@@ -29,30 +29,30 @@ jobs:
   include:
     - stage: Tests
       name: accessibility-checker-engine
-      script: travis/test_ace.sh
+      script: travis/test/ace.sh
     - name: accessibility-checker - Selenium
-      script: travis/test_achecker_selenium.sh
+      script: travis/test/achecker_selenium.sh
     - name: accessibility-checker - Other
-      script: travis/test_achecker_other.sh
+      script: travis/test/achecker_other.sh
     - name: karma-accessibility-checker - Assert
-      script: travis/test_karma_achecker_assert.sh
+      script: travis/test/karma_achecker_assert.sh
     - name: karma-accessibility-checker - Content
-      script: travis/test_karma_achecker_content.sh
+      script: travis/test/karma_achecker_content.sh
     - name: karma-accessibility-checker - Other
-      script: travis/test_karma_achecker_other.sh
+      script: travis/test/karma_achecker_other.sh
     - stage: Deploy
       name: Deploy rule server
-      script: echo "Deploy rule server..."
-      if: tag IS present
+      script: travis/publish/rules.sh
+      if: branch = master OR branch = prod
     - name: Deploy accessibility-checker
-      script: echo "Deploy accessibility-checker..."
-      if: tag IS present
+      script: travis/publish/achecker.sh
+      if: tag IS present AND branch = prod
     - name: Deploy karma-accessibility-checker
-      script: echo "Deploy karma-accessibility-checker..."
-      if: tag IS present
+      script: travis/publish/karma-achecker.sh
+      if: tag IS present AND branch = prod
     - name: Deploy accessibility-checker for Chrome
-      script: echo "Deploy accessibility-checker for Chrome..."
-      if: tag IS present
+      script: travis/publish/achecker-chrome.sh
+      if: tag IS present AND branch = prod
     - name: Deploy accessibility-checker for Firefox
-      script: echo "Deploy accessibility-checker for Firefox..."
-      if: tag IS present
+      script: travis/publish/achecker-firefox.sh
+      if: tag IS present AND branch = prod

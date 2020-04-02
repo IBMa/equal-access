@@ -1,0 +1,1 @@
+echo "Deploy karma-accessibility-checker..."
