@@ -1,0 +1,1 @@
+echo "Deploy accessibility-checker for Firefox..."
