@@ -7,18 +7,6 @@ node_js:
 services:
   - xvfb
 
-env:
-  global:
-    - TRAVIS_API=https://api.travis-ci.org
-  matrix:
-    - COMPONENT=DEPLOYMENT
-    - COMPONENT=ace
-    - COMPONENT=aChecker_Node TEST_SUITE=SELENIUM
-    - COMPONENT=aChecker_Node TEST_SUITE=OTHER
-    - COMPONENT=aChecker_Karma TEST_SUITE=CONTENT
-    - COMPONENT=aChecker_Karma TEST_SUITE=ASSERT
-    - COMPONENT=aChecker_Karma TEST_SUITE=OTHER
-
 before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1600x1200x24"
   - export CHROME_BIN=/usr/bin/google-chrome
@@ -37,59 +25,14 @@ before_script:
   - cd ..;
   - cd ..;
 
-script:
-  - if [[ ( "$COMPONENT" == "ace" ) ]]; then 
-      cd accessibility-checker-engine;
-      npm install;
-      npx karma start --single-run --watch=false;
-      res=$?;if [ $res != 0 ]; then exit $res; fi;
-      cd ..;
-    fi
-  - if [[ ( "$COMPONENT" == "aChecker_Node" ) ]]; then 
-      cd accessibility-checker-engine;
-      npm install;
-      npm run build;
-      cd ..;
-      cd accessibility-checker;
-      npm install;
-      if [[ ( "$TEST_SUITE" == "SELENIUM" ) ]]; then 
-        npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.Scans/**/*.test.js;
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-        npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.ObjectStructure/**/*.test.js;
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-      fi;
-      if [[ ( "$TEST_SUITE" == "OTHER" ) ]]; then 
-        npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js; 
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-      fi;
-
-      cd ..;
-    fi
-  - if [[ ( "$COMPONENT" == "aChecker_Karma" ) ]]; then 
-      cd karma-accessibility-checker;
-      npm install;
-      npm run setup;
-      sleep 10;
-      npm run build;
-      npm run installPlugin;
-      if [[ ( "$TEST_SUITE" == "CONTENT" ) ]]; then 
-        npx karma start karma.conf1.js;
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-      fi;
-      if [[ ( "$TEST_SUITE" == "ASSERT" ) ]]; then 
-        npx karma start karma.conf2.js;
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-      fi;
-      if [[ ( "$TEST_SUITE" == "OTHER" ) ]]; then 
-        npx karma start karma.conf3.js;
-        res=$?;if [ $res != 0 ]; then exit $res; fi;
-      fi;
-      cd ..;
-    fi
-  - if [[ ( "$COMPONENT" == "DEPLOYMENT" ) ]]; then 
-      cd rule-server;
-      ./scripts/travis/travisAfterAll.sh AFTER_SUCCESS;
-      cd ..;
-    fi
-
-    
+jobs:
+  include:
+    - script: travis/test_ace.sh
+    - script: travis/test_achecker_selenium.sh
+    - script: travis/test_achecker_other.sh
+    - script: travis/test_karma_achecker_assert.sh
+    - script: travis/test_karma_achecker_content.sh
+    - script: travis/test_karma_achecker_other.sh
+    - stage: Deploy
+      script: echo "Deploy rule server..."
+      tags: true
