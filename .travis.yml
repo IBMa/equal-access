@@ -27,13 +27,32 @@ before_script:
 
 jobs:
   include:
-    - stage: Test
+    - stage: Tests
+      name: accessibility-checker-engine
       script: travis/test_ace.sh
+    - name: accessibility-checker - Selenium
       script: travis/test_achecker_selenium.sh
+    - name: accessibility-checker - Other
       script: travis/test_achecker_other.sh
+    - name: karma-accessibility-checker - Assert
       script: travis/test_karma_achecker_assert.sh
+    - name: karma-accessibility-checker - Content
       script: travis/test_karma_achecker_content.sh
+    - name: karma-accessibility-checker - Other
       script: travis/test_karma_achecker_other.sh
     - stage: Deploy
+      name: Deploy rule server
       script: echo "Deploy rule server..."
+      if: tag IS present
+    - name: Deploy accessibility-checker
+      script: echo "Deploy accessibility-checker..."
+      if: tag IS present
+    - name: Deploy karma-accessibility-checker
+      script: echo "Deploy karma-accessibility-checker..."
+      if: tag IS present
+    - name: Deploy accessibility-checker for Chrome
+      script: echo "Deploy accessibility-checker for Chrome..."
+      if: tag IS present
+    - name: Deploy accessibility-checker for Firefox
+      script: echo "Deploy accessibility-checker for Firefox..."
       if: tag IS present
