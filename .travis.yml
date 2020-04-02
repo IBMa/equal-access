@@ -27,12 +27,13 @@ before_script:
 
 jobs:
   include:
-    - script: travis/test_ace.sh
-    - script: travis/test_achecker_selenium.sh
-    - script: travis/test_achecker_other.sh
-    - script: travis/test_karma_achecker_assert.sh
-    - script: travis/test_karma_achecker_content.sh
-    - script: travis/test_karma_achecker_other.sh
+    - stage: Test
+      script: travis/test_ace.sh
+      script: travis/test_achecker_selenium.sh
+      script: travis/test_achecker_other.sh
+      script: travis/test_karma_achecker_assert.sh
+      script: travis/test_karma_achecker_content.sh
+      script: travis/test_karma_achecker_other.sh
     - stage: Deploy
       script: echo "Deploy rule server..."
-      tags: true
+      if: tag IS present
