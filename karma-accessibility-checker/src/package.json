@@ -30,7 +30,7 @@
     "fs-extra": "0.30.0",
     "path": "0.12.7",
     "promise": "7.1.1",
-    "js-yaml": "3.6.0",
+    "js-yaml": "3.13.1",
     "deep-diff": "0.3.4",
     "uuid": "2.0.1",
     "slack-node": "0.1.8",
