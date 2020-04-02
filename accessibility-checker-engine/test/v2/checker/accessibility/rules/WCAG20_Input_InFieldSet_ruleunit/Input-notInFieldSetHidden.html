@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-notInFieldSetHidden.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input type Tests</h3>
+
+
+<ul>
+	<li>Test - Input without associated fieldset - type="text"</li>
+</ul>
+
+<form action="..." method="post">
+<!--		<legend>Legend text: Personal Information</legend> -->
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="fn1">First Name</label>
+		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
+
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name" hidden>
+
+		<button type="submit">Submit</button>
+</form>
+
+<ul>
+	<li>Test - Input without associated fieldset - type="file"</li>
+</ul>
+
+<form action="..." method="post">
+<!--		<legend>Legend text: File Information</legend> -->
+		<p>Fieldset text: Please enter the file information.</p>
+
+		<label for="ffn2">First File Name</label>
+		<input type="file" name="firstfilename" id="ffn2" value="enter first file name">
+
+		<label for="lfn2">Last File Name</label>
+		<input type="file" name="lastfilename" id="lfn2" value="enter last file name" style="display: none">
+
+		<button type="submit">Submit</button>
+</form>
+
+<ul>
+	<li>Test - Input without associated fieldset - type="password"</li>
+</ul>
+
+<form action="..." method="post">
+<!--		<legend>Legend text: Personal Information</legend> -->
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="fpw1">First Password</label>
+		<input type="password" name="firstpassword" id="fpw1" value="enter first password" title="enter first password">
+
+		<label for="lpw1">Last Password</label>
+		<input type="password" name="lastpassword" id="lpw1" value="enter last password" title="enter last password" style="visibility: hidden">
+
+		<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+<!--		<legend>Legend text: Automobiles</legend> -->
+		<p>Fieldset text: Please select the auto of your choice.</p>
+
+		<label for="cars1">Automobiles </label>
+		<select name="autos" id="cars1" title="autos">
+			<optgroup label="American cars">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+			</optgroup>
+
+			<optgroup label="European cars">
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+			</optgroup>
+		</select>
+
+		<select name="autos" id="cars1" title="autos" style="display: none">
+			<optgroup label="American cars">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+			</optgroup>
+
+			<optgroup label="European cars">
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+			</optgroup>
+		</select>
+		<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+<!--		<legend>Legend text: Automobiles</legend> -->
+		<p>Fieldset text: Please type the auto of your choice.</p>
+
+		<label for="cars2">List of Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars2" title="autos">		Ford, GM, Chrysler
+		</textarea>
+		<textarea rows="2" cols="50" name="autos" id="cars2" title="autos" hidden>		Ford, GM, Chrysler
+		</textarea>
+		<button type="submit">Submit</button>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+		if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+		if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+		OpenAjax.a11y.ruleCoverage = [
+				{
+					ruleId: "1028",
+					passedXpaths: [
+					],
+					failedXpaths: [
+						// Val engine does not support Check Hidden, so by default we will not check hidden content
+						// so no violations will trigger.
+						// 	"/html/body/form[1]/input[1]",
+						// 	"/html/body/form[2]/input[1]",
+						// 	"/html/body/form[3]/input[1]",
+						// 	"/html/body/form[4]/select[1]",
+						// 	"/html/body/form[5]/textarea[1]",
+						// The following will NOT trigger violation -  content hidden with options
+						// 	"/html/body/form[1]/input[2]",
+						// 	"/html/body/form[2]/input[2]",
+						// 	"/html/body/form[3]/input[2]",
+						// 	"/html/body/form[4]/select[2]",
+						// 	"/html/body/form[5]/textarea[2]"
+					]
+				}
+		];
+//]]>
+</script></body>
+
+</html>

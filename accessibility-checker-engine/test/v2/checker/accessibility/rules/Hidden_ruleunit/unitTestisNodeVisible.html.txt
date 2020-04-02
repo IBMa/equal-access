@@ -1,0 +1,458 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head id="headVisible">
+	<meta id="metaVisible" http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title id="titleVisible">Unit Testing isNodeVisible function in util-rpt.js file</title>
+	<script src="../../src/oaa-a11y.js"></script>
+	<script id="scriptVisible" src="../../src/scripts/util-rpt.js"></script>
+	<link id="linkVisible" rel="stylesheet" type="text/css" href="css/external.css">
+	<base id="baseVisible" target="_blank" href="http://www.example.com/page.html">
+	<noscript id="noscriptVisible">
+  		<!-- anchor linking to external file -->
+  		<a href="http://www.mozilla.com/">External Link</a>
+	</noscript>
+	<script type="text/javascript">
+		function runisNodeVisibleUnitTest() {
+
+			// Below this covers elements which are hidden
+			var divdisplaynoneinline = RPT.util.isNodeVisible(document.getElementById("divdisplaynoneinline"));
+			console.log("Div element with display: none using attribute, expecting false: " + divdisplaynoneinline);
+
+			var divvisibilityhiddeninline = RPT.util.isNodeVisible(document.getElementById("divvisibilityhiddeninline"));
+			console.log("Div element with visibility: hidden using attribute, expecting false: " + divvisibilityhiddeninline);
+
+			var divdisplaynoneclass = RPT.util.isNodeVisible(document.getElementById("divdisplaynoneclass"));
+			console.log("Div element with display: none using CSS class, expecting false: " + divdisplaynoneclass);
+
+			var divvisibilityhiddenclass = RPT.util.isNodeVisible(document.getElementById("divvisibilityhiddenclass"));
+			console.log("Div element with visibility: hidden using CSS class, expecting false: " + divvisibilityhiddenclass);
+
+			var displayjavascript = RPT.util.isNodeVisible(document.getElementById("displayjavascript"));
+			console.log("Div element with display: none using JS, expecting false: " + displayjavascript);
+
+			var visibilityjavascript = RPT.util.isNodeVisible(document.getElementById("visibilityjavascript"));
+			console.log("Div element with visibility: hidden using JS, expecting false: " + visibilityjavascript);
+
+			var divhiddenattribute = RPT.util.isNodeVisible(document.getElementById("divhiddenattribute"));
+			console.log("Div element with hidden using attribute, expecting false: " + divhiddenattribute);
+
+			var hiddenWithJavascript = RPT.util.isNodeVisible(document.getElementById("hiddenWithJavascript"));
+			console.log("Div element with hidden using JS, expecting false: " + hiddenWithJavascript);
+
+
+			// Below this covers element which are hidden because of parent
+			var elementWithHidden = RPT.util.isNodeVisible(document.getElementById("seven"));
+			console.log("Div element with hidden parent using attribute, expecting false: " + elementWithHidden);
+
+			var elementWithStyleNone = RPT.util.isNodeVisible(document.getElementById("sevennone"));
+			console.log("Div element with style=\"display: none\" parent using attribute, expecting false: " + elementWithStyleNone);
+
+			var elementWithVisibilityHidden = RPT.util.isNodeVisible(document.getElementById("sevenhidden"));
+			console.log("Div element with style=\"visibility: hidden\" parent using attribute, expecting false: " + elementWithVisibilityHidden);
+
+			var elementWithHiddenJS = RPT.util.isNodeVisible(document.getElementById("sevenJS"));
+			console.log("Div element with hidden parent using JS, expecting false: " + elementWithHiddenJS);
+
+			var elementWithStyleNoneJS = RPT.util.isNodeVisible(document.getElementById("sevennoneJS"));
+			console.log("Div element with style=\"display: none\" parent using JS, expecting false: " + elementWithStyleNoneJS);
+
+			var elementWithVisibilityHiddenJS = RPT.util.isNodeVisible(document.getElementById("sevenhiddenJS"));
+			console.log("Div element with style=\"visibility: hidden\" parent using JS, expecting false: " + elementWithVisibilityHiddenJS);
+
+			var elementWithStyleNoneClass = RPT.util.isNodeVisible(document.getElementById("sevennoneclass"));
+			console.log("Div element with style=\"display: none\" parent using CSS class, expecting false: " + elementWithStyleNoneClass);
+
+			var elementWithVisibilityHiddenClass = RPT.util.isNodeVisible(document.getElementById("sevenhiddenclass"));
+			console.log("Div element with style=\"visibility: hidden\" parent using CSS class, expecting false: " + elementWithVisibilityHiddenClass);
+
+			var elementWithStyleNoneExternalClass = RPT.util.isNodeVisible(document.getElementById("sevennoneexternalclass"));
+			console.log("Div element with style=\"display: none\" parent using CSS class, expecting false: " + elementWithStyleNoneExternalClass);
+
+			var elementWithVisibilityHiddenExternalClass = RPT.util.isNodeVisible(document.getElementById("sevenhiddenexternalclass"));
+			console.log("Div element with style=\"visibility: hidden\" parent using CSS class, expecting false: " + elementWithVisibilityHiddenExternalClass);
+
+			// Below this covers element which cant be hidden
+			var areahidden = RPT.util.isNodeVisible(document.getElementById("areahidden"));
+			console.log("Area element with hidden attribute, expecting true: " + areahidden);
+
+			var areanone = RPT.util.isNodeVisible(document.getElementById("areanone"));
+			console.log("Area element with style=\"display: none\" attribute, expecting true: " + areanone);
+
+			var areavisibility = RPT.util.isNodeVisible(document.getElementById("areavisibility"));
+			console.log("Area element with style=\"visibility: hidden\" attribute, expecting true: " + areavisibility);
+
+			var paramhidden = RPT.util.isNodeVisible(document.getElementById("paramhidden"));
+			console.log("param element with hidden attribute, expecting true: " + paramhidden);
+
+			var paramnone = RPT.util.isNodeVisible(document.getElementById("paramnone"));
+			console.log("param element with style=\"display: none\" attribute, expecting true: " + paramnone);
+
+			var paramvisibility = RPT.util.isNodeVisible(document.getElementById("paramvisibility"));
+			console.log("param element with style=\"visibility: hidden\" attribute, expecting true: " + paramvisibility);
+
+			var audiohidden = RPT.util.isNodeVisible(document.getElementById("audiohidden"));
+			console.log("audio element with hidden attribute, expecting true: " + audiohidden);
+
+			var audionone = RPT.util.isNodeVisible(document.getElementById("audionone"));
+			console.log("audio element with style=\"display: none\" attribute, expecting true: " + audionone);
+
+			var audiovisibility = RPT.util.isNodeVisible(document.getElementById("audiovisibility"));
+			console.log("audio element with style=\"visibility: hidden\" attribute, expecting true: " + audiovisibility);
+
+			var scripthidden = RPT.util.isNodeVisible(document.getElementById("scripthidden"));
+			console.log("script element with hidden attribute, expecting true: " + scripthidden);
+
+			// Special Cases
+			var inputhidden = RPT.util.isNodeVisible(document.getElementById("inputhidden"));
+			console.log("Check the special case where if a form is hidden and contains input elements with id=\"hidden\", expecting false: " + inputhidden);
+
+			var VisibilityVisible = RPT.util.isNodeVisible(document.getElementById("sevenhiddenVisible"));
+			console.log("When parent has visibility: hidden and child has visibility: visible:, expecting true: " + VisibilityVisible);
+
+			// Elements which are hidden by default should always be marked as visible by the isNodeVisible function
+			var scriptVisible = RPT.util.isNodeVisible(document.getElementById("scriptVisible"));
+			console.log("script element is visible by default:, expecting true: " + scriptVisible);
+
+			var linkVisible = RPT.util.isNodeVisible(document.getElementById("linkVisible"));
+			console.log("link element is visible by default:, expecting true: " + linkVisible);
+
+			var styleVisible = RPT.util.isNodeVisible(document.getElementById("styleVisible"));
+			console.log("style element is visible by default:, expecting true: " + styleVisible);
+
+			var headVisible = RPT.util.isNodeVisible(document.getElementById("headVisible"));
+			console.log("head element is visible by default:, expecting true: " + headVisible);
+
+			var titleVisible = RPT.util.isNodeVisible(document.getElementById("titleVisible"));
+			console.log("title element is visible by default:, expecting true: " + titleVisible);
+
+			var metaVisible = RPT.util.isNodeVisible(document.getElementById("metaVisible"));
+			console.log("meta element is visible by default:, expecting true: " + metaVisible);
+
+			var baseVisible = RPT.util.isNodeVisible(document.getElementById("baseVisible"));
+			console.log("base element is visible by default:, expecting true: " + baseVisible);
+
+			var noscriptVisible = RPT.util.isNodeVisible(document.getElementById("noscriptVisible"));
+			console.log("noscript element is visible by default:, expecting true: " + noscriptVisible);
+
+			var templateVisible = RPT.util.isNodeVisible(document.getElementById("templateVisible"));
+			console.log("template element is visible by default:, expecting true: " + templateVisible);
+
+			var datalistVisible = RPT.util.isNodeVisible(document.getElementById("datalistVisible"));
+			console.log("datalist element is visible by default:, expecting true: " + datalistVisible);
+
+			console.log("---------- START Verifying how the hidden by default elements work ----------");
+			console.log("script: display --> " + document.defaultView.getComputedStyle(document.getElementById("scriptVisible"), null).getPropertyValue('display'));
+			console.log("link: display --> " + document.defaultView.getComputedStyle(document.getElementById("linkVisible"), null).getPropertyValue('display'));
+			console.log("style: display --> " + document.defaultView.getComputedStyle(document.getElementById("styleVisible"), null).getPropertyValue('display'));
+			console.log("head: display --> " + document.defaultView.getComputedStyle(document.getElementById("headVisible"), null).getPropertyValue('display'));
+			console.log("title: display --> " + document.defaultView.getComputedStyle(document.getElementById("titleVisible"), null).getPropertyValue('display'));
+			console.log("meta: display --> " + document.defaultView.getComputedStyle(document.getElementById("metaVisible"), null).getPropertyValue('display'));
+			console.log("base: display --> " + document.defaultView.getComputedStyle(document.getElementById("baseVisible"), null).getPropertyValue('display'));
+			console.log("noscript: display --> " + document.defaultView.getComputedStyle(document.getElementById("noscriptVisible"), null).getPropertyValue('display'));
+			console.log("template: display --> " + document.defaultView.getComputedStyle(document.getElementById("templateVisible"), null).getPropertyValue('display'));
+			console.log("datalist: display --> " + document.defaultView.getComputedStyle(document.getElementById("datalistVisible"), null).getPropertyValue('display'));
+			console.log("---------- END Verifying how the hidden by default elements work ----------");
+
+		}
+	</script>
+</head>
+
+<body onload="runisNodeVisibleUnitTest();">
+	<div role="main">
+
+		<a href="#navskip">skip to main content</a>
+
+		<label>Choose a browser from this list:
+		<input list="datalistVisible" name="myBrowser" /></label>
+		<datalist id="datalistVisible">
+  			<option value="Chrome">
+  			<option value="Firefox">
+  			<option value="Internet Explorer">
+  			<option value="Opera">
+  			<option value="Safari">
+  			<option value="Microsoft Edge">
+		</datalist>
+
+		<template id="templateVisible">
+		  <tr>
+		    <td class="record"></td>
+		    <td></td>
+		  </tr>
+		</template>
+
+		<div id="divdisplaynoneinline" style="display: none;">I am Not visible display: none; dont trigger violation</div>
+		<div id="divvisibilityhiddeninline" style="visibility: hidden;">I am Not visible visibility: hidden; dont trigger violation</div>
+
+		<div id="divdisplaynoneclass" class="display">CSS FILE: I am Not visible display: none; dont trigger violation</div>
+		<div id="divvisibilityhiddenclass" class="visibility">CSS FILE: I am Not visible visibility: hidden; dont trigger violation</div>
+
+		<div id="displayjavascript">Javascript: I am Not visible display: none; dont trigger violation</div>
+		<div id="visibilityjavascript">Javascript: I am Not visible visibility: hidden; dont trigger violation</div>
+
+		<div id="divhiddenattribute" hidden>I am Not visible hidden attribute dont trigger violation</div>
+		<div id="hiddenWithJavascript">I am Not visible hidden element property set dont trigger violation</div>
+
+		<!-- Check element seven to make sure it is hidden -->
+		<div id="first" hidden>Div 1 hidden
+			<div id="two">Div 2 hidden
+				<div id="three">Div 3 hidden
+					<div id="four">Div 4 hidden
+						<div id="five">Div 5 hidden
+							<div id="six">Div 6 hidden
+								<div id="seven">Div 7 hidden
+									<div role="document" aria-label="label text">Text</div>
+									<div role="document" aria-label="label text">Text</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevennone to make sure it is hidden -->
+		<div id="firstnone" style="display: none">Div 1 style="display: none"
+			<div id="twonone">Div 2 style="display: none"
+				<div id="threenone">Div 3 style="display: none"
+					<div id="fournone">Div 4 style="display: none"
+						<div id="fivenone">Div 5 style="display: none"
+							<div id="sixnone">Div 6 style="display: none"
+								<div id="sevennone">Div 7 style="display: none"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevenhidden to make sure it is hidden -->
+		<div id="firsthidden" style="visibility: hidden">Div 1 style="visibility: hidden"
+			<div id="twohidden">Div 2 style="visibility: hidden"
+				<div id="threehidden">Div 3 style="visibility: hidden"
+					<div id="fourhidden">Div 4 style="visibility: hidden"
+						<div id="fivehidden">Div 5 style="visibility: hidden"
+							<div id="sixhidden">Div 6 style="visibility: hidden"
+								<div id="sevenhidden">Div 7 style="visibility: hidden"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element seven to make sure it is hidden with JavaScript-->
+		<div id="firstJS">Div 1 hidden
+			<div id="two">Div 2 hidden
+				<div id="three">Div 3 hidden
+					<div id="four">Div 4 hidden
+						<div id="five">Div 5 hidden
+							<div id="six">Div 6 hidden
+								<div id="sevenJS">Div 7 hidden
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevennone to make sure it is display: none with JavaScript -->
+		<div id="firstnoneJS">Div 1 style="display: none"
+			<div id="twonone">Div 2 style="display: none"
+				<div id="threenone">Div 3 style="display: none"
+					<div id="fournone">Div 4 style="display: none"
+						<div id="fivenone">Div 5 style="display: none"
+							<div id="sixnone">Div 6 style="display: none"
+								<div id="sevennoneJS">Div 7 style="display: none"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevenhidden to make sure it is visibility: hidden with JavaScript -->
+		<div id="firsthiddenJS">Div 1 style="visibility: hidden"
+			<div id="twohidden">Div 2 style="visibility: hidden"
+				<div id="threehidden">Div 3 style="visibility: hidden"
+					<div id="fourhidden">Div 4 style="visibility: hidden"
+						<div id="fivehidden">Div 5 style="visibility: hidden"
+							<div id="sixhidden">Div 6 style="visibility: hidden"
+								<div id="sevenhiddenJS">Div 7 style="visibility: hidden"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevennone to make sure it is display: none with CSS class -->
+		<div id="firstnoneclass" class="display">Div 1 style="display: none"
+			<div id="twonone">Div 2 style="display: none"
+				<div id="threenone">Div 3 style="display: none"
+					<div id="fournone">Div 4 style="display: none"
+						<div id="fivenone">Div 5 style="display: none"
+							<div id="sixnone">Div 6 style="display: none"
+								<div id="sevennoneclass">Div 7 style="display: none"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevenhidden to make sure it is visibility: hidden with CSS class -->
+		<div id="firsthiddenclass" class="visibility">Div 1 style="visibility: hidden"
+			<div id="twohidden">Div 2 style="visibility: hidden"
+				<div id="threehidden">Div 3 style="visibility: hidden"
+					<div id="fourhidden">Div 4 style="visibility: hidden"
+						<div id="fivehidden">Div 5 style="visibility: hidden"
+							<div id="sixhidden">Div 6 style="visibility: hidden"
+								<div id="sevenhiddenclass">Div 7 style="visibility: hidden"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevennone to make sure it is display: none with CSS class external -->
+		<div id="firstnoneexternalclass" class="displayexternal">Div 1 style="display: none"
+			<div id="twonone">Div 2 style="display: none"
+				<div id="threenone">Div 3 style="display: none"
+					<div id="fournone">Div 4 style="display: none"
+						<div id="fivenone">Div 5 style="display: none"
+							<div id="sixnone">Div 6 style="display: none"
+								<div id="sevennoneexternalclass">Div 7 style="display: none"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Check element sevenhidden to make sure it is visibility: hidden with CSS class external-->
+		<div id="firsthiddenexternalclass" class="visibilityexternal">Div 1 style="visibility: hidden"
+			<div id="twohidden">Div 2 style="visibility: hidden"
+				<div id="threehidden">Div 3 style="visibility: hidden"
+					<div id="fourhidden">Div 4 style="visibility: hidden"
+						<div id="fivehidden">Div 5 style="visibility: hidden"
+							<div id="sixhidden">Div 6 style="visibility: hidden"
+								<div id="sevenhiddenexternalclass">Div 7 style="visibility: hidden"
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<p>Click on the sun or on one of the planets to watch it closer:</p>
+
+		<img src="http://www.w3schools.com/tags/planets.gif" width="145" height="126" alt="Planets" usemap="#planetmap">
+
+		<map name="planetmap">
+			<area id="areahidden" hidden shape="rect" coords="0,0,82,126" alt="Sun" href="http://www.w3schools.com/tags/sun.htm">
+			<area id="areanone" style="display: none" shape="circle" coords="90,58,3" alt="Mercury" href="http://www.w3schools.com/tags/mercur.htm">
+			<area id="areavisibility" style="visibility: hidden" shape="circle" coords="124,58,8" alt="Venus" href="http://www.w3schools.com/tags/venus.htm">
+		</map>
+
+		<object data="http://www.w3schools.com/tags/horse.wav">
+			<param id="paramhidden" hidden name="autoplay" value="true">
+			<param id="paramnone" style="display: none" name="autoplay" value="true">
+			<param id="paramvisibility" style="visibility: hidden" name="autoplay" value="true">
+		</object>
+
+		<br>
+
+		<audio id="audiohidden" hidden controls>
+			<source src="http://www.w3schools.com/tags/horse.mp3" type="audio/mpeg"> Your browser does not support the audio element.
+		</audio>
+
+		<br>
+		<br>
+
+		<audio id="audionone" style="display: none" controls>
+			<source src="http://www.w3schools.com/tags/horse.ogg" type="audio/ogg"> Your browser does not support the audio element.
+		</audio>
+
+		<br>
+		<br>
+
+		<audio id="audiovisibility" style="visibility: hidden" controls>
+			<source src="http://www.w3schools.com/tags/horse.ogg" type="audio/ogg"> Your browser does not support the audio element.
+		</audio>
+
+		<p><strong>Note:</strong> The audio tag is not supported in Internet Explorer 8 and earlier versions.</p>
+
+		<!-- Check the special case where if a form is hidden and contains input elements with id="hidden" then a simple node.hidden will not return a boolean
+			 Refer to: 95940: hidden property on form element can be non boolean
+		-->
+		<form hidden id="formhidden">
+            <input id="hidden">
+            <input id="inputhidden">
+        </form>
+
+        <!-- When parent has visibility: hidden and child has visibility: visible -->
+        <div id="firsthiddenVisible" style="visibility: hidden">Div 1 style="visibility: hidden"
+            <div id="twohiddenVisible">Div 2 style="visibility: hidden"
+                <div id="threehiddenVisible">Div 3 style="visibility: hidden"
+                    <div id="fourhiddenVisible">Div 4 style="visibility: hidden"
+                        <div id="fivehiddenVisible">Div 5 style="visibility: hidden"
+                            <div id="sixhiddenVisible">Div 6 style="visibility: hidden"
+                                <div id="sevenhiddenVisible" style="visibility: visible">Div 7 style="visibility: visible"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<script id="scripthidden" hidden>
+		document.getElementById("firstJS").hidden = true;
+
+		document.getElementById("firstnoneJS").style.display = "none";
+		document.getElementById("firsthiddenJS").style.visibility = "hidden";
+
+		document.getElementById("hiddenWithJavascript").hidden = true;
+
+		document.getElementById("displayjavascript").style.display = "none";
+		document.getElementById("visibilityjavascript").style.visibility = "hidden";
+	</script>
+
+	<style id="styleVisible">
+		.display {
+			display: none;
+		}
+
+		.visibility {
+			visibility: hidden;
+		}
+	</style>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "999999999999",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+
+</html>

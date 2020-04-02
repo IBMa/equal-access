@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: DefinitionLists-valid.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Definition Lists Tests</h3>
+
+<ul>
+	<li>Test #1 - Valid definition list</li>
+	<li>Test #2 - Valid complex definition list</li>
+	<li>Test #3 - Valid complex definition list with multiple sequential DT tags and multiple sequential DD tags</li>
+</ul>
+
+<dl id="dl1">
+	<dt id="dt1">Person 1</dt>
+	<dd id="dd1">test team lead</dd>
+
+	<dt id="dt2">Person 	2</dt>
+	<dd id="dd2">test team 	member</dd>
+</dl>
+
+<dl id="dl2">
+	<dt id="dt3"><strong>Types of tea</strong></dt>
+	<dd id="dd3">
+		<p>
+			<ul>
+				<li>black</li>
+				<li>Also <em>Orange Spice</em></li>
+			</ul>
+		</p>
+	</dd>
+
+	<dt id="dt4">Types of Coffee</dt>
+	<dd id="dd4">
+		<a href="../support/Coffee_types.html" alt="coffee types">Coffee Types</a>
+	</dd>
+</dl>
+
+<dl id="dl3">
+	<dt id="dt5">First name 1</dt>
+	<dt id="dt6">Middle name 1</dt>
+	<dt id="dt7">Last name 1</dt>
+	<dd id="dd5">father</dd>
+	<dd id="dd6">programmer</dd>
+	<dd id="dd7">tennis player</dd>
+	<dd id="dd8">coach</dd>
+
+	<dt id="dt8">First name 2</dt>
+	<dt id="dt9">Middle name 2</dt>
+	<dt id="dt10">Last name 2</dt>
+	<dd id="dd9">mother</dd>
+	<dd id="dd10">paralegal</dd>
+	<dd id="dd11">tennis player</dd>
+	<dd id="dd12">coach</dd>
+</dl>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "3",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

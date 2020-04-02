@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to banner content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA widgets that must be explicitly labelled by an aria-label, aria-labelledby or title attribute</h3>
+
+    <!-- aria-label tests -->
+
+    <!-- alert does not require a label according to ARIA spec -->
+    <!-- <div role="alert" aria-label="">...</div> -->
+    <div role="alertdialog" aria-label=" ">...</div>
+    <div role="combobox" aria-label>...</div>
+    <div role="dialog">...</div>
+    <div role="grid">...</div>
+    <div role="listbox">...</div>
+    <div role="log">...</div>
+    <div role="marquee">...</div>
+    <div role="menu">...</div>
+    <!-- menubar does not require a label according to ARIA spec -->
+    <!-- <div role="menubar" >...</div> -->
+    <div role="progressbar">...</div>
+    <div role="radiogroup">...</div>
+    <!-- scrollbar does not require a label according to ARIA spec -->
+    <!-- <div role="scrollbar" >...</div> -->
+    <div role="slider">...</div>
+    <div role="spinbutton">...</div>
+    <!-- tablist does not require a label according to ARIA spec -->
+    <!-- <div role="tablist" >...</div> -->
+    <div role="tabpanel">...</div>
+    <div role="textbox">...</div>
+    <div role="timer">...</div>
+    <div role="tree">...</div>
+    <div role="treegrid">...</div>
+
+    <!-- aria-labelledby tests -->
+    <div role="alertdialog" aria-labelledby=" ">...</div>
+    <div role="dialog" labelledby>...</div>
+    <div role="grid">...</div>
+    <div role="listbox">...</div>
+    <div role="log">...</div>
+    <div role="marquee">...</div>
+    <div role="menu">...</div>
+    <div role="progressbar">...</div>
+    <div role="radiogroup">...</div>
+    <div role="slider">...</div>
+    <div role="spinbutton">...</div>
+    <div role="tabpanel">...</div>
+    <div role="textbox">...</div>
+    <div role="timer">...</div>
+    <div role="tree">...</div>
+    <div role="treegrid">...</div>
+
+    <!-- title attribute tests -->
+    <div role="alertdialog" title=" ">...</div>
+    <div role="tree" title>...</div>
+
+    <a name="navskip"></a>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [{
+            ruleId: "1156",
+            passedXpaths: [],
+            failedXpaths: [
+                "/html/body/div[1]",
+            	// "/html/body/div[2]", // Rule short circuits combobox role so it won't fail.
+                "/html/body/div[3]",
+                "/html/body/div[4]",
+                "/html/body/div[5]",
+                "/html/body/div[6]",
+                "/html/body/div[7]",
+                "/html/body/div[9]",
+                "/html/body/div[10]",
+                "/html/body/div[11]",
+                "/html/body/div[12]",
+                "/html/body/div[13]",
+                "/html/body/div[14]",
+                "/html/body/div[15]",
+                "/html/body/div[16]",
+                "/html/body/div[17]",
+                "/html/body/div[18]",
+                "/html/body/div[19]",
+                "/html/body/div[20]",
+                "/html/body/div[21]",
+                "/html/body/div[22]",
+                "/html/body/div[23]",
+                "/html/body/div[25]",
+                "/html/body/div[26]",
+                "/html/body/div[27]",
+                "/html/body/div[28]",
+                "/html/body/div[29]",
+                "/html/body/div[30]",
+                "/html/body/div[31]",
+                "/html/body/div[32]",
+                "/html/body/div[33]",
+                "/html/body/div[34]",
+                "/html/body/div[35]"
+            ]
+        }];
+        //]]>
+    </script>
+</body>
+
+</html>

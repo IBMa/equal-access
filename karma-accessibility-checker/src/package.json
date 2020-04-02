@@ -1,0 +1,57 @@
+{
+  "name": "karma-accessibility-checker",
+  "version": "3.0.0-beta.0",
+  "description": "A Karma plugin for Accessibility Testing.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "node --eval \"var path = require('path');var fs = require('fs-extra');var karmaibmaRoot = path.resolve(__dirname, '..', 'karma-ibma');var karmaibmaMovePath = path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) { try { fs.copySync(karmaibmaRoot, karmaibmaMovePath);} catch (e) {fs.removeSync(karmaibmaMovePath)}}\"",
+    "postuninstall": "node --eval \"var path=require('path'); var fs=require('fs-extra');var karmaibmaRoot=path.resolve(__dirname, '..', '..', 'karma-ibma');if (fs.existsSync(karmaibmaRoot)) {fs.removeSync(karmaibmaRoot);}\""
+  },
+  "keywords": [
+    "ci",
+    "integration",
+    "continuous",
+    "karma-ibma",
+    "karma",
+    "karma-plugin",
+    "a11y",
+    "accessibility",
+    "IBMa",
+    "karma-framework",
+    "karma-reporter",
+    "karma-preprocessor"
+  ],
+  "author": "IBM Accessibility",
+  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "dependencies": {
+    "karma": "1.7.1",
+    "fs": "0.0.2",
+    "fs-extra": "0.30.0",
+    "path": "0.12.7",
+    "promise": "7.1.1",
+    "js-yaml": "3.6.0",
+    "deep-diff": "0.3.4",
+    "uuid": "2.0.1",
+    "slack-node": "0.1.8",
+    "slack": "8.1.1",
+    "shelljs": "0.7.5"
+  },
+  "engines": {
+    "node": "4 || 5 || 6 || 7 || 8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IBMa/equal-access.git"
+  },
+  "bugs": {
+    "url" : "https://github.com/IBMa/equal-access/issues",
+    "email": "thbrunet@us.ibm.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "achecker_policies": "./bin/achecker_policies.js"
+  }
+}

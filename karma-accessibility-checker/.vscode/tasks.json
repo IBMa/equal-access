@@ -1,0 +1,86 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "command": "npm",
+    "isShellCommand": true,
+    "showOutput": "always",
+    "suppressTaskName": true,
+    "args": [
+        "run-script"
+    ],    
+    "tasks": [
+        {
+            "taskName": "Setup (npm run-script setup)",
+            "args": ["setup"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Install karma-ibma plugin (npm run-script installPlugin)",
+            "args": ["installPlugin"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Lint (npm run-script lint)",
+            "args": ["link"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Run client side testing (npm run-script test)",
+            "args": ["test"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": true,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Start Local Rule Server (npm run-script startLocalRuleServer)",
+            "args": ["startLocalRuleServer"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Pull down dependencies (npm run-script dependencies)",
+            "args": ["dependencies"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Build package (npm run-script build)",
+            "args": ["build"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": true, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        },
+        {
+            "taskName": "Deploy to GSA (npm run-script deploy)",
+            "args": ["deploy"], // npm task name
+            "suppressTaskName": true,
+            "isBuildCommand": false, // Whether or not to run on Shift+Ctrl+B
+            "isTestCommand": false,
+            "echoCommand": true,
+            "isWatching": false // to avoid locked files            
+        }                                                                               
+    ]
+}

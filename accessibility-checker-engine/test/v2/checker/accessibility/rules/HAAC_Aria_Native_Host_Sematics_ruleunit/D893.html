@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite: Defect 893</title>
+</head>
+
+<body>
+
+<h2>Test case: D893.html</h2>
+
+<!-- ################################################################### -->
+
+<ol role="menu" id="menu4" aria-label="menu4" onkeypress="keyEvent()" tabindex=0 >                                                                      
+	<li role="menuitem" id="menuitem41" aria-label="menuitem41" onkeypress="keyEvent()" tabindex=0 aria-expanded="true"  aria-level="1">  menuitem11 </li>
+	<li role="menuitem" id="menuitem42" aria-label="menuitem42" onkeypress="keyEvent()" tabindex=0 aria-expanded="false" aria-level="2"> menuitem12 </li>	
+</ol> 
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1146",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/ol/li", 
+        "/html/body/ol/li[2]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

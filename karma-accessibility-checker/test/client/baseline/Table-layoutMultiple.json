@@ -1,0 +1,210 @@
+{
+    "reports": [
+        {
+            "frameIdx": 0,
+            "frameTitle": "Frame 0",
+            "issues": [
+                {
+                    "severityCode": "eISLow",
+                    "messageCode": "rpt.g1060.tableLayoutTrigger",
+                    "ruleId": "1060",
+                    "help": "idhi_accessibility_check_g1060.html",
+                    "msgArgs": [],
+                    "bounds": {
+                        "left": 0,
+                        "top": 0,
+                        "height": 0,
+                        "width": 0
+                    },
+                    "level": "recommendation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[1]",
+                    "snippet": "<table id=\"layout_table1\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g471.tableStructure",
+                    "ruleId": "471",
+                    "help": "idhi_accessibility_check_g471.html",
+                    "msgArgs": [
+                            "table",
+                            "caption"
+                        ],
+                    "bounds": {
+                        "left": 0,
+                        "top": 0,
+                        "height": 0,
+                        "width": 0
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[1]",
+                    "snippet": "<table id=\"layout_table1\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISLow",
+                    "messageCode": "rpt.g1060.tableLayoutTrigger",
+                    "ruleId": "1060",
+                    "help": "idhi_accessibility_check_g1060.html",
+                    "msgArgs": [],
+                    "bounds": {
+                        "left": 0,
+                        "top": 0,
+                        "height": 0,
+                        "width": 0
+                    },
+                    "level": "recommendation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[2]",
+                    "snippet": "<table id=\"layout_table2\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g471.tableStructure",
+                    "ruleId": "471",
+                    "help": "idhi_accessibility_check_g471.html",
+                    "msgArgs": [
+                            "table",
+                            "th"
+                        ],
+                    "bounds": {
+                        "left": 0,
+                        "top": 0,
+                        "height": 0,
+                        "width": 0
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[2]",
+                    "snippet": "<table id=\"layout_table2\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISLow",
+                    "messageCode": "rpt.g1060.tableLayoutTrigger",
+                    "ruleId": "1060",
+                    "help": "idhi_accessibility_check_g1060.html",
+                    "msgArgs": [],
+                    "bounds": {
+                        "left": 10,
+                        "top": 990,
+                        "height": 219,
+                        "width": 335
+                    },
+                    "level": "recommendation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[3]",
+                    "snippet": "<table id=\"layout_table3\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g471.tableStructure",
+                    "ruleId": "471",
+                    "help": "idhi_accessibility_check_g471.html",
+                    "msgArgs": [
+                            "table",
+                            "td"
+                        ],
+                    "bounds": {
+                        "left": 10,
+                        "top": 990,
+                        "height": 219,
+                        "width": 335
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[3]",
+                    "snippet": "<table id=\"layout_table3\" role=\"presentation\">"
+                    },
+                {
+                    "severityCode": "eISLow",
+                    "messageCode": "rpt.g1060.tableLayoutTrigger",
+                    "ruleId": "1060",
+                    "help": "idhi_accessibility_check_g1060.html",
+                    "msgArgs": [],
+                    "bounds": {
+                        "left": 10,
+                        "top": 1345,
+                        "height": 219,
+                        "width": 335
+                    },
+                    "level": "recommendation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[4]",
+                    "snippet": "<table id=\"layout_table4\" role=\"presentation\" summary=\"this is a layout table\">"
+                    },
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g471.tableStructure",
+                    "ruleId": "471",
+                    "help": "idhi_accessibility_check_g471.html",
+                    "msgArgs": [
+                            "table",
+                            "summary"
+                        ],
+                    "bounds": {
+                        "left": 10,
+                        "top": 1345,
+                        "height": 219,
+                        "width": 335
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[4]",
+                    "snippet": "<table id=\"layout_table4\" role=\"presentation\" summary=\"this is a layout table\">"
+                    },
+                {
+                    "severityCode": "eISLow",
+                    "messageCode": "rpt.g1060.tableLayoutTrigger",
+                    "ruleId": "1060",
+                    "help": "idhi_accessibility_check_g1060.html",
+                    "msgArgs": [],
+                    "bounds": {
+                        "left": 10,
+                        "top": 1747,
+                        "height": 368,
+                        "width": 335
+                    },
+                    "level": "recommendation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[5]",
+                    "snippet": "<table id=\"layout_table5\" role=\"presentation\" summary=\"this is a layout table\">"
+                    },
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g471.tableStructure",
+                    "ruleId": "471",
+                    "help": "idhi_accessibility_check_g471.html",
+                    "msgArgs": [
+                            "table",
+                            "summary, caption, th, td"
+                        ],
+                    "bounds": {
+                        "left": 10,
+                        "top": 1747,
+                        "height": 368,
+                        "width": 335
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/table[5]",
+                    "snippet": "<table id=\"layout_table5\" role=\"presentation\" summary=\"this is a layout table\">"
+                    }
+                ]
+            }
+        ],
+    "summary": {
+        "counts": {
+            "violation": 5,
+            "potentialviolation": 0,
+            "recommendation": 5,
+            "potentialrecommendation": 0,
+            "manual": 0
+        },
+        "scanTime": 99,
+        "policies": [
+                "IBM_Accessibility",
+                "CI162_5_2_DCP080115"
+            ],
+        "reportLevels": [
+                "violation",
+                "potentialviolation",
+                "recommendation",
+                "potentialrecommendation",
+                "manual"
+            ],
+        "startScan": 1470271478531
+    },
+    "scanID": "29dc36a3-640f-49d2-8398-c94e4946bbaf",
+    "toolID": "karma-accessibility-checker-v2.0.1",
+    "label": "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html"
+}

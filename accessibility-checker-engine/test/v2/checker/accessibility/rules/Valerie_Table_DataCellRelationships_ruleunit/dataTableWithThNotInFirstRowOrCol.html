@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: Table-cellRelationshipsValid.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Table Cell Relationship Tests - data table with th not in first row or col</h3>
+
+<table cellspacing="0" cellpadding="1" border="1" align="left" valign="middle" id="searchTable">
+            <tbody>
+                <tr valign="middle" nowrap="">
+                    <td id="searchTD"><label accesskey="s" for="searchWord" id="searchLabel"> &nbsp;Search: </label></td>
+                    <td>
+                    <input type="text" title="* = any string, ? = any character, &quot;&quot; = phrase, AND, OR, NOT = boolean operators " alt="* = any string, ? = any character, &quot;&quot; = phrase, AND, OR, NOT = boolean operators " maxlength="256" size="24" value="" name="searchWord" id="searchWord">
+                    </td>
+                    <td>
+                    <input type="button" title="Go" alt="Go" id="go" value="Go" onclick="this.blur();doSearch()">
+                    <input type="hidden" value="500" name="maxHits">
+                    </td>
+                    <td nowrap=""><a onmouseout="window.status='';" onmouseover="window.status='Select\u0020Scope'; return true;" alt="Select Scope" title="Select Scope" href="javascript:openAdvanced();" id="scopeLabel">Scope:</a></td>
+                    <th nowrap="">
+                    <input type="hidden" value="All topics" name="workingSet">
+                    <div id="scope">
+                        All topics
+                    </div></th>
+                </tr>
+            </tbody>
+</table>
+<br>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1059",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/table/tbody/tr/td[1]",
+        "/html/body/table/tbody/tr/td[2]",
+        "/html/body/table/tbody/tr/td[3]",
+        "/html/body/table/tbody/tr/td[4]",
+        "/html/body/table/tbody/tr/th"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

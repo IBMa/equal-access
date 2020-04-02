@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: DefinitionLists-invalid.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Definition Lists Tests</h3>
+
+<ul>
+	<li>Test #1 - Invalid definition list - no "dd" elements</li>
+	<li>Test #2 - Invalid definition list - no "dt" elements</li>
+	<li>Test #3 - Invalid definition list - no "dl" elements</li>
+	<li>Test #4 - Invalid definition list - no "dl" or "dd" elements</li>
+	<li>Test #5 - Invalid definition list - no "dl" or "dt" elements</li>
+</ul>
+
+<dl id="dl4">
+	<dt id="dt11">Person 1</dt>
+	<dt id="dt12">Person 2</dt>
+</dl>
+
+<dl id="dl5">
+	<dd id="dd13">father</dd>
+	<dd id="dd14">coach</dd>
+</dl>
+
+<!-- Test #3 - Invalid definition list - no "dl" elements -->
+<!-- valid definition list inserted to ensure invalid definition list not associated with previous definition list -->
+<dl id="dl1">
+	<dt id="dt1">Person 1</dt>
+	<dd id="dd1">test team lead</dd>
+</dl>
+
+	<dt id="dt13">Person 1</dt>
+	<dd id="dd15">test team lead</dd>
+
+	<dt id="dt14">Person 	2</dt>
+	<dd id="dd16">test team 	member</dd>
+
+<!-- Test #4 - Invalid definition list - no "dl" or "dd" elements -->
+<!-- valid definition list inserted to ensure invalid definition list not associated with previous definition list -->
+<dl id="dl1">
+	<dt id="dt2">Person 1</dt>
+	<dd id="dd2">test team lead</dd>
+</dl>
+
+	<dt id="dt15">Person 1</dt>
+	<dt id="dt16">Person 2</dt>
+
+<!-- Test #5 - Invalid definition list - no "dl" or "dt" elements -->
+<!-- valid definition list inserted to ensure invalid definition list not associated with previous definition list -->
+<dl id="dl1">
+	<dt id="dt3">Person 1</dt>
+	<dd id="dd3">test team lead</dd>
+</dl>
+
+	<dd id="dd17">test team lead</dd>
+	<dd id="dd18">test team member</dd>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "3",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+				"/html/body/dl[1]",
+				"/html/body/dl[2]",
+				"/html/body/dt[1]",
+				"/html/body/dd[1]",
+				"/html/body/dt[2]",
+				"/html/body/dd[2]",
+				"/html/body/dt[3]",
+				"/html/body/dt[4]",
+				"/html/body/dd[3]",
+				"/html/body/dd[4]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

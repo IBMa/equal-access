@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
+<head>
+<title>OMXE for DB2 PE - Reporting User's Guide - Example of a member-scope Locking report</title>
+</head>
+<body role="main" id="ko2ru00253">
+<h1 class="title topictitle1">Example of a member-scope Locking report</h1>
+<div class="body"><p class="shortdesc">Locking reports are helpful in monitoring the locking of
+page sets.</p>
+<p class="p">If you want to monitor deadlocks and timeouts on shared databases,
+and if you want this information grouped by individual members, generate
+a Lockout report for every member. Because group-scope reports are
+available in the Locking report set, this report is called a member-scope
+report.</p>
+<p class="p">Member-scope reports also provide group-scope information because
+holders and waiters of lockups are shown. Member scope and group scope
+only influence the summarization of the report.</p>
+<p class="p">To generate a member-scope Locking report, specify the following
+command stream: </p>
+<pre class="pre codeblock"><code>⋮
+LOCKING
+   REPORT
+      LEVEL (LOCKOUT)
+      ORDER(DATABASE-PAGESET)
+⋮</code></pre>
+<p class="p">Member-scope report is the default, so you are not required
+to specify the SCOPE subcommand option. To order the report by page
+set within a database, specify the ORDER subcommand option.</p>
+<p class="p">The following example shows a member-scope Locking report for group
+DSHGRPXX, which has two members, FIRST and SECOND. The report is two
+pages long because a new page is started when the member that is being
+reported changes.</p>
+<div class="example" id="ko2ru00253__dshg21"><h2 class="title sectiontitle">Member-scope Locking Lockout report, page
+1</h2><p class="p">The first page of the report shows the locking activity
+of the threads that have executed in member FIRST.</p>
+<pre class="screen"><code>
+   LOCATION: SYDNEY                      OMEGAMON XE for DB2 Performance Expert (V5R1M1)                PAGE: 1-1
+      GROUP: DSHGRPXX                                                                         REQUESTED FROM: NOT SPECIFIED
+     MEMBER: FIRST                                 LOCKING REPORT - LOCKOUT                               TO: NOT SPECIFIED
+  SUBSYSTEM: DB22                                   ORDER: DATABASE-PAGESET                      ACTUAL FROM: 05/15/08 12:15:00.21
+DB2 VERSION: V8                                           SCOPE: MEMBER                                   TO: 05/15/08 13:27:56.09
+
+DATABASE           --- L O C K   R E S O U R C E ---                     --------------- A G E N T S ----------------  BLOCKER/
+ PAGESET           TYPE      NAME                    TIMEOUTS DEADLOCKS  MEMBER   PLANNAME CONNECT  CORRNAME CORRNMBR  HOLDER WAITER
+------------------ --------- ----------------------- -------- ---------  -------- -------- -------- -------- --------  ------ ------
+DBASE9             ROW       PAGE=X'000021'                 0         3  FIRST    D3APP01  BATCH    RUNPR01  'BLANK'        2      1
+ TSPACEXX                    ROW =X'03'                                  SECOND   D3APPBB  BATCH    RUNPRBB  'BLANK'        1      1
+                                                                         SECOND   D3APPDD  BATCH    RUNPRDD  'BLANK'        0      2
+                   INDEXPAGE PAGE=X'002393'                 0         1  FIRST    D3APP02  BATCH    RUNPR02  'BLANK'        0      1
+                             SUBP=X'01'
+
+                   ** LOCKOUTS FOR TSPACEXX       **        0         4
+
+** TOTAL - DBASE9 **                                        0         4
+
+DBASE10
+ TSPACEZZ          DATAPAGE  PAGE=X'000055'                 0         3  FIRST    D3APP03  BATCH    RUNPR03   'BLANK'       2      1
+                                                                         FIRST    D3APP05  BATCH    RUNPR05   'BLANK'       0      3
+                   ** LOCKOUTS FOR TSPACEZZ       **        0         3
+
+** GRAND TOTAL **                                           0         7
+</code></pre>
+</div>
+
+</div>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1070",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

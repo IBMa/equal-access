@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Img-redundantLinkAdjacentHidden.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Image link text redundancy checks with alt text</h3>
+
+
+<ul>
+	<li>Test - Link text and Alt text equal for adjest links equal</li>
+</ul>
+
+<a id="anchor1" href="http://www.cnn.com">
+  <img src="../support/nav_home.gif" id="img1" alt="Home Navigation Bar" />
+</a><a id="anchor2" href="http://www.cnn.com" hidden>Home Navigation Bar
+  <img src="../support/nav_home.gif" id="img2" alt="Home Navigation Bar Valid" />
+</a>
+
+<a id="anchor3" href="http://www.cnn.com" style="display: none">Home Navigation Bar
+  <img src="../support/nav_home.gif" id="img3" alt="Home Navigation Bar Valid" />
+</a><a id="anchor4" href="http://www.cnn.com">
+  <img src="../support/nav_home.gif" id="img4" alt="Home Navigation Bar" />
+</a>
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1000",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        // Val Engine does not support checking for hidden
+        //"/html/body/a[2]/img",
+        //"/html/body/a[5]/img"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

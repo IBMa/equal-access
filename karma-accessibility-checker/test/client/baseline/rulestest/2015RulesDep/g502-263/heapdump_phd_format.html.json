@@ -1,0 +1,99 @@
+{
+    "reports": [{
+        "frameIdx": 0,
+        "frameTitle": "PHD Heapdump file format",
+        "issues": [{
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g1.styleTrigger",
+            "ruleId": "1",
+            "help": "idhi_accessibility_check_g1.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "manual",
+            "xpath": "/html[1]/head[1]/link[1]",
+            "snippet": "<link href=\"../../ibmdita.css\" type=\"text/css\" rel=\"stylesheet\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "haac.g1142.AriaSemantics",
+            "ruleId": "1142",
+            "help": "idhi_accessibility_check_g1142.html",
+            "msgArgs": ["main", "body", "document, application"],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "violation",
+            "xpath": "/html[1]/body[1]",
+            "snippet": "<body id=\"heapdump_phd_format\" role=\"main\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g263.blockquoteWrapsTextQuote",
+            "ruleId": "263",
+            "help": "idhi_accessibility_check_g263.html",
+            "msgArgs": ["\"start of dump\""],
+            "bounds": {
+                "left": 48,
+                "top": 1699,
+                "height": 35,
+                "width": 207
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/body[1]/div[2]/div[1]/div[2]/ul[1]/li[6]/span[2]",
+            "snippet": "<span class=\"q\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g502.textSensoryReference",
+            "ruleId": "502",
+            "help": "idhi_accessibility_check_g502.html",
+            "msgArgs": ["top, top-left"],
+            "bounds": {
+                "left": 48,
+                "top": 1699,
+                "height": 35,
+                "width": 207
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/body[1]/div[2]/div[1]/div[2]/ul[1]/li[7]/ul[1]/li[2]",
+            "snippet": "<li class=\"li\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g502.textSensoryReference",
+            "ruleId": "502",
+            "help": "idhi_accessibility_check_g502.html",
+            "msgArgs": ["top"],
+            "bounds": {
+                "left": 48,
+                "top": 1699,
+                "height": 35,
+                "width": 207
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/body[1]/div[2]/div[1]/div[2]/ul[1]/li[7]/ul[1]/li[3]",
+            "snippet": "<li class=\"li\">"
+        }]
+    }],
+    "summary": {
+        "counts": {
+            "violation": 1,
+            "potentialviolation": 3,
+            "recommendation": 1,
+            "potentialrecommendation": 0,
+            "manual": 1
+        },
+        "scanTime": 160,
+        "policies": ["IBM_Accessibility"],
+        "reportLevels": ["violation", "potentialviolation", "recommendation", "potentialrecommendation", "manual"],
+        "startScan": 1475448875954
+    },
+    "scanID": "44b970f2-4d4b-4441-8220-dc49b9fb5f9e",
+    "toolID": "karma-accessibility-checker-v2.4.1",
+    "URL": "http://pttest-data.canlab.ibm.com/acce-rules/rulestest/2015RulesDep/g502-263/heapdump_phd_format.html",
+    "label": "rulestest/2015RulesDep/g502-263/heapdump_phd_format.html"
+}

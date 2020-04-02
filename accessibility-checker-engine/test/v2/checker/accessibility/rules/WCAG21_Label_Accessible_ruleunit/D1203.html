@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Defect 1203: aria-labelledby doesn't have visible text for input button types </title>
+	</head>
+	<body>
+    
+    <!-- Fail: -->
+    <div id="buttonInstruction1a">Press button to display your results:</div> <input type="button" value="show"  aria-labelledby="buttonInstruction1a"/>
+    <div id="buttonInstruction1c">Press button to restart:</div> <input type="reset" aria-labelledby="buttonInstruction1c"/>
+
+    <div id="buttonInstruction1">Press button to display your results:</div> <input type="submit" aria-labelledby="buttonInstruction1"/>
+    <div id="buttonInstruction2">Press button two to display your results:</div> <input type="submit" value="submit results" aria-labelledby="buttonInstruction2"/>
+   <input type="submit" aria-label="To display"/>
+
+
+  <!--Pass:  -->
+  <div id="buttonInstruction1b">Press button to display your results:</div> <input type="button" value="press button"  aria-labelledby="buttonInstruction1b"/>
+  <div id="buttonInstruction1d">Press button to reset:</div> <input type="reset" aria-labelledby="buttonInstruction1d"/>
+  <div id="buttonInstruction3">Press button to submit your results:</div> <input type="submit" aria-labelledby="buttonInstruction3"/>
+  <div id="buttonInstruction4">Press button to display your results:</div> <input type="submit"  value="display" aria-labelledby="buttonInstruction4"/>
+  <input type="submit" aria-label="To submit"/>
+  <input type="submit" value="display" aria-label="To display"/>
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1202",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/input", 
+        "/html/body/input[2]", 
+        "/html/body/input[3]",
+        "/html/body/input[4]",
+        "/html/body/input[5]"
+      ]
+    }
+  ];
+//]]>
+</script>
+	</body>
+	</html>

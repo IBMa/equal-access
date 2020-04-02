@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 5 Transitional//EN" "http://www.w3.org/TR/html5/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+	<a href="#navskip">skip to main content</a>
+	
+	<!-- ################################################################### -->
+	
+	
+	<h3>Input type Tests</h3>
+	<!--1 failed: no label, no title -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: month</legend>
+			<input type="month" name="month" id="ln1" value="enter month">
+		</fieldset>
+	</form>
+	
+	<!--2 passed: has title -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: Search</legend>
+			<input type="search" name="google search" id="search1" value="google" title="Enter search string">
+		</fieldset>
+	</form>
+	
+	<!--3 failed: label is empty -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: tel</legend>
+			<label for="tel1"></label>
+			<input type="tel" name="tel" id="tel1" value="416" title="Enter phone">
+		</fieldset>
+	</form>
+	
+	<!--4 passed: label id doesn't match, but has title -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: url</legend>
+			<label for="url1">Home URL</label>
+			<input type="url" name="URL" id="url2" value="localhost" title="Enter URL">
+		</fieldset>
+	</form>
+	
+	<!--5 passed: label id doesn't match, has no title -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: email</legend>
+			<label for="email1">E-mail</label>
+			<input type="email" name="Email" id="email2" value="enter e-mail address">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: date</legend>
+			<label for="date1">Birthday</label>
+			<input type="date" name="Birthday" id="date1" value="01/10/2010" title="your birthday">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: number</legend>
+			<label for="number1">Number</label>
+			<input type="number" name="Name" id="number1" value="1" title="a number">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: range</legend>
+			<label for="range1">Range</label>
+			<input type="range" name="" id="range1" value="3" min=1 max=10 title="select a number">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: image</legend>
+			<label for="image1">An Image for submit button</label>
+			<input type="image" name="" id="image1" title="an image">
+		</fieldset>
+	</form>
+	
+	<!-- items at risk -->
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text:datetime </legend>
+			<label for="datetime1">DateTime field</label>
+			<input type="datetime" name="Datetime" id="datetime1" value="0" title="date and time">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: month</legend>
+			<label for="month1">Month</label>
+			<input type="month" name="Month" id="month1" title="A month">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: week</legend>
+			<label for="week1">A week</label>
+			<input type="week" name="Week" id="week1" title="a week">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: time</legend>
+			<label for="time1">Time</label>
+			<input type="time" name="Time" id="time1" title="A time">
+		</fieldset>
+	</form>
+	
+	<form action="..." method="post">
+		<fieldset>
+			<legend>Legend text: color</legend>
+			<label for="color1">Pen color</label>
+			<input type="color" name="Color" id="color1" title="pick a color">
+		</fieldset>
+	</form>
+	
+	<label for="input">input</label>
+	<input id="input" list="browsers">
+	<datalist id="browsers">
+	  <option label="1" value="Internet Explorer">
+	  <option label="2" value="Firefox">
+	</datalist>
+	
+	<form action="demo_keygen.asp" method="get">
+	  Encryption: <keygen name="security">
+	</form>
+	
+	<form oninput="x.value=parseInt(a.value)+parseInt(b.value)">0
+	  <input type="range" id="a" value="50" title="1">100
+	  +<input type="number" id="b" value="50" title="2">
+	  =<output name="x" for="a b"></output>
+	</form>
+	
+	<progress value="22" max="100"> </progress>
+	
+	<meter value="0.6">60%</meter>
+	
+	<a name="navskip">End</a>
+	
+	<!-- g41 should NOT be triggered, please see RTC defect 82892. -->
+	<form action="..." method="post">
+		<fieldset>
+			<legend></legend>
+			<input type="month" name="month" id="ln1" value="enter month">
+		</fieldset>
+	</form>
+	
+	<script type="text/javascript">
+	//<![CDATA[
+	  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+	  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+	  OpenAjax.a11y.ruleCoverage = [
+	    {
+	      ruleId: "41",
+	      passedXpaths: [
+	      ],
+	      failedXpaths: [
+			"/html/body/form[3]/fieldset/input",	// "/html[1]/body[1]/form[3]/fieldset[1]/input[1]",                      
+			"/html/body/form[5]/fieldset/input",  // "/html[1]/body[1]/form[5]/fieldset[1]/input[1]",              
+			"/html/body/datalist",                // "/html[1]/body[1]/datalist[1]",      
+			"/html/body/form[15]/keygen",         // "/html[1]/body[1]/form[15]/keygen[1]",                      
+			"/html/body/form[16]/output",         // "/html[1]/body[1]/form[16]/output[1]",                
+			"/html/body/progress",                // "/html[1]/body[1]/progress[1]",     
+			"/html/body/meter"                    // "/html[1]/body[1]/meter[1]",                 
+	      ]
+	    }
+	  ];
+	//]]>
+	</script>
+</body>
+
+</html>

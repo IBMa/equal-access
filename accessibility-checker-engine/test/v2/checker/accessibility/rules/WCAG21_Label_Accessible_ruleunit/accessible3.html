@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Flag a violation if Accessible name does not match or contain the visible label text</title>
+	</head>
+	<body>
+
+<input type="reset" id="tc9_01" aria-label="Reset Surname" value=" Reset surname"> <!-- Pass: use 'value' attr as visible text -->
+<input type="reset" id="tc9_01b" aria-label="Reset Surname" value=" Reset familiy name"> <!-- Fail: use 'value' attr as visible text -->
+<input type="reset" id="tc9_01c" aria-label="Reset"> <!-- Pass: default value is 'reset' -->
+<input type="reset" id="tc9_01d" aria-label="Readjust" >  <!-- Fail : default value is 'reset'  -->
+
+<input type="submit" id="tc9_02" aria-label="Submit information" value=" Submit information"> <!-- Pass: use 'value' attr as visible text -->
+<input type="submit" id="tc9_02b" aria-label="Submit info" value=" Submit information"> <!-- Fail: use 'value' attr as visible text -->
+<input type="submit" id="tc9_02c" aria-label="Submit info"> <!-- Pass: default value is 'submit' -->
+<input type="submit" id="tc9_02d" aria-label="Send info"> <!-- Fail : default value is 'submit' -->
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1202",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/input[2]",  "/html/body/input[4]",
+        "/html/body/input[6]",  "/html/body/input[8]"
+      ]
+    }
+  ];
+//]]>
+</script>
+	</body>
+	</html>

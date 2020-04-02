@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible Node.js debug attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Client Side Testcase",
+            "program": "${workspaceRoot}/node_modules/karma/bin/karma",
+            "args": ["start"],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run Server Side Testcase Mocha",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+            "args": ["test/server/**/*.spec.js", "--compilers js:babel/register"],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Process",
+            "port": 5858
+        },
+         {
+            "type": "node",
+            "request": "launch",
+            "name": "Run AVA Unit Test Debug",
+            "program": "${workspaceRoot}/node_modules/ava/profile.js",
+            "args": [
+                "${file}"
+            ]
+        }
+    ]
+}

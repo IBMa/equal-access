@@ -1,0 +1,17 @@
+{
+    "swagger": {
+      "basePath": "/api/v1",
+      "entryFile": "./src/main.ts",
+      "specVersion": 3,
+      "outputDirectory": "./api/dist",
+      "controllerPathGlobs": [
+        "./src/controllers/**/*controller.ts"
+      ]
+    },
+    "routes": {
+      "basePath": "/api/v1",
+      "entryFile": "./src/main.ts",
+      "routesDir": "./src/routes",
+      "middleware": "express"
+    }
+  }

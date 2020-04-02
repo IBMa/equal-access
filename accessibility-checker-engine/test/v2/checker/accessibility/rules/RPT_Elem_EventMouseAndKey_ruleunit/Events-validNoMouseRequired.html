@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Events-validNoMouseRequired.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Events Tests</h3>
+
+
+<ul>
+	<li>Test - Events with Javascript</li>
+</ul>
+
+<!-- Events -->
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Events while inside this textarea!</p>
+
+		<label for="cars0">List of Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars9"
+			onmousedown="alert( 'onDblClick event' )" onkeydown="alert( 'onDblClick event' )">		Ford, GM, Chrysler</textarea>
+
+		<textarea rows="2" cols="50" name="autos" id="cars0"
+			onmouseup="alert( 'onDblClick event' )" onkeyup="alert( 'onDblClick event' )">		Ford, GM, Chrysler</textarea>
+
+		<textarea rows="2" cols="50" name="autos" id="cars3"
+			onclick="alert( 'onDblClick event' )" onkeypress="alert( 'onDblClick event' )">		Ford, GM, Chrysler</textarea>
+
+		<textarea rows="2" cols="50" name="autos" id="cars11"
+			onmouseover="alert( 'onDblClick event' )" onfocus="alert( 'onDblClick event' )">		Ford, GM, Chrysler</textarea>
+
+		<textarea rows="2" cols="50" name="autos" id="cars12"
+			onmouseout="alert( 'onDblClick event' )" onblur="alert( 'onDblClick event' )">		Ford, GM, Chrysler</textarea>
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "269",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

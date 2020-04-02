@@ -1,0 +1,17 @@
+{
+  "scripts": {
+    "test": "cucumber-js"
+  },
+  "devDependencies": {
+    "accessibility-checker": "^1.0.9",
+    "chai": "^3.5.0",
+    "chromedriver": "^78.0.1",
+    "cucumber": "^6.0.3",
+    "cucumber-html-reporter": "^5.0.2",
+    "eslint": "^6.6.0",
+    "html-escape": "^2.0.0",
+    "line-reader": "^0.4.0",
+    "selenium-webdriver": "^4.0.0-alpha.4"
+  },
+  "dependencies": {}
+}

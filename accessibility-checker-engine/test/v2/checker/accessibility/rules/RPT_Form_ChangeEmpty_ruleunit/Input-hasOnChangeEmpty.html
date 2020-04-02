@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-hasOnChange.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input OnChange event Tests</h3>
+
+
+<ul>
+	<li>Test #1 - Input type="text"</li>
+	<li>Test #2 - Input type="file"</li>
+	<li>Test #3 - Input type="password"</li>
+	<li>Test #4 - Input type="radio"</li>
+	<li>Test #4 - Input type="checkbox"</li>
+	<li>Test #6 - Input - Select"</li>
+	<li>Test #7 - Input - Textarea"</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information</legend>
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name" >
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: File Information</legend>
+		<p>Fieldset text: Please enter the file information.</p>
+
+		<label for="lfn2">Last File Name</label>
+		<input type="file" name="lastfilename" id="lfn2" value="enter last file name" title="Enter last filename" onchange="">
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information</legend>
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="lpw3">Password</label>
+		<input type="password" name="lastpassword" id="lpw3" value="enter last password" title="enter last password" >
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information - Gender</legend>
+		<p>Fieldset text: Please select your gender.</p>
+
+		<input type="radio" name="male" id="male1" value="male" title="boy">
+		<label for="male1">male</label>
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information - Preferences</legend>
+		<p>Fieldset text: Please select your preferences.</p>
+
+		<input type="checkbox" name="athletic" id="athletic1" value="athletic" title="strong" onchange="">
+		<label for="athletic1">Althletic</label>
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please select the auto of your choice.</p>
+
+		<label for="cars1">List of automobiles</label>
+		<select name="autos" id="cars1" title="autos" onchange="">
+			<optgroup label="American cars">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+			</optgroup>
+
+			<optgroup label="European cars">
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+			</optgroup>
+		</select>
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please type the auto of your choice.</p>
+
+		<label for="cars2">List of Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars2" title="autos">		Ford, GM, Chrysler
+		</textarea>
+	</fieldset>
+	<button type="submit">Submit</button>
+</form>
+
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1147",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

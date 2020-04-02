@@ -1,0 +1,69 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: IFrame-hasEmptyTitle.html</h2>
+
+
+<!-- ------------------------------------------------------------------------------------ -->
+
+
+<h3>IFrame Element Tests</h3>
+
+
+<ul>
+	<li>Test - Valid iframe with empty Title atribute</li>
+</ul>
+
+<iframe id="iframe1" src="../support/frame_test1.html" style="width:350px; height:100px;" scrolling="yes" frameborder="1" title="" name="first">
+</iframe>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "39",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/iframe"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

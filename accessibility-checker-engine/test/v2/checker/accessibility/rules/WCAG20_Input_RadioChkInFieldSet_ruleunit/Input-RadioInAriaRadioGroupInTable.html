@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-RadioChkInFieldset.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Radio Button Grouping Tests - type="radio"</h3>
+
+
+<ol>
+	<li>Test - Radio button grouping within a fieldset with a legend</li>
+	<li>Test - Checkbox grouping within a fieldset with a legend</li>
+</ol>
+
+<h1 id="labelId">Legend text: Personal Information - Gender</h1>
+<form action="..." method="post">
+	<table summary="test table">
+            <tr>
+                <td height="24" width="32%"id="DISPOC">
+                    Are you acting in the role of DISPOC?
+                </td>
+                <td height="24" width="73%" role="radiogroup" aria-labelledby="DISPOC">
+                    <input type="radio" name="txtSpoc" id="Spoc1" value="" onclick="document.proform.txtSpoc.value='';">
+                    <label for="Spoc1">
+                        No
+                    </label>
+                    <input type="radio" name="txtSpoc" id="Spoc2" value="D" onclick="document.proform.txtSpoc.value='D';">
+                    <label for="Spoc2">
+                        Yes
+                    </label>
+                </td>
+            </tr>
+        </table>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1029",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

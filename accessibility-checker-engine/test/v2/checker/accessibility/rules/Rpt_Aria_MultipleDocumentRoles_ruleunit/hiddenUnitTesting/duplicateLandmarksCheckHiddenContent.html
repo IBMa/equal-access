@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+    <title>RPT Test Suite</title>
+</head>
+
+<body id="body">
+
+    <div role="navigation">
+        <a href="#navskip" alt="skip to main content"> NavSkip </a>
+    </div>
+
+    <div role="main">
+        <a name="navskip"></a>
+        <h2>Failing test case for g1101 using element as abbr,var</h2>
+
+        <abbr title="Rational Policy Tester" role="document" aria-label="RPT">RPT</abbr>
+        <var role="document" aria-label="RPT" hidden>DAP</var>
+    </div>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1101",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

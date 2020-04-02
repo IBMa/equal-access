@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to main content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA role has no focable child</h3>
+
+    <div role="tree" aria-disabled="true" tabindex="0" id="tree1" onkeypress="return navKeyEvent(event);">
+        <div id="item1" role="treeitem" tabindex="x">Tree item</div>
+    </div>
+
+    <div role="tree" aria-disabled="true" tabindex="0" id="tree2" onkeypress="return navKeyEvent(event);">
+        <div id="item2" role="treeitem" tabindex="">Tree item</div>
+    </div>
+
+    <div role="tree" aria-disabled="true" tabindex="0" id="tree3" onkeypress="return navKeyEvent(event);">
+        <div id="item3" role="treeitem" tabindex=" ">Tree item</div>
+    </div>
+
+    <div role="tree" aria-disabled="true" tabindex="0" id="tree4" onkeypress="navKeyEvent();">
+        <div id="tree4item1" role="group">
+            Nothing to see here.
+        </div>
+        <div id="tree3item2" role="treeitem">Tree item 2</div>
+    </div>
+
+    <fieldset disabled>
+        <fieldset role="tree" id="tree5">
+            <div id="item3" role="treeitem" tabindex=" ">Tree item</div>
+        </fieldset>
+    </fieldset>
+
+    <select role="tree" id="tree6" disabled="true">
+        <option value="volvo" tabindex=" ">Volvo</option>
+        <option value="saab" tabindex="a">Saab</option>
+        <option value="mercedes" tabindex="1">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    <table role="presentation">
+        <tr>
+            <td>Roles</td>
+            <td>aria-disabled parent</td>
+            <td>aria-disabled=true</td>
+            <td>JS aria-disabled=true</td>
+        </tr>
+        <tr>
+            <td>combobox, listbox with option, </td>
+            <td aria-disabled="true">
+                <div role=combobox id=1_combobox aria-label=1_combobox onkeydown="changecolouronclick(this)" aria-expanded=true> In Chuck we trust
+                    <div role=listbox id=1_listbox aria-label=1_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=1_option aria-label=1_option> In Chuck we trust</div>
+                    </div>
+                </div>
+                <hr>
+                <div role=combobox id=11_combobox aria-label=11_combobox onkeydown="changecolouronclick(this)" aria-expanded=true> In Chuck we trust
+                    <div role=listbox id=11_listbox aria-label=11_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=11_option aria-label=11_option> In Chuck we trust</div>
+                    </div>
+                </div>
+            </td>
+
+            <td>
+                <div role=combobox id=2_combobox aria-label=2_combobox onkeydown="changecolouronclick(this)" aria-expanded=true aria-disabled="true"> In Chuck we trust
+                    <div role=listbox id=2_listbox aria-label=2_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=2_option aria-label=2_option> In Chuck we trust</div>
+                    </div>
+                </div>
+                <hr>
+                <div role=combobox id=22_combobox aria-label=22_combobox onkeydown="changecolouronclick(this)" aria-expanded=true aria-disabled="true"> In Chuck we trust
+                    <div role=listbox id=22_listbox aria-label=22_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=22_option aria-label=22_option> In Chuck we trust</div>
+                    </div>
+                </div>
+            </td>
+
+            <td aria-disabled="true">
+                <div role=combobox id=3_combobox aria-label=3_combobox onkeydown="changecolouronclick(this)" aria-expanded=true> In Chuck we trust
+                    <div role=listbox id=3_listbox aria-label=3_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=3_option aria-label=3_option> In Chuck we trust</div>
+                    </div>
+                </div>
+                <hr>
+                <div role=combobox id=33_combobox aria-label=33_combobox onkeydown="changecolouronclick(this)" aria-expanded=true> In Chuck we trust
+                    <div role=listbox id=33_listbox aria-label=33_listbox onkeydown="changecolouronclick(this)"> In Chuck we trust
+                        <div role=option id=33_option aria-label=33_option> In Chuck we trust</div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr aria-disabled="true">
+            <td>grid, gridcell </td>
+            <td>
+                <table role=grid id=1_grid aria-label=1_grid onkeydown="changecolouronclick(this)">
+                    <tr role=row id=11_row>
+                        <th role=columnheader id="Chuck"> In Chuck we trust again</th>
+                        <th role=columnheader id="Amara"> In Chuck we trust again</th>
+                    </tr>
+                    <tr role=row id=12_row>
+                        <th role=rowheader id=Cassifer> In Chuck we trust again</th>
+                        <td role=gridcell headers='Chuck Cassifer' id=1_gridcell aria-label=1_gridcell> In Chuck we trust</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table role=grid id=2_grid aria-label=2_grid onkeydown="changecolouronclick(this)" aria-disabled=true>
+                    <tr role=row id=21_row aria-disabled=true>
+                        <th role=columnheader id="Chuck2"> In Chuck we trust again</th>
+                        <th role=columnheader id="Amara2"> In Chuck we trust again</th>
+                    </tr>
+                    <tr role=row id=22_row>
+                        <th role=rowheader id=Cassifer2> In Chuck we trust again</th>
+                        <td role=gridcell headers='Chuck2 Cassifer2' id=2_gridcell aria-label=2_gridcell> In Chuck we trust</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table role=grid id=3_grid aria-label=3_grid onkeydown="changecolouronclick(this)">
+                    <tr role=row id=31_row>
+                        <th role=columnheader id="Chuck3"> In Chuck we trust again</th>
+                        <th role=columnheader id="Amara3"> In Chuck we trust again</th>
+                    </tr>
+                    <tr role=row id=32_row>
+                        <th role=rowheader id=Cassifer3> In Chuck we trust again</th>
+                        <td role=gridcell headers='Chuck3 Cassifer3' id=3_gridcell aria-label=3_gridcell> In Chuck we trust</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <a name="navskip"></a>
+    <script>
+        function changecolouronclick(element) {
+            element.innerHTML += 1;
+            element.style.color = "red";
+        }
+
+        function changecolouronmousedown(element) {
+            element.innerHTML += 3;
+            element.style.color = "green";
+        }
+
+        document.getElementById("3_combobox").setAttribute("aria-disabled", "true");
+        document.getElementById("33_listbox").setAttribute("aria-disabled", "true");
+        document.getElementById("3_grid").setAttribute("aria-disabled", "true");
+    </script>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof (OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof (OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [
+            {
+                ruleId: "1086",
+                passedXpaths: [
+      ],
+                failedXpaths: [
+      ]
+    }
+  ];
+        //]]>
+    </script>
+</body>
+
+</html>

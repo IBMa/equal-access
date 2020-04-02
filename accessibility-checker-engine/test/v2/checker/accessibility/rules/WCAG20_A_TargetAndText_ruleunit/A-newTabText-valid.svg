@@ -1,0 +1,16 @@
+<svg width="100%" height="500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>RPT Test Suite</title>
+	<a xlink:href="http://metadita.org" target="_parent">
+        <text x="10" y="20">1. This is a link to metadita.org. target='_parent'</text>
+    </a>
+	<a xlink:href="http://metadita.org" target="_self">
+        <text x="10" y="40">2. This is a link to metadita.org. target='_self'</text>
+    </a>
+	<a xlink:href="http://metadita.org" target="_top">
+        <text x="10" y="60">3. This is a link to metadita.org. target='_top'</text>
+    </a>
+	<a xlink:href="http://metadita.org" target="_blank"  title="5. This is a link to metadita.org (Opens in a new tab or new window). target='_blank'">
+        <rect x="20" y="120" width="75" height="20"
+                style="stroke: #333366; fill: #6666cc"/>
+    </a>
+</svg>

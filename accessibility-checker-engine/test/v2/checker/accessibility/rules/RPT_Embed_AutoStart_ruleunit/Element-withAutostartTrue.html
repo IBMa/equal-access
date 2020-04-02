@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Elements-withAutostartTrue.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Elements with autostart Tests</h3>
+
+
+<ul>
+	<li>Test - Elements loading audio files</li>
+</ul>
+
+<applet id="applet1" code="test1.au" object=object Title="Fish" style="width:200px; height:200px" alt="Image of a fish">
+	<param name="autostart" value="true">
+	Sound of a fish
+</applet>
+
+<applet id="applet2" code="test2.au" object=object Title="Fish" style="width:200px; height:200px" alt="Image of a fish">
+	<param name="autoplay" value="0">
+	Sound of a fish
+</applet>
+
+<object id="object1" data="../support/test1.wav" Type="audiio/wav" Title="Fish" style="width:200px; height:200px">
+	<param name="autostart" value="true">
+	Sound of a fish
+</object>
+
+<object id="object2" data="../support/test2.au" Type="audio/au" Title="Fish" style="width:200px; height:200px">
+	<param name="autoplay" value="1">
+	Sound of a fish
+</object>
+
+<embed id="embed1" src="../support/test3.mp3" autostart="true" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed1">Sound of a fish</noembed>
+</embed>
+<embed id="embed2" src="../support/test4.wav" autostart="1" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed2">Sound of a fish</noembed>
+</embed>
+
+<embed id="embed3" src="../support/test5.wav" flashvars="autostart=true" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed3">Sound of a fish</noembed>
+</embed>
+
+<embed id="embed4" src="../support/test6.wav" flashvars="autostart=1" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed4">Sound of a fish</noembed>
+</embed>
+
+<embed id="embed5" src="../support/test5.wav; autostart=true" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed5">Sound of a fish</noembed>
+</embed>
+<embed id="embed6" src="../support/test6.wav; autostart=1" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed6">Sound of a fish</noembed>
+</embed>
+<embed id="embed7" src="../support/test3.mp3" autostart="TRUE" style="width:150px; height:150px" alt="fish">
+	<noembed id="noembed1">Sound of a fish</noembed>
+</embed>
+<bgsound src="hello.wav" loop="3">
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "503",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/applet[1]/param",
+        "/html/body/object[1]/param",
+        "/html/body/object[2]/param",
+        "/html/body/embed[1]",
+        "/html/body/embed[2]",
+        "/html/body/embed[3]",
+        "/html/body/embed[4]",
+        "/html/body/embed[5]",
+        "/html/body/embed[6]",
+        "/html/body/embed[7]",
+        "/html/body/bgsound"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

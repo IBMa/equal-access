@@ -1,0 +1,18 @@
+[
+    {
+        "id": "2020AprilDeploy",
+        "name": "02 April 2020 Deployment",
+        "path": "/archives/2020.04.02",
+        "latest": true
+    },
+    {
+        "id": "latest",
+        "name": "Latest Archive",
+        "path": "/archives/latest"
+    },
+    {
+        "id": "preview",
+        "name": "Preview Rules",
+        "path": "/archives/preview"
+    }
+]

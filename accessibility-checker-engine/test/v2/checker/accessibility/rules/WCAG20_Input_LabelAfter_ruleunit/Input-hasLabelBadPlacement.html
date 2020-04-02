@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-hasLabelBadPlacement.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input type Tests</h3>
+
+
+
+<ul>
+	<li>Test #1 - Associated label tag before input element - type="radio"</li>
+	<li>Test #2 - Associated label tag before input element - type="checkbox"</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information - Gender</legend>
+		<p>Fieldset text: Please select your gender.</p>
+
+		<label for="male1">male</label>
+		<input type="radio" name="male" id="male1" value="male" title="boy">
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information - Preferences</legend>
+		<p>Fieldset text: Please select your preferences.</p>
+
+		<label for="athletic1">Althletic</label>
+		<input type="checkbox" name="athletic" id="athletic1" value="athletic" title="strong">
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+
+<a name="navskip">End</a>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information - Preferences</legend>
+		<p>Fieldset text: Please select your preferences.</p>
+
+		<label for="athletic2">
+		<span>Althletic</span></label>
+		<input type="checkbox" name="athletic" id="athletic2" value="athletic" title="strong">
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1018",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form[1]/fieldset/input",
+        "/html/body/form[2]/fieldset/input",
+		"/html/body/form[3]/fieldset/input"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

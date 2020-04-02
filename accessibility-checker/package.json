@@ -1,0 +1,65 @@
+{
+  "name": "accessibility-checker",
+  "version": "3.0.0-beta.0",
+  "description": "Accessibility Checker for Node",
+  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint src",
+    "test": "mocha -R dot test/mocha/**/*.test.js",
+    "build": "cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
+    "package:zip": "rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js && cd package && npm pack",
+    "package:npm": "rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com/IBMa/equal-access/accessibility-checker"
+  },
+  "engines": {
+    "node": "10.x"
+  },
+  "dependencies": {
+    "chromedriver": "^80.0.1",
+    "deep-diff": "^0.3.4",
+    "js-yaml": "^3.13.1",
+    "puppeteer": "^2.0.0"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.4.13",
+    "chai": "^4.2.0",
+    "eslint": "^6.3.0",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-download": "0.0.1",
+    "gulp-flatten": "^0.4.0",
+    "gulp-git": "^2.9.0",
+    "gulp-gzip": "^1.2.0",
+    "gulp-insert": "^0.5.0",
+    "gulp-jsonminify": "^1.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^1.0.0",
+    "gulp-sftp": "^0.1.5",
+    "gulp-ssh": "^0.7.0",
+    "gulp-tar": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-uglify-es": "^2.0.0",
+    "gulp-unzip": "^1.1.0",
+    "gulp-util": "^3.0.7",
+    "gulp-zip": "^5.0.0",
+    "jasmine": "^3.5.0",
+    "mocha": "^6.2.0",
+    "natives": "1.1.6",
+    "rimraf": "^3.0.0",
+    "selenium-webdriver": "^3.6.0",
+    "serve-index": "^1.7.3",
+    "tmp": "0.1.0",
+    "url-exists": "^1.0.3",
+    "ws": "^7.1.2",
+    "xml2js": "^0.4.22",
+    "zombie": "^6.1.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

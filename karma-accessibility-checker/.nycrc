@@ -1,0 +1,25 @@
+{
+    "lines": 98,
+    "statements": 98,
+    "functions": 100,
+    "branches": 98,
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/**/*.spec.js",
+      "src/**/engine-browser.js",
+      "src/**/ACHelper.js"
+    ],
+    "reporter": [
+      "lcov",
+      "text-summary"
+    ],
+    "extension": [
+      ".js"
+    ],
+    "cache": true,
+    "all": true,
+    "check-coverage": true,
+    "report-dir": "./coverage/server/ava"
+}

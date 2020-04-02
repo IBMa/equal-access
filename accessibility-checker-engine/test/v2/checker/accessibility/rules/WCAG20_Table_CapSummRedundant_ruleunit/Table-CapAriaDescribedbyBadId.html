@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+	<style type='text/css'>
+        table { border: solid gray 1px; }
+        td, th { border-style: inset; border-width: 1px; }
+    </style>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Table-CapSummRedundant.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Data Table Tests</h3>
+
+
+<ul>
+	<li>Test - Simple Data Table with redundant aria-describedby and caption.  However, aria-describedby has a bad id so rule should not trigger.</li>
+</ul>
+<p id="desc">Boys and Girls in Elementary School Classes</p>
+<table id="data_table1" aria-describedby="tblDesc">
+	<caption>Boys and Girls in Elementary School Classes</caption>
+
+	<tr>
+		<th scope="col">Class</th>
+		<th scope="col"># of Boys</th>
+		<th scope="col"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th scope="row">1st Grade</th>
+		<td>11</td>
+		<td>10</td>
+	</tr>
+
+	<tr>
+		<th scope="row">2nd Grade</th>
+		<td>7</td>
+		<td>12</td>
+	</tr>
+
+	<tr>
+		<th scope="row">3rd Grade</th>
+		<td>12</td>
+		<td>14</td>
+	</tr>
+</table>
+
+<br>
+
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1011",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

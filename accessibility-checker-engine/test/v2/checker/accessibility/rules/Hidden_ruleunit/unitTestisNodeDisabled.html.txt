@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+    <title>Unit Testing isNodeDisabled function in util-rpt.js file</title>
+    <script src="../../src/oaa-a11y.js"></script>
+    <script src="../../src/scripts/util-rpt.js"></script>
+    <script src="../../src/wai-aria/aria_definitions.js"></script>
+    <script type="text/javascript">
+        function runisNodeDisabledUnitTest() {
+            // "button", "input", "select", "textarea", "optgroup", "option", "menuitem", "fieldset"
+            // Below this covers elements which are disabled
+            var buttonDisabled = RPT.util.isNodeDisabled(document.getElementById("buttonDisabled"));
+            console.log("Button element disabled, expecting true: " + buttonDisabled);
+
+            var inputDisabled = RPT.util.isNodeDisabled(document.getElementById("inputDisabled"));
+            console.log("Input element disabled, expecting true: " + inputDisabled);
+
+            var selectDisabled = RPT.util.isNodeDisabled(document.getElementById("selectDisabled"));
+            console.log("Select element disabled, expecting true: " + selectDisabled);
+
+            var textareaDisabled = RPT.util.isNodeDisabled(document.getElementById("textareaDisabled"));
+            console.log("Textarea element disabled, expecting true: " + textareaDisabled);
+
+            var optgroupDisabled = RPT.util.isNodeDisabled(document.getElementById("optgroupDisabled"));
+            console.log("Optgroup element disabled, expecting true: " + optgroupDisabled);
+
+            var optionDisabled = RPT.util.isNodeDisabled(document.getElementById("optionDisabled"));
+            console.log("Option element disabled, expecting true: " + optionDisabled);
+
+            var menuitemDisabled = RPT.util.isNodeDisabled(document.getElementById("menuitemDisabled"));
+            console.log("Menuitem element disabled, expecting true: " + menuitemDisabled);
+
+            var fieldsetDisabled = RPT.util.isNodeDisabled(document.getElementById("fieldsetDisabled"));
+            console.log("fieldset element disabled, expecting true: " + fieldsetDisabled);
+
+            var buttonParentDisabled = RPT.util.isNodeDisabled(document.getElementById("buttonParentDisabled"));
+            console.log("Button's parent element disabled, expecting true: " + buttonParentDisabled);
+
+            var inputParentDisabled = RPT.util.isNodeDisabled(document.getElementById("inputParentDisabled"));
+            console.log("Input's parent element disabled, expecting true: " + inputParentDisabled);
+
+            var selectParentDisabled = RPT.util.isNodeDisabled(document.getElementById("selectParentDisabled"));
+            console.log("Select's parent element disabled, expecting true: " + selectParentDisabled);
+
+            var textareaParentDisabled = RPT.util.isNodeDisabled(document.getElementById("textareaParentDisabled"));
+            console.log("Textarea's parent element disabled, expecting true: " + textareaParentDisabled);
+
+            var optgroupParentDisabled = RPT.util.isNodeDisabled(document.getElementById("optgroupParentDisabled"));
+            console.log("Optgroup's parent element disabled, expecting true: " + optgroupParentDisabled);
+
+            var optionParentDisabled = RPT.util.isNodeDisabled(document.getElementById("optionParentDisabled"));
+            console.log("Option's parent element disabled, expecting true: " + optionParentDisabled);
+
+            var menuitemParentDisabled = RPT.util.isNodeDisabled(document.getElementById("menuitemParentDisabled"));
+            console.log("Menuitem's parent element disabled, expecting true: " + menuitemParentDisabled);
+
+            var fieldsetParentDisabled = RPT.util.isNodeDisabled(document.getElementById("fieldsetParentDisabled"));
+            console.log("fieldset's parent element disabled, expecting true: " + fieldsetParentDisabled);
+
+            // Below this covers elements which are disabled using aria-disabled
+            var buttonAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("buttonAriaDisabled"));
+            console.log("Button element aria-disabled=true, expecting true: " + buttonAriaDisabled);
+
+            var inputAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("inputAriaDisabled"));
+            console.log("Input element aria-disabled=true, expecting true: " + inputAriaDisabled);
+
+            var selectAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("selectAriaDisabled"));
+            console.log("Select element aria-disabled=true, expecting true: " + selectAriaDisabled);
+
+            var textareaAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("textareaAriaDisabled"));
+            console.log("Textarea element aria-disabled=true, expecting true: " + textareaAriaDisabled);
+
+            var optgroupAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("optgroupAriaDisabled"));
+            console.log("Optgroup element aria-disabled=true, expecting true: " + optgroupAriaDisabled);
+
+            var optionAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("optionAriaDisabled"));
+            console.log("Option element aria-disabled=true, expecting true: " + optionAriaDisabled);
+
+            var menuitemAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("menuitemAriaDisabled"));
+            console.log("Menuitem element aria-disabled=true, expecting true: " + menuitemAriaDisabled);
+
+            var fieldsetAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("fieldsetAriaDisabled"));
+            console.log("fieldset element aria-disabled=true, expecting true: " + fieldsetAriaDisabled);
+
+            var buttonParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("buttonParentAriaDisabled"));
+            console.log("Button's parent element aria-disabled=true, expecting true: " + buttonParentAriaDisabled);
+
+            var inputParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("inputParentAriaDisabled"));
+            console.log("Input's parent element aria-disabled=true, expecting true: " + inputParentAriaDisabled);
+
+            var selectParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("selectParentAriaDisabled"));
+            console.log("Select's parent element aria-disabled=true, expecting true: " + selectParentAriaDisabled);
+
+            var textareaParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("textareaParentAriaDisabled"));
+            console.log("Textarea's parent element aria-disabled=true, expecting true: " + textareaParentAriaDisabled);
+
+            var optgroupParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("optgroupParentAriaDisabled"));
+            console.log("Optgroup's parent element aria-disabled=true, expecting true: " + optgroupParentAriaDisabled);
+
+            var optionParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("optionParentAriaDisabled"));
+            console.log("Option's parent element aria-disabled=true, expecting true: " + optionParentAriaDisabled);
+
+            var menuitemParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("menuitemParentAriaDisabled"));
+            console.log("Menuitem's parent element aria-disabled=true, expecting true: " + menuitemParentAriaDisabled);
+
+            var fieldsetParentAriaDisabled = RPT.util.isNodeDisabled(document.getElementById("fieldsetParentAriaDisabled"));
+            console.log("fieldset's parent element aria-disabled=true, expecting true: " + fieldsetParentAriaDisabled);
+        }
+    </script>
+</head>
+
+<body onload="runisNodeDisabledUnitTest();">
+    <div role="main">
+
+        <a href="#navskip">skip to main content</a>
+
+        <form id="formNoEvents" action="demo_form.asp">
+            <button role="button" id="buttonDisabled" type="button" disabled> I am a button</button>
+            <br>
+            <input type="submit" aria-label="submit1" role="button" value="Submit" id="inputDisabled" disabled>
+            <br>
+            <select onkeypress="keyEvent()" role="listbox" id="selectDisabled" disabled>
+                <option role="listitem" value="corolla" id="1_corolla"> Corolla </option>
+            </select>
+            <textarea id="textareaDisabled" disabled>
+                342 Alvin Road Ducksburg
+            </textarea>
+            <select>
+                <optgroup id="optgroupDisabled" label="Swedish Cars" disabled>
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                </optgroup>
+            </select>
+            <select>
+                <option id="optionDisabled" value="volvo" disabled>Volvo</option>
+            </select>
+
+            <fieldset disabled id="fieldsetDisabled" style="color: rgb(255, 0, 0);">
+                <legend>Personalia:</legend>
+                Name:
+                <input type="text">
+                <br> Email:
+                <input type="text">
+                <br> Date of birth:
+                <input type="text">
+            </fieldset>
+        </form>
+        <div style="background:yellow;border:1px solid #cccccc;padding: 10px;" contextmenu="mymenu">
+            <p>Right-click inside this box to see the context menu!
+
+                <menu type="context" id="mymenu">
+                    <menuitem label="Refresh" onclick="window.location.reload();" icon="ico_reload.png" id="menuitemDisabled" disabled></menuitem>
+                    <menu label="Share on...">
+                        <menuitem label="Twitter" icon="ico_twitter.png" onclick="window.open('//twitter.com/intent/tweet?text=' + window.location.href);"></menuitem>
+                        <menuitem label="Facebook" icon="ico_facebook.png" onclick="window.open('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+                    </menu>
+                    <menuitem label="Email This Page" onclick="window.location='mailto:?body='+window.location.href;"></menuitem>
+                </menu>
+        </div>
+        <br>
+        <br>
+        <form action="demo_form.asp">
+            <fieldset id="fieldsetParentDisabled" disabled>
+                <legend>This covers the cases where parent is disabled, which menas that childrens are also disabled</legend>
+                <button role="button" id="buttonParentDisabled" type="button"> I am a button</button>
+                <br>
+                <input type="submit" aria-label="submit1" role="button" value="Submit" id="inputParentDisabled">
+                <br>
+                <select onkeypress="keyEvent()" role="listbox" id="selectParentDisabled">
+                    <option role="listitem" value="corolla" id="1_corolla"> Corolla </option>
+                </select>
+                <textarea id="textareaParentDisabled">
+                    342 Alvin Road Ducksburg
+                </textarea>
+                <select>
+                    <optgroup id="optgroupParentDisabled" label="Swedish Cars">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                    </optgroup>
+                </select>
+                <select>
+                    <option id="optionParentDisabled" value="volvo">Volvo</option>
+                </select>
+
+                <fieldset id="fieldsetParentDisabled" style="color: rgb(255, 0, 0);">
+                    <legend>Personalia:</legend>
+                    Name:
+                    <input type="text">
+                    <br> Email:
+                    <input type="text">
+                    <br> Date of birth:
+                    <input type="text">
+                </fieldset>
+                <div style="background:yellow;border:1px solid #cccccc;padding: 10px;" contextmenu="mymenu">
+                    <p>Right-click inside this box to see the context menu!
+
+                        <menu type="context" id="mymenu">
+                            <menuitem label="Refresh" onclick="window.location.reload();" icon="ico_reload.png" id="menuitemParentDisabled" disabled></menuitem>
+                            <menu label="Share on...">
+                                <menuitem label="Twitter" icon="ico_twitter.png" onclick="window.open('//twitter.com/intent/tweet?text=' + window.location.href);"></menuitem>
+                                <menuitem label="Facebook" icon="ico_facebook.png" onclick="window.open('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+                            </menu>
+                            <menuitem label="Email This Page" onclick="window.location='mailto:?body='+window.location.href;"></menuitem>
+                        </menu>
+                </div>
+            </fieldset>
+        </form>
+        <form id="formNoEvents" action="demo_form.asp">
+            <button role="button" id="buttonAriaDisabled" type="button" aria-disabled="true"> I am a button</button>
+            <br>
+            <input type="submit" aria-label="submit1" role="button" value="Submit" id="inputAriaDisabled" aria-disabled="true">
+            <br>
+            <select onkeypress="keyEvent()" role="listbox" id="selectAriaDisabled" aria-disabled="true">
+                <option role="listitem" value="corolla" id="1_corolla"> Corolla </option>
+            </select>
+            <textarea id="textareaAriaDisabled" aria-disabled="true">
+                342 Alvin Road Ducksburg
+            </textarea>
+            <select>
+                <optgroup id="optgroupAriaDisabled" label="Swedish Cars" aria-disabled="true">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                </optgroup>
+            </select>
+            <select>
+                <option id="optionAriaDisabled" value="volvo" aria-disabled="true">Volvo</option>
+            </select>
+
+            <fieldset aria-disabled="true" id="fieldsetAriaDisabled" style="color: rgb(255, 0, 0);">
+                <legend>Personalia:</legend>
+                Name:
+                <input type="text">
+                <br> Email:
+                <input type="text">
+                <br> Date of birth:
+                <input type="text">
+            </fieldset>
+        </form>
+        <div style="background:yellow;border:1px solid #cccccc;padding: 10px;" contextmenu="mymenu">
+            <p>Right-click inside this box to see the context menu!
+
+                <menu type="context" id="mymenu">
+                    <menuitem label="Refresh" onclick="window.location.reload();" icon="ico_reload.png" id="menuitemAriaDisabled" aria-disabled="true"></menuitem>
+                    <menu label="Share on...">
+                        <menuitem label="Twitter" icon="ico_twitter.png" onclick="window.open('//twitter.com/intent/tweet?text=' + window.location.href);"></menuitem>
+                        <menuitem label="Facebook" icon="ico_facebook.png" onclick="window.open('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+                    </menu>
+                    <menuitem label="Email This Page" onclick="window.location='mailto:?body='+window.location.href;"></menuitem>
+                </menu>
+        </div>
+        <br>
+        <br>
+        <form action="demo_form.asp">
+            <fieldset id="fieldsetParentAriaDisabled" aria-disabled="true">
+                <legend>This covers the cases where parent is aria-disabled, which menas that childrens are also disabled</legend>
+                <button role="button" id="buttonParentAriaDisabled" type="button"> I am a button</button>
+                <br>
+                <input type="submit" aria-label="submit1" role="button" value="Submit" id="inputParentAriaDisabled">
+                <br>
+                <select onkeypress="keyEvent()" role="listbox" id="selectParentAriaDisabled">
+                    <option role="listitem" value="corolla" id="1_corolla"> Corolla </option>
+                </select>
+                <textarea id="textareaParentAriaDisabled">
+                    342 Alvin Road Ducksburg
+                </textarea>
+                <select>
+                    <optgroup id="optgroupParentAriaDisabled" label="Swedish Cars">
+                        <option value="volvo">Volvo</option>
+                        <option value="saab">Saab</option>
+                    </optgroup>
+                </select>
+                <select>
+                    <option id="optionParentAriaDisabled" value="volvo">Volvo</option>
+                </select>
+
+                <fieldset id="fieldsetParentAriaDisabled" style="color: rgb(255, 0, 0);">
+                    <legend>Personalia:</legend>
+                    Name:
+                    <input type="text">
+                    <br> Email:
+                    <input type="text">
+                    <br> Date of birth:
+                    <input type="text">
+                </fieldset>
+                <div style="background:yellow;border:1px solid #cccccc;padding: 10px;" contextmenu="mymenu">
+                    <p>Right-click inside this box to see the context menu!
+
+                        <menu type="context" id="mymenu">
+                            <menuitem label="Refresh" onclick="window.location.reload();" icon="ico_reload.png" id="menuitemParentAriaDisabled" disabled></menuitem>
+                            <menu label="Share on...">
+                                <menuitem label="Twitter" icon="ico_twitter.png" onclick="window.open('//twitter.com/intent/tweet?text=' + window.location.href);"></menuitem>
+                                <menuitem label="Facebook" icon="ico_facebook.png" onclick="window.open('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+                            </menu>
+                            <menuitem label="Email This Page" onclick="window.location='mailto:?body='+window.location.href;"></menuitem>
+                        </menu>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <script id="scripthidden">
+    </script>
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof (OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof (OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [
+            {
+                ruleId: "999999999999",
+                passedXpaths: [
+	      ],
+                failedXpaths: [
+	      ]
+	    }
+	  ];
+        //]]>
+    </script>
+</body>
+
+</html>

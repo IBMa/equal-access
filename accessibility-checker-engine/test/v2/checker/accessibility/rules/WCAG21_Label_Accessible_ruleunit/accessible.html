@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Flag a violation if Accessible name does not match or contain the visible label text</title>
+	</head>
+	<body>
+		
+<!-- Failed -->
+<label>Please choose one or more pets
+  <select name="pets" multiple size="4" aria-label="Pick something">
+    <optgroup label="4-legged pets">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+      <option value="hamster" disabled>Hamster</option>
+    </optgroup>
+    <optgroup label="Flying pets">
+      <option value="parrot">Parrot</option>
+      <option value="macaw">Macaw</option>
+      <option value="albatross">Albatross</option>
+    </optgroup>
+  </select>
+</label>
+
+<!-- Failed -->
+	<label for="select2" >Please pick one or more pets</label>
+  <select id="select2" name="pets" multiple size="4" aria-label="Choose something">
+    <optgroup label="4-legged pets">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+      <option value="hamster" disabled>Hamster</option>
+    </optgroup>
+    <optgroup label="Flying pets">
+      <option value="parrot">Parrot</option>
+      <option value="macaw">Macaw</option>
+      <option value="albatross">Albatross</option>
+    </optgroup>
+	</select>
+	
+
+	<!-- Passed -->
+	<label>Please choose one or more
+  <select name="pets" multiple size="4" aria-label="Please choose one or more pets:">
+    <optgroup label="4-legged pets">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+      <option value="hamster" disabled>Hamster</option>
+    </optgroup>
+    <optgroup label="Flying pets">
+      <option value="parrot">Parrot</option>
+      <option value="macaw">Macaw</option>
+      <option value="albatross">Albatross</option>
+    </optgroup>
+  </select>
+</label>
+
+<!-- Passed -->
+	<label for="select4" >Please pick one or more</label>
+  <select id="select4" name="pets" multiple size="4" aria-label="Please pick one or more pets:">
+    <optgroup label="4-legged pets">
+      <option value="dog">Dog</option>
+      <option value="cat">Cat</option>
+      <option value="hamster" disabled>Hamster</option>
+    </optgroup>
+    <optgroup label="Flying pets">
+      <option value="parrot">Parrot</option>
+      <option value="macaw">Macaw</option>
+      <option value="albatross">Albatross</option>
+    </optgroup>
+  </select>
+
+<!-- Failed -->
+<label for="story1">Tell us your story:</label>
+
+<textarea id="story1" name="story"
+          rows="5" cols="33" aria-label="Your story:">
+It was a dark and stormy night...
+</textarea>
+
+	<!-- Passed -->
+	<label for="story2">Tell us your story:</label>
+<textarea id="story2" name="story"
+          rows="5" cols="33" aria-label="Tell us your story:">
+It was a dark and stormy night...
+</textarea>
+
+	<!-- Failed -->
+	<label for="name1">Your name (4 to 8 characters):</label>
+	<input type="text" id="name1" name="name" required
+       minlength="4" maxlength="8" size="10" aria-label="Name (4 to 8 characters):">
+
+	<!-- Passed -->
+	<label for="name2">Name (4 to 8 characters):</label>
+	<input type="text" id="name2" name="name" required
+       minlength="4" maxlength="8" size="10" aria-label="Name (4 to 8 characters):">
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1202",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+					"/html/body/label/select",
+					"/html/body/select",
+					"/html/body/textarea",
+					"/html/body/input"
+      ]
+    }
+  ];
+//]]>
+</script>
+	</body>
+	</html>

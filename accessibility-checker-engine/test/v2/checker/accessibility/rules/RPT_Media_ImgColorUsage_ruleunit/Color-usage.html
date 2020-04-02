@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+
+	<style type="text/css">
+		h1 {color:red}
+		p {color:blue}
+        table { border: solid gray 1px; }
+        td, th { border-style: inset; border-width: 1px; }
+	</style>
+
+	<link id="link1" rel="stylesheet" type="text/css" href="stylesheet.css" title="Style">
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Color-usage.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Color Tests</h3>
+
+<ul>
+	<li>Test - Font has color attribute</li>
+</ul>
+
+<!-- color -->
+<font face="verdana" size="3" color="red">
+	This is some text!
+</font>
+
+<table id="data_table10" bgcolor="grey" summary="An example of a simple data table showing the teacher and number of boys and girls in each grade of an elementary school">
+	<caption>Teachers and Boys and Girls in Elementary School Classes</caption>
+
+	<tr bgcolor="red">
+		<th id="class" bgcolor="blue">Class</th>
+		<th id="teacher">Teacher</th>
+		<th id="boys"># of Boys</th>
+		<th id="girls"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th id="1stgrade" rowspan="2">1st Grade</th>
+		<th id="MrHenry" headers="1stgrade teacher">Mr. Henry</th>
+		<td headers="1stgrade MrHenry boys" bgcolor="green">5</td>
+		<td headers="1stgrade MrHenry girls">4</td>
+	</tr>
+
+	<tr>
+		<th id="MrsSmith" headers="1stgrade teacher">Mrs. Smith</th>
+		<td headers="1stgrade MrsSmith boys">7</td>
+		<td headers="1stgrade MrsSmith girls">9</td>
+	</tr>
+
+	<tr>
+		<th id="2ndgrade" rowspan="3">2nd Grade</th>
+		<th id="MrJones" headers="2ndgrade teacher">Mr. Jones</th>
+		<td headers="2ndgrade MrJones boys">3</td>
+		<td headers="2ndgrade MrJones girls">9</td>
+	</tr>
+
+	<tr>
+		<th id="MrsWhite" headers="2ndgrade teacher">Mrs. White</th>
+		<td headers="2ndgrade MrsWhite boys">4</td>
+		<td headers="2ndgrade MrsWhite girls">3</td>
+	</tr>
+
+	<tr>
+		<th id="MrsKelly" headers="2ndgrade teacher">Mrs. Kelly</th>
+		<td headers="2ndgrade MrsKelly boys">6</td>
+		<td headers="2ndgrade MrsKelly girls">9</td>
+	</tr>
+</table>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn1">Go</label>
+		<input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" alt="go button">
+	</fieldset>
+</form>
+
+<applet id="applet1" code="test.xx" object=object Title="Fish" width="200" height="200" alt="Image of a fish">
+	An image of a fish
+</applet>
+
+<object id="object1" data="../support/test1.yyy" Type="audio/wav" Title="Fish" width="200" height="200">
+	<param name="autostart" value="false">
+	Sound of a fish
+</object>
+
+<embed id="embed1" src="../support/fish.zzz" width="150" height="150">
+	<noembed id="noembed1">Image of a fish</noembed>
+</embed>
+
+<script type="text/javascript">
+	document.write("Hello World!")
+</script>
+
+<p style="color:#FF0000">
+	A paragraph.
+</p>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "245",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/head/style",
+        "/html/head/link",
+        "/html/body/font",
+        "/html/body/table/tbody/tr[1]",
+        "/html/body/table/tbody/tr[1]/th[1]",
+        "/html/body/table/tbody/tr[2]/td[1]",
+        "/html/body/form/fieldset/input",
+        "/html/body/applet",
+        "/html/body/embed",
+        "/html/body/script[1]",
+        "/html/body/p"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

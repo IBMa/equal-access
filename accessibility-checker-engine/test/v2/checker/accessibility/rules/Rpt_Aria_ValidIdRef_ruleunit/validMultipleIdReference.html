@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+<h3>WAI-ARIA valid multiple idref test</h3>
+
+<!-- multiple idref one visible: des1 -->
+<p id="test1" role="application" aria-describedby="desc1 desc2">
+<span id="desc1" >Description</span>
+<span id="desc2" hidden>Descriptions</span>
+</p>
+
+<p id="test2" role="application" aria-describedby="desc3 desc4">
+<span id="desc3" hidden>Description</span>
+<span id="desc4" >Descriptions</span>
+</p>
+
+<p id="test3" role="application" aria-describedby="desc5 desc6">
+<span id="desc6" >Descriptions</span>
+</p>
+
+<p id="test3" role="application" aria-describedby="desc7 desc8">
+<span id="desc7" style="display: inline">Descriptions</span>
+    <span id="desc8" style="display: none">Descriptions</span>
+</p>
+
+<a name="navskip"></a>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1077",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Non-decorative static text or images within "application" role must receive accessible focus. G1187</title>
+</head>
+<body>
+
+
+<!-- fail case -->
+<div role="application" id = "app1">
+	<div role="document" id="1.1">
+		<h2>Some heading 1</h2>
+		<p>A paragraph of text 1</p>
+  </div>
+  <div  id="1.2">
+		<h2>Some heading</h2>
+		<p>A paragraph of text</p>
+	</div>
+</div>
+
+<!-- fail case -->
+<article role="application" aria-label="TC3_3_appplication" id="a1">
+     <article role="region" aria-label="TC3_3 region">
+          <p> only pretend to be article, the only content</p>
+      </article>
+ </article>
+
+
+<!-- Pass case -->
+<div role="application" id = "app2">
+  <article id="MyGuitarBlog">
+    <header >
+       <h1>Your first high end Guitar</h1>
+       <p> Taking the plunge, and why you should do it </p>
+    </header>
+    <p>Buying your first really high end axe is up there with moving house, 
+      doing a driving test or getting married in terms of being really important 
+      but the good news is it’s nothing like as stressful as any of those are!
+    </p>
+    <footer>
+      <p>Some comments from interested humans </p>
+    </footer>
+  </article>
+</div>
+
+<!-- Pass case -->
+<div role="application" id = "app3">
+	<div role="document"  id="3.1">
+		<h2>Some heading 3</h2>
+		<p>A paragraph of text 3</p>
+	</div>
+</div>
+
+<!-- Pass case -->
+<div role="application" id = "app4">
+	<div role="document">
+		<h2>Some heading 4</h2>
+		<p>A paragraph of text 4</p>
+  </div>
+  <article>
+		<h2>Some heading 4.1</h2>
+		<p>A paragraph of text 4.1</p>
+	</article>
+</div>
+
+<!-- Pass case. Don't trigger on hidden child. -->
+<article role="application" aria-label="TC4_appplication">
+   <section role="document" aria-label="TC4_appplication_document">
+ 		<p> some text goes here</p>
+   </section>
+   <p hidden="true"> some more orphan content</p>
+</article>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1187",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+    	  "/html/body/div",
+    	  "/html/body/article"
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# https://git-scm.com/docs/gitignore
+# https://help.github.com/articles/ignoring-files
+# Example .gitignore files: https://github.com/github/gitignore
+/bower_components/
+**/node_modules/
+/dependencies/
+/package/
+/src/node_modules/
+/npm-debug.log
+/coverage/
+/results/
+/examples/basic/results/
+/src/lib/engine-browser.js
+.nyc_output
+/src/lib/reporters/slackNotificationObject.json
+/test/server/unitTestCommon/configFiles/empty/results
+package-lock.json

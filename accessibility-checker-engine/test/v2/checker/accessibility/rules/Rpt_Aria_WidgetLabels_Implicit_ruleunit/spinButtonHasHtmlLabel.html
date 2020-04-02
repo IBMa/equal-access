@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to banner content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>A spinbutton with an html label</h3>
+
+    <form method="post" name="example" action="" id="form1">
+        <h1>number spinner</h1>
+        <br> initial value=900, no delta specified, no min specified, max=1550, onChange captured, big font
+        <br>
+        <label for="integerspinner1">Spinbox #1: </label>
+        <br>
+        <div role="presentation" id="widget_integerspinner1" class="dijit dijitReset dijitInline dijitLeft dijitTextBox dijitSpinner bigFont" widgetid="integerspinner1">
+            <div class="dijitReset dijitButtonNode dijitSpinnerButtonContainer">
+                <input type="text" role="presentation" readonly="readonly" tabindex="-1" class="dijitReset dijitInputField dijitSpinnerButtonInner">
+                <div data-dojo-attach-point="upArrowNode" class="dijitReset dijitLeft dijitButtonNode dijitArrowButton dijitUpArrowButton">
+                    <div class="dijitArrowButtonInner">
+                        <input type="text" role="presentation" readonly="readonly" tabindex="-1" value="?" class="dijitReset dijitInputField">
+                    </div>
+                </div>
+                <div data-dojo-attach-point="downArrowNode" class="dijitReset dijitLeft dijitButtonNode dijitArrowButton dijitDownArrowButton">
+                    <div class="dijitArrowButtonInner">
+                        <input type="text" role="presentation" readonly="readonly" tabindex="-1" value="?" class="dijitReset dijitInputField">
+                    </div>
+                </div>
+            </div>
+            <div class="dijitReset dijitValidationContainer">
+                <input type="text" role="presentation" readonly="readonly" tabindex="-1" value="?" class="dijitReset dijitInputField dijitValidationIcon dijitValidationInner">
+            </div>
+            <div class="dijitReset dijitInputField dijitInputContainer">
+                <input type="text" autocomplete="off" role="spinbutton" data-dojo-attach-event="onkeypress:_onKeyPress" data-dojo-attach-point="textbox,focusNode" class="dijitReset dijitInputInner" tabindex="0" id="integerspinner1" aria-valuenow="900" aria-invalid="false"
+                    aria-valuemin="-9000000000000000" aria-valuemax="1550" value="900">
+                <input type="hidden" name="integerspinner1" value="900">
+            </div>
+        </div>
+        <button onclick="alert(document.displayData()); return false;" name="button">
+        view data
+    </button>
+        <input type="submit" name="submit">
+    </form>
+
+    <a name="navskip"></a>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [{
+            ruleId: "1156",
+            passedXpaths: [],
+            failedXpaths: []
+            
+// covered by g41            failedXpaths: ["/html/body/form/div/div/div/div/input",
+//                 "/html/body/form/div/div/div[2]/div/input",
+//                 "/html/body/form/div/div/input",
+//                 "/html/body/form/div/div[2]/input",
+//                 "/html/body/form/input"
+//             ]
+        }];
+        //]]>
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: A-TargetAndText.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Anchor Tests with target attribute</h3>
+
+
+<ul>
+	<li>Test - Valid elements with target attribute</li>
+</ul>
+
+
+<a id="anchor1" href="http://www.cnn.com" target="_blank">Home Navigation Bar</a>
+
+<img src ="planets.gif" width="145" height="126" alt="Planets" usemap ="#planetmap" />
+
+<map name="planetmap">
+	<area shape="rect" coords="0,0,82,126" href="sun.htm" alt="Sun" target="_blank" />
+	<area shape="circle" coords="90,58,3" href="mercur.htm" alt="Mercury" />
+	<area shape="circle" coords="124,58,8" href="venus.htm" alt="Venus" />
+</map>
+
+<form action="form_action.asp" method="get" target="_blank">
+	First name: <input type="text" name="fname" /><br />
+	Last name: <input type="text" name="lname" /><br />
+
+	<input type="submit" value="Submit" />
+</form>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "112",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/a[2]",
+        "/html/body/map/area[1]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

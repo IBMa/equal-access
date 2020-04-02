@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Combobox must have text input</title>
+</head>
+<body>
+
+
+<!-- combobox 1.1 style: passed case -->
+<div id="pass1" aria-label="Tag" role="combobox" aria-expanded="true" aria-owns="owned_listbox" aria-haspopup="listbox">
+    <input type="text" aria-autocomplete="list" aria-controls="owned_listbox" aria-activedescendant="selected_option">
+</div>
+<ul role="listbox" id="owned_listbox">
+    <li role="option">Zebra</li>
+    <li role="option" id="selected_option">Zoom</li>
+</ul>
+
+<!-- combobox 1.1 style: passed case -->
+<div id="pass1b" aria-label="Tag" role="combobox" aria-expanded="true" aria-owns="owned_listbox1b input1b" aria-haspopup="listbox"> 
+</div>
+<input id="input1b" type="text" aria-autocomplete="list" aria-controls="owned_listbox1b" aria-activedescendant="selected_option1b">
+<ul role="listbox" id="owned_listbox1b">
+    <li role="option">Zebra</li>
+    <li role="option" id="selected_option1b">Zoom</li>
+</ul>
+
+  <!-- combobox 1.1 style: failed case -->
+<div id="pass2" aria-label="Tag" role="combobox" aria-expanded="true" aria-owns="owned_listbox2" aria-haspopup="listbox">
+</div>
+<ul role="listbox" id="owned_listbox2">
+    <li role="option">Zebra</li>
+    <li role="option" id="selected_option2">Zoom</li>
+</ul>
+
+<!-- combobox 1.1 style: failed case -->
+<div id="pass3" aria-label="Tag" role="combobox" aria-expanded="true" aria-owns="owned_listbox3" aria-haspopup="listbox">
+    <input type="text" aria-autocomplete="list" aria-controls="owned_listbox3" aria-activedescendant="selected_option3" aria-multiline="true">
+</div>
+<ul role="listbox" id="owned_listbox3">
+    <li role="option">Zebra</li>
+    <li role="option" id="selected_option3">Zoom</li>
+</ul>
+
+<!--  combobox 1.0 style: passed case -->
+			<label> Oh, my Chuck 
+				<input type="text" role="combobox" id="input3" aria-activedescendant="Chuck_option" aria-expanded="true" aria-owns="textbox3 list2" aria-controls="list2" aria-autocomplete="list" tabindex="0" list="list2"> 
+			</label>
+      <label> input box  <input type="url"  id="textbox3"  aria-multiline="false" role="textbox"> </label>           						 	
+			<ul aria-expanded="true" role="listbox" id="list2" onkeypress="keyEvent()" aria-label="list2">
+				<li role="option" aria-selected="false" aria-label="Chuck option" 	id="Chuck_option"  tabindex="0"	aria-checked="undefined" >Chuck</li>
+				<li role="option" aria-selected="false" aria-label="Amara option" 	id="Amara_option"  tabindex="0"	aria-checked="mixed"		 >Amara</li>
+			</ul>
+
+
+<!-- Pass case not a combobox-->
+<div aria-label="Tag5" role="menu" aria-expanded="false" aria-haspopup="grid">
+    <input type="text" aria-autocomplete="list" aria-controls="owned_listbox5" aria-activedescendant="selected_option5">
+<ul role="grid" id="owned_listbox5">
+    <li role="option">Zebra</li>
+    <li role="option" id="selected_option5">Zoom</li>
+</ul>
+</div>
+
+<!-- passed case hidden -->
+      <label display:none> input box  <input type="url"  id="textbox3"  aria-multiline="false" role="textbox"> </label>           						 	
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1194",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/div[3]",
+        "/html/body/div[4]"
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

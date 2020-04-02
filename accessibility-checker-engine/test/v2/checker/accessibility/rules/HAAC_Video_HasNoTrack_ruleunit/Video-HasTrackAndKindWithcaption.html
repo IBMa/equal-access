@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+
+
+	<title>RPT Test Suite</title>
+</head>
+
+
+<body>
+
+
+<div role="main">
+
+<h2>Test case: Video-HasTrackAndKindWithCaptions.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Video element with track element</h3>
+
+<ul>
+	<li>Test - Video element with track elements</li>
+</ul>
+
+ <video id="video1" src="sample.ogv">
+   <track kind="captions" src="sampleCaptions.srt" srclang="en">
+   <track kind="captions" src="sampleCaptions.fr.srt" srclang="fr">
+ </video>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1117",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+
+      ]
+    }
+  ];
+//]]>
+</script>
+</div>
+</body>
+</html>

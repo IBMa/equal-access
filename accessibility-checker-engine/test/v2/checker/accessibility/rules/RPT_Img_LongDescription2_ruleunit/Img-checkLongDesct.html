@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: Img-checkLongdesc.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Img Long Description Tests</h3>
+
+<ul>
+	<li>Test - Img with no Longdesc text</li>
+	<li>Test - Img with valid Longdesc text</li>
+	<li>Test - Img with valid Longdesc text</li>
+	<li>Test - Img with empty Longdesc text</li>
+	<li>Test - Img with invalid Longdesc text</li>
+	<li>Test - Img with invalid Longdesc text</li>
+	<li>Test - Img with invalid Longdesc text</li>
+</ul>
+
+<img id="image1" src="../support/ExplodedPieChart.gif" alt="this is the chart" />
+
+<img id="image2" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/longdesc-piechartInfo.html" />
+
+<img id="image3" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/longdesc-piechartInfo.htm" />
+
+<img id="image4" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/longdesc-piechartInfo.py" />
+
+<img id="image5" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="" />
+
+<img id="image6" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="  " />
+
+<img id="image7" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/nav_home.gif" />
+
+<img id="image8" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/nav_home.wav" />
+
+<img id="image9" src="../support/ExplodedPieChart.gif" alt="this is the chart" longdesc="../support/nav_home.mp3" />
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "454",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/img[5]",
+        "/html/body/img[6]",
+        "/html/body/img[7]",
+        "/html/body/img[8]",
+        "/html/body/img[9]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

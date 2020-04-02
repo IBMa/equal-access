@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite: Defect 1022</title>
+
+	<style type="text/css">
+		h1 {border-color:red}
+		p {border-left-color:blue}
+	</style>
+
+</head>
+
+<body alink="#FF0000" link="#00FF00" text="#0000FF" vlink="#FFFF00" background="http://www.cnn.com" bgcolor="#00FFFF">
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: D1022.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Color Tests</h3>
+
+<ul>
+	<li>Test - Font has color attribute</li>
+</ul>
+
+<!-- color -->
+<font face="verdana" size="3" color="red">
+	This is some text!
+</font>
+
+<em>test</em><font color="blue"> Blue: Aliquam erat</font>
+
+<font color="red"> Red: Aliquam erat</font>
+<p style="color: red"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+
+<em><font color="red"> em Aliquam erat</font></em>
+<strong><font color="red"> strong Aliquam erat</font></strong>
+<cite><font color="red"> cite Aliquam erat</font></cite>
+<dfn><font color="red"> dfn Aliquam erat</font></dfn>
+<code><font color="red"> code Aliquam erat</font></code>
+<samp><font color="red"> samp Aliquam erat</font></samp>
+<kbd><font color="red"> kbd Aliquam erat</font></kbd>
+<var><font color="red"> var Aliquam erat</font></var>
+<abbr><font color="red"> abbr Aliquam erat</font></abbr>
+<acronym><font color="red"> acronym Aliquam erat</font></acronym>
+
+<font color="red"> <em> Aliquam erat</em></font>
+<font color="red"> <strong> Aliquam erat</strong></font>
+<font color="red"> <cite> Aliquam erat</cite></font>
+<p style="color: red"> <cite> P</cite></p>
+<font color="red"> <dfn> Aliquam erat</dfn></font>
+<p style="color: red"> <DFN> a definition </DFN> </p>
+<font color="red"> <code> Aliquam erat</code></font>
+<p style="color: red"> <code> p </code></p>
+<font color="red"> <samp> Aliquam erat</samp></font>
+<p style="color: blue">  <samp> p2 </samp></p>
+<font color="red"> <kbd> Aliquam erat</kbd> </font>
+<font color="red"> <var> Aliquam erat</var> </font>
+<font color="red"> <abbr> Aliquam erat</abbr> </font>
+<font color="red"> <acronym> Aliquam erat</acronym></font>
+
+<p style="color:#FF0000">
+	A paragraph.
+</p>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "466",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/font[1]",
+        "/html/body/font[2]",
+        "/html/body/font[3]",
+        "/html/body/p[1]",
+        "/html/body/p[6]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

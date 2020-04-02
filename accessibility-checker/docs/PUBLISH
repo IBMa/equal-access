@@ -1,0 +1,5 @@
+npm install
+npm package:npm
+cd package
+npm login
+npm publish 

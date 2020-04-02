@@ -1,0 +1,23 @@
+circle.myGreen {
+    stroke: #006600;
+    fill:   #00cc00;
+}
+circle.myRed {
+    stroke: #660000;
+    fill:   #cc0000;
+}
+ellipse.myGreen {
+    stroke: #006600;
+    fill:   #00cc00;
+	position:absolute;
+	z-index:1;
+}
+ellipse.myRed {
+    stroke: #660000;
+    fill:   #cc0000;
+	position:absolute;
+	z-index:-1;
+}
+#text1{
+    fill: #0066FF;
+}

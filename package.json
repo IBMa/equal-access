@@ -1,0 +1,17 @@
+{
+    "name": "ibm-equal-access-toolkit",
+    "version": "3.0.0-beta.0",
+    "description": "IBM accessibility tools",
+    "private": false,
+    "scripts": {
+        "install": "(cd accessibility-checker-engine && npm install); (cd accessibility-checker && npm install); (cd karma-accessibility-checker && npm install); (cd rule-server && npm install)",
+        "build": "(cd accessibility-checker-engine && npm run build); (cd accessibility-checker && npm run package:npm); (cd karma-accessibility-checker && npm run build); (cd rule-server && npm run build)"
+    },
+    "author": "IBM",
+    "license": "SEE LICENSE IN LICENSE file",
+    "dependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git@github.com/IBMa/equal-access"
+    }
+}

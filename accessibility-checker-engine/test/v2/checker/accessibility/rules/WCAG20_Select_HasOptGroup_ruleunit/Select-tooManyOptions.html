@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Select-tooManyOptions.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Optgroup test</h3>
+
+
+<ul>
+	<li>Test - Select has no optgoup atribute and too many options</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please select the auto of your choice.</p>
+
+		<label for="cars1">Automobiles </label>
+		<select name="autos" id="cars1" title="autos">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+
+				<option value="Ford1">Ford1</option>
+				<option value="GM1">GM1</option>
+				<option value="Chrysler1">Chrysler1</option>
+
+				<option value="Jaguar1">Jaguar1</option>
+				<option value="Volvo1">Volvo1</option>
+				<option value="Saab1">Saab1</option>
+		</select>
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "467",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form/fieldset/select"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

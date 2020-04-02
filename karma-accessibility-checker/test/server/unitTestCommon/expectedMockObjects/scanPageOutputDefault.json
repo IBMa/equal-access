@@ -1,0 +1,56 @@
+{
+    "reports": [
+        {
+            "frameIdx": 0,
+            "frameTitle": "Helo World",
+            "issues": [
+                {
+                    "severityCode": "eISHigh",
+                    "messageCode": "rpt.g377.elemUniqueId",
+                    "ruleId": "377",
+                    "help": "idhi_accessibility_check_g377.html",
+                    "msgArgs": [
+                        "div",
+                        "firstDiv"
+                    ],
+                    "bounds": {
+                        "left": 999,
+                        "top": 999,
+                        "height": 999,
+                        "width": 999
+                    },
+                    "level": "violation",
+                    "xpath": "/html[1]/body[1]/div[2]/div[2]",
+                    "snippet": "<div id=\"firstDiv\">",
+                    "ignored": false
+                }
+            ]
+        }
+    ],
+    "summary": {
+        "counts": {
+            "violation": 1,
+            "potentialviolation": 0,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 0,
+            "ignored": 0
+        },
+        "scanTime": 999,
+        "ruleArchive":"March 2017 Deployment (2017MarchDeploy)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation",
+            "recommendation",
+            "potentialrecommendation",
+            "manual"
+        ],
+        "startScan": 99999999999
+    },
+    "scanID": "uuid",
+    "toolID": "karma-ibma",
+    "label": "scanPageOutputDefault.html"
+}

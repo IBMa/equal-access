@@ -1,0 +1,3425 @@
+/******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+
+import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { ARIAMapper } from "../../../aria/ARIAMapper";
+import { CacheDocument, CacheElement } from "../../../common/Engine";
+
+export class RPTUtil {
+    // This list contains a list of element tags which can not be hidden, when hidden is
+    // added to theses elements it does not do anything at all.
+    //  area --> area element is part of a map element and it can not be hidden because it is used to
+    //           make an certian parts of an map interactive.
+    //  param --> element can only be part of object elment and it cannot be hidden directly, it
+    //            can only be hidden if the parent is hidden.
+    //  audio --> If this element is hidden it will still play the music, so we should still trigger
+    //            violations for this element.
+    // Note: All element tags that are added here should be added as lowercase, as we are using indexOf to do the check.
+    public static unhideableElements = ['area', 'param', 'audio'];
+
+    // This list contains a list of elements tags which have display: none by default, since we have rules triggering
+    // on theses elements we need to make then visible by default so that the rules can trigger regardless of the
+    // Check Hidden Content option in the tools.
+    //  script --> script elements have display: none by default
+    //  link --> link elements have display: none by default, but the actually CSS script is still executed so we have to
+    //            mark this element as visible at all times.
+    //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
+    //            mark this element as visible at all times.
+    //  head --> head elements have display: none by default, but it will still behave correct
+    //  title --> title elements have display: none by default, but it will still display the title
+    //  meta --> meta elements have display: none by default, but it will still perform the action that meta is suppose to
+    //  base --> base elements have display: none by default, but it will still perform the action that meta is suppose to
+    //  noscript --> noscript elements have display: none by default, but it will still perform the action that meta is suppose to
+    //  template --> template elements have display: none by default, because they are just a mechanism for holding client-side content
+    //               that is not to be rendered when a page is loaded. https://developer.mozilla.org/en/docs/Web/HTML/Element/template
+    //  datalist --> datalist elements have display: none by default,
+    public static hiddenByDefaultElements = ['script', 'link', 'style', 'head', 'title', 'meta', 'base', 'noscript', 'template', 'datalist']
+
+
+    // This list contains a list of elements tags which have display: none by default, since we have rules triggering
+    public static navLinkKeywords = ['start', 'next', 'prev', 'previous', 'contents', 'index']
+
+    // This list contains a list of rule ids for the rules that have to check for hidden content regardless of the Check Hidden
+    // Content Setting. This means that when the engine is actually determine which elements to mass to the rules, it will always
+    // pass theses rules no matter what the Check Hidden Content Setting is.
+    public static rulesThatHaveToCheckHidden = ['RPT_Elem_UniqueId']
+
+    public static isDefinedAriaAttributeAtIndex(ele, index) {
+        let attrName = ele.attributes[index].name;
+        return RPTUtil.isDefinedAriaAttribute(ele, attrName);
+    }
+
+    // https://www.w3.org/TR/wai-aria-1.1/#introstates
+    public static ariaAttributeRoleDefaults = {
+        "alert": {
+            "aria-live": "assertive",
+            "aria-atomic": "true"
+        },
+        "checkbox": {
+            "aria-checked": "false"
+        },
+        "combobox": {
+            "aria-expanded": "false",
+            "aria-haspopup": "listbox"
+        },
+        "heading": {
+            "aria-level": "2"
+        },
+        "listbox": {
+            "aria-orientation": "vertical"
+        },
+        "log": {
+            "aria-live": "polite"
+        },
+        "menu": {
+            "aria-orientation": "vertical"
+        },
+        "menubar": {
+            "aria-orientation": "horizontal"
+        },
+        "menuitemcheckbox": {
+            "aria-checked": "false"
+        },
+        "menuitemradio": {
+            "aria-checked": "false"
+        },
+        "option": {
+            "aria-selected": "false"
+        },
+        "radio": {
+            "aria-checked": "false"
+        },
+        "scrollbar": {
+            "aria-orientation": "vertical",
+            "aria-valuemin": "0",
+            "aria-valuemax": "100",
+            "aria-valuenow": function (element) {
+                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
+                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
+                return "" + (((max - min) / 2) + min);
+            }
+        },
+        "separator": {
+            "aria-orientation": "horizontal",
+            "aria-valuemin": "0",
+            "aria-valuemax": "100",
+            "aria-valuenow": "50"
+        },
+        "slider": {
+            "aria-orientation": "horizontal",
+            "aria-valuemin": "0",
+            "aria-valuemax": "100",
+            "aria-valuenow": function (element) {
+                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
+                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
+                return "" + (((max - min) / 2) + min);
+            }
+        },
+        "spinbutton": {
+            // Not sure how to encode min/max
+            "aria-valuenow": "0"
+        },
+        "status": {
+            "aria-live": "polite",
+            "aria-atomic": "true"
+        },
+        "switch": {
+            "aria-checked": "false"
+        },
+        "tab": {
+            "aria-selected": "false"
+        },
+        "tablist": {
+            "aria-orientation": "horizontal"
+        },
+        "toolbar": {
+            "aria-orientation": "horizontal"
+        },
+        "tree": {
+            "aria-orientation": "vertical"
+        }
+    }
+
+    // https://www.w3.org/TR/wai-aria-1.1/#aria-atomic
+    public static ariaAttributeGlobalDefaults = {
+        "aria-atomic": "false",
+        "aria-autocomplete": "none",
+        "aria-busy": "false",
+        "aria-checked": undefined,
+        "aria-current": "false",
+        "aria-disabled": "false",
+        "aria-dropeffect": "none",
+        "aria-expanded": undefined,
+        "aria-grabbed": undefined,
+        "aria-haspopup": "false",
+        "aria-hidden": undefined,
+        "aria-invalid": "false",
+        "aria-live": "off",
+        "aria-modal": "false",
+        "aria-multiline": "false",
+        "aria-multiselectable": "false",
+        "aria-orientation": undefined,
+        "aria-pressed": undefined,
+        "aria-readonly": "false",
+        "aria-required": "false",
+        "aria-selected": undefined,
+        "aria-sort": "none"
+    }
+
+    // https://www.w3.org/TR/html-aam-1.0/#html-attribute-state-and-property-mappings
+    public static ariaAttributeImplicitMappings = {
+        "aria-autocomplete": {
+            "form": function (e) {
+                return "off" === e.getAttribute("autocomplete") ? "none" : "both";
+            },
+            "input": function (e) {
+                return "off" === e.getAttribute("autocomplete") ? "none" : "both";
+            },
+            "select": function (e) {
+                return "off" === e.getAttribute("autocomplete") ? "none" : "both";
+            },
+            "textarea": function (e) {
+                return "off" === e.getAttribute("autocomplete") ? "none" : "both";
+            }
+        },
+        "aria-checked": {
+            "input": function (e) {
+                if (e.hasAttribute("indeterminate")) return "mixed";
+                return "" + e.hasAttribute("checked");
+            },
+            "menuitem": function (e) {
+                if (e.hasAttribute("indeterminate")) return "mixed";
+                return "" + e.hasAttribute("checked");
+            },
+            "*": function (e) {
+                if (e.hasAttribute("indeterminate")) return "mixed";
+            },
+        },
+        "aria-haspopup": {
+            "*": function (e) {
+                if (e.hasAttribute("contextmenu")) return "true";
+                return;
+            }
+        },
+        "aria-multiselectable": {
+            "input": function (e) {
+                if (e.hasAttribute("multiple")) return "true";
+                return;
+            }
+        },
+        "aria-expanded": {
+            "details": function (e) {
+                return e.getAttribute("open")
+            },
+            "dialog": function (e) {
+                return e.getAttribute("open")
+            }
+        },
+        "aria-placeholder": {
+            "input": function (e) {
+                return e.getAttribute("placeholder")
+            },
+            "textarea": function (e) {
+                return e.getAttribute("placeholder")
+            }
+        },
+        "aria-required": {
+            "input": function (e) {
+                return e.getAttribute("required")
+            },
+            "select": function (e) {
+                return e.getAttribute("required")
+            },
+            "textarea": function (e) {
+                return e.getAttribute("required")
+            }
+        },
+        "aria-disabled": {
+            "button": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "fieldset": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "input": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "keygen": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "optgroup": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "option": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "select": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "textarea": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            }
+        }
+    }
+
+    /**
+     * This method handles implicit aria definitions, for example, an input with checked is equivalent to aria-checked="true"
+     */
+    public static getAriaAttribute(ele, attributeName) {
+        // If the attribute is defined, it takes precedence
+        let retVal = ele.getAttribute(attributeName);
+
+        if (ele.hasAttribute(attributeName) && retVal.trim() == "") { //"" is treated as false, so we need return it before the below check
+            return retVal;
+        }
+        // Then determine implicit values from other attributes
+        if (!retVal) {
+            let tag = ele.nodeName.toLowerCase();
+            if (attributeName in RPTUtil.ariaAttributeImplicitMappings) {
+                if (tag in RPTUtil.ariaAttributeImplicitMappings[attributeName]) {
+                    retVal = RPTUtil.ariaAttributeImplicitMappings[attributeName][tag];
+                    if (typeof (retVal) === "function") {
+                        retVal = retVal(ele);
+                    }
+                } else if ("*" in RPTUtil.ariaAttributeImplicitMappings[attributeName]) {
+                    retVal = RPTUtil.ariaAttributeImplicitMappings[attributeName]["*"];
+                    if (typeof (retVal) === "function") {
+                        retVal = retVal(ele);
+                    }
+                }
+            }
+        }
+
+        // Check role-based defaults
+        if (!retVal) {
+            let role = ARIAMapper.nodeToRole(ele);
+            if (role in RPTUtil.ariaAttributeRoleDefaults && attributeName in RPTUtil.ariaAttributeRoleDefaults[role]) {
+                retVal = RPTUtil.ariaAttributeRoleDefaults[role][attributeName];
+                if (typeof (retVal) === "function") {
+                    retVal = retVal(ele);
+                }
+            }
+        }
+
+        // Still not defined? Check global defaults
+        if (!retVal && attributeName in RPTUtil.ariaAttributeGlobalDefaults) {
+            retVal = RPTUtil.ariaAttributeGlobalDefaults[attributeName];
+        }
+        return retVal;
+    }
+
+    public static tabTagMap = {
+        "button": true,
+        "input": function (element): boolean {
+            return element.getAttribute("type") != "hidden";
+        },
+        "select": true,
+        "textarea": true,
+        "div": function (element) {
+            return element.hasAttribute("contenteditable");
+        },
+        "a": function (element) {
+            // xlink:href?? see svg
+            return element.hasAttribute("href");
+        },
+        "area": function (element) {
+            return element.hasAttribute("href");
+        },
+        "audio": function (element) {
+            return element.hasAttribute("controls");
+        },
+        "video": function (element) {
+            return element.hasAttribute("controls");
+        }
+    }
+
+    public static wordCount(str) : number {
+        str = str.trim();
+        if (str.length == 0) return 0;
+        return str.split(/\s+/g).length;
+    }
+
+    /**
+     * Note that this only detects if the element itself is in the tab order.
+     * However, this element may delegate focus to another element via aria-activedescendant
+     * Also, focus varies by browser...  sticking to things that are focusable on chrome and firefox
+     */
+    public static isTabbable(element) {
+        // Using https://allyjs.io/data-tables/focusable.html
+        // Handle the explicit cases first
+        if (!RPTUtil.isNodeVisible(element)) return false;
+        if (element.hasAttribute("tabindex")) {
+            return parseInt(element.getAttribute("tabindex")) >= 0;
+        }
+        // Explicit cases handled - now the implicit
+        let nodeName = element.nodeName.toLowerCase();
+        if (nodeName in RPTUtil.tabTagMap) {
+            let retVal = RPTUtil.tabTagMap[nodeName];
+            if (typeof (retVal) === "function") {
+                retVal = retVal(element);
+            }
+            return retVal;
+        } else {
+            return false;
+        }
+    }
+
+    public static tabIndexLEZero(elem) {
+        if (RPTUtil.hasAttribute(elem, "tabindex")) {
+            if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {
+                let tabindexValue = parseInt(elem.getAttribute("tabindex"));
+                return tabindexValue == 0 || tabindexValue == -1;
+            }
+        }
+        return false;
+    }
+    //TODO: function does not handle equivalents for roles: row, link, header, button
+    // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
+    public static isHtmlEquiv(node, htmlEquiv) {
+        let retVal = false;
+        if (node) {
+            let nodeName = node.nodeName.toLowerCase();
+            if (nodeName == "input") {
+                let type = node.getAttribute("type").toLowerCase();
+                if (type) {
+                    if (htmlEquiv.indexOf("checkbox") != -1) {
+                        retVal = type == "checkbox";
+                    } else if (htmlEquiv.indexOf("radio") != -1) {
+                        retVal = type == "radio";
+                    }
+                }
+            }
+        }
+        return retVal;
+    }
+
+    public static isDefinedAriaAttribute(ele, attrName) {
+        let isDefinedAriaAttribute = false;
+        if (attrName.substring(0, 5) == 'aria-') {
+            isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName);
+        }
+        return isDefinedAriaAttribute;
+    }
+
+    public static normalizeSpacing(s) {
+        return s.trim().replace(/\s+/g, ' ');
+    };
+
+    public static nonExistantIDs(node, targetids) {
+        let returnnotfoundids = '';
+        if (RPTUtil.normalizeSpacing(targetids).length < 1) return returnnotfoundids;
+
+        let targetArray = targetids.split(" ");
+        let doc = node.ownerDocument;
+        for (let i = 0; i < targetArray.length; i++) {
+            let xp = "//*[@id='" + targetArray[i] + "']";
+            let xpathResult = doc.evaluate(xp, node, doc.defaultNSResolver, 0 /* XPathResult.ANY_TYPE */, null);
+            let r = xpathResult.iterateNext();
+            if (!r) returnnotfoundids += targetArray[i] + ', ';
+        }
+        if (RPTUtil.normalizeSpacing(returnnotfoundids).length >= 2)
+            returnnotfoundids = returnnotfoundids.substring(0, returnnotfoundids.length - 2);
+        else
+            returnnotfoundids = '';
+        return returnnotfoundids;
+    }
+
+    public static getDocElementsByTag(elem, tagName) {
+        let doc = elem.ownerDocument;
+        tagName = tagName.toLowerCase();
+        if (!doc.RPT_DOCELEMSBYTAG)
+            doc.RPT_DOCELEMSBYTAG = {}
+        if (!(tagName in doc.RPT_DOCELEMSBYTAG))
+            doc.RPT_DOCELEMSBYTAG[tagName] = doc.getElementsByTagName(tagName);
+        return doc.RPT_DOCELEMSBYTAG[tagName];
+    }
+
+    /**
+     * This function is responsible for get a list of all the child elemnts which match the tag
+     * name provided.
+     *
+     * Note: This is a wrapper function to: RPTUtil.getChildByTagHidden
+     *
+     * @parm {element} parentElem - The parent element
+     * @parm {string} tagName - The tag to search for under the parent element
+     * @parm {boolean} ignoreHidden - true if hidden elements with the tag should ignored from the list
+     *                                false if the hidden elements should be added
+     *
+     * @return {List} retVal - list of all the elements which matched the tag under the parent that were provided.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getChildByTag(parentElem, tagName) {
+        return RPTUtil.getChildByTagHidden(parentElem, tagName, false, false);
+    }
+
+    /**
+     * This function is responsible for get a list of all the child elemnts which match the tag
+     * name provided.
+     *
+     * @parm {element} parentElem - The parent element
+     * @parm {string} tagName - The tag to search for under the parent element
+     * @parm {boolean} ignoreHidden - true if hidden elements with the tag should ignored from the list
+     *                                false if the hidden elements should be added
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     *
+     * @return {List} retVal - list of all the elements which matched the tag under the parent that were provided.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getChildByTagHidden(parentElem, tagName, ignoreHidden, considerHiddenSetting) {
+        // Variable Decleration
+        let retVal = [];
+        let child = parentElem.firstChild;
+
+        // Loop over all the child elements of the parent to build a list of all the elements that
+        // match the tagName provided
+        while (child != null) {
+
+            // Only include the children into the return array if they match with tagname.
+            if (child.nodeName.toLowerCase() == tagName) {
+
+                // In the case that ignorehidden was set to true, then perform a isNodeVisible check
+                // and in the case the node is not visilble we more to theses then move to the next node.
+                // Perform a couple of checks to determine if hidden elements should be ignored or not.
+                //  1. When ignoreHidden is set to true upfront, then perform a isNodeVisible
+                //  2. If considerHiddenSetting option is set to true then we perform the check to consider the
+                //     Check Hidden Content that is provided.
+                //  2.1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                //       be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                //       add it to the roleToElems hash at all or even do any checking for it at all.
+                if ((ignoreHidden || (considerHiddenSetting && !RPTUtil.shouldCheckHiddenContent(child))) && !RPTUtil.isNodeVisible(child)) {
+                    // Move on to the next element
+                    child = child.nextSibling;
+
+                    continue;
+                }
+
+                // Push the element
+                retVal.push(child);
+            }
+
+            // Move to the next sibling element
+            child = child.nextSibling;
+        }
+        return retVal;
+    }
+
+    /**
+     * This function is responsible for finding a list of elements that match given roles(s).
+     * This function by defauly will not consider Check Hidden Setting at all.
+     * This function by defauly will not consider implicit roles.
+     * Note: This is a wrapper function to: RPTUtil.getElementsByRoleHidden
+     *
+     * @parm {document} doc - The document node
+     * @parm {list or string} roles - List or single role for which to return elements based on.
+     *
+     * @return {List} retVal - list of all the elements which matched the role(s) that were provided.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getElementsByRole(doc, roles) {
+        return RPTUtil.getElementsByRoleHidden(doc, roles, false, false);
+    }
+
+    /**
+     * This function is responsible for finding a list of elements that match given roles(s).
+     * This function aslo finds elements with implicit roles.
+     * This function will also consider elements that are hidden based on the if the Check
+     * Hidden Content settings should be considered or not.
+     *
+     * @parm {document} doc - The document node
+     * @parm {list or string} roles - List or single role for which to return elements based on.
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {List} retVal - list of all the elements which matched the role(s) that were provided.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getElementsByRoleHidden(doc, roles, considerHiddenSetting, considerImplicitRoles?) {
+        // In the case that the role to element assoication is already made, and available in the global hasAttribute
+        // we can just use that one instead of building a new one.
+        let roleToElems = null;
+        if (considerImplicitRoles) {
+            roleToElems = RPTUtil.getCache(doc, "RPTUtil_GETELEMENTSBY_ROLE_IMPLICIT", null);
+        } else {
+            roleToElems = RPTUtil.getCache(doc, "RPTUtil_GETELEMENTSBY_ROLE", null);
+        }
+
+
+        // Build the new role to element, this is where we loop through all the elements and extract all the
+        // elements bsaed on roles.
+        if (roleToElems == null) {
+            // Re-initialize the roleToElems hash
+            roleToElems = {};
+
+            // Get the body of the doc
+            let root = doc.body;
+
+            // Keep looping until we are at the very parent node of the entire page, so that we can loop through
+            // all the nodes.
+            while (root.parentNode != null) {
+                // Get the parentNode
+                root = root.parentNode;
+            }
+
+            // Build a nodewalter based of the root node, this node walter will be use loop over all the nodes
+            // and build the roles to Element coralation
+            let nw = new NodeWalker(root);
+
+            // Loop over the entire doc/list of nodes to build the role to element map
+            // Note: This will build an roleToElems hash which is in the following format.
+            // roleToElems = {
+            //    document: [{div},{abbr},{var}],
+            //    main: [{div}],
+            //    navigation: [{div}]
+            // }
+            while (nw.nextNode()) {
+
+                // Only check the elements which have the role attribute assiciated to them
+                if (!nw.bEndTag) {
+
+                    let wRoles = [];
+                    //check if the node has role attributes
+                    if (nw.node.hasAttribute && nw.node.hasAttribute("role")) {
+                        // Extract all the roles that are assigned to this element, can have multiple roles on one
+                        // element split by space, so we need to extract all of them into an array.
+                        wRoles = nw.node.getAttribute("role").split(" ");
+                    }
+
+                    if (wRoles.length === 0 && considerImplicitRoles) {
+                        let tagProperty = RPTUtil.getElementAriaProperty(nw.node);
+                        //check if there are any implicit roles for this element.
+                        if (tagProperty && tagProperty.implicitRole) {
+                            wRoles = tagProperty.implicitRole;
+                        }
+                    }
+
+                    if (wRoles.length == 0) {
+                        continue;
+                    }
+
+                    // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+                    // or not.
+                    //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+                    //     Check Hidden Content that is provided.
+                    //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                    //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                    //     add it to the roleToElems hash at all or even do any checking for it at all.
+                    //
+                    // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+                    //       so on and so forth.
+                    if (considerHiddenSetting && RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
+                        continue;
+                    }
+
+                    // Loop through all the roles and assigned this node to all thes roles
+                    for (let i = 0; i < wRoles.length; ++i) {
+                        // In the case that the role key is not already in the roleToElems hash, construct the
+                        // add the key and assign empty array.
+                        if (!(wRoles[i] in roleToElems)) {
+                            roleToElems[wRoles[i]] = [];
+                        }
+
+                        // Add the node to the array for the role
+                        roleToElems[wRoles[i]].push(nw.node);
+                    }
+                }
+            }
+
+            // Set the roleToElems hash map as a global variable
+            if (considerImplicitRoles) {
+                RPTUtil.setCache(doc, "RPTUtil_GETELEMENTSBY_ROLE_IMPLICIT", roleToElems);
+            } else {
+                RPTUtil.setCache(doc, "RPTUtil_GETELEMENTSBY_ROLE", roleToElems);
+            }
+
+        }
+
+        // Initilize the return value
+        let retVal = [];
+
+        // Handle the cases where the provided role is a string and not an array,
+        // for this case we take the string and put it into an array
+        if (typeof (roles) == "string") {
+            let role = roles;
+            roles = [];
+            roles.push(role);
+        }
+
+        // Loop through the roles that were provided and find the list of elements for this roles
+        // and add them to the return value.
+        if (roles.length) {
+            // loop over all the roles
+            for (let i = 0; i < roles.length; ++i) {
+                // Extract the role from the array
+                let nextRole = roles[i];
+                // Fetch the list of all the elements for this role
+                let copyRoles = roleToElems[nextRole];
+
+                // If there are elements to copy to another array, then perform the copy
+                if (copyRoles) {
+                    // Loop over all the elements which are to be copied
+                    for (let j = 0; j < copyRoles.length; ++j) {
+                        // Add this element to the return val
+                        retVal.push(copyRoles[j]);
+                    }
+                }
+            }
+        }
+
+        return retVal;
+    }
+    /**
+     * This function is responsible for retrieving element's roles.
+     * This function aslo finds implicit roles.
+     * @parm {HTMLElement} ele - element for which to find role.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {List} roles - list of attribute roles and implicit roles.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getRoles(ele, considerImplicitRoles) {
+        let roles = [];
+        if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
+            let attrRoles = RPTUtil.normalizeSpacing(ele.getAttribute("role").trim()).split(" ");
+            for (let i = 0; i < attrRoles.length; ++i) {
+                roles.push(attrRoles[i]);
+            }
+        }
+
+        //check if implicit roles exist.
+        //Note: element can have multiple implicit roles
+        if (considerImplicitRoles) {
+            let implicitRole = RPTUtil.getImplicitRole(ele);
+            if (implicitRole.length > 0) {
+                //add implicit roles to the attributes roles.
+                RPTUtil.concatUniqueArrayItemList(implicitRole, roles);
+            }
+        }
+        return roles;
+    }
+
+    /**
+     * Returns the implicit role of the elemement
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return the implicit role or [] if doesn't exist
+     *
+     * @memberOf RPTUtil
+     */
+    public static getImplicitRole(ele) {
+        let tagProperty = RPTUtil.getElementAriaProperty(ele);
+        //check if there are any implicit roles for this element.
+        if (tagProperty) {
+            if (tagProperty.implicitRole) {
+                return tagProperty.implicitRole;
+            }
+        }
+        return [];
+    }
+
+    /**
+     * Returns the required properties of the role
+     * @parm {string} role - the role
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return {List} properties - list of properties that are required by the role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getRoleRequiredProperties(role, ele) {
+        if (role == null) {
+            return null;
+        }
+
+        if (ARIADefinitions.designPatterns[role]) {
+            // handle special case of separator
+            if (role.toLowerCase() === "separator") {
+                if (RPTUtil.isFocusable(ele)) {
+                    return ARIADefinitions.designPatterns[role].reqProps;
+                }
+                return null;
+            }
+
+            return ARIADefinitions.designPatterns[role].reqProps;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Test if the ele node is focusable
+     */
+    public static isFocusable(ele) {
+        if (ele === "undefined" || ele == null) {
+            return false;
+        }
+        return RPTUtil.isTabbable(ele);
+    }
+
+    /**
+     * This function is responsible for finding if a element has given role.
+     * This function aslo finds if element has give roles as implicit role.
+     * @parm {HTMLElement} ele - element for which to find role.
+     * @parm {list or string} roles - List or single role for which to find if element has these roles.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {List} retVal - true or false based on if th element has the specified role.
+     *
+     * @memberOf RPTUtil
+     *
+     * Consider to use hasRoleInSemantics() instead.
+     */
+    public static hasRole(ele, role, considerImplicitRoles?) {  //Consider to use hasRoleInSemantics() instead.
+        let retVal = false;
+        if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
+            if (typeof (role) != typeof ("")) {
+                let roles = ele.getAttribute("role").trim().split(" ");
+                for (let i = 0; !retVal && i < roles.length; ++i) {
+                    retVal = roles[i] in role;
+                }
+            } else {
+                let roles = ele.getAttribute("role").trim().split(" ");
+                for (let i = 0; !retVal && i < roles.length; ++i) {
+                    retVal = roles[i] == role;
+                }
+            }
+        }
+        //if none of the the attribute roles matched with given role
+        //check if implicit roles matches.
+        //Note: element can have multiple implicit roles
+        if (!retVal && considerImplicitRoles) {
+            let tagProperty = RPTUtil.getElementAriaProperty(ele);
+            let wRoles = [];
+            //check if there are any implicit roles for this element.
+            if (tagProperty && tagProperty.implicitRole !== null) {
+                //add implicit roles to the attributes roles.
+                RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, wRoles);
+                //if role is array loop thru and see if any  of the implicit role present in the array
+                if (typeof (role) != typeof ("")) {
+                    for (let i = 0; !retVal && i < wRoles.length; ++i) {
+                        retVal = wRoles[i] in role;
+                    }
+                } else {
+                    for (let i = 0; !retVal && i < wRoles.length; ++i) {
+                        retVal = wRoles[i] == role;
+                    }
+                }
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * Checks if the element has the role, including the implied role if role is not explicitly specified.
+     *
+     * This function is replacing the hasRole function
+     *
+     * @parm {HTMLElement} ele - element for which to find role.
+     * @parm {list or string} roles - List or single role for which to find if element has these roles.
+     *
+     * @return {List} retVal - true or false based on if the element has the specified role.
+     *
+     * @memberOf RPTUtil
+     */
+    public static hasRoleInSemantics(ele, role) {
+        let retVal = false;
+        let roleSpecified = false;
+        if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
+            if (typeof (role) != typeof ("")) {
+                let roles = ele.getAttribute("role").trim().toLowerCase().split(/\s+/);
+                for (let i = 0; !retVal && i < roles.length; ++i) {
+                    roleSpecified = true;
+                    retVal = roles[i] in role;
+                }
+            } else {
+                let roles = ele.getAttribute("role").trim().toLowerCase().split(/\s+/);
+                for (let i = 0; !retVal && i < roles.length; ++i) {
+                    roleSpecified = true;
+                    retVal = roles[i] == role;
+                }
+            }
+        }
+
+        if (roleSpecified) {
+            return retVal;
+        }
+
+        //check if implicit roles matches.
+        //Note: element can have multiple implicit roles
+        let tagProperty = RPTUtil.getElementAriaProperty(ele);
+        //check if there are any implicit roles for this element.
+        if (tagProperty && tagProperty.implicitRole !== null) {
+            let impRoles = tagProperty.implicitRole;
+            //if role is array loop thru and see if any  of the implicit role present in the array
+            if (typeof (role) != typeof ("")) {
+                for (let i = 0; !retVal && i < impRoles.length; ++i) {
+                    retVal = impRoles[i] in role;
+                }
+            } else {
+                for (let i = 0; !retVal && i < impRoles.length; ++i) {
+                    retVal = impRoles[i] == role;
+                }
+            }
+        }
+        return retVal;
+    }
+
+    /**
+     * This function is responsible for finding if a element has given role.
+     * This function also checks if element has given roles as implicit roles.
+     * @parm {HTMLElement} ele - element for which to find role.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {bool} retVal - true or false based on if the element has the specified role.
+     *
+     * @memberOf RPTUtil
+     */
+    public static hasAnyRole(ele, considerImplicitRoles) {
+        let retVal = false;
+        if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
+            retVal = true;
+        }
+
+        //check if implicit roles exist.
+        //Note: element can have multiple implicit roles
+        if (!retVal && considerImplicitRoles) {
+            let tagProperty = RPTUtil.getElementAriaProperty(ele);
+            //check if there are any implicit roles for this element.
+            if (tagProperty && tagProperty.implicitRole !== null &&
+                tagProperty.implicitRole.length > 0) {
+                retVal = true;
+            }
+        }
+        return retVal;
+    }
+
+    public static isDataTable(tableNode) {
+        return !(RPTUtil.hasRole(tableNode, "none") || RPTUtil.hasRole(tableNode, "presentation"));
+    }
+
+    /*
+     * A complex data table is a data table with any of the following characteristics:
+     *
+     * a thead element that contains two or more tr elements
+     * a table with more than one thead element
+     * a table with two or more tr elements that contain only th elements
+     * a th or td element with a rowspan or colspan attribute
+     * a tr element that contains at least one td element and two or more th elements
+     * a table with headers not located in the first row or first column
+     * a td element with a headers attribute value that contains more than two IDREFs
+     */
+    public static isComplexDataTable(table) {
+
+        if ("RPTUtil_isComplexDataTable" in table) {
+            return !!table.RPTUtil_isComplexDataTable;
+        }
+
+        let isComplexTable = false;
+
+        if (table && RPTUtil.isDataTable(table)) {
+
+            let thNodes = null,
+                tdNodes = null;
+            let trNodes = table.getElementsByTagName("tr");
+            let trNodeCount = trNodes.length;
+            let tdNodeCount = 0,
+                thNodeCount = 0,
+                trNodesHavingOnlyThNodes = 0;
+
+            for (let i = 0; !isComplexTable && i < trNodeCount; ++i) {
+
+                thNodes = trNodes[i].getElementsByTagName("th");
+                tdNodes = trNodes[i].getElementsByTagName("td");
+                thNodeCount = thNodes.length;
+                tdNodeCount = tdNodes.length;
+
+                if (tdNodeCount !== 0) {
+
+                    // a tr element that contains at least one td element and two or more th elements;
+                    isComplexTable = thNodeCount > 1;
+
+                    // a th element with a rowspan or colspan attribute
+                    for (let j = 0; !isComplexTable && j < thNodeCount; ++j) {
+                        isComplexTable = ((thNodes[j].hasAttribute("rowspan") ||
+                            thNodes[j].hasAttribute("colspan")) &&
+                            RPTUtil.getAncestor(thNodes[j], "table") == table);
+                    }
+
+                    // a td element with a rowspan or colspan attribute
+                    // a td element with a headers attribute value that contains more than two IDREFs
+                    for (let k = 0; !isComplexTable && k < tdNodeCount; ++k) {
+                        isComplexTable = ((tdNodes[k].hasAttribute("rowspan") ||
+                            tdNodes[k].hasAttribute("colspan") ||
+                            (tdNodes[k].hasAttribute("headers") && RPTUtil.normalizeSpacing(tdNodes[k].getAttribute("headers")).split(" ").length > 2)) &&
+                            RPTUtil.getAncestor(tdNodes[k], "table") == table);
+                    }
+
+                } else {
+
+                    // two or more tr elements that contain only th elements
+                    if (thNodeCount > 0) {
+                        ++trNodesHavingOnlyThNodes;
+                    }
+                    isComplexTable = trNodesHavingOnlyThNodes == 2;
+                }
+            }
+
+            if (!isComplexTable) {
+
+                let theadNodes = table.getElementsByTagName("thead");
+                let theadNodesLength = theadNodes.length;
+
+                if (theadNodesLength > 0) {
+
+                    // table has more than one thead element
+                    isComplexTable = theadNodesLength > 1;
+
+                    // a thead element that contains two or more tr elements
+                    if (!isComplexTable) {
+                        isComplexTable = theadNodes[0].getElementsByTagName("tr").length > 1;
+                    }
+                }
+            }
+            if (!isComplexTable && trNodeCount !== 0) {
+                // a table with headers not located in the first row or first column
+                isComplexTable = thNodeCount > 0 && !RPTUtil.isTableHeaderInFirstRowOrColumn(table);
+            }
+        }
+        table.RPTUtil_isComplexDataTable = isComplexTable;
+
+        return isComplexTable;
+    }
+
+    // Return true if a table's header is in the first row or column
+    public static isTableHeaderInFirstRowOrColumn(ruleContext) {
+
+        let passed = false;
+        let rows = ruleContext.rows;
+        // Check if the first row is all TH's
+        if (rows != null && rows.length > 0) {
+            let firstRow = rows[0];
+            passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length == 0;
+            // If the first row isn't a header row, try the first column
+            if (!passed) {
+                // Assume that the first column has all TH's unless we find a TD in the first column.
+                passed = true;
+                for (let i = 0; passed && i < rows.length; ++i) {
+                    // If no cells in this row, that's okay too.
+                    passed = !rows[i].cells ||
+                        rows[i].cells.length == 0 ||
+                        rows[i].cells[0].nodeName.toLowerCase() != "td";
+                }
+            }
+            if (!passed) {
+                // Special case - both first row and first column are headers, but they did not use
+                // a th for the upper-left cell
+                passed = true;
+                for (let i = 1; passed && i < firstRow.cells.length; ++i) {
+                    passed = firstRow.cells[i].nodeName.toLowerCase() != "td";
+                }
+                for (let i = 1; passed && i < rows.length; ++i) {
+                    // If no cells in this row, that's okay too.
+                    passed = !rows[i].cells ||
+                        rows[i].cells.length == 0 ||
+                        rows[i].cells[0].nodeName.toLowerCase() != "td";
+                }
+            }
+        }
+        return passed;
+    }
+
+    public static isNodeInGrid(node) {
+        return RPTUtil.getAncestorWithRole(node, "grid") != null;
+    }
+    public static isLayoutTable(tableNode) {
+        return RPTUtil.hasRole(tableNode, "presentation") || RPTUtil.hasRole(tableNode, "none");
+    }
+    public static getFileExt(url) {
+        let m = url.match(/\.(([^;?#\.]|^$)+)([;?#]|$)/);
+        if (m != null && m.length >= 2) {
+            return "." + m[1];
+        }
+        return "";
+    }
+    public static getFileAnchor(url) {
+        let m = url.match(/#(([^;?\.]|^$)+)([;?]|$)/);
+        if (m != null && m.length >= 2) {
+            return m[1];
+        }
+        return "";
+    }
+    public static checkObjEmbed(node, extTest, mimeTest) {
+        let nodeName = node.nodeName.toLowerCase();
+
+        if (nodeName != "object" && nodeName != "embed" &&
+            nodeName != "a" && nodeName != "area") return false;
+        let retVal = false;
+        // Check mime type
+        if (!retVal && node.hasAttribute("type")) {
+            let mime = node.getAttribute("type").toLowerCase();
+            retVal = mimeTest(mime);
+        }
+        if (!retVal && node.hasAttribute("codetype")) {
+            let mime = node.getAttribute("codetype");
+            retVal = mimeTest(mime);
+        }
+
+        // Check the filename
+        if (!retVal) {
+            let filename = "";
+            if (nodeName == "embed") {
+                filename = node.getAttribute("src");
+            } else if (nodeName == "a" || nodeName == "area") {
+                filename = node.getAttribute("href");
+            } else if (node.hasAttribute("data")) {
+                filename = node.getAttribute("data");
+            }
+            if (filename == null) filename = "";
+            let ext = RPTUtil.getFileExt(filename);
+            retVal = extTest(ext);
+        }
+
+        // Check for filenames in the params
+        if (!retVal && nodeName == "object") {
+            // In the case that Check Hidden Option is set then comply with that setting
+            let params = RPTUtil.getChildByTagHidden(node, "param", false, true);
+            for (let i = 0; !retVal && params != null && i < params.length; ++i) {
+                retVal = params[i].hasAttribute("value") &&
+                    extTest(RPTUtil.getFileExt(params[i].getAttribute("value")));
+            }
+        }
+        return retVal;
+    }
+    public static isAudioObjEmbedLink(node) {
+        return RPTUtil.checkObjEmbed(node, RPTUtil.isAudioExt, function (mime) {
+            return mime.startsWith("audio")
+        });
+    }
+    public static isAudioExt(ext) {
+        let audio_extensions = [".aif", ".aifc", ".aiff", ".air", ".asf", ".au", ".cda",
+            ".dsm", ".dss", ".dwd", ".iff", ".kar", ".m1a", ".med",
+            ".mp2", ".mp3", ".mpa", ".pcm", ".ra", ".ram", ".rm",
+            ".sam", ".sf", ".sf2", ".smp", ".snd", ".svx", ".ul",
+            ".voc", ".wav", ".wma", ".wve"
+        ];
+        return RPTUtil.valInArray(ext.toLowerCase(), audio_extensions);
+    }
+    public static isVideoObjEmbedLink(node) {
+        return RPTUtil.checkObjEmbed(node, RPTUtil.isVideoExt, function (mime) {
+            return mime.startsWith("video") ||
+                mime.startsWith("application/x-shockwave-flash");
+        });
+    }
+    public static isVideoExt(ext) {
+        let video_extensions = [".asf", ".avi", ".divx", ".dv", ".m1v", ".m2p", ".m2v", ".moov",
+            ".mov", ".mp4", ".mpeg", ".mpg", ".mpv", ".ogm", ".omf", ".qt",
+            ".rm", ".rv", ".smi", ".smil", ".swf", ".vob", ".wmv", ".rmvb",
+            ".mvb"
+        ];
+        return RPTUtil.valInArray(ext.toLowerCase(), video_extensions);
+    }
+    public static isImageObjEmbedLink(node) {
+        return RPTUtil.checkObjEmbed(node, RPTUtil.isImgExt, function (mime) {
+            return mime.startsWith("image");
+        });
+    }
+    public static isImgExt(ext) {
+        let image_extensions = [".bmp", ".gif", ".jpg", ".jpeg", ".pcx", ".png"];
+        return RPTUtil.valInArray(ext.toLowerCase(), image_extensions);
+    }
+    public static isHtmlExt(ext) {
+        let html_extensions = [".asp", ".aspx", ".cfm", ".cfml", ".cgi", ".htm", ".html", ".shtm",
+            ".shtml", ".php", ".pl", ".py", ".shtm", ".shtml", ".xhtml"
+        ];
+        return RPTUtil.valInArray(ext.toLowerCase(), html_extensions);
+    }
+    public static isPresentationalElement(node) {
+        // Elements extracted from https://developer.mozilla.org/en/docs/Web/HTML/Element#Inline_text_semantics,
+        // http://dev.w3.org/html5/html-author/#text-level-semantics and https://wiki.whatwg.org/wiki/Presentational_elements_and_attributes
+        let presentationalElements = ["abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+            "em", "i", "kbd", "mark", "q", "rp", "rt", "rtc", "ruby", "s",
+            "samp", "small", "span", "strong", "sub", "sup", "time", "u",
+            "var", "wbr", "a", "progress", "meter", "basefont", "big", "center",
+            "strike", "tt", "font", "blink", "h1", "h2", "h3", "h4", "h5", "h6",
+            "hr", "blockquote", "p"
+        ];
+        return RPTUtil.valInArray(node.nodeName.toLowerCase(), presentationalElements);
+    }
+    public static hasTriggered(doc, id) {
+        return RPTUtil.getCache(doc, id, false);
+    }
+    public static triggerOnce(doc, id, passed) {
+        if (passed) return true;
+        let triggered = RPTUtil.getCache(doc, id, false);
+        RPTUtil.setCache(doc, id, true);
+        return triggered;
+    }
+
+    /* determine if the given value exists in the given array */
+    public static valInArray(value, arr) {
+        for (let idx in arr) {
+            if (arr[idx] == value) return true;
+        }
+        return false;
+    }
+
+    /**
+     * return the ancestor of the given element
+     * @param tagNames string, array, or dictionary containing the tags to search for
+     */
+    public static getAncestor(element, tagNames) {
+        let walkNode = element;
+        while (walkNode != null) {
+            let thisTag = walkNode.nodeName.toLowerCase();
+            if (typeof (tagNames) == "string") {
+                if (thisTag == tagNames.toLowerCase()) {
+                    break;
+                }
+            } else if (tagNames.length) {
+                for (let idx in tagNames) {
+                    //                        Packages.java.lang.System.err.println(thisTag + ":" + tagNames[idx] + ":" + (tagNames[idx] == thisTag));
+                    if (tagNames[idx] == thisTag)
+                        return walkNode;
+                }
+            } else if (thisTag in tagNames) {
+                break;
+            }
+            walkNode = walkNode.parentNode;
+        }
+        return walkNode;
+    }
+
+    // return true if element1 and element2 are siblings
+    public static isSibling(element1, element2) {
+        if (element1 && element2) {
+            let node = null;
+            if (element1.parentNode && element1.parentNode.firstChild) node = element1.parentNode.firstChild;
+            while (node) {
+                if (node === element2) return true;
+                node = node.nextSibling;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * return the ancestor of the given element and role.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {string} role - The role to search for on an element under the provided element
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} walkNode - A parent node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAncestorWithRole(element, roleName, considerImplicitRoles?) {
+        let walkNode = element;
+        while (walkNode != null) {
+            if (considerImplicitRoles) {
+                if (RPTUtil.hasRoleInSemantics(walkNode, roleName)) {
+                    break;
+                }
+            } else {
+                if (RPTUtil.hasRole(walkNode, roleName, false)) {
+                    break;
+                }
+            }
+            walkNode = walkNode.parentNode;
+        }
+        return walkNode;
+    }
+
+    /**
+     * This function is responsible for finding a node which matches the role and is a sibling of the
+     * provided element.
+     *
+     * This function by default will not consider Check Hidden Setting at all.
+     *
+     * Note: This is a wrapper function to: RPTUtil.getSiblingWithRoleHidden
+     *
+     * @parm {element} element - The element to start the node walk on to find sibling node
+     * @parm {string} role - The role to search for on an element under the provided element
+     *
+     * @return {node} walkNode - A sibling node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getSiblingWithRole(element, role) {
+        return RPTUtil.getSiblingWithRoleHidden(element, role, false);
+    }
+
+    /**
+     * This function is responsible for finding a node which matches the role and is a sibling of the
+     * provided element.
+     *
+     * This function also considers implicit roles for the elements.
+     *
+     * This function will also consider elements that are hidden based on the if the Check
+     * Hidden Content settings should be considered or not.
+     *
+     * @parm {element} element - The element to start the node walk on to find sibling node
+     * @parm {string} role - The role to search for on an element under the provided element
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicit - true or false based on if Implicit roles should be considered.
+     *
+     * @return {node} walkNode - A sibling node of the element passed in, which has the provided role
+     *
+     * @memberOf RPTUtil
+     */
+    public static getSiblingWithRoleHidden(element, role, considerHiddenSetting, considerImplicitRole?) {
+
+        // Variable Declaration
+        let walkNode = null;
+        let hasRole = false;
+
+        // Only perform the check if element and role are both provided
+        if (element && role) {
+            // Fetch the next sibling element
+            walkNode = element.nextSibling;
+
+            // Keep looping over the next siblings to find element which matches
+            // the provided role.
+            while (walkNode != null && !hasRole) {
+
+                // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+                // or not.
+                //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+                //     Check Hidden Content that is provided.
+                //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                //     add it to the roleToElems hash at all or even do any checking for it at all.
+                //
+                // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+                //       so on and so forth.
+                if (considerHiddenSetting && RPTUtil.shouldNodeBeSkippedHidden(walkNode)) {
+                    // Move on to the next node
+                    walkNode = walkNode.nextSibling;
+
+                    continue;
+                }
+
+                // Check if this node has the role that we need to check exists
+                if (considerImplicitRole) {
+                    hasRole = RPTUtil.hasRoleInSemantics(walkNode, role);
+                } else {
+                    hasRole = RPTUtil.hasRole(walkNode, role, false);
+                }
+
+                // Move on to the next node
+                walkNode = walkNode.nextSibling;
+            }
+
+            // If we still have not found a node that matches the role, start a reverse look up
+            if (!walkNode) {
+                // Fetch the previous Sibling of this element
+                walkNode = element.previousSibling;
+
+                // Keep looping over all the previous siblings to search for an element which
+                // matches the provided role.
+                while (walkNode != null && !hasRole) {
+
+                    // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+                    // or not.
+                    //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+                    //     Check Hidden Content that is provided.
+                    //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+                    //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+                    //     add it to the roleToElems hash at all or even do any checking for it at all.
+                    //
+                    // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+                    //       so on and so forth.
+                    if (considerHiddenSetting && RPTUtil.shouldNodeBeSkippedHidden(walkNode)) {
+                        // Move on to the next node
+                        walkNode = walkNode.previousSibling;
+
+                        continue;
+                    }
+
+                    // Check if this node has the role that we need to check exists
+                    hasRole = RPTUtil.hasRole(walkNode, role, considerImplicitRole);
+
+                    // Move on to the next node
+                    walkNode = walkNode.previousSibling;
+                }
+            }
+        }
+
+        return walkNode;
+    }
+
+    public static isDescendant(parent, child) {
+        let node = child.parentNode;
+        while (node != null) {
+            if (node == parent) {
+                return true;
+            }
+            node = node.parentNode;
+        }
+        return false;
+    }
+
+    /**
+     * This function is responsible for getting a descendant element with the specified role, under
+     * the element that was provided.
+     *
+     * Note by default this function will not consider the Check Hidden Content Setting.
+     *
+     * Note: This is a wrapper function to: RPTUtil.getDescendantWithRoleHidden
+     *
+     * @parm {element} element - parent element for which we will be checking descendants for
+     * @parm {string} roleName - The role to look for on the descendants elements
+     *
+     * @return {node} - The descendant element that matches the role specified (only one)
+     *
+     * @memberOf RPTUtil
+     */
+    public static getDescendantWithRole(element, roleName) {
+        return RPTUtil.getDescendantWithRoleHidden(element, roleName, false);
+    }
+
+    /**
+     * This function is responsible for getting a descendant element with the specified role, under
+     * the element that was provided. This function aslo finds elements with implicit roles.
+     *
+     * @parm {element} element - parent element for which we will be checking descendants for
+     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} - The descendant element that matches the role specified (only one)
+     *
+     * @memberOf RPTUtil
+     */
+    public static getDescendantWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles?) {
+        // Variable Decleration
+        let descendant = null;
+        let nw = new NodeWalker(element);
+
+        // Loop over all the childrens of the element provided and check if the rolename provided exists
+        while (nw.nextNode() && nw.node != element && nw.node != element.nextSibling) {
+
+            // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+            // or not.
+            //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+            //     Check Hidden Content that is provided.
+            //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+            //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+            //     add it to the roleToElems hash at all or even do any checking for it at all.
+            //
+            // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+            //       so on and so forth.
+            if (considerHiddenSetting && RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
+                continue;
+            }
+
+            // Check if this node has the role specified, if it does then set this as the descendant and stop checking the rest of the
+            // nodes.
+            // Check if this node has the implicit roles, if it does then set this as the descendant and stop checking the rest of the
+            // nodes.
+            if (considerImplicitRoles ? RPTUtil.hasRoleInSemantics(nw.node, roleName) : RPTUtil.hasRole(nw.node, roleName, false)) {
+                descendant = nw.node;
+                break;
+            }
+        }
+
+        return descendant;
+    }
+    /**
+     * This function is responsible for getting a All descendant elements with the specified role, under
+     * the element that was provided. This function aslo finds elements with implicit roles.
+     *
+     * @parm {element} element - parent element for which we will be checking descendants for
+     * @parm {string} roleName - The role to look for on the descendants elements
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} - The descendant element that matches the role specified (only one)
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAllDescendantsWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles) {
+        // Variable Decleration
+        let descendants = [];
+        let nw = new NodeWalker(element);
+
+        // Loop over all the childrens of the element provided and check if the rolename provided exists
+        while (nw.nextNode() && nw.node != element && nw.node != element.nextSibling) {
+            if (nw.bEndTag) {
+                continue;
+            }
+            // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+            // or not.
+            //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+            //     Check Hidden Content that is provided.
+            //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+            //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+            //     add it to the roleToElems hash at all or even do any checking for it at all.
+            //
+            // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+            //       so on and so forth.
+            if (considerHiddenSetting && RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
+                continue;
+            }
+
+            // Check if this node has the role specified, if it does then set this as the descendant and stop checking the rest of the
+            // nodes.
+            // Check if this node has the implicit roles, if it does then set this as the descendant and stop checking the rest of the
+            // nodes.
+            if (RPTUtil.hasRole(nw.node, roleName, considerImplicitRoles)) {
+                descendants.push(nw.node);
+            }
+        }
+
+        return descendants;
+    }
+
+    /**
+     * This function is responsible for getting an element referenced by aria-owns and has the
+     * role that was specified.
+     *
+     * Note by default this function will not consider the Check Hidden Content Setting.
+     *
+     * Note: This is a wrapper function to: RPTUtil.getAriaOwnsWithRoleHidden
+     *
+     * @parm {element} element - Element to check for aria-owns
+     * @parm {string} roleName - The role to look for on the aria-owns element
+     *
+     * @return {node} - The element that is referenced by aria-owns and has role specified.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAriaOwnsWithRole(element, roleName) {
+        return RPTUtil.getAriaOwnsWithRoleHidden(element, roleName, false);
+    }
+
+    /**
+     * This function is responsible for getting an element referenced by aria-owns and has the
+     * role that was specified. This function aslo finds elements with implicit roles.
+     *
+     * @parm {element} element - Element to check for aria-owns
+     * @parm {string} roleName - The role to look for on the aria-owns element
+     * @parm {bool} considerHiddenSetting - true or false based on if hidden setting should be considered.
+     * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
+     *
+     * @return {node} - The element that is referenced by aria-owns and has role specified.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getAriaOwnsWithRoleHidden(element, roleName, considerHiddenSetting, considerImplicitRoles?) {
+        // Variable Decleration
+        let referencedElement = null;
+        let referencedElemHasRole = false;
+
+        // In the case aria-owns is not on the element just break out of this function with null
+        if (RPTUtil.attributeNonEmpty(element, "aria-owns")) {
+
+            // Get the reference ID
+            let referenceID = element.getAttribute("aria-owns");
+
+            // Get the element for the reference ID
+            referencedElement = element.ownerDocument.getElementById(referenceID);
+
+            // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+            // or not.
+            //  1. If considerHiddenSetting option is set to true then we perform the check to consider the
+            //     Check Hidden Content that is provided.
+            //  2. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+            //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
+            //     add it to the roleToElems hash at all or even do any checking for it at all.
+            if (considerHiddenSetting && referencedElement != null && RPTUtil.shouldNodeBeSkippedHidden(referencedElement)) {
+                referencedElemHasRole = null;
+            } else {
+                referencedElemHasRole = RPTUtil.hasRole(referencedElement, roleName, considerImplicitRoles);
+            }
+        }
+        return referencedElemHasRole ? referencedElement : null;
+    }
+
+    /** get element containing label for the given element
+     * @deprecated Deprecated because the function name is misleading. Use getLabelForElement(element) instead
+     */
+    public static getInputLabel(element) {
+        return RPTUtil.getLabelForElement(element);
+    }
+
+    /**
+     * This function is responsible for getting the element containing the label for the given element.
+     *
+     * Note: This is a wrapper function to: RPTUtil.getLabelForElementHidden
+     *
+     * @parm {element} element - The element for which to get the label element for.
+     *
+     * @return {element} element - return the element for the label, otherwise null
+     *
+     * @memberOf RPTUtil
+     */
+    public static getLabelForElement(element) {
+        return RPTUtil.getLabelForElementHidden(element, false);
+    }
+
+    /**
+     * This function is responsible for getting the element containing the label for the given element.
+     *
+     * This function will return null if the containing lable element is hidden, when the ignoreHidden option
+     * is set to true.
+     *
+     * @parm {element} element - The element for which to get the label element for.
+     * @parm {boolean} ignoreHidden - true if hidden elements with label should be ignored from the list
+     *                                false if the hidden elements should be added
+     *
+     * @return {element} element - return the element for the label, otherwise null
+     *
+     * @memberOf RPTUtil
+     */
+    public static getLabelForElementHidden(element: Element, ignoreHidden) {
+
+        // Check if the global RPTUtil_LABELS hash is available, as this will contain the label nodes based on
+        // for attribute.
+        if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
+            // Variable Decleration
+            let idToLabel = {}
+
+            // Get all the label elements in the entire doc
+            let labelNodes = RPTUtil.getDocElementsByTag(element, "label");
+
+            // Loop over all the label nodes, in the case the label node has a for attribute,
+            // extract that attribute and add this node to the hash if it is visible.
+            for (let i = 0; i < labelNodes.length; ++i) {
+
+                if (labelNodes[i].hasAttribute("for")) {
+
+                    // If ignore hidden is specified and the node is not visible we do not add it to the
+                    // labelNodes hash.
+                    if (ignoreHidden && !RPTUtil.isNodeVisible(labelNodes[i])) {
+                        continue;
+                    }
+
+                    idToLabel[labelNodes[i].getAttribute("for")] = labelNodes[i];
+                }
+            }
+
+            // Add the built hash to the ownerDocument (document), to be used later to fast retrival
+            RPTUtil.setCache(element.ownerDocument, "RPTUtil_LABELS", idToLabel);
+        }
+
+        // If this element has an id attribute, get the corosponding label element
+        if (element.hasAttribute("id")) {
+            // Fetch the id attribute
+            let ctrlId = element.getAttribute("id");
+
+            // Return the corosponding label element.
+            // Note: in the case that the the id is not found in the hash that means, it does not exists or is hidden
+            if (ctrlId.trim().length > 0) {
+                return RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS",{})[ctrlId];
+            }
+        }
+
+        return null;
+    }
+
+    /* Return specified element attribute if present else return null */
+    public static getElementAttribute(element, attr) {
+        return (element && element.hasAttribute && element.hasAttribute(attr)) ? element.getAttribute(attr) : null;
+    }
+
+    // Return true if the element has an ARIA label
+    public static hasAriaLabel(element) {
+
+        // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
+        return RPTUtil.attributeNonEmpty(element, "aria-label") || RPTUtil.attributeNonEmpty(element, "aria-labelledby");
+    }
+
+    // Return true if element has valid implicit label
+    public static hasImplicitLabel(element) {
+        let parentNode = element.parentNode;
+        // Test  a) if the parent is a label which is the implicit label
+        //       b) if the form element is the first child of the label
+        //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
+        // form elements that do not require implicit or explicit label element are:
+        // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
+
+        if (parentNode.tagName.toLowerCase() === "label" && RPTUtil.isFirstFormElement(parentNode, element)) {
+            let parentClone = parentNode.cloneNode(true);
+            // exclude all form elements from the label since they might also have inner content
+            parentClone = RPTUtil.removeAllFormElementsFromLabel(parentClone);
+            return RPTUtil.hasInnerContentHidden(parentClone);
+        } else
+            return false;
+    }
+
+    public static isFirstFormElement(parentNode, element) {
+        let formElementsRequiringLabel = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
+        let childNodes = parentNode.childNodes;
+        for (let i = 0; i < childNodes.length; i++) {
+            if (formElementsRequiringLabel.indexOf(childNodes[i].nodeName.toLowerCase()) === -1)
+                continue;
+            else if (childNodes[i] !== element)
+                return false;
+            else
+                return true;
+        }
+        return false;
+    }
+
+    public static removeAllFormElementsFromLabel(element) {
+        let formElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
+        let childNodes = element.childNodes;
+        for (let i = 0; i < childNodes.length; i++) {
+            if (formElements.indexOf(childNodes[i].nodeName.toLowerCase()) > -1) {
+                element.removeChild(childNodes[i]);
+            }
+        }
+        return element;
+    }
+
+    // Given an array of elements, return true if the elements have unique ARIA labels
+    public static hasUniqueAriaLabelsLocally(elements, isGlobal) {
+        if (elements.length === 0) return false;
+        let doc = elements[0].ownerDocument;
+        let hasDuplicateLabels = false;
+        let uniqueAriaLabels = null;
+
+        if (isGlobal) {
+            uniqueAriaLabels = RPTUtil.getCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", null);
+        }
+        if (uniqueAriaLabels == null) {
+            uniqueAriaLabels = {};
+        }
+
+        for (let i = 0; !hasDuplicateLabels && i < elements.length; ++i) {
+
+            if (elements[i].hasAttribute) {
+
+                if (elements[i].hasAttribute("aria-label")) {
+
+                    let ariaLabel = RPTUtil.normalizeSpacing(elements[i].getAttribute("aria-label")).toLowerCase();
+                    hasDuplicateLabels = ariaLabel in uniqueAriaLabels;
+                    uniqueAriaLabels[ariaLabel] = true;
+
+                } else if (elements[i].hasAttribute("aria-labelledby")) {
+
+                    let labelID = elements[i].getAttribute("aria-labelledby");
+                    let labelNode = elements[i].ownerDocument.getElementById(labelID);
+                    let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                    let normalizedLabel = RPTUtil.normalizeSpacing(label).toLowerCase();
+                    hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
+                    uniqueAriaLabels[normalizedLabel] = true;
+
+                } else {
+                    // Has no label at all
+                    hasDuplicateLabels = true;
+                }
+            }
+        }
+        if (isGlobal) {
+            RPTUtil.setCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", uniqueAriaLabels);
+        }
+        return !hasDuplicateLabels;
+    }
+
+    public static getAriaLabel(ele) {
+        if (ele.hasAttribute) {
+            if (ele.hasAttribute("aria-labelledby")) {
+                let labelIDs = ele.getAttribute("aria-labelledby").trim().split(" ");
+                let normalizedLabel = "";
+                for (let j = 0, length = labelIDs.length; j < length; ++j) {
+                    let labelID = labelIDs[j];
+                    let labelNode = ele.ownerDocument.getElementById(labelID);
+                    let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                    normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
+                }
+                return normalizedLabel.trim();
+            } else if (ele.hasAttribute("aria-label")) {
+                return RPTUtil.normalizeSpacing(ele.getAttribute("aria-label")).toLowerCase().trim();
+            }
+        }
+        if (ele.nodeName.toLowerCase() === "input") {
+            return (RPTUtil.getLabelForElement(ele) || "").trim();
+        }
+        return "";
+    }
+
+    public static findAriaLabelDupes(elements) {
+        let dupeMap = {}
+        elements.forEach(function (ele) {
+            dupeMap[RPTUtil.getAriaLabel(ele)] = (dupeMap[RPTUtil.getAriaLabel(ele)] || 0) + 1;
+        })
+        return dupeMap;
+    }
+
+    // Given an array of elements, return true if the elements have unique ARIA labels globally
+    public static hasUniqueAriaLabels(elements) {
+        return RPTUtil.hasUniqueAriaLabelsLocally(elements, true);
+    }
+
+    // Given an array of elements, return true if the elements have unique ARIA labels
+    public static hasDuplicateAriaLabelsLocally(elements, isGlobal) {
+        if (elements.length === 0) return false;
+        let doc = elements[0].ownerDocument;
+
+        let hasDuplicateLabels = false;
+        let uniqueAriaLabels: { [key: string]: boolean } = null;
+        let duplicateLabelNameArray = new Array();
+
+        if (isGlobal) {
+            uniqueAriaLabels = RPTUtil.getCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", null);
+        }
+        if (uniqueAriaLabels == null) {
+            uniqueAriaLabels = {};
+        }
+
+        for (let i = 0; i < elements.length; ++i) {
+
+            if (elements[i].hasAttribute) {
+
+                if (elements[i].hasAttribute("aria-label")) {
+
+                    let ariaLabel = RPTUtil.normalizeSpacing(elements[i].getAttribute("aria-label")).toLowerCase();
+                    hasDuplicateLabels = ariaLabel in uniqueAriaLabels;
+                    uniqueAriaLabels[ariaLabel] = true;
+                    if (!(ariaLabel in duplicateLabelNameArray)) {
+                        duplicateLabelNameArray[ariaLabel] = new Array();
+                    }
+                    duplicateLabelNameArray[ariaLabel].push(elements[i].nodeName.toLowerCase());
+
+                } else if (elements[i].hasAttribute("aria-labelledby")) {
+
+                    let labelIDs = elements[i].getAttribute("aria-labelledby").trim().split(" ");
+                    let normalizedLabel = "";
+                    for (let j = 0, length = labelIDs.length; j < length; ++j) {
+                        let labelID = labelIDs[j];
+                        let labelNode = elements[i].ownerDocument.getElementById(labelID);
+                        let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
+                        normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
+                    }
+                    hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
+                    uniqueAriaLabels[normalizedLabel] = true;
+                    if (!(normalizedLabel in duplicateLabelNameArray)) {
+                        duplicateLabelNameArray[normalizedLabel] = new Array();
+                    }
+                    duplicateLabelNameArray[normalizedLabel].push(elements[i].nodeName.toLowerCase());
+                }
+            }
+        }
+        if (isGlobal) {
+            RPTUtil.setCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", uniqueAriaLabels);
+        }
+        return duplicateLabelNameArray;
+    }
+
+    // Given an array of elements, return true if the elements have unique ARIA labels globally
+    public static hasDuplicateAriaLabels(elements) {
+        return RPTUtil.hasDuplicateAriaLabelsLocally(elements, true);
+    }
+
+    // Given an array of elements, return true if the elements have unique aria-labelledby attributes
+    public static hasUniqueAriaLabelledby(elements) {
+
+        let hasDuplicateLabels = false;
+        let labelRefs = {};
+
+        for (let i = 0; !hasDuplicateLabels && i < elements.length; ++i) {
+
+            if (elements[i].hasAttribute && elements[i].hasAttribute("aria-labelledby")) {
+                let labelRef = RPTUtil.normalizeSpacing(elements[i].getAttribute("aria-labelledby"));
+                hasDuplicateLabels = labelRef in labelRefs;
+                labelRefs[labelRef] = true;
+            } else {
+                hasDuplicateLabels = true;
+            }
+        }
+        return !hasDuplicateLabels;
+    }
+
+    /* Determine the node depth of the given element */
+    public static nodeDepth(element) {
+        let depth = 0;
+        let walkNode = element;
+        while (walkNode != null) {
+            walkNode = walkNode.parentNode;
+            depth = depth + 1;
+        }
+        return depth;
+    }
+
+    /* compare node order of the 2 given nodes */
+    /* returns
+     *   0 if the nodes are equal
+     *   1 if node b is before node a
+     *  -1 if node a is before node b
+     *   2 if node a is nested in node b
+     *  -2 if node b is nested in node a
+     *   null if either node is null or their parent nodes are not equal
+     */
+    public static compareNodeOrder(nodeA, nodeB) {
+        if (nodeA == nodeB) return 0;
+
+        let aDepth = RPTUtil.nodeDepth(nodeA);
+        let bDepth = RPTUtil.nodeDepth(nodeB);
+        if (bDepth > aDepth) {
+            for (let i = 0; i < bDepth - aDepth; ++i)
+                nodeB = nodeB.parentNode;
+            if (nodeA == nodeB) // Node B nested in Node A
+                return -2;
+        } else if (aDepth > bDepth) {
+            for (let i = 0; i < aDepth - bDepth; ++i)
+                nodeA = nodeA.parentNode;
+            if (nodeA == nodeB) // Node A nested in Node B
+                return 2;
+        }
+        while (nodeA != null && nodeB != null && nodeA.parentNode != nodeB.parentNode) {
+            nodeA = nodeA.parentNode;
+            nodeB = nodeB.parentNode;
+        }
+        if (nodeA == null || nodeB == null || nodeA.parentNode != nodeB.parentNode) return null;
+        while (nodeB != null && nodeB != nodeA)
+            nodeB = nodeB.previousSibling;
+        if (nodeB == null) // nodeB before nodeA
+            return 1;
+        else return -1;
+    }
+
+    /* Determine if given string is a valid language */
+    public static validLang(langStr) {
+        return /^(([a-zA-Z]{2,3}(-[a-zA-Z](-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4}|[a-zA-Z]{5,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([0-9a-zA-Z]{5,8}|[0-9][a-zA-Z]{3}))*(-[0-9a-wy-zA-WY-Z](-[a-zA-Z0-9]{2,8})+)*(-x(-[a-zA-Z0-9]{1,8})+)?|x(-[a-zA-Z0-9]{1,8})+|(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE|art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$/.test(langStr)
+    }
+
+    /**
+     *  Determine if the given attribute of the given element is not empty
+     *  @memberOf RPTUtil
+     */
+    public static attributeNonEmpty(element, attrStr) {
+        return element.hasAttribute(attrStr) && element.getAttribute(attrStr).trim().length > 0;
+    }
+
+    /* Return a pointer to the given global variable
+     * with its initial value as given */
+    public static getCache(cacheSpot: Document | Element, keyName, initValue) {
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+
+        if (cacheObj.aceCache == undefined) {
+            cacheObj.aceCache = {}
+        }
+        if (cacheObj.aceCache[keyName] == undefined) {
+            cacheObj.aceCache[keyName] = initValue;
+        }
+        return cacheObj.aceCache[keyName]
+    }
+
+    public static setCache(cacheSpot: Document | Element, globalName, value) : any {
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        if (cacheObj.aceCache == undefined) {
+            cacheObj.aceCache = {}
+        }
+        cacheObj.aceCache[globalName] = value;
+        return value;
+    }
+
+    /* Return a pointer to the given frame, null if not found */
+    public static getFrameByName(ruleContext,frameName) {
+        let window = ruleContext.ownerDocument.defaultView;
+        let frameList = [window];
+        let idx = 0;
+        while (idx < frameList.length) {
+            try {
+                if (frameList[idx].name == frameName) return frameList[idx];
+                for (let i = 0; i < frameList[idx].frames.length; ++i) {
+                    try {
+                        // Ensure it's a real frame and avoid recursion
+                        if (frameList[idx].frames[i] && !frameList.includes(frameList[idx].frames[i])) {
+                            frameList.push(frameList[idx].frames[i]);
+                        }
+                    } catch (e) {}
+                }
+            } catch (e) {}
+            ++idx;
+        }
+        return null;
+    }
+
+    public static defaultNSResolver(prefix){
+        let uri;
+        switch (prefix) {
+            case 'html':
+                uri = 'http://www.w3.org/1999/xhtml';
+            case 'x2':
+                uri = 'http://www.w3.org/TR/xhtml2';
+            case 'x':
+                uri = 'http://www.w3.org/1999/xhtml';
+            case 'xhtml':
+                uri = 'http://www.w3.org/1999/xhtml';
+            default:
+                uri = null;
+        }
+        return uri;
+    }
+
+    //checking if only the inner text is empty or not
+    public static isInnerTextOnlyEmpty(element) {
+        // Get the innerText of the element
+        let text = element.innerText;
+
+        if (text === undefined && element.textContent !== undefined) {
+            // In headless mode,  innerText is sometimes 'undefined'
+            // so we try textContent as a workaround
+            text = element.textContent
+        }
+
+        // Trim the inner text and verify that it is not empty.
+        return !(text != null && text.trim().length > 0);
+    }
+
+    /* Return the inner text of the given element */
+    public static getInnerText(element) {
+        let retVal = element.innerText;
+        if (retVal == undefined || retVal.trim() == "")
+            retVal = element.textContent;
+        return retVal;
+    }
+
+    /**
+     * This function is responsible for checking if elements inner text is empty or not.
+     *
+     * @parm {element} node The node which should be checked it has inner text or not.
+     * @return {bool} true if element has empty inner text, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static isInnerTextEmpty(element) {
+        // Get the innerText of the element
+        let text = RPTUtil.getInnerText(element);
+
+        // Trim the inner text and verify that it is not empty.
+        return !(text != null && text.trim().length > 0);
+    }
+
+    public static hasInnerContent(element) {
+        let text = RPTUtil.getInnerText(element);
+        let hasContent = (text != null && text.trim().length > 0);
+
+        if (element.firstChild != null) {
+            let nw = new NodeWalker(element);
+            while (!hasContent && nw.nextNode()) {
+                hasContent = (nw.node.nodeName.toLowerCase() == "img" &&
+                    RPTUtil.attributeNonEmpty(nw.node, "alt"));
+            }
+        }
+        return hasContent;
+    }
+
+    /**
+     * This function is responsible for determine if an element has inner content.
+     * This function also considers cases where inner text is hidden, which now will
+     * be classified as does not have hidden content.
+     *
+     * @parm {element} node The node which should be checked it has inner text or not.
+     * @return {bool} true if element has empty inner text, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static hasInnerContentHidden(element) {
+        return RPTUtil.hasInnerContentHiddenHyperLink(element, false);
+    }
+    public static hasInnerContentHiddenHyperLink(element, hyperlink_flag) {
+
+        // Variable Decleration
+        let childElement = element.firstElementChild;
+        let hasContent = false;
+
+        // In the case that the childElement is not null then we need to check each of the elements
+        // to make sure that the elements are not all hidden.
+        if (childElement != null) {
+            // Get the nodewalter of the element node, so that we can loop over it and verify
+            // that the elements under the element are not completly hidden.
+            let nw = new NodeWalker(element);
+
+            // Loop over all the nodes until there are no more nodes or we have determine that there is content under
+            // this parent element.
+            while (!hasContent && nw.nextNode() && nw.node != element) {
+                // Get the next node
+                let node = nw.node;
+
+                // In the case an img element is present with alt then we can mark this as pass
+                // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
+                hasContent = (node.nodeName.toLowerCase() == "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node));
+
+                // Now we check if this node is of type element, visible
+                if (!hasContent && node.nodeType == 1 && RPTUtil.isNodeVisible(node)) {
+                    // Check if the innerText of the element is empty or not
+                    hasContent = !RPTUtil.isInnerTextOnlyEmpty(node);
+                    if (!hasContent && hyperlink_flag == true) {
+                        hasContent = RPTUtil.attributeNonEmpty(node, "aria-label") || RPTUtil.attributeNonEmpty(node, "aria-labelledby");
+                        let doc = node.ownerDocument;
+                        if (doc) {
+                            let win = doc.defaultView;
+                            if (win) {
+                                let cStyle = win.getComputedStyle(node);
+                                if (!hasContent && cStyle != null) {
+                                    //                                       console.log(cStyle.backgroundImage);
+                                    //                                       console.log(cStyle.content)
+                                    hasContent = ((cStyle.backgroundImage && cStyle.backgroundImage.indexOf) || cStyle.content) && RPTUtil.attributeNonEmpty(node, "alt");
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                // Check for cases where there is text node after an element under the parent
+                // In the case we detect nodetype as text node and the patent of the text node is
+                // the same element we are checking has Inner content for then get the inner content of this
+                // text node.
+                if (node.nodeType == 3 && node.parentElement == element) {
+                    // Check if the innerText of the element is empty or not
+                    hasContent = !RPTUtil.isInnerTextEmpty(node);
+                }
+            }
+        }
+        // In the case there are no child elements then we can simply perform the check for only innertext
+        // the img with alt case will be covered in the above if, as img is considers as an element.
+        else {
+            // Check if the innerText of the element is empty or not
+            hasContent = !RPTUtil.isInnerTextEmpty(element);
+        }
+
+        return hasContent;
+    }
+
+    public static hasInnerContentOrAlt(element) {
+        let text = RPTUtil.getInnerText(element);
+        let hasContent = (text != null && text.trim().length > 0) || RPTUtil.attributeNonEmpty(element, "alt");
+
+        if (element.firstChild != null) {
+            let nw = new NodeWalker(element);
+            while (!hasContent && nw.nextNode() && nw.node != element) {
+                hasContent = (nw.node.nodeName.toLowerCase() == "img" &&
+                    RPTUtil.attributeNonEmpty(nw.node, "alt"));
+            }
+        }
+        return hasContent;
+    }
+
+    public static concatUniqueArrayItem(item, arr) {
+        arr.indexOf(item) === -1 && item !== null ? arr.push(item) : false;
+        return arr;
+    }
+
+    public static concatUniqueArrayItemList(itemList, arr) {
+        for (let i = 0; itemList !== null && i < itemList.length; i++) {
+            arr = RPTUtil.concatUniqueArrayItem(itemList[i], arr);
+        }
+        return arr;
+    }
+
+    public static getElementAriaProperty(ruleContext) {
+        let tagName = null;
+
+        if (ruleContext.tagName) {
+            tagName = ruleContext.tagName.toLowerCase();
+        } else if (ruleContext.nodeName) {
+            tagName = ruleContext.nodeName.toLowerCase();
+        }
+
+        // check if the tagProperty exists in the documentConformanceRequirement hash.
+        let tagProperty = ARIADefinitions.documentConformanceRequirement[tagName];
+        // The tag needs to check some special attributes
+        if (tagProperty === null || tagProperty === undefined) {
+            let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
+            switch (tagName) { // special cases
+                case "a":
+                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                    break;
+                case "area":
+                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
+                    break;
+                case "button":
+                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "menu" ? tagProperty = specialTagProperties["with-type-menu"] : tagProperty = specialTagProperties["without-type-menu"];
+                    break;
+                case "footer": {
+                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                    ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
+                    break;
+                }
+                case "h1":
+                case "h2":
+                case "h3":
+                case "h4":
+                case "h5":
+                case "h6":
+                    specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["h1-6"];
+                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level") && ruleContext.getAttribute("aria-level") > 0)
+                        tagProperty = specialTagProperties["h1-6-with-aria-level-positive-integer"];
+                    else
+                        tagProperty = specialTagProperties["h1-6-without-aria-level-positive-integer"];
+                    break;
+                case "header":
+                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                    if (ancestor === null)
+                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                    ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
+                    break;
+                case "hgroup":
+                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level"))
+                        tagProperty = specialTagProperties["with-aria-level"];
+                    else
+                        tagProperty = specialTagProperties["without-aria-level"];
+                    break;
+                case "img":
+                    ruleContext.hasAttribute("alt") && ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-without-empty-alt"];
+                    break;
+                case "input":
+                    if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
+                        let type = ruleContext.getAttribute("type").trim().toLowerCase();
+                        tagProperty = specialTagProperties[type];
+                        if (tagProperty === null || tagProperty === undefined) {
+                            switch (type) {
+                                case "search":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-list"] : tagProperty = specialTagProperties["search-no-list"];
+                                    break;
+                                case "text":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                    break;
+                                case "tel":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
+                                    break;
+                                case "url":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
+                                    break;
+                                case "email":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["email-with-list"] : tagProperty = specialTagProperties["email-no-list"];
+                                    break;
+                                case "checkbox":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
+                                    break;
+                                default:
+                                    // default type is the same as type=text
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                    break;
+                            }
+                        }
+                    } else {
+                        // default type is the same as type=text
+                        RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                    }
+                    break;
+                case "li": {
+                    let parentNode = ruleContext.parentNode;
+                    parentNode !== null && (parentNode.tagName.toLowerCase() === "ol" || parentNode.tagName.toLowerCase() === "ul") ? tagProperty = specialTagProperties["parent-ol-or-ul"] : tagProperty = specialTagProperties["parent-not-ol-or-ul"];
+                    break;
+                }
+                case "link":
+                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"]; //https://www.w3.org/TR/html51/document-metadata.html#elementdef-link
+                    break;
+                case "menu":
+                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "context" ? tagProperty = specialTagProperties["type-context"] : tagProperty = tagProperty;
+                    break;
+                case "menuitem":
+                    if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
+                        if (ruleContext.getAttribute("type").trim().toLowerCase() === "command")
+                            tagProperty = specialTagProperties["type-command"];
+                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "checkbox")
+                            tagProperty = specialTagProperties["type-checkbox"];
+                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "radio")
+                            tagProperty = specialTagProperties["type-radio"];
+                    }
+                    if (tagProperty === null || tagProperty === undefined)
+                        tagProperty = specialTagProperties["default"];
+                    break;
+                case "option":
+                    let parentNode = ruleContext.parentNode;
+                    // https://developer.mozilla.org/en/docs/Web/HTML/Element/option
+                    /* refer to Github issue #436, we remove "select" and "optgroup" based on HTML 5.1 spec. A select can have a role of menu
+                        * A menu role requires a menuitem, menuitemcheckbox, or menuitemradio. So, "option" element needs to take one of those roles.
+                        * Hence, the conformance table is incorrect.*/
+                    if ( /*parentNode.tagName.toLowerCase() === "select" || parentNode.tagName.toLowerCase() === "optgroup" || */ parentNode.tagName.toLowerCase() === "datalist" || parentNode.tagName.toLowerCase() === "options")
+                        tagProperty = specialTagProperties["list-suggestion-datalist"];
+                    else
+                        tagProperty = specialTagProperties["not-list-suggestion-datalist"];
+                    break;
+                case "select":
+                    specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
+                    if (ruleContext.hasAttribute("multiple") ||
+                        RPTUtil.attributeNonEmpty(ruleContext, "size") && ruleContext.getAttribute("size") > 1)
+                        tagProperty = specialTagProperties["multiple-attr-size-gt1"];
+                    else
+                        tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
+                    break;
+                default:
+                    if (ARIADefinitions.textLevelSemanticElements.indexOf(tagName) > -1) {
+                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["text-level-semantic-elements"];
+                    } else {
+                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
+                    }
+            } //switch
+        }
+        return tagProperty || null;
+    }
+
+    public static getAllowedAriaRoles(ruleContext, properties) {
+        let tagName = ruleContext.tagName.toLowerCase();
+        let allowedRoles = [];
+        let tagProperty = null;
+        if (properties != null && properties !== undefined)
+            tagProperty = properties;
+        else
+            tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+
+        if (tagProperty !== null && tagProperty !== undefined) {
+            if (tagProperty.implicitRole !== null) {
+                RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, allowedRoles);
+            }
+
+            if (tagProperty.validRoles !== null) {
+                RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
+            }
+        }
+        return allowedRoles;
+    }
+
+    public static getAllowedAriaAttributes(ruleContext, permittedRoles, properties) {
+        let tagName = ruleContext.tagName.toLowerCase();
+        let allowedAttributes = [];
+        /*These needs to be handled first since its applicable to all elements*/
+        if (ruleContext.hasAttribute("disabled") && ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) === -1) {
+            /*Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
+                Use the disabled attribute on any element that is allowed the disabled attribute in HTML5. aria-disabled="true"
+                Only use the aria-disabled attribute for elements that are not allowed to have a disabled attribute in HTML5 */
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
+        }
+        if (ruleContext.hasAttribute("required") && ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
+            /*Element with a required attribute  // http://www.the-art-of-web.com/html/html5-form-validation/
+                * aria-required="true" Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
+                * MAY also be used for elements that have an attached ARIA role which allows the aria-required attribute.*/
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
+        }
+        if (ruleContext.hasAttribute("readonly") && ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) === -1) {
+            /*Element with a readonly attribute* aria-readonly="true" * Use the readonly attribute on any element that is allowed the readonly attribute in HTML5.
+                Only use the aria-readonly attribute for elements that are not allowed to have a readonly attribute in HTML5 */
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
+        }
+        if (ruleContext.hasAttribute("hidden")) {
+            /*Element with a hidden attribute Use the aria-hidden attribute on any HTML element.
+                Note: If an element has a hidden attribute, an aria-hidden attribute is not required.*/
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", allowedAttributes);
+        }
+
+        let tagProperty = null;
+        if (properties != null && properties !== undefined)
+            tagProperty = properties;
+        else
+            tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+
+        let skipImplicitRoleCheck = false;
+        if (tagName === "form" || tagName === "section") {
+            // special case: form has an implicit role only if it has an accessible name
+            skipImplicitRoleCheck = !ruleContext.hasAttribute("aria-label") &&
+                !ruleContext.hasAttribute("aria-labelledby") &&
+                !ruleContext.hasAttribute("title");
+        }
+        if (tagProperty !== null && tagProperty !== undefined) {
+            // add the implicit role allowed attributes to the allowed role list if there is no specified role
+            if (tagProperty.implicitRole !== null &&
+                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length == 0) &&
+                !skipImplicitRoleCheck) {
+                for (let i = 0; i < tagProperty.implicitRole.length; i++) {
+                    let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
+                    if (roleProperty !== null && roleProperty !== undefined) {
+                        let properties = roleProperty.props;
+                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
+                        RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        // special case of separator
+                        if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
+                            RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                        }
+                    }
+                }
+            }
+            // Adding the global properties to the valid attribute list
+            if (tagProperty.globalAriaAttributesValid) {
+                let properties = ARIADefinitions.globalProperties; // global properties
+                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+            } else {
+                // special case: <img> with alt="" allows only aria-hidden
+                if (tagName === "img" &&
+                    ruleContext.hasAttribute("alt") &&
+                    ruleContext.getAttribute("alt").trim() === "") {
+                    RPTUtil.concatUniqueArrayItemList(["aria-hidden"], allowedAttributes);
+                }
+            }
+        }
+
+        // adding the specified role properties to the allowed attribute list
+        for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
+            let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
+            if (roleProperties !== null && roleProperties !== undefined) {
+                let properties = roleProperties.props; // allowed properties
+                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
+                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                // special case for separator
+                if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
+                    RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                }
+            }
+        }
+        return allowedAttributes;
+    }
+
+    public static CSS(element) {
+        let styleText = "";
+        if (element == null) return [];
+        if (element.IBM_CSS_THB) return element.IBM_CSS_THB;
+        let nodeName = element.nodeName.toLowerCase();
+        if (nodeName == "style") {
+            styleText = RPTUtil.getInnerText(element);
+        } else if (element.hasAttribute("style")) {
+            styleText = element.getAttribute("style");
+        } else return [];
+        if (styleText == null || styleText.trim().length == 0) return [];
+        //remove comment blocks
+        let re = /(\/\*+(?:(?:(?:[^\*])+)|(?:[\*]+(?!\/)))[*]+\/)|\/\/.*/g;
+        let subst = ' ';
+        styleText = styleText.replace(re, subst);
+        // Find all "key : val;" pairs with various whitespace inbetween
+        let rKeyVals = /\s*([^:\s]+)\s*:\s*([^;$}]+)\s*(;|$)/g;
+        // Find all "selector { csskeyvals } with various whitespace inbetween
+        let rSelectors = /\s*([^{]*){([^}]*)}/g;
+        if (styleText.indexOf("{") == -1) {
+
+            let keyVals = {};
+            let m;
+            while ((m = rKeyVals.exec(styleText)) != null) {
+                keyVals[m[1]] = m[2].trim().toLowerCase();
+            }
+            let retVal = [{
+                selector: null,
+                values: keyVals
+            }];
+            element.IBM_CSS_THB = retVal;
+            return retVal;
+        } else {
+            let retVal = [];
+            let m;
+            let m2;
+            while ((m = rSelectors.exec(styleText)) != null) {
+                let keyVals = {}
+                let selKey = m[1];
+                let selVal = m[2];
+
+                while ((m2 = rKeyVals.exec(selVal)) != null) {
+                    keyVals[m2[1]] = m2[2].trim().toLowerCase();
+                }
+                retVal.push({
+                    selector: selKey,
+                    values: keyVals
+                });
+            }
+            element.IBM_CSS_THB = retVal;
+            return retVal;
+        }
+    }
+
+    /**
+     * This function is responsible for checking if the node that is provied is
+     * visible or not. Following is how the check is performed:
+     *    1. Check if the current node is hidden with the following options:
+     *       CSS --> dislay: none
+     *       CSS --> visibility: hidden
+     *       attribute --> hidden
+     *    2. Check if the any of the current nodes parents are hidden with the same
+     *       options listed in 1.
+     *
+     *    Note: If either current node or any of the parent nodes are hidden then this
+     *          function will return false (node is not visible).
+     *
+     * @parm {element} node The node which should be checked if it is visible or not.
+     * @return {bool} false if the node is NOT visible, true otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static isNodeVisible(node) {
+
+        // Set PT_NODE_HIDDEN to false for all the nodes, before the check and this will be changed to
+        // true when we detect that the node is hidden. We have to set it to false so that we know
+        // the rules has already been checked.
+        RPTUtil.setCache(node, "PT_NODE_HIDDEN", RPTUtil.getCache(node, "PT_NODE_HIDDEN", false));
+
+        // Check the nodeType if this node, if this node is a text node then
+        // we get the parentnode and set that as the node as a text nodes,
+        // visibility is directly related to the parent node.
+        if (node.nodeType == 3) {
+            node = node.parentNode;
+        }
+
+        // We should only allow nodeType element, and TextNode all other nodesTypes
+        // we can return the visibility as visible.
+        // Following nodes will be returned as visable by default, since we can not
+        // actually change their visibility.
+        //  Node.PROCESSING_INSTRUCTION_NODE --> 7
+        //  Node.COMMENT_NODE                --> 8
+        //  9 /* Node.DOCUMENT_NODE */               --> 9
+        //  Node.DOCUMENT_TYPE_NODE          --> 10
+        //  Node.DOCUMENT_FRAGMENT_NODE      --> 11
+        else if (node.nodeType != 1) {
+            return true;
+        }
+
+        // Make sure that the ownerDocument is present before moving forward
+        // in detecting if the node is visible or not. In the case that ownerDocument
+        // does not exist then we simply return node is visible by default.
+        if (!node.ownerDocument) {
+            return true;
+        }
+
+        // Variable Declaration
+        let compStyle;
+        let nodeName = node.nodeName.toLowerCase();
+
+        // In the case this node is a script, link or style node, right away return node is visible
+        // because scripts, links and style nodes can not be hidden by HTML attribute or CSS or are hidden by default. But we want to scan
+        // the elements everytime as they render content still which is still visible to users.
+        //  script --> script elements have display: none by default
+        //  link --> link elements have display: none by default, but the actually CSS script is still executed so we have to
+        //            mark this element as visible at all times.
+        //  style --> style elements have display: none by default, but the actually CSS script is still executed so we have to
+        //            mark this element as visible at all times.
+        if (RPTUtil.hiddenByDefaultElements != null && RPTUtil.hiddenByDefaultElements != undefined && RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1) {
+            return true;
+        }
+
+        // Check if this node is visible, we check couple of CSS properties and hidden attribute.
+        // area, param and audio elements we do not check if they are hidden as it does not apply to them.
+        // Check the unhideableElements array which is part of the rules, to check if this element is allowed to be hidden or not
+        // in the case that the element is part of the unhideableElements array then we do not run the hidden check on this element,
+        // and go stright to the parent node.
+        // Array check elements like:
+        //  area --> area element is part of a map element and it can not be hidden because it is used to
+        //           make an certian parts of an map interactive.
+        //  param --> element can only be part of object elment and it cannot be hidden directly, it
+        //            can only be hidden if the parent is hidden.
+        //  audio --> If this element is hidden it will still play the music, so we should still trigger
+        //            violations for this element.
+        // In the case that unhideableElements array is not defined then we just scan all elements and do no filtering at all.
+        if (RPTUtil.unhideableElements == null || RPTUtil.unhideableElements == undefined || RPTUtil.unhideableElements.indexOf(nodeName) == -1) {
+            // Check if defaultView exists for this node, if it does then use this to run the getComputedStyle
+            // function to get the CSS style for the node.
+            if (node.ownerDocument.defaultView) {
+                // Run the getComputedStyle on this node to fetch the CSS compuation of the node
+                compStyle = node.ownerDocument.defaultView.getComputedStyle(node, null);
+            }
+            // In the case that defaultView does not exists return true to identify that this
+            // node is visible, because were not able to detect if it was not.
+            else {
+                return true;
+            }
+
+            // Get the hidden element property and hidden attribute
+            let hiddenAttribute = node.getAttribute("hidden");
+            let hiddenPropertyCustom = RPTUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
+            ;
+
+            // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
+            // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
+            // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
+            // which is under the form element then, node.hidden gives the element/list of elements which have id="hidden". Refer to
+            // mozilla bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1267356
+            let hiddenProperty = typeof node.hidden == "boolean" ? node.hidden : false;
+
+            // If compStyle object is empty, node does't have hidden property, node does't have hidden attribute and does't have custom PT
+            // hidden property then we can just return true (node visible) at this point.
+            if (!compStyle &&
+                !hiddenProperty && // this covers false, null, or undefined
+                (hiddenAttribute == null || hiddenAttribute == undefined) &&
+                !hiddenPropertyCustom // This covers false, null or undefined
+            ) {
+                return true;
+            }
+
+            // In the case that the compStyle is defined we check the following:
+            //  CSS style display set to none
+            //  CSS style visibility set to hidden
+            //    Note: For this property since it is inherited, need to skip the check on parents as
+            //          the parent can have hidden but the child can be visible. So we only check this property
+            //          on child elements/elements that are passed to this function the first time.
+            //  node hidden property set (node.hidden)
+            //  node attribute hidden set (to any value)
+            //  node custom hidden property ser (node.PT_NODE_HIDDEN)
+            // If any of the above conditions are true then we return false as this element is not visible
+            if ((compStyle !== null && (compStyle.getPropertyValue('display') == 'none' ||
+                (!node.Visibility_Check_Parent && compStyle.getPropertyValue('visibility') == 'hidden'))) ||
+                hiddenProperty ||
+                hiddenAttribute != null ||
+                hiddenPropertyCustom) {
+                // Set a custom expandos property on the the node to identify that it is hidden, so that we can uses
+                // use this in the rules to determine if the node is hidden or not, if we need to.
+                // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
+                // properties is a lot faster performance whise. For Hash map we need to store based on xpath, and to calculate
+                // xpath it is more performance impact.
+                RPTUtil.setCache(node, "PT_NODE_HIDDEN", true);
+                return false;
+            }
+        }
+
+        // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
+        // the hidden CSS, property or attribute. Only keep checking until we are all the way back to the parentNode
+        // element.
+        let parentElement = node.parentNode;
+
+        // If the parent node exists and the nodetype is element (1), then run recursive call to perform the check
+        // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
+        // have to duplicate the logic for checking if the node is visible or not for all the parents starting with
+        // child node.
+        if (parentElement != null && parentElement.nodeType == 1) {
+            // When we have a parent element going through the isNodeVisible function we have to mark it as such
+            // so that in the function we can skip checking visibility: hidden for parent elements since visibility: hidden
+            // is inherited, which allows a child to have a different setting then the child. This property only needs to be checked
+            // once for the first element that is passed down and that is all. Ignore it for all the parents that we iterate over.
+            parentElement.Visibility_Check_Parent = true;
+
+            // Check upwards recursively, and save the results in an variable
+            let nodeVisible = RPTUtil.isNodeVisible(parentElement);
+
+            // If the node is found to not be visible then add the custom PT_NODE_HIDDEN to true.
+            // so that we can use this in the rules.
+            if (!nodeVisible) {
+                RPTUtil.setCache(node, "PT_NODE_HIDDEN", true);
+            }
+
+            // Check upwards recursively
+            return nodeVisible;
+        }
+
+        // Return true (node is visible)
+        return true;
+    }
+
+    public static getControlOfLabel(node: Node) {
+        // Handle the easy case of label -> for
+        let labelAncestor = RPTUtil.getAncestor(node, "label");
+        if (labelAncestor) {
+            if (labelAncestor.hasAttribute("for")) {
+                return node.ownerDocument.getElementById(labelAncestor.getAttribute("for"));
+            }
+        }
+
+        // Create a dictionary containing ids of parent nodes
+        let idDict = {};
+        let parentWalk = node;
+        while (parentWalk) {
+            if (parentWalk.nodeType === 1 /* Node.ELEMENT_NODE */) {
+                const ancestor = parentWalk as Element;
+                if (ancestor.hasAttribute("id")) {
+                    idDict[ancestor.getAttribute("id")] = true;
+                }
+            }
+            parentWalk = parentWalk.parentNode;
+        }
+
+        // Iterate through controls that use aria-labelledby and see if any of them reference one of my ancestor ids
+        const inputsUsingLabelledBy = node.ownerDocument.querySelectorAll("*[aria-labelledby]");
+        for (let idx=0; idx<inputsUsingLabelledBy.length; ++idx) {
+            const inputUsingLabelledBy = inputsUsingLabelledBy[idx];
+            const ariaLabelledBy = inputUsingLabelledBy.getAttribute("aria-labelledby");
+            const sp = ariaLabelledBy.split(" ");
+            for (const id of sp) {
+                if (id in idDict) {
+                    return inputUsingLabelledBy;
+                }
+            }
+        }
+
+        // Find the cases where we're within an aria labelledby
+        return null;
+    }
+
+    /**
+     * This function is responsible for checking if the node that is provied is
+     * disabled or not. Following is how the check is performed:
+     *    1. Check if the current node is disabled with the following options:
+     *       attribute --> disabled
+     *         Also needs to be "button", "input", "select", "textarea", "optgroup", "option",
+     *         "menuitem", "fieldset" nodes (in array elementsAllowedDisabled)
+     *       attribute --> aria-disabled="true"
+     *    2. Check if any of the current nodes parents are disabled with the same
+     *       options listed in 1.
+     *
+     *    Note: If either current node or any of the parent nodes are disabled then this
+     *          function will return true (node is disabled).
+     *
+     * @parm {HTMLElement} node - The node which should be checked if it is disabled or not.
+     * @return {bool} true if the node is disabled, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static isNodeDisabled(node) {
+
+        // Set PT_NODE_DISABLED to false for all the nodes, before the check and this will be changed to
+        // true when we detect that the node is disabled. We have to set it to false so that we know
+        // the node has already been checked. Only set it to false if the setting is undefined or null
+        // as if it is defined we do not wnat to reset it. As if it is true then we should make use of it
+        // to speed up the check.
+        let PT_NODE_DISABLED = RPTUtil.getCache(node, "PT_NODE_DISABLED", false);
+
+        // Check the nodeType of this node, if this node is a text node then
+        // we get the parentnode and set that as the node as a text nodes,
+        // disabled is directly related to the parent node.
+        if (node.nodeType == 3) {
+            node = node.parentNode;
+        }
+
+        // Variable Declaration
+        let nodeName = node.nodeName.toLowerCase();
+
+        // Get the disabled element property, disabled and aria-disabled attribute and check that it is true
+        let disabledAttribute = node.hasAttribute("disabled");
+        let disabledPropertyCustom = PT_NODE_DISABLED;
+        let ariaDisabledAttribute = node.hasAttribute('aria-disabled') && node.getAttribute("aria-disabled") === 'true';
+
+        // If this node has disabled attribute and the node allows disabled attribute, then return true.
+        // Disabled attribute is only allowed on "button", "input", "select", "textarea", "optgroup", "option", "menuitem", "fieldset"
+        // In the case aria-disabled is set to true, then also return true
+        if (disabledPropertyCustom || (disabledAttribute && ARIADefinitions.elementsAllowedDisabled.indexOf(nodeName) > -1) || ariaDisabledAttribute) {
+            PT_NODE_DISABLED = true;
+            RPTUtil.setCache(node, "PT_NODE_DISABLED", PT_NODE_DISABLED);
+            return true;
+        }
+
+        // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
+        // disabled attribute. Only keep checking until we are all the way back to the parentNode
+        // element.
+        let parentElement = node.parentNode;
+
+        // If the parent node exists and the nodetype is element (1), then run recursive call to perform the check
+        // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
+        // have to duplicate the logic for checking if the node is disabled or not for all the parents starting with
+        // child node.
+        if (parentElement != null && parentElement.nodeType == 1) {
+            // Check upwards recursively, and save the results in an variable
+            let nodeDisabled = RPTUtil.isNodeDisabled(parentElement);
+
+            // If the node is found to be disabled then add the custom PT_NODE_DISABLED to true.
+            // so that we can use this next time, to quickly determine if node is disabled or not.
+            // This is extra percaution, the isNodeDisabled function already sets this.
+            if (nodeDisabled) {
+                PT_NODE_DISABLED = true;
+            }
+
+            // Check upwards recursively
+            RPTUtil.setCache(node, "PT_NODE_DISABLED", PT_NODE_DISABLED);
+            return nodeDisabled;
+        }
+
+        // Return false (node is not disabled)
+        return false;
+    }
+
+    /**
+     * This function is responsible for determine if hidden content should be checked
+     * in rules.
+     *
+     * @parm {element} node - A node so that the document can be accessed to check for the
+     *                        option. Can be document element or a simple node element.
+     * @return {bool} true if hidden content should be checked, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static shouldCheckHiddenContent(node) {
+        return false;
+    }
+
+    /**
+     * This function is responsible for determining if node should be skipped from checking or not, based
+     * on the Check Hidden Content settings and if the node is visible or not.
+     *
+     * @parm {element} node - Node to check if it is visible or not based on the Check Hidden Content
+     *                        setting.
+     *
+     * @return {bool} true if node should be skipped, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+    public static shouldNodeBeSkippedHidden(node) {
+        // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
+        // or not.
+        //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
+        //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we
+        //     return true to identify that the node should not be scanned/added to any hash/array.
+        //
+        // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
+        //       so on and so forth.
+        if (!RPTUtil.shouldCheckHiddenContent(node) && !RPTUtil.isNodeVisible(node)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static isfocusableByDefault(node) {
+        var focusableElements = ['input', 'select', 'button', 'textarea', 'option', 'area'];
+        if (node.nodeName.toLowerCase() == "a" && RPTUtil.hasAttribute(node, 'href')) return true;
+        if (node.nodeName.toLowerCase() == "area" && RPTUtil.hasAttribute(node, 'href')) return true;
+        if (focusableElements.indexOf(node.nodeName.toLowerCase()) != -1) return true;
+        return false;
+    }
+
+    /**
+     * This function check if a non-tabable node has valid tabable content.
+     * If it is tabable (the tabindex is not speicified or is not -1), returns false;
+     * If it is non-tabable, but a child is tabable and does not have element content, returns false;
+     * Otherwise, returns true.
+     */
+    public static nonTabableChildCheck(element : Element): boolean {
+        if (!element.hasAttribute("tabindex") ||
+            (parseInt(element.getAttribute("tabindex")) != -1)) {
+            return false;
+        }
+        let nw = new NodeWalker(element);
+        while (nw.nextNode()) {
+            let child = nw.node;
+            if (child.nodeType !== 1 /* Node.ELEMENT_NODE */) { // Text node. usually is a cartridge return.
+                continue;
+            }
+            if (child.hasAttribute("tabindex") &&
+                (parseInt(child.getAttribute("tabindex")) != -1) &&
+                !RPTUtil.hasInnerContent(child)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static CSSColorLookup = {
+        "aliceblue": "#f0f8ff",
+        "antiquewhite": "#faebd7",
+        "aqua": "#00ffff",
+        "aquamarine": "#7fffd4",
+        "azure": "#f0ffff",
+        "beige": "#f5f5dc",
+        "bisque": "#ffe4c4",
+        "black": "#000000",
+        "blanchedalmond": "#ffebcd",
+        "blue": "#0000ff",
+        "blueviolet": "#8a2be2",
+        "brown": "#a52a2a",
+        "burlywood": "#deb887",
+        "cadetblue": "#5f9ea0",
+        "chartreuse": "#7fff00",
+        "chocolate": "#d2691e",
+        "coral": "#ff7f50",
+        "cornflowerblue": "#6495ed",
+        "cornsilk": "#fff8dc",
+        "crimson": "#dc143c",
+        "cyan": "#00ffff",
+        "darkblue": "#00008b",
+        "darkcyan": "#008b8b",
+        "darkgoldenrod": "#b8860b",
+        "darkgray": "#a9a9a9",
+        "darkgreen": "#006400",
+        "darkkhaki": "#bdb76b",
+        "darkmagenta": "#8b008b",
+        "darkolivegreen": "#556b2f",
+        "darkorange": "#ff8c00",
+        "darkorchid": "#9932cc",
+        "darkred": "#8b0000",
+        "darksalmon": "#e9967a",
+        "darkseagreen": "#8fbc8f",
+        "darkslateblue": "#483d8b",
+        "darkslategray": "#2f4f4f",
+        "darkturquoise": "#00ced1",
+        "darkviolet": "#9400d3",
+        "deeppink": "#ff1493",
+        "deepskyblue": "#00bfff",
+        "dimgray": "#696969",
+        "dodgerblue": "#1e90ff",
+        "firebrick": "#b22222",
+        "floralwhite": "#fffaf0",
+        "forestgreen": "#228b22",
+        "fuchsia": "#ff00ff",
+        "gainsboro": "#dcdcdc",
+        "ghostwhite": "#f8f8ff",
+        "gold": "#ffd700",
+        "goldenrod": "#daa520",
+        "gray": "#808080",
+        "green": "#008000",
+        "greenyellow": "#adff2f",
+        "honeydew": "#f0fff0",
+        "hotpink": "#ff69b4",
+        "indianred": "#cd5c5c",
+        "indigo": "#4b0082",
+        "ivory": "#fffff0",
+        "khaki": "#f0e68c",
+        "lavender": "#e6e6fa",
+        "lavenderblush": "#fff0f5",
+        "lawngreen": "#7cfc00",
+        "lemonchiffon": "#fffacd",
+        "lightblue": "#add8e6",
+        "lightcoral": "#f08080",
+        "lightcyan": "#e0ffff",
+        "lightgoldenrodyellow": "#fafad2",
+        "lightgrey": "#d3d3d3",
+        "lightgreen": "#90ee90",
+        "lightpink": "#ffb6c1",
+        "lightsalmon": "#ffa07a",
+        "lightseagreen": "#20b2aa",
+        "lightskyblue": "#87cefa",
+        "lightslategray": "#778899",
+        "lightsteelblue": "#b0c4de",
+        "lightyellow": "#ffffe0",
+        "lime": "#00ff00",
+        "limegreen": "#32cd32",
+        "linen": "#faf0e6",
+        "magenta": "#ff00ff",
+        "maroon": "#800000",
+        "mediumaquamarine": "#66cdaa",
+        "mediumblue": "#0000cd",
+        "mediumorchid": "#ba55d3",
+        "mediumpurple": "#9370d8",
+        "mediumseagreen": "#3cb371",
+        "mediumslateblue": "#7b68ee",
+        "mediumspringgreen": "#00fa9a",
+        "mediumturquoise": "#48d1cc",
+        "mediumvioletred": "#c71585",
+        "midnightblue": "#191970",
+        "mintcream": "#f5fffa",
+        "mistyrose": "#ffe4e1",
+        "moccasin": "#ffe4b5",
+        "navajowhite": "#ffdead",
+        "navy": "#000080",
+        "oldlace": "#fdf5e6",
+        "olive": "#808000",
+        "olivedrab": "#6b8e23",
+        "orange": "#ffa500",
+        "orangered": "#ff4500",
+        "orchid": "#da70d6",
+        "palegoldenrod": "#eee8aa",
+        "palegreen": "#98fb98",
+        "paleturquoise": "#afeeee",
+        "palevioletred": "#d87093",
+        "papayawhip": "#ffefd5",
+        "peachpuff": "#ffdab9",
+        "peru": "#cd853f",
+        "pink": "#ffc0cb",
+        "plum": "#dda0dd",
+        "powderblue": "#b0e0e6",
+        "purple": "#800080",
+        "red": "#ff0000",
+        "rosybrown": "#bc8f8f",
+        "royalblue": "#4169e1",
+        "saddlebrown": "#8b4513",
+        "salmon": "#fa8072",
+        "sandybrown": "#f4a460",
+        "seagreen": "#2e8b57",
+        "seashell": "#fff5ee",
+        "sienna": "#a0522d",
+        "silver": "#c0c0c0",
+        "skyblue": "#87ceeb",
+        "slateblue": "#6a5acd",
+        "slategray": "#708090",
+        "snow": "#fffafa",
+        "springgreen": "#00ff7f",
+        "steelblue": "#4682b4",
+        "tan": "#d2b48c",
+        "teal": "#008080",
+        "thistle": "#d8bfd8",
+        "tomato": "#ff6347",
+        "turquoise": "#40e0d0",
+        "violet": "#ee82ee",
+        "wheat": "#f5deb3",
+        "white": "#ffffff",
+        "whitesmoke": "#f5f5f5",
+        "yellow": "#ffff00",
+        "yellowgreen": "#9acd32",
+        "buttontext": "rgba(0, 0, 0, 0.847)",
+        "buttonface": "#ffffff",
+        "graytext": "rgba(0, 0, 0, 0.247)"
+    }
+
+
+    // Rewrite the color object to account for alpha
+    public static Color(cssStyleColor) {
+        cssStyleColor = cssStyleColor.toLowerCase();
+        if (cssStyleColor == "transparent") return new ColorObj(255, 255, 255, 0);
+        if (cssStyleColor in RPTUtil.CSSColorLookup)
+            cssStyleColor = RPTUtil.CSSColorLookup[cssStyleColor];
+        if (cssStyleColor.startsWith("rgb(")) {
+            let rgbRegex = /\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
+            let m = cssStyleColor.match(rgbRegex);
+            if (m == null) return null;
+            else {
+                return new ColorObj(m[1], m[2], m[3]);
+            }
+        } else if (cssStyleColor.startsWith("rgba(")) {
+            let rgbRegex = /\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(.+)\s*\)/;
+            let m = cssStyleColor.match(rgbRegex);
+            if (m == null) return null;
+            else {
+                return new ColorObj(m[1], m[2], m[3], m[4]);
+            }
+        } else if (cssStyleColor.charAt(0) != "#") {
+            return null;
+        } else {
+            if (cssStyleColor.length == 4) {
+                // The three-digit RGB (#rgb) is converted to six-digit form (#rrggbb) by replicating digits
+                // (https://www.w3.org/TR/css-color-3/#rgb-color)
+                cssStyleColor = "#" + cssStyleColor.charAt(1).repeat(2) +
+                    cssStyleColor.charAt(2).repeat(2) +
+                    cssStyleColor.charAt(3).repeat(2);
+            }
+            let thisRed = parseInt(cssStyleColor.substring(1, 3), 16);
+            let thisGreen = parseInt(cssStyleColor.substring(3, 5), 16);
+            let thisBlue = parseInt(cssStyleColor.substring(5, 7), 16);
+            return new ColorObj(thisRed, thisGreen, thisBlue);
+        }
+        //    return null; // Unreachable
+    };
+
+    public static ColorCombo(ruleContext : HTMLElement) {
+        var doc = ruleContext.ownerDocument;
+        if (!doc) {
+            return null;
+        }
+        var win = doc.defaultView;
+        if (!win) {
+            return null;
+        }
+
+        var ancestors = [];
+        var walkNode = ruleContext;
+        while (walkNode) {
+            if (walkNode.nodeType == 1)
+                ancestors.push(walkNode);
+            walkNode = walkNode.parentElement;
+        }
+
+        var retVal = {
+            "hasGradient": false,
+            "hasBGImage": false,
+            "fg": null,
+            "bg": null
+        };
+        var compStyleColor = win.getComputedStyle(ruleContext).color;
+        if (!compStyleColor)
+            compStyleColor = "black";
+        var fg = RPTUtil.Color(compStyleColor);
+
+        var reColor = /transparent|rgba?\([^)]+\)/gi;
+        var guessGradColor = function (gradList, bgColor, fgColor) {
+            try {
+                // If there's only one color, return that
+                if (typeof gradList.length == "undefined")
+                    return gradList;
+
+                var overallWorst = null;
+                var overallWorstRatio = null;
+                for (var iGrad = 1; iGrad < gradList.length; ++iGrad) {
+                    var worstColor = gradList[iGrad - 1];
+                    var worstRatio = fgColor.contrastRatio(gradList[iGrad - 1]);
+                    var step = .1;
+                    var idx = 0;
+                    while (step > .0001) {
+                        while (idx + step <= 1 && worstRatio > fgColor.contrastRatio(gradList[iGrad].mix(gradList[iGrad - 1], idx + step).getOverlayColor(bgColor))) {
+                            worstColor = gradList[iGrad].mix(gradList[iGrad - 1], idx + step).getOverlayColor(bgColor);
+                            worstRatio = fgColor.contrastRatio(worstColor);
+                            idx = idx + step;
+                        }
+                        while (idx - step >= 0 && worstRatio > fgColor.contrastRatio(gradList[iGrad].mix(gradList[iGrad - 1], idx - step).getOverlayColor(bgColor))) {
+                            worstColor = gradList[iGrad].mix(gradList[iGrad - 1], idx - step).getOverlayColor(bgColor);
+                            worstRatio = fgColor.contrastRatio(worstColor);
+                            idx = idx - step;
+                        }
+                        step = step / 10;
+                    }
+                    if (overallWorstRatio == null || overallWorstRatio > worstRatio) {
+                        overallWorstRatio = worstRatio;
+                        overallWorst = worstColor;
+                    }
+                }
+                return overallWorst;
+            } catch (e) {
+                console.log(e);
+            }
+            return bgColor;
+        };
+
+        var priorStackBG = RPTUtil.Color("white");
+        var thisStackOpacity = null;
+        var thisStackAlpha = null;
+        var thisStackBG = null;
+        // Ancestors processed from the topmost parent toward the child
+        while (ancestors.length > 0) {
+            var procNext = ancestors.pop();
+            // cStyle is the computed style of this layer
+            var cStyle = win.getComputedStyle(procNext);
+            if (cStyle == null) continue;
+
+            // thisBgColor is the color of this layer or null if the layer is transparent
+            var thisBgColor = null;
+            if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
+                thisBgColor = RPTUtil.Color(cStyle.backgroundColor);
+            }
+
+            // If there is a gradient involved, set thisBgColor to the worst color combination available against the foreground
+            if (cStyle.backgroundImage && cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
+                var gradColors : string[] = cStyle.backgroundImage.match(reColor);
+                if (gradColors) {
+                    let gradColorComp : ColorObj[] = [];
+                    for (var i = 0; i < gradColors.length; ++i) {
+                        if (!gradColors[i].length) {
+                            gradColors.splice(i--, 1);
+                        } else {
+                            gradColorComp.push(RPTUtil.Color(gradColors[i]));
+                        }
+                    }
+                    thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
+                }
+            }
+
+            // Handle non-solid opacity
+            if (thisStackOpacity == null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
+                // New stack, reset
+                if (thisStackBG != null) {
+                    // Overlay
+                    thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
+                    priorStackBG = thisStackBG.getOverlayColor(priorStackBG);
+                }
+                thisStackOpacity = 1.0;
+                thisStackAlpha = null;
+                thisStackBG = null;
+                if (cStyle.opacity && cStyle.opacity.length > 0) {
+                    thisStackOpacity = parseFloat(cStyle.opacity);
+                }
+                if (thisBgColor != null) {
+                    thisStackBG = thisBgColor;
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
+                    delete thisStackBG.alpha;
+                    if (thisStackOpacity == 1.0 && thisStackAlpha == 1.0) {
+                        retVal.hasBGImage = false;
+                        retVal.hasGradient = false;
+                    }
+                }
+            }
+            // Handle solid color backgrounds and gradient color backgrounds
+            else if (thisBgColor != null) {
+                // If this stack already has a background color, blend it
+                if (thisStackBG == null) {
+                    thisStackBG = thisBgColor;
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
+                    delete thisStackBG.alpha;
+                } else {
+                    thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
+                }
+                // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
+                // We can't wipe out the gradient info if this layer was transparent
+                if (thisStackOpacity == 1.0 && thisStackAlpha == 1.0 && (thisStackBG.alpha || 1.0) == 1.0 && (thisBgColor.alpha || 1.0) == 0) {
+                    retVal.hasBGImage = false;
+                    retVal.hasGradient = false;
+                }
+            }
+            if (cStyle.backgroundImage && cStyle.backgroundImage != "none") {
+                if (cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
+                    retVal.hasGradient = true;
+                } else {
+                    retVal.hasBGImage = true;
+                }
+            }
+        }
+        if (thisStackBG != null) {
+            fg = fg.getOverlayColor(thisStackBG);
+            delete fg.alpha;
+        }
+        fg.alpha = (fg.alpha || 1) * thisStackOpacity;
+        fg = fg.getOverlayColor(priorStackBG);
+        if (thisStackBG != null) {
+            thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
+            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);
+        }
+        retVal.fg = fg;
+        retVal.bg = priorStackBG;
+        return retVal;
+    };
+
+    public static hasAttribute(element, attributeName) {
+        var hasAttribute = false;
+        if (element.hasAttribute) {
+            hasAttribute = element.hasAttribute(attributeName);
+        } else if (element.attributes && element.attributes.getNamedItem) {
+            var attr = element.attributes.getNamedItem(attributeName);
+            hasAttribute = attr && attr.specified;
+        }
+        return hasAttribute;
+    }
+}
+
+export class RPTUtilStyle {
+    public static getWeightNumber(styleVal) {
+        let map = {
+            "light": 100,
+            "bold": 700
+        };
+        let retVal = parseInt(styleVal);
+        if (retVal) return retVal;
+        if (styleVal in map)
+            return map[styleVal];
+        return 400;
+    }
+
+    public static getFontInPixels = function (styleVal) {
+        let map = {
+            "xx-small": 16,
+            "x-small": 10,
+            "small": 13,
+            "medium": 16,
+            "large": 18,
+            "x-large": 24,
+            "xx-large": 32
+        };
+        let value = parseFloat(styleVal);
+        if (!value) {
+            return map[styleVal];
+        }
+        let units = styleVal.substring(("" + value).length);
+        if (units == "" || units == "px") return value;
+        if (units == "em") return value * 16;
+        if (units == "%") return value / 100 * 16;
+        if (units == "pt") return value * 4 / 3;
+        return Math.round(value);
+    }
+}
+
+export class ColorObj {
+    red : number;
+    green : number;
+    blue : number;
+    alpha : number;
+
+    constructor(red : string | number, green : string | number, blue : string | number, alpha? : string | number) {
+        function fixComponent(comp : string | number) : number {
+            if (typeof (comp) != typeof ("")) return comp as number;
+            let compStr = comp as string;
+            compStr = compStr.trim();
+            if (compStr[compStr.length - 1] != "%") return parseInt(compStr);
+            return Math.round(parseFloat(compStr.substring(0, compStr.length - 1)) * 2.55);
+        }
+        this.red = fixComponent(red);
+        this.green = fixComponent(green);
+        this.blue = fixComponent(blue);
+        if (typeof (alpha) != "undefined") {
+            this.alpha = (typeof (alpha) == typeof ("")) ? parseFloat(alpha as string) : alpha as number;
+        }
+    }
+
+    toHexHelp(value : number) : string {
+        let retVal = Math.round(value).toString(16);
+        if (retVal.length == 1)
+            return "0" + retVal;
+        return retVal;
+    };
+
+    toHex() : string {
+        return "#" + this.toHexHelp(this.red) + this.toHexHelp(this.green) + this.toHexHelp(this.blue);
+    };
+
+    contrastRatio(bgColor : ColorObj) {
+        let fgColor: ColorObj = this;
+
+        if (typeof (this.alpha) != "undefined")
+            fgColor = this.getOverlayColor(bgColor);
+
+        let lum1 = fgColor.relativeLuminance();
+        if (!bgColor.relativeLuminance) {
+            let s = "";
+            for (let key in bgColor) {
+                s += key + "\n";
+            }
+            alert(bgColor);
+            alert(s);
+        }
+        let lum2 = bgColor.relativeLuminance();
+        let ratio = (lum1 > lum2) ? (lum1 + .05) / (lum2 + .05) : (lum2 + .05) / (lum1 + .05);
+        return ratio;
+    };
+
+    relativeLuminance() : number {
+        let R = this.red / 255.0;
+        let G = this.green / 255.0;
+        let B = this.blue / 255.0;
+        R = R <= .03928 ? R / 12.92 : Math.pow((R + .055) / 1.055, 2.4);
+        G = G <= .03928 ? G / 12.92 : Math.pow((G + .055) / 1.055, 2.4);
+        B = B <= .03928 ? B / 12.92 : Math.pow((B + .055) / 1.055, 2.4);
+        return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+    };
+
+    mix(color2 : ColorObj, percThis : number) {
+        if (typeof (this.alpha) == "undefined" && typeof (color2.alpha) == "undefined") {
+            return new ColorObj(
+                percThis * this.red + (1 - percThis) * color2.red,
+                percThis * this.green + (1 - percThis) * color2.green,
+                percThis * this.blue + (1 - percThis) * color2.blue
+            );
+        } else {
+            let alphaThis = this.alpha ? this.alpha : 1;
+            let alphaOther = color2.alpha ? color2.alpha : 1;
+            return new ColorObj(
+                percThis * this.red + (1 - percThis) * color2.red,
+                percThis * this.green + (1 - percThis) * color2.green,
+                percThis * this.blue + (1 - percThis) * color2.blue,
+                percThis * alphaThis + (1 - percThis) * alphaOther
+            );
+        }
+    };
+
+    getOverlayColor(bgColor : ColorObj) {
+        if (typeof (this.alpha) == "undefined" || this.alpha >= 1) {
+            // No mixing required - it's opaque
+            return this;
+        }
+        if (this.alpha < 0) {
+            //		Haac.Error.logError("Invalid alpha value");
+            return null;
+        }
+        if (typeof (bgColor.alpha) != "undefined" && bgColor.alpha < 1) {
+            //		Haac.Error.logError("Cannot mix with a background alpha");
+            return null;
+        }
+        let retVal = this.mix(bgColor, this.alpha);
+        delete retVal.alpha;
+        return retVal;
+    }
+
+    public static fromCSSColor(cssStyleColor) {
+        let thisRed = -1;
+        let thisGreen = -1;
+        let thisBlue = -1;
+
+        cssStyleColor = cssStyleColor.toLowerCase();
+        if (cssStyleColor.startsWith("rgb(")) {
+            let rgbRegex = /\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
+            let m = cssStyleColor.match(rgbRegex);
+            if (m == null) return null;
+            else {
+                thisRed = m[1];
+                thisGreen = m[2];
+                thisBlue = m[3];
+            }
+        } else if (cssStyleColor.startsWith("rgba(")) {
+            let rgbRegex = /\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(.+)\s*\)/;
+            let m = cssStyleColor.match(rgbRegex);
+            if (m == null) return null;
+            else {
+                thisRed = m[1];
+                thisGreen = m[2];
+                thisBlue = m[3];
+            }
+        } else {
+            if (cssStyleColor.charAt(0) != "#") {
+                if (cssStyleColor in RPTUtil.CSSColorLookup)
+                    cssStyleColor = RPTUtil.CSSColorLookup[cssStyleColor];
+                else return null;
+            }
+            let fromHex = function (val) {
+                let lookup = {
+                    "a": 10,
+                    "b": 11,
+                    "c": 12,
+                    "d": 13,
+                    "e": 14,
+                    "f": 15
+                };
+                let retVal = 0;
+                for (let i = 0; i < val.length; ++i) {
+                    retVal = retVal * 16 +
+                        parseInt(val.charAt(i) in lookup ? lookup[val.charAt(i)] : val.charAt(i));
+                }
+                return retVal;
+            }
+            if (cssStyleColor.length == 4) {
+                // The three-digit RGB (#rgb) is converted to six-digit form (#rrggbb) by replicating digits
+                // (https://www.w3.org/TR/css-color-3/#rgb-color)
+                cssStyleColor = "#" + cssStyleColor.charAt(1).repeat(2) +
+                    cssStyleColor.charAt(2).repeat(2) +
+                    cssStyleColor.charAt(3).repeat(2);
+            }
+            thisRed = fromHex(cssStyleColor.substring(1, 3));
+            thisGreen = fromHex(cssStyleColor.substring(3, 5));
+            thisBlue = fromHex(cssStyleColor.substring(5, 7));
+        }
+        return new ColorObj(thisRed, thisGreen, thisBlue);
+    }
+}
+
+/* Return a node walker for the given element.
+ * bEnd is optional and defaults to false
+ * but if true, indicates the node is the end node*/
+export class NodeWalker {
+    node;
+    bEndTag;
+    constructor(element, bEnd?) {
+        this.node = element;
+        this.bEndTag = (bEnd == undefined ? false : bEnd == true);
+    }
+
+    nextNode() {
+        if (!this.bEndTag && this.node.firstChild) {
+            this.node = this.node.firstChild;
+        } else if (this.node.nextSibling) {
+            this.node = this.node.nextSibling;
+            this.bEndTag = false;
+        } else if (this.node.parentNode) {
+            this.node = this.node.parentNode;
+            this.bEndTag = true;
+        } else {
+            return false;
+        }
+        return true;
+    }
+    prevNode() {
+        if (this.bEndTag && this.node.lastChild) {
+            this.node = this.node.lastChild;
+            this.bEndTag = true;
+        } else if (this.node.previousSibling) {
+            this.node = this.node.previousSibling;
+            this.bEndTag = true;
+        } else if (this.node.parentNode) {
+            this.node = this.node.parentNode;
+            this.bEndTag = false;
+        } else {
+            return false;
+        }
+        if (this.bEndTag && (this.node.firstChild == null || typeof (this.node.firstChild) == 'undefined'))
+            this.bEndTag = false;
+        return true;
+    }
+}

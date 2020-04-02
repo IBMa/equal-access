@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-RadioChkInFieldset.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Radio Button Grouping Tests - type="radio"</h3>
+
+
+<ol>
+	<li>Test - Radio button grouping within a data table</li>
+</ol>
+
+<form action="..." method="post">
+
+<table role="presentation">
+<tr>
+	<td></td><td>col 1 header</td><td>col 2 header</td>
+<tr>
+    <td><input type="radio" name="item" value="1" title="item 1"></td> <td>item 1</td> <td>other info for item 1</td>
+</tr>
+    <td><input id="rb1"type="radio" name="item" value="2" title="item 2"></td> <td>item 2</td> <td>other info for item 2</td>
+</tr>
+    <td><input type="radio" name="item" value="3" title="item 3"></td> <td>item 3</td> <td>other info for item 3</td>
+</tr>
+
+</table>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1029",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form/table/tbody/tr[2]/td[1]/input",
+        "/html/body/form/table/tbody/tr[3]/td[1]/input",
+        "/html/body/form/table/tbody/tr[4]/td[1]/input"
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

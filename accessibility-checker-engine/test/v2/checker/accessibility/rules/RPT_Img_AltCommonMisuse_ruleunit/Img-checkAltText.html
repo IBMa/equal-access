@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Img-checkAltText.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Img Alt Text Tests</h3>
+
+
+<p>
+	Alt text attribute Tests
+</p>
+
+<ul>
+	<li>Test #1 - Valid Alt text</li>
+	<li>Test #2 - Missing Alt text attribute</li>
+	<li>Test #3 - Empty Alt text</li>
+	<li>Test #4 - Invalid Alt text</li>
+	<li>Test #5 - Alt text length too many characters</li>
+	<li>Test #6 - Alt text with only spaces</li>
+	<li>Test #7 - Alt text with commonly inserted strings by authoring tools</li>
+	<li>Test #8 - Alt text equal to image src name without directory names of extension</li>
+	<li>Test #9 - Alt text equal to image src name without directory names</li>
+	<li>Test #10 - Alt text equal to image src name exactly</li>
+</ul>
+
+
+<img id="image1" src="../support/nav_home.gif" alt="Home Navigation Bar" />
+
+<img id="image2" src="../support/nav_home.gif" />
+
+<img id="image3" src="../support/nav_home.gif" alt="" />
+
+<img id="image4" src="../support/nav_home.gif" alt="&#01;" />
+
+<img id="image5" src="../support/nav_home.gif" alt="a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m " />
+
+<img id="image6" src="../support/nav_home.gif" alt="   " />
+
+<img id="image7" src="../support/nav_home.gif" alt="short description" />
+
+<img id="image8" src="../support/nav_home.gif" alt="nav_home" />
+
+<img id="image9" src="../support/nav_home.gif" alt="nav_home.gif" />
+
+<img id="image10" src="../support/nav_home.gif" alt="../support/nav_home.gif" />
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "453",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/img[7]",
+        "/html/body/img[9]",
+        "/html/body/img[10]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

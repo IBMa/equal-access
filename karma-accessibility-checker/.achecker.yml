@@ -1,0 +1,99 @@
+# Custom Internal settings for testing purposes only
+
+# optional - Specify one rule archive which consist diffrent type of policies.
+# Default: latest
+customRuleServer: true
+rulePack: https://localhost:9445/rules/archives/preview/js
+ruleArchive: preview
+
+# We are setting no policies because we want the unit test to run for all policies
+# optional - Specify one or many policies to scan.
+# i.e. For one policy use policies: IBM_Accessibility_2017_02
+# i.e. Multiple policies: IBM_Accessibility_2017_02,IBM_Accessibility_2018_08 or refer to below as a list
+# Default: null
+# We are setting no policies because we want the unit test to run for all policies
+policies:
+    - IBM_Accessibility
+    - IBM_Accessibility_BETA
+
+# optional - Specify one or many violation levels on which to fail the test
+#            i.e. If specified violation then the testcase will only fail if
+#                 a violation is found uring the scan.
+# i.e. failLevels: violation
+# i.e. failLevels: violation,potential violation or refer to below as a list
+# Default: violation, potentialviolation
+failLevels:
+    - violation
+    - potentialviolation
+
+# optional - Specify one or many violation levels which should be reported
+#            i.e. If specified violation then in the report it would only contain
+#                 results which are level of violation.
+# i.e. reportLevels: violation
+# i.e. reportLevels: violation,potentialviolation or refer to below as a list
+# Default: violation, potentialviolation, recommendation, potentialrecommendation, manual
+reportLevels:
+    - violation
+    - potentialviolation
+    - recommendation
+    - potentialrecommendation
+    - manual
+    - pass
+
+# Optional - Specify if screenshoot should be captured of the current page that is being scanned
+# Default: true
+captureScreenshots: false
+
+# Optional - Which type should the results be outputted to
+#   outputFormat: json
+# Default: json
+outputFormat:
+    - json
+
+# Optional - Specify labels that you would like associated to your scan
+#
+# i.e.
+#   label: Firefox,master,V12,Linux
+#   label:
+#       - Firefox
+#       - master
+#       - V12
+#       - Linux
+# Default: N/A
+label:
+    - Firefox
+    - master
+    - V12
+    - Linux
+
+# optional - Where the scan results should be saved
+# Default: results
+outputFolder: results
+
+# Following are the non published config options
+
+# optional - Should Hidden content be scanned
+# true --> Yes scan hidden content
+# false --> Don't scan hidden content
+# Default: true
+checkHiddenContent: false
+
+# optional - Specify where to sent the slack notification
+# Default: local: false
+#
+# Supports the following types of slack authentications (API token, and webhook)
+#   API with channel: <account>:<token>#<channel>
+#   or
+#   Incoming Webhook: https://hooks.slack.com/services/TXXXXXXXX/BXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXX
+notifications:
+  slack: ibm-accessibility:xoxp-XXXXXXXXXXX-XXXXXXXXXXX-XXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX#a11y-tool-integration
+  localRun: false
+
+# optional - List of file extensions which should be scanned when scanning local files
+#            This list is used to determine if provided content to aChecker.getCompliance is
+#            local file or not.
+# Default: html, htm, svg
+extensions:
+    - html
+    - htm
+    - svg

@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-ImageHasAltOrTitle.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input Image type Tests</h3>
+
+
+
+<ul>
+	<li>Test - Valid Image Button with either Alt text or title attribute</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn1">Go</label>
+        <input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" alt="go button">
+        <div id="go_label">go button</div>
+		<input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" aria-labelledby="go_label">
+		<input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" aria-label="go button">
+		<input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" title="go button">
+
+		<button type="button" name="testButton1" id="button1">Press</button>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<input type="image" name="Go" id="GoBtn2" src="../support/btn_go.gif" value="go button" alt="go button">
+
+		<button type="button" name="testButton1" id="button1">Press</button>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn3">Go</label>
+		<input type="image" name="Go" id="GoBtn3" src="../support/btn_go.gif" value="go button" title="go button">
+
+		<button type="button" name="testButton1" id="button1">Press</button>
+	</fieldset>
+</form>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "10",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

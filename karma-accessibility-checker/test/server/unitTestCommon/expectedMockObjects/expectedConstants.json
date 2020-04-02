@@ -1,0 +1,47 @@
+{
+  "captureScreenshots": false,
+  "checkHiddenContent": false,
+  "customRuleServer": false,
+  "configFiles": [
+    ".achecker.yml",
+    ".achecker.yaml",
+    "achecker",
+    ".config/.achecker.yml",
+    ".config/.achecker.yaml",
+    ".config/achecker"
+  ],
+  "engineFileName": "engine-browser.js",
+  "extensions": [
+    "html",
+    "htm",
+    "svg"
+  ],
+  "failLevels": [
+    "violation",
+    "potentialviolation"
+  ],
+  "failureSlackNotificationColor": "#ff0000",
+  "githubServer": "https://github.com/",
+  "outputFolder": "results",
+  "outputFormat": "json",
+  "passingSlackNotificationColor": "#00ff00",
+  "reportLevels": [
+    "violation",
+    "potentialviolation",
+    "recommendation",
+    "potentialrecommendation",
+    "manual"
+  ],
+  "rulePack": "https://cc-rules.w3ibm.mybluemix.net/js/latest/",
+  "ruleArchive" : "latest",
+  "sendSlackNotificationFile": "sendSlackNotification.js",
+  "slackBotUsername": "IBM Accessibility (karma-ibma)",
+  "slackIconEmoji": "",
+  "slackIconURL": null,
+  "slackNotificationObjectFile": "slackNotificationObject.json",
+  "travisServer": "https://travis-ci.org/",
+  "notifications": {
+      "localRun": false
+  },
+  "baseA11yServerURL": "https://aat.w3ibm.mybluemix.net"
+}

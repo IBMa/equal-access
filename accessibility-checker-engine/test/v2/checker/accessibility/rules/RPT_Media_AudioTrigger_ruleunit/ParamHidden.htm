@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>OBJECT with param hidden</title>
+</head>
+<body>
+	<p>Some text</p>
+	<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab" width="200" height="40">
+		<param name="src" value="boring.wav" />
+		<param name="autoplay" value="true" />
+		<param name="autostart" value="true" />
+	</object>
+
+	<p>Some more text</p>
+
+	<object type="audio/x-wav" data="ding.wav" width="200" height="40">
+		<param hidden name="src" value="ding.wav" />
+		<param style="display: none" name="autoplay" value="true" />
+		<param style="visibility: hidden" name="autostart" value="true" />
+	</object>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "24",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/object[1]",
+        "/html/body/object[2]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+</html>

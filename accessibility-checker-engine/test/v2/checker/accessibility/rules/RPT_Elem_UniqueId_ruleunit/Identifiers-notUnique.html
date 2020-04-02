@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+	<style type='text/css'>
+        table { border: solid gray 1px; }
+        td, th { border-style: inset; border-width: 1px; }
+    </style>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Identifiers-notUnique.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Identifier Tests</h3>
+
+
+<ul>
+	<li>Test - Input, Select, Textarea and Table element Identifiers are not unique</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information</legend>
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="fn1">First Name</label>
+		<input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
+
+		<label for="ln1">Last Name</label>
+		<input type="text" name="lastname" id="fn1" value="enter last name" title="enter last name">
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please select the auto of your choice.</p>
+
+		<label for="cars1">Domestic Automobiles </label>
+		<select name="autos" id="cars1" title="autos">
+			<optgroup label="American cars">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+			</optgroup>
+		</select>
+
+		<label for="cars2">Foreign Automobiles </label>
+		<select name="autos" id="cars1" title="autos">
+			<optgroup label="European cars">
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+			</optgroup>
+		</select>
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please type the auto of your choice.</p>
+
+		<label for="cars3">List of Domestic Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars3" title="autos">		Ford, GM, Chrysler		</textarea>
+
+		<label for="cars4">List of Foreign Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars3" title="autos">		Jaguar, Volvo, Saab		</textarea>
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<table id="data_table1" summary="An example of a simple data table showing the number of boys and girls in each grade of an elementary school">
+	<caption>Boys and Girls in Elementary School Classes</caption>
+
+	<tr>
+		<th id="header1" scope="col">Class</th>
+		<th id="header1" scope="col"># of Boys</th>
+		<th id="header3" scope="col"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th id="header4" scope="row">1st Grade</th>
+		<td id="data1">11</td>
+		<td id="data1">10</td>
+	</tr>
+
+	<tr>
+		<th id="header5" scope="row">2nd Grade</th>
+		<td id="data3">7</td>
+		<td id="data4">12</td>
+	</tr>
+
+	<tr>
+		<th id="header6" scope="row">3rd Grade</th>
+		<td id="data5">12</td>
+		<td id="data6">14</td>
+	</tr>
+</table>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "377",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form[1]/fieldset/input[2]",
+        "/html/body/form[2]/fieldset/select[2]",
+        "/html/body/form[3]/fieldset/textarea[2]",
+        "/html/body/table/tbody/tr[1]/th[2]",
+        "/html/body/table/tbody/tr[2]/td[2]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "sample-start": "node TestFileServerLocal",
+        "webdriver-start": "webdriver-manager update && webdriver-manager start",
+        "test": "protractor conf.js"
+    },
+    "devDependencies": {
+        "accessibility-checker": "^1.0.9",
+        "express": "^4.16.3",
+        "protractor": "^5.4.0",
+        "serve-index": "^1.9.1"
+    }
+}

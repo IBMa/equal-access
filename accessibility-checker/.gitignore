@@ -1,0 +1,8 @@
+**/node_modules
+package
+package-external
+dist
+dependencies
+npm-debug.log
+results
+package-lock.json

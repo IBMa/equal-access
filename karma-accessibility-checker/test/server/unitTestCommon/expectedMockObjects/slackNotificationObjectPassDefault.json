@@ -1,0 +1,44 @@
+{
+    "username": "IBM Accessibility (karma-ibma)",
+    "as_user": false,
+    "icon_emoji": "",
+    "text": "Accessibility test run *PASSED* in *-277778 hrs 13 min -40 sec* with the following:",
+    "attachments": [
+        {
+            "color": "#00ff00",
+            "fields": [
+                {
+                    "title": "Violations",
+                    "value": 0,
+                    "short": true
+                },
+                {
+                    "short": true,
+                    "title": "Potential Violations",
+                    "value": 0
+                },
+                {
+                    "short": true,
+                    "title": "Recommendations",
+                    "value": 0
+                },
+                {
+                    "short": true,
+                    "title": "Potential Recommendations",
+                    "value": 0
+                },
+                {
+                    "title": "Manual Checks",
+                    "value": 0,
+                    "short": true
+                },
+                {
+                    "title": "Ignored",
+                    "value": 0,
+                    "short": true
+                }
+            ],
+            "fallback": "Violations: 0 Potential Violations: 0 Recommendations: 0 Potential Recommendations: 0 Manual Checks: 0 Ignored: 0 "
+        }
+    ]
+}

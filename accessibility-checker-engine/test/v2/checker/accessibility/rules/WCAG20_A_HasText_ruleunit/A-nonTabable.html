@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" style="filter: url(&quot;#none&quot;);">
+
+<head>
+    <style>
+        .bookmark-icon {
+            content: url("BookmarkIcon_32.png");
+        }
+    </style>
+    <title>Hyperlinks with tabindex -1</title>
+
+</head>
+
+<body>
+    <H2>Test non tabable hyerlink</H2>
+    <p>
+    </p>
+    <p>
+        This link has not content
+    </p>
+    <a href="htttp://www.ibm.com" tabindex="-1">
+    </a>
+
+    This link
+    <a href="/Products/Blindness/JAWS" tabindex="-1">
+        <h2 tabindex="0">
+            JAWS® SCREEN READER<br><br>
+        </h2>
+        <img src="/Content/Images/homepageJawsButton.jpg" alt="" class="spacer-1">
+    </a>
+
+    <a href="/b" tabindex="-1">
+        <p tabindex="0">
+        </p>
+        <img src="/Content/Images/homepageJawsButton.jpg" alt="" class="spacer-1">
+    </a>
+
+    <a href="/b" tabindex="-1">
+        <p tabindex="0">
+
+
+        </p>
+        <img src="/Content/Images/homepageJawsButton.jpg" alt="" class="spacer-1">
+    </a>
+
+    <a class="submenu-trigger core-sprite-edit" aria-label="Edit" href="https://local.dev-console.stage1.ng.bluemix.net/devops/code/edit/edit.html">
+    </a>
+
+    <a>
+        <div class="bookmark-icon" alt="I AM READING DIV">
+        </div>
+    </a>
+
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["WCAG20_A_HasText"],
+            results: [{
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "FAIL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[1]",
+                    "aria": "/document[1]/link[1]"
+                },
+                "reasonId": "Fail_1",
+                "message": "Hyperlink is missing link text or an image with alt text.",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[2]",
+                    "aria": "/document[1]/link[2]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Hyperlink contains content that is readable by assistive technologies.",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "FAIL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[3]",
+                    "aria": "/document[1]/link[3]"
+                },
+                "reasonId": "Fail_1",
+                "message": "Hyperlink is missing link text or an image with alt text.",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "FAIL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[4]",
+                    "aria": "/document[1]/link[4]"
+                },
+                "reasonId": "Fail_1",
+                "message": "Hyperlink is missing link text or an image with alt text.",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[5]",
+                    "aria": "/document[1]/link[5]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Hyperlink contains content that is readable by assistive technologies.",
+                "messageArgs": [],
+                "apiArgs": []
+            }, {
+                "ruleId": "WCAG20_A_HasText",
+                "category": "Accessibility",
+                "value": [
+                    "INFORMATION", "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/a[6]",
+                    "aria": "/document[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Hyperlink contains content that is readable by assistive technologies.",
+                "messageArgs": [],
+                "apiArgs": []
+            }]
+        }
+    </script>
+</body>
+
+</html>

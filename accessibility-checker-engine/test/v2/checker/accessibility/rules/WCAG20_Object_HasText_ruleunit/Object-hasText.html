@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Object-hasText.html</h2>
+
+
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+
+<h3>Object text Tests</h3>
+
+
+<ul>
+	<li>Test - Valid Object text as text</li>
+	<li>Test - Valid Object text as image</li>
+  <li>Test - Valid Object with text after element</li>
+  <li>Test - Valid Object with text before element</li>
+</ul>
+
+<object id="object1" data="../support/fish.gif" Type="image/gif" Title="Fish" width="200" height="200">
+	An image of a fish
+</object>
+
+<object id="object2" data="../support/chicken.gif" Type="image/gif" Title="Chicken" width="200" height="200">
+	<img src="../support/chicken.gif" alt="An image of a chicken if browser cannot load data" />
+</object>
+
+<object role="application" aria-label="object" id="object3" data="../support/chicken.gif" title="Object one">
+  <param aria-label="param" id="param" name="foo" value="bar">You have an unsupportive browser
+</object>
+
+<object id="object4" data="../support/fish.gif" Type="image/gif" Title="Fish" width="200" height="200">An image of a fish
+  <span style="display: none">An image of a fish</span>
+</object>
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "20",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

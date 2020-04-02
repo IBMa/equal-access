@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <div role="main">
+
+        <a href="#navskip">skip to main content</a>
+
+        <a name="navskip"></a>
+
+        <h2>Test case: Lists-TextNodeOnly.html</h2>
+
+        <!-- ################################################################### -->
+
+        <h3>Definition Lists Tests</h3>
+
+        <ul>
+            <li>Test #1 - Valid dl list with only textnode </li>
+            <li>Test #2 - Valid ul list with only textnode </li>
+            <li>Test #3 - Valid ol list with only textnode </li>
+            <li>Test #4 - Valid menu list with only textnode </li>
+            <li>Test #5 - Valid ul with only textnode embedded under another ol</li>
+            <li>Test #6 - Valid dl with only textnode embedded under another menu</li>
+        </ul>
+
+        <!-- Test #1 - Valid dl list with only textnode -->
+        <dl> DL TextNode
+        </dl>
+
+        <!-- Test #2 - Valid ul list with only textnode -->
+        <ul> UL TextNode
+        </ul>
+
+        <!-- Test #3 - Valid ol list with only textnode -->
+        <ol> OL TextNode
+        </ol>
+
+        <!-- Test #4 - Valid menu list with only textnode -->
+        <menu> menu TextNode
+        </menu>
+
+        <!-- Test #5 - Valid ul with only textnode embedded under another ol -->
+        <ul> ul Textnode with embedded ol
+            <li>
+                <ol> ol Textnode embedded under ul </ol>
+            </li>
+        </ul>
+
+        <!-- Test #6 - Valid dl with only textnode embedded under another menu -->
+        <dl> dl Textnode with embedded menu
+            <dt>
+				<menu> menu Textnode embedded under dl->dt </menu>
+			</dt>
+            <dd>Description of the dt, menu Textnode embedded under dl->dt</dd>
+        </dl>
+    </div>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof (OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof (OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [
+            {
+                ruleId: "3",
+                passedXpaths: [
+      ],
+                failedXpaths: [
+      ]
+    }
+  ];
+        //]]>
+    </script>
+</body>
+
+</html>

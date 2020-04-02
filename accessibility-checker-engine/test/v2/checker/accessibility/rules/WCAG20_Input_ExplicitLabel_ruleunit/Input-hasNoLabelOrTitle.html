@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Input-hasNoLabelOrTitle.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Input type Tests</h3>
+
+
+<ul>
+	<li>Test #1 - No Associated label tag or title attribute - Input type="text"</li>
+	<li>Test #2 - No Associated label tag or title attribute - Input type="file"</li>
+	<li>Test #3 - No Associated label tag or title attribute - Input type="password"</li>
+	<li>Test #4 - No Associated label tag or title attribute - Select"</li>
+	<li>Test #5 - No Associated label tag or title attribute - Textarea"</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information</legend>
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="ln1"></label>
+		<input type="text" name="lastname" id="ln1" value="enter last name">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: File Information</legend>
+		<p>Fieldset text: Please enter the file information.</p>
+
+		<label for="lfn1"></label>
+		<input type="file" name="lastfilename" id="lfn1" value="enter last file name">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Personal Information</legend>
+		<p>Fieldset text: Please enter your personal information.</p>
+
+		<label for="lpw1"></label>
+		<input type="password" name="lastpassword" id="lpw1" value="enter last password">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please select the auto of your choice.</p>
+
+		<label for="cars1"></label>
+		<select name="autos" id="cars1">
+			<optgroup label="American cars">
+				<option value="Ford">Ford</option>
+				<option value="GM">GM</option>
+				<option value="Chrysler">Chrysler</option>
+			</optgroup>
+
+			<optgroup label="European cars">
+				<option value="Jaguar">Jaguar</option>
+				<option value="Volvo">Volvo</option>
+				<option value="Saab">Saab</option>
+			</optgroup>
+		</select>
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Please type the auto of your choice.</p>
+
+		<label for="cars3"></label>
+		<textarea rows="2" cols="50" name="autos" id="cars1">		Ford, GM, Chrysler
+		</textarea>
+	</fieldset>
+</form>
+
+
+<a name="navskip">End</a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "41",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/form[1]/fieldset/input",
+        "/html/body/form[2]/fieldset/input",
+        "/html/body/form[3]/fieldset/input",
+        "/html/body/form[4]/fieldset/select",
+        "/html/body/form[5]/fieldset/textarea"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

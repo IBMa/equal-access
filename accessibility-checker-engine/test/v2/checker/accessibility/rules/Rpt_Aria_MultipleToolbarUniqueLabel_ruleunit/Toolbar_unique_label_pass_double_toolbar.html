@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Multiple toolbar widgets on a page must have unique labels specified. G1188</title>
+</head>
+<body>
+<p>Multiple toolbar widgets on a page must have unique labels specified.
+</p>
+<p>pass - double tool bars with unique labels</p>
+
+<div class="toolbar" role="toolbar" aria-label="toolbar_1" id="t1">
+    <div class="toolbar-item selected" role="button" tabindex="0">
+ 	Tool 1
+    </div>
+    <div class="toolbar-item" role="button" tabindex="-1">
+      Tool 2
+    </div>
+    <div class="toolbar-item" role="button" tabindex="-1">
+      Tool 3
+    </div>
+    <div class="menu-wrapper">
+      <button tabindex="-1" aria-haspopup="true" aria-controls="menu1" class="toolbar-item menu-button">
+                Menu
+      </button>
+      <ul role="menu" id="menu1">
+        <li role="menuitem">
+          Item 1
+        </li>
+        <li role="menuitem">
+          Item 2
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+<div class="toolbar" role="toolbar" aria-label="toolbar_2" id="t2">
+    <div class="toolbar-item selected" role="button" tabindex="0">
+ 	Tool 1
+    </div>
+    <div class="toolbar-item" role="button" tabindex="-1">
+      Tool 2
+    </div>
+    <div class="toolbar-item" role="button" tabindex="-1">
+      Tool 3
+    </div>
+    <div class="menu-wrapper">
+      <button tabindex="-1" aria-haspopup="true" aria-controls="menu2" class="toolbar-item menu-button">
+                Menu
+      </button>
+      <ul role="menu" id="menu2">
+        <li role="menuitem">
+          Item 1
+        </li>
+        <li role="menuitem">
+          Item 2
+        </li>
+      </ul>
+    </div>
+  </div>
+  
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1188",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

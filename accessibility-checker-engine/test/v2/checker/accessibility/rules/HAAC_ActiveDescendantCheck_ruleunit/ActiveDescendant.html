@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Active descendant of composite widget with DOM focus must be valid</title>
+</head>
+<body>
+
+
+<!-- fail case: reference not a child -->
+<input type="text" aria-activedescendant="rb12" aria-readonly="true" 
+   aria-owns="cb1-list" aria-autocomplete="list" role="combobox" id="failed_1">
+<ul aria-expanded="true" role="listbox" id="cb1-list">
+	<li role="option" id="cb1-opt1">Alabama</li>
+	<li role="option" id="cb1-opt7">Colorado</li>
+</ul>
+
+<!-- fail case. aria-controls  -->
+<input id="control2" type="text" aria-label="Tag" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="owned_listbox2" aria-activedescendant="cb1-list">
+	<ul role="listbox" id="owned_listbox2">
+		<li role="option">Zebra</li>
+		<li role="option" aria-selected="true" id="selected_option2">Zoom</li>
+  </ul>
+  
+<!-- fail case. activedescendant is hidden-->
+  <input id="control3" type="text" aria-label="Tag3" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="owned_listbox3" aria-activedescendant="selected_option3">
+	<ul role="listbox" id="owned_listbox3" hidden="true">
+		<li role="option">Zebra</li>
+		<li role="option" aria-selected="true" id="selected_option3">Zoom</li>
+	</ul>
+
+<!-- failed. aria-controls  not a textbox-->
+<input id="control1" type="text" aria-label="Tag" role="combobox" aria-expanded="true" aria-autocomplete="list" aria-controls="owned_listbox" aria-activedescendant="selected_option">
+	<ul role="listbox" id="owned_listbox">
+		<li role="option">Zebra</li>
+		<li role="option" aria-selected="true" id="selected_option">Zoom</li>
+	</ul>
+  
+<!-- pass case.  aria-activedescendant id doesn't exist -->  
+<div role=combobox id=combobox4_2 tabindex="0" aria-activedescendant="Amara_option" aria-expanded=false 
+  aria-controls=input1 aria-labelledby=combobox4_5  aria-owns=owned_listbox> 
+    invalid<br>
+    <label> combobox4_2 <input id=input4_2 type="text" tabindex="0"> </label>
+</div>
+
+<!-- Pass case: aria-owns -->
+  <input type="text" aria-activedescendant="cb1-opt1" aria-readonly="true" 
+   aria-owns="cb1-list div1" aria-autocomplete="list" role="combobox" id="cb1-edit">
+<ul aria-expanded="true" role="listbox" id="cb1-list">
+	<li role="option" id="cb1-opt1">Alabama</li>
+	<li role="option" id="cb1-opt2">Colorado</li>
+</ul>
+
+<div id = "div1"></div>
+
+<!-- pass: direct child -->
+<h3 id="group_label_1">
+  Pizza Crust
+</h3>
+  <ul id="rg1" class="radiogroup" role="radiogroup" aria-labelledby="group_label_1" aria-activedescendant="rb11"
+    tabindex="0">
+    <li id="rb11" role="radio" aria-checked="false">
+    	Regular crust
+    </li>
+    <li id="rb12" role="radio" aria-checked="false">
+            Deep dish
+    </li>
+    <li id="rb13" role="radio" aria-checked="false">
+            Thin crust
+      </li>
+  </ul>
+
+
+<!-- pass. aria-controls  -->
+<input id="control5" type="text" aria-label="Tag" aria-expanded="true" aria-autocomplete="list" aria-controls="owned_listbox5" aria-activedescendant="selected_option5">
+	<ul role="listbox" id="owned_listbox5">
+		<li role="option">Zebra</li>
+		<li role="option" aria-selected="true" id="selected_option5">Zoom</li>
+	</ul>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1186",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/input",
+        "/html/body/input[2]",
+        "/html/body/input[3]",
+        "/html/body/input[4]"
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

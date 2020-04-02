@@ -1,0 +1,41 @@
+{
+    "name": "rule-server",
+    "version": "3.0.0-beta.0",
+    "description": "",
+    "main": "src/main.ts",
+    "scripts": {
+        "build:ace": "cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && cd ../rule-server",
+        "build:ace:debug": "cd ../accessibility-checker-engine && npm install && npm run build-debug && npm run build-node && cd ../rule-server",
+        "build": "rm -rf dist && npm run build:ace && mkdir -p src/routes && mkdir -p api && mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
+        "start": "npm run build && cd dist && node main.js",
+        "debug": "npm run build && TS_NODE_PROJECT=./src/tsconfig.json node --nolazy --inspect-brk=9229 -r ts-node/register ./src/main.ts",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "integration": "echo 'no integration test'"
+    },
+    "author": "",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cfenv": "^1.2.2",
+        "compression": "^1.7.4",
+        "cors": "^2.8.5",
+        "cradle": "^0.7.1",
+        "crypto-js": "^3.1.9-1",
+        "express": "^4.17.1",
+        "mkdirp": "^1.0.3",
+        "node-fetch": "^2.6.0",
+        "tsoa": "^2.5.13",
+        "typescript": "^3.7.5"
+    },
+    "devDependencies": {
+        "@types/node": "^13.7.1",
+        "express-http-proxy": "^1.6.0",
+        "gulp": "^4.0.2",
+        "nano": "^8.1.0",
+        "pem": "^1.14.4",
+        "ts-node": "^8.6.2"
+    },
+    "engines": {
+        "node": "12.14.1",
+        "npm": "6.13.7"
+    }
+}

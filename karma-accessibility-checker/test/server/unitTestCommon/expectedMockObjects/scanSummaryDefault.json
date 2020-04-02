@@ -1,0 +1,34 @@
+{
+    "counts": {
+        "violation": 0,
+        "potentialviolation": 0,
+        "recommendation": 0,
+        "potentialrecommendation": 0,
+        "manual": 0,
+        "ignored": 0
+    },
+    "startReport": 999999999999,
+    "endReport": "",
+    "toolID": "karma-accessibility-checker-v2.4.1",
+    "ruleArchive":"March 2017 Deployment (2017MarchDeploy)",
+    "policies": null,
+    "reportLevels": [
+        "violation",
+        "potentialviolation",
+        "recommendation",
+        "potentialrecommendation",
+        "manual"
+    ],
+    "labels": [
+        "Firefox",
+        "master",
+        "V12",
+        "Linux"
+    ],
+    "failLevels": [
+        "violation",
+        "potentialviolation"
+    ],
+    "scanID": "3720d06c-b596-42b8-a1af-a601cdbb6081",
+    "pageScanSummary": []
+}

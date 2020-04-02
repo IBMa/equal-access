@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to main content</a>
+
+    <h1>Test case: widget-button-tabbable.html</h1>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+    <div>
+        <h2>Passing Examples</h2>
+        <div>
+            <label><input name="group1" type="radio" value="val1">Radio 1</label>
+            <label><input name="group1" type="radio" value="val2">Radio 2</label>
+            <label><input name="group1" type="radio" value="val3">Radio 3</label>
+        </div>
+        <ul id="rg2" role="radiogroup" aria-labelledby="rg2_label" tabindex="0" aria-activedescendant="r4">
+            <li id="r1" role="radio" aria-checked="false">
+                <img role="presentation" src="http://www.oaa-accessibility.org/media/examples/images/radio-unchecked.gif" />                Thai
+            </li>
+            <li id="r2" role="radio" aria-checked="false">
+                <img role="presentation" src="http://www.oaa-accessibility.org/media/examples/images/radio-unchecked.gif" />                Subway
+            </li>
+            <li id="r3" role="radio" aria-checked="false">
+                <img role="presentation" src="http://www.oaa-accessibility.org/media/examples/images/radio-unchecked.gif" />                Jimmy Johns
+            </li>
+            <li id="r4" role="radio" aria-checked="true">
+                <img role="presentation" src="http://www.oaa-accessibility.org/media/examples/images/radio-checked.gif" />                Radio Maria
+            </li>
+            <li id="r5" role="radio" aria-checked="false">
+                <img role="presentation" src="http://www.oaa-accessibility.org/media/examples/images/radio-unchecked.gif" />                Rainbow Gardens
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h2>Failing examples</h2>
+    </div>
+    <a name="navskip">End</a>
+
+
+    <script type="text/javascript">
+    //<![CDATA[
+    if (typeof (OpenAjax) == 'undefined') OpenAjax = {}
+    if (typeof (OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+    OpenAjax.a11y.ruleCoverage = [
+        {
+            ruleId: "1177",
+            passedXpaths: [
+            ],
+            failedXpaths: [
+            ]
+        }
+    ];
+//]]>
+</script>
+</body>
+
+</html>

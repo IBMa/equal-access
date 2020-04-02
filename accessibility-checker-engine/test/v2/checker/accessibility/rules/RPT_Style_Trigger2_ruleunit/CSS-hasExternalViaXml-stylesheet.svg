@@ -1,0 +1,17 @@
+<?xml-stylesheet type="text/css" href="svg-stylesheet.css" ?>
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+    <ellipse class="myGreen" cx="110" cy="60"  rx="100" ry="50"/>
+
+	<text id="text1" x="60" y="50" font-size="20">
+      testing text1
+    </text>
+
+    <ellipse class="myRed"   cx="110" cy="80" rx="100" ry="50"/>
+
+	<text id="text2" x="60" y="150" font-size="20">
+      testing text2
+    </text>
+
+</svg>

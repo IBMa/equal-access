@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+
+	<style type="text/css">
+	<![CDATA[
+	circle.myGreen {
+    stroke: #006600;
+    fill:   #00cc00;
+	}
+	circle.myRed {
+    stroke: #660000;
+    fill:   #cc0000;
+	}
+	ellipse.myGreen {
+    stroke: #006600;
+    fill:   #00cc00;
+	position:absolute;
+	z-index:1;
+	}
+	ellipse.myRed {
+    stroke: #660000;
+    fill:   #cc0000;
+	position:absolute;
+	z-index:-1;
+	}
+	#text1{
+    fill: #0066FF;
+	}
+	]]>
+	</style>
+
+    <ellipse class="myGreen" cx="110" cy="60"  rx="100" ry="50"/>
+
+	<text id="text1" x="60" y="50" font-size="20">
+      testing text1
+    </text>
+
+    <ellipse class="myRed"   cx="110" cy="80" rx="100" ry="50"/>
+
+	<text id="text2" x="60" y="150" font-size="20">
+      testing text2
+    </text>
+
+</svg>

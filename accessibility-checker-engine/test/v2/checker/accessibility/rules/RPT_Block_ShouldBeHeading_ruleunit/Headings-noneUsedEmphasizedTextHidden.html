@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+    <script>
+        // Need to set this to simulate setting being set by tools
+        document.PT_CHECK_HIDDEN_CONTENT = true;
+    </script>
+
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Headings-noneUsedEmphasizedTextHidden.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Headings Tests</h3>
+
+
+<ul>
+	<li>Test - Headings not used - instead emphasized text used</li>
+</ul>
+
+<p>
+	<b hidden>Fake Heading</b>
+</p>
+
+<p>
+	<em style="display: none">Fake Heading</em>
+</p>
+
+<p>
+	<i style="visibility: hidden">Fake Heading</i>
+</p>
+
+<p>
+	<strong hidden>Fake Heading</strong>
+</p>
+
+<p>
+	<u style="display: none">Fake Heading</u>
+</p>
+
+<p>
+	<font size="8" color="red" style="visibility: hidden">Fake Heading</font>
+</p>
+
+<p>
+	<font size="larger" color="red" hidden>Fake Heading</font>
+</p>
+
+<br>
+	<b style="display: none">Fake Heading</b>
+
+<br>
+	<em style="visibility: hidden">Fake Heading</em>
+
+<br>
+	<i hidden>Fake Heading</i>
+
+<br>
+	<strong style="display: none">Fake Heading</strong>
+
+<br>
+	<u style="visibility: hidden">Fake Heading</u>
+
+<br>
+	<font size="8" color="red" hidden>Fake Heading</font>
+
+<br>
+	<font size="larger" color="red" style="display: none">Fake Heading</font>
+
+<br>
+
+<div>
+	<b style="visibility: hidden">Fake Heading</b>
+</div>
+
+<div>
+	<em hidden>Fake Heading</em>
+</div>
+
+<div>
+	<i style="display: none">Fake Heading</i>
+</div>
+
+<div>
+	<strong style="visibility: hidden">Fake Heading</strong>
+</div>
+
+<div>
+	<u hidden>Fake Heading</u>
+</div>
+
+<div>
+	<font size="8" color="red" style="display: none">Fake Heading</font>
+</div>
+
+<div>
+	<font size="larger" color="red" style="visibility: hidden">Fake Heading</font>
+</div>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "322",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        // By default we do not check hidden content so rule will not trigger on theses
+        // "/html/body/p[1]",
+        // "/html/body/p[2]",
+        // "/html/body/p[3]",
+        // "/html/body/p[4]",
+        // "/html/body/p[5]",
+        // "/html/body/p[6]",
+        // "/html/body/p[7]",
+        // "/html/body/br[1]",
+        // "/html/body/br[2]",
+        // "/html/body/br[3]",
+        // "/html/body/br[4]",
+        // "/html/body/br[5]",
+        // "/html/body/br[6]",
+        // "/html/body/br[7]",
+        // "/html/body/div[1]",
+        // "/html/body/div[2]",
+        // "/html/body/div[3]",
+        // "/html/body/div[4]",
+        // "/html/body/div[5]",
+        // "/html/body/div[6]",
+        // "/html/body/div[7]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

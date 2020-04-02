@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Avoid matching partial text</title>
+	</head>
+	<body>
+
+    <!-- Fail: do not match by partial words -->
+      <label for="file3">Progress</label>
+      <progress id="file3" max="100" value="70" aria-label="Progressing"> 70% </progress>
+
+    <!-- Fail: do not match by partial words -->
+      <label for="file4">thing</label>
+      <progress id="file4" max="100" value="70" aria-label="Something"> 70% </progress>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1202",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        // progressbar is not an interactive component - not an error
+        // "/html/body/progress",
+        // "/html/body/progress[2]"
+      ]
+    }
+  ];
+//]]>
+</script>
+	</body>
+	</html>

@@ -1,0 +1,682 @@
+{
+    "numExecuted": 428,
+    "results": [
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[1]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 1,
+            "snippet": "<style data-namewalk=\"3\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[1]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"3\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[2]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 1,
+            "snippet": "<style data-namewalk=\"4\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[2]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"4\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[3]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 1,
+            "snippet": "<style data-namewalk=\"5\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[3]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"5\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[4]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"6\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[4]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"6\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[5]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"7\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[6]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"8\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[7]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"9\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[8]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"10\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[9]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"11\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[10]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"12\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[11]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"13\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[12]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"14\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[13]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"15\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[13]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"15\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[14]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"16\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[14]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"16\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[15]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"17\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[15]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"17\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[16]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_ColorSemantics1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"18\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[16]"
+            },
+            "reasonId": "Potential_1",
+            "ruleId": "RPT_Style_HinderFocus1",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"18\" md-theme-style=\"\">",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "ignored": false,
+            "level": "potentialviolation"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 0,
+                "left": 0,
+                "top": 0,
+                "width": 0
+            },
+            "category": "Accessibility",
+            "message": "Confirm Windows high contrast mode is supported for CSS background images.",
+            "messageArgs": [],
+            "path": {
+                "aria": "",
+                "dom": "/html[1]/head[1]/style[1]"
+            },
+            "reasonId": "Manual_1",
+            "ruleId": "RPT_Style_Trigger2",
+            "ruleTime": 0,
+            "snippet": "<style data-namewalk=\"3\" class=\"ng-binding\" md-theme-style=\"\">",
+            "value": [
+                "RECOMMENDATION",
+                "MANUAL"
+            ],
+            "ignored": false,
+            "level": "manual"
+        }
+    ],
+    "summary": {
+        "counts": {
+            "violation": 0,
+            "potentialviolation": 24,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 1,
+            "ignored": 0
+        },
+        "scanTime": 53,
+        "ruleArchive": "September 2019 Deployment (2019SeptDeploy)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation",
+            "recommendation",
+            "potentialrecommendation",
+            "manual"
+        ],
+        "startScan": 1573070070559,
+        "URL": "file:///Users/thbrunet/Tom/Git/Tools-Boilerplates/IBM-AAT/nodejs/jest-selenium/sample/Hello.html"
+    },
+    "scanID": "17fa83f2-a35e-44c3-b604-34eec4dbeb00",
+    "toolID": "@ibma/aat-v2.0.0-alpha",
+    "label": "HOME"
+}

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+	<head>
+		<title>Checks that the HTML autocomplete attribute has a correct value </title>
+	</head>
+	<body>
+    <!-- Fail: unknown term -->
+    <input autocomplete="badterm" />
+
+    <!-- Fail: work not allowed before photo -->
+    <input autocomplete="work photo" />
+
+    <!--Fail: invalid order-->
+    <input autocomplete="work shipping email" />
+
+    <!--Fail: comma separated instead of space separated -->
+    <input autocomplete="work,email" />
+
+    <!--Fail: inapprpriate term for type of field -->
+    <input type="number" autocomplete="email" />
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1203",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/input",
+        "/html/body/input[2]",
+        "/html/body/input[3]",
+        "/html/body/input[4]",
+        "/html/body/input[5]",
+      ]
+    }
+  ];
+//]]>
+</script>
+	</body>
+	</html>

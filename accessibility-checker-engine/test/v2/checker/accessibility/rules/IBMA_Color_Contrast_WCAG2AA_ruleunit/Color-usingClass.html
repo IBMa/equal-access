@@ -1,0 +1,362 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+
+    <style type='text/css'>
+        .lowContrast1 { color:black; background-color: #333333 }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast2 { color:black; background-color: #333333; font-size: 14pt; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast3 { color:black; background-color: #333333; font-size: 1.2em; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast4 { color:black; background-color: #333333; font-size: 120%; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast5 { color:black; background-color: #333333; font-size: 14pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast6 { color:black; background-color: #333333; font-size: 1.2em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast7 { color:black; background-color: #333333; font-size: 120%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast8 { color:black; background-color: #333333; font-size: 18pt; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast9 { color:black; background-color: #333333; font-size: 1.5em; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast10 { color:black; background-color: #333333; font-size: 150%; }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast11 { color:black; background-color: #333333; font-size: 18pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast12 { color:black; background-color: #333333; font-size: 1.5em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .lowContrast13 { color:black; background-color: #333333; font-size: 150%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast1 { color:black; background-color: #666666 }
+    </style>
+
+    <style type='text/css'>
+        .medContrast2 { color:black; background-color: #666666; font-size: 14pt; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast3 { color:black; background-color: #666666; font-size: 1.2em; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast4 { color:black; background-color: #666666; font-size: 120%; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast5 { color:black; background-color: #666666; font-size: 14pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast6 { color:black; background-color: #666666; font-size: 1.2em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast7 { color:black; background-color: #666666; font-size: 120%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast8 { color:black; background-color: #666666; font-size: 18pt; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast9 { color:black; background-color: #666666; font-size: 1.5em; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast10 { color:black; background-color: #666666; font-size: 150%; }
+    </style>
+
+    <style type='text/css'>
+        .medContrast11 { color:black; background-color: #666666; font-size: 18pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast12 { color:black; background-color: #666666; font-size: 1.5em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .medContrast13 { color:black; background-color: #666666; font-size: 150%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast1 { color:black; background-color: #ffffff }
+    </style>
+
+    <style type='text/css'>
+        .highContrast2 { color:black; background-color: #ffffff; font-size: 14pt; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast3 { color:black; background-color: #ffffff; font-size: 1.2em; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast4 { color:black; background-color: #ffffff; font-size: 120%; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast5 { color:black; background-color: #ffffff; font-size: 14pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast6 { color:black; background-color: #ffffff; font-size: 1.2em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast7 { color:black; background-color: #ffffff; font-size: 120%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast8 { color:black; background-color: #ffffff; font-size: 18pt; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast9 { color:black; background-color: #ffffff; font-size: 1.5em; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast10 { color:black; background-color: #ffffff; font-size: 150%; }
+    </style>
+
+    <style type='text/css'>
+        .highContrast11 { color:black; background-color: #ffffff; font-size: 18pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast12 { color:black; background-color: #ffffff; font-size: 1.5em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .highContrast13 { color:black; background-color: #ffffff; font-size: 150%; font-weight: bold }
+    </style>
+    
+    <style type='text/css'>
+        .incomplete1 { color: black; }
+        .incomplete2 { background-color: black; }
+    </style>
+    
+    <style type='text/css'>
+        .alphaContrast1 { color:black; background-color: rgba(0,0,0,.6); }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast2 { color:black; background-color: rgba(0,0,0,.6); font-size: 14pt; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast3 { color:black; background-color: rgba(0,0,0,.6); font-size: 1.2em; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast4 { color:black; background-color: rgba(0,0,0,.6); font-size: 120%; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast5 { color:black; background-color: rgba(0,0,0,.6); font-size: 14pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast6 { color:black; background-color: rgba(0,0,0,.6); font-size: 1.2em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast7 { color:black; background-color: rgba(0,0,0,.6); font-size: 120%; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast8 { color:black; background-color: rgba(0,0,0,.6); font-size: 18pt; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast9 { color:black; background-color: rgba(0,0,0,.6); font-size: 1.5em; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast10 { color:black; background-color: rgba(0,0,0,.6); font-size: 150%; }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast11 { color:black; background-color: rgba(0,0,0,.6); font-size: 18pt; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast12 { color:black; background-color: rgba(0,0,0,.6); font-size: 1.5em; font-weight: bold }
+    </style>
+
+    <style type='text/css'>
+        .alphaContrast13 { color:black; background-color: rgba(0,0,0,.6); font-size: 150%; font-weight: bold }
+    </style>
+ </head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Color-usingClass.html</h2>
+
+
+<!-- ################################################################### -->
+
+
+<h3>Color using Class Tests</h3>
+
+
+<ul>
+	<li>Test - Color using Class</li>
+</ul>
+
+    <div class="lowContrast1">This text is fail - div[1].</div>
+    <div class="lowContrast2">This text is fail - div[2].</div>
+    <div class="lowContrast3">This text is fail - div[3].</div>
+    <div class="lowContrast4">This text is fail - div[4].</div>
+    <div class="lowContrast5">This text is fail - div[5].</div>
+    <div class="lowContrast6">This text is fail - div[6].</div>
+    <div class="lowContrast7">This text is fail - div[7].</div>
+    <div class="lowContrast8">This text is fail - div[8].</div>
+    <div class="lowContrast9">This text is fail - div[9].</div>
+    <div class="lowContrast10">This text is fail - div[10].</div>
+    <div class="lowContrast11">This text is fail - div[11].</div>
+    <div class="lowContrast12">This text is fail - div[12].</div>
+    <div class="lowContrast13">This text is fail - div[13].</div>
+    
+    <div class="medContrast1">This text is fail - div[14].</div>
+    <div class="medContrast2">This text is fail - div[15].</div>
+    <div class="medContrast3">This text is fail - div[16].</div>
+    <div class="medContrast4">This text is fail - div[17].</div>
+    <div class="medContrast5">This text is pass - div[18].</div>
+    <div class="medContrast6">This text is pass - div[19].</div>
+    <div class="medContrast7">This text is pass - div[20].</div>
+    <div class="medContrast8">This text is pass - div[21].</div>
+    <div class="medContrast9">This text is pass - div[22].</div>
+    <div class="medContrast10">This text is pass - div[23].</div>
+    <div class="medContrast11">This text is pass - div[24].</div>
+    <div class="medContrast12">This text is pass - div[25].</div>
+    <div class="medContrast13">This text is pass - div[26].</div>
+
+    <div class="highContrast1">This text is pass - div[27].</div>
+    <div class="highContrast2">This text is pass - div[28].</div>
+    <div class="highContrast3">This text is pass - div[29].</div>
+    <div class="highContrast4">This text is pass - div[30].</div>
+    <div class="highContrast5">This text is pass - div[31].</div>
+    <div class="highContrast6">This text is pass - div[32].</div>
+    <div class="highContrast7">This text is pass - div[33].</div>
+    <div class="highContrast8">This text is pass - div[34].</div>
+    <div class="highContrast9">This text is pass - div[35].</div>
+    <div class="highContrast10">This text is pass - div[36].</div>
+    <div class="highContrast11">This text is pass - div[37].</div>
+    <div class="highContrast12">This text is pass - div[38].</div>
+    <div class="highContrast13">This text is pass - div[39].</div>
+
+    <div class="incomplete1">This text is pass - div[40].</div>
+    <div class="incomplete2">This text is fail - div[41].</div>
+
+    <div class="alphaContrast1">This text is fail - div[42].</div>
+    <div class="alphaContrast2">This text is fail - div[43].</div>
+    <div class="alphaContrast3">This text is fail - div[44].</div>
+    <div class="alphaContrast4">This text is fail - div[45].</div>
+    <div class="alphaContrast5">This text is pass - div[46].</div>
+    <div class="alphaContrast6">This text is pass - div[47].</div>
+    <div class="alphaContrast7">This text is pass - div[48].</div>
+    <div class="alphaContrast8">This text is pass - div[49].</div>
+    <div class="alphaContrast9">This text is pass - div[50].</div>
+    <div class="alphaContrast10">This text is pass - div[51].</div>
+    <div class="alphaContrast11">This text is pass - div[52].</div>
+    <div class="alphaContrast12">This text is pass - div[53].</div>
+    <div class="alphaContrast13">This text is pass - div[54].</div>
+
+    <div aria-disabled="true" class="lowContrast1">This text is pass - div[55].</div>
+    <div>
+        <label class="lowContrast1" for="disabledControl">This text is pass - div[56]/label</label>
+        <input id="disabledControl" disabled />
+    </div>
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1148",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/div[1]",
+        "/html/body/div[2]",
+        "/html/body/div[3]",
+        "/html/body/div[4]",
+        "/html/body/div[5]",
+        "/html/body/div[6]",
+        "/html/body/div[7]",
+        "/html/body/div[8]",
+        "/html/body/div[9]",
+        "/html/body/div[10]",
+        "/html/body/div[11]",
+        "/html/body/div[12]",
+        "/html/body/div[13]",
+        "/html/body/div[14]",
+        "/html/body/div[15]",
+        "/html/body/div[16]",
+        "/html/body/div[17]",
+        "/html/body/div[41]",
+        "/html/body/div[42]",
+        "/html/body/div[43]",
+        "/html/body/div[44]",
+        "/html/body/div[45]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+<h2>Test case: Img-checkLongdesc.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Img Long Description Tests</h3>
+
+<!-- The description is somewhere on the same page as the image -->
+<img id="1" src="http://example.com/graph1" alt="Drinks are getting sweeter"
+    longdesc="#graph1Explained">
+
+<!-- The description is a page on its own -->
+<img id="2" src="figure1" alt="figure 1" longdesc="http://example.com/desc1">
+
+<!-- The description is one of several within an external page -->
+<img id="3" src="ExampleImage" alt="example" longdesc="http://example.com/descs#item3">
+
+<!-- The description is included in a data: URI -->
+<img id="4" src="logo" alt="W3C" longdesc="data:text/html;charset=utf-8;,%3C!DOCTYPE%20html%3E
+%3Chtml%3E%3Chead%3E%3Ctitle%3EDescription%20of%20the%20W3C%20Logo%3C/title%3E%3C/head%3E
+%3Cbody%3E%3Cp%3EA%20blue%20capital%20letter%20%22W%22%20with%20kerning%20so%20it%20
+touches%20a%20blue%203%2C%20followed%20by%20a%20black%20shadow%20of%20a%20white%20
+capital%20letter%20C%20all%20on%20a%20white%20background%3C/body%3E%3C/html%3E">
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "454",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

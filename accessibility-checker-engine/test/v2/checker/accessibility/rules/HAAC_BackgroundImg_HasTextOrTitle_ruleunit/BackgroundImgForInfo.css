@@ -1,0 +1,6 @@
+@CHARSET "ISO-8859-1";
+p#bestinterest {
+  padding-left: 250px;
+  background: transparent url(porkChops.jpg) no-repeat top left;
+  height: 200px;
+}

@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Elements-checkAltText.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Element Alt Text Tests</h3>
+
+<p>
+	Img Alt text attribute Tests
+</p>
+
+<ul>
+	<li>Test #1 - Valid Alt text</li>
+	<li>Test #2 - Missing Alt text attribute</li>
+	<li>Test #3 - Empty Alt text</li>
+	<li>Test #4 - Invalid Alt text</li>
+	<li>Test #5 - Alt text length too many characters</li>
+	<li>Test #6 - Alt text with only spaces</li>
+	<li>Test #7 - Alt text with commonly inserted strings by authoring tools</li>
+	<li>Test #8 - Alt text equal to image src name without directory names of extension</li>
+	<li>Test #9 - Alt text equal to image src name without directory names</li>
+	<li>Test #10 - Alt text equal to image src name exactly</li>
+</ul>
+
+
+<img id="image1" src="../support/nav_home.gif" alt="Home Navigation Bar" />
+
+<img id="image2" src="../support/nav_home.gif" />
+
+<img id="image3" src="../support/nav_home.gif" alt="" />
+
+<img id="image4" src="../support/nav_home.gif" alt="&#01;" />
+
+<img id="image5" src="../support/nav_home.gif" alt="a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m " />
+
+<img id="image6" src="../support/nav_home.gif" alt="   " />
+
+<img id="image7" src="../support/nav_home.gif" alt="short description of image" />
+
+<img id="image8" src="../support/nav_home.gif" alt="nav_home" />
+
+<img id="image9" src="../support/nav_home.gif" alt="nav_home.gif" />
+
+<img id="image10" src="../support/nav_home.gif" alt="../support/nav_home.gif" />
+
+<a name="navskip"></a>
+
+<p>
+	Area Alt text attribute Tests
+</p>
+
+<ul>
+	<li>Test #1 - Valid Alt text</li>
+	<li>Test #2 - Missing Alt text attribute</li>
+	<li>Test #3 - Empty Alt text</li>
+	<li>Test #4 - Invalid Alt text</li>
+	<li>Test #5 - Alt text length too many characters</li>
+	<li>Test #6 - Alt text with only spaces</li>
+	<li>Test #7 - Alt text with commonly inserted strings by authoring tools</li>
+</ul>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_1" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_1">
+	<area id="area1" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area2" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio:" />
+	<area id="area3" coords="196,7,276,23" shape="rect" href="technology.htm" alt=" Technology" />
+	<area id="area4" coords="300,7,390,22" shape="rect" href="employment.htm" alt="Employment " />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_3" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_3">
+	<area id="area6" coords="15,7,94,23" shape="rect" href="philosophy.htm" />
+	<area id="area7" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio" />
+	<area id="area8" coords="196,7,276,23" shape="rect" href="technology.htm" alt="Technology" />
+	<area id="area9" coords="300,7,390,22" shape="rect" href="employment.htm" alt="Employment" />
+	<area id="area10" coords="407,7,484,23" shape="rect" href="contact.htm" alt="Contact us as this is a test for alt text this is a test for alt text this is a test for alt text" />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_4" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_4">
+	<area id="area11" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area12" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="" />
+	<area id="area13" coords="196,7,276,23" shape="rect" href="technology.htm" alt="Technology" />
+	<area id="area14" coords="300,7,390,22" shape="rect" href="employment.htm" alt="Employment" />
+	<area id="area15" coords="407,7,484,23" shape="rect" href="contact.htm" alt="this is a test for alt text this is a test for alt text this is a test for alt text" />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_5" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_5">
+	<area id="area16" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area17" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio" />
+	<area id="area18" coords="196,7,276,23" shape="rect" href="technology.htm" alt="&#01;" />
+	<area id="area19" coords="300,7,390,22" shape="rect" href="employment.htm" alt="Employment" />
+	<area id="area20" coords="407,7,484,23" shape="rect" href="contact.htm" alt="this is a test for alt text this is a test for alt text this is a test for alt text" />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_6" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_6">
+	<area id="area21" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area22" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio" />
+	<area id="area23" coords="196,7,276,23" shape="rect" href="technology.htm" alt="Technology" />
+	<area id="area24" coords="300,7,390,22" shape="rect" href="employment.htm" alt="a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m " />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_7" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_7">
+	<area id="area25" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area26" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio" />
+	<area id="area27" coords="196,7,276,23" shape="rect" href="technology.htm" alt="Technology" />
+	<area id="area28" coords="300,7,390,22" shape="rect" href="employment.htm" alt="    " />
+</map>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_7" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_7">
+	<area id="area25" coords="15,7,94,23" shape="rect" href="philosophy.htm" alt="Philosophy" />
+	<area id="area26" coords="109,7,176,23" shape="rect" href="portfolio.htm" alt="Portfolio" />
+	<area id="area27" coords="196,7,276,23" shape="rect" href="technology.htm" alt="Technology" />
+	<area id="area28" coords="300,7,390,22" shape="rect" href="employment.htm" alt="short description of image" />
+</map>
+
+<p>
+	Applet Alt text attribute Tests
+</p>
+
+<ul>
+	<li>Test #1 - Valid Alt text</li>
+	<li>Test #2 - Missing Alt text attribute</li>
+	<li>Test #3 - Empty Alt text</li>
+	<li>Test #4 - Invalid Alt text</li>
+	<li>Test #5 - Alt text length too many characters</li>
+	<li>Test #6 - Alt text with only spaces</li>
+	<li>Test #7 - Alt text with commonly inserted strings by authoring tools</li>
+</ul>
+
+<applet id="applet4" code="" object=object Title="Chicken" width="200" height="200" alt="trout">
+	An image of a fish
+</applet>
+
+<applet id="applet5" code="" object=object Title="Fish" width="200" height="200">
+	An image of a fish
+</applet>
+
+<applet id="applet6" code="" object=object Title="Chicken" width="200" height="200" alt="">
+	An image of a fish
+</applet>
+
+<applet id="applet7" code="" object=object Title="Fish" width="200" height="200" alt="&#01;">
+	An image of a fish
+</applet>
+
+<applet id="applet8" code="" object=object Title="Fish" width="200" height="200" alt="a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m a b c d e f g h i j k l m" />
+	An image of a fish
+</applet>
+
+<applet id="applet9" code="" object=object Title="Fish" width="200" height="200" alt="   " />
+	An image of a fish
+</applet>
+
+<applet id="applet9" code="" object=object Title="Fish" width="200" height="200" alt="short description of image" />
+	An image of a fish
+</applet>
+
+<p>
+	Input with type="image" Alt text attribute Tests
+</p>
+
+<ul>
+	<li>Test #1 - Valid Alt text</li>
+	<li>Test #2 - Missing Alt text attribute</li>
+	<li>Test #3 - Empty Alt text</li>
+	<li>Test #4 - Invalid Alt text</li>
+	<li>Test #5 - Alt text length too many characters</li>
+	<li>Test #6 - Alt text with only spaces</li>
+	<li>Test #7 - Alt text with commonly inserted strings by authoring tools</li>
+</ul>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn1">Go</label>
+		<input type="image" name="Go" id="GoBtn1" src="../support/btn_go.gif" value="go button" title="go button" alt="go button">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn3">Go</label>
+		<input type="image" name="Go" id="GoBtn3" src="../support/btn_go.gif" value="go button" title="go button">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn4">Go</label>
+		<input type="image" name="Go" id="GoBtn4" src="../support/btn_go.gif" value="go button" title="go button" alt="">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn5">Go</label>
+		<input type="image" name="Go" id="GoBtn5" src="../support/btn_go.gif" value="go button" title="go button" alt="&#01;">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn6">Go</label>
+		<input type="image" name="Go" id="GoBtn6" src="../support/btn_go.gif" value="go button" title="go button"
+			alt="1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn7">Go</label>
+		<input type="image" name="Go" id="GoBtn7" src="../support/btn_go.gif" value="go button" title="go button"
+			alt="   ">
+	</fieldset>
+</form>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Go button</legend>
+		<p>Fieldset text: Please push the "go" button.</p>
+
+		<label for="GoBtn7">Go</label>
+		<input type="image" name="Go" id="GoBtn7" src="../support/btn_go.gif" value="go button" title="go button"
+			alt="short descripton of image">
+	</fieldset>
+</form>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "455",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/img[2]",
+        "/html/body/img[6]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

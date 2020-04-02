@@ -1,0 +1,62 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+   "http://www.w3.org/TR/html4/frameset.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1057",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/frameset/frame"
+      ]
+    }
+  ];
+//]]>
+</script></head>
+
+<!-- ------------------------------------------------------------------------------------ -->
+
+<!-- Frame Element Tests -->
+	<!-- Test #1 - Frame with invalid src attribute - invalid file extension (normally ".html") -->
+
+<frameset cols="16%,17%,17%,16%,17%,17%">
+
+	<frame name="Invalid frame" title="frame test file 6" id="frame6" src="../support/frame_test6.jpg">
+
+	<noframes>
+		<a href="#navskip">Skip to main content</a>
+		<a name="navskip"></a>
+		<p>
+				This browser does not handle frames
+ 		</p>
+	</noframes>
+</frameset>
+
+</html>

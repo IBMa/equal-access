@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Media-documetntrigger.html</h2>
+
+<!-- ################################################################### -->
+
+<h3>Media Tests</h3>
+
+<ul>
+	<li>Test - A and Area elements with href of file types ".docx", ".doc", ".pdf", or ".odt"</li>
+</ul>
+
+<!-- Anchor element with href of file types ".doc", ".pdf", or ".odt" -->
+<a id="anchor1" href="test.doc">Home Navigation Bar 1</a>
+<a id="anchor2" href="test.pdf">Home Navigation Bar 2</a>
+<a id="anchor3" href="test.odt">Home Navigation Bar 3</a>
+<a id="anchor4" href="test.docx">Home Navigation Bar 4</a>
+
+<!-- Area element with href of file types ".doc", ".pdf", or ".odt" -->
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map_1" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map_1">
+	<area id="area1" coords="15,7,94,23" shape="rect" href="scientific.doc" alt="scientific" />
+	<area id="area2" coords="109,7,176,23" shape="rect" href="portfolio.pdf" alt="Portfolio:" />
+	<area id="area3" coords="196,7,276,23" shape="rect" href="technology.odt" alt=" Technology" />
+	<area id="area4" coords="300,7,390,22" shape="rect" href="employment.htm" alt="Employment " />
+	<area id="area5" coords="400,7,490,22" shape="rect" href="worker.docx" alt="worker " />
+</map>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1183",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/a[2]",
+        "/html/body/a[3]",
+        "/html/body/a[4]",
+        "/html/body/a[5]",
+        "/html/body/map/area[1]",
+        "/html/body/map/area[2]",
+        "/html/body/map/area[3]",
+        "/html/body/map/area[5]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

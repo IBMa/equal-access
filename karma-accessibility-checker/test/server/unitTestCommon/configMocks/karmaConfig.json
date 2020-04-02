@@ -1,0 +1,295 @@
+{
+    "LOG_DISABLE": "OFF",
+    "LOG_ERROR": "ERROR",
+    "LOG_WARN": "WARN",
+    "LOG_INFO": "INFO",
+    "LOG_DEBUG": "DEBUG",
+    "frameworks": [
+        "jasmine",
+        "aChecker",
+        "jasmine-diff"
+    ],
+    "protocol": "http:",
+    "port": 9876,
+    "hostname": "localhost",
+    "httpsServerConfig": {},
+    "basePath": "C:/IBMa/karma-accessibility-checker",
+    "files": [
+        {
+            "pattern": "C:\\IBMa\\karma-accessibility-checker\\node_modules\\deep-diff\\releases\\deep-diff-0.3.4.min.js",
+            "included": true,
+            "served": true,
+            "watched": false,
+            "nocache": false
+        },
+        {
+            "pattern": "C:\\IBMa\\karma-accessibility-checker\\node_modules\\karma-ibma\\lib\\ACHelper.js",
+            "included": true,
+            "served": true,
+            "watched": false,
+            "nocache": false
+        },
+        {
+            "pattern": "C:\\IBMa\\karma-accessibility-checker\\node_modules\\karma-ibma\\lib\\engine-browser.js",
+            "included": true,
+            "served": true,
+            "watched": false,
+            "nocache": false
+        }
+    ],
+    "browserConsoleLogOptions": {
+        "level": "debug",
+        "format": "%b %T: %m",
+        "terminal": true
+    },
+    "customContextFile": null,
+    "customDebugFile": null,
+    "exclude": [
+        "C:/IBMa/karma-accessibility-checker/test/client/**/aChecker.LocalFile.test.js",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1092/validLandMarks-testCaseFromAnn.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g254/**/*.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g33/**/*.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1112/*.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g256/*.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1118/*.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/Hidden/unitTestisNodeDisabled.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/Hidden/unitTestshouldCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/Hidden/unitTestisNodeVisible.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/Hidden/unitTestisNodeVisible.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1052/NoEmbed-invalidHiddenText.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1094/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1092/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1095/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1096/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1097/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1099/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1103/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1105/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1111/hiddenUnitTesting/contentinfoHasNoMainDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1114/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1115/hiddenUnitTesting/duplicateLandmarksDontCheckHiddenContent.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1140/AssesskeyNeedsLabel.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1024/Link-validCssHrefNotInHead.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g1024/Link-validHrefAndRel.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g115/Elements-withJavascript.html",
+        "C:/IBMa/karma-accessibility-checker/dependencies/tools-rules-html/v2/a11y/test/g269/Events-OnclickMissingKeyboardEvents.html",
+        "C:/IBMa/karma-accessibility-checker/karma.conf.js"
+    ],
+    "logLevel": "DEBUG",
+    "colors": true,
+    "autoWatch": false,
+    "autoWatchBatchDelay": 250,
+    "restartOnFileChange": false,
+    "usePolling": false,
+    "reporters": [
+        "jasmine-diff",
+        "spec",
+        "aChecker"
+    ],
+    "singleRun": true,
+    "browsers": [
+        "ChromeCustom"
+    ],
+    "captureTimeout": 60000,
+    "proxies": {},
+    "proxyValidateSSL": true,
+    "preprocessors": {},
+    "urlRoot": "/",
+    "reportSlowerThan": 0,
+    "loggers": [
+        {
+            "type": "console",
+            "layout": {
+                "type": "pattern",
+                "pattern": "%[%d{DATE}:%p [%c]: %]%m"
+            },
+            "makers": {}
+        }
+    ],
+    "transports": [
+        "polling",
+        "websocket"
+    ],
+    "forceJSONP": false,
+    "plugins": [
+        "karma-*",
+        {
+            "launcher:FirefoxCustom": [
+                "factory",
+                null
+            ],
+            "launcher:ChromeCustom": [
+                "factory",
+                null
+            ],
+            "launcher:PhantomJSCustom": [
+                "factory",
+                null
+            ]
+        }
+    ],
+    "client": {
+        "args": [],
+        "useIframe": true,
+        "captureConsole": true,
+        "clearContext": true,
+        "ACConfig": {
+            "rulePack": "http://localhost:3000/",
+            "ruleArchive":"March 2017 Deployment (2017MarchDeploy)",
+            "policies": null,
+            "failLevels": [
+                "violation",
+                "potentialviolation"
+            ],
+            "reportLevels": [
+                "violation",
+                "potentialviolation",
+                "recommendation",
+                "potentialrecommendation",
+                "manual"
+            ],
+            "captureScreenshots": false,
+            "outputFormat": [
+                "json"
+            ],
+            "label": [
+                "Firefox",
+                "master",
+                "V12",
+                "Linux"
+            ],
+            "outputFolder": "results",
+            "checkHiddenContent": false,
+            "notifications": null,
+            "extensions": [
+                "html",
+                "htm",
+                "svg"
+            ],
+            "notifications": {
+                "localRun": false,
+                "slack" : "ibm-accessibility:xoxp-XXXXXXXXXXX-XXXXXXXXXXX-XXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX#a11y-tool-integration"
+            },
+            "engineFileName": "engine-browser.js",
+            "toolID": "karma-accessibility-checker-v2.4.1",
+            "scanID": "3720d06c-b596-42b8-a1af-a601cdbb6081",
+            "DEBUG": true,
+            "customRuleServer" : true
+        }
+    },
+    "defaultClient": {
+        "args": [],
+        "useIframe": true,
+        "captureConsole": true,
+        "clearContext": true,
+        "ACConfig": {
+            "rulePack": "http://localhost:3000/",
+            "policies": null,
+            "failLevels": [
+                "violation",
+                "potentialviolation"
+            ],
+            "reportLevels": [
+                "violation",
+                "potentialviolation",
+                "recommendation",
+                "potentialrecommendation",
+                "manual"
+            ],
+            "captureScreenshots": false,
+            "outputFormat": [
+                "json"
+            ],
+            "label": [
+                "Firefox",
+                "master",
+                "V12",
+                "Linux"
+            ],
+            "outputFolder": "results",
+            "checkHiddenContent": false,
+            "notifications": null,
+            "extensions": [
+                "html",
+                "htm",
+                "svg"
+            ],
+            "notifications": {
+                "localRun": false,
+                "slack" : "ibm-accessibility:xoxp-30333352626-38940427350-107107541668-670fb433a248e46da027d391f4b3f1a3#a11y-tool-integration"
+            },
+            "engineFileName": "engine-browser.js",
+            "toolID": "karma-accessibility-checker-v2.4.1",
+            "scanID": "3720d06c-b596-42b8-a1af-a601cdbb6081",
+            "DEBUG": true,
+            "customRuleServer" : true
+        }
+    },
+    "browserDisconnectTimeout": 2000,
+    "browserDisconnectTolerance": 2,
+    "browserNoActivityTimeout": 100000,
+    "concurrency": null,
+    "failOnEmptyTestSuite": true,
+    "retryLimit": 3,
+    "detached": false,
+    "cmd": "start",
+    "configFile": "C:\\IBMa\\karma-accessibility-checker\\karma.conf.js",
+    "customLaunchers": {
+        "FirefoxCustom": {
+            "base": "Firefox",
+            "prefs": {
+                "accessibility.blockautorefresh": true
+            }
+        },
+        "ChromeCustom": {
+            "base": "Chrome",
+            "flags": [
+                "--disable-web-security"
+            ]
+        },
+        "PhantomJSCustom": {
+            "base": "PhantomJS",
+            "options": {
+                "settings": {
+                    "webSecurityEnabled": false
+                }
+            }
+        }
+    },
+    "ACProfile": false,
+    "coverageReporter": {
+        "dir": "coverage/",
+        "reporters": [
+            {
+                "type": "text"
+            }
+        ]
+    },
+    "specReporter": {
+        "maxLogLines": 20,
+        "suppressErrorSummary": false,
+        "suppressFailed": false,
+        "suppressPassed": false,
+        "suppressSkipped": false,
+        "showSpecTiming": true
+    },
+    "jasmineDiffReporter": {
+        "color": {
+            "expectedBg": "bgYellow",
+            "expectedFg": "black",
+            "actualBg": "bgCyan",
+            "actualFg": "red",
+            "defaultBg": "white",
+            "defaultFg": "grey",
+            "enabled": true
+        },
+        "matchers": {
+            "toEqual": {
+                "pretty": true
+            },
+            "toHaveBeenCalledWith": {
+                "pretty": "___"
+            }
+        }
+    }
+}

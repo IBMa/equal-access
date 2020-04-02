@@ -1,0 +1,7 @@
+        /*used for background of entire titlebar */
+        .titlebarback
+        {
+                background-repeat: repeat-x;
+                background-position: right top;
+                background-color: #000;
+        }

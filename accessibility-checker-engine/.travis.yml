@@ -1,0 +1,22 @@
+sudo: required
+
+group: bluezone
+
+language: node_js
+node_js:
+  - "8"
+
+addons:
+  apt:
+    packages:
+    - google-chrome-stable
+
+services:
+  -xvfb
+
+before_install:
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - google-chrome --version
+
+script:
+  - npx karma start --single-run --watch=false

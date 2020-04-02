@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>when combobox popup is visible, aria-owns/controls in the input text refers to a popup element</title>
+</head>
+<body>
+
+
+
+<!-- fail case -->
+<div role=combobox id="div_cb_20b" aria-label="div_cb_20b" aria-expanded="true" aria-haspopup="listbox" onkeypress="keyEvent()" > div_cb_20b  <br>
+   <label for="input20b" > combobox20b </label>
+   <input id=input20b type="text" aria-controls="div_text_19b_owned" >
+   <datalist id="div_text_20b_owned" aria-label="div_text_20b_owned">
+      <option aria-label="Michael" id="20b_Michael_div_cb"> Michael</option>
+      <option aria-label="Gabriel" id="20b_Gabriel_div_cb"> Gabriel</option>
+   </datalist>
+</div>
+
+    <datalist id="div_text_19b_owned" aria-label="div_text_19b_owned">
+      <option aria-label="Michael" id="20b_Michael_div_cb"> Michael</option>
+      <option aria-label="Gabriel" id="20b_Gabriel_div_cb"> Gabriel</option>
+   </datalist>
+
+
+<!-- pass case -->
+<div role=combobox id="div_cb" aria-label="div_cb" aria-expanded="true" aria-haspopup="listbox" onkeypress="keyEvent()" aria-owns="list2" > div_cb  <br>
+   <label for="input2" > combobox </label>
+   <input id=input2 type="text" aria-controls="list2" >
+   <datalist id="list3" aria-label="list 3">
+      <option aria-label="Michael" id="Michael2"> Michael</option>
+      <option aria-label="Gabriel" id="Gabriel2"> Gabriel</option>
+   </datalist>
+</div>
+
+ <datalist id="list2" aria-label="list 2">
+      <option aria-label="Michael" id="Michael2"> Michael</option>
+      <option aria-label="Gabriel" id="Gabriel2"> Gabriel</option>
+   </datalist>
+ 
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1198",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+    	  "/html/body/div"
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

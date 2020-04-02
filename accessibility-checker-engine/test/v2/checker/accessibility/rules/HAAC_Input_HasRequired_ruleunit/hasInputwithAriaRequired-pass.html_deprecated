@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+<head>
+<title>RPT Test g1124</title>
+</head>
+<body>
+
+<div role="main">
+
+<h2>Test case: If your application must be accessible in Internet Explorer 8, use aria-required instead of the HTML5 required property. </h2>
+
+<!-- ################################################################### -->
+
+
+<label for="reqfield">* Name:</label>
+<input name="Name" id="reqfield" type="text" aria-required="true"/>
+<label for="reqselect">* Select:</label>
+<select id="reqselect" name="select" aria-required="true" >
+  <option value="value1">Value 1</option>
+  <option value="value2" selected>Value 2</option>
+  <option value="value3">Value 3</option>
+</select>
+<textarea id="textarea1" name="textarea" rows="5" cols="10" aria-required="true" >Write something here</textarea>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1123",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{
+    "rulePack": "https://cc-rules.w3ibm.mybluemix.net/js/latest/",
+    "authToken": "47994f55-03f8-4edb-93d5-f8e3c066f269/92cf2e70-5a68-4289-8838-6fb0510569b4",
+    "ruleArchive" : "latest",
+    "policies": [
+        "IBM_Accessibility"
+    ],
+    "failLevels": [
+        "violation",
+        "potentialviolation"
+    ],
+    "reportLevels": [
+        "violation",
+        "potentialviolation",
+        "recommendation",
+        "potentialrecommendation",
+        "manual"
+    ],
+    "captureScreenshots": false,
+    "outputFormat": [
+        "json"
+    ],
+    "label": [
+        "Firefox",
+        "master",
+        "V12",
+        "Linux"
+    ],
+    "outputFolder": "results",
+    "checkHiddenContent": false,
+    "extensions": [
+        "html",
+        "htm",
+        "svg"
+    ],
+    "notifications": {
+        "slack": "ibm-accessibility:xoxp-XXXXXXXXXXX-XXXXXXXXXXX-XXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX#a11y-tool-integration",
+        "localRun": false
+    }
+}

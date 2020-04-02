@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Events-Onclick.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Onclick Events Tests</h3>
+
+
+<ul>
+	<li>Test - Events with Onclick</li>
+</ul>
+
+
+<span onclick="this.location.href='newpage.html'">
+	Fake link
+</span>
+
+<img  src="go.gif" alt="go to the new page" onclick="this.location.href='newpage.html'">
+
+<p>
+	<img src="bargain.jpg"
+		tabindex="0"
+		alt="View Bargains"
+		onclick="doNav('viewbargains.html');"
+		onkeypress="doKeyPress('viewbargains.html');">
+</p>
+
+
+<div id="linklike">
+	View the results of the survey.
+</div>
+
+<a onclick="something.html">No href attribute</a>
+
+<h1 style="bold" id="ddd">Heading 1</h1>
+
+<img  src="go.gif" alt="go to the new page" onclick="this.location.href='newpage'">
+
+
+<!-- Events -->
+
+<a onclick="something.html" href="test" >test</a>
+
+<h1 style="bold">Heading 1</h1>
+
+<map>
+<area onclick="somethingelse.php"></area>
+</map>
+
+<form action="..." method="post">
+	<fieldset>
+		<legend>Legend text: Automobiles</legend>
+		<p>Fieldset text: Events while inside this textarea!</p>
+
+		<label for="cars0">List of Automobiles </label>
+		<textarea rows="2" cols="50" name="autos" id="cars1" onclick="test.asp">		Ford, GM, Chrysler</textarea>
+		<textarea rows="2" cols="50" name="autos" id="cars2" onclick="test.cfm">		Ford, GM, Chrysler</textarea>
+		<textarea rows="2" cols="50" name="autos" id="cars3" onclick="test.html">		Ford, GM, Chrysler</textarea>
+		<textarea rows="2" cols="50" name="autos" id="cars4" onclick="test.shtml">		Ford, GM, Chrysler</textarea>
+		<textarea rows="2" cols="50" name="autos" id="cars5" onclick="test.cgi">		Ford, GM, Chrysler</textarea>
+
+		<button type="submit">Submit</button>
+	</fieldset>
+</form>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "470",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/span",
+        "/html/body/img[1]",
+        "/html/body/p/img",
+        "/html/body/a[2]",
+        "/html/body/img[2]",
+        "/html/body/map/area",
+        "/html/body/form/fieldset/textarea[1]",
+        "/html/body/form/fieldset/textarea[2]",
+        "/html/body/form/fieldset/textarea[3]",
+        "/html/body/form/fieldset/textarea[4]",
+        "/html/body/form/fieldset/textarea[5]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

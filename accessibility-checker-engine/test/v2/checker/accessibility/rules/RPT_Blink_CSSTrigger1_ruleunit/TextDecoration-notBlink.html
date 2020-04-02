@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+
+	<style type="text/css">
+		a:link {color: #333333; text-decoration:none;}
+		a:visited {color: #333333; text-decoration:Line-through;}
+		a:hover {color: #800000; text-decoration:Line-through;}
+	</style>
+
+	<link rel="stylesheet" type="text/css" href="theme.css">
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: TextDecoraton-notBlink.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Element Tests</h3>
+
+
+<ul>
+	<li>Test - Elements with text-decoration not with value of Blink</li>
+</ul>
+
+<a href="http://www.cnn.com" style="text-decoration:none">
+	CNN
+</a>
+
+<p style="text-decoration:none">
+	Ignore this sentence
+</p>
+
+<!-- Style element - see "head" element above -->
+<p>
+	<a href="http://www.google.com">
+		Test
+	</a>
+</p>
+
+<!-- Link element - see "head" element above -->
+<p>
+	<a href="http://www.google.com">
+		Test
+	</a>
+</p>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "479",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

@@ -1,0 +1,1299 @@
+{
+    "reports": [{
+        "frameIdx": 0,
+        "frameTitle": "RPT Test Suite",
+        "issues": [{
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g1.styleTrigger",
+            "ruleId": "1",
+            "help": "idhi_accessibility_check_g1.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "manual",
+            "xpath": "/html[1]/head[1]/style[1]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[1]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[1]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[1]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[2]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[2]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[3]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[3]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[4]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[4]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[5]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[5]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[6]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[6]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[6]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[7]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[7]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[7]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[8]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[8]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[9]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[9]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[10]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[11]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[12]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[13]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[14]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[14]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[15]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[15]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[16]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[16]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[16]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[17]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[17]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[17]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1066.colorContrast2",
+            "ruleId": "1066",
+            "help": "idhi_accessibility_check_g1066.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[20]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[20]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[20]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[21]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[21]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[21]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[22]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[22]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[23]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[23]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[24]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[24]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[25]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[25]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[26]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[26]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[26]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[27]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g506.styleHinderFocus1",
+            "ruleId": "506",
+            "help": "idhi_accessibility_check_g506.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[27]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[27]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[28]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[28]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[29]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[29]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[30]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[31]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[32]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[33]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[34]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[34]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[35]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[35]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[36]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[36]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[36]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[37]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[37]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[37]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1066.colorContrast2",
+            "ruleId": "1066",
+            "help": "idhi_accessibility_check_g1066.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[40]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[40]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[40]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[41]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[41]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[41]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1065.colorContrast1",
+            "ruleId": "1065",
+            "help": "idhi_accessibility_check_g1065.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[42]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISLow",
+            "messageCode": "rpt.g466.styleColorSemantics1",
+            "ruleId": "466",
+            "help": "idhi_accessibility_check_g466.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[42]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/style[42]",
+            "snippet": "<style type=\"text/css\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/link[1]",
+            "snippet": "<link href=\"stylesheets/bootstrap_nonMedia.css\" type=\"text/css\" rel=\"stylesheet\">"
+        }, {
+            "severityCode": "eISMedium",
+            "messageCode": "wcag20.g1069.styleBeforeAfter",
+            "ruleId": "1069",
+            "help": "idhi_accessibility_check_g1069.html",
+            "msgArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 0,
+                "width": 0
+            },
+            "level": "potentialviolation",
+            "xpath": "/html[1]/head[1]/link[2]",
+            "snippet": "<link href=\"stylesheets/bootstrap_slowLoading.css\" type=\"text/css\" rel=\"stylesheet\">"
+        }]
+    }],
+    "summary": {
+        "counts": {
+            "violation": 0,
+            "potentialviolation": 84,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 1
+        },
+        "scanTime": 194,
+        "policies": ["IBM_Accessibility"],
+        "reportLevels": ["violation", "potentialviolation", "recommendation", "potentialrecommendation", "manual"],
+        "startScan": 1475377229908
+    },
+    "scanID": "750b9b59-25d3-47bd-838b-00354cfd5d78",
+    "toolID": "karma-accessibility-checker-v2.4.1",
+    "URL": "http://pttest-data.canlab.ibm.com/acce-rules/rulestest/2015RulesDep/g1069/performance/performance.html",
+    "label": "rulestest/2015RulesDep/g1069/performance/performance.html"
+}

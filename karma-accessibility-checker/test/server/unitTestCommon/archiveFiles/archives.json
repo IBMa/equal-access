@@ -1,0 +1,54 @@
+[
+    {
+        "id": "2019FebDeploy",
+        "name": "February 2019 Deployment",
+        "path": "archives/2019FebDeploy",
+        "latest": true
+    },
+    {
+        "id": "2018OctDeploy",
+        "name": "October 2018 Deployment",
+        "path": "archives/2018OctDeploy"
+    },
+    {
+        "id": "2018AugustDeploy",
+        "name": "August 2018 Deployment",
+        "path": "archives/2018AugustDeploy"
+    },
+    {
+        "id": "2018FebDeploy",
+        "name": "February 2018 Deployment",
+        "path": "archives/2018FebDeploy"
+    },
+    {
+        "id": "2017AugustDeploy",
+        "name": "August 2017 Deployment",
+        "path": "archives/2017AugustDeploy"
+    },
+    {
+        "id": "2017MayDeploy",
+        "name": "May 2017 Deployment",
+        "path": "archives/2017MayDeploy"
+    },
+    {
+        "id": "2017MarchDeploy",
+        "name": "March 2017 Deployment",
+        "path": "archives/2017MarchDeploy"
+    },
+    {
+        "id": "2017FebDeploy",
+        "name": "February 2017 Deployment",
+        "path": "archives/2017FebDeploy"
+    },
+    {
+        "id": "2016OctDeploy",
+        "name": "October 2016 Deployment",
+        "path": "archives/2016OctDeploy"
+    },
+    {
+        "id": "2013FebDeploy",
+        "name": "February 2013 Deployment",
+        "path": "archives/2013FebDeploy",
+        "sunset": true
+    }
+]

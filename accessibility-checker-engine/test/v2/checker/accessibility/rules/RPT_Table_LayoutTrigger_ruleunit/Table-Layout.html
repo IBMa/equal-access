@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+	<style type='text/css'>
+        table { border: solid gray 1px; width: 100%;}
+        td, th { border-style: inset; border-width: 1px; padding: 10px;}
+    </style>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Table-Layout.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Table type Tests</h3>
+
+
+<ul>
+	<li>Test - Layout Table</li>
+</ul>
+
+<table id="layout_table1" role="presentation" summary="this is a layout table">
+
+	<tr>
+		<td>Class</td>
+		<td># of Boys</td>
+		<td># of Girls</td>
+	</tr>
+
+	<tr>
+		<td>1st Grade</td>
+		<td>11</td>
+		<td>10</td>
+	</tr>
+
+	<tr>
+		<td>2nd Grade</td>
+		<td>7</td>
+		<td>12</td>
+	</tr>
+
+	<tr>
+		<td>3rd Grade</td>
+		<td>12</td>
+		<td>14</td>
+	</tr>
+
+</table>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1060",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/table"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

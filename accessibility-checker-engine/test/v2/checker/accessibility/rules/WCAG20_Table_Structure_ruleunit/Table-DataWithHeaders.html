@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Table-DataWithHeaders.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Table Tests</h3>
+
+
+<ul>
+	<li>Test - Data Table with headers</li>
+</ul>
+
+<table id="data_table10" border="1" summary="An example of a simple data table showing the teacher and number of boys and girls in each grade of an elementary school">
+	<caption>Teachers and Boys and Girls in Elementary School Classes</caption>
+
+	<tr>
+		<th id="class">Class</th>
+		<th id="teacher">Teacher</th>
+		<th id="boys"># of Boys</th>
+		<th id="girls"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th id="1stgrade" rowspan="2">1st Grade</th>
+		<th id="MrHenry" headers="1stgrade teacher">Mr. Henry</th>
+		<td headers="1stgrade MrHenry boys">5</td>
+		<td headers="1stgrade MrHenry girls">4</td>
+	</tr>
+
+	<tr>
+		<th id="MrsSmith" headers="1stgrade teacher">Mrs. Smith</th>
+		<td headers="1stgrade MrsSmith boys">7</td>
+		<td headers="1stgrade MrsSmith girls">9</td>
+	</tr>
+
+	<tr>
+		<th id="2ndgrade" rowspan="3">2nd Grade</th>
+		<th id="MrJones" headers="2ndgrade teacher">Mr. Jones</th>
+		<td headers="2ndgrade MrJones boys">3</td>
+		<td headers="2ndgrade MrJones girls">9</td>
+	</tr>
+
+	<tr>
+		<th id="MrsWhite" headers="2ndgrade teacher">Mrs. White</th>
+		<td headers="2ndgrade MrsWhite boys">4</td>
+		<td headers="2ndgrade MrsWhite girls">3</td>
+	</tr>
+
+	<tr>
+		<th id="MrsKelly" headers="2ndgrade teacher">Mrs. Kelly</th>
+		<td headers="2ndgrade MrsKelly boys">6</td>
+		<td headers="2ndgrade MrsKelly girls">9</td>
+	</tr>
+
+</table>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "471",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>

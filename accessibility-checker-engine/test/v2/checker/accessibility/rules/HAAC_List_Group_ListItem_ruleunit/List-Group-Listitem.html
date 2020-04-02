@@ -1,0 +1,110 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>A group role used in the context of list must have its children limited to listitem elements only</title>
+</head>
+<body>
+
+<!-- Pass case -->
+<div id="list1" role="list" tabindex="-1">
+  <div id="animalGroup1" role="group">
+    <div id="birds1" role="listitem">
+      <span tabindex="-1">Birds</span>
+    </div>
+    <div id="cats1" role="listitem">
+      <span tabindex="-1">Cats</span>
+    </div>
+    <div id="fishes1" role="listitem">
+      <span tabindex="-1">Fishes</span>
+    </div>
+  </div>
+</div>
+
+
+<!--  failing test case -->
+<div id="list2" role="list" tabindex="-1">
+  <div id="animalGroup2" role="group">
+    <div id="birds2" role="listitem">
+      <span tabindex="-1">Birds</span>
+    </div>
+    <div id="cats2" role="listitem">
+      <span tabindex="-1">Cats</span>
+    </div>
+    <div id="fishes2" role="treeitem">
+      <span tabindex="-1">Fishes</span>
+    </div>
+  </div>
+</div>
+
+<div id="list3" role="menu" tabindex="-1">
+  <div id="animalGroup3" role="group">
+    <div id="birds3" role="listitem">
+      <span tabindex="-1">Birds</span>
+    </div>
+    <div id="cats3" role="listitem">
+      <span tabindex="-1">Cats</span>
+    </div>
+    <div id="fishes3" role="listitem">
+      <span tabindex="-1">Fishes</span>
+    </div>
+  </div>
+</div>
+
+<!--  failing test case -->
+<div id="list4" role="list" tabindex="-1">
+  <details id="details1">
+    <div id="fishes2" role="treeitem">
+      <span tabindex="-1">Fishes</span>
+    </div>
+  </details>
+</div>
+
+<!--  pass test case -->
+<div id="list5" role="list" tabindex="-1">
+  <details id="details2">
+    <div id="fishes2" role="listitem">
+      <span tabindex="-1">Fishes</span>
+    </div>
+  </details>
+</div>
+
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1185",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+    	  "/html/body/div[2]/div",
+    	  "/html/body/div[4]/details"
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to main content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA role valid parent test</h3>
+
+    <!-- Container for treeitem role must be tree  -->
+    <div role="tablist">
+        <div role="tree">
+            <ul id="id1" role="treeitem">
+                <li>Content</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Container for option role must be listbox  -->
+    <ul role="listbox">
+        <li id="id2" role="option">Content</li>
+    </ul>
+
+    <div role="menubar">
+        <ul role="menu">
+            <li id="id3" role="menuitem">menu item</li>
+        </ul>
+    </div>
+
+    <!-- Element contains multiple roles -->
+    <div role="banner menubar">
+        <ul role="menu">
+            <li id="id3" role="menuitem">menu item</li>
+        </ul>
+    </div>
+
+    <a name="navskip"></a>
+
+    <table aria-label="table_2" id="table2" summary="this is NOT a layout table" onkeypress="keyEvent()">
+        <caption id="caption1" aria-label="caption_1">The table</caption>
+        <colgroup id="colgroup1">
+            <col id="col1" style="background-color:lightblue">
+            <col span="2" style="background-color:lightgray">
+        </colgroup>
+        <thead aria-label="thead1" id="thead1">
+            <th role="rowheader" aria-label="th_1" id="class">Class</th>
+            <th role=gridcell onkeypress="keyEvent()" id="Boys" scope="col"># of Boys</th>
+            <th role=gridcell onkeypress="keyEvent()" id="Girls" scope="col"># of Girls</th>
+        </thead>
+        <tbody aria-label="tbody_1" id="tbody1">
+            <tr role="row" aria-label="tr_1" id="tr1">
+                <td headers="class" scope="row" role="rowheader" aria-label="td_1" id="td1">1st Grade</td>
+                <td headers="class Boys" role=gridcell onkeypress="keyEvent()">11</td>
+                <td headers="class Girls" role=gridcell onkeypress="keyEvent()">10</td>
+            </tr>
+        </tbody>
+        <tfoot aria-label="tfoot_1" id="tfoot1">
+            <th id="totalElementary" scope="row" role=gridcell onkeypress="keyEvent()">Overall</th>
+            <td headers="totalElementary Boys" role=gridcell onkeypress="keyEvent()">30</td>
+            <td headers="totalElementary Girls" role=gridcell onkeypress="keyEvent()">36</td>
+        </tfoot>
+    </table>
+
+
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [{
+            ruleId: "1153",
+            passedXpaths: [],
+            failedXpaths: []
+        }, ];
+        //]]>
+    </script>
+</body>
+
+</html>

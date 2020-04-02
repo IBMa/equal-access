@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Unit Testing isNodeVisible function in util-rpt.js file</title>
+	<script src="../../src/oaa-a11y.js"></script>
+	<script src="../../src/scripts/util-rpt.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/external.css">
+	<script type="text/javascript">
+		function runisNodeVisibleUnitTest() {
+
+			// Pass a normal node to the function with the PT_CHECK_HIDDEN_CONTENT set to true
+            document.PT_CHECK_HIDDEN_CONTENT = true;
+			var normalElementNodeTrue = RPT.util.shouldCheckHiddenContent(document.getElementById("maindiv"));
+			console.log("Pass element node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT set to true, expecting true: " + normalElementNodeTrue);
+
+            // Pass a normal node with the PT_CHECK_HIDDEN_CONTENT set to false
+            document.PT_CHECK_HIDDEN_CONTENT = false;
+			var normalElementNodeFalse = RPT.util.shouldCheckHiddenContent(document.getElementById("maindiv"));
+			console.log("Pass element node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT set to false, expecting false: " + normalElementNodeFalse);
+
+            // Pass a normal node with the PT_CHECK_HIDDEN_CONTENT not present at all
+            delete document.PT_CHECK_HIDDEN_CONTENT;
+			var normalElementNodeNoSettingSet = RPT.util.shouldCheckHiddenContent(document.getElementById("maindiv"));
+			console.log("Pass element node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT notset, expecting false: " + normalElementNodeFalse);
+
+            // Pass a normal node with the PT_CHECK_HIDDEN_CONTENT set to undefined
+            document.PT_CHECK_HIDDEN_CONTENT = undefined;
+			var normalElementNodeSetToUndefined = RPT.util.shouldCheckHiddenContent(document.getElementById("maindiv"));
+			console.log("Pass element node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT set to undefined, expecting false: " + normalElementNodeSetToUndefined);
+
+            // Pass a normal node to the function with the PT_CHECK_HIDDEN_CONTENT set to true
+            document.PT_CHECK_HIDDEN_CONTENT = true;
+			var documentNodeTrue = RPT.util.shouldCheckHiddenContent(document);
+			console.log("Pass document node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT set to true, expecting true: " + documentNodeTrue);
+
+            // Pass a normal node with the PT_CHECK_HIDDEN_CONTENT set to false
+            document.PT_CHECK_HIDDEN_CONTENT = false;
+			var documentNodeFalse = RPT.util.shouldCheckHiddenContent(document);
+			console.log("Pass document node to shouldCheckHiddenContent with PT_CHECK_HIDDEN_CONTENT set to false, expecting false: " + documentNodeFalse);
+		}
+	</script>
+</head>
+
+<body onload="runisNodeVisibleUnitTest();">
+	<div id="maindiv" role="main">
+
+		<a href="#navskip">skip to main content</a>
+	</div>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "999999999999",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+</body>
+
+</html>

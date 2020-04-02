@@ -1,0 +1,6 @@
+package-lock.json
+dist
+routes
+api
+certs
+node_modules

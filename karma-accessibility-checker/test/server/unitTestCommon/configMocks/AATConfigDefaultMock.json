@@ -1,0 +1,31 @@
+{
+  "captureScreenshots": false,
+  "checkHiddenContent": false,
+  "engineFileName": "engine-browser.js",
+  "extensions": [
+    "html",
+    "htm",
+    "svg"
+  ],
+  "failLevels": [
+    "violation",
+    "potentialviolation"
+  ],
+  "outputFolder": "results",
+  "outputFormat": "json",
+  "reportLevels": [
+    "violation",
+    "potentialviolation",
+    "recommendation",
+    "potentialrecommendation",
+    "manual"
+  ],
+  "rulePack": "https://cc-rules.w3ibm.mybluemix.net/js/latest/",
+  "ruleArchive":"latest",
+  "authToken": "47994f55-03f8-4edb-93d5-f8e3c066f269/92cf2e70-5a68-4289-8838-6fb0510569b4",
+  "scanID": "886c5c7d-9b1d-489e-a11f-86f706cb3d8c",
+  "toolID": "karma-accessibility-checker-v2.4.1",
+  "notifications": {
+    "localRun": false
+  }
+}

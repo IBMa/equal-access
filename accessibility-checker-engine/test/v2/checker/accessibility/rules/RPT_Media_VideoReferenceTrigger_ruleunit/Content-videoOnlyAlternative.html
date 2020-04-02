@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Content-videoOnlyAlternative.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Element with audio Tests</h3>
+
+<a href="HomeNav.mpg">Home Navigation</a>
+<a href="HomeNav.mpeg">Home Navigation</a>
+<a href="HomeNav.mov">Home Navigation</a>
+<a href="HomeNav.rv">Home Navigation</a>
+<a href="HomeNav.rm">Home Navigation</a>
+<a href="HomeNav.smi">Home Navigation</a>
+<a href="HomeNav.smil">Home Navigation</a>
+<a href="HomeNav.avi">Home Navigation</a>
+
+<embed src="HomeNav.avi">Home Navigation</embed>
+<embed src="HomeNav.mpg">Home Navigation</embed>
+<embed src="HomeNav.mpeg">Home Navigation</embed>
+<embed src="HomeNav.mov">Home Navigation</embed>
+<embed src="HomeNav.rv">Home Navigation</embed>
+<embed src="HomeNav.rm">Home Navigation</embed>
+<embed src="HomeNav.smi">Home Navigation</embed>
+<embed src="HomeNav.smil">Home Navigation</embed>
+
+<object data="HomeNav.avi" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.mpg" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.mpeg" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.mov" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.rm" type="video/avi" title="Home Navigation">	Home Navigaton Bar</object>
+<object data="HomeNav.rv" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.smi" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+<object data="HomeNav.smil" type="video/avi" title="Home Navigation">Home Navigaton Bar</object>
+
+<img src="../support/nav_home.gif" usemap="#HomeNav_Map" alt="Home Navigation Bar" />
+
+<map name="HomeNav_Map">
+	<area id="area1" coords="15,7,94,23" shape="rect" href="HomeNav.avi" alt="Philosophy" />
+	<area id="area2" coords="109,7,176,23" shape="rect" href="HomeNav.mpg" alt="Portfolio" />
+	<area id="area3" coords="196,7,276,23" shape="rect" href="HomeNav.mpeg" alt="Technology" />
+	<area id="area4" coords="300,7,390,22" shape="rect" href="HomeNav.mov" alt="Employment " />
+	<area id="area5" coords="300,7,390,22" shape="rect" href="HomeNav.rm" alt="Atheltics" />
+	<area id="area6" coords="300,7,390,22" shape="rect" href="HomeNav.rv" alt="Games" />
+	<area id="area7" coords="300,7,390,22" shape="rect" href="HomeNav.smi" alt="Dances" />
+	<area id="area8" coords="300,7,390,22" shape="rect" href="HomeNav.smil" alt="School" />
+</map>
+
+<applet id="applet1" code="fish.avi" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet2" code="fish.mpg" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet3" code="fish.mpeg" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet4" code="fish.mov" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet5" code="fish.rm" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet6" code="fish.rv" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet7" code="fish.smi" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+<applet id="applet8" code="fish.smil" object=object Title="Fish" width="200" height="200" alt="Image of a fish">An image of a fish</applet>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "511",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/a[2]",
+        "/html/body/a[3]",
+        "/html/body/a[4]",
+        "/html/body/a[5]",
+        "/html/body/a[6]",
+        "/html/body/a[7]",
+        "/html/body/a[8]",
+        "/html/body/a[9]",
+        "/html/body/embed[1]",
+        "/html/body/embed[2]",
+        "/html/body/embed[3]",
+        "/html/body/embed[4]",
+        "/html/body/embed[5]",
+        "/html/body/embed[6]",
+        "/html/body/embed[7]",
+        "/html/body/embed[8]",
+        "/html/body/object[1]",
+        "/html/body/object[2]",
+        "/html/body/object[3]",
+        "/html/body/object[4]",
+        "/html/body/object[5]",
+        "/html/body/object[6]",
+        "/html/body/object[7]",
+        "/html/body/object[8]",
+        "/html/body/map/area[1]",
+        "/html/body/map/area[2]",
+        "/html/body/map/area[3]",
+        "/html/body/map/area[4]",
+        "/html/body/map/area[5]",
+        "/html/body/map/area[6]",
+        "/html/body/map/area[7]",
+        "/html/body/map/area[8]",
+        "/html/body/applet[1]",
+        "/html/body/applet[2]",
+        "/html/body/applet[3]",
+        "/html/body/applet[4]",
+        "/html/body/applet[5]",
+        "/html/body/applet[6]",
+        "/html/body/applet[7]",
+        "/html/body/applet[8]"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>

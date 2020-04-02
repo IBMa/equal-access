@@ -1,0 +1,39 @@
+{
+  "name": "accessibility-checker",
+  "version": "3.0.0-beta.0",
+  "description": "An automated testing tools for accessibility testing using Puppeteer, Selenium, or Zombie",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "a11y",
+    "accessibility",
+    "IBMa",
+    "ci",
+    "integration",
+    "continuous"
+  ],
+  "author": "IBM Accessibility",
+  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "dependencies": {
+    "chromedriver": "^80.0.1",
+    "deep-diff": "^0.3.4",
+    "js-yaml": "^3.13.1",
+    "puppeteer": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IBMa/equal-access.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IBMa/equal-access/issues",
+    "email": "thbrunet@us.ibm.com"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "achecker": "./bin/achecker.js"
+  }
+}

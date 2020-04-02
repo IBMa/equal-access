@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+	<a href="#navskip">skip to main content</a>
+	
+	
+	<h2>Test case: Headings-invalidHidden.html</h2>
+	
+	
+	
+	<!-- ################################################################### -->
+	
+	
+	<h3>Headings Tests</h3>
+	
+	
+	<ul>
+		<li>Test - Invalid headings - empty</li>
+	</ul>
+	
+	<h1><span hidden>H1</span></h1>
+	<h2><span style="display: none">H2</span></h2>
+	<h3><span style="visibility: hidden">H3</span></h3>
+	<h4><span hidden>H4</span></h4>
+	<h5><span hidden>H5</span></h5>
+	<h6><span hidden>H6</span></h6>
+	
+	<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "488",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/h1", 
+        "/html/body/h2[2]",
+        "/html/body/h3[2]",
+        "/html/body/h4",
+        "/html/body/h5",
+        "/html/body/h6"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>
