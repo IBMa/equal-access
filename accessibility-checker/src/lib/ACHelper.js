@@ -1100,7 +1100,7 @@ try {
     let page = null;
     aChecker.buildIframeAndGetDoc = async function (URLorLocalFileorContent) {
         let browser = await aChecker.getBrowserChrome();
-        if (!page) {
+        if (!page || page.isClosed()) {
             page = await browser.newPage();
             page.on('console', msg => {
                 for (let i = 0; i < msg.args.length; ++i)
