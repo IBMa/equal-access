@@ -18,3 +18,4 @@ echo "Starting Blue Green Deployment Process"
 RETURN_CODE=$?
 echo "The return code value from deploy_to_bluemix.sh script: ${RETURN_CODE}"
 exit ${RETURN_CODE}
+
