@@ -1123,7 +1123,7 @@ try {
             return page;
         }
         try {
-            return nav();
+            return await nav();
         } catch (e) {
             // Try to restart if page fails
             browser = await aChecker.getBrowserChrome(true);
@@ -1132,7 +1132,7 @@ try {
                 for (let i = 0; i < msg.args.length; ++i)
                   console.log(`${i}: ${msg.args[i]}`);
               });
-            return nav();
+            return await nav();
         }
     };
 
