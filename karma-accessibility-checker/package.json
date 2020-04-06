@@ -1,6 +1,6 @@
 {
   "name": "karma-accessibility-checker-project",
-  "version": "3.0.0-beta.0",
+  "version": "3.0.0.0",
   "description": "Accessibility Checker for Karma Test Framework",
   "main": "src/index.js",
   "scripts": {

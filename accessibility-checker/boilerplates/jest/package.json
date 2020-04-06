@@ -1,6 +1,6 @@
 {
   "name": "@ibma/aat-boilerplate",
-  "version": "3.0.0-beta.0",
+  "version": "3.0.0.0",
   "description": "Example usage of IBM AAT with Jest",
   "main": "src/app.js",
   "scripts": {
