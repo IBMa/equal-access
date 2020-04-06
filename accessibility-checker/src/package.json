@@ -1,6 +1,6 @@
 {
   "name": "accessibility-checker",
-  "version": "3.0.0.0",
+  "version": "3.0.0",
   "description": "An automated testing tools for accessibility testing using Puppeteer, Selenium, or Zombie",
   "main": "index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "karma-accessibility-checker",
-  "version": "3.0.0.0",
+  "version": "3.0.0",
   "description": "A Karma plugin for Accessibility Testing.",
   "main": "index.js",
   "scripts": {
