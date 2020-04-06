@@ -25,7 +25,7 @@ const distFiles = () => {
 }
 
 const staticFiles = () => {
-    return gulp.src(["../src/static/archives/**", "../src/static/index.html"])
+    return gulp.src(["../src/static/**/archives/**", "../src/static/index.html"])
         .pipe(gulp.dest("../dist/static/"));
 }
 
