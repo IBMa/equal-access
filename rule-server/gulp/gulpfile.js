@@ -57,10 +57,13 @@ const archivePolicies = () => {
                     let policies = [];
                     try {
                         let checker = new ace.Checker();
-                        for (const rs of checker.rulesetIds) {
-                            policies.push(rs);
+                        for (const rs of checker.rulesets) {
+                            policies.push({
+                                id: rs.id,
+                                name: rs.name
+                            });
                         }
-                        policies.sort();
+                        policies.sort((a,b) => a.id.localeCompare(b.id));
                     } catch (e) {}
                     archive.policies = policies;
                     if (archive.latest) {
