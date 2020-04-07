@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const modifyFile = require('gulp-modify-file')
 
 const license = 
 `/******************************************************************************
@@ -24,7 +25,7 @@ const distFiles = () => {
 }
 
 const staticFiles = () => {
-    return gulp.src(["../src/static/**"])
+    return gulp.src(["../src/static/**/archives/**", "../src/static/index.html"])
         .pipe(gulp.dest("../dist/static/"));
 }
 
@@ -38,4 +39,46 @@ const aceDocs = () => {
         .pipe(gulp.dest("../dist/static/archives/preview/doc/"))
 }
 
-gulp.task("build", gulp.parallel([distFiles, staticFiles, acePreview, aceDocs]));
+const archivePolicies = () => {
+    // Adds the policy ids to the archive file
+    return gulp.src(["../src/static/archives.json"])
+        .pipe(modifyFile((content, path, file) => {
+            let archives = JSON.parse(content);
+            let latestPol = [];
+            let latestArchive = null;
+            for (const archive of archives) {
+                if (archive.id !== "latest") {
+                    let ace;
+                    if (archive.id !== "preview") {
+                        ace = require(`../src/static${archive.path}/js/ace-node.js`);
+                    } else {
+                        ace = require("../../accessibility-checker-engine/dist/ace-node.js");
+                    }
+                    let policies = [];
+                    try {
+                        let checker = new ace.Checker();
+                        for (const rs of checker.rulesets) {
+                            policies.push({
+                                id: rs.id,
+                                name: rs.name
+                            });
+                        }
+                        policies.sort((a,b) => a.id.localeCompare(b.id));
+                    } catch (e) {}
+                    archive.policies = policies;
+                    if (archive.latest) {
+                        latestPol = policies;
+                    }
+                } else {
+                    latestArchive = archive;
+                }
+            }
+            if (latestArchive) {
+                latestArchive.policies = latestPol;
+            }
+            return JSON.stringify(archives, null, 2);
+        }))
+        .pipe(gulp.dest("../dist/static/"));
+}
+
+gulp.task("build", gulp.parallel([distFiles, staticFiles, acePreview, aceDocs, archivePolicies]));

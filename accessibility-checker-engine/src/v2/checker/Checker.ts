@@ -29,8 +29,9 @@ export type Ruleset = {
     category: eRuleCategory,
     checkpoints: Array<{
         num: string,
-        // JCH: add name of checkpoint
+        // JCH: add name of checkpoint and summary description
         name: string,
+        summary: string,
         rules: Array<{id: string, level: eRulePolicy}>
     }>
 }

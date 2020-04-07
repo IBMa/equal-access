@@ -26,6 +26,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.1.1",
             "name": "Non-text Content",
+            "summary": "All non-text content that is presented to the user has a text alternative that serves the equivalent purpose.",
             "rules": [
                 {
                     id: "WCAG20_Input_ExplicitLabelImage",
@@ -121,6 +122,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.2.1",
             "name": "Audio-only and Video-only (Prerecorded)",
+            "summary": "For prerecorded audio-only or video-only media, an alternative provides equivalent information.",
             "rules": [
                 {
                     id: "HAAC_Video_HasNoTrack",
@@ -139,6 +141,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.2.2",
             "name": "Captions (Prerecorded)",
+            "summary": "Captions are provided for all prerecorded audio content in synchronized media.",
             "rules": [
                 {
                     id: "HAAC_Video_HasNoTrack",
@@ -149,6 +152,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.2.3",
             "name": "Audio Description or Media Alternative (Prerecorded)",
+            "summary": "An alternative for time-based media or audio description of the prerecorded video content is provided for synchronized media.",
             "rules": [
                 {
                     id: "RPT_Media_VideoReferenceTrigger",
@@ -159,6 +163,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.2.4",
             "name": "Captions (Live)",
+            "summary": "Captions are provided for all live audio content in synchronized media.",
             "rules": [
                 {
                     id: "HAAC_Video_HasNoTrack",
@@ -173,6 +178,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.2.5",
             "name": "Audio Description (Prerecorded)",
+            "summary": "Audio description is provided for all prerecorded video content in synchronized media.",
             "rules": [
                 {
                     id: "RPT_Media_VideoReferenceTrigger",
@@ -183,6 +189,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.3.1",
             "name": "Info and Relationships",
+            "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
                 {
                     id: "RPT_Headers_FewWords",
@@ -298,6 +305,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.3.2",
             "name": "Meaningful Sequence",
+            "summary": "When the sequence in which content is presented affects its meaning, a correct reading sequence can be programmatically determined.",
             "rules": [
                 {
                     id: "Valerie_Elem_DirValid",
@@ -312,6 +320,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.3.3",
             "name": "Sensory Characteristics",
+            "summary": "Instructions provided for understanding and operating content do not rely solely on sensory characteristics of components such as shape, size, visual location, orientation, or sound.",
             "rules": [
                 {
                     id: "RPT_Text_SensoryReference",
@@ -322,11 +331,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.3.4",
             "name": "Orientation",
+            "summary": "Content does not restrict its view and operation to a single display orientation, such as portrait or landscape.",
             "rules": []
         },
         {
             "num": "1.3.5",
             "name": "Identify Input Purpose",
+            "summary": "The purpose of each input field that collects information about the user can be programmatically determined when the field serves a common purpose.",
             "rules": [
                 {
                     id: "WCAG21_Input_Autocomplete",
@@ -337,6 +348,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.4.1",
             "name": "Use of Color",
+            "summary": "Color is not used as the only visual means of conveying information, indicating an action, prompting a response, or distinguishing a visual element.",
             "rules": [
                 {
                     id: "RPT_Font_ColorInForm",
@@ -351,6 +363,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.4.2",
             "name": "Audio Control",
+            "summary": "If any audio plays automatically for more than 3 seconds, either a mechanism is available to pause or stop the audio, or a mechanism is available to control audio volume independently from the overall system volume level.",
             "rules": [
                 {
                     id: "RPT_Embed_AutoStart",
@@ -361,6 +374,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.4.3",
             "name": "Contrast (Minimum)",
+            "summary": "The visual presentation of text and images of text has a contrast ratio of at least 4.5:1, with a 3:1 ratio for large-scale text.",
             "rules": [
                 {
                     id: "IBMA_Color_Contrast_WCAG2AA",
@@ -375,6 +389,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.4.4",
             "name": "Resize Text",
+            "summary": "Text can be resized without assistive technology up to 200 percent without loss of content or functionality.",
             "rules": [
                 {
                     id: "WCAG21_Style_Viewport",
@@ -385,31 +400,37 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "1.4.5",
             "name": "Images of Text",
+            "summary": "If the technologies being used can achieve the visual presentation, text is used to convey information rather than images of text.",
             "rules": []
         },
         {
             "num": "1.4.10",
             "name": "Reflow",
+            "summary": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
             "rules": []
         },
         {
             "num": "1.4.11",
             "name": "Non-text Contrast",
+            "summary": "The parts of graphical objects required to understand the content, and the visual information required to identify UI components and states, have a contrast ratio of at least 3:1 against adjacent colors.",
             "rules": []
         },
         {
             "num": "1.4.12",
             "name": "Text Spacing",
+            "summary": "No loss of content or functionality occurs when users change letter, word and paragraph spacing, as well as line height.",
             "rules": []
         },
         {
             "num": "1.4.13",
             "name": "Content on Hover or Focus",
+            "summary": "Where hover or focus actions cause additional content to become visible and hidden, the additional content is dismissable, hoverable and persistent.",
             "rules": []
         },
         {
             "num": "2.1.1",
             "name": "Keyboard",
+            "summary": "All functionality of the content is operable through a keyboard interface without requiring specific timings for individual keystrokes.",
             "rules": [
                 {
                     id: "RPT_Elem_EventMouseAndKey",
@@ -440,6 +461,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.1.2",
             "name": "No Keyboard Trap",
+            "summary": "If keyboard focus can be moved to a component using a keyboard interface, then focus can be moved away from that component using only a keyboard interface, and, if it requires more than unmodified arrow or tab keys or other standard exit methods, the user is advised of the method for moving focus away.",
             "rules": [
                 {
                     id: "HAAC_Media_DocumentTrigger2",
@@ -450,11 +472,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.1.4",
             "name": "Character Key Shortcuts",
+            "summary": "If a keyboard shortcut is implemented using only letter, punctuation, number or symbol characters, then the shortcut can be turned off, remapped or activated only on focus.",
             "rules": []
         },
         {
             "num": "2.2.1",
             "name": "Timing Adjustable",
+            "summary": "For each time limit that is set by the content, the user can turn off, adjust, or extend the limit.",
             "rules": [
                 {
                     id: "RPT_Meta_Refresh",
@@ -469,6 +493,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.2.2",
             "name": "Pause, Stop, Hide",
+            "summary": "For moving, blinking, scrolling, or auto-updating information, the user can pause, stop, hide or adjust the information.",
             "rules": [
                 {
                     id: "RPT_Marquee_Trigger",
@@ -487,11 +512,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.3.1",
             "name": "Three Flashes or Below Threshold",
+            "summary": "Content does not contain anything that flashes more than three times in any one second period, or the flash is below the general flash and red flash thresholds.",
             "rules": []
         },
         {
             "num": "2.4.1",
             "name": "Bypass Blocks",
+            "summary": "A mechanism is available to bypass blocks of content that are repeated on multiple Web pages.",
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
@@ -602,6 +629,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.4.2",
             "name": "Page Titled",
+            "summary": "Web pages, non-web documents, and software have titles that describe topic or purpose.",
             "rules": [
                 {
                     id: "WCAG20_Doc_HasTitle",
@@ -616,11 +644,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.4.3",
             "name": "Focus Order",
+            "summary": "If content can be navigated sequentially and the navigation sequences affect meaning or operation, focusable components receive focus in an order that preserves meaning and operability.",
             "rules": []
         },
         {
             "num": "2.4.4",
             "name": "Link Purpose (In Context)",
+            "summary": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
             "rules": [
                 {
                     id: "WCAG20_A_HasText",
@@ -631,11 +661,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.4.5",
             "name": "Multiple Ways",
+            "summary": "More than one way is available to locate a Web page within a set of Web pages, except where the Web Page is the result of, or a step in, a process.",
             "rules": []
         },
         {
             "num": "2.4.6",
             "name": "Headings and Labels",
+            "summary": "Headings and labels describe topic or purpose.",
             "rules": [
                 {
                     id: "RPT_Header_HasContent",
@@ -646,6 +678,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.4.7",
             "name": "Focus Visible",
+            "summary": "Any keyboard operable user interface has a mode of operation where the keyboard focus indicator is visible.",
             "rules": [
                 {
                     id: "RPT_Style_HinderFocus1",
@@ -660,16 +693,19 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.5.1",
             "name": "Pointer Gestures",
+            "summary": "All functionality that uses multipoint or path-based gestures for operation can be operated with a single pointer without a path-based gesture.",
             "rules": []
         },
         {
             "num": "2.5.2",
             "name": "Pointer Cancellation",
+            "summary": "For functionality that can be operated using a single pointer, completion of the function is on the up-event with an ability to abort, undo or reverse the outcome.",
             "rules": []
         },
         {
             "num": "2.5.3",
             "name": "Label in Name",
+            "summary": "For user interface components with labels that include text or images of text, the accessible name contains the text that is presented visually.",
             "rules": [
                 {
                     id: "WCAG21_Label_Accessible",
@@ -680,11 +716,13 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.5.4",
             "name": "Motion Actuation",
+            "summary": "Functionality that can be operated by motion can also be operated by user interface components, and the motion trigger can be disabled.",
             "rules": []
         },
         {
             "num": "3.1.1",
             "name": "Language of Page",
+            "summary": "The default human language of Web pages, non-Web documents, or software can be programmatically determined.",
             "rules": [
                 {
                     id: "WCAG20_Html_HasLang",
@@ -695,6 +733,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.1.2",
             "name": "Language of Parts",
+            "summary": "The human language of each passage or phrase in the content can be programmatically determined.",
             "rules": [
                 {
                     id: "WCAG20_Elem_Lang_Valid",
@@ -705,6 +744,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.2.1",
             "name": "On Focus",
+            "summary": "When any component receives focus, it does not initiate a change of context.",
             "rules": [
                 {
                     id: "WCAG20_Select_NoChangeAction",
@@ -719,6 +759,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.2.2",
             "name": "On Input",
+            "summary": "Changing the setting of any user interface component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
             "rules": [
                 {
                     id: "WCAG20_A_TargetAndText",
@@ -745,16 +786,19 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.2.3",
             "name": "Consistent Navigation",
+            "summary": "Navigational mechanisms that are repeated on multiple Web pages within a set of Web pages occur in the same relative order each time they are repeated, unless a change is initiated by the user.",
             "rules": []
         },
         {
             "num": "3.2.4",
             "name": "Consistent Identification",
+            "summary": "Components that have the same functionality within a set of Web pages are identified consistently.",
             "rules": []
         },
         {
             "num": "3.3.1",
             "name": "Error Identification",
+            "summary": "If an input error is automatically detected, the item that is in error is identified and the error is described to the user in text.",
             "rules": [
                 {
                     id: "HAAC_Aria_ErrorMessage",
@@ -765,6 +809,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.3.2",
             "name": "Labels or Instructions",
+            "summary": "Labels or instructions are provided when content requires user input.",
             "rules": [
                 {
                     id: "WCAG20_Input_LabelBefore",
@@ -795,16 +840,19 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "3.3.3",
             "name": "Error Suggestion",
+            "summary": "If an input error is automatically detected and suggestions for correction are known, then the suggestions are provided to the user, unless it would jeopardize the security or purpose of the content.",
             "rules": []
         },
         {
             "num": "3.3.4",
             "name": "Error Prevention (Legal, Financial, Data)",
+            "summary": "For content that cause legal commitments or financial transactions for the user to occur, that modify or delete user-controllable data in data storage systems, or that submit user test responses, the user can reverse, correct, or confirm the action.",
             "rules": []
         },
         {
             "num": "4.1.1",
             "name": "Parsing",
+            "summary": "In content implemented using markup languages, elements have complete start and end tags, elements are nested according to their specifications, elements do not contain duplicate attributes, and any IDs are unique, except where the specifications allow these features.",
             "rules": [
                 {
                     id: "RPT_Elem_UniqueId",
@@ -819,6 +867,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "4.1.2",
             "name": "Name, Role, Value",
+            "summary": "For all user interface components (including, but not limited to: form elements, links and components generated by scripts), the name and role can be programmatically determined; states, properties, and values that can be set by the user can be programmatically set; and notification of changes to these items is available to user agents, including assistive technologies.",
             "rules": [
                 {
                     id: "WCAG20_Input_ExplicitLabel",
@@ -932,6 +981,7 @@ let a11yRulesets: Ruleset[] = [
         {
             "num": "2.4.3",
             "name": "Focus Order",
+            "summary": "If content can be navigated sequentially and the navigation sequences affect meaning or operation, focusable components receive focus in an order that preserves meaning and operability.",
             "rules": [
                 {
                     id: "IBMA_Focus_Tabbable",

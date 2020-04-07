@@ -78,10 +78,11 @@ export class Server {
             let latest = "2020FebDeploy";
             for (const archive of archives) {
                 if (archive.latest) {
-                    latest = archive.id;
+                    latest = archive.path;
                 }
             }
-            this.app.use("/rules/archives/latest", express.static(path.join(__dirname, "archives", latest), { maxAge: Server.oneDay }));
+            console.log("Latest:",path.join(__dirname, latest));
+            this.app.use("/rules/archives/latest", express.static(path.join(__dirname, "static", latest), { maxAge: Server.oneDay }));
         } catch (err) {
             console.error("[ERROR] Fatal error occurred", err);
             throw err;
