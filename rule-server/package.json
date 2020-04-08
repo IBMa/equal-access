@@ -6,7 +6,7 @@
     "scripts": {
         "build:ace": "cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && cd ../rule-server",
         "build:ace:debug": "cd ../accessibility-checker-engine && npm install && npm run build-debug && npm run build-node && cd ../rule-server",
-        "build:help": "cp -r ../accessibility-checker-engine/help ./src-gatsby/src/pages/tools/help && cd src-gatsby && npm run build && cd ..",
+        "build:help": "mkdir ./src-gatsby/src/pages/tools && cp -r ../accessibility-checker-engine/help ./src-gatsby/src/pages/tools/help && cd src-gatsby && npm run build && cd ..",
         "build": "rm -rf dist && npm run build:ace && npm run build:help && mkdir -p src/routes && mkdir -p api && mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
         "start": "npm run build && cd dist && node main.js",
         "debug": "npm run build && TS_NODE_PROJECT=./src/tsconfig.json node --nolazy --inspect-brk=9229 -r ts-node/register ./src/main.ts",

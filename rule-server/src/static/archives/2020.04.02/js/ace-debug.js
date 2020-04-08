@@ -19421,7 +19421,7 @@ var Config = /** @class */ (function () {
     function Config() {
     }
     Config.DEBUG = false;
-    Config.helpRoot = "https://ibm.com/able/tools/help";
+    Config.helpRoot = "https://able.ibm.com/rules/tools/help";
     return Config;
 }());
 exports.Config = Config;
