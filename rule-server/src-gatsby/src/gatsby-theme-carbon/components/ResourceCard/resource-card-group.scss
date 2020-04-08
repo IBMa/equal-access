@@ -1,0 +1,59 @@
+// Card groups
+// Set spacing to the right of the group
+.resource-card-group .#{$prefix}--col-lg-4:nth-child(2n) {
+  @include carbon--breakpoint('lg') {
+    margin-right: 33%;
+  }
+}
+
+// set border between cards
+.resource-card-group .#{$prefix}--resource-card {
+  border-top: 1px solid $carbon--gray-20;
+}
+
+.resource-card-group .#{$prefix}--resource-card--dark {
+  border-top-color: $carbon--black-100;
+}
+
+.resource-card-group
+  .#{$prefix}--col-lg-4:nth-child(2)
+  .#{$prefix}--resource-card {
+  @include carbon--breakpoint('md') {
+    border-top: 0px solid transparent;
+  }
+}
+
+.resource-card-group
+  .#{$prefix}--col-lg-4:first-child
+  .#{$prefix}--resource-card {
+  border-top: 0px solid transparent;
+}
+
+.resource-card-group
+  .#{$prefix}--col-lg-4:nth-child(odd)
+  .#{$prefix}--resource-card {
+  @include carbon--breakpoint('md') {
+    border-left: 1px solid transparent;
+  }
+}
+
+.resource-card-group
+  .#{$prefix}--col-lg-4:nth-child(even)
+  .#{$prefix}--resource-card {
+  @include carbon--breakpoint('md') {
+    border-left: 1px solid $carbon--gray-20;
+  }
+}
+
+.resource-card-group
+  .#{$prefix}--col-lg-4:nth-child(even)
+  .#{$prefix}--resource-card--dark {
+  border-left-color: $carbon--black-100;
+}
+
+// Set spacing to the right of the group
+.resource-card-group .#{$prefix}--col-lg-4:nth-child(2) {
+  @include carbon--breakpoint('lg') {
+    margin-right: 33%;
+  }
+}

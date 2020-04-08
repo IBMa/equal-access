@@ -1,0 +1,46 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_RadioChkInFieldSet"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+
+## Why is this important?
+
+Grouping related radio buttons and checkboxes enables assistive technology to convey the group relationship to users (e.g. "group of 5 radio buttons").
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Form controls share `name=\"{1}\"` but are not grouped
+Related sets of radio buttons or checkboxes should be programmatically grouped.
+
+[IBM 1.3.1 Info and relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Group related controls of the same type by enclosing them within a `<fieldset>` element;
+ * OR, group related radio buttons by using `role="radiogroup"`;
+ * OR, group related checkboxes by using `role="group"`;
+ * OR, disassociate unrelated controls or controls of different types by using different `"name"` attribute values.
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

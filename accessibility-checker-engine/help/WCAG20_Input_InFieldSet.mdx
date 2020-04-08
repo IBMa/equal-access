@@ -1,0 +1,59 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_InFieldSet"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+ * People who rely on keyboard control
+
+## Why is this important?
+
+Groups of logically related input elements must be contained within a fieldset element. All controls within a given fieldset element are then related and the relationship may then provided to the user by user agents.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## Use the `<fieldset>` element to group logically related input elements
+Groups of logically related input elements should be contained within a `<fieldset>` element
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Use a `<fieldset>` element to group the related input elements.
+
+For example:
+```
+<form action="..." method="post">
+    <fieldset>
+        <legend>Legend text: Personal Information</legend>
+        <p>Fieldset text: Please enter your personal information.</p>
+
+        <label for="fn1">First Name</label>
+        <input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
+
+        <label for="ln1">Last Name</label>
+        <input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name">
+    </fieldset>
+</form>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

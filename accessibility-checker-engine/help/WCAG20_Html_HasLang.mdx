@@ -1,0 +1,44 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Html_HasLang"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers 
+* People with dyslexia
+
+## Why is this important?
+
+Speech synthesizers that support multiple languages can adapt to the pronunciation and syntax that are specific to the language, speaking the text in the correct language with proper pronunciation. Some screen readers can be configured to automatically switch languages based on the `lang` attribute.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The page does not identify its default language 
+Page must identify the default language of the document with a `lang` attribute
+
+[IBM 3.1.1 Language of Page](http://www.ibm.com/able/guidelines/ci162/language_of_page.html) | [WCAG 2.1 technique H57](https://www.w3.org/WAI/WCAG21/Techniques/html/H57)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Identify the default language of the document by providing the `lang` or `xml:lang` attribute on the HTML element.
+For example: `<html lang=“en">`
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

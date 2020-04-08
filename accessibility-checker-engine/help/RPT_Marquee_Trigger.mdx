@@ -1,0 +1,46 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Marquee_Trigger"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* People with attention deficit disorders
+* People with reading disabilities
+* People with intellectual disabilities
+* People with low vision
+
+## Why is this important?
+
+Content that moves or auto-updates can be a barrier and a severe distraction to anyone who has trouble reading stationary text quickly as well as anyone who has trouble tracking moving objects. The `<marquee>` element is obsolete and should not be used.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## Scrolling content found that uses the obsolete `<marquee>` element
+The `<marquee>` element is obsolete and should not be used
+
+[IBM 2.2.2 Pause, Stop, Hide](http://www.ibm.com/able/guidelines/ci162/pause_stop_hide.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* If it isn't absolutely necessary, don't use this effect;
+* OR, use other options such as CSS or scripting to create the same effect, and include an option to turn off the scrolling.
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

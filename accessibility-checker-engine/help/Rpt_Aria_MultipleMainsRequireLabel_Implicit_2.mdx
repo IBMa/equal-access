@@ -1,0 +1,62 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleMainsRequireLabel_Implicit_2"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people and people with low vision using screen readers
+ * People with dexterity impairment using voice control
+
+## Why is this important?
+
+The `<main>` element has an implicit landmark role of `"main"` that represents the central topic of the document. This provides a non-obtrusive alternative for a “skip to main content” link. It is possible, but not desirable, to have more than one element with a `"main"` role, for example through DOM nesting (e.g. a document within a document) or by use of the `aria-owns` attribute. In this situation, an associated unique label that describes each area of main content is needed to allow users of assistive technologies to understand the purpose of each main area, and navigate to them. Ideally the author SHOULD mark no more than one element with the `"main"` role.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Multiple elements with `"main"` role do not have unique labels
+Multiple elements with `"main"` role must have unique labels
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)  | [W3C WAI-ARIA 1.1 Main Landmark](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Remove the `"main"` role from all but the one element that represents the main content on the page (highly recommended);
+* OR, for each element with a `"main"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes the element's central content;
+* OR, for elements where the design cannot accommodate suitable visible text, use the `aria-label` attribute to add an invisible, unique, non-empty label to the element.
+
+For example:
+
+```
+<html>
+<body>
+	<main hidden aria-labelledby="title1">
+		<h1 id="title1"> Stock Ticker portlet </h1>
+	</main>
+
+	<div role="main" aria-label="Weather portlet">
+		...
+	</div>
+</body>
+</html>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

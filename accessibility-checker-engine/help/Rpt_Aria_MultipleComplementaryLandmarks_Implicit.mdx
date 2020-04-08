@@ -1,0 +1,56 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleComplementaryLandmarks_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people and people with low vision using screen readers
+
+## Why is this important?
+
+When there are multiple elements with a `"complementary"` role, they must have unique labels that clearly describe the region's content. This includes `<aside>` elements, which have the implicit role of `"complementary"`. These labels help people using assistive technologies to quickly find and navigate to each region.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Multiple elements with the `"complementary"` role do not have a unique label
+All elements with the `"complementary"` role must have a unique label
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WCAG 2.1 technique ARIA6](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA6.html) |  [WCAG 2.1 technique ARIA13](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA13)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* For each element with a `"complementary"` role, either set the value of the `aria-labelledby` attribute to the `id` of any visible text that appropriately and uniquely describes that region's content;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"complementary"` role.
+
+For example:
+```
+<h2 id="weather">Weather portlet</h2>
+<div role="complementary" aria-labelledby="weather">
+   ...
+</div>
+
+<div role="complementary" aria-label="Stock ticker portlet">
+   ...
+</div>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

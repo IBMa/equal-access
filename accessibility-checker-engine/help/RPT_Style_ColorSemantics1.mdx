@@ -1,0 +1,47 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Style_ColorSemantics1"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * People who cannot see color, have limited color vision or have color blindness
+ * People using text only, monochrome or braille displays
+ * People who personalize their display colors for easier reading
+
+## Why is this important?
+
+Using descriptive markup and visual differences together with color enables users who cannot see color to understand the meaning conveyed through color differences.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Needs review
+</div>
+
+## Check color is not used as the only visual means of conveying information
+Combine color and descriptive markup to convey information
+
+[IBM 1.4.1 Use of color](http://www.ibm.com/able/guidelines/ci162/color.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* If color is used to indicate required fields, also use an asterisk ('\*') to visually indicate required fields without color (e.g.  “required fields are red and indicated with '*'") and indicate them programmatically with the `"required"` attribute;
+
+* OR if use of color conveys other meaning or information, check that there is another visual indicator together with programmatic or text information that conveys the same information (e.g. use “green checkmarks” and “red crosses” instead of just “red” and “green” indicators).
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

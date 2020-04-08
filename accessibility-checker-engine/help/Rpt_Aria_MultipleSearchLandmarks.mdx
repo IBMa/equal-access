@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleSearchLandmarks"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+* Blind people using screen readers
+
+## Why is this important?
+
+When there is more than one element with the `"search"` landmark role, each must have a unique, meaningful label so that assistive technologies can identify and navigate to each one.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## Multiple elements with `"search"` role do not have unique labels
+Each element with a `"search"` role must have a unique label that describes its purpose
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA6.html) | [WCAG 2.1 technique ARIA13](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA13)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* For each element with a `"search"` role, either set the value of the `aria-labelledby` attribute to the `id` of any visible text that appropriately and uniquely describes that search element's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"search"` role.
+
+For example:
+```
+<div role="search" aria-label="Weather portlet">
+...
+</div>
+<div role="search" aria-label="Stock ticker portlet">
+...
+</div>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

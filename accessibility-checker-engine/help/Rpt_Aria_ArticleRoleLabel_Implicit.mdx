@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ArticleRoleLabel_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+
+## Why is this important?
+
+Elements with a role of `"article"` must have an associated label. This information helps people using assistive technologies to find and navigate the content. The HTML `<article>` element has an implicit role of `"article"`.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Element with `"article"` role does not have a label
+All elements with role of `"article"` must have a label that describes their purpose
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Article Role](https://www.w3.org/TR/wai-aria-1.1/#article)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* If there is visible text that appropriately describes the purpose of the article, set the element's `aria-labelledby` attribute value to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"article"` role.
+
+For example:
+```
+<h1 id="news">Breaking news</h1>
+...
+<div role="article" aria-labelledby="news">
+    ...
+</div>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

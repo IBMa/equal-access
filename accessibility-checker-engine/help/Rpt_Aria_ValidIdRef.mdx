@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ValidIdRef"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with dexterity impairment using voice control
+
+## Why is this important?
+
+Any element that uses a WAI-ARIA property must reference a valid `id` attribute. This enables assistive technologies to precisely identify the referenced element.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The `id` {0} specified for the WAI-ARIA property {1} value is not valid
+The WAI-ARIA property must reference a non-empty unique id of an existing element that is visible
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Update the WAI-ARIA property {1} value with the unique `id` value of a valid visible element.
+
+For example:
+```
+<form action="" method="post">
+      <label for="ln1">Last Name</label>
+      <input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name" aria-describedby="ln2">
+</form>
+<div id="ln2" role="tooltip">Last Name must be alpha only characters</div>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Elem_UniqueAccessKey"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with dexterity impairment using voice control
+
+## Why is this important?
+
+Setting the `accesskey` attribute on elements allows quick access to the element by focusing or activating the element using the keyboard. Having a unique `accesskey` value allows the user agents to determine which element to activate when a user triggers the access key.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## `Accesskey` attribute value on the element is not unique
+`Accesskey` attribute values on each element must be unique for the page
+
+[IBM 4.1.1 Parsing](http://www.ibm.com/able/guidelines/ci162/parsing.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Update the `accesskey` attribute on the element with a unique non-empty value.
+
+For example:
+ ``` 
+ <button type="button" name="testButton1" id="button1" accesskey="a">Accept</button>
+ <button type="button" name="testButton2" id="button2" accesskey="r">Reject</button> 
+ ```
+        		
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

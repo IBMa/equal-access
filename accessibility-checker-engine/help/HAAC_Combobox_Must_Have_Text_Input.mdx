@@ -1,0 +1,62 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Combobox_Must_Have_Text_Input"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen readers
+
+## Why is this important?
+
+A combobox combines a text input element and a popup element that helps the user set the value of the input. The text input element must be a single line text field with an appropriate role, otherwise assistive technologies may not be able to present and control the content correctly.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The text input `role` or number of lines is not valid for a combobox
+A combobox must have a single line text input element with a valid `role`
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Code the combobox as in the WAI-ARIA 1.2 example below;
+ * OR, if the text input element is multi-line (e.g. `<textarea>`), set `aria-multiline="false"`;
+ * AND, ensure the text input element has `role="textbox"` or `role="searchbox"`. An `<input type="text">` element has the implicit role of `"textbox"`.
+
+Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
+
+```
+ <label for="tag_combo">Tag</label>
+  <input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option">
+   <ul role="listbox" id="popup_listbox">
+      <li role="option">Zebra</li>
+      <li role="option" id="selected_option">Zoom</li>
+   </ul>
+```
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

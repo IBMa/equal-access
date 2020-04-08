@@ -1,0 +1,56 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleApplicationLandmarks"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+
+## Why is this important?
+
+An element with an `"application"` role is a type of WAI-ARIA landmark region. When there are multiple application regions, they must have unique labels, so people who use assistive technologies can quickly identify and navigate to each application region.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Multiple elements with `"application"` role do not have unique labels
+Each element with an `"application"` role must have a unique label that describes its purpose
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA6.html) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA13)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * For each element with `role="application"`, either set the value of the `aria-labelledby` attribute of each application to the `id` of any visible text that appropriately and uniquely describes that application's purpose;
+ * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"application"` role.
+
+For example:
+```
+<h1 id="weather">Weather portlet</h1>
+<div role="application" aria-labelledby="weather">
+    ...
+</div>
+
+<div role="application" aria-label="Stock ticker portlet">
+    ...
+</div>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

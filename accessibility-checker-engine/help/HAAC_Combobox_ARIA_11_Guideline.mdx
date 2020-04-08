@@ -1,0 +1,61 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Combobox_ARIA_11_Guideline"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using screen readers
+ * People with low vision using screen magnification
+
+## Why is this important?
+
+The features and behaviors of combobox implementations are complex and vary widely, so it is important that the recommended authoring techniques are followed to produce a fully functioning component. This ensures full keyboard control, focus management and manipulation of the roles, states, and properties. These in turn support assistive technology and provide necessary information to interact with the component.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## Check combobox component is coded to WAI-ARIA 1.2 Authoring Practices
+Combobox widget should be coded to WAI-ARIA 1.2 Authoring Practices
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Confirm the element with `"combobox"` role follows a supported design pattern as described in [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox);
+* AND, perform a manual test to ensure the keyboard interaction, focus management and manipulation of the roles, states, and properties work as intended.
+
+Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
+
+```
+ <label for="tag_combo">Tag</label>
+  <input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option">
+<ul role="listbox" id="popup_listbox">
+   <li role="option">Zebra</li>
+   <li role="option" id="selected_option">Zoom</li>
+</ul>
+```
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

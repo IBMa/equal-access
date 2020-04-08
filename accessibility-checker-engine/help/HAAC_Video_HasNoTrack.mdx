@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Video_HasNoTrack"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People who are deaf or hard of hearing
+
+## Why is this important?
+
+Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Media embedded with a `<video>` element does not have a `<track>`element to provide text alternatives for audio or visual content
+Media embedded with a `<video>` element must have a `<track>` element to provide text alternatives for audio or visual content
+
+[IBM 1.2.1 Audio-only and Video-only (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_and_video.html) | [WCAG 2.1 technique H96](https://www.w3.org/WAI/WCAG21/Techniques/html/H96)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+Use the `<track>` element with the `kind` attribute to provide text tracks for the audio (`kind=captions`) and visual (`kind=descriptions`) aspects of the video
+
+For example:
+
+```
+<video src="...">
+      <track src="myvideo.srt" kind="captions" >
+</video>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
