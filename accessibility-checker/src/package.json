@@ -15,7 +15,7 @@
     "continuous"
   ],
   "author": "IBM Accessibility",
-  "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
+  "license": "Apache-2.0",
   "dependencies": {
     "chromedriver": "^80.0.1",
     "deep-diff": "^0.3.4",
@@ -27,8 +27,7 @@
     "url": "https://github.com/IBMa/equal-access.git"
   },
   "bugs": {
-    "url": "https://github.com/IBMa/equal-access/issues",
-    "email": "thbrunet@us.ibm.com"
+    "url": "https://github.com/IBMa/equal-access/issues"
   },
   "publishConfig": {
     "access": "public"
