@@ -18,6 +18,9 @@ before_script:
   # Rule server build
   - cd rule-server;
   - npm install;
+  - cd src-gatsby;
+  - npm install;
+  - cd ..;
   - npm run build;
   - cd dist;
   - node main.js &
