@@ -16,7 +16,7 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-Forms that are designed to automatically submit when all the fields are filled out or when focus leaves the last field without providing a warning can be confusing to users.
+Forms that are designed to automatically submit when all the fields are filled out or when focus leaves the last field pose problems for accessibility. If users are not warned, they may leave a field to get more context and be confused when the information is submitted. 
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -25,8 +25,8 @@ Forms that are designed to automatically submit when all the fields are filled o
 Recommendation
 </div>
 
-## Confirm the form does not submit automatically
-Do not automatically submit a form without warning the user
+## Confirm the form does not submit automatically without warning
+A form should not be submitted automatically without warning the user
 
 [IBM 3.2.2 On Input](http://www.ibm.com/able/guidelines/ci162/on_input.html) | [WCAG 2.1 technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13) | [WCAG 2.1 failure technique F36](https://www.w3.org/WAI/WCAG21/Techniques/failures/F36)
 
@@ -35,7 +35,9 @@ Do not automatically submit a form without warning the user
 
 ## What to do
 
-* Use the standard behavior of a `<form>` element by providing a "submit" button or the use of an Enter key to submit the form.
+* Verify that the `onchange` function does not automatically submit the form;
+* OR, if the form is automatically submitted, verify that the user is warned in advance;
+* OR, use the standard behavior of a `<form>` element by providing a "submit" button or the use of an Enter key to submit the form.
 
 
 </Column>

@@ -24,7 +24,7 @@ Violation
 </div>
 
 ## Custom error message has invalid reference `id`
-A custom error message must reference a valid `id` and when triggered it must be appropriately exposed
+A custom error message must reference a valid `id` and when triggered the message must be appropriately exposed
 
 [IBM 3.3.1 Error Identification](http://www.ibm.com/able/guidelines/ci162/error_id.html) | [WCAG 2.1 technique G85](https://www.w3.org/WAI/WCAG21/Techniques/general/G84)
 
@@ -32,8 +32,8 @@ A custom error message must reference a valid `id` and when triggered it must be
 </div>
 
 ## What to do
-* If `aria-errormessage` attribute does not reference a valid `id`, update the value to reference a valid `id`;
-* OR, if the `aria-errormessage` attribute references a valid `id`, verify the content is exposed in a container that is not hidden when the message is triggered.
+* If the `aria-errormessage` attribute does not reference a valid `id`, update the value to reference a valid `id`;
+* OR, if the `aria-errormessage` attribute references a valid `id`, verify the content is in a container that is not hidden when the message is triggered.
 
 Example:
 ```<!-- Initial valid state -->
@@ -41,7 +41,7 @@ Example:
 <input id="startTime" type="text" aria-errormessage="msgID" value="" aria-invalid="false">
 <span id="msgID" aria-live="off" style="visibility:hidden">Invalid time:  the time must be between 9:00 AM and 5:00 PM</span>
 
-<!-- User has input an invalid value -->
+<!-- User has entered an invalid value -->
 <label for="startTime">Please enter a start time for the meeting:</label>
 
 <input id="startTime" type="text" aria-errormessage="msgID" aria-invalid="true" value="11:30" PM>

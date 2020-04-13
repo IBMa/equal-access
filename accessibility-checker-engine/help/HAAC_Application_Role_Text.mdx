@@ -16,7 +16,7 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-Within an `application` region (or area), only focusable elements are accessible to users of some assistive technologies. Therefore, to ensure access to any non-decorative static text or image content that does not receive focus by default, it must be implemented in an accessible way.
+Within an element with the role `"application"`, only focusable elements are accessible to users of some assistive technologies by default. Therefore, to ensure access to any non-decorative static text or image content that does not receive focus by default, it must be implemented in an accessible way.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -25,8 +25,8 @@ Within an `application` region (or area), only focusable elements are accessible
 Needs review
 </div>
 
-## Check non-decorative static text or image content within the `application` role has keyboard focus
-Non-decorative static text or image content within the `application` role must receive keyboard focus
+## Verify that non-decorative static text or image content within the element with role of `"application"` is accessible
+Non-decorative static text and image content within an element with role of `"application"` must be accessible
 
 [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WAI ARIA 1.2: Application Role](https://www.w3.org/TR/wai-aria-1.2/#application)
 
@@ -35,8 +35,9 @@ Non-decorative static text or image content within the `application` role must r
 
 ## What to do
 
-* Associate the content with a focusable element using the `aria-labelledby` or `aria-describedby` attributes;
-* OR, place the content in a focusable element that has role `document` or `article`;
+* Verify that the content is decorative;
+* OR, associate the content with a focusable element using the `aria-labelledby` or `aria-describedby` attribute;
+* OR, place the content in a focusable element that has role `"document"` or `"article"`;
 * OR, manage the focus of descendants as described in [Managing Focus](https://www.w3.org/TR/wai-aria-1.2/#managingfocus) by updating the value of `aria-activedescendant` to reference the element containing the focused content.
 
 

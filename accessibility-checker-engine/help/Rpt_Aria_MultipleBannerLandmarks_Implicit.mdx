@@ -14,7 +14,7 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-An HTML `<header>` element that is a descendant of the `<body>` element, or any element with an explicit `"banner"` role is a type of WAI-ARIA landmark region that identifies site-oriented content at the beginning of the page. When the page includes more than one banner region, each should have a unique label, so people who use assistive technologies can quickly identify and navigate to each banner region.
+An HTML `<header>` element that is a descendant of the `<body>` element, or any element with an explicit `"banner"` role is a type of WAI-ARIA landmark region that identifies site-oriented content at the beginning of the page. When the page includes more than one banner region, each should have a unique label, so people who use assistive technologies can quickly identify and navigate to each `"banner"` region.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -26,14 +26,14 @@ Violation
 ## Multiple elements with `"banner"` role do not have unique labels
 Each element with a `"banner"` role must have a unique label that describes its purpose
 
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA6.html) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA13)
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 <div id="elementLocation">
 </div>
 
 ## What to do
 
-* For each `<header>` element that is a descendant of the `<body>` element, and each element with `role="banner"`, either set the value of the `aria-labelledby` attribute of each banner to the `id` of any visible text that appropriately and uniquely describes that banner's purpose;
+* For each `<header>` element that is a descendant of the `<body>` element, and each element with `role="banner"`, either set the value of the `"aria-labelledby"` attribute of each banner to the `"id"` of any visible text that appropriately and uniquely describes that banner's purpose;
 * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"banner"` role.
 
 For example:

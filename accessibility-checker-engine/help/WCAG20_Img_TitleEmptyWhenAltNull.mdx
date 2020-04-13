@@ -14,7 +14,7 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-When an image is decorative and has an empty `alt` attribute, the `title` attribute should not be included so the image is ignored by assistive technologies.
+When an image is decorative and has an empty `alt` attribute, the `title` attribute should not be included. This ensures the image is ignored by assistive technologies.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -33,7 +33,7 @@ When the image `alt` text attribute is empty, the `title` attribute must also be
 
 ## What to do
 
-Use a null `alt` text attribute and no `title` attribute on an image that assistive technologies should ignore.
+* Use a null `alt` text attribute and no `title` attribute on an image that assistive technologies should ignore.
 
 For example:
 ```<img src="squiggle.gif" width="20" height="20" alt="" />```

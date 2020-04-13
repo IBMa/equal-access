@@ -10,7 +10,8 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
-* Blind people and people with low vision using screen readers
+* Blind people using screen readers
+* People with low vision using a screen reader
 
 ## Why is this important?
 
@@ -33,8 +34,8 @@ Elements with a `"region"` role must have a label that describes their purpose
 
 ## What to do
 
-* If there is visible text that appropriately describes the region's purpose, set the region element's `aria-labelledby` attribute to the `id` value of that text (example below);
-* OR, use the `aria-label` attribute to add a label directly to the element with the `region` role.
+* If there is visible text that appropriately describes the region's purpose, set the region element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
+* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"region"` role.
 
 For example, the HTML `<section>` element has an implicit role of `"region"`:
 ```

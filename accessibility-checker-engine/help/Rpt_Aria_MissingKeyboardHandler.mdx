@@ -29,7 +29,7 @@ Needs review
 ## Interactive WAI_ARIA UI component does not have keyboard handlers implemented for keyboard access
 Interactive WAI_ARIA UI components must provide keyboard access
 
-[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [WAI-ARIA Authoring Practices 1.1, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex) | [W3C WAI-ARIA 1.1, Developing a Keyboard Interface](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard)
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [WAI-ARIA Authoring Practices 1.2, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex) | [W3C WAI-ARIA 1.2, Developing a Keyboard Interface](https://www.w3.org/TR/wai-aria-practices-1.2/#keyboard)
 
 <div id="elementLocation">
 </div>
@@ -37,9 +37,9 @@ Interactive WAI_ARIA UI components must provide keyboard access
 ## What to do
 
  * Confirm you can use only the keyboard to navigate to and interact with the UI component;
- * OR, if the component is not keyboard accessible, implement `onkeydown` or `onkeypress` keyboard handlers on the element itself using the [ARIA Authoring practices guidance](https://www.w3.org/TR/wai-aria-practices-1.1/);
+ * OR, if the component is not keyboard accessible, implement `onkeydown` or `onkeypress` keyboard handlers on the element itself using the [ARIA 1.2 Authoring practices guidance](https://www.w3.org/TR/wai-aria-practices-1.2);
  * OR, if the inaccessible component has required children, implement `onkeydown` or `onkeypress` keyboard handlers on all the required children (example below) or a grandchild of each required child;
- * OR, use other methods to provide keyboard access as described in [WAI-ARIA Authoring Practices 1.1, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex), using the [WAI-ARIA 1.1 Authoring practices guidance](https://www.w3.org/TR/wai-aria-practices-1.1/)
+ * OR, use other methods to provide keyboard access as described in [WAI-ARIA Authoring Practices 1.2, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex).
 
 For example:
 

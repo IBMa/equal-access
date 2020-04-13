@@ -25,15 +25,15 @@ Recommendation
 ## Multiple elements with `"search"` role do not have unique labels
 Each element with a `"search"` role must have a unique label that describes its purpose
 
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA6.html) | [WCAG 2.1 technique ARIA13](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/ARIA13)
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 <div id="elementLocation">
 </div>
 
 ## What to do
 
-* For each element with a `"search"` role, either set the value of the `aria-labelledby` attribute to the `id` of any visible text that appropriately and uniquely describes that search element's purpose;
-* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"search"` role.
+* For each element with a `"search"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes that search element's purpose;
+* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"search"` role.
 
 For example:
 ```

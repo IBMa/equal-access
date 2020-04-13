@@ -10,12 +10,13 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
-* Blind people and people with low vision using screen readers
+* Blind people using screen readers
+* People with low vision using a screen reader
 * People who rely on keyboard control
 
 ## Why is this important?
 
-The skip to main link or an element with the `main` role allows people who use only a keyboard to skip over content that is repeated on several pages such as, banners and navigation menus and quickly navigate to the main content.
+The skip to main link or an element with the `"main"` role allows people who use only a keyboard to skip over content that is repeated on several pages such as, banners and navigation menus and quickly navigate to the main content.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -35,7 +36,7 @@ Web pages must provide a way to skip directly to the main content
 ## What to do
 
  * Enclose the main content in a `<main>` element;
- * OR, enclose the main content in an element with the `main` landmark role (e.g. `<div role="main">`);
+ * OR, enclose the main content in an element with the `"main"` landmark role (e.g. `<div role="main">`);
  * OR, have a first link on each page that skips to the main content.
 
 For example:

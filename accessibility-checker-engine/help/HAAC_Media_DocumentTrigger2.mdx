@@ -10,12 +10,13 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
+ * People who rely on keyboard control
  * Blind people using screen readers
  * People who physically cannot use a pointing device
 
 ## Why is this important?
 
-If a file download mechanism moves the keyboard focus away from the web page (e.g., when a dialog box is part of the mechanism), it may inadvertently trap keyboard-only users in the UI used to download files. When the dialog is closed, if keyboard focus is not returned to the users' original point of regard, the keyboard-only user may have to spend significant effort navigating back to where they were on the page.
+A keyboard trap is a situation where a keyboard-only user is unable to get out of a content area. For example, if a file download mechanism is implemented with a dialog box, this moves the keyboard focus away from the web page. If keyboard focus is not handled correctly, it may inadvertently trap keyboard-only users in the dialog. In addition, when the dialog is closed, if keyboard focus is not returned to the user's original position on the web page (the 'point of regard'), they may have to spend significant effort navigating back to where they were on the page.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
@@ -24,8 +25,8 @@ If a file download mechanism moves the keyboard focus away from the web page (e.
 Needs review
 </div>
 
-## Check that file download mechanism does not cause keyboard trap
-File download mechanism should be keyboard-operable and preserve page focus location
+## Check that the file download mechanism does not cause a keyboard trap
+File download mechanisms should be keyboard-operable and preserve page focus location
 
 [IBM 2.1.2 No Keyboard Trap](https://www.ibm.com/able/guidelines/ci162/no_keyboard_trap.html)
 
@@ -34,7 +35,7 @@ File download mechanism should be keyboard-operable and preserve page focus loca
 
 ## What to do
 
- * Manually test by using the tab key to enter and exit the file download mechanism;
+ * Manually test by using the Tab key to enter and exit the file download mechanism;
  * AND, when exiting the download mechanism, ensure the keyboard focus returns to the same point on the web page where the download was initiated.
 
 </Column>
