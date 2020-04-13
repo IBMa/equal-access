@@ -1,0 +1,46 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Media_AudioVideoAltFilename"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using a screen reader
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+## Why is this important?
+
+Proper text alternatives convey the meaning of what the non-text content such as audio or video content is. Placeholder text or filenames are not viable labels because they do not convey function or information; for example, filenames such as "video.jpg" or "interviewOct.wav".
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Filename used as label for embedded audio or video
+Audio or video on the page must have a short text alternative that describes the media content
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Provide a short text alternative as a label that describes the content of the audio or video on the page.
+
+For example: A video feed in NY Times has the following descriptive label "Video of the fine dining place 'Clay Pit' located in downtown Austin, TX."
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

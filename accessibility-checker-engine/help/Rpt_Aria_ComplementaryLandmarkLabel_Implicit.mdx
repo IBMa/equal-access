@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ComplementaryLandmarkLabel_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+
+## Why is this important?
+
+Elements with a `"complementary"` role are a type of region used to enclose content that is complementary to the main content on the page. Providing a visible label for each `"complementary"` region on the page provides better context for all users including people using assistive technologies. These landmark labels help to identify and navigate to the content.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## An element with a `"complementary"` role does not have a visible label
+A unique and visible label is preferred for each element with a `"complementary"` role
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Complementary Role](https://www.w3.org/TR/wai-aria-1.1/#complementary)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* For each `<aside>` element or element with `role="complementary"`, set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes the complementary content.
+
+For example:
+```
+<h1 id="weather">Weather portlet</h1>
+
+<div role="complementary" aria-labelledby="weather">
+...
+</div>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

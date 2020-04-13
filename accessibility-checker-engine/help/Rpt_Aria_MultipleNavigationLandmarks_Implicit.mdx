@@ -1,0 +1,59 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleNavigationLandmarks_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using a screen reader
+* People with dexterity impairment using voice control
+
+## Why is this important?
+
+When there multiple elements with role `"nav"` on a page, they must have unique labels that clearly describe their purpose. This helps people who use assistive technologies to quickly understand and navigate to each navigation region.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Multiple elements with `"nav"` role do not have unique labels
+Multiple elements with `"nav"` role must have unique labels
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* For each element with a `"nav"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` value of any visible text that appropriately and uniquely describes that navigation region;
+* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to an element with the `"nav"` role.
+
+
+For example:
+```
+<h2 id="weather">Weather portlet</h2>
+<nav aria-labelledby="weather">
+	...
+</nav>
+
+<nav aria-label="Stock ticker portlet">
+		...
+</nav>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

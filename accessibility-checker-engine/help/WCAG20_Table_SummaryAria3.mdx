@@ -1,0 +1,68 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Table_SummaryAria3"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+## Why is this important?
+
+A table summary provides a brief overview of how data has been organized into a data table and is specifically useful when the table is large with many rows and columns or when the table has a complex structure (multiple row or column headers). The table summary should not duplicate the caption.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## The data table has no summary
+Data tables should have a summary that gives an overview of the table
+
+[IBM 1.3.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 HTML technique H73](https://www.w3.org/WAI/WCAG21/Techniques/html/H73.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Add an `aria-labelledby` attribute to the `<table>` element. It must point to visible text on the page that is meaningful as its summary;
+* OR, add an `aria-describedby` attribute to provide a brief overview of the data table;
+* OR, add an `aria-label` attribute to provide a brief overview of the data table.
+
+Note: In HTML5 the `summary` attribute is obsolete and should be avoided.
+
+For example the following example uses the `aria-labelledby` to provide the table summary:
+```  
+  <p id="tblSummary">The following table shows the number of boys and girls in each grade of an elementary school.</p>
+  	
+    <table border="1" aria-labelledby="tblSummary">
+     <tr>
+       <th id="class">Class</th>
+       <th id="teacher">Teacher</th>
+       <th id="boys"># of Boys</th>
+       <th id="girls"># of Girls</th>
+     </tr>
+     <tr>
+       <th rowspan="2" id="1stgrade">1st Grade</th>
+        <th headers="1stgrade teacher" id="MrHenry">Mr. Henry</th>
+        <td headers="1stgrade MrHenry boys">5</td>
+        <td headers="1stgrade MrHenry girls">4</td>
+     </tr>
+    ...
+   </table> 
+   ```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

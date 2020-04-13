@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Aria_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+## Why is this important?
+
+Some HTML elements or attributes have native semantics that map by default to an implied WAI-ARIA semantics. For predictable interaction and behavior of UI controls, these implicit semantics should only be overridden in specific ways, defined in the [W3C ARIA in HTML Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) specification.  
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The WAI-ARIA role or attribute `{0}` is not valid for the element `<{1}>` 
+WAI-ARIA roles and attributes must be valid for the element they are assigned to
+
+[IBM 4.2.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C ARIA in HTML Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* If a native HTML element fits the intended behavior, use that;
+* OR, update the role and/or attributes using the guidance in [W3C ARIA in HTML Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance).
+
+The following sample code correctly uses the HTML5 `<aside>` element to designate complementary content on the page.       
+```
+<aside>About the editor, Max Perkins: Editor of Genius(1978),…… </aside> 
+```
+        
+The following code correctly overrides the `<aside>` element’s implicit semantics (`role=“complementary”`) by using the ARIA role of `“note”` to designate the notated content on the page.
+```        
+<aside role="note">About the editor, Max Perkins: Editor of Genius(1978),…… </aside> 
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_ExplicitLabel"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers who cannot see the context around the control
+* People with dexterity impairment using voice control
+
+## Why is this important?
+
+Associating a meaningful label with every UI control allows the browser and assistive technology to expose and announce the control to a user. Associating a visible label also provides a larger clickable area.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The UI control `<{0}>` has no label
+Each UI control must have an associated label
+
+[IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html) | [WCAG 2.1 technique H44](https://www.w3.org/TR/WCAG20-TECHS/H44) | [WCAG 2.1 technique ARIA16](https://www.w3.org/TR/WCAG20-TECHS/ARIA16.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
+
+* OR put the UI element inside a visible `<label>` element;
+
+* OR add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
+
+* OR only if the design cannot have a visible label, use the `title` attribute to provide a label.
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

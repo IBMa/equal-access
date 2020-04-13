@@ -1,0 +1,49 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Aria_ImgAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+## Why is this important?
+
+A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## WAI-ARIA widget with an `"img"` role has no label or an empty label
+Element with an `"img"` role must have a non-empty label
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16) | [WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Add an `aria-labelledby` attribute to the element with a `role="img"`. It must point to visible text on the page that is meaningful as a label;
+* OR, add an `aria-label` attribute to the element with a `role="img"`;
+* OR, only if the design cannot have a visible label, use the `title` attribute to provide a label
+
+Example:
+```<div role="img" aria-labelledby="image1"> ... <p id="image1">Text that describes the group of images.</p></div>```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

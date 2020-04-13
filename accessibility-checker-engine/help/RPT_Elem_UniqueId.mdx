@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Elem_UniqueId"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using a screen reader
+
+## Why is this important?
+
+The `id` attribute provides a machine-readable identifier for the elements of the page. A unique value for `id` allows browsers and assistive technologies to interpret and parse the content accurately.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## The `<{0}>` element has the `id` \"{1}\" that is not unique
+Element `id` attribute values must be unique within a document
+
+[IBM 4.1.1 Parsing ](http://www.ibm.com/able/guidelines/ci162/parsing.html) | [WCAG 2.1 technique H93](https://www.w3.org/WAI/WCAG21/Techniques/html/H93) | [WCAG 2.1 failure technique F77](https://www.w3.org/WAI/WCAG21/Techniques/failures/F77)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * For each element with an `id` attribute, provide a unique, non-empty value.
+
+For example:
+```
+<h1 id="news">Breaking news</h1>
+<p id="newsintro">The latest stories from our correspondents around the world.</p>
+...
+<div role="article" aria-labelledby="news" aria-describedby="newsintro">
+    ...
+</div>
+```
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

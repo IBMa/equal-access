@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_WidgetLabels_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen magnification
+* People with dexterity impairment using voice control
+
+## Why is this important?
+Interactive UI components with certain implicit or explicit WAI-ARIA roles require an [accessible name](https://www.w3.org/TR/accname-1.1/#dfn-accessible-name). Without proper labels or the programmatically associated name, assistive technologies may not be able to accurately present the component's name and purpose to the user. This affects the user’s navigation and ability to interact with the content.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Interactive component does not have a programatically associated name
+Interactive component must have a programatically associated name
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1 Specification for Widget Roles](https://www.w3.org/TR/wai-aria-1.1/#widget_roles) | [WAI-ARIA Specification for Accessible Name Computation](https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_name)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Use the `aria-labelledby` attribute to reference existing visible text on the page that can clearly identify the purpose of the component;
+* OR use the `aria-label` attribute with a short description as its value that can clearly dentify the purpose of the component when a visual label is not available;
+* OR use the `title` attribute to provide a name when the design cannot accommodate a visual label;
+* OR if the element's role allows it to derive a label from its content, provide the label text as the inner content of the element (e.g. `<button type="submit">Search</button>`).
+
+The following code snippet shows a tree widget labelled with an `aria-labelledby` attribute to reference the heading text:
+
+   ```<h1 id="contents">Table of contents</h1>
+   <div role="tree" aria-labelledby="contents" tabindex="0">...</div>
+   ```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

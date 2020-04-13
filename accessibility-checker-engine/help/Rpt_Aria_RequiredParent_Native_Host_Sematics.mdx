@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredParent_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using a screen reader
+
+## Why is this important?
+
+If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA parent element that is required for that role must also be set for the element. If the parent element's native WAI-ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## An element with WAI-ARIA role `{0}` is not contained in or owned by an element with one of the following WAI-ARIA roles: `{1}`
+An element with WAI-ARIA role must be contained within a valid element
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1 Required Context Role](https://www.w3.org/TR/wai-aria/#scope)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Add one of the required context role(s) (`{1}`) to the appropriate parent of this element.
+
+For example, the following `<li>` element uses an `"option"` role. The `"option"` role requires a parent element with role `"listbox"`.
+
+```
+<ul role="listbox">
+    <li role="option">list box option</li>
+</ul>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

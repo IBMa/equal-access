@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_OneBannerInSiblingSet_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+## Why is this important?
+
+When more than one `"banner"` landmark role is used on a web page, it can confuse people who use assistive technologies that rely on this information to easily navigate the various sections in the page.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## There is more than one element with `"banner"` role on the page
+There must be only one element with `"banner"` role used on the page
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WAI-ARIA 1.1 HTML Sectioning Elements](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Remove `"banner"` role from all but one element. (The`<header>` element has an implicit role of banner when it is a descendent of the body element.)
+
+For example:
+```
+ <body>
+	<div role="banner">banner content...</div>
+	<div role="search">Search widget</div>
+	<div role="contentinfo">Copyright information...</div>
+</body>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

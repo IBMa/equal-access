@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Frame_HasTitle"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with dexterity impairment who navigate web pages with a keyboard.
+
+## Why is this important?
+
+An inline frame’s title provides a label for the frame that describes its content to the user. With this information a user can determine which frame to enter and explore in detail.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Inline frame does not have a title
+Inline frames must have a unique, non-empty title
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique H64](https://www.w3.org/WAI/WCAG21/Techniques/html/H64)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Use the `"title"` attribute of the `<iframe>` element to provide a unique, non-empty title that describes its contents.
+For example:
+
+```
+<iframe src="https://cloudstorage.html" id="adiframe"
+       name="adiframe" title="Cloud Storage">
+         <a href="storage-ad.html"> Cloud storage</a>
+</iframe>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

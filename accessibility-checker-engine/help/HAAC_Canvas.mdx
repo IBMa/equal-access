@@ -1,0 +1,64 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Canvas"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using screen readers
+
+## Why is this important?
+
+The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements. However, canvas content is not exposed to assistive technologies like semantic HTML. To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Recommendation
+</div>
+
+## Verify accessibility of the `<canvas>` element
+The `<canvas>` element may not be accessible
+
+[IBM 1.1.1 Non-Text Content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html) | [IBM 4.1.2 Name, Role, Value])(http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element;
+ * OR, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
+ * OR, if the `<canvas>` element is more complex such as a static chart, or an interactive drawing, provide an alternative accessible rendering;
+ * OR, use canvas fallback content (between the `<canvas>` tags) with keyboard access.
+
+This example shows the use of the `<canvas>` element with its content exposed as an image with a WAI-ARIA `role` attribute, a label, and a description.
+
+```
+<!-- Canvas exposed as an image element. -->
+<canvas id="example" role="img" alt="Circles" aria-describedby="img1"></canvas>
+<div id="img1">
+		<p>The prose in this div describes the circles in detail</p>
+</div>
+```
+
+This example shows an interactive `<canvas>` with equivalent accessible information provided in the canvas fallback content. The keyboard equivalent would be applied to the corresponding fallback elements.
+```
+<!-- Canvas exposed as a button element -->
+<canvas id="roundButton" onmousedown="..." onmouseup="..." onclick="..." onkeydown="..." onkeyup="...">
+    <div tabindex="0" role="button">ok</div>
+</canvas>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

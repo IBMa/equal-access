@@ -1,0 +1,45 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_BackgroundImg_HasTextOrTitle"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* People with visual impairment using color contrast enhancement
+
+## Why is this important?
+
+When background images convey meaning, the information is lost when the background images do not render in system high contrast mode. A text alternative can provide that information for people who use system high contrast.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Needs review
+</div>
+
+## Check background image have a text alternative in system high contrast mode
+Background images that convey meaning must have a text alternative that describes the image
+
+[IBM 1.1.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 CSS technique C9](https://www.w3.org/WAI/WCAG21/Techniques/css/C9)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Do not use background images to convey information;
+* OR, if the background image conveys meaning, verify the information is available as text when viewing content in system high contrast mode;
+* OR, use the `"title"` attribute to provide a text alternative.
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

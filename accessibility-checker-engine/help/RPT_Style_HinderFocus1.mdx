@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Style_HinderFocus1"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+ * People who physically cannot use a pointing device
+
+## Why is this important?
+
+All focus indicators should be highly visible and distinguishable. When navigating a Web page with a keyboard, users need to know which element has the keyboard focus. A visual focus indicator might be a vertical bar (a typical cursor) or a visible border surrounding a user interface control.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Check the keyboard focus indicator is highly visible when using CSS elements for border or outline
+The keyboard focus indicator must be highly visible when default border or outline is modified by CSS
+
+[IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html) | [WCAG 2.1 CSS technique C15](https://www.w3.org/WAI/WCAG21/Techniques/css/C15) | [WCAG 2.1 Script technique SCR31](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR31) | [WCAG 2.1 failure technique F78](https://www.w3.org/WAI/WCAG21/Techniques/failures/F78)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * If the keyboard focus meets visibility standards when tabbing on to the component, no action is needed;
+ * OR, use the default focus indicator for the platform;
+ * OR, adjust the CSS styling to make the keyboard focus highly visible;
+ * OR, use interface components that are highlighted by the user agent when they receive focus;
+ * OR, use a script to change the background color or border of the element to make it visually distinct when it receives focus
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
+
+

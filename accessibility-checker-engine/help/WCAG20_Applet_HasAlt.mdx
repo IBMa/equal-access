@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Applet_HasAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+## Why is this important?
+
+Alternative text on `<applet>` elements is important for users who do not have a Java-capable browser or have disabled Java™. In addition, providing a text alternative makes the same information accessible through audio or other channels.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## An `<applet>` element does not have a short text alternative
+`<applet>` elements must provide `alt` text and an alternative description
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique H35](https://www.w3.org/TR/WCAG20-TECHS/H35)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* If the `<applet>` element is missing an alternative description, add an `alt` attribute
+* AND, add HTML-based content (i.e., inner text) that describes the function of the `<applet>` element, if possible.
+
+For example:
+
+```
+<applet CODE="banner.class" ALT="Scrolling news banner" WIDTH="200" HEIGHT="200">
+Banner showing three things:
+ <ol>
+  <li>The Dow Jones Industrial Average climbed 300 points today in heavy trading.</li>
+  <li>G8 Summit to start in Washington tomorrow.</li>
+  <li>Global nuclear non-proliferation treaty signed by all nations today.</li>
+ </ol>
+</applet>
+```
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

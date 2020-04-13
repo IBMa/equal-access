@@ -1,0 +1,45 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Select_HasOptGroup"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+ * Blind people using screen readers
+ * People who rely on keyboard control
+
+## Why is this important?
+
+By grouping related content, users can navigate to the content they want more quickly.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Needs review
+</div>
+
+## Group of related options may need `<optgroup>`
+Groups of related options within a selection list should be grouped with `<optgroup>`
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+ * Use the `<optgroup>` element to group `<option>` elements inside a `<select>` element. Use the `"label"` attribute so that users will know what content to expect inside the group;
+ * AND, place the `<optgroup>` element directly inside the `<select>` element, and place the `<option>` elements directly inside the `<optgroup>`.
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

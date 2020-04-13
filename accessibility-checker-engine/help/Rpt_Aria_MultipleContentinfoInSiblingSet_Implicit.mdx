@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+## Who does this affect?
+
+* Blind people using screen readers
+
+## Why is this important?
+
+There should be only one element with a role of `"contentinfo"` per page, document or application, to avoid any confusion about where to find footer information. An element with the `"contentinfo"` role is a landmark that identifies common footer information about its parent, such as copyrights, accessibility and privacy statements typically repeated at the bottom of each page. The HTML `<footer>` element has an implicit role of `"contentinfo"` when its context is a `<body>` element.
+
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div className="level-violation">
+Violation
+</div>
+
+## Multiple elements with `"contentinfo"` role found on a page
+A page, document or application should only have one element with the `"contentinfo"` role
+
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Contentinfo Landmark](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/contentinfo.html)
+
+<div id="elementLocation">
+</div>
+
+## What to do
+
+* Remove the `"contentinfo"` role from all but the one element that represents the main footer information for the page, document, or application.
+
+For example:
+```
+<body>
+	<div role="main">Main content...</div>
+	<div role="search">Search widget</div>
+	<div role="contentinfo">Copyright information...</div>
+</body>
+```
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
