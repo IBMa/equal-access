@@ -53,12 +53,12 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
 
     .toolLeft {
         padding: 16px 16px 16px 32px;
-        background-color: black;
-        color: white;
+        background-color: #E8DAFF;
+        color: black;
 
 
         .bx--list__item {
-            color: white;
+            color: black;
             font-size: 12px;
             line-height: 18px;
         }
@@ -77,7 +77,8 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
     }
     .toolMain {
         padding: 16px 32px 16px 32px;
-
+        background-color: #f4f4f4;
+        
         .level-violation {
             position: absolute;
             font-family:IBMPlexSans-SemiBold;
