@@ -102,7 +102,7 @@ export class Checker {
                 for (const result of report.results) {
                     if (result.ruleId in checkNls) {
                         report.nls[result.ruleId] = report.nls[result.ruleId] || {
-                            0: report.nls[result.ruleId][0]
+                            0: checkNls[result.ruleId][0]
                         }
                         if (result.reasonId in checkNls[result.ruleId]) {
                             report.nls[result.ruleId][result.reasonId] = checkNls[result.ruleId][result.reasonId];
