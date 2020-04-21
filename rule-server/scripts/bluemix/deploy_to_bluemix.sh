@@ -150,7 +150,7 @@ promote2prod() {
     cf delete -f rules-server${APP_POSTFIX}-old
     cf rename rules-server${APP_POSTFIX} rules-server${APP_POSTFIX}-old
     cf stop rules-server${APP_POSTFIX}-old
-    cf rename rules-server${APP_POSTFIX}-next rules-server${APP_POSTFIX}
+    # cf rename rules-server${APP_POSTFIX}-next rules-server${APP_POSTFIX}
 }
 
 # workflow
