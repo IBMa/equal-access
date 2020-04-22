@@ -148,9 +148,12 @@ dump-logs-app() {
 
 promote2prod() {
     cf delete -f rules-server${APP_POSTFIX}-old
+    sleep 5
     cf rename rules-server${APP_POSTFIX} rules-server${APP_POSTFIX}-old
+    sleep 5
     cf stop rules-server${APP_POSTFIX}-old
-    # cf rename rules-server${APP_POSTFIX}-next rules-server${APP_POSTFIX}
+    sleep 5
+    cf rename rules-server${APP_POSTFIX}-next rules-server${APP_POSTFIX}
 }
 
 # workflow
