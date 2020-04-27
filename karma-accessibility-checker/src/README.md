@@ -8,39 +8,39 @@
 
 **Table of Contents**
 
-- [karma-accessibility-checker](#karma-accessibility-checker)
-  - [Overview](#overview)
-  - [Quick start](#quick-start)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Install](#install)
-      - [Install npm](#install-npm)
-  - [Configuration](#configuration)
-    - [Configuring Karma](#configuring-karma)
-      - [Configuring `plugins`](#configuring-plugins)
-      - [Configuring `framework` and `reporters`](#configuring-framework-and-reporters)
-      - [Configuring `preprocessor`](#configuring-preprocessor)
-    - [Configuring the `karma-accessibility-checker` plugin](#configuring-the-karma-accessibility-checker-plugin)
-  - [Usage](#usage)
-  - [API](#api)
-    - [aChecker.getCompliance(`content`, `label`, `callback`)](#acheckergetcompliancecontent-label-callback)
-    - [aChecker.assertCompliance(`actualResults`)](#acheckerassertcomplianceactualresults)
-    - [aChecker.getDiffResults(`label`)](#acheckergetdiffresultslabel)
-    - [aChecker.getBaseline(`label`)](#acheckergetbaselinelabel)
-    - [aChecker.diffResultsWithExpected(`actual`, `expected`, `clean`)](#acheckerdiffresultswithexpectedactual-expected-clean)
-    - [aChecker.stringifyResults(`results`)](#acheckerstringifyresultsresults)
-  - [Errors](#errors)
-    - [Error: labelNotProvided](#error-labelnotprovided)
-    - [Error: labelNotUnique](#error-labelnotunique)
-    - [Error: slackNotificationTarketIsNotValid](#error-slacknotificationtarketisnotvalid)
-    - [Error: SlackAPIError](#error-slackapierror)
-    - [Error: SlackWebHookError](#error-slackwebhookerror)
-    - [Error: LoadingConfigError](#error-loadingconfigerror)
-    - [Error: RuleArchiveInvalid](#error-rulearchiveinvalid)
-    - [Error: ValidPoliciesMissing](#error-validpoliciesmissing)
-  - [FAQ](#faq)
-  - [Known Issues](#known-issues)
-    - [Feedback and Reporting bugs](#feedback-and-reporting-bugs)
+-   [karma-accessibility-checker](#karma-accessibility-checker)
+    -   [Overview](#overview)
+    -   [Quick start](#quick-start)
+    -   [Getting started](#getting-started)
+        -   [Prerequisites](#prerequisites)
+        -   [Install](#install)
+            -   [Install npm](#install-npm)
+    -   [Configuration](#configuration)
+        -   [Configuring Karma](#configuring-karma)
+            -   [Configuring `plugins`](#configuring-plugins)
+            -   [Configuring `framework` and `reporters`](#configuring-framework-and-reporters)
+            -   [Configuring `preprocessor`](#configuring-preprocessor)
+        -   [Configuring the `karma-accessibility-checker` plugin](#configuring-the-karma-accessibility-checker-plugin)
+    -   [Usage](#usage)
+    -   [API](#api)
+        -   [aChecker.getCompliance(`content`, `label`, `callback`)](#acheckergetcompliancecontent-label-callback)
+        -   [aChecker.assertCompliance(`actualResults`)](#acheckerassertcomplianceactualresults)
+        -   [aChecker.getDiffResults(`label`)](#acheckergetdiffresultslabel)
+        -   [aChecker.getBaseline(`label`)](#acheckergetbaselinelabel)
+        -   [aChecker.diffResultsWithExpected(`actual`, `expected`, `clean`)](#acheckerdiffresultswithexpectedactual-expected-clean)
+        -   [aChecker.stringifyResults(`results`)](#acheckerstringifyresultsresults)
+    -   [Errors](#errors)
+        -   [Error: labelNotProvided](#error-labelnotprovided)
+        -   [Error: labelNotUnique](#error-labelnotunique)
+        -   [Error: slackNotificationTarketIsNotValid](#error-slacknotificationtarketisnotvalid)
+        -   [Error: SlackAPIError](#error-slackapierror)
+        -   [Error: SlackWebHookError](#error-slackwebhookerror)
+        -   [Error: LoadingConfigError](#error-loadingconfigerror)
+        -   [Error: RuleArchiveInvalid](#error-rulearchiveinvalid)
+        -   [Error: ValidPoliciesMissing](#error-validpoliciesmissing)
+    -   [FAQ](#faq)
+    -   [Known Issues](#known-issues)
+        -   [Feedback and Reporting bugs](#feedback-and-reporting-bugs)
 
 ## Quick start
 
@@ -85,16 +85,13 @@ plugins array to load the `karma-accessibility-checker` plugin.
 
 ```js
 // karma.conf.js
-module.exports = function(config) {
-  config.set({
+module.exports = function (config) {
+    config.set({
+        // Plugins for karma to load
+        plugins: [require("karma-accessibility-checker")],
 
-    // Plugins for karma to load
-    plugins: [
-        require('karma-accessibility-checker')
-    ]
-
-    // ...
-  });
+        // ...
+    });
 };
 ```
 
@@ -104,46 +101,41 @@ Add `aChecker` to the `framework`, `reporters` array in the Karma configuration 
 
 ```js
 // karma.conf.js
-module.exports = function(config) {
-  config.set({
+module.exports = function (config) {
+    config.set({
+        // Frameworks to use to run the tests that we define
+        frameworks: ["jasmine", "aChecker"],
 
-    // Frameworks to use to run the tests that we define
-    frameworks: ['jasmine', 'aChecker'],
+        // Test results reporter to use
+        reporters: ["progress", "aChecker"],
 
-    // Test results reporter to use
-    reporters: ['progress', 'aChecker'],
-
-    // ...
-  });
+        // ...
+    });
 };
 ```
 
 #### Configuring `preprocessor`
 
-Use `aChecker` in `preprocessor` to process the baseline files and load them into memory. This saved copy of the files, can then be used for accessibility scan results comparaison.
+Use `aChecker` in `preprocessor` to process the baseline files and load them into memory. This saved copy of the files, can then be used for accessibility scan results comparison.
 
 ```js
 // karma.conf.js
-module.exports = function(config) {
-  config.set({
+module.exports = function (config) {
+    config.set({
+        // ...
 
-    // ...
+        // Preprocess matching files before serving them to the browser
+        // Note: Preprocessors may be transforming the files and file types that are available at run time.
+        preprocessors: {
+            "test/baseline/**/*.json": ["aChecker"],
+        },
 
-    // Preprocess matching files before serving them to the browser
-    // Note: Preprocessors may be transforming the files and file types that are available at run time.
-    preprocessors: {
-        'test/baseline/**/*.json': ['aChecker']
-    },
+        // List of files / patterns to load in the browser
+        // Note: Order matters, the order they are listed here is how they are loaded.
+        files: ["test/baseline/**/*.json", "test/**/*.js"],
 
-    // List of files / patterns to load in the browser
-    // Note: Order matters, the order they are listed here is how they are loaded.
-    files: [
-        'test/baseline/**/*.json',
-        "test/**/*.js"
-    ],
-
-    // ...
-  });
+        // ...
+    });
 };
 ```
 
@@ -157,7 +149,7 @@ options for `karma-accessibility-checker`. This is the structure of the `.acheck
 # i.e. For march rule archive use ruleArchive: 2017MayDeploy
 # Default: latest
 # Refer to README.md FAQ section below to get the rule archive ID.
-ruleArchive : latest
+ruleArchive: latest
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility_2017_02
@@ -223,13 +215,15 @@ To perform an accessibility scan within your testcases and verify the scan resul
 ```javascript
 // Perform the accessibility scan using the aChecker.getCompliance API
 aChecker.getCompliance(testDataFileContent, testFile, function (results) {
-
     // Call the aChecker.assertCompliance API which is used to compare the results with baseline object if we can find one that
     // matches the same label which was provided.
     var returnCode = aChecker.assertCompliance(results);
 
     // In the case that the violationData is not defined then trigger an error right away.
-    expect(returnCode).toBe(0, "Scanning " + testFile + " failed." + JSON.stringify(results));
+    expect(returnCode).toBe(
+        0,
+        "Scanning " + testFile + " failed." + JSON.stringify(results)
+    );
 
     // Mark the testcases as done, when using jasmine as the test framework.
     done();
@@ -243,18 +237,19 @@ Refer to [Examples](https://github.com/IBMa/equal-access/karma-accessibility-che
 ### aChecker.getCompliance(`content`, `label`, `callback`)
 
 Execute accessibility scan on provided content. The content can be in these forms:
-* HTML (String)
-* Single node/widget (HTMLElement)
-* Local file path (String)
-* URL (String)
-* Document node (HTMLDocument)
+
+-   HTML (String)
+-   Single node/widget (HTMLElement)
+-   Local file path (String)
+-   URL (String)
+-   Document node (HTMLDocument)
 
 Use a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
-* `content` - (String | HTMLElement | HTMLDocument) content to be scanned for accessibility violations.
-* `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
-* `callback` - (Function) callback that is invoked (indicating success). The callback will be invoked with the ```results```
-as a parameter to the callback function provided. This is the outline of the results object which will be passed to the callback function:
+-   `content` - (String | HTMLElement | HTMLDocument) content to be scanned for accessibility violations.
+-   `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
+-   `callback` - (Function) callback that is invoked (indicating success). The callback will be invoked with the `results`
+    as a parameter to the callback function provided. This is the outline of the results object which will be passed to the callback function:
 
 ```javascript
 {
@@ -355,43 +350,43 @@ Assertion will be perform one of the following ways based on the condition that 
 
 2. If there is no baseline file, assertion will be made based on the provided `failLevels`. In this case, 2 is returned if there are failures based on `failLevels`.
 
-* `actualResults` - (Object) results for which assertion needs to be run. Properties include:
-  * **scanID**, (String) auto generated UUID used to associate a session.
-  * **toolID**, (String) tool ID for the tool that generated these results.
-  * **label**, (String) label provided to identify unique scan results. (provided through the aChecker.getCompliance API).
-  * **URL**, (String) contains the URL that was scanned using aChecker.getCompliance API. (provided through aChecker.getCompliance API).
-  * **issueMessages**, (Object) violation messages based on language.
-    * **messages**, (Object) violation messages indexed by message ID.
-    * **lang**, (String) locale of the violation messages.
-  * **summary**, (Object) summary of the scan that these results are for. Properties include:
-    * **counts**, (Object) number of violations based on the violation level. Properties include:
-      * **violation**, (Int) total number of violations.
-      * **potentialviolation**, (Int) total number of potential violations.
-      * **recommendation**, (Int) total number of recommendations.
-      * **potentialrecommendation**, (Int) total number of potential recommendations.
-      * **manual**, (Int) total number of manual checks.
-    * **scanTime**, (Int) total number of milliseconds it took to perform the scan.
-    * **ruleArchive**, (String) rule archive used for this particular scan result.
-    * **policies**, (Array) policies used for the scan result.
-    * **reportLevels**, (Array) list of violation levels to include in the report. (save to file).
-    * **startScan**, (Int) start time of the scan in milliseconds since epoch, GMT.
-  * **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not support yet) Each array element is an object with these properties:
-    * **frameIdx**, (Int) frame index in the page represented as an integer value.
-    * **frameTitle**, (String) title of the frame on the page that was scanned.
-    * **issues**, (Array) detailed list of violations. Each array element is an objectc with these properties:
-      * **severityCode**, (String) severity code of the violation.
-      * **messageCode**, (String) message code of the violation. Used to map the localized message string.
-      * **ruleId**, (String) rule ID of the violation.
-      * **help**, (String) help file name of the violation.
-      * **msgArgs**, (Array) list of tokens to help provide a detailed error description of the issue.
-      * **bounds**, (Object) provides the pixel position of the element that triggered the violation. Properties include:
-        * **left**, (Int) left pixel position of the element.
-        * **top**, (Int) top pixel position of the element.
-        * **height**, (Int) height pixel position of the element.
-        * **width**, (Int) width pixel position of the element.
-      * **level**, (String) level of the violation.
-      * **xpath**, (String) XPath of the element that triggered the violation.
-      * **snippet**, (String) snippet for the element that triggered the violation.
+-   `actualResults` - (Object) results for which assertion needs to be run. Properties include:
+    -   **scanID**, (String) auto generated UUID used to associate a session.
+    -   **toolID**, (String) tool ID for the tool that generated these results.
+    -   **label**, (String) label provided to identify unique scan results. (provided through the aChecker.getCompliance API).
+    -   **URL**, (String) contains the URL that was scanned using aChecker.getCompliance API. (provided through aChecker.getCompliance API).
+    -   **issueMessages**, (Object) violation messages based on language.
+        -   **messages**, (Object) violation messages indexed by message ID.
+        -   **lang**, (String) locale of the violation messages.
+    -   **summary**, (Object) summary of the scan that these results are for. Properties include:
+        -   **counts**, (Object) number of violations based on the violation level. Properties include:
+            -   **violation**, (Int) total number of violations.
+            -   **potentialviolation**, (Int) total number of potential violations.
+            -   **recommendation**, (Int) total number of recommendations.
+            -   **potentialrecommendation**, (Int) total number of potential recommendations.
+            -   **manual**, (Int) total number of manual checks.
+        -   **scanTime**, (Int) total number of milliseconds it took to perform the scan.
+        -   **ruleArchive**, (String) rule archive used for this particular scan result.
+        -   **policies**, (Array) policies used for the scan result.
+        -   **reportLevels**, (Array) list of violation levels to include in the report. (save to file).
+        -   **startScan**, (Int) start time of the scan in milliseconds since epoch, GMT.
+    -   **reports**, (Array) list of reports in the case of multiple iframes are present on the single page. (iframe scanning not support yet) Each array element is an object with these properties:
+        -   **frameIdx**, (Int) frame index in the page represented as an integer value.
+        -   **frameTitle**, (String) title of the frame on the page that was scanned.
+        -   **issues**, (Array) detailed list of violations. Each array element is an objects with these properties:
+            -   **severityCode**, (String) severity code of the violation.
+            -   **messageCode**, (String) message code of the violation. Used to map the localized message string.
+            -   **ruleId**, (String) rule ID of the violation.
+            -   **help**, (String) help file name of the violation.
+            -   **msgArgs**, (Array) list of tokens to help provide a detailed error description of the issue.
+            -   **bounds**, (Object) provides the pixel position of the element that triggered the violation. Properties include:
+                -   **left**, (Int) left pixel position of the element.
+                -   **top**, (Int) top pixel position of the element.
+                -   **height**, (Int) height pixel position of the element.
+                -   **width**, (Int) width pixel position of the element.
+            -   **level**, (String) level of the violation.
+            -   **xpath**, (String) XPath of the element that triggered the violation.
+            -   **snippet**, (String) snippet for the element that triggered the violation.
 
 Returns `0` if `actualResults` matches baseline or if no violations match the `failLevels`.
 
@@ -405,7 +400,7 @@ Returns `-1` if an exception has occured during scanning and the results reflect
 
 Retrieve the diff results for a specified scan (denoted by its label) when API `aChecker.assertCompliance(...)` returns 1 (when the `actualResults` do not match the baseline).
 
-* `label` - (String) label to use when getting the diff results. The label should match the one provided for aChecker.getCompliance(...).
+-   `label` - (String) label to use when getting the diff results. The label should match the one provided for aChecker.getCompliance(...).
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
 Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
@@ -416,7 +411,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the baseline result object based on the label provided.
 
-* `label` - (String) label for which to get the baseline. The label should match the one provided for aChecker.getCompliance(...).
+-   `label` - (String) label for which to get the baseline. The label should match the one provided for aChecker.getCompliance(...).
 
 Returns `object` that follows the same structure as the results object outlined in the aChecker.getCompliance
 and aChecker.assertCompliance API.
@@ -427,9 +422,9 @@ Returns `undefined` if a baseline is not found for the label provided.
 
 Compare provided `actual` and `expected` objects and get the differences between them.
 
-* `actual` - (Object) actual results that you want to compare. Refer to aChecker.assertCompliance for details about available properties to include.
-* `expected` - (Object) expected results to compare to. Refer to aChecker.assertCompliance for details about available properties to include.
-* `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance compare of only `xpath` and `ruleID`.
+-   `actual` - (Object) actual results that you want to compare. Refer to aChecker.assertCompliance for details about available properties to include.
+-   `expected` - (Object) expected results to compare to. Refer to aChecker.assertCompliance for details about available properties to include.
+-   `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance compare of only `xpath` and `ruleID`.
 
 Returns a diff object, where the **left hand side (lhs) is actualResults** and the **right hand side (rhs) is baseline**.
 Refer to the [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object, and how to interpret the object.
@@ -440,7 +435,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the readable stringified representation of the scan results.
 
-* `results` - (Object) results which need to be stringified. Refer to aChecker.assertCompliance for details about available properties to include.
+-   `results` - (Object) results which need to be stringified. Refer to aChecker.assertCompliance for details about available properties to include.
 
 Returns a `String` representation of the scan results which can be logged to a console.
 
@@ -506,12 +501,12 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## FAQ
 
-* How do I get a list of the available `ruleArchive, policies` and their ID's?
-   1. run `npx achecker_policies`
+-   How do I get a list of the available `ruleArchive, policies` and their ID's?
+    1. run `npx achecker_policies`
 
 ## Known Issues
 
-1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access document of generated iframe. This is due to cross domain frame access restrictions in browsers. On firefox there is no provided alternative, Chrome and PhantomJS provide a way to over ride this. by adding the following to karma.config.js:
+1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access document of generated iframe. This is due to cross domain frame access restrictions in browsers. On firefox there is no provided alternative, Chrome and PhantomJS provide a way to override this. by adding the following to karma.config.js:
 
 ```javascript
  module.exports = function (config) {
@@ -539,7 +534,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 2. Unable to scan local files when provided to `aChecker.getCompliance(...)` API as a local file URL. This is due to a limitation in Karma where it is not able to load local files using `file://` protocol. For scanning local file, there is a work around which can be used to scan them, following are the steps to update karma.config.js file with the following:
 
-```javascript
+````javascript
  module.exports = function (config) {
     config.set({
         browsers: ['Chrome'],
@@ -562,7 +557,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
         ....
     });
 }
-```
+````
 
 ### Feedback and Reporting bugs
 
