@@ -78,7 +78,12 @@
     "analyze": "analyzeChunks=true node scripts/build.js"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+        "react/jsx-pascal-case": 0,
+        "jsx-a11y/anchor-is-valid": 0,
+        "no-script-url": 0
+    }
   },
   "browserslist": {
     "production": [
