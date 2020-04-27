@@ -43,6 +43,8 @@ jobs:
       script: travis/test/karma_achecker_content.sh
     - name: karma-accessibility-checker - Other
       script: travis/test/karma_achecker_other.sh
+    - name: accessibility-checker-extension - Build
+      script: travis/test/extension_build.sh
     - stage: Deploy
       name: Deploy rule server
       script: travis/publish/rules.sh

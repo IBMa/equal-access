@@ -1,0 +1,168 @@
+{
+  "name": "report-react",
+  "version": "3.0.0",
+  "private": true,
+  "dependencies": {
+    "@babel/core": "7.7.4",
+    "@svgr/webpack": "4.3.3",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@typescript-eslint/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/parser": "^2.8.0",
+    "babel-eslint": "10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "8.0.6",
+    "babel-plugin-named-asset-import": "^0.3.5",
+    "babel-preset-react-app": "^9.1.0",
+    "camelcase": "^5.3.1",
+    "carbon-components": "^10.9.3",
+    "carbon-components-react": "^7.9.3",
+    "carbon-icons": "^7.0.7",
+    "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "css-loader": "3.2.0",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
+    "eslint": "^6.6.0",
+    "eslint-config-react-app": "^5.1.0",
+    "eslint-loader": "3.0.2",
+    "eslint-plugin-flowtype": "3.13.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-react": "7.16.0",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "express": "^4.17.1",
+    "file-loader": "4.3.0",
+    "fs-extra": "^8.1.0",
+    "html-webpack-plugin": "4.0.0-beta.5",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "24.9.0",
+    "jest-environment-jsdom-fourteen": "0.1.0",
+    "jest-resolve": "24.9.0",
+    "jest-watch-typeahead": "0.4.2",
+    "markdown-to-jsx": "^6.11.1",
+    "mini-css-extract-plugin": "0.8.0",
+    "morgan": "^1.9.1",
+    "optimize-css-assets-webpack-plugin": "5.0.3",
+    "pnp-webpack-plugin": "1.5.0",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "8.0.1",
+    "postcss-preset-env": "6.7.0",
+    "postcss-safe-parser": "4.0.1",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^1.0.5",
+    "react-dev-utils": "10.1.0",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.0",
+    "resolve": "1.12.2",
+    "resolve-url-loader": "3.1.1",
+    "sass-loader": "8.0.0",
+    "semver": "6.3.0",
+    "style-loader": "1.0.0",
+    "terser-webpack-plugin": "2.2.1",
+    "ts-pnp": "1.1.5",
+    "url-loader": "2.3.0",
+    "webpack": "4.41.2",
+    "webpack-dev-server": "3.9.0",
+    "webpack-manifest-plugin": "2.2.0",
+    "workbox-webpack-plugin": "4.3.1"
+  },
+  "scripts": {
+    "start": "npm run build:help && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/start.js",
+    "build:help": "gulp --gulpfile ./gulp/gulpFile.js",
+    "build": "npm run build:react && node build.js",
+    "build:react": "npm run build:help && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/build.js",
+    "test": "node scripts/test.js",
+    "prod": "PORT=8080 HOST=http://localhost: node ./server.js",
+    "analyze": "analyzeChunks=true node scripts/build.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.js"
+    ],
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jest-environment-jsdom-fourteen",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "modulePaths": [],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
+    ]
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "devDependencies": {
+    "@types/carbon-components-react": "^7.6.7",
+    "@types/carbon__icons-react": "^10.9.0",
+    "@types/markdown-to-jsx": "^6.11.0",
+    "@types/react": "^16.9.19",
+    "@types/react-dom": "^16.9.5",
+    "cross-env": "^7.0.0",
+    "gulp": "^4.0.2",
+    "gulp-ext-replace": "^0.3.0",
+    "gulp-replace": "^1.0.0",
+    "node-sass": "^4.13.1",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.5",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "resize-observer-polyfill": "^1.5.1",
+    "use-resize-observer": "^6.1.0-alpha.2"
+  }
+}
