@@ -17,6 +17,7 @@ $ npm install --save-dev accessibility-checker
 ```
 
 Use the command-line version:
+
 ```bash
 $ npx achecker
 ```
@@ -56,7 +57,7 @@ options for `accessibility-checker`. Following is the structure of the `.achecke
 # optional - Specify the rule archive
 # Default: latest
 # Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
-ruleArchive : latest
+ruleArchive: latest
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility
@@ -117,27 +118,25 @@ baselineFolder: test/baselines
 ```
 
 A similar `achecker.js` file can also be used:
+
 ```js
 module.exports = {
-    "ruleArchive": "latest",
-    "policies": [ "IBM_Accessibility"],
-    "failLevels": [ "violation", "potentialviolation" ],
-    "reportLevels": [
+    ruleArchive: "latest",
+    policies: ["IBM_Accessibility"],
+    failLevels: ["violation", "potentialviolation"],
+    reportLevels: [
         "violation",
         "potentialviolation",
         "recommendation",
         "potentialrecommendation",
         "manual",
-        "pass"
+        "pass",
     ],
-    "outputFormat": [ "json" ],
-    "label": [
-        process.env.TRAVIS_BRANCH
-    ],
-    "outputFolder": "results",
-    "baselineFolder": "test/baselines"
-}
-
+    outputFormat: ["json"],
+    label: [process.env.TRAVIS_BRANCH],
+    outputFolder: "results",
+    baselineFolder: "test/baselines",
+};
 ```
 
 ## Usage
@@ -172,21 +171,22 @@ Refer to [Examples](https://github.com/IBMa/equal-access-boilerplates) for sampl
 ### async aChecker.getCompliance(`content`, `label` : string)
 
 Execute accessibility scan on provided content. `content` can be in the following form:
-* HTML content (String)
-* Single node/widget (HTMLElement)
-* Local file path (String)
-* URL (String)
-* Document node (HTMLDocument)
-* Selenium WebDriver (WebDriver)
-* Puppeteer page
+
+-   HTML content (String)
+-   Single node/widget (HTMLElement)
+-   Local file path (String)
+-   URL (String)
+-   Document node (HTMLDocument)
+-   Selenium WebDriver (WebDriver)
+-   Puppeteer page
 
 Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using puppeteer, aChecker.getCompliance expects the Page object.
 
 Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibilty-checker APIs.
 
-* `content` - (String | HTMLElement | HTMLDocument | Selenium WebDriver) content to be scanned for accessibility violations.
-* `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
-* Returns a promise with an object of the form below:
+-   `content` - (String | HTMLElement | HTMLDocument | Selenium WebDriver) content to be scanned for accessibility violations.
+-   `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.
+-   Returns a promise with an object of the form below:
 
 ```javascript
 {
@@ -290,7 +290,7 @@ Perform assertion on the scan results. Will perform one of the following asserti
 
 2. In the case of NO baseline file is provided for this particular scan, assertion will be made based on the provided `failLevels`. In this case, it returns 2 if there are failures based on failLevels. (violation level matches at least one provided in the `failLevels` object)
 
-* `report` - (Object) results for which assertion needs to be run. See above for report format.
+-   `report` - (Object) results for which assertion needs to be run. See above for report format.
 
 Returns `0` in the case actualResults matches baseline or no violations fall into the failLevels
 
@@ -298,13 +298,13 @@ Returns `1` in the case actualResults DON'T match baseline
 
 Returns `2` in the case that there is a failure based on failLevels.
 
-Returns `-1` in the case that an exception has occured during scanning and the results reflected that.
+Returns `-1` in the case that an exception has occurred during scanning and the results reflected that.
 
 ### aChecker.getDiffResults(`label`)
 
 Retrieve the diff results based on label in the case API `aChecker.assertCompliance(...)` returns 1, when actualResults DON'T match baseline.
 
-* `label` - (String) label for which to get the diff results for. (should match the one provided for aChecker.getCompliance(...))
+-   `label` - (String) label for which to get the diff results for. (should match the one provided for aChecker.getCompliance(...))
 
 Returns a diff object, where **left hand side (lhs) is actualResults** and **right hand side (rhs) is baseline**.
 Refer to [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object,
@@ -316,7 +316,7 @@ Returns `undefined` if there are no differences.
 
 Retrieve the baseline result object based on the label provided.
 
-* `label` - (String) label for which to get the baseline for. (should match the one provided for aChecker.getCompliance(...))
+-   `label` - (String) label for which to get the baseline for. (should match the one provided for aChecker.getCompliance(...))
 
 Returns `object` which will follow the same structure as the results object outlined in aChecker.getCompliance
 and aChecker.assertCompliance APIs.
@@ -327,12 +327,12 @@ Returns `undefined` in the case baseline is not found for the label provided.
 
 Compare provided `actual` and `expected` objects and get the differences if there are any.
 
-* `actual` - (Object) actual results which need to be compared.
-Refer to aChecker.assertCompliance APIs for details on properties include.
-* `expected` - (Object) expected results to compare to.
-Refer to aChecker.assertCompliance APIs for details on properties include.
-* `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance
-compare of only xpath and ruleID
+-   `actual` - (Object) actual results which need to be compared.
+    Refer to aChecker.assertCompliance APIs for details on properties include.
+-   `expected` - (Object) expected results to compare to.
+    Refer to aChecker.assertCompliance APIs for details on properties include.
+-   `clean` - (boolean) clean the `actual` and `expected` results by converting the objects to match with a basic compliance
+    compare of only xpath and ruleID
 
 Returns a diff object, where **left hand side (lhs) is actualResults** and **right hand side (rhs) is baseline**.
 Refer to [deep-diff](https://github.com/flitbit/diff#simple-examples) documentation for the format of the diff object,
@@ -344,8 +344,8 @@ Returns `undefined` if there are no differences.
 
 Retrieve the readable stringified representation of the scan results.
 
-* `report` - (Object) results which need to be stringified.
-Refer to aChecker.assertCompliance APIs for details on properties include.
+-   `report` - (Object) results which need to be stringified.
+    Refer to aChecker.assertCompliance APIs for details on properties include.
 
 Returns `String` representation of the scan results which can be logged to console.
 
@@ -389,7 +389,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## Feedback
 
-If you are an IBM employee, feel free to provide any feedback by in the `#accessibility-at-ibm` channel in IBM Slack.  For all other users, please give use any feedback in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+If you are an IBM employee, feel free to provide any feedback by in the `#accessibility-at-ibm` channel in IBM Slack. For all other users, please give use any feedback in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
 
 ### Reporting bugs
 
