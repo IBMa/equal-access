@@ -119,9 +119,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async startScan() {
         let tabId = this.state.tabId;
-        let self = this;
-        self.setState({ numScanning: this.state.numScanning + 1 });
-        await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        if (tabId === -1) {
+            // componentDidMount is not done initializing yet
+            setTimeout(this.startScan.bind(this), 100);
+        } else {
+            this.setState({ numScanning: this.state.numScanning + 1 });
+            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        }
     }
 
     collapseAll() {
