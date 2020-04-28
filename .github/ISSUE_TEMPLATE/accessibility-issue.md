@@ -7,8 +7,6 @@ assignees: ''
 
 ---
 
-
-Issue: Accessibility Issue
 <!-- Feel free to remove sections that aren't relevant.
 
 ## Title line template: [Title]: Brief description
