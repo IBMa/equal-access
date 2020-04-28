@@ -13876,7 +13876,7 @@ var IEngine_1 = __webpack_require__(/*! ../../../api/IEngine */ "./src/v2/api/IE
 var a11yRulesets = [
     {
         id: "IBM_Accessibility",
-        name: "IBM Accessibility January 2020",
+        name: "IBM Accessibility April 2020",
         category: IEngine_1.eRuleCategory.ACCESSIBILITY,
         "checkpoints": [
             {
