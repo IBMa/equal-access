@@ -30,19 +30,22 @@ interface IReportChecklistProps {
     selectItem: (item: IReportItem) => void
 }
 
+interface IGroup {
+    title: string,
+    counts: { [key: string]: number }
+    items: IReportItem[]
+}
+
 export default class ReportChecklist extends React.Component<IReportChecklistProps, IReportChecklistState> {
-    state: IReportChecklistState = {};
-    
+    state: IReportChecklistState = {
+    };
+
     render() {
         let itemIdx = 0;
         let ruleToGroups : {
-            [key: string]: {
-                title: string,
-                counts: { [key: string]: number }
-                items: IReportItem[]
-            }[]
+            [key: string]: IGroup[]
         } = {};
-        let groups = [];
+        let groups : IGroup[] = [];
 
         for (const checkpoint of this.props.ruleset.checkpoints) {
             let cpGroup = {
@@ -77,22 +80,31 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         // this.props.report.sort((a,b) => {
         //     return a.path.aria.localeCompare(b.path.aria);
         // })
+        let idx=0;
+        groups = groups.filter(group => group.items.length > 0);
         return <div className="bx--grid report">
-            <div className="bx--row reportHeader">
-                <div className="bx--col-sm-1">
-                    Issues                    
-                </div>
-                <div className="bx--col-sm-3">
-                    Checkpoint
+            <div role="rowgroup">
+                <div className="bx--row reportHeader" role="row">
+                    <div className="bx--col-sm-1" role="columnheader">
+                        Issues                    
+                    </div>
+                    <div className="bx--col-sm-3" role="columnheader">
+                        Checkpoint
+                    </div>
                 </div>
             </div>
-            {groups.map(group => {
-                if (group.items.length > 0) {
-                    return <ReportRow report={this.props.report} selectItem={this.props.selectItem} group={group} />;
-                } else {
-                    return null;
-                }
-            })}
+            <div role="rowgroup">
+                {groups.map(group => {
+                    let thisIdx = idx;
+                    idx += group.items.length+1;
+                    return <ReportRow 
+                        idx={thisIdx} 
+                        report={this.props.report} 
+                        group={group}
+                        selectItem={this.props.selectItem} 
+                    />;
+                })}
+            </div>
         </div>
     }
 }
