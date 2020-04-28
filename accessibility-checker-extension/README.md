@@ -1,33 +1,62 @@
-## Environment
-* Node 12.13.0
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
 
-## Quick Start
-* Install dependencies in both `accessibility-checker-extension` and `report-react`
-```
-npm install
-```
+# accessibility-checker-extension
+A web browser extensions that adds automated accessibility checking capabilities
 
-* Transpile the code:
-  * Build for dev: `npm run build:dev`
-  * Build for dev and watch for changes: `npm run build:watch`
-  * Build for production: `npm run build:prod`
+## Getting started
 
-## Watch against local rule server
-* In rule-server:
+* [Node Version 12](https://nodejs.org/en/download/).
+
+### Clone Repository
+
+```bash
+$ git clone --branch=master https://github.com/IBMa/equal-access.git
+$ cd accessibility-checker
 ```
-npm start
+or with SSH
+
+```bash
+$ git clone --branch=master git@github.com:IBMa/equal-access.git
+$ cd accessibility-checker
 ```
-* In browser-extension:
-```
-npm run build:watch:local
-```
+### Install dependencies
+
+1. Under the root directory ```equal-access``` directory 
+
+    ```
+    npm install
+    ```
+
+2. Under the accessibility-checker-extension directory 
+    ```
+    npm install
+    ```
+
+3. Go back to the root directory ```cd ..```
+
+4. Under the report-react directory
+    ```
+    npm install
+    npm start
+    ```
+
+5. On a new command line window, navigate to the accessibility-checker-extension directory 
+   and execute
+    ```
+    npm run build:watch:local
+    ```
+    Build run options:<br> 
+    Build for dev: `npm run build:dev`<br> 
+    Build for dev and watch for changes: `npm run build:watch`<br> 
+    Build for production: `npm run build:prod`<br> 
+
 
 ## Loading into the browser:
 ### In Chrome web browser
 1. Go to: [**chrome://extensions**](chrome://extensions)
 2. Toggle: "**developer mode**" on.
 3. Click on: "**Load unpacked**"
-4. Select the newly created folder "**dist**" from the project folder.
+4. Select the newly created folder "**dist**" ```equal-access/accessibility-checker-extension/dist``` from the project folder.
 
 ### In Firefox web browser
 1. Go to: [**about:debugging**](about:debugging) in the Firefox browser
@@ -45,10 +74,7 @@ The commands generate a package/accessibility-checker-extension.zip file. The zi
 1. Go to: [**about:debugging**](about:debugging) in the Firefox browser
 2. Select: "**This Firefox**"
 3. Click on: "**Load Temporary Add-on…**"
-4. Open the newly created package file "**accessibility-checker-extension.zip**" from the package folder.
-   
-## License
-Apache 2.0
+4. Open the newly created package file "**accessibility-checker-extension.zip**" from the package folder.  
 
 ## Bugs and Issues
 
