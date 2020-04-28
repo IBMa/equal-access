@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
  
-import CommonMessaging from "./CommonMessaging";
+import CommonMessaging from "./commonMessaging";
 
 export default class PanelMessaging {
 

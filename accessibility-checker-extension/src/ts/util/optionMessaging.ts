@@ -14,7 +14,7 @@
     limitations under the License.
   *****************************************************************************/
  
-import CommonMessaging from "./CommonMessaging";
+import CommonMessaging from "./commonMessaging";
 import EngineCache from "../background/helper/engineCache";
 
 export default class OptionMessaging {
