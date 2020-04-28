@@ -1,4 +1,11 @@
-Issue: Bug Report 🐛
+---
+name: 'Bug Report 🐛'
+about: Something isn't working as expected? Here is the right place to report.
+title: '[BUG]'
+labels: 'Bug'
+assignees: ''
+
+---
 
 <!-- Feel free to remove sections that aren't relevant.
 

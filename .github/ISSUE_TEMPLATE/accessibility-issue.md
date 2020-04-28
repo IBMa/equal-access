@@ -1,3 +1,13 @@
+---
+name: Accessibility Issue
+about: 'Report an accessibility or usability issue'
+title: "[A11y]"
+labels: A11y_Bug
+assignees: ''
+
+---
+
+
 Issue: Accessibility Issue
 <!-- Feel free to remove sections that aren't relevant.
 

@@ -1,5 +1,11 @@
-Feature request or enhancement 💡
-Suggest an idea for this project
+---
+name: 'Feature request or enhancement 💡'
+about: Suggest an idea for this project
+title: ''
+labels: 'enhancement'
+assignees: ''
+---
+
 
 Use this template if you want to request a new feature, or a change to an
 existing feature.
