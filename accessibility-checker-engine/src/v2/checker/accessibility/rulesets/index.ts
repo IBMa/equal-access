@@ -20,7 +20,7 @@ import { eRulePolicy, eRuleCategory } from "../../../api/IEngine";
 let a11yRulesets: Ruleset[] = [
 {
     id: "IBM_Accessibility",
-    name: "IBM Accessibility January 2020",
+    name: "IBM Accessibility April 2020",
     category: eRuleCategory.ACCESSIBILITY,
     "checkpoints": [
         {

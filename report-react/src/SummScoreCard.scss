@@ -1,0 +1,44 @@
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+@import '~carbon-components/scss/globals/scss/styles.scss';
+@import '~carbon-components/scss/globals/grid/grid';
+
+.summScoreCard {
+    margin: 1rem -1rem 0rem -1rem;
+    padding: 1rem;
+
+    box-sizing: border-box;
+
+    border: 1px solid #9E63FB;
+    background-color: #E8DAFF;
+    
+    .scLeft {
+        flex: 0 0 51.25%;
+        max-width: 51.25%;
+
+        @media (min-width: 66rem) {
+            flex: 0 0 33.75%;
+            max-width: 33.75%;
+        }
+    }
+
+    .title {
+        @include carbon--type-style('heading-02');
+    }
+
+    .score {
+        @include carbon--type-style('display-03');
+        font-size: 96px;
+    }
+
+    @media (min-width: 42rem) {
+        margin: 1rem 0rem 0rem -1rem;
+    }
+
+    @media (min-width: 66rem) {
+        height: 100%;
+        margin: 0rem 0rem 0rem -1rem;
+    }
+}

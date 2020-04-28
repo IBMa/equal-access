@@ -1,0 +1,134 @@
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+@import '~carbon-components/scss/globals/scss/styles.scss';
+@import '~carbon-components/scss/globals/grid/grid';
+
+#main-content {
+    margin-top: 1.5rem;
+    @include carbon--type-style('body-long-01');
+
+    .summInfo {
+        margin-top: 1rem;
+        @include carbon--type-style('body-short-02');
+        .prodName {
+            @include carbon--type-style('productive-heading-04');
+        }
+        .time {
+            margin-top: 40px;
+        }
+        .url {
+            width: 95%;
+            word-break: break-all;
+        }
+    }
+    
+    .summReport, .summCard {
+        margin: 1rem -1rem 0rem -1rem;
+        padding: 1rem;
+
+        background-color: #FFFFFF;
+
+        .title {
+            @include carbon--type-style('heading-01');
+        }
+
+        @media (min-width: 42rem) {
+            margin: 1rem 0rem 0rem -1rem;
+        }
+    }
+
+    .bx--modal-content {
+        padding: 1rem 1rem 0rem 1rem;
+        margin-bottom: 0rem;
+    }
+
+    .toolHelp {
+        background-color: white;
+
+        .bx--list--unordered {
+            margin: 1rem;
+        }
+
+        .bx--list--ordered {
+            margin: 1rem;
+        }
+
+        > .bx--grid {
+            max-width: 100%;
+            padding-bottom: 0px;
+        }
+
+        .bx--row {
+            margin: 0px;
+        }
+
+        .toolTop {
+            color:#ffffff;
+            background: linear-gradient(to right, #5f3196 , #31175c);
+            padding: 1rem;
+            p {
+                margin-top: .5rem;
+                font-size:12px;
+                font-family:IBMPlexSans-SemiBold;
+            }
+
+            h1 {
+                font-size:28px;
+                line-height:18px;
+                margin-top: 0px;
+            }
+        }
+
+        .toolLeft {
+            padding: 1rem;
+            background-color: #E8DAFF;
+            color: black;
+
+
+            .bx--list__item {
+                color: black;
+                font-size: 12px;
+                line-height: 18px;
+            }
+            
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2.6rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
+        }
+        .toolMain {
+            padding: 1rem;
+            background-color: #f4f4f4;
+            
+            .level-violation {
+                font-family:IBMPlexSans-SemiBold;
+                font-size:11px;
+                color:#ff399b;
+                line-height:1;
+            }
+
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
+        }
+    }
+}

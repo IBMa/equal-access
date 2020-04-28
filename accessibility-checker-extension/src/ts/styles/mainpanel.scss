@@ -1,0 +1,427 @@
+
+html, body, #devtoolsPanel-root {
+    height: 100%;
+}
+
+.bx--grid {
+    margin: 0px;
+    padding: 0px;
+}
+
+.bx--row {
+    margin: 0px;
+}
+
+.leftPanel {
+    height: 100%;
+    overflow: scroll;
+    background-color: #F2F4F8;
+}
+
+// Right Panel containing scan and report
+.rightPanel {
+    border-left: solid darkgray 1px;
+    height: 100%;
+    overflow: scroll;
+    padding-left: 0px;
+}
+
+.eaacMain {
+    margin-top: 8px;
+    margin-left: 24px;
+}
+
+.eaacTitle {
+    height: 24px;
+    width: 289px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 16px;
+    letter-spacing: 0;
+    line-height: 24px;
+}
+
+.bee-logo {
+    height: 28px;
+    width: 28px;
+}
+
+.scan-button {
+    height: 24px;
+    width: 128px;
+}
+
+.baeTitleTop {
+    padding-top: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-bottom: 8px;
+    border-bottom: solid #ccc 1px;
+    background-color: rgba(255, 255, 255, 0.99);
+    z-index: 1000;
+}
+.baeTitleTop .baeTitle {
+    font-weight: 600;
+    color: #171717;
+}
+
+.baeTitleTop .baeTitleMsg {
+    color: #4A4A4A;	
+    font-size: 14px;	
+    line-height: 22px;
+}
+
+.tab-content {
+    margin-top: 4px;
+    padding: 0px;
+}
+
+.checklist {
+    margin-top: 4px;
+    margin-left: 24px
+}
+
+.settingsButtons {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    min-height: 30px;
+}
+
+.tab-padding1 {
+    padding: 0px;
+    width: 185px;
+}
+
+.tab-padding2 {
+    padding: 0px;
+    width: 193px;
+}
+
+.tab-padding3 {
+    padding: 0px;
+    width: 200px;
+}
+
+.issueCountsBorder {
+    box-sizing: border-box;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 4px;
+    margin-right: 30px;
+    border: 1px solid #DCDCDC;
+}
+
+.summaryBarCounts {
+    height: 18px;
+    width: 73px;
+    color: #252525;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01px;
+    line-height: 18px;
+    margin-left: 6px;
+}
+
+.issuesGraphic {
+    font-family:IBMPlexSans;
+    font-size:11px;
+    color:#565656;
+    letter-spacing:0.13px;
+    line-height:18px;
+    text-align:left;
+}
+
+.fixed-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%; 
+}
+
+// Splash
+.splash {  
+    display: flex;  
+    justify-content: right;
+    min-width: 100%;
+    min-height: 100%;  
+}
+
+.ibm-equal-access-acc {
+    height: 35px;
+    width: 318px;
+    color: #252525;
+    font-family: "IBM Plex Sans";
+    font-size: 28px;
+    letter-spacing: 0;
+    line-height: 36px;
+    margin-top: 13px;
+    margin-left: 32px;
+}
+
+.version-number {
+    height: 18px;
+    width: 252px;
+    margin-left: 32px;
+    color: #3C3838;
+    font-family: "IBM Plex Sans";
+    font-size: 11px;
+    letter-spacing: 0.13px;
+    line-height: 18px;
+    padding-bottom: 48px;
+}
+
+.this-extension-helps {
+    height: 240px;
+    width: 358px;
+    color: #3C3838;
+    font-family: "IBM Plex Sans";
+    font-size: 14px;
+    letter-spacing: 0.16px;
+    line-height: 20px;
+    margin-left: 32px;
+}
+
+// Left Panel rule info
+.checkpointName {
+    font-family:IBMPlexSans;
+    font-size:28px;
+    color:#000000;
+    letter-spacing:0.32px;
+    line-height:18px;
+    text-align:left;
+}
+
+.checkpointSummary {
+    font-family:IBMPlexSans-SemiBold;
+    font-size:12px;
+    color:#000000;
+    letter-spacing:0.14px;
+    line-height:14px;
+    text-align:left;
+}
+
+// Summary
+
+.summaryBG {
+    height: 448px;
+    
+    background-color: #F2F4F8;
+}
+
+.ibm-equal-access {
+    height: 20px;
+    width: 133px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 20px;
+}
+
+.summary-title {
+    height: 36px;
+    width: 206px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 28px;
+    letter-spacing: 0;
+    line-height: 36px;
+}
+
+.score-tile {
+    box-sizing: border-box;
+    height: 146px;
+    width: 306px;
+    border: 1px solid #198038;
+    background-color: #DEFBE6;
+}
+
+.score-card {
+    height: 200px;
+    width: 200px;
+}
+
+.violations-tile {
+    height: 144px;
+    width: 304px;
+    background-color: #FFFFFF;
+}
+
+.report-information {
+    height: 182px;
+    min-width: 223px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 14px;
+    letter-spacing: 0;
+    line-height: 20px;
+}
+
+.scan-summary {
+    height: 24px;
+    width: 292px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 16px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 19px;
+}
+
+summary-information {
+    font: IBM Plex Sans Bold;
+    size: 16px;
+    line-height: 22px;
+    letter-spacing: 0;
+}
+
+.scan-time {
+    height: 12px;
+    width: 292px;
+    color: #323232;
+    font-family: "IBM Plex Sans";
+    font-size: 10px;
+    letter-spacing: 0.01px;
+    line-height: 12px;
+}
+
+.page-title {
+    height: 48px;
+    width: 215px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    letter-spacing: 0;
+    line-height: 19px;
+}
+
+.overall-score-title {
+    height: 16px;
+    width: 136px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+
+.icon-status-checkmark-filled {
+    height: 14px;
+    width: 14px;
+}
+
+.percent-score {
+    height: 70px;
+    width: 164px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 72px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 70px;
+}
+
+.elements-no-violations {
+    height: 24px;
+    width: 130px;
+    color: #323232;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    letter-spacing: 0.01px;
+    line-height: 12px;
+}
+
+.summary-numbers {
+    height: 70px;
+    width: 140px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 72px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 70px;
+}
+
+.violations-title {
+    height: 16px;
+    width: 180px;
+    color: #171717;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 16px;
+}
+
+.violation-failures {
+    height: 24px;
+    width: 150px;
+    color: #323232;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    letter-spacing: 0.01px;
+    line-height: 12px;
+}
+
+.needs-review-failures {
+    height: 24px;
+    width: 175px;
+    color: #323232;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    letter-spacing: 0.01px;
+    line-height: 12px;
+}
+
+.recommendations {
+    height: 24px;
+    width: 200px;
+    color: #323232;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    letter-spacing: 0.01px;
+    line-height: 12px;
+}
+  
+  
+.dropDown {
+    background-color: #0f62fe;
+    color: #ffffff;
+}
+  
+.dropDown:hover {
+    background-color: #0353e9;
+}
+  
+  
+  
+  .manualCheck {
+    font-family: sans-serif;
+    font-size: 60px;
+    fill: #121212;
+    text-align: center;
+    margin-top: 25px;
+    margin-bottom: 25px;
+  }
+  
+  
+  .bx--list-box__label {
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.125rem;
+    letter-spacing: 0.16px;
+    color: #f4f4f4;
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  
+.alignit {
+    text-align: right;
+}
+  
