@@ -33,6 +33,8 @@ jobs:
     - stage: Tests
       name: accessibility-checker-engine
       script: travis/test/ace.sh
+    - name: accessibility-checker-extension - Build
+      script: travis/test/extension_build.sh
     - name: accessibility-checker - Selenium
       script: travis/test/achecker_selenium.sh
     - name: accessibility-checker - Other

@@ -1,0 +1,11 @@
+{
+	"editor.tabSize": 4,
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": true,
+	"files.associations": {
+		"*.js": "javascript",
+		"*.jsx": "javascriptreact",
+		"*.ts": "typescript",
+		"*.tsx": "typescriptreact",
+	}
+}

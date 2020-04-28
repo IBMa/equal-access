@@ -1,0 +1,392 @@
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+@import '~carbon-components/scss/globals/scss/styles.scss';
+@import '~carbon-components/scss/globals/grid/grid';
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding-top: 1rem;
+
+    .eaacTitle {
+        color: #171717;
+        font-size: 12px;
+        
+        @media only screen and (min-width: 30rem) {
+            font-size: 16px;
+        }
+    }
+
+    .bee-logo {
+        height: 24px;
+        position: absolute;
+        right: 1rem;
+        @media only screen and (min-width: 42rem) {
+            right: 0px;
+        }
+    }
+
+    .headerTools {
+        position: absolute;
+        right: .5rem;
+        @media only screen and (min-width: 42rem) {
+            right: -.5rem;
+        }
+        button .bx--assistive-text {
+            top: -1.5rem;
+        }
+        button::before {
+            top: 0rem;
+        }
+        button.bx--btn {
+            color: black;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled {
+            color: #c6c6c6;
+            border-width: 0px;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled:hover {
+            color: #c6c6c6;
+            svg {
+                fill: #c6c6c6;
+            }
+        }
+    }
+
+    .summary {
+        margin-top: 16px;
+
+        > div {
+            border-top: solid #DCDCDC 1px;
+            border-bottom: solid #DCDCDC 1px;
+            padding: .5rem 0rem .5rem 1rem;
+            overflow:hidden;
+            text-overflow: ellipsis;
+            white-space:nowrap
+        }
+
+        .summaryBarCounts {
+            color: #252525;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .summaryBarLabels {
+            display:none;
+            
+            @media only screen and (min-width: 32rem) {
+                display:inline;
+            }
+        }
+
+        img, svg {
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+    }
+}
+
+.report {
+    .reportHeader {
+        height: 2rem;
+        background-color: #DCE1E7;
+        color: #252525;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 10px 0px;
+    }
+
+    .itemHeader {
+        font-size: 12px;
+        min-height: 32px;
+        padding: 10px 0px 0px;
+    }
+
+    .itemDetail {
+        border-bottom: solid #DCDCDC 1px;
+
+        > div {
+            padding: 10px 1rem;
+        } 
+
+        .itemMessage {
+            margin-left: 22px;
+            text-indent: -22px;
+
+            img, svg {
+                margin-right: 6px;
+                vertical-align: middle;
+            }
+        }
+    }
+    .itemDetail.selected {
+        background-color: #E8DAFF;
+    }
+    .itemDetail.selectedChild {
+        background-color: #DCDCDC;
+    }
+}
+
+.mainPanel {
+    .helpHeader {
+        background-color: #be95ff;
+        padding: 1rem 1rem;
+
+        .helpCpTitle {
+            @include carbon--type-style('productive-heading-03');
+        }
+
+        .helpCpSumm {
+            @include carbon--type-style('helper-text-01');
+        }
+    }
+
+
+    .toolHelp, .toolHelp .bx--row:nth-child(1) {
+        height: 100%;
+    }
+    @media (min-width: 99rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    @media (min-width: 66rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    @media (min-width: 42rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    .toolHelp {
+        background-color: white;
+
+        .bx--list--unordered {
+            margin: 1rem;
+        }
+
+        .bx--list--ordered {
+            margin: 1rem;
+        }
+
+        > .bx--grid {
+            max-width: 100%;
+            padding-bottom: 0px;
+        }
+
+        .bx--row {
+            margin: 0px;
+        }
+
+        .toolTop {
+            color:#ffffff;
+            background: linear-gradient(to right, #5f3196 , #31175c);
+            padding: 1rem ;
+            p {
+                margin-top: 8px;
+                font-size:12px;
+                font-family:IBMPlexSans-SemiBold;
+            }
+
+            h1 {
+                font-size:28px;
+                line-height:18px;
+                margin-top: 0px;
+            }
+        }
+
+        .toolLeft {
+            padding: 1rem;
+            background-color: #E8DAFF;
+            color: black;
+
+
+            .bx--list__item {
+                color: black;
+                font-size: 12px;
+                line-height: 18px;
+            }
+            
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
+        }
+        .toolMain {
+            padding: 1rem;
+            background-color: #f4f4f4;
+            
+            .level-violation {
+                position: absolute;
+                font-family:IBMPlexSans-SemiBold;
+                font-size:11px;
+                color:#ff399b;
+            }
+
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
+        }
+    }
+
+    .reportSummary {
+        padding: 0rem;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 1rem;
+
+        .summaryTitle {
+            @include carbon--type-style('productive-heading-02');
+            color: #171717;
+        }
+
+        .summaryTitleDetail {
+            @include carbon--type-style('helper-text-01');
+            color: #000000;
+        }
+
+        .reportButton {
+            margin-top: 1rem;
+
+            @media only screen and (min-width: 66rem) {
+                margin-top: 0rem;
+                position: relative;
+
+                button {
+                    position: absolute;
+                    right: 0px;
+                }
+            }
+        }
+
+        .tile {
+            margin-left: -1rem;
+        }
+        
+        .tile-title {
+            @include carbon--type-style('productive-heading-01');            
+            color: #121619;
+        }
+
+        .tile-score {
+            @include carbon--type-style('display-01');
+            margin-top: 8px;
+            color: #161616;
+        }
+
+        .tile-description {
+            @include carbon--type-style('helper-text-01');
+            color: #000000;
+        }
+        
+        .tile-description2 {
+            @include carbon--type-style('helper-text-01');
+            color: #000000;
+        }
+
+        .score-tile {
+            box-sizing: border-box;
+            border: solid #8A3FFC 1px;
+            background-color: #E8DAFF;
+            margin-top: 18px;
+            height: 154px
+        }
+        .count-tile {
+            box-sizing: border-box;
+            background-color: #FFFFFF;
+            margin-top: 18px;
+            height: 154px
+        }
+    }
+
+    .reportSplash {
+        padding: 0rem;
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding-bottom: 1rem;
+
+        .title {
+            @include carbon--type-style('productive-heading-04');
+            color: #252525;
+        }
+
+        .version {
+            @include carbon--type-style('helper-text-01');
+            color: #6F6F6F;
+        }
+
+        .description {
+            @include carbon--type-style('body-long-01');
+            margin-top: 33px;
+            color: #161616;
+        }
+
+        .link {
+            color: #377CFC;
+          }
+    }
+
+    .mainPanelRight {
+        overflow-y: scroll;
+        position:fixed;
+        height: 100%;
+        left: 50%;
+        width: 50%;
+        background-color: white;
+        top: 1rem;
+
+        .bx--grid {
+            padding: 0rem 1rem;
+        }
+
+        .fixed-header .headerTools {
+            right: 1.5rem;
+        }
+        .fixed-header .bee-logo {
+            right: 2rem;
+        }
+    }
+}
+
+html, body {
+    height: 100%;
+
+    #devtoolsPanel-root {
+        height: 100%;
+    }
+}

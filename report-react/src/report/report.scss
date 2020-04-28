@@ -1,0 +1,82 @@
+
+$feature-flags: (
+    grid-columns-16: true,
+);
+@import '~carbon-components/scss/globals/scss/styles.scss';
+
+.report {
+    .bx--col-lg-4 {
+        @media screen and (min-width: 66rem) {
+            flex: 0 0 34% !important;
+            max-width: 34% !important;
+        }
+    }
+
+    .bx--col-lg-2 {
+        @media (min-width: 66rem) {
+            flex: 0 0 16% !important;
+            max-width: 16% !important;
+        }
+    }
+
+    .bx--col-lg-6 {
+        @media (min-width: 66rem) {
+            flex: 0 0 50% !important;
+            max-width: 50% !important;
+        }
+    }
+    margin: 1rem 0rem -1rem 0rem;
+    padding: 0rem;
+
+    .reportHeader {
+        height: 2rem;
+        background-color: #e0e0e0;
+        color: #161616;
+
+        .label {
+            @include carbon--type-style('heading-01');
+            font-size: 12px;
+            padding: .4375rem 0 0;
+        }
+    }
+
+    .itemHeader {
+        font-size: 12px;
+        min-height: 32px;
+        padding: 10px 0px 0px;
+    }
+
+    .itemDetail {
+        border-bottom: solid #DCDCDC 1px;
+
+        > div div {
+            padding: 10px 1rem;
+        } 
+
+        .itemMessage {
+            margin-left: 5px;
+            text-indent: -22px;
+
+            img, svg {
+                margin-right: 6px;
+                vertical-align: middle;
+            }
+        }
+    }
+    .itemDetail.selected {
+        background-color: #E8DAFF;
+    }
+    .itemDetail.selectedChild {
+        background-color: #DCDCDC;
+    }
+
+    .helpLink {
+        color: #0062FF;
+        font-size: 12px;
+        text-decoration: none;
+        svg {
+            fill: #0062FF;
+            height: 12px;
+        }
+    }
+}
