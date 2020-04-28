@@ -72,7 +72,7 @@
     "start": "npm run build:help && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/start.js",
     "build:help": "gulp --gulpfile ./gulp/gulpFile.js",
     "build": "npm run build:react && node build.js",
-    "build:react": "npm run build:help && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/build.js",
+    "build:react": "npm run build:help && cross-env CI=false NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/build.js",
     "test": "node scripts/test.js",
     "prod": "PORT=8080 HOST=http://localhost: node ./server.js",
     "analyze": "analyzeChunks=true node scripts/build.js"
@@ -80,9 +80,9 @@
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
-        "react/jsx-pascal-case": 0,
-        "jsx-a11y/anchor-is-valid": 0,
-        "no-script-url": 0
+        "react/jsx-pascal-case": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "no-script-url": "off"
     }
   },
   "browserslist": {
