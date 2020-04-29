@@ -23,9 +23,9 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: cd report-react
-    - run: npm ci
+    - run: npm install
     - run: cd ../accessibility-checker-extension
-    - run: npm ci
+    - run: npm install
     - run: npm run package:browser
     - run: cd ..
     - name: Upload packed extension
