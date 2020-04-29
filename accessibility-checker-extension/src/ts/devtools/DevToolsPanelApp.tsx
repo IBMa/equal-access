@@ -93,24 +93,23 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         var self = this;
 
-        chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-            if (tabs[0] && tabs[0].url && tabs[0].id) {
-                let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
-                var url = tabs[0].url;
-                if (!self.state.listenerRegistered) {
-                    PanelMessaging.addListener("TAB_UPDATED", async message => {
-                        if (message.tabId === self.state.tabId && message.status === "loading") {
-                            if (message.tabUrl && message.tabUrl != self.state.tabURL) {
-                                self.setState({ report: null, tabURL: message.tabUrl });
-                            }
+        let tabs = await PanelMessaging.sendToBackground("TAB_INFO", { })
+        if (tabs[0] && tabs[0].url && tabs[0].id) {
+            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
+            var url = tabs[0].url;
+            if (!self.state.listenerRegistered) {
+                PanelMessaging.addListener("TAB_UPDATED", async message => {
+                    if (message.tabId === self.state.tabId && message.status === "loading") {
+                        if (message.tabUrl && message.tabUrl != self.state.tabURL) {
+                            self.setState({ report: null, tabURL: message.tabUrl });
                         }
-                    });
-                    PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
-                }
-                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
+                    }
+                });
+                PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
             }
-        });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
+        }
     }
 
     async startScan() {
