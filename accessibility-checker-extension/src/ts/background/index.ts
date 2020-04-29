@@ -17,11 +17,27 @@
 import BackgroundMessaging from "../util/backgroundMessaging";
 import EngineCache from './helper/engineCache';
 import Config from "./helper/config";
+import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
+let metrics = new ACMetricsLogger("ac-extension");
 
 async function initTab(tabId: number, archiveId: string) {
+    // Determine if we've ever loaded any engine
+    let isLoaded = await new Promise((resolve, reject) => {
+        chrome.tabs.executeScript(tabId, {
+            code: "typeof window.ace",
+            frameId: 0,
+            matchAboutBlank: true
+        }, function (res) {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError.message);
+            }
+            resolve(res[0] !== "undefined");
+        })
+    });
+    
+    // Switch to the appropriate engine for this archiveId
     let engineCode = await EngineCache.getEngine(archiveId);
-
     await new Promise((resolve, reject) => {
         chrome.tabs.executeScript(tabId, {
             code: engineCode + "window.ace = ace;",
@@ -34,18 +50,22 @@ async function initTab(tabId: number, archiveId: string) {
             resolve();
         })
     });
-    await new Promise((resolve, reject) => {
-        chrome.tabs.executeScript(tabId, {
-            file: "tabListeners.js",
-            frameId: 0,
-            matchAboutBlank: true
-        }, function (_res) {
-            if (chrome.runtime.lastError) {
-                reject(chrome.runtime.lastError.message);
-            }
-            resolve();
+
+    // Initialize the listeners once
+    if (!isLoaded) {
+        await new Promise((resolve, reject) => {
+            chrome.tabs.executeScript(tabId, {
+                file: "tabListeners.js",
+                frameId: 0,
+                matchAboutBlank: true
+            }, function (_res) {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError.message);
+                }
+                resolve();
+            });
         });
-    });
+    }
 }
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
@@ -86,6 +106,11 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
 
 BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) => {
     BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
+    if (message.archiveId && message.policyId) {
+        let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+        metrics.profileV2(message.report.totalTime, browser, message.policyId);
+        metrics.sendLogsV2();
+    }
     return true;
 })
 
