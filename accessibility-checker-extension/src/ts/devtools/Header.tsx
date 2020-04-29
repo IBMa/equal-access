@@ -107,7 +107,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts">{counts["Recommendation"] || 0}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <span className="summaryBarCounts">{(counts["Violation"] || 0)+(counts["Needs review"] || 0)+(counts["Recommendation"] || 0)}&nbsp;Issues&nbsp;found</span>
+                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(counts["Violation"] || 0)+(counts["Needs review"] || 0)+(counts["Recommendation"] || 0)}&nbsp;Issues&nbsp;found</span>
                 </div>
             </div>
         </div>);
