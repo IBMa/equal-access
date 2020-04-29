@@ -93,7 +93,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         var self = this;
 
-        await chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+        chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
             if (tabs[0] && tabs[0].url && tabs[0].id) {
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
                 var url = tabs[0].url;
