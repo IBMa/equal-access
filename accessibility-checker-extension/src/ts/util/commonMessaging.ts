@@ -28,7 +28,12 @@ export default class CommonMessaging {
                         sendResponse(result);
                         return result;
                     })
-                    return response;
+                    let isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
+                    if (isFirefox) {
+                        return response;
+                    } else {
+                        return true;
+                    }
                 } else if (response) {
                     sendResponse(response);
                 } else {
