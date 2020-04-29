@@ -22,12 +22,12 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: cd report-react
     - run: npm install
-    - run: cd ../accessibility-checker-extension
+      working-directory: report-react
     - run: npm install
+      working-directory: accessibility-checker-extension
     - run: npm run package:browser
-    - run: cd ..
+      working-directory: accessibility-checker-extension
     - name: Upload packed extension
       uses: actions/upload-artifact@v1
       with:
