@@ -26,7 +26,7 @@ export default class PanelMessaging {
         let myMessage = JSON.parse(JSON.stringify(message));
         myMessage.type = type;
         return new Promise((resolve, reject) => {
-			chrome.runtime.sendMessage(myMessage, async function (res) {
+			chrome.runtime.sendMessage(myMessage, function (res) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
                 } else {
@@ -41,7 +41,7 @@ export default class PanelMessaging {
                         resolve();
                     }
                 }
-			});
+            });
         })
     }
 
