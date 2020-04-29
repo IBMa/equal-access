@@ -116,3 +116,13 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
     });
 });
+
+
+// TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    BackgroundMessaging.sendToPanel("TAB_UPDATED", {
+        tabId: tabId,
+        status: changeInfo&&changeInfo.status,
+        tabUrl: tab.url
+    });
+});

@@ -98,21 +98,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
                 var url = tabs[0].url;
                 if (!self.state.listenerRegistered) {
+                    PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        if (message.tabId === self.state.tabId && message.status === "loading") {
+                            if (message.tabUrl && message.tabUrl != self.state.tabURL) {
+                                self.setState({ report: null, tabURL: message.tabUrl });
+                            }
+                        }
+                    });
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
-            }
-        });
-
-
-        // TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
-        chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-            if (tabId === this.state.tabId && changeInfo.status == "complete") {
-
-                if (tab.url && tab.url != this.state.tabURL) {
-                    this.setState({ report: null, tabURL: tab.url });
-                }
             }
         });
     }
