@@ -119,9 +119,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async startScan() {
         let tabId = this.state.tabId;
-        let self = this;
-        self.setState({ numScanning: this.state.numScanning + 1 });
-        await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        if (tabId === -1) {
+            // componentDidMount is not done initializing yet
+            setTimeout(this.startScan.bind(this), 100);
+        } else {
+            this.setState({ numScanning: this.state.numScanning + 1 });
+            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        }
     }
 
     collapseAll() {
@@ -260,7 +264,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
-                    <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4"}}>
+                    <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
                         {!this.state.report && <ReportSplash /> }
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
@@ -273,7 +277,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             />
-                        <div style={{marginTop: "9rem"}}>
+                        <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
                             <main>
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
@@ -296,7 +300,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     reportHandler={this.reportHandler.bind(this)}
                     collapseAll={this.collapseAll.bind(this)}
                     />
-                <div style={{marginTop: "9rem"}}>
+                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
                     <main>
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 

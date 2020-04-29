@@ -175,15 +175,17 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 className={"tab-content-"+tabId}
                                 handleTabClick={()=>true} handleTabKeyDown={()=>true}
                             >
-                                {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                    <ReportElements selectItem={this.props.selectItem} report={this.props.report}/>
-                                </div>}
-                                {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                    <ReportRules selectItem={this.props.selectItem} report={this.props.report}/>
-                                </div>}
-                                {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                    <ReportChecklist selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
-                                </div>}
+                                <div role="table">
+                                    {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                        <ReportElements selectItem={this.props.selectItem} report={this.props.report}/>
+                                    </div>}
+                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                        <ReportRules selectItem={this.props.selectItem} report={this.props.report}/>
+                                    </div>}
+                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                        <ReportChecklist selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
+                                    </div>}
+                                </div>
                             </Tab>
                         })}
                         </Tabs>

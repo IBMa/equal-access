@@ -40,6 +40,7 @@ interface IReportRowState {
 }
 
 interface IReportRowProps {
+    idx: number,
     report: IReport,
     group: IReportRowGroup;
     selectItem: (item: IReportItem) => void
@@ -62,6 +63,12 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
 
     toggleRow() {
         this.setState({ expanded: !this.state.expanded });
+    }
+
+    onKeyDown(e: any) {
+        if (e.keyCode === 13) {
+            e.target.click();
+        }
     }
 
     static getDerivedStateFromProps(props: IReportRowProps, state: IReportRowState) {
@@ -109,16 +116,17 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                 }
             }, 0)
         }
+        let subIdx = this.props.idx+1;
         return <div className="itemRow">
-            <div className="bx--row itemHeader" onClick={this.toggleRow.bind(this)}>
-                <div className="bx--col-sm-1">
+            <div tabIndex={0} role="row" aria-rowindex={this.props.idx} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
+                <div role="cell" className="bx--col-sm-1">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
                     { vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</span></> }
                     { nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</span></> }
                     { rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></> }
                 </div>
-                <div className="bx--col-sm-3">
+                <div role="cell" className="bx--col-sm-3">
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
                 </div>
             </div>
@@ -126,9 +134,9 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    return (<div className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)}>
-                    <div className="bx--col-sm-1"> </div>
-                    <div className="bx--col-sm-3">
+                    return (<div tabIndex={0} role="row" aria-rowindex={subIdx} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
+                    <div role="cell" className="bx--col-sm-1"> </div>
+                    <div role="cell" className="bx--col-sm-3">
                         <div className="itemMessage">
                             {val === "Violation" && <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Violation" /></span>}
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
