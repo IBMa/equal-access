@@ -5,6 +5,10 @@ $feature-flags: (
 @import '~carbon-components/scss/globals/scss/styles.scss';
 @import '~carbon-components/scss/globals/grid/grid';
 
+#devtoolsPanel-root {
+    overflow: hidden;
+}
+
 .fixed-header {
     position: fixed;
     top: 0;
@@ -75,7 +79,7 @@ $feature-flags: (
 
         .summaryBarCounts {
             color: #252525;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
         }
 
@@ -362,7 +366,6 @@ $feature-flags: (
     }
 
     .mainPanelRight {
-        overflow-y: scroll;
         position:fixed;
         height: 100%;
         left: 50%;
@@ -380,6 +383,16 @@ $feature-flags: (
         .fixed-header .bee-logo {
             right: 2rem;
         }
+    }
+}
+
+main {
+    overflow-y: scroll;
+    margin-right: 0rem;
+    height: 100%;
+
+    >div {
+        padding-right: 1rem;
     }
 }
 

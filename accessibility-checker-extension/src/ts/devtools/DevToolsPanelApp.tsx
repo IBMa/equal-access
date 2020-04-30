@@ -93,35 +93,34 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         var self = this;
 
-        await chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-            if (tabs[0] && tabs[0].url && tabs[0].id) {
-                let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
-                var url = tabs[0].url;
-                if (!self.state.listenerRegistered) {
-                    PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
-                }
-                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
+        let tabs = await PanelMessaging.sendToBackground("TAB_INFO", { })
+        if (tabs[0] && tabs[0].url && tabs[0].id) {
+            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
+            var url = tabs[0].url;
+            if (!self.state.listenerRegistered) {
+                PanelMessaging.addListener("TAB_UPDATED", async message => {
+                    if (message.tabId === self.state.tabId && message.status === "loading") {
+                        if (message.tabUrl && message.tabUrl != self.state.tabURL) {
+                            self.setState({ report: null, tabURL: message.tabUrl });
+                        }
+                    }
+                });
+                PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
             }
-        });
-
-
-        // TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
-        chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-            if (tabId === this.state.tabId && changeInfo.status == "complete") {
-
-                if (tab.url && tab.url != this.state.tabURL) {
-                    this.setState({ report: null, tabURL: tab.url });
-                }
-            }
-        });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
+        }
     }
 
     async startScan() {
         let tabId = this.state.tabId;
-        let self = this;
-        self.setState({ numScanning: this.state.numScanning + 1 });
-        await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        if (tabId === -1) {
+            // componentDidMount is not done initializing yet
+            setTimeout(this.startScan.bind(this), 100);
+        } else {
+            this.setState({ numScanning: this.state.numScanning + 1 });
+            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+        }
     }
 
     collapseAll() {
@@ -260,7 +259,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
-                    <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4"}}>
+                    <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
                         {!this.state.report && <ReportSplash /> }
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
@@ -273,7 +272,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             />
-                        <div style={{marginTop: "9rem"}}>
+                        <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
                             <main>
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
@@ -296,7 +295,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     reportHandler={this.reportHandler.bind(this)}
                     collapseAll={this.collapseAll.bind(this)}
                     />
-                <div style={{marginTop: "9rem"}}>
+                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
                     <main>
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
