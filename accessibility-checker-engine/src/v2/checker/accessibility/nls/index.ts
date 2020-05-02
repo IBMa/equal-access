@@ -73,7 +73,7 @@ let a11yNls = {
     "WCAG20_Input_ExplicitLabel": {
         0: "Each form control must have associated label.",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Form control element {0} is missing associated label.",
+        "Fail_1": "Form control element `<{0}>` has no associated label",
         "Fail_2": "Form control with role {0} is missing associated label."
     },
     // JCH - DONE
