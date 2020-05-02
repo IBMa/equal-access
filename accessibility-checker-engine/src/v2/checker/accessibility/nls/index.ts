@@ -299,9 +299,12 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_A_HasText": {
-        0: "Hyperlinks must contain link text or an image with alt text.",
-        "Pass_0": "Hyperlink contains content that is readable by assistive technologies.",
-        "Fail_1": "Hyperlink is missing link text or an image with alt text."
+        0: "Hyperlinks must have a description of their purpose",
+        "Pass_0": "Hyperlink has a description of its purpose",
+        "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
+        //0: "Hyperlinks must contain link text or an image with alt text.",
+        //"Pass_0": "Hyperlink contains content that is readable by assistive technologies.",
+        //"Fail_1": "Hyperlink is missing link text or an image with alt text."
     },
     // JCH - DONE
     "WCAG20_Fieldset_HasLegend": {
