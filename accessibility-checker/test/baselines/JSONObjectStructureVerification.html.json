@@ -1813,7 +1813,8 @@
             },
             "ruleTime": 0,
             "reasonId": "Pass_0",
-            "message": "Hyperlink contains content that is readable by assistive technologies.",
+            //"message": "Hyperlink contains content that is readable by assistive technologies.",
+            "message": "Hyperlink has a description of its purpose",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -3629,8 +3630,8 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_A_HasText": {
-            "0": "Hyperlinks must contain link text or an image with alt text.",
-            "Pass_0": "Hyperlink contains content that is readable by assistive technologies."
+            "0": "Hyperlinks must have a description of their purpose",
+            "Pass_0": "Hyperlink has a description of its purpose"
         },
         "IBMA_Color_Contrast_WCAG2AA": {
             "0": "Contrast of foreground and background must be sufficient to meet WCAG AA requirements.",
