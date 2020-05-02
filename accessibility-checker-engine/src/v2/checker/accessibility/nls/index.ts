@@ -74,7 +74,7 @@ let a11yNls = {
         0: "Each form control must have associated label.",
         "Pass_0": "Rule Passed",
         //"Fail_1": "Form control element <{0}> has no associated label",-Pass
-        "Fail_1": "Form control element `<{0}>` has no associated label",
+        //"Fail_1": "Form control element `<{0}>` has no associated label",
         //"Fail_1": "Form control element {0} has no associated label", - Pass
         "Fail_2": "Form control with role {0} is missing associated label."
     },
@@ -462,11 +462,15 @@ let a11yNls = {
     },
     // JCH - DONE
     "Valerie_Label_HasContent": {
-        0: "Provide descriptive text in LABEL elements.",
-        "Pass_Regular": "LABEL element has accessible name with inner content",
-        "Pass_AriaLabel": "LABEL element has accessible name via 'aria-label'",
-        "Pass_LabelledBy": "LABEL element has accessible name via 'aria-labelledby'",
-        "Fail_1": "LABEL element is missing descriptive text that identifies the expected input."
+        0: "A `<label>` element must have non-empty descriptive text that identifies the purpose of the interactive component",
+        "Pass_Regular": "`<label>` element has accessible name with inner content",
+        "Pass_AriaLabel": "`<label>` element has accessible name via `aria-label`",
+        "Pass_LabelledBy": "`<label>` element has accessible name via `aria-labelledby`",
+        "Fail_1": "The `<label>` element does not have descriptive text that identifies the expected input"
+        //"Pass_Regular": "LABEL element has accessible name with inner content",
+        //"Pass_AriaLabel": "LABEL element has accessible name via 'aria-label'",
+        //"Pass_LabelledBy": "LABEL element has accessible name via 'aria-labelledby'",
+        //"Fail_1": "LABEL element is missing descriptive text that identifies the expected input."
     },
     // JCH - DONE
     "Valerie_Elem_DirValid": {
