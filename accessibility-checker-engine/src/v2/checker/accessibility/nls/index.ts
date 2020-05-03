@@ -282,14 +282,22 @@ let a11yNls = {
     //       "Potential_k" descriptive message describing case when it is not a failure 
     //                     but needs other checking to confirm pass or
     "WCAG20_Html_HasLang": {
-        0: "Page must identify the default language of the document with a lang attribute", 
-        "Pass_0": "Page language detected as {0}",
-        "Fail_1": "Page detected as XHTML 1.0, but has neither lang nor xml:lang attributes.",
-        "Fail_2": "Page detected as XHTML, but does not have an xml:lang attribute.",
-        "Fail_3": "Page detected as HTML, but does not have a lang attribute.",
-        "Fail_4": "Page detected as XHTML 1.0 with lang and xml:lang attributes that do not match: '{0}', '{1}'.",
-        "Potential_5": "Page detected as XHTML 1.0 with only a lang attribute. Confirm that page is only delivered via text/html mime type",
-        "Potential_6": "Page detected as XHTML 1.0 with only an xml:lang attribute. Confirm that page is only delivered via xml mime type"
+        //0: "Page must identify the default language of the document with a lang attribute", 
+        //"Pass_0": "Page language detected as {0}",
+        //"Fail_1": "Page detected as XHTML 1.0, but has neither lang nor xml:lang attributes.",
+        //"Fail_2": "Page detected as XHTML, but does not have an xml:lang attribute.",
+        //"Fail_3": "Page detected as HTML, but does not have a lang attribute.",
+        //"Fail_4": "Page detected as XHTML 1.0 with lang and xml:lang attributes that do not match: '{0}', '{1}'.",
+        //"Potential_5": "Page detected as XHTML 1.0 with only a lang attribute. Confirm that page is only delivered via text/html mime type",
+        //"Potential_6": "Page detected as XHTML 1.0 with only an xml:lang attribute. Confirm that page is only delivered via xml mime type"
+        0: "Page must identify the default language of the document with a `lang` attribute", 
+        "Pass_0": "Page language detected as `\"{0}\"`",
+        "Fail_1": "Page detected as XHTML 1.0, but has neither `lang` nor `xml:lang` attributes",
+        "Fail_2": "Page detected as XHTML, but does not have an `xml:lang` attribute",
+        "Fail_3": "Page detected as HTML, but does not have a `lang` attribute",
+        "Fail_4": "Page detected as XHTML 1.0 with `lang` and `xml:lang` attributes that do not match: `\"{0}\"`, `\"{1}\"`",
+        "Potential_5": "Page detected as XHTML 1.0 with only a `lang` attribute. Confirm that page is only delivered via text/html mime type",
+        "Potential_6": "Page detected as XHTML 1.0 with only an `xml:lang` attribute. Confirm that page is only delivered via xml mime type"
     },
     // JCH - DONE
     "WCAG20_Form_TargetAndText": {

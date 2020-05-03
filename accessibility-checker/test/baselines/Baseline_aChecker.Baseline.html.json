@@ -12,7 +12,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_3",
-            "message": "Page detected as HTML, but does not have a lang attribute.",
+            "message": "Page detected as HTML, but does not have a `lang` attribute",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -1070,7 +1070,7 @@
     "numExecuted": 41,
     "nls": {
         "WCAG20_Html_HasLang": {
-            "Fail_3": "Page detected as HTML, but does not have a lang attribute."
+            "Fail_3": "Page detected as HTML, but does not have a `lang` attribute"
         },
         "RPT_Html_SkipNav": {
             "Potential_1": "Possibly a mechanism to bypass blocks of content that are repeated on multiple Web pages is not provided."

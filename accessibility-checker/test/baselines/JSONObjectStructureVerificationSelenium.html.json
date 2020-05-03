@@ -94,8 +94,8 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Html_HasLang": {
-            "0": "Page must identify the default language of the document with a lang attribute",
-            "Pass_0": "Page language detected as {0}"
+            "0": "Page must identify the default language of the document with a `lang` attribute",
+            "Pass_0": "Page language detected as `\"{0}\"`"
         },
         "WCAG20_Text_Emoticons": {
             "0": "Provide text alternatives for emoticons.",
@@ -146,7 +146,7 @@
                 "width": 2732
             },
             "category": "Accessibility",
-            "message": "Page language detected as en",
+            "message": "Page language detected as `\"en\"`",
             "messageArgs": [
                 "en"
             ],

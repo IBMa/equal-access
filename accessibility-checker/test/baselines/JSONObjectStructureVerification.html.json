@@ -41,7 +41,7 @@
             },
             "ruleTime": 1,
             "reasonId": "Pass_0",
-            "message": "Page language detected as en",
+            "message": "Page language detected as `\"en\"`",
             "messageArgs": [
                 "en"
             ],
@@ -3545,8 +3545,8 @@
     "numExecuted": 135,
     "nls": {
         "WCAG20_Html_HasLang": {
-            "0": "Page must identify the default language of the document with a lang attribute",
-            "Pass_0": "Page language detected as {0}"
+            "0": "Page must identify the default language of the document with a `lang` attribute",
+            "Pass_0": "Page language detected as `\"{0}\"`"
         },
         "RPT_Html_SkipNav": {
             "0": "Provide a mechanism to bypass blocks of content that are repeated on multiple Web pages.",
