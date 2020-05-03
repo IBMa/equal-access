@@ -3629,7 +3629,7 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_A_HasText": {
-            "0": "Hyperlinks must have a description of their purpose",
+            "0": "Hyperlinks must have a text description of their purpose",
             "Pass_0": "Hyperlink has a description of its purpose"
         },
         "IBMA_Color_Contrast_WCAG2AA": {
