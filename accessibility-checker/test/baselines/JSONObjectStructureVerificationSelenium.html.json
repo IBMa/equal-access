@@ -117,7 +117,7 @@
                 "width": 2700
             },
             "category": "Accessibility",
-            "message": "The div element has the id \"firstDiv\" that is already in use.",
+            "message": "The `<div>` element has the id `\"firstDiv\"` that is already in use",
             "messageArgs": [
                 "div",
                 "firstDiv"

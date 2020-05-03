@@ -12,7 +12,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_2",
-            "message": "The div element has the id \"firstDiv\" that is already in use.",
+            "message": "The `<div>` element has the id `\"firstDiv\"` that is already in use",
             "messageArgs": [
                 "div",
                 "firstDiv"
