@@ -76,9 +76,7 @@
         "WCAG20_A_HasText": {
             "0": "Hyperlinks must have a description of their purpose",
             "Pass_0": "Hyperlink has a description of its purpose"
-            //"0": "Hyperlinks must contain link text or an image with alt text.",
-            //"Pass_0": "Hyperlink contains content that is readable by assistive technologies."
-        },
+         },
         "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
             "0": "Check that the description of the first hyperlink communicates that it links to the main content.",
             "Pass_0": "Rule Passed"
@@ -1920,7 +1918,6 @@
                 "width": 112
             },
             "category": "Accessibility",
-            //"message": "Hyperlink contains content that is readable by assistive technologies.",
             "message": "Hyperlink has a description of its purpose",
             "messageArgs": [],
             "path": {

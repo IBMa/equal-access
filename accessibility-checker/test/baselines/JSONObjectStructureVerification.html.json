@@ -1813,7 +1813,6 @@
             },
             "ruleTime": 0,
             "reasonId": "Pass_0",
-            //"message": "Hyperlink contains content that is readable by assistive technologies.",
             "message": "Hyperlink has a description of its purpose",
             "messageArgs": [],
             "apiArgs": [],
