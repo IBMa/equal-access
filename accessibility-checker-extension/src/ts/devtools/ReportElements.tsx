@@ -89,6 +89,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
+                        learnMore={this.props.learnMore}
                         selectItem={this.props.selectItem} 
                     />
                 })}

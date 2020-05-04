@@ -16,9 +16,6 @@
  
 import React, { RefObject } from "react";
 
-import {
-} from 'carbon-components-react';
-
 import { IReportItem, valueMap, ICheckpoint, IReport} from "./Report";
 
 import { ChevronUp16, ChevronDown16 } from '@carbon/icons-react';
@@ -134,7 +131,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    return (<div tabIndex={0} role="row" aria-rowindex={subIdx} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
+                    return (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={subIdx} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                     <div role="cell" className="bx--col-sm-1"> </div>
                     <div role="cell" className="bx--col-sm-3">
                         <div className="itemMessage">
@@ -142,6 +139,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
+                            <span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.learnMore} >Learn more</a>
                         </div>
                     </div>
                 </div>)})}

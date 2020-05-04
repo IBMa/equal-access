@@ -129,6 +129,16 @@ $feature-flags: (
                 margin-right: 6px;
                 vertical-align: middle;
             }
+
+            .helpLink {
+                color: #0062FF;
+                font-size: 12px;
+                text-decoration: none;
+                svg {
+                    fill: #0062FF;
+                    height: 12px;
+                }
+            }
         }
     }
     .itemDetail.selected {
