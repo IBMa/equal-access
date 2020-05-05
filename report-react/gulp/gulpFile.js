@@ -43,6 +43,9 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     ItemPassive = () => {
         return <span>{this.props.report.nls[this.props.item.ruleId][0]}</span>
     }
+    ItemLevel = () => {
+        return <div>{JSON.stringify(this.props.item.value)}</div>
+    }
     ItemSnippet = () => {
         return <div style={{margin: "1rem 0rem"}}>
             <CodeSnippet type="single" light={true} >
@@ -95,6 +98,7 @@ function copyFiles() {
         .pipe(replace("export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)", ""))
         .pipe(replace("export default ({ children }) => (<React.Fragment>{children}</React.Fragment>)", ""))
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
+        .pipe(replace("<div id=\"locLevel\"></div>", "<ItemLevel item={this.props.item} />"))
         .pipe(replace(/(## (.|\n)*?## (.|\n)*?## ).*?\n(.|\n)*?\n\n/, "$1<ItemActive item={this.props.item} />\n<ItemPassive item={this.props.item} />\n\n"))
         .pipe(replace(/^[^<]*/, componentHeader))
         .pipe(replace(/$/, componentFooter))
