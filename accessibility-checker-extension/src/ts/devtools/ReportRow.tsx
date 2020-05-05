@@ -30,7 +30,8 @@ export interface IReportRowGroup {
     checkpoint?: ICheckpoint,
     title: string,
     counts: { [key: string]: number },
-    items: IReportItem[]
+    items: IReportItem[],
+    selected: boolean
 }
 
 interface IReportRowState {
@@ -42,8 +43,10 @@ interface IReportRowState {
 interface IReportRowProps {
     idx: number,
     report: IReport,
-    group: IReportRowGroup;
-    selectItem: (item: IReportItem) => void
+    group: IReportRowGroup,
+    selectItem: (item: IReportItem) => void,
+    selectGroup: any,
+    tabName: string
 }
 
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
@@ -62,7 +65,10 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     }
 
     toggleRow() {
-        this.setState({ expanded: !this.state.expanded });
+      var currentExpanded = this.state.expanded;
+      this.props.group.selected = !currentExpanded;
+      this.setState({ expanded: !currentExpanded });
+
     }
 
     onKeyDown(e: any) {
@@ -91,11 +97,17 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     }
 
     render() {
-        const group = this.props.group;
+        console.log('--ReportRow---', this.props);
+        const {group, tabName} = this.props;
         let vCount = group.counts["Violation"] || 0;
         let nrCount = group.counts["Needs review"] || 0;
         let rCount = group.counts["Recommendation"] || 0;
+        
         let open = this.state.expanded;
+        if(tabName==='elementRoles'){
+            open = group.selected;
+        }
+
         if (this.state.scrollTo) {
             setTimeout(() => {
                 const element = this.scrollRef.current;

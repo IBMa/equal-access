@@ -32,12 +32,17 @@ interface IGroup {
     title: string,
     counts: { [key: string]: number }
     items: IReportItem[]
+    selected: boolean
 }
 
 export default class ReportRules extends React.Component<IReportRulesProps, IReportRulesState> {
     state: IReportRulesState = {
     };
     
+    groupClickHandler = ()=> {
+        console.log('ReportRules groupClickHandler');
+    }
+
     render() {
         let itemIdx = 0;
         let groupMap : {
@@ -54,7 +59,8 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                     // TODO: Change out for passive rule message
                     title: this.props.report.nls[item.ruleId][0] || item.ruleId,
                     counts: {},
-                    items: []
+                    items: [],
+                    selected: false
                 }
             }
             let curGroup = groupMap[item.ruleId];
@@ -91,6 +97,8 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         report={this.props.report} 
                         group={group}
                         selectItem={this.props.selectItem} 
+                        selectGroup ={this.groupClickHandler}
+                        tabName={'rules'}
                     />                
                 })}
             </div>

@@ -34,13 +34,19 @@ interface IGroup {
     title: string,
     counts: { [key: string]: number }
     items: IReportItem[]
+    selected: boolean
 }
 
 export default class ReportChecklist extends React.Component<IReportChecklistProps, IReportChecklistState> {
     state: IReportChecklistState = {
     };
 
+    groupClickHandler = ()=> {
+        console.log('ReportChecklist groupClickHandler');
+    }
+
     render() {
+        console.log("----ReportChecklist----", this.props)
         let itemIdx = 0;
         let ruleToGroups : {
             [key: string]: IGroup[]
@@ -53,7 +59,8 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                 title: `${checkpoint.num} ${checkpoint.name}`,
                 checkpoint: checkpoint,
                 counts: {},
-                items: []
+                items: [],
+                selected: false
             }
             groups.push(cpGroup);
             for (const rule of checkpoint.rules) {
@@ -101,7 +108,9 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
-                        selectItem={this.props.selectItem} 
+                        selectItem={this.props.selectItem}
+                        selectGroup ={this.groupClickHandler}
+                        tabName={'checklist'}
                     />;
                 })}
             </div>
