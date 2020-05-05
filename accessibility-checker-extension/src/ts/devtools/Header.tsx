@@ -28,7 +28,6 @@ const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
-// const Violation16 = "/assets/Violation16.png";
 
 interface IHeaderState {
 }
@@ -106,9 +105,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                             <ReportData16 aria-label="Report" className="my-custom-class" />
                         </Button>
-                {/* <Button className="settingsButtons" size="small" hasIconOnly kind="primary" iconDescription="Report" type="button" style={{ color: "black", backgroundColor: "white"}}>
-                    <Settings16 aria-label="Report" className="my-custom-class" />
-                </Button> */}
                     </div>
                 </div>
             </div>

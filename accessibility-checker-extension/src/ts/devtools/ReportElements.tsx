@@ -26,7 +26,9 @@ interface IReportElementsState {
 }
 interface IReportElementsProps {
     report: IReport;
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
+    layout: string
 }
 
 interface IGroup {
@@ -77,11 +79,11 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Element
+                        Element Roles
                     </div>
                 </div>
             </div>
-            <div role="rowgroup">
+            <div role="rowgroup">  
                 {groups.map(group => {
                     let thisIdx = idx;
                     idx += group.items.length+1;                    
@@ -89,7 +91,9 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
+                        getItem={this.props.getItem}
                         selectItem={this.props.selectItem} 
+                        layout={this.props.layout}
                     />
                 })}
             </div>
