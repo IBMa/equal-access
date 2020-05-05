@@ -133,7 +133,6 @@ export function preprocessReport(report: IReport, filter: string | null) {
             report.counts.filtered[val] = (report.counts.filtered[val] || 0) + 1;
         }
     }
-    console.log(report.counts);
     return report;
 }
 
