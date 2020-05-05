@@ -85,9 +85,10 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                 </div>
             </div>
             <div role="rowgroup">
+                {console.log("Checklist: this.props.layout = ",this.props.layout)}
                 {groups.map(group => {
                     let thisIdx = idx;
-                    idx += group.items.length+1;                    
+                    idx += group.items.length+1;               
                     return <ReportRow
                         idx={thisIdx} 
                         report={this.props.report} 

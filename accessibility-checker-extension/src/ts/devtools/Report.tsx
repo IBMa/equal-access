@@ -183,10 +183,10 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                         <ReportElements layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportRules selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportChecklist selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
                                     </div>}
                                 </div>
                             </Tab>

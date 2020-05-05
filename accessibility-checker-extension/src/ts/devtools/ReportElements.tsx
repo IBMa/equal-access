@@ -84,6 +84,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 </div>
             </div>
             <div role="rowgroup">
+                {console.log("Elements: this.props.layout = ",this.props.layout)}  
                 {groups.map(group => {
                     let thisIdx = idx;
                     idx += group.items.length+1;                    
