@@ -27,7 +27,9 @@ interface IReportChecklistState {
 interface IReportChecklistProps {
     ruleset: IRuleset,
     report: IReport,
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
+    layout: string
 }
 
 interface IGroup {
@@ -101,7 +103,9 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
-                        selectItem={this.props.selectItem} 
+                        getItem={this.props.getItem}
+                        selectItem={this.props.selectItem}
+                        layout={this.props.layout} 
                     />;
                 })}
             </div>
