@@ -59,35 +59,38 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     constructor(props: any) {
         super(props);
-        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
-            chrome.devtools.inspectedWindow.eval(`((node) => {
-				let countNode = (node) => { 
-					let count = 0;
-					let findName = node.nodeName;
-					while (node) { 
-						if (node.nodeName === findName) {
-							++count;
-						}
-						node = node.previousElementSibling; 
-					}
-					return "/"+findName.toLowerCase()+"["+count+"]";
-				}
-				let retVal = "";
-				while (node && node.nodeType === 1) {
-					if (node) {
-						retVal = countNode(node)+retVal;
-						node = node.parentNode;
-					}
-				}
-				return retVal;
-			})($0)`, (result: string) => {
-                this.onFilter(result);
-                // This filter occurred because we selected something on the right
-                if (this.ignoreNext) {
-                    this.ignoreNext = false;
-                }
+        // Only listen to element events on the subpanel
+        if (this.props.layout=== "sub") {
+            chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
+                chrome.devtools.inspectedWindow.eval(`((node) => {
+                    let countNode = (node) => { 
+                        let count = 0;
+                        let findName = node.nodeName;
+                        while (node) { 
+                            if (node.nodeName === findName) {
+                                ++count;
+                            }
+                            node = node.previousElementSibling; 
+                        }
+                        return "/"+findName.toLowerCase()+"["+count+"]";
+                    }
+                    let retVal = "";
+                    while (node && node.nodeType === 1) {
+                        if (node) {
+                            retVal = countNode(node)+retVal;
+                            node = node.parentNode;
+                        }
+                    }
+                    return retVal;
+                })($0)`, (result: string) => {
+                    this.onFilter(result);
+                    // This filter occurred because we selected something on the right
+                    if (this.ignoreNext) {
+                        this.ignoreNext = false;
+                    }
+                });
             });
-        });
+        }
     }
 
     async componentDidMount() {
