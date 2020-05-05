@@ -28,7 +28,6 @@ interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
-    readLayout: () => void,
     layout: string
 }
 
@@ -94,7 +93,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         group={group}
                         getItem={this.props.getItem}
                         selectItem={this.props.selectItem} 
-                        readLayout={this.props.readLayout}
                         layout={this.props.layout}
                     />
                 })}

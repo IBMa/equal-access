@@ -31,7 +31,6 @@ import HelpHeader from './HelpHeader';
 
 interface IPanelProps {
     layout: "main" | "sub",
-    readLayout: () => void
 }
 
 interface IPanelState {
@@ -273,11 +272,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({learnMore: false});
     }
 
-    readLayout() {
-        console.log("this.props.layout", this.props.layout);
-        //this.setState({learnLayout: this.props.layout})
-    }
-
     render() {
         if (this.props.layout === "main") {
             return <React.Fragment>
@@ -315,7 +309,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             console.log("learnMore = "+this.state.learnMore)
             if (this.state.learnMore) {
                 return <React.Fragment>
-                    {this.props.readLayout}
                     <div className="subPanel">
                         <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                         <div style={{marginTop:"100px", overflow:"scroll"}}>
@@ -342,7 +335,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                 rulesets={this.state.rulesets} 
                                 report={this.state.report} 
                                 getItem = {this.getItem.bind(this)} 
-                                readLayout = {this.getItem.bind(this)}
                                 layout = {this.props.layout}
                                 selectedTab="element"
                                 tabs={["checklist", "element", "rule"]} />}
