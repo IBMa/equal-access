@@ -530,6 +530,16 @@ $feature-flags: (
 
                 margin-top: 0px;
             }
+
+            .issueLevel {
+                @include carbon--type-style('label-01');
+                font-weight: 600;
+
+                img {
+                    margin-right: 4px;
+                    height: 16px;
+                }
+            }
         }
     }
 }
