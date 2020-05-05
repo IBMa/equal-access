@@ -306,7 +306,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
             </React.Fragment>
         } else if (this.props.layout === "sub") {
-            console.log("learnMore = "+this.state.learnMore)
             if (this.state.learnMore) {
                 return <React.Fragment>
                     <div className="subPanel">
