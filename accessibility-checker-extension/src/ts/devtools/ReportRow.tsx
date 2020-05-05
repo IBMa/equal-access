@@ -141,8 +141,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
-                            {this.props.readLayout}
-                            <span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.getItem.bind(this, item)} >Learn more</a>
+                            {console.log(this.props.readLayout)}
+                            {/* <span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.getItem.bind(this, item)} >Learn more</a> */}
                         </div>
                     </div>
                 </div>)})}
