@@ -22,6 +22,7 @@
  
  
  const BeeLogo = "/assets/Bee_logo.svg";
+ import { ArrowLeft16 } from '@carbon/icons-react';
  
  interface IHeaderState {
  }
@@ -47,7 +48,7 @@
              </div>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button onClick={this.props.learnHelp} size="small" className="scan-button">Back to element roles view</Button>
+                     <Button onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16} className="scan-button">Back to element roles view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >
