@@ -275,7 +275,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     render() {
         if (this.props.layout === "main") {
             return <React.Fragment>
-                {console.log("main - this.state.selectedItem = "+this.state.selectedItem)}
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
                     <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
                         {!this.state.report && <ReportSplash /> }
