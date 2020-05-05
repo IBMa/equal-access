@@ -34,7 +34,10 @@ export interface IReport {
     timestamp: number,
     filterstamp: number,
     results: IReportItem[],
-    counts: { [key: string]: number } 
+    counts: { 
+        "total": { [key: string]: number },
+        "filtered": { [key: string]: number }
+    }
 }
 
 export interface IReportItem {
@@ -95,7 +98,10 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
 
 export function preprocessReport(report: IReport, filter: string | null) {
     let first = true;
-    report.counts = {};
+    report.counts = {
+        "total": {},
+        "filtered": {}
+    };
     for (const item of report.results) {
         let filtVal = "";
         item.selected = false;
@@ -122,8 +128,9 @@ export function preprocessReport(report: IReport, filter: string | null) {
             }
         }
         let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
+        report.counts.total[val] = (report.counts.total[val] || 0) + 1;
         if (filtVal !== "") {
-            report.counts[val] = (report.counts[val] || 0) + 1;
+            report.counts.filtered[val] = (report.counts.filtered[val] || 0) + 1;
         }
     }
     return report;

@@ -170,7 +170,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 report: {
                     timestamp: this.state.report.timestamp,
                     nls: this.state.report.nls,
-                    counts: this.state.report.counts,
+                    counts: {
+                        "total": this.state.report.counts,
+                        "filtered": this.state.report.counts
+                    },
                     results: []
                 }
             }
