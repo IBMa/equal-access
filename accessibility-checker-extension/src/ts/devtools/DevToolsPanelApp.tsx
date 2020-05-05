@@ -297,6 +297,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     selectItem={this.selectItem.bind(this)} 
                                     rulesets={this.state.rulesets} 
                                     report={this.state.report} 
+                                    getItem = {this.getItem.bind(this)} 
+                                    layout = {this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
                                     
@@ -310,7 +312,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 return <React.Fragment>
                     <div className="subPanel">
                         <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
-                        <div style={{marginTop:"100px", overflow:"scroll"}}>
+                        <div style={{marginTop:"100px"}}>
                             {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
                         </div>
                     </div>
