@@ -28,14 +28,11 @@
  
  interface IHeaderProps {
      layout: "main" | "sub",
+     learnHelp: () => void
  }
  
  export default class HelpHeader extends React.Component<IHeaderProps, IHeaderState> {
      state: IHeaderState = {};
-
-     help() {
-
-     }
      
      render() {
  
@@ -50,7 +47,7 @@
              </div>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button onClick={this.help} size="small" className="scan-button">Back to element roles view</Button>
+                     <Button onClick={this.props.learnHelp} size="small" className="scan-button">Back to element roles view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >

@@ -30,7 +30,8 @@ import { genReport } from './genReport';
 import HelpHeader from './HelpHeader';
 
 interface IPanelProps {
-    layout: "main" | "sub"
+    layout: "main" | "sub",
+    readLayout: () => void
 }
 
 interface IPanelState {
@@ -43,7 +44,9 @@ interface IPanelState {
     selectedItem?: IReportItem,
     rulesets: IRuleset[] | null,
     selectedCheckpoint? : ICheckpoint,
-    learnMore : boolean
+    learnMore : boolean,
+    learnItem :IReportItem | null,
+    learnLayout: string
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -55,7 +58,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabURL: "",
         tabId: -1,
         rulesets: null,
-        learnMore: false
+        learnMore: false,
+        learnItem: null,
+        learnLayout: ""
     }
     
     ignoreNext = false;
@@ -224,14 +229,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 } else if (this.props.layout === "sub") {
                     if (this.state.report) {
                         for (const resultItem of this.state.report.results) {
-                            
                             resultItem.selected = resultItem.path.dom === item.path.dom;
-                            console.log("resultItem.selected1 = "+resultItem.selected);
-                            resultItem.selected = resultItem.itemIdx === item.itemIdx;
-                            console.log("resultItem.selected2 = "+resultItem.selected);
                         }
                         this.setState({report: this.state.report});
-                        this.setState({selectedItem: item});
                     }
             
                     var script =
@@ -262,9 +262,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    learnMore () {
+    getItem(item: IReportItem) {
         console.log("********  Learn More");
-        this.setState({learnMore: true});
+        console.log("item = ", item);
+        this.setState({learnMore: true, learnItem: item});
+    }
+
+    learnHelp() {
+        console.log("back button function");
+        this.setState({learnMore: false});
+    }
+
+    readLayout() {
+        console.log("this.props.layout", this.props.layout);
+        //this.setState({learnLayout: this.props.layout})
     }
 
     render() {
@@ -294,38 +305,48 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     report={this.state.report} 
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
+                                    
                             </main>
                         </div>
                     </div>
                 </div>
             </React.Fragment>
         } else if (this.props.layout === "sub") {
+            console.log("learnMore = "+this.state.learnMore)
             if (this.state.learnMore) {
                 return <React.Fragment>
-                    {console.log("sub - this.state.selectedItem = "+this.state.selectedItem)}
-                <HelpHeader layout={this.props.layout}></HelpHeader>
-                {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
+                    {this.props.readLayout}
+                    <div className="subPanel">
+                        <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
+                        <div style={{marginTop:"100px", overflow:"scroll"}}>
+                            {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
+                        </div>
+                    </div>
+                
                 </React.Fragment>
             } else {
             return <React.Fragment>
-                <Header 
-                    layout={this.props.layout} 
-                    counts={this.state.report && this.state.report.counts} 
-                    startScan={this.startScan.bind(this)} 
-                    reportHandler={this.reportHandler.bind(this)}
-                    collapseAll={this.collapseAll.bind(this)}
-                    />
-                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
-                    <main>
-                        {this.state.numScanning > 0 ? <Loading /> : <></>}
-                        {this.state.report && <Report 
-                            selectItem={this.selectItem.bind(this)} 
-                            rulesets={this.state.rulesets} 
-                            report={this.state.report} 
-                            learnMore = {this.learnMore.bind(this)} 
-                            selectedTab="element"
-                            tabs={["checklist", "element", "rule"]} />}
-                    </main>
+                <div>
+                    <Header 
+                        layout={this.props.layout} 
+                        counts={this.state.report && this.state.report.counts} 
+                        startScan={this.startScan.bind(this)} 
+                        reportHandler={this.reportHandler.bind(this)}
+                        collapseAll={this.collapseAll.bind(this)}
+                        />
+                    <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                        <main>
+                            {this.state.numScanning > 0 ? <Loading /> : <></>}
+                            {this.state.report && <Report 
+                                selectItem={this.selectItem.bind(this)} 
+                                rulesets={this.state.rulesets} 
+                                report={this.state.report} 
+                                getItem = {this.getItem.bind(this)} 
+                                readLayout = {this.getItem.bind(this)}
+                                selectedTab="element"
+                                tabs={["checklist", "element", "rule"]} />}
+                        </main>
+                    </div>
                 </div>
             </React.Fragment>
             }
