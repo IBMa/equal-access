@@ -308,6 +308,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             selectItem={this.selectItem.bind(this)} 
                             rulesets={this.state.rulesets} 
                             report={this.state.report} 
+                            layout = {this.props.layout}
                             selectedTab="element"
                             tabs={["checklist", "element", "rule"]} />}
                     </main>

@@ -78,7 +78,8 @@ interface IReportProps {
     report: IReport,
     selectedTab: "checklist" | "element" | "rule",
     tabs: ("checklist" | "element" | "rule")[],
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    layout: string
 }
 
 export const valueMap: { [key: string]: { [key2: string]: string } } = {
@@ -184,7 +185,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                             >
                                 <div role="table">
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportElements selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportElements layout={this.props.layout} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
                                         <ReportRules selectItem={this.props.selectItem} report={this.props.report}/>

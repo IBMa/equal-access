@@ -28,6 +28,7 @@ interface IReportElementsState {
 interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void
+    layout: string
 }
 
 interface IGroup {
@@ -208,6 +209,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         report={this.props.report} 
                         group={group}
                         selectItem={this.props.selectItem}
+                        layout={this.props.layout}
                         selectGroup ={this.groupClickHandler}
                         tabName={'elementRoles'}
                     />

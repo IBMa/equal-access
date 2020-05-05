@@ -45,6 +45,7 @@ interface IReportRowProps {
     report: IReport,
     group: IReportRowGroup,
     selectItem: (item: IReportItem) => void,
+    layout: string
     selectGroup: any,
     tabName: string
 }
@@ -98,13 +99,13 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
 
     render() {
         console.log('--ReportRow---', this.props);
-        const {group, tabName} = this.props;
+        const {group, tabName, layout} = this.props;
         let vCount = group.counts["Violation"] || 0;
         let nrCount = group.counts["Needs review"] || 0;
         let rCount = group.counts["Recommendation"] || 0;
         
         let open = this.state.expanded;
-        if(tabName==='elementRoles'){
+        if(tabName==='elementRoles' && layout==='sub'){
             open = group.selected;
         }
 
