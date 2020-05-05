@@ -19,7 +19,7 @@ $feature-flags: (
     .eaacTitle {
         color: #171717;
         font-size: 12px;
-        
+        margin-top: 4px;
         @media only screen and (min-width: 30rem) {
             font-size: 16px;
         }
