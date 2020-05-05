@@ -95,15 +95,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             
             <div className="bx--row summary">
                 <div className="bx--col-sm-1">
-                    <img src={Violation16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" />
+                    <img src={Violation16} alt="Needs review" />
                     <span className="summaryBarCounts">{counts["Violation"] || 0}&nbsp;<span className="summaryBarLabels">Violations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" />
+                    <img src={NeedsReview16} alt="Needs review" />
                     <span className="summaryBarCounts">{counts["Needs review"] || 0}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" />
+                    <img src={Recommendation16} alt="Recommendation" />
                     <span className="summaryBarCounts">{counts["Recommendation"] || 0}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
