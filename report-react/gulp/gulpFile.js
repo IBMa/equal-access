@@ -6,6 +6,10 @@ var ext_replace = require('gulp-ext-replace');
 const componentHeader = `import React, { ReactNode } from "react";
 import Markdown from 'markdown-to-jsx';
 import { IReportItem, IReport } from '../IReport';
+import {
+    OrderedList, UnorderedList, ListItem, CodeSnippet
+} from 'carbon-components-react';
+
 const Violation16 = <svg version="1.1" id="icon" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16">
 <rect id="_Transparent_Rectangle_" style={{fill: "none"}} width="16" height="16"/>
 <path style={{fill: "#A2191F"}} d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
@@ -38,9 +42,6 @@ const Recommendation16 = <svg version="1.1" id="icon" x="0px" y="0px"
 <path style={{fill: "#0043CE"}} d="M14,15H2c-0.6,0-1-0.4-1-1V2c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v12C15,14.6,14.6,15,14,15z"/>
 <text transform="matrix(1 0 0 1 5.9528 12.5044)" style={{fill: "#FFFFFF", fontFamily: "IBMPlexSerif", fontSize: "12.9996px"}}>i</text>
 </svg>
-import {
-    OrderedList, UnorderedList, ListItem, CodeSnippet
-} from 'carbon-components-react';
 
 const Row = ({ children }: any) => {
     return <div className="bx--row">{children}</div>
@@ -92,9 +93,9 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         const value = this.props.item.value;
         const val = valueMap[value[0]][value[1]] || value[0] + "_" + value[1];
         let icon = <React.Fragment></React.Fragment>;
-        if (val === "Violation") icon = <img src={Violation16} alt="" />;
-        if (val === "Needs review") icon = <img src={NeedsReview16} alt="" />;
-        if (val === "Recommendation") icon = <img src={Recommendation16} alt="" />;
+        if (val === "Violation") icon = Violation16;
+        if (val === "Needs review") icon = NeedsReview16;
+        if (val === "Recommendation") icon = Recommendation16;
         return <div className="issueLevel">{icon}{val}</div>
     }
     ItemSnippet = () => {
