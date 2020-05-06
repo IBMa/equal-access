@@ -84,7 +84,25 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     while (node && node.nodeType === 1) {
                         if (node) {
                             retVal = countNode(node)+retVal;
-                            node = node.parentNode;
+                            if (node.parentElement) {
+                                node = node.parentElement;
+                            } else {
+                                let parentElement = null;
+                                try {
+                                    // Check if we're in an iframe
+                                    let parentWin = node.ownerDocument.defaultView.parent;
+                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                    for (const iframe of iframes) {
+                                        try {
+                                            if (iframe.contentDocument === node.ownerDocument) {
+                                                parentElement = iframe;
+                                                break;
+                                            }
+                                        } catch (e) {}
+                                    }
+                                } catch (e) {}
+                                node = parentElement;
+                            }
                         }
                     }
                     return retVal;
