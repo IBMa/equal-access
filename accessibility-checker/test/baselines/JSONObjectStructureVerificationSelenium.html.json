@@ -1,7 +1,7 @@
 {
     "nls": {
         "HAAC_Application_Role_Text": {
-            "0": "Non-decorative static text and image content within an element with `\"application\"` role must be accessible",
+            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
             "Pass_0": "Rule Passed"
         },
         "HAAC_Aria_Native_Host_Sematics": {
@@ -25,12 +25,12 @@
             "Pass_0": "Rule Passed"
         },
         "RPT_Blockquote_WrapsTextQuote": {
-            "0": "Quotations should be marked with `<q>` or `<blockquote>` elements",
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
             "Pass_0": "Rule Passed"
         },
         "RPT_Elem_UniqueId": {
-            "0": "Element `id` attribute values must be unique within a document",
-            "Fail_2": "The `<{0}>` element has the id `\"{1}\"` that is already in use",
+            "0": "Element 'id' attribute values must be unique within a document",
+            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use",
             "Pass_0": "Rule Passed"
         },
         "RPT_Header_HasContent": {
@@ -54,7 +54,7 @@
             "Pass_0": "Rule Passed"
         },
         "RPT_Title_Valid": {
-            "0": "Page `<title>` should be a descriptive title, rather than a filename",
+            "0": "Page <title> should be a descriptive title, rather than a filename",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_MissingKeyboardHandler": {
@@ -70,7 +70,7 @@
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_ValidRole": {
-            "0": "Elements must have a valid `role` per WAI-ARIA specification",
+            "0": "Elements must have a valid 'role' per WAI-ARIA specification",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_A_HasText": {
@@ -94,15 +94,15 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Html_HasLang": {
-            "0": "Page must identify the default language of the document with a `lang` attribute",
-            "Pass_0": "Page language detected as `\"{0}\"`"
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Pass_0": "Page language detected as \"{0}\""
         },
         "WCAG20_Text_Emoticons": {
             "0": "Emoticons must have a short text alternative that describes their purpose",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Text_LetterSpacing": {
-            "0": "Use CSS `letter-spacing` to control spacing within a word",
+            "0": "Use CSS 'letter-spacing' to control spacing within a word",
             "Pass_0": "Rule Passed"
         }
     },
@@ -117,7 +117,7 @@
                 "width": 2700
             },
             "category": "Accessibility",
-            "message": "The `<div>` element has the id `\"firstDiv\"` that is already in use",
+            "message": "The <div> element has the id \"firstDiv\" that is already in use",
             "messageArgs": [
                 "div",
                 "firstDiv"
@@ -146,7 +146,7 @@
                 "width": 2732
             },
             "category": "Accessibility",
-            "message": "Page language detected as `\"en\"`",
+            "message": "Page language detected as \"en\"",
             "messageArgs": [
                 "en"
             ],

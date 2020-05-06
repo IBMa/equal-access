@@ -12,7 +12,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_3",
-            "message": "Page detected as HTML, but does not have a `lang` attribute",
+            "message": "Page detected as HTML, but does not have a 'lang' attribute",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -38,7 +38,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_2",
-            "message": "Missing `<title>` element in `<head>` element",
+            "message": "Missing <title> element in <head> element",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -64,7 +64,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_1",
-            "message": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA `\"main\"` landmark or a skip link)",
+            "message": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -90,7 +90,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_2",
-            "message": "Image does not have an `alt` attribute short text alternative",
+            "message": "Image does not have an 'alt' attribute short text alternative",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -1070,13 +1070,13 @@
     "numExecuted": 41,
     "nls": {
         "WCAG20_Html_HasLang": {
-            "Fail_3": "Page detected as HTML, but does not have a `lang` attribute"
+            "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute"
         },
         "RPT_Html_SkipNav": {
             "Potential_1": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages"
         },
         "WCAG20_Doc_HasTitle": {
-            "Fail_2": "Missing `<title>` element in `<head>` element"
+            "Fail_2": "Missing <title> element in <head> element"
         },
         "HAAC_BackgroundImg_HasTextOrTitle": {
             "Pass_0": "Rule Passed"
@@ -1106,10 +1106,10 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
-            "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA `\"main\"` landmark or a skip link)"
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)"
         },
         "WCAG20_Img_HasAlt": {
-            "Fail_2": "Image does not have an `alt` attribute short text alternative"
+            "Fail_2": "Image does not have an 'alt' attribute short text alternative"
         },
         "RPT_Img_AltCommonMisuse": {
             "Pass_0": "Rule Passed"
