@@ -26,6 +26,7 @@ export class DOMWalker {
     }
 
     atRoot() : boolean {
+        if ((this as any).ownerElement) return false;
         if (this.root === this.node) {
             return true;
         } else if (this.root.isSameNode) {
@@ -41,7 +42,16 @@ export class DOMWalker {
     nextNode() : boolean {
         do {
             if (!this.bEndTag) {
-                if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.firstChild) {
+                let iframeNode = (this.node as HTMLIFrameElement);
+                if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                    && this.node.nodeName.toUpperCase() === "IFRAME"
+                    && iframeNode.contentDocument
+                    && iframeNode.contentDocument.documentElement)
+                {
+                    let ownerElement = this.node;
+                    this.node = iframeNode.contentDocument.documentElement;
+                    (this.node as any).ownerElement = ownerElement;
+                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.firstChild) {
                     this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
@@ -52,6 +62,9 @@ export class DOMWalker {
                 } else if (this.node.nextSibling) {
                     this.node = this.node.nextSibling;
                     this.bEndTag = false;
+                } else if ((this.node as any).ownerElement) {
+                    this.node = (this.node as any).ownerElement;
+                    this.bEndTag = true;
                 } else if (this.node.parentNode) {
                     this.node = this.node.parentNode;
                     this.bEndTag = true;
@@ -66,7 +79,16 @@ export class DOMWalker {
     prevNode() : boolean {
         do {
             if (this.bEndTag) {
-                if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.lastChild) {
+                let iframeNode = (this.node as HTMLIFrameElement);
+                if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                    && this.node.nodeName.toUpperCase() === "IFRAME"
+                    && iframeNode.contentDocument
+                    && iframeNode.contentDocument.documentElement) 
+                {
+                    let ownerElement = this.node;
+                    this.node = iframeNode.contentDocument.documentElement;
+                    (this.node as any).ownerElement = ownerElement;
+                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.lastChild) {
                     this.node = this.node.lastChild;
                 } else {
                     this.bEndTag = false;
@@ -77,6 +99,9 @@ export class DOMWalker {
                 } else if (this.node.previousSibling) {
                     this.node = this.node.previousSibling;
                     this.bEndTag = true;
+                } else if ((this.node as any).ownerElement) {
+                    this.node = (this.node as any).ownerElement;
+                    this.bEndTag = false;
                 } else if (this.node.parentNode) {
                     this.node = this.node.parentNode;
                     this.bEndTag = false;

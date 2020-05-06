@@ -237,21 +237,49 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }
                         this.setState({report: this.state.report});
                     }
-            
+
                     var script =
-                        `var nodes = document.evaluate("${item.path.dom}", document, null, XPathResult.ANY_TYPE, null);
-                    var element = nodes.iterateNext();
-                    if (element) {
-                        inspect(element);
-                        var elementRect = element.getBoundingClientRect();
-                        var absoluteElementTop = elementRect.top + window.pageYOffset;
-                        var middle = absoluteElementTop - 100;
-                        element.ownerDocument.defaultView.scrollTo({
-                            top: middle,
-                            behavior: 'smooth'
-                        });
-                        true;
-                    }`
+`function lookup(doc, xpath) {
+    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+    let element = nodes.iterateNext();
+    if (element) {
+        return element;
+    } else {
+        return null;
+    }
+}
+function selectPath(srcPath) {
+    let doc = document;
+    let element = null;
+    while (srcPath && srcPath.includes("iframe")) {
+        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+        let iframe = lookup(doc, parts[1]);
+        element = iframe || element;
+        if (iframe && iframe.contentDocument && iframe.contentDocument) {
+            doc = iframe.contentDocument;
+            srcPath = parts[2];
+        } else {
+            srcPath = null;
+        }
+    }
+    if (srcPath) {
+        element = lookup(doc, srcPath) || element;
+    }
+    if (element) {
+        inspect(element);
+        var elementRect = element.getBoundingClientRect();
+        var absoluteElementTop = elementRect.top + window.pageYOffset;
+        var middle = absoluteElementTop - 100;
+        element.ownerDocument.defaultView.scrollTo({
+            top: middle,
+            behavior: 'smooth'
+        });
+        return true;
+    }
+    return;
+}
+selectPath("${item.path.dom}");
+`
                     this.ignoreNext = true;
                     chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
                         if (isException) {
