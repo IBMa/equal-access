@@ -152,10 +152,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     collapseAll() {
         if (this.state.report) {
-            if (!this.ignoreNext) {
-                this.state.report.filterstamp = new Date().getTime();
-            }
-            this.setState({ filter: null, report: preprocessReport(this.state.report, null), selectedItem: undefined, selectedCheckpoint: undefined });
+            this.state.report.filterstamp = new Date().getTime();
+            this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
         }
     }
 
@@ -170,7 +168,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({ 
                 filter: null, 
                 numScanning: Math.max(0, this.state.numScanning - 1), 
-                report: preprocessReport(report, null), 
+                report: preprocessReport(report, null, false), 
                 selectedItem: undefined
             });
         }
@@ -179,10 +177,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     onFilter(filter: string) {
         if (this.state.report) {
-            if (!this.ignoreNext) {
-                this.state.report.filterstamp = new Date().getTime();
-            }
-            this.setState({ filter: filter, report: preprocessReport(this.state.report, filter) });
+            this.state.report.filterstamp = new Date().getTime();
+            this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
         }
     }
 

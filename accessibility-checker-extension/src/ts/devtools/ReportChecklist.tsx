@@ -64,7 +64,8 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
         }
 
-        for (const item of this.props.report.results) {
+        let myResults = JSON.parse(JSON.stringify(this.props.report.results));
+        for (const item of myResults) {
             if (item.value[1] === "PASS") {
                 continue;
             }
@@ -84,6 +85,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         // })
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
+        let scrollFirst = true;
         return <div className="bx--grid report">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
@@ -99,6 +101,10 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                 {groups.map(group => {
                     let thisIdx = idx;
                     idx += group.items.length+1;
+                    group.items.map(item => {
+                        item.scrollTo = item.scrollTo && scrollFirst;
+                        scrollFirst = scrollFirst && !item.scrollTo;
+                    })
                     return <ReportRow 
                         idx={thisIdx} 
                         report={this.props.report} 
