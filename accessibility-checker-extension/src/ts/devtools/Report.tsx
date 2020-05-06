@@ -34,6 +34,7 @@ export interface IReport {
     timestamp: number,
     filterstamp: number,
     results: IReportItem[],
+
     counts: { 
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
@@ -79,6 +80,7 @@ interface IReportProps {
     selectedTab: "checklist" | "element" | "rule",
     tabs: ("checklist" | "element" | "rule")[],
     selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
     layout: string
 }
 
@@ -185,13 +187,13 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                             >
                                 <div role="table">
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportElements layout={this.props.layout} selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportRules selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportChecklist selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
                                     </div>}
                                 </div>
                             </Tab>

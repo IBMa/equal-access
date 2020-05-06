@@ -27,7 +27,8 @@ interface IReportElementsState {
 }
 interface IReportElementsProps {
     report: IReport;
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
     layout: string
 }
 
@@ -81,16 +82,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
         return {groups: groups};
     }
 
-    // getSelectedItem = (report: IReport)=>{
-
-    //     for (const item of report.results){
-    //         if(item.selected === true){
-    //             return item;
-    //         }
-    //     }
-    //     return undefined;
-    // }
-
      static getSelectedItem(report: IReport){
 
         for (const item of report.results){
@@ -100,22 +91,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
         }
         return undefined;
     }
-
-
-    //are items in a group the selected item's children elements?
-    // isGroupSelected = (group: IGroup, selectedItem: IReportItem | undefined) =>{
-    //     if(selectedItem === undefined){
-    //         return false;
-    //     } else {
-    //         //only check the first item path because all items in a group have the same path
-    //         const item = group.items[0];
-    //         if((item.path.aria).indexOf(selectedItem.path.aria) !==-1){
-    //             return true;
-    //         } else {
-    //             return false;
-    //         }
-    //     }
-    // }
 
     static isGroupSelected (group: IGroup, selectedItem: IReportItem | undefined) {
         if(selectedItem === undefined){
@@ -147,44 +122,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
     render() {
         let groups = this.state.groups;
 
-        console.log('---ReportElements---', this.props);
-        console.log('---ReportElements--groups-', groups);
-        // let itemIdx = 0;
-        // let groups : IGroup[] = []
-        // let groupMap : {
-        //     [key: string]: IGroup
-        // } | null = {};
-        // for (const item of this.props.report.results) {
-        //     if (item.value[1] === "PASS") {
-        //         continue;
-        //     }
-        //     item.itemIdx = itemIdx++;
-
-        //     let thisGroup = groupMap[item.path.aria];
-        //     if (!thisGroup) {
-        //         thisGroup = {
-        //             title: item.path.aria,
-        //             counts: {},
-        //             items: [],
-        //             selected: false
-        //         }
-        //         groupMap[item.path.aria] = thisGroup;
-        //         groups.push(thisGroup);
-        //     }
-        //     thisGroup.items.push(item);
-        //     let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
-        //     thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
-        // }
-
-        // let selectedItem = this.getSelectedItem(this.props.report);
-        // groups.map( group =>{
-        //         group.selected = this.isGroupSelected(group, selectedItem);
-        // });
-
-
-
-
-
         // this.props.report.sort((a,b) => {
         //     return a.path.aria.localeCompare(b.path.aria);
         // })
@@ -196,11 +133,11 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Element
+                        Element Roles
                     </div>
                 </div>
             </div>
-            <div role="rowgroup">
+            <div role="rowgroup">  
                 {groups.map(group => {
                     let thisIdx = idx;
                     idx += group.items.length+1;                    
@@ -208,7 +145,8 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
-                        selectItem={this.props.selectItem}
+                        getItem={this.props.getItem}
+                        selectItem={this.props.selectItem} 
                         layout={this.props.layout}
                         selectGroup ={this.groupClickHandler}
                         tabName={'elementRoles'}

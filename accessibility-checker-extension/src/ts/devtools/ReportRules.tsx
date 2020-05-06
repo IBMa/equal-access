@@ -26,7 +26,9 @@ interface IReportRulesState {
 }
 interface IReportRulesProps {
     report: IReport;
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
+    layout: string
 }
 interface IGroup {
     title: string,
@@ -91,12 +93,14 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             <div role="rowgroup">
                 {groups.map(group => {
                     let thisIdx = idx;
-                    idx += group.items.length+1;                    
+                    idx += group.items.length+1;               
                     return <ReportRow
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
-                        selectItem={this.props.selectItem} 
+                        getItem={this.props.getItem}
+                        selectItem={this.props.selectItem}
+                        layout={this.props.layout}
                         selectGroup ={this.groupClickHandler}
                         tabName={'rules'}
                     />                

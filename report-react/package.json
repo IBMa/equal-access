@@ -80,9 +80,9 @@
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
-        "react/jsx-pascal-case": "off",
-        "jsx-a11y/anchor-is-valid": "off",
-        "no-script-url": "off"
+      "react/jsx-pascal-case": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "no-script-url": "off"
     }
   },
   "browserslist": {
