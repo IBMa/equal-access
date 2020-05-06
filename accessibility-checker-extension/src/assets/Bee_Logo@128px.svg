@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.1.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="128px" height="128px" viewBox="0 0 128 128" style="enable-background:new 0 0 128 128;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill-rule:evenodd;clip-rule:evenodd;fill:none;}
+	.st1{filter:url(#Adobe_OpacityMaskFilter);}
+	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#FFFFFF;}
+	.st3{mask:url(#mask-2_2_);fill-rule:evenodd;clip-rule:evenodd;fill:#924CFC;}
+	.st4{fill-rule:evenodd;clip-rule:evenodd;}
+</style>
+<rect class="st0" width="128" height="128"/>
+<g id="Group-4_1_" transform="translate(0.000000, 0.333400)">
+	<g id="Clip-3_1_">
+	</g>
+	<defs>
+		<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="8" y="23.7" width="112" height="82.2">
+			<feColorMatrix  type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0"/>
+		</filter>
+	</defs>
+	<mask maskUnits="userSpaceOnUse" x="8" y="23.7" width="112" height="82.2" id="mask-2_2_">
+		<g class="st1">
+			<polygon id="path-1_2_" class="st2" points="8,23.7 120,23.7 120,108.7 8,108.7 			"/>
+		</g>
+	</mask>
+	<path id="Fill-2_1_" class="st3" d="M110.1,63.7L82,51.3l9.5,30.1c1.8,5.4,6.3,10.6,14,10.6c8,0,14.5-6.5,14.5-14.5
+		C120,70.8,115.8,66.3,110.1,63.7L110.1,63.7z M48,95.7c2.8,6,8.9,10.2,16,10.2c7.1,0,13.2-4.2,16-10.2H48z M80,55.7
+		c-2.8-6-8.9-10.2-16-10.2c-7.1,0-13.2,4.2-16,10.2H80z M8,77.6c0,8,6.5,14.5,14.5,14.5c7.7,0,12.2-5.3,14-10.6L46,51.3L17.9,63.7
+		C12.2,66.3,8,70.8,8,77.6L8,77.6z M74.4,23.7c-4.4,0-8,3.6-8,8c0,4.4,3.6,8,8,8c4.4,0,8-3.6,8-8C82.4,27.2,78.8,23.7,74.4,23.7
+		L74.4,23.7z M53.6,23.7c-4.4,0-8,3.6-8,8c0,4.4,3.6,8,8,8c4.4,0,8-3.6,8-8C61.6,27.2,58,23.7,53.6,23.7L53.6,23.7z"/>
+</g>
+<path id="Fill-1_3_" class="st4" d="M80,64H48v8h32V64z"/>
+<path id="Fill-1_2_" class="st4" d="M80,80H48v8h32V80z"/>
+</svg>
