@@ -33,10 +33,13 @@ HTML5 attributes must not conflict with the associated WAI-ARIA attribute used o
 Remove one of the conflicting HTML5 or ARIA attributes from the `<input>` element.
 
 Example using HTML5:
+
 ```<label for="phone">* Phone number: </body>
 <input type="text" id="phone" name="phone" required>
 ```
+
 Example uses both HTML5 and ARIA attribute indicating the input is required without any conflict:
+
 ```<label for="phone">* Phone number: </body>
 <input type="text" id="phone" name="phone" required aria-required="true">
 ```
