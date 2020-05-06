@@ -16,23 +16,22 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with ARIA - authors must incorporate the code for keyboard access.
+The primary keyboard navigation convention uses Tab and `Shift+Tab` key commands to move focus from one UI component to another. Other keys (primarily the arrow keys) move focus within components comprised of multiple focusable elements. Authors must follow this convention and provide no more than one tab stop per component (providing keyboard focus).
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel" className="level-violation">Violation</div>
 
-## The component does not have a tabbable element
-The component must have at least one tabbable element
+## The component has more than one tabbable element
+The component must have no more than one tabbable element
 
 [IBM 2.1.1 Keyboard](https://www.ibm.com/able/guidelines/ci162/keyboard.html) | [The Tab Sequence](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_general_between)
 
 <div id="locSnippet"></div>
 
 ## What to do
-
-* Use the HTML tabindex attribute to include the component in the tab sequence. (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
+* Modify the widget’s keyboard navigation model to contain only one tab stop to set focus in or on the widget. (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
 
 
 </Column>
