@@ -14,6 +14,8 @@
     limitations under the License.
  *****************************************************************************/
 
+import { DOMUtil } from "./DOMUtil";
+
 export class DOMWalker {
     root : Node;
     node : Node;
@@ -45,6 +47,7 @@ export class DOMWalker {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
+                    && DOMUtil.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -82,6 +85,7 @@ export class DOMWalker {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
+                    && DOMUtil.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
