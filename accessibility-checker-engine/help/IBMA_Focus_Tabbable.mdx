@@ -10,19 +10,21 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with tremor or other movement disorders
 
 ## Why is this important?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with ARIA - authors must incorporate the code for keyboard access.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel" className="level-violation">Violation</div>
 
-## Image does not have a short text alternative
-Images that convey meaning must have a short text alternative.
+## The component does not have a tabbable element
+The component must have at least one tabbable element
 
 [IBM 1.1.1 Non-text content]() | [WCAG technique H37]()
 
@@ -30,15 +32,7 @@ Images that convey meaning must have a short text alternative.
 
 ## What to do
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+Use the HTML tabindex attribute to include the component in the tab sequence.  (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
 
 
 </Column>
