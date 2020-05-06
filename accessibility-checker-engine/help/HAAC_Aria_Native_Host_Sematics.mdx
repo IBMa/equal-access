@@ -34,12 +34,14 @@ WAI-ARIA roles and attributes must be valid for the element they are assigned to
 * If a native HTML element fits the intended behavior, use that;
 * OR, update the role and/or attributes using the guidance in [W3C ARIA in HTML Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance).
 
-The following sample code correctly uses the HTML5 `<aside>` element to designate complementary content on the page.       
+The following sample code correctly uses the HTML5 `<aside>` element to designate complementary content on the page.
+
 ```
 <aside>About the editor, Max Perkins: Editor of Genius(1978),…… </aside> 
 ```
         
 The following code correctly overrides the `<aside>` element’s implicit semantics (`role=“complementary”`) by using the ARIA role of `“note”` to designate the notated content on the page.
+
 ```        
 <aside role="note">About the editor, Max Perkins: Editor of Genius(1978),…… </aside> 
 ```
