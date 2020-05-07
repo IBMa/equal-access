@@ -142,10 +142,10 @@ $feature-flags: (
         }
     }
     .itemDetail.selected {
-        background-color: #E8DAFF;
+        background-color: #BE95FF;
     }
     .itemDetail.selectedChild {
-        background-color: #DCDCDC;
+        background-color: #E8DAFF;
     }
 }
 
@@ -226,6 +226,7 @@ $feature-flags: (
         }
 
         .toolLeft {
+            @include carbon--type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
@@ -238,9 +239,9 @@ $feature-flags: (
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include carbon--type-style('productive-heading-01');
 
-                margin-top: 2rem;
+                margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
@@ -272,6 +273,17 @@ $feature-flags: (
                 @include carbon--type-style('body-long-01');
 
                 margin-top: 0px;
+            }
+
+            .issueLevel {
+                @include carbon--type-style('heading-01');
+                //font-weight: 600;
+
+                img {
+                    margin-right: 4px;
+                    height: 20px;
+                    vertical-align: -5px;
+                }
             }
         }
     }
@@ -356,6 +368,11 @@ $feature-flags: (
 
         .title {
             @include carbon--type-style('productive-heading-04');
+            color: #252525;
+        }
+
+        .subtitle {
+            @include carbon--type-style('productive-heading-03');
             color: #252525;
         }
 
@@ -473,6 +490,7 @@ $feature-flags: (
         }
 
         .toolLeft {
+            @include carbon--type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
@@ -485,9 +503,9 @@ $feature-flags: (
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include carbon--type-style('productive-heading-01');
 
-                margin-top: 2rem;
+                margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
@@ -519,6 +537,17 @@ $feature-flags: (
                 @include carbon--type-style('body-long-01');
 
                 margin-top: 0px;
+            }
+
+            .issueLevel {
+                @include carbon--type-style('heading-01');
+                //font-weight: 600;
+
+                img {
+                    margin-right: 4px;
+                    height: 20px;
+                    vertical-align: -5px;
+                }
             }
         }
     }
