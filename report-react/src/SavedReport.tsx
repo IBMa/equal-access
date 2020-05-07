@@ -95,8 +95,8 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 <div className="bx--row">
                     <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4">
                         <div className="summInfo">
-                            <div className="eaName">IBM <strong>Equal Access</strong></div>
-                            <div className="prodName">Accessibility Checker Report</div>
+                            <div className="eaName">IBM <strong>Accessibility</strong></div>
+                            <div className="prodName">Equal Access Accessibility Checker Report</div>
                             <div className="time">{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
                             <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                         </div>
@@ -107,18 +107,18 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 </div>
                 <div className="bx--row">
                     <div className="bx--col-sm-2 bx--col-md-4 bx--offset-lg-4 bx--col-lg-4">
-                        <ScoreCard count={this.props.reportData.report.counts["Violation"]} title="Violation" icon={Violation16}>
+                        <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violation" icon={Violation16}>
                             Accessibility failures that need to be corrected
                         </ScoreCard>
                         
                     </div>
                     <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                        <ScoreCard count={this.props.reportData.report.counts["Needs review"]} title="Needs review" icon={NeedsReview16}>
+                        <ScoreCard count={this.props.reportData.report.counts.total["Needs review"]} title="Needs review" icon={NeedsReview16}>
                             Issues that may not be a violation; manual review is needed
                         </ScoreCard>
                     </div>
                     <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                        <ScoreCard count={this.props.reportData.report.counts["Recommendation"]} title="Recommendations" icon={Recommendation16}>
+                        <ScoreCard count={this.props.reportData.report.counts.total["Recommendation"]} title="Recommendations" icon={Recommendation16}>
                             Opportunities to apply best practices to further improve accessibility
                         </ScoreCard>
                         

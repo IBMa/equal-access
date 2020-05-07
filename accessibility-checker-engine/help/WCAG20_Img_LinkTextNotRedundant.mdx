@@ -20,7 +20,7 @@ When the text equivalent of an image inside or adjacent to a link is the same as
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Link text is repeated in an image `alt` attribute
  The text alternative for an image within a link should not repeat the link text or adjacent link text
@@ -31,13 +31,12 @@ When the text equivalent of an image inside or adjacent to a link is the same as
 
 ## What to do
 
-```
 * If a link has text and a redundant image, set the image `alt` attribute to `alt=“”` (null alt without any spaces);
 * OR If a link has text and an image that adds important information to the text, set the image `alt` attribute to convey the added information.
   (e.g. `<a><img alt="urgent">new mail</a>`);
 * OR If adjacent links have different targets but the same text, change the link text or the `alt` attribute on the image to distinguish the purpose of each link;
 * OR If adjacent links have the same target, combine them into a single link and set the image `alt` attribute to `alt=“”`.
-```
+
 
 
 </Column>

@@ -7,20 +7,14 @@ Karma Plugin for Accessibility Testing
 **Table of Contents**
 
 - [karma-accessibility-checker](#karma-accessibility-checker)
-  - [Recommendations](#recommendations)
   - [Bugs and Issues](#bugs-and-issues)
   - [Requirements](#requirements)
   - [Running Locally](#running-locally)
-    - [Prerequisites](#prerequisites)
   - [How to Debug](#how-to-debug)
   - [How to publish to npm repository](#how-to-publish-to-npm-repository)
   - [How to write Karma Reporter:](#how-to-write-karma-reporter)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-## Recommendations
-
-Use [Visual Studio Code](https://code.visualstudio.com/download) as your IDE.
 
 ## Bugs and Issues
 
@@ -28,13 +22,9 @@ All bugs or issues related to the karma-accessibility-checker code can be create
 
 ## Requirements
 
-Install [NodeJS and NPM](https://nodejs.org/en/download/).
+* [Node Version 12](https://nodejs.org/en/download/).
 
 ## Running Locally
-
-### Prerequisites
-
-Install Latest [NodeJS and NPM](https://nodejs.org/en/download/).
 
 To run tests locally:
 

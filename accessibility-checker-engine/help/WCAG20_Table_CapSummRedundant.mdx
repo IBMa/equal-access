@@ -20,7 +20,7 @@ Duplicating a table’s caption and its summary description is repetitive and sl
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## The table summary duplicates the caption
 The table summary must not duplicate the caption
@@ -33,6 +33,8 @@ The table summary must not duplicate the caption
 
   * If the table caption describes the table purpose and structure fully, remove the summary;
   * OR if information beyond the caption is needed, write a summary that describes the table structure without duplicating information in the caption. The summary should be referenced with an `aria-describedby` attribute.  The `summary` attribute is obsolete in HTML5.
+
+  For example:
 
 ```
 <p id="table1_summary">

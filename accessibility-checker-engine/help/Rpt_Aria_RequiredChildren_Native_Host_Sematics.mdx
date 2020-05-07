@@ -19,7 +19,7 @@ If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA child e
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Needs review</div>
+<div id="locLevel"></div>
 
 ## An element with WAI-ARIA `role="{0}"` does not contain or own at least one child element with each of the following WAI-ARIA roles: `{1}`
 An element with WAI-ARIA `role` must contain required children
@@ -30,7 +30,7 @@ An element with WAI-ARIA `role` must contain required children
 
 ## What to do
 
- * Add the appropriate required child element(s) with implicit or explicit role(s) ({$1}) to this element.
+ * Add the appropriate required child element(s) to this element.
 
 For example, the following element uses the `"radiogroup"` role. The `"radiogroup"` role requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button.
 

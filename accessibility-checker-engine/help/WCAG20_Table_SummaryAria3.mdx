@@ -20,7 +20,7 @@ A table summary provides a brief overview of how data has been organized into a 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Recommendation</div>
+<div id="locLevel"></div>
 
 ## The data table has no summary
 Data tables should have a summary that gives an overview of the table
@@ -38,9 +38,10 @@ Data tables should have a summary that gives an overview of the table
 Note: In HTML5 the `summary` attribute is obsolete and should be avoided.
 
 For example the following example uses the `aria-labelledby` to provide the table summary:
-```  
+
+```
   <p id="tblSummary">The following table shows the number of boys and girls in each grade of an elementary school.</p>
-  	
+
     <table border="1" aria-labelledby="tblSummary">
      <tr>
        <th id="class">Class</th>
@@ -55,7 +56,7 @@ For example the following example uses the `aria-labelledby` to provide the tabl
         <td headers="1stgrade MrHenry girls">4</td>
      </tr>
     ...
-   </table> 
+   </table>
    ```
 
 </Column>
