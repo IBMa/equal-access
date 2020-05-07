@@ -22,6 +22,17 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      working-directory: rule-server
+    - run: npm install
+      working-directory: rule-server/src-gatsby
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
+      
+    - run: npm install
       working-directory: accessibility-checker-engine
     - run: npx karma start --single-run --watch=false
       working-directory: accessibility-checker-engine
@@ -40,11 +51,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
+        working-directory: rule-server
+      - run: npm install
+        working-directory: rule-server/src-gatsby
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: accessibility-checker
+        
       - run: npm run build
         working-directory: accessibility-checker
+
       - run: npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
         working-directory: accessibility-checker
 
