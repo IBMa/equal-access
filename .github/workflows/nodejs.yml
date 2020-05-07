@@ -5,12 +5,53 @@ name: Extension Build
 
 on:
   push:
-    branches: [ master ]
+    branches: ['*']
 
 jobs:
-  build:
-
+  test-accessibility-checker-engine:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: accessibility-checker-engine
+    - run: npx karma start --single-run --watch=false
+      working-directory: accessibility-checker-engine
+
+  test-accessibility-checker-basic:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [10.x, 12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm run build
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
+        working-directory: accessibility-checker
+
+  build-extension:
+    runs-on: ubuntu-latest
+
+    if: github.ref == 'refs/heads/master'
 
     strategy:
       matrix:
