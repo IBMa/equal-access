@@ -356,6 +356,14 @@ var aChecker = {
 
         // If there is something to report...
         if (report.results) {
+            let url = parsed.location && parsed.location.href;
+            report.summary = report.summary || {}
+            report.summary.URL = url;
+            report.counts = {}
+
+            let origReport = JSON.parse(JSON.stringify(report));
+            origReport = aChecker.buildReport(origReport, url, label, startScan);
+
             // Filter the violations based on the reporLevels
             report = aChecker.filterViolations(report);
 
@@ -380,7 +388,7 @@ var aChecker = {
 
             // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
             // saved to a file by the server side reporter.
-            aChecker.sendResultsToReporter(report);
+            aChecker.sendResultsToReporter(origReport, report, "Native");
         }
 
         // Call the user provided callback function after the filtering, building report and summary count tasks
@@ -436,13 +444,14 @@ var aChecker = {
      *
      * @memberOf this
      */
-    aChecker.sendResultsToReporter = function (results) {
+    aChecker.sendResultsToReporter = function (unFilteredResults, results) {
 
         // Call the karma "__karma__.info" API to send the pageResults over to the Karma server,
         // which will them trigger an emmitter event, then the reporter can pick up the 'info'
         // event and do anything with the event.
         // Send the pageResults as an object, to the karma API which will then be used by the aChecker reporter.
         window.__karma__.info({
+            unFilteredResults: unFilteredResults,
             pageResults: results
         });
     };

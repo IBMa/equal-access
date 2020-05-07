@@ -15,3 +15,5 @@
 /src/lib/reporters/slackNotificationObject.json
 /test/server/unitTestCommon/configFiles/empty/results
 package-lock.json
+
+/src/lib/reporters/genReport.js

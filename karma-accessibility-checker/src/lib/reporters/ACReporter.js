@@ -23,6 +23,7 @@
 
 // Load common/JSON Reporter variables/functions
 var ACReporterCommon = require('./ACReporterCommon');
+var ACReporterHTML = require('./ACReporterHTML');
 var ACReporterJSON = require('./ACReporterJSON');
 var ACReporterSlack = require('./ACReporterSlack');
 var ACMetricsLogger = require('../log/ACMetricsLogger');
@@ -165,7 +166,8 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
         var scanResults = results.pageResults;
 
         // Save the results of a single scan to a JSON file based on the label provided
-        ACReporterJSON.savePageResults(config, scanResults);
+        ACReporterJSON.savePageResults(config, results.scanResults);
+        ACReporterHTML.savePageResults(config, result.unFilteredResults);
 
         // Update the overall summary object count object to include the new scan that was performed
         ACReporterCommon.addToSummaryCount(scanResults.summary.counts);

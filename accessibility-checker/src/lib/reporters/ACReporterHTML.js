@@ -144,7 +144,7 @@ var ACReporterHTML = function (aChecker) {
                 "MANUAL": "Recommendation"
             }
         };
-                
+        
         Config.DEBUG && console.log("START 'writeObjectToFileAsHTML' function");
 
         // Extract the parent directory of the file name that is provided
@@ -180,9 +180,6 @@ var ACReporterHTML = function (aChecker) {
             ++outReport.report.counts.total.All;
         }
 
-
-
-        console.log(outReport.report.counts.total["Violation"]);
         // Convert the Object into HTML string and write that to the file
         // Make sure to use utf-8 encoding to avoid an issues specify to OS.
         // In terms of the HTML string that is constructed use 4 spaces to format the HTML object, before
