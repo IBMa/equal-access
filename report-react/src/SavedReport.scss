@@ -82,6 +82,7 @@ $feature-flags: (
         }
 
         .toolLeft {
+            @include carbon--type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
@@ -94,9 +95,9 @@ $feature-flags: (
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include carbon--type-style('productive-heading-01');
 
-                margin-top: 2.6rem;
+                margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 

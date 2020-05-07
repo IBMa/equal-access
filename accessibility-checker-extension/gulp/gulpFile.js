@@ -73,11 +73,14 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     }
 
     ItemSnippet = () => {
-        return <div style={{margin: "1rem 0rem"}}>
-            <CodeSnippet type="single" light={true} >
-                {this.props.item.snippet}
-            </CodeSnippet>
-        </div>
+        return <React.Fragment>
+            <h2 id="element-location">Element location</h2>
+            <div style={{margin: "1rem 0rem"}}>
+                <CodeSnippet type="single" light={true} >
+                    {this.props.item.snippet}
+                </CodeSnippet>
+            </div>
+        </React.Fragment>
     }
     render() : ReactNode {
         const md = \``;
