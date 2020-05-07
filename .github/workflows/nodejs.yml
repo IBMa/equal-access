@@ -5,7 +5,7 @@ name: Extension Build
 
 on:
   push:
-    branches: ['*']
+    branches: '*'
 
 jobs:
   test-accessibility-checker-engine:
