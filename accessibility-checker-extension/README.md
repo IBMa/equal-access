@@ -7,18 +7,6 @@ A web browser extensions that adds automated accessibility checking capabilities
 
 * [Node Version 12](https://nodejs.org/en/download/).
 
-### Clone Repository
-
-```bash
-$ git clone --branch=master https://github.com/IBMa/equal-access.git
-$ cd accessibility-checker
-```
-or with SSH
-
-```bash
-$ git clone --branch=master git@github.com:IBMa/equal-access.git
-$ cd accessibility-checker
-```
 ### Install dependencies
 
 1. Under the root directory ```equal-access``` directory 
