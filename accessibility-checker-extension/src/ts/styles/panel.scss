@@ -19,7 +19,7 @@ $feature-flags: (
     .eaacTitle {
         color: #171717;
         font-size: 12px;
-        
+        margin-top: 4px;
         @media only screen and (min-width: 30rem) {
             font-size: 16px;
         }
@@ -128,6 +128,16 @@ $feature-flags: (
             img, svg {
                 margin-right: 6px;
                 vertical-align: middle;
+            }
+
+            .helpLink {
+                color: #0062FF;
+                font-size: 12px;
+                text-decoration: none;
+                svg {
+                    fill: #0062FF;
+                    height: 12px;
+                }
             }
         }
     }
@@ -382,6 +392,134 @@ $feature-flags: (
         }
         .fixed-header .bee-logo {
             right: 2rem;
+        }
+    }
+}
+
+.subPanel {
+    .helpHeader {
+        background-color: #be95ff;
+        padding: 1rem 1rem;
+
+        .helpCpTitle {
+            @include carbon--type-style('productive-heading-03');
+        }
+
+        .helpCpSumm {
+            @include carbon--type-style('helper-text-01');
+        }
+    }
+
+
+    .toolHelp, .toolHelp .bx--row:nth-child(1) {
+        height: 100%;
+    }
+    @media (min-width: 99rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    @media (min-width: 66rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    @media (min-width: 42rem) {
+        .toolHelp .bx--grid {
+            padding-left: 0rem;
+            padding-right: 0rem;
+        }
+    }
+
+    .toolHelp {
+        background-color: white;
+
+        .bx--list--unordered {
+            margin: 1rem;
+        }
+
+        .bx--list--ordered {
+            margin: 1rem;
+        }
+
+        > .bx--grid {
+            max-width: 100%;
+            padding-bottom: 0px;
+        }
+
+        .bx--row {
+            margin: 0px;
+        }
+
+        .toolTop {
+            color:#ffffff;
+            background: linear-gradient(to right, #5f3196 , #31175c);
+            padding: 1rem ;
+            p {
+                margin-top: 8px;
+                font-size:12px;
+                font-family:IBMPlexSans-SemiBold;
+            }
+
+            h1 {
+                font-size:28px;
+                line-height:18px;
+                margin-top: 0px;
+            }
+        }
+
+        .toolLeft {
+            padding: 1rem;
+            background-color: #E8DAFF;
+            color: black;
+
+
+            .bx--list__item {
+                color: black;
+                font-size: 12px;
+                line-height: 18px;
+            }
+            
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
+        }
+        .toolMain {
+            padding: 1rem;
+            background-color: #f4f4f4;
+            
+            .level-violation {
+                position: absolute;
+                font-family:IBMPlexSans-SemiBold;
+                font-size:11px;
+                color:#ff399b;
+            }
+
+            h2 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
+
+            p {
+                @include carbon--type-style('body-long-01');
+
+                margin-top: 0px;
+            }
         }
     }
 }

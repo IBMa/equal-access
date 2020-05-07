@@ -26,7 +26,9 @@ interface IReportElementsState {
 }
 interface IReportElementsProps {
     report: IReport;
-    selectItem: (item: IReportItem) => void
+    selectItem: (item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
+    layout: string
 }
 
 interface IGroup {
@@ -45,7 +47,8 @@ export default class ReportElements extends React.Component<IReportElementsProps
         let groupMap : {
             [key: string]: IGroup
         } | null = {};
-        for (const item of this.props.report.results) {
+        let myResults = JSON.parse(JSON.stringify(this.props.report.results));
+        for (const item of myResults) {
             if (item.value[1] === "PASS") {
                 continue;
             }
@@ -70,6 +73,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         //     return a.path.aria.localeCompare(b.path.aria);
         // })
         let idx=0;
+        let scrollFirst = true;
         return <div className="bx--grid report">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
@@ -77,19 +81,25 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Element
+                        Element Roles
                     </div>
                 </div>
             </div>
-            <div role="rowgroup">
+            <div role="rowgroup">  
                 {groups.map(group => {
                     let thisIdx = idx;
-                    idx += group.items.length+1;                    
+                    idx += group.items.length+1;
+                    group.items.map(item => {
+                        item.scrollTo = item.scrollTo && scrollFirst;
+                        scrollFirst = scrollFirst && !item.scrollTo;
+                    })
                     return <ReportRow 
                         idx={thisIdx} 
                         report={this.props.report} 
                         group={group}
+                        getItem={this.props.getItem}
                         selectItem={this.props.selectItem} 
+                        layout={this.props.layout}
                     />
                 })}
             </div>
