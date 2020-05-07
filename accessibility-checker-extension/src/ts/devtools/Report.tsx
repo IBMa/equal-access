@@ -183,10 +183,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 // onKeyDown={function noRefCheck() { }}
                                 // renderContent={function noRefCheck() { }}
                                 role="presentation"
-                                selected={true}
-                                tabIndex={0}
                                 className={"tab-content-"+tabId}
-                                handleTabClick={()=>true} handleTabKeyDown={()=>true}
                             >
                                 <div role="table">
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
