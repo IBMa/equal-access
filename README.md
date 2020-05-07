@@ -1,32 +1,15 @@
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
+
 # equal-access
 
 Note: This tool release is currently beta. Some links may not resolve.
 
 This Git repository hosts tools that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit) and supporting components.
 
-## Overview
 
-This README covers topics for developers. For non-developer usage, see the following instruction for individual tools:
-* [accessibility-checker-extension for Chrome](accessibility-checker-extension/README.md) (also refer to [Chrome extension]()): web browser extensions that adds automated accessibility checking capabilities to Chrome and other browser that support the Chromium web-extension API
-* [accessibility-checker-extension for Firefox](accessibility-checker-extension/README.md) (also refer to [Firefox extension]()) : web browser extensions that adds automated accessibility checking capabilities to Firefox
-* [accessibility-checker](accessibility-checker/README.md) (also refer to [npm](https://www.npmjs.com/package/accessibility-checker)): automated accessibility testing for Node-based test environments
-* [karma-accessibility-checker](karma-accessibility-checker/README.md) (also refer to [npm](https://www.npmjs.com/package/karma-accessibility-checker)): automated accessibility testing for the Karma environment
+## Getting started
 
-### What's in this repository?
-
-Tools (description above):
-* [accessibility-checker-extension](accessibility-checker-extension/README.md)
-* [accessibility-checker](accessibility-checker/README.md)
-* [karma-accessibility-checker](karma-accessibility-checker/README.md)
-
-Components:
-* [accessibility-checker-engine](accessibility-checker-engine/README.md): accessibility rules and evaluation engine used by the tools
-* rule-server: deploys the rules and engine for usage by the tools
-
-## Prerequisites
-
-* [NodeJS with NPM](https://nodejs.org/en/download/).
-* [Git](https://git-scm.com/downloads), if you want to clone the repository to your local environment
+* [Node Version 12](https://nodejs.org/en/download/).
 
 ### Clone Repository
 
@@ -41,11 +24,33 @@ $ git clone --branch=master git@github.com:IBMa/equal-access.git
 $ cd accessibility-checker
 ```
 
-If using ssh for clone make sure to follow steps at: [Connecting to GitHub with SSH](https://help.github.com/articles/connecting-to-github-with-ssh/)
+### Install dependencies
+
+Under the equal-access directory 
+
+```
+npm install
+```
+Now you can select the tool you want to use and follow the README.MD instructions 
+
+
+### What's in this repository?
+
+Please review the README.md of each tool/components for more information
+
+Tools (description above):
+* [accessibility-checker-extension](accessibility-checker-extension/README.md): A web browser extensions that adds automated accessibility checking capabilities
+* [accessibility-checker](accessibility-checker/README.md): Automated accessibility testing for Node-based test environments
+* [karma-accessibility-checker](karma-accessibility-checker/README.md): Automated accessibility testing for the Karma environment
+
+Components:
+* [accessibility-checker-engine](accessibility-checker-engine/README.md): accessibility rules and evaluation engine used by 
+* [rule-server](https://github.com/IBMa/equal-access/tree/master/rule-server): deploys the rules and engine for usage by the tools
+
 
 ## Usage
 
-You can build all the tools from root directory or build each individual tool separately.  
+You can build all the tools from the root directory or build each individual tool separately.  
 
 ### Build all the tools from root directory
 
