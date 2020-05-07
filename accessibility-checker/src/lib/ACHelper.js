@@ -21,6 +21,7 @@ const DeepDiff = require("deep-diff");
 const ACMetricsLogger = require('./log/ACMetricsLogger');
 const puppeteer = require('puppeteer');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
+const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
 
 let aChecker = {
@@ -30,6 +31,7 @@ let ace;
 !(function () {
     let reporterJSON;
     let reporterCSV;
+    let reporterHTML;
     // Init the Metrics logger
     let metricsLogger;
     let initialize = async () => {
@@ -39,6 +41,7 @@ let ace;
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
 
+        reporterHTML = new ACReporterHTML(aChecker);
         reporterJSON = new ACReporterJSON(aChecker);
         reporterCSV = new ACReporterCSV(aChecker);
 
@@ -515,32 +518,34 @@ try {
 
             // If there is something to report...
             if (report.results) {
-
-                // Filter the violations based on the reporLevels
-                report = aChecker.filterViolations(report);
-
-                // Add the count object, to data a recount after the filtering of violations is done.
-                report = aChecker.updateViolationCount(report);
-
-                // Add the violation count to global summary object
-                aChecker.addToSummaryCount(report.counts);
-
-                // Build the report object for this scan, to follow a specific format. Refer to the
-                // function prolog for more information on the object creation.
-                report = aChecker.buildReport(report, URL, label, startScan);
-
-                // Add the scan results to global karma result object which can be accessed when users testcase
-                // finishes, user can also access it to alter it for any reason.
-                aChecker.addResultsToGlobal(report);
-
                 // Add URL to the result object
                 return browser.getCurrentUrl().then(function (url) {
-
+                    report.summary = report.summary || {}
                     report.summary.URL = url;
+                    report.counts = {}
+                    let origReport = JSON.parse(JSON.stringify(report));
+                    origReport = aChecker.buildReport(origReport, url, label, startScan);
+
+                    // Filter the violations based on the reporLevels
+                    report = aChecker.filterViolations(report);
+
+                    // Add the count object, to data a recount after the filtering of violations is done.
+                    report = aChecker.updateViolationCount(report);
+
+                    // Add the violation count to global summary object
+                    aChecker.addToSummaryCount(report.counts);
+
+                    // Build the report object for this scan, to follow a specific format. Refer to the
+                    // function prolog for more information on the object creation.
+                    report = aChecker.buildReport(report, url, label, startScan);
+
+                    // Add the scan results to global karma result object which can be accessed when users testcase
+                    // finishes, user can also access it to alter it for any reason.
+                    aChecker.addResultsToGlobal(report);
 
                     // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
                     // saved to a file by the server side reporter.
-                    aChecker.sendResultsToReporter(report, "Selenium");
+                    aChecker.sendResultsToReporter(origReport, report, "Selenium");
 
                     if (aChecker.Config.captureScreenshots && browser.takeScreenshot) {
                         return browser.getCurrentUrl().then(function (url) {
@@ -610,6 +615,13 @@ try {
 
         // If there is something to report...
         if (report.results) {
+            let url = await page.evaluate("document.location.href");
+            report.summary = report.summary || {}
+            report.summary.URL = url;
+            report.counts = {}
+
+            let origReport = JSON.parse(JSON.stringify(report));
+            origReport = aChecker.buildReport(origReport, url, label, startScan);
 
             // Filter the violations based on the reporLevels
             report = aChecker.filterViolations(report);
@@ -627,12 +639,10 @@ try {
             // Add the scan results to global karma result object which can be accessed when users testcase
             // finishes, user can also access it to alter it for any reason.
             aChecker.addResultsToGlobal(report);
-            let url = await page.evaluate("document.location.href");
-            report.summary.URL = url;
 
             // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
             // saved to a file by the server side reporter.
-            aChecker.sendResultsToReporter(report, "Puppeteer");
+            aChecker.sendResultsToReporter(origReport, report, "Puppeteer");
 
             if (aChecker.Config.captureScreenshots) {
                 let image = await page.screenshot({
@@ -688,6 +698,13 @@ try {
 
         // If there is something to report...
         if (report.results) {
+            let url = parsed.location && parsed.location.href;
+            report.summary = report.summary || {}
+            report.summary.URL = url;
+            report.counts = {}
+
+            let origReport = JSON.parse(JSON.stringify(report));
+            origReport = aChecker.buildReport(origReport, url, label, startScan);
 
             // Filter the violations based on the reporLevels
             report = aChecker.filterViolations(report);
@@ -705,12 +722,10 @@ try {
             // Add the scan results to global karma result object which can be accessed when users testcase
             // finishes, user can also access it to alter it for any reason.
             aChecker.addResultsToGlobal(report);
-            let url = parsed.location && parsed.location.href;
-            report.summary.URL = url;
 
             // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
             // saved to a file by the server side reporter.
-            aChecker.sendResultsToReporter(report, "Native");
+            aChecker.sendResultsToReporter(origReport, report, "Native");
         }
 
         return {
@@ -762,12 +777,15 @@ try {
      *
      * @memberOf this
      */
-    aChecker.sendResultsToReporter = function (results, profile) {
+    aChecker.sendResultsToReporter = function (unFilteredResults, results, profile) {
         if (aChecker.Config.outputFormat.indexOf("json") != -1) {
             reporterJSON.report(results);
         }
         if (aChecker.Config.outputFormat.includes("csv")) {
             reporterCSV.report(results);
+        }
+        if (aChecker.Config.outputFormat.indexOf("html") != -1) {
+            reporterHTML.report(unFilteredResults);
         }
         // Only perform the profiling if profiling was not disabled on purpose
         if (!aChecker.Config.label || aChecker.Config.label.indexOf("IBMa-Node-TeSt") === -1) {
@@ -1846,6 +1864,10 @@ try {
      */
     aChecker.getHelpURL = function (ruleId) {
         return new ace.Checker().engine.getHelp(ruleId);
+    };
+
+    aChecker.getRulesets = function () {
+        return new ace.Checker().rulesets;
     };
 
     aChecker.ruleIdToLegacyId = {
