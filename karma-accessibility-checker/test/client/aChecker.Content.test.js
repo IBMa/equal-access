@@ -108,7 +108,7 @@ describe("Rule Unit Tests As Content", function () {
                     aChecker.getCompliance(unitTestURL, unitTestFile + "_content")
                     .then((result) => {
                         if (!result || !result.report) {
-                            try { expect(false).to.equal(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
+                            try { expect(false).toEqual(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
                         }
                         report = result.report;
                         iframe = result.iframe;
@@ -178,7 +178,7 @@ describe("Rule Unit Tests As Content", function () {
                                 expectedInfo[ruleId].sort();
                                 actualInfo[ruleId].sort();
                             }
-                            expect(actualInfo).to.eql(expectedInfo);
+                            expect(actualInfo).toEqual(expectedInfo);
                         }
                     })
                     .then(() => {
