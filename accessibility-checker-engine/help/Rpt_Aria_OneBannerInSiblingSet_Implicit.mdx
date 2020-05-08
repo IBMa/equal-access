@@ -20,7 +20,7 @@ When more than one `"banner"` landmark role is used on a web page, it can confus
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## There is more than one element with `"banner"` role on the page
 There must be only one element with `"banner"` role used on the page
@@ -34,6 +34,7 @@ There must be only one element with `"banner"` role used on the page
 * Remove `"banner"` role from all but one element. (The`<header>` element has an implicit role of banner when it is a descendent of the body element.)
 
 For example:
+
 ```
  <body>
 	<div role="banner">banner content...</div>

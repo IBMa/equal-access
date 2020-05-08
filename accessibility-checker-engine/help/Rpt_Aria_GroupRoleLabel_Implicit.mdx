@@ -19,7 +19,7 @@ An HTML `<details>` element or an element with an explicit `"group"` role is use
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Recommendation</div>
+<div id="locLevel"></div>
 
 ## The {0} element with a `"group"` role does not have a label
 Elements with a `"group"` role should have a label that describes the logical collection
@@ -30,10 +30,11 @@ Elements with a `"group"` role should have a label that describes the logical co
 
 ## What to do
 
-* If there is visible text that appropriately describes the purpose of the group content, set the element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"group"` role.
+* If there is visible text that appropriately describes the purpose of the group content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"group"` role.
 
 For example:
+
 ```
  <h2 id="fruit">Fruits</h2>
        <p> The following is a grouping of fruits by type</p>

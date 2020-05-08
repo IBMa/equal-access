@@ -28,7 +28,9 @@ export interface IReport {
         }
     }
     results: IReportItem[],
-    counts: { [key: string]: number }
+    counts: {
+        total: { [key: string]: number }
+    }
 }
 
 export interface IReportItem {

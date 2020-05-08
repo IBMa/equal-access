@@ -10,7 +10,7 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
-* Blind people using screen readers 
+* Blind people using screen readers
 * People with low vision
 * People with dexterity impairment using voice control
 
@@ -21,7 +21,7 @@ When language attributes are used to identify the language of a page or specific
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Specified language is not valid [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt)
 The language of content must be specified in accordance with BCP 47
@@ -34,14 +34,15 @@ The language of content must be specified in accordance with BCP 47
 
 * Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language.
 
-For example: 
+For example:
+
 ```
 <blockquote lang="fr">
   <p>
     Prouver que j’ai raison serait accorder que je puis avoir tort.
   </p>
 </blockquote>
-```  
+```
 
 </Column>
 </Row>

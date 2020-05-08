@@ -20,7 +20,7 @@ Interactive UI components with certain implicit or explicit WAI-ARIA roles requi
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Interactive component does not have a programatically associated name
 Interactive component must have a programatically associated name
@@ -38,9 +38,10 @@ Interactive component must have a programatically associated name
 
 The following code snippet shows a tree widget labelled with an `aria-labelledby` attribute to reference the heading text:
 
-   ```<h1 id="contents">Table of contents</h1>
-   <div role="tree" aria-labelledby="contents" tabindex="0">...</div>
-   ```
+```
+<h1 id="contents">Table of contents</h1>
+<div role="tree" aria-labelledby="contents" tabindex="0">...</div>
+```
 
 
 </Column>

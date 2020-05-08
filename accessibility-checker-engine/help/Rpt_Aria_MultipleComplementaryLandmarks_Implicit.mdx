@@ -20,7 +20,7 @@ When there are multiple elements with a `"complementary"` role, they must have u
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Multiple elements with the `"complementary"` role do not have a unique label
 All elements with the `"complementary"` role must have a unique label
@@ -31,10 +31,11 @@ All elements with the `"complementary"` role must have a unique label
 
 ## What to do
 
-* For each element with a `"complementary"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes that region's content;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"complementary"` role.
+* For each element with a `"complementary"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that region's content;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"complementary"` role.
 
 For example:
+
 ```
 <h2 id="weather">Weather portlet</h2>
 <div role="complementary" aria-labelledby="weather">

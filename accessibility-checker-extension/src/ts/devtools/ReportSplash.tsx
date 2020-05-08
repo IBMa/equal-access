@@ -30,7 +30,8 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
             <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem"}}>
                 <div className="bx--row">
                     <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
-                        <div className="title">IBM <span style={{fontWeight:600}}>Equal Access</span> Accessibility Checker</div>
+                        <div className="title">IBM <span style={{fontWeight:600}}>Accessibility</span></div>
+                        <div className="subtitle">Equal Access Accessibility Checker</div>
                         <div className="version">Version 2.1.0</div>
                         <div className="description">
                             This extension helps you identify accessibility issues, offers tips on how to fix them, 

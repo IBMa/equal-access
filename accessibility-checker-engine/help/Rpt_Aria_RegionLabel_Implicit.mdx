@@ -20,7 +20,7 @@ Elements with a `"region"` role must have a label that describes the purpose of 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## An element with a `"region"` role does not have a label
 Elements with a `"region"` role must have a label that describes their purpose
@@ -31,10 +31,11 @@ Elements with a `"region"` role must have a label that describes their purpose
 
 ## What to do
 
-* If there is visible text that appropriately describes the region's purpose, set the region element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"region"` role.
+* If there is visible text that appropriately describes the region's purpose, set the region element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"region"` role.
 
 For example, the HTML `<section>` element has an implicit role of `"region"`:
+
 ```
 <section aria-labelledby="log1">
 	<h3 id="log1">Real time log</h3>

@@ -18,7 +18,7 @@ When there is more than one element with the `"search"` landmark role, each must
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Recommendation</div>
+<div id="locLevel"></div>
 
 ## Multiple elements with `"search"` role do not have unique labels
 Each element with a `"search"` role must have a unique label that describes its purpose
@@ -29,10 +29,11 @@ Each element with a `"search"` role must have a unique label that describes its 
 
 ## What to do
 
-* For each element with a `"search"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes that search element's purpose;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"search"` role.
+* For each element with a `"search"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that search element's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"search"` role.
 
 For example:
+
 ```
 <div role="search" aria-label="Weather portlet">
 ...

@@ -20,7 +20,7 @@ When elements are assigned a WAI-ARIA `role`, there are required attributes for 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## An element with WAI-ARIA role `"{0}"` does not have the required WAI-ARIA attribute(s): `{1}`
 When using a WAI-ARIA role on an element, the required attributes for that role must be defined
@@ -31,10 +31,10 @@ When using a WAI-ARIA role on an element, the required attributes for that role 
 
 ## What to do
 
-
 * Define the missing state or property attributes for the element according to its role.
 
 The following example shows all the required properties defined for the `scrollbar` role:
+
 ```
  <div id="content1">Lorem ipsum ...</div>
    <div

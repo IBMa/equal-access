@@ -21,7 +21,7 @@ When there are multiple elements with a `"region"` role, they must have unique l
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Multiple elements with `"region"` role do not have unique labels
 Multiple elements with `"region"` role must have unique labels
@@ -32,15 +32,15 @@ Multiple elements with `"region"` role must have unique labels
 
 ## What to do
 
-* For each element with a `"region"` role, either set the value of the `"aria-labelledby"` attribute of each region to the `"id"` of any visible text that appropriately and uniquely describes that region's content;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"region"` role.
+* For each element with a `"region"` role, either set the value of the `aria-labelledby` attribute of each region to the `id` value of any visible text that appropriately and uniquely describes that region's content;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"region"` role.
 
 For example:
+
 ```
 <div role="region" aria-label="Weather portlet">
 ...
 </div>
-
 
 <div role="region" aria-label="Stock ticker portlet">
 ...

@@ -20,7 +20,7 @@ When there are multiple elements with a `"group"` role they must have unique lab
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Multiple elements with a `"group"` role have the same label
 All elements with a `"group"` role must have unique labels
@@ -31,16 +31,16 @@ All elements with a `"group"` role must have unique labels
 
 ## What to do
 
-* For each element with a `"group"` role, either set the value of the `"aria-labelledby"` attribute of each group to the `"id"` of any visible text that appropriately and uniquely describes that group's purpose;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"group"` role.
+* For each element with a `"group"` role, either set the value of the `aria-labelledby` attribute of each group to the `id` value of any visible text that appropriately and uniquely describes that group's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"group"` role.
 
 For example:
+
 ```
 <h2 id="stories">Breaking News Stories</h2>
 <div role="group" aria-labelledby="stories">
 ...
 </div>
-
 
 <div role="group" aria-label="Market outlook stories">
 ...

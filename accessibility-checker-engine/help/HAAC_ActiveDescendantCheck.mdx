@@ -20,7 +20,7 @@ In a composite component where the child elements are not normally able to take 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## The `aria-activedescendant` property of the component does not reference the `id` of a valid child element.
 The `aria-activedescendant` property must reference the `id` of a non-empty, non-hidden active child element.
@@ -37,6 +37,7 @@ The `aria-activedescendant` property must reference the `id` of a non-empty, non
 * AND, verify that the child element is either a descendant of this element, or is owned by this element (indicated by using the aria-owns attribute on this element).
 
 The following example* shows a radio group using `aria-activedescendant` to indicate the active radio button, which is coded as a DOM descendant:
+
    ``` 
    <h3 id="group_label_1">Pizza Crust</h3>
    <ul id="rg1" class="radiogroup" role="radiogroup" aria-labelledby="group_label_1" aria-activedescendant="rb11" tabindex="0">
@@ -44,7 +45,8 @@ The following example* shows a radio group using `aria-activedescendant` to indi
      <li id="rb12" role="radio" aria-checked="false">Deep dish</li>
      <li id="rb13" role="radio" aria-checked="false">Thin crust</li>
    </ul> 
-   ```  
+   ``` 
+   
 * Example code includes material copied from or derived from ARIA 1.2 Practices - Radio Group Example Using aria-activedescendant. Copyright © 2018-2019 W3C® (MIT, ERCIM, Keio, Beihang).
 
 

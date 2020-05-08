@@ -21,7 +21,7 @@ The HTML `<aside>` element has an implicit role of `"complementary"`.
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## An element with `"complementary"` role does not have a label
 An element with `"complementary"` role must have a label
@@ -32,10 +32,11 @@ An element with `"complementary"` role must have a label
 
 ## What to do
 
-* If there is visible text that appropriately describes the purpose of the content, set the element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"complementary"` role.
+* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"complementary"` role.
 
 For example:
+
 ```
 <h1 id="news">Breaking news articles</h1>
 <div role="complementary" aria-labelledby="news">

@@ -20,7 +20,7 @@ Landmark roles provide programmatic access to sections of a web page, making it 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Content is not within a landmark element
 All content must reside within an element with a landmark role
@@ -32,7 +32,6 @@ All content must reside within an element with a landmark role
 ## What to do
 
 * Enclose the content within an HTML5 sectioning element with an implicit landmark role (e.g. `<main>Content</main>`);
-
 * OR use the `"role"` attribute on an enclosing element to specify an appropriate WAI-ARIA landmark value (e.g. `<div role="contentinfo">...</div>`).
 
 

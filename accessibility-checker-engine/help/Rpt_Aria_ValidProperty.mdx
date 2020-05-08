@@ -20,7 +20,7 @@ When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.1 specifies which attri
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## The attribute(s) `{0}` referenced by the element `<{1}>` is not a valid WAI-ARIA state or property
 WAI-ARIA attributes must be valid for the element's role
@@ -36,6 +36,7 @@ WAI-ARIA attributes must be valid for the element's role
 In the following example the element references only valid WAI-ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
 
 For example:
+
 ```
 <ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1">
 

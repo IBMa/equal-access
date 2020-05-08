@@ -21,7 +21,7 @@ When there multiple elements with role `"nav"` on a page, they must have unique 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## Multiple elements with `"nav"` role do not have unique labels
 Multiple elements with `"nav"` role must have unique labels
@@ -32,11 +32,12 @@ Multiple elements with `"nav"` role must have unique labels
 
 ## What to do
 
-* For each element with a `"nav"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` value of any visible text that appropriately and uniquely describes that navigation region;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to an element with the `"nav"` role.
+* For each element with a `"nav"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that navigation region;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to an element with the `"nav"` role.
 
 
 For example:
+
 ```
 <h2 id="weather">Weather portlet</h2>
 <nav aria-labelledby="weather">

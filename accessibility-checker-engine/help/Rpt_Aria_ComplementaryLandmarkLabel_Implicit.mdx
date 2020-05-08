@@ -19,7 +19,7 @@ Elements with a `"complementary"` role are a type of region used to enclose cont
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Recommendation</div>
+<div id="locLevel"></div>
 
 ## An element with a `"complementary"` role does not have a visible label
 A unique and visible label is preferred for each element with a `"complementary"` role
@@ -30,9 +30,10 @@ A unique and visible label is preferred for each element with a `"complementary"
 
 ## What to do
 
-* For each `<aside>` element or element with `role="complementary"`, set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes the complementary content.
+* For each `<aside>` element or element with `role="complementary"`, set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes the complementary content.
 
 For example:
+
 ```
 <h1 id="weather">Weather portlet</h1>
 
