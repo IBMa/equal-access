@@ -120,9 +120,9 @@ jobs:
         working-directory: accessibility-checker
         
 ###############################################################################
-# Karma Assert
+# Karma Tests
 ####
-  karma-accessibility-checker-test-assert:
+  karma-accessibility-checker-test:
       runs-on: ubuntu-latest
 
       strategy:
@@ -157,7 +157,11 @@ jobs:
         working-directory: karma-accessibility-checker
       - run: npm run installPlugin
         working-directory: karma-accessibility-checker
+      - run: npx karma start karma.conf1.js;
+        working-directory: karma-accessibility-checker
       - run: npx karma start karma.conf2.js;
+        working-directory: karma-accessibility-checker
+      - run: npx karma start karma.conf3.js;
         working-directory: karma-accessibility-checker
 
 ###############################################################################
