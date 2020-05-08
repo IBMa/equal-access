@@ -30,10 +30,11 @@ Each element with an `"application"` role must have a unique label that describe
 
 ## What to do
 
- * For each element with `role="application"`, either set the value of the `"aria-labelledby"` attribute of each application to the `"id"` of any visible text that appropriately and uniquely describes that application's purpose;
- * OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"application"` role.
+ * For each element with `role="application"`, either set the value of the `aria-labelledby` attribute of each application to the `id` value of any visible text that appropriately and uniquely describes that application's purpose;
+ * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"application"` role.
 
 For example:
+
 ```
 <h1 id="weather">Weather portlet</h1>
 <div role="application" aria-labelledby="weather">
@@ -44,7 +45,6 @@ For example:
     ...
 </div>
 ```
-
 
 </Column>
 </Row>

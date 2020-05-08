@@ -32,10 +32,11 @@ An element with `"complementary"` role must have a label
 
 ## What to do
 
-* If there is visible text that appropriately describes the purpose of the content, set the element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"complementary"` role.
+* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"complementary"` role.
 
 For example:
+
 ```
 <h1 id="news">Breaking news articles</h1>
 <div role="complementary" aria-labelledby="news">
