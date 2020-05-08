@@ -90,7 +90,13 @@ module.exports = function (config) {
         // Start the browsers in this Array and run tests on them
         // Available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         // All theses browsers will be started when Karma starts, more info on url above.
-        browsers: ['ChromeHeadless'],
+        browsers: ['ChromeCustom'],
+        customLaunchers: {
+            ChromeCustom: {
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security']
+            }
+        },
 
         // Preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor

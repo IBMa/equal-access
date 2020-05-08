@@ -49,7 +49,13 @@ module.exports = (config) => {
         ],
 
         frameworks: ['jasmine'],
-        browsers: ['ChromeHeadless'],
+        browsers: ['ChromeCustom'],
+        customLaunchers: {
+            ChromeCustom: {
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security']
+            }
+        },
         preprocessors: {
             'test/**/*_ruleunit/*.html': ['html2js'],
             'test/**/*_ruleunit/*.htm': ['html2js'],
