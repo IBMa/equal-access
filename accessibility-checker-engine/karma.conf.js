@@ -50,13 +50,6 @@ module.exports = (config) => {
 
         frameworks: ['jasmine'],
         browsers: ['ChromeHeadless'],
-        // customLaunchers: {
-        //     ChromeCustom: {
-        //         base: 'Chrome',
-        //         flags: process.platform === "darwin" ? ['--disable-web-security', '--crash-dumps-dir=/tmp']
-        //             : ['--', '--disable-web-security', '--headless', "--remote-debugging-port=9876"]
-        //     }
-        // },
         preprocessors: {
             'test/**/*_ruleunit/*.html': ['html2js'],
             'test/**/*_ruleunit/*.htm': ['html2js'],

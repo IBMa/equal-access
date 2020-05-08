@@ -90,28 +90,7 @@ module.exports = function (config) {
         // Start the browsers in this Array and run tests on them
         // Available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         // All theses browsers will be started when Karma starts, more info on url above.
-        browsers: ['ChromeCustom'],
-        // TODO: Travis does not support Chrome and IE yet, investigate 'ChromeCustom', 'PhantomJSCustom',
-        //browsers: ['FirefoxCustom', 'PhantomJS', 'SlimerJS', 'Chrome', 'IE', 'jsdom'],
-        // TODO: Looks like jsdom still has some issues, looks like it only works when PhantomJS is used,
-        //       will try to create a simple testcases to pass along to the Karma community to take a looks
-        //       issue looks like something wrong in the jsdom launcher.
-        // jsdom on windows works well, but on linux it has issues, all testcases fail because aChecker is not defined
-        // which means that the engine-browser.js is not loaded. Investigating.
-        //browsers: ['FirefoxCustom', 'PhantomJS', 'SlimerJS', 'jsdom'],
-
-        /* ---------------------- Start custom browser launchers ---------------------- */
-        // Create a custom firefox launcher with some preferences set and extensions
-        // installed, for this custom firefox launcher we set the following:
-        //  Preference:
-        //      blockautorefresh --> Disable meta refresh to avoid testcases from hanging
-        customLaunchers: {
-            ChromeCustom: {
-                base: 'Chrome',
-                flags: process.platform === "darwin" ? ['--disable-web-security', '--crash-dumps-dir=/tmp']
-                    : ['--disable-web-security', '--headless', "--remote-debugging-port=9876"]
-            }
-        },
+        browsers: ['ChromeHeadless'],
 
         // Preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
