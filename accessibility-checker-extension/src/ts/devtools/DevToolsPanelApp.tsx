@@ -84,7 +84,25 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     while (node && node.nodeType === 1) {
                         if (node) {
                             retVal = countNode(node)+retVal;
-                            node = node.parentNode;
+                            if (node.parentElement) {
+                                node = node.parentElement;
+                            } else {
+                                let parentElement = null;
+                                try {
+                                    // Check if we're in an iframe
+                                    let parentWin = node.ownerDocument.defaultView.parent;
+                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                    for (const iframe of iframes) {
+                                        try {
+                                            if (iframe.contentDocument === node.ownerDocument) {
+                                                parentElement = iframe;
+                                                break;
+                                            }
+                                        } catch (e) {}
+                                    }
+                                } catch (e) {}
+                                node = parentElement;
+                            }
                         }
                     }
                     return retVal;
@@ -134,10 +152,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     collapseAll() {
         if (this.state.report) {
-            if (!this.ignoreNext) {
-                this.state.report.filterstamp = new Date().getTime();
-            }
-            this.setState({ filter: null, report: preprocessReport(this.state.report, null), selectedItem: undefined, selectedCheckpoint: undefined });
+            this.state.report.filterstamp = new Date().getTime();
+            this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
         }
     }
 
@@ -152,7 +168,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({ 
                 filter: null, 
                 numScanning: Math.max(0, this.state.numScanning - 1), 
-                report: preprocessReport(report, null), 
+                report: preprocessReport(report, null, false), 
                 selectedItem: undefined
             });
         }
@@ -161,10 +177,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     onFilter(filter: string) {
         if (this.state.report) {
-            if (!this.ignoreNext) {
-                this.state.report.filterstamp = new Date().getTime();
-            }
-            this.setState({ filter: filter, report: preprocessReport(this.state.report, filter) });
+            this.state.report.filterstamp = new Date().getTime();
+            this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
         }
     }
 
@@ -177,8 +191,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     timestamp: this.state.report.timestamp,
                     nls: this.state.report.nls,
                     counts: {
-                        "total": this.state.report.counts,
-                        "filtered": this.state.report.counts
+                        "total": this.state.report.counts.total,
+                        "filtered": this.state.report.counts.filtered
                     },
                     results: []
                 }
@@ -237,21 +251,49 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }
                         this.setState({report: this.state.report});
                     }
-            
+
                     var script =
-                        `var nodes = document.evaluate("${item.path.dom}", document, null, XPathResult.ANY_TYPE, null);
-                    var element = nodes.iterateNext();
-                    if (element) {
-                        inspect(element);
-                        var elementRect = element.getBoundingClientRect();
-                        var absoluteElementTop = elementRect.top + window.pageYOffset;
-                        var middle = absoluteElementTop - 100;
-                        element.ownerDocument.defaultView.scrollTo({
-                            top: middle,
-                            behavior: 'smooth'
-                        });
-                        true;
-                    }`
+`function lookup(doc, xpath) {
+    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+    let element = nodes.iterateNext();
+    if (element) {
+        return element;
+    } else {
+        return null;
+    }
+}
+function selectPath(srcPath) {
+    let doc = document;
+    let element = null;
+    while (srcPath && srcPath.includes("iframe")) {
+        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+        let iframe = lookup(doc, parts[1]);
+        element = iframe || element;
+        if (iframe && iframe.contentDocument && iframe.contentDocument) {
+            doc = iframe.contentDocument;
+            srcPath = parts[2];
+        } else {
+            srcPath = null;
+        }
+    }
+    if (srcPath) {
+        element = lookup(doc, srcPath) || element;
+    }
+    if (element) {
+        inspect(element);
+        var elementRect = element.getBoundingClientRect();
+        var absoluteElementTop = elementRect.top + window.pageYOffset;
+        var middle = absoluteElementTop - 100;
+        element.ownerDocument.defaultView.scrollTo({
+            top: middle,
+            behavior: 'smooth'
+        });
+        return true;
+    }
+    return;
+}
+selectPath("${item.path.dom}");
+`
                     this.ignoreNext = true;
                     chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
                         if (isException) {

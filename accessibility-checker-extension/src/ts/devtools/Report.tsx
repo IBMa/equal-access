@@ -99,8 +99,13 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
     }
 };
 
-export function preprocessReport(report: IReport, filter: string | null) {
-    let first = true;
+/**
+ * Check report against filters and set the selections / scroll position
+ * @param report 
+ * @param filter Filter to use
+ * @param scroll If true, will set a scroll position on the report. If false, will not scroll.
+ */
+export function preprocessReport(report: IReport, filter: string | null, scroll: boolean) {
     report.counts = {
         "total": {},
         "filtered": {}
@@ -118,15 +123,13 @@ export function preprocessReport(report: IReport, filter: string | null) {
                 filtVal = "=";
                 item.selected = true;
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = first;
-                    first = false;
+                    item.scrollTo = scroll;
                 }
             } else if (xpath.startsWith(filter)) {
                 item.selectedChild = true;
                 filtVal = "^";
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = first;
-                    first = false;
+                    item.scrollTo = scroll;
                 }
             }
         }
@@ -180,10 +183,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 // onKeyDown={function noRefCheck() { }}
                                 // renderContent={function noRefCheck() { }}
                                 role="presentation"
-                                selected={true}
-                                tabIndex={0}
                                 className={"tab-content-"+tabId}
-                                handleTabClick={()=>true} handleTabKeyDown={()=>true}
                             >
                                 <div role="table">
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>

@@ -1,12 +1,9 @@
+[![IBM Equal Access Toolkit is released under the Apache-2.0 license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](./LICENSE)
+
 # accessibility-checker
+An automated accessibility testing for Node-based test environments from [IBM Equal Access Toolkit](https://ibm.com/able/toolkit).
 
-This is the README for accessibility-checker developers. If you want to use accessibility-checker, see [NPM](https://www.npmjs.com/package/accessibility-checker).
-
-## Recommendations
-
-Use [Visual Studio Code](https://code.visualstudio.com/download) as your IDE.
-
-Install [NodeJS and NPM](https://code.visualstudio.com/download).
+To get started, please review [NPM](https://www.npmjs.com/package/accessibility-checker).
 
 ## Running Locally
 
@@ -30,6 +27,6 @@ $ npm run package
 $ npm test
 ```
 
-### Reporting bugs (TO DO)
+### Reporting bugs 
 
 If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).

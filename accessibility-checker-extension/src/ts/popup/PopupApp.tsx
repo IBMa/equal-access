@@ -50,7 +50,8 @@ export default class PopupApp extends React.Component {
         <div style={{ display: "flex", flexWrap: "nowrap" }}>
           <div>
             <div className="popupTitle">
-              IBM <strong>Equal Access</strong> Accessibility Checker
+              IBM <strong>Accessibility</strong><br />
+              Equal Access Accessibility Checker
             </div>
             <div className="versionDec">Version {manifest.version}</div>
           </div>

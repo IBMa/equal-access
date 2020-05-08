@@ -73,7 +73,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let headerContent = (<div className="bx--grid">
             <div className="bx--row" style={{height: "2rem"}}>
                 <div className="bx--col-sm-3">
-                    <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access </span>Accessibility Checker</div>
+                    <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
                 </div>
                 <div className="bx--col-sm-1" style={{position: "relative"}}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />

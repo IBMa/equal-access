@@ -21,10 +21,10 @@ A `label` element is attached to a specific `<input>` element through the use of
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
-## The `<label>` `"for"` attribute value of \"{0}\" is not the `"id"` of a valid `<input>` element
-The `"for"` attribute must reference a non-empty, unique `"id"` attribute of an `<input>` element
+## The `<label>` `for` attribute value of \"{0}\" is not the `id` of a valid `<input>` element
+The `for` attribute must reference a non-empty, unique `id` attribute of an `<input>` element
 
 [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
 
@@ -32,7 +32,7 @@ The `"for"` attribute must reference a non-empty, unique `"id"` attribute of an 
 
 ## What to do
 
- * Set the value of the `for` attribute to the `id` value of the valid `<input>` element to be labeled. Make sure the `id` value is unique. For example:
+* Set the value of the `for` attribute to the `id` value of the valid `<input>` element to be labeled. Make sure the `id` value is unique. For example:
 
 ```
 <label id="label2" for="ln1">Last Name</label>

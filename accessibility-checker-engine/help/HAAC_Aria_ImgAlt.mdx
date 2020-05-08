@@ -21,7 +21,7 @@ A component with an `"img"` role can contain important information as well as mu
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## WAI-ARIA widget with an `"img"` role has no label or an empty label
 Element with an `"img"` role must have a non-empty label
@@ -37,7 +37,10 @@ Element with an `"img"` role must have a non-empty label
 * OR, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:
-```<div role="img" aria-labelledby="image1"> ... <p id="image1">Text that describes the group of images.</p></div>```
+
+```
+<div role="img" aria-labelledby="image1"> ... <p id="image1">Text that describes the group of images.</p></div>
+```
 
 </Column>
 </Row>

@@ -104,11 +104,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                         parentPanel = parentPanel?.parentElement;
                     }
                     if (parentPanel && parentPanel.getAttribute("aria-hidden") !== "true") {
-                        const elementRect = element.getBoundingClientRect();
-                        const absoluteElementTop = elementRect.top + window.pageYOffset;
-                        const middle = absoluteElementTop - 144;
-                        element.ownerDocument?.defaultView?.scrollTo({
-                            top: middle,
+                        element.scrollIntoView({
                             behavior: 'smooth'
                         });
                     }
@@ -141,7 +137,6 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
-                            {console.log("this.props.layout = ",this.props.layout)}
                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.getItem.bind(this, item)} >Learn more</a></React.Fragment>) : ""}
                             
                         </div>

@@ -20,7 +20,7 @@ A combobox is a UI interactive component that combines an input and another elem
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## The combobox has the `aria-autocomplete` attribute set on an element that isn't a text input
 A combobox that supports autocompletion behavior must have the `aria-autocomplete` attribute only on its text input element
@@ -36,6 +36,7 @@ A combobox that supports autocompletion behavior must have the `aria-autocomplet
 * AND, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
 
 For example: 
+
 ```
  <label for="tag_combo">Tag</label>
   <input type="text" id="tag_combo"

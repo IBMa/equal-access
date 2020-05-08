@@ -20,7 +20,7 @@ Associating a meaningful label with every UI control allows the browser and assi
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
-<div id="locLevel" className="level-violation">Violation</div>
+<div id="locLevel"></div>
 
 ## The UI control `<{0}>` has no label
 Each UI control must have an associated label
@@ -32,11 +32,8 @@ Each UI control must have an associated label
 ## What to do
 
 * Add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
-
 * OR put the UI element inside a visible `<label>` element;
-
 * OR add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
-
 * OR only if the design cannot have a visible label, use the `title` attribute to provide a label.
 
 
