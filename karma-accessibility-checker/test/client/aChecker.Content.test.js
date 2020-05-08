@@ -30,18 +30,6 @@ let policyMap = {
 };
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
-    beforeAll(async function () {    
-        let rulesets = checker.rulesets;
-        rulesets.forEach(function (rs) {
-            if (rs.id in policyMap) {
-                for (const cp of rs.checkpoints) {
-                    for (const rule of cp.rules) {
-                        validList[rule.id] = true;
-                    }
-                }
-            }
-        });
-    });
 
     // Variable Decleration
     var originalTimeout;
@@ -90,7 +78,17 @@ describe("Rule Unit Tests As Content", function () {
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
                 it('aChecker.Content.test.js: a11y scan should match expected value', function (done) {
-
+                    let rulesets = aChecker.rulesets;
+                    
+                    rulesets.forEach(function (rs) {
+                        if (rs.id in policyMap) {
+                            for (const cp of rs.checkpoints) {
+                                for (const rule of cp.rules) {
+                                    validList[rule.id] = true;
+                                }
+                            }
+                        }
+                    });
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
