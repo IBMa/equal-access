@@ -24,10 +24,6 @@ for (const key in mapRuleToG) {
 
 
 // Determine which rules are in policy
-let validList = {};
-let policyMap = {
-    "IBM_Accessibility": true
-};
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
 
@@ -78,8 +74,13 @@ describe("Rule Unit Tests As Content", function () {
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
                 it('aChecker.Content.test.js: a11y scan should match expected value', function (done) {
-                    let rulesets = aChecker.rulesets;
-                    
+                    let validList = {};
+                    let policyMap = {};
+                    aChecker.Config.policies.forEach(function (policy) {
+                        policyMap[policy] = true;
+                    });
+                
+                    let rulesets = aChecker.getRulesets();
                     rulesets.forEach(function (rs) {
                         if (rs.id in policyMap) {
                             for (const cp of rs.checkpoints) {
@@ -89,6 +90,7 @@ describe("Rule Unit Tests As Content", function () {
                             }
                         }
                     });
+
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
                     // object also.
