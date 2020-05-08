@@ -7,9 +7,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Marquee_Trigger": {
-        0: "The `<marquee>` element is obsolete and should not be used",
+        0: "The <marquee> element is obsolete and should not be used",
         "Passed_0": "Rule Passed",
-        "Fail_1": "Scrolling content found that uses the obsolete `<marquee>` element"
+        "Fail_1": "Scrolling content found that uses the obsolete <marquee> element"
     },
     // JCH - DONE
     "RPT_Headers_FewWords": {
@@ -19,11 +19,11 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Input_ExplicitLabelImage": {
-        0: "The `<input>` element of type `\"image\"` should have a text alternative",
-        "Pass_0": "Image button provides alternative text using the `alt` attribute",
+        0: "The <input> element of type \"image\" should have a text alternative",
+        "Pass_0": "Image button provides alternative text using the 'alt' attribute",
         "Pass_1": "Image button provides alternative text using a WAI-ARIA label",
-        "Pass_2": "Image button provides alternative text using the `title` attribute",
-        "Fail": "The `<input>` element of type `\"image\"` has no text alternative"
+        "Pass_2": "Image button provides alternative text using the 'title' attribute",
+        "Fail": "The <input> element of type \"image\" has no text alternative"
     },
     // JCH - DONE
     "RPT_Img_UsemapValid": {
@@ -33,17 +33,17 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Object_HasText": {
-        0: "`<object>` elements must have a text alternative for the content rendered by the object",
+        0: "<object> elements must have a text alternative for the content rendered by the object",
         "Pass_0": "Rule Passed",
-        "Fail_1": "An `<object>` element does not have a text alternative"
+        "Fail_1": "An <object> element does not have a text alternative"
     },
     // JCH - DONE
     "WCAG20_Applet_HasAlt": {
-        0: "`<applet>` elements must provide an `alt` attribute and an alternative description",
+        0: "<applet> elements must provide an 'alt' attribute and an alternative description",
         "Pass_0": "Rule Passed",
-        "Fail_1": "An `<applet>` element does not have an `alt` attribute that provides a short text alternative",
-        "Fail_2": "The `alt` attribute value for an `<applet>` element duplicates the `code` attribute",
-        "Fail_3": "An `<applet>` element provides alternative text, but does not provide inner content"
+        "Fail_1": "An <applet> element does not have an 'alt' attribute that provides a short text alternative",
+        "Fail_2": "The 'alt' attribute value for an <applet> element duplicates the 'code' attribute",
+        "Fail_3": "An <applet> element provides alternative text, but does not provide inner content"
     },
     // JCH - DONE
     "RPT_Media_AudioTrigger": {
@@ -53,9 +53,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Blockquote_HasCite": {
-        0: "Use `<blockquote>` only for quotations, not indentation",
+        0: "Use <blockquote> only for quotations, not indentation",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that `<blockquote>` is used only for quotations, not indentation"
+        "Potential_1": "Verify that <blockquote> is used only for quotations, not indentation"
     },
     // JCH - DONE
     "RPT_Meta_Refresh": {
@@ -65,20 +65,20 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Frame_HasTitle": {
-        0: "Inline frames must have a unique, non-empty `title` attribute",
+        0: "Inline frames must have a unique, non-empty 'title' attribute",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Inline frame does not have a `title` attribute"
+        "Fail_1": "Inline frame does not have a 'title' attribute"
     },
     // JCH - DONE
     "WCAG20_Input_ExplicitLabel": {
         0: "Each form control must have an associated label",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Form control element `<{0}>` has no associated label",
-        "Fail_2": "Form control with `\"{0}\"` role has no associated label"
+        "Fail_1": "Form control element <{0}> has no associated label",
+        "Fail_2": "Form control with \"{0}\" role has no associated label"
     },
     // JCH - DONE
     "RPT_Media_AltBrief": {
-        0: "Alternative text in `alt` attribute should be brief (<150 characters)",
+        0: "Alternative text in 'alt' attribute should be brief (<150 characters)",
         "Pass_0": "Rule Passed",
         "Potential_1": "Text alternative is more than 150 characters"
     },
@@ -90,9 +90,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Area_HasAlt": {
-        0: "`<area>` elements in an image map must have a text alternative",
+        0: "<area> elements in an image map must have a text alternative",
         "Pass_0": "Rule Passed",
-        "Fail_1": "`<area>` element in an image map has no text alternative"
+        "Fail_1": "<area> element in an image map has no text alternative"
     },
     // JCH - DONE
     "RPT_Media_ImgColorUsage": {
@@ -114,23 +114,23 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
-        0: "Quotations should be marked with `<q>` or `<blockquote>` elements",
+        0: "Quotations should be marked with <q> or <blockquote> elements",
         "Pass_0": "Rule Passed",
-        "Potential_1": "If the following text is a quotation, mark it as a `<q>` or `<blockquote>` element: {0}"
+        "Potential_1": "If the following text is a quotation, mark it as a <q> or <blockquote> element: {0}"
     },
     // JCH - DONE
     "RPT_Elem_EventMouseAndKey": {
         0: "All interactive content with mouse event handlers must have equivalent keyboard access",
         "Pass_0": "Rule Passed",
-        "Manual_1": "Confirm the `<{0}>` element with mouse event handler(s) `{1}` has a corresponding keyboard handler(s)"
+        "Manual_1": "Confirm the <{0}> element with mouse event handler(s) '{1}' has a corresponding keyboard handler(s)"
     },
     // JCH - DONE
     "WCAG20_Doc_HasTitle": {
         0: "The page should have a title that correctly identifies the subject of the page",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Missing `<head>` element so there can be no `<title>` element present",
-        "Fail_2": "Missing `<title>` element in `<head>` element",
-        "Fail_3": "The `<title>` element is empty (no innerHTML)"
+        "Fail_1": "Missing <head> element so there can be no <title> element present",
+        "Fail_2": "Missing <title> element in <head> element",
+        "Fail_3": "The <title> element is empty (no innerHTML)"
     },
     // JCH - DONE
     "RPT_Block_ShouldBeHeading": {
@@ -140,16 +140,16 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Form_HasSubmit": {
-        0: "A `<form>` element should have a submit button or an image button",
+        0: "A <form> element should have a submit button or an image button",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify the `<form>` element has a submit button or an image button"
+        "Potential_1": "Verify the <form> element has a submit button or an image button"
     },
     // JCH - DONE
     "RPT_Elem_UniqueId": {
-        0: "Element `id` attribute values must be unique within a document",
+        0: "Element 'id' attribute values must be unique within a document",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<{0}>` element has the id `\"{1}\"` that is empty",
-        "Fail_2": "The `<{0}>` element has the id `\"{1}\"` that is already in use"
+        "Fail_1": "The <{0}> element has the id \"{1}\" that is empty",
+        "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use"
     },
     // JCH - DONE
     "RPT_Font_ColorInForm": {
@@ -165,22 +165,22 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Img_AltCommonMisuse": {
-        0: "`alt` attribute value must be a good inline replacement for the image",
+        0: "'alt' attribute value must be a good inline replacement for the image",
         "Pass_0": "Rule Passed",
         "Potential_1": "Verify that the file name serves as a good inline replacement for the image"
     },
     // JCH - DONE
     "RPT_Img_LongDescription2": {
-        0: " The `longdesc` attribute must reference HTML content",
+        0: " The 'longdesc' attribute must reference HTML content",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the file designated by the `longdesc` attribute contains valid HTML content (file extension not recognized)"
+        "Potential_1": "Verify that the file designated by the 'longdesc' attribute contains valid HTML content (file extension not recognized)"
     },
     // JCH - DONE
     "WCAG20_Img_HasAlt": {
-        0: "Images must have an `alt` attribute with a short text alternative if they convey meaning, or `alt=\"\"` if decorative",
+        0: "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Image `alt` attribute value consists only of whitespace",
-        "Fail_2": "Image does not have an `alt` attribute short text alternative"
+        "Fail_1": "Image 'alt' attribute value consists only of whitespace",
+        "Fail_2": "Image does not have an 'alt' attribute short text alternative"
     },
     // JCH - DONE
     "RPT_Style_BackgroundImage": {
@@ -214,9 +214,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Select_HasOptGroup": {
-        0: "Groups of related options within a selection list should be grouped with `<optgroup>`", 
+        0: "Groups of related options within a selection list should be grouped with <optgroup>", 
         "Pass_0": "Rule Passed",
-        "Potential_1": "Group of related options may need `<optgroup>`"
+        "Potential_1": "Group of related options may need <optgroup>"
     },
     // JCH - DONE
     "RPT_List_UseMarkup": {
@@ -232,9 +232,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Table_Structure": {
-        0: "Table elements with `role=\"presentation\"` or `role=\"none\"` should not have structural elements or attributes",
+        0: "Table elements with 'role=\"presentation\" or 'role=\"none\" should not have structural elements or attributes",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<{0}>` element with `\"presentation\"` role or `\"none\"` role has structural element(s) and/or attribute(s) `{1}`"
+        "Fail_1": "The <{0}> element with \"presentation\" role or \"none\" role has structural element(s) and/or attribute(s) '{1}'"
     },
     // JCH - DONE
     "WCAG20_Img_AltTriggerNonDecorative": {
@@ -250,9 +250,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Blink_CSSTrigger1": {
-        0: "Do not use the `\"blink\"` value of the `text-decoration` property for longer than five seconds",
+        0: "Do not use the \"blink\" value of the 'text-decoration' property for longer than five seconds",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Check the `\"blink\"` value of the CSS `text-decoration` property is not used for more than than five seconds"
+        "Potential_1": "Check the \"blink\" value of the CSS 'text-decoration' property is not used for more than than five seconds"
     },
     // JCH - DONE
     "RPT_Html_SkipNav": {
@@ -262,10 +262,10 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Title_Valid": {
-        0: "Page `<title>` should be a descriptive title, rather than a filename",
+        0: "Page <title> should be a descriptive title, rather than a filename",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Page `<title>` is empty",
-        "Potential_2": "Verify that using the filename as the page `<title>` value is descriptive"
+        "Fail_1": "Page <title> is empty",
+        "Potential_2": "Verify that using the filename as the page <title> value is descriptive"
     },
     // JCH - DONE
     "RPT_Header_HasContent": {
@@ -280,14 +280,14 @@ let a11yNls = {
     //       "Potential_k" descriptive message describing case when it is not a failure 
     //                     but needs other checking to confirm pass or
     "WCAG20_Html_HasLang": {
-        0: "Page must identify the default language of the document with a `lang` attribute", 
-        "Pass_0": "Page language detected as `\"{0}\"`",
-        "Fail_1": "Page detected as XHTML 1.0, but has neither `lang` nor `xml:lang` attributes",
-        "Fail_2": "Page detected as XHTML, but does not have an `xml:lang` attribute",
-        "Fail_3": "Page detected as HTML, but does not have a `lang` attribute",
-        "Fail_4": "Page detected as XHTML 1.0 with `lang` and `xml:lang` attributes that do not match: `\"{0}\"`, `\"{1}\"`",
-        "Potential_5": "Page detected as XHTML 1.0 with only a `lang` attribute. Confirm that page is only delivered via text/html mime type",
-        "Potential_6": "Page detected as XHTML 1.0 with only an `xml:lang` attribute. Confirm that page is only delivered via xml mime type"
+        0: "Page must identify the default language of the document with a 'lang' attribute", 
+        "Pass_0": "Page language detected as \"{0}\"",
+        "Fail_1": "Page detected as XHTML 1.0, but has neither 'lang' nor 'xml:lang' attributes",
+        "Fail_2": "Page detected as XHTML, but does not have an 'xml:lang' attribute",
+        "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute",
+        "Fail_4": "Page detected as XHTML 1.0 with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
+        "Potential_5": "Page detected as XHTML 1.0 with only a 'lang' attribute. Confirm that page is only delivered via text/html mime type",
+        "Potential_6": "Page detected as XHTML 1.0 with only an 'xml:lang' attribute. Confirm that page is only delivered via xml mime type"
     },
     // JCH - DONE
     "WCAG20_Form_TargetAndText": {
@@ -303,11 +303,11 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Fieldset_HasLegend": {
-        0: " `<fieldset>` elements must have a single, non-empty `<legend>` as a label",
+        0: " <fieldset> elements must have a single, non-empty <legend> as a label",
         "Pass_0": "Rule Passed",
-        "Fail_1": "`<fieldset>` element does not have a `<legend>`",
-        "Fail_2": "`<fieldset>` element has more than one `<legend>`",
-        "Fail_3": "`<fieldset>` element `<legend>` is empty"
+        "Fail_1": "<fieldset> element does not have a <legend>",
+        "Fail_2": "<fieldset> element has more than one <legend>",
+        "Fail_3": "<fieldset> element <legend> is empty"
     },
     // JCH - DONE
     "RPT_Media_VideoObjectTrigger": {
@@ -343,9 +343,9 @@ let a11yNls = {
     "WCAG20_Img_LinkTextNotRedundant": {
         0: "The text alternative for an image within a link should not repeat the link text or adjacent link text",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Link text is repeated in an image `alt` value within the same link",
-        "Fail_2": "Link text of previous link is repeated in image `alt` value of a link",
-        "Fail_3": "Image `alt` value within a link is repeated in link text of the link after"
+        "Fail_1": "Link text is repeated in an image 'alt' value within the same link",
+        "Fail_2": "Link text of previous link is repeated in image 'alt' value of a link",
+        "Fail_3": "Image 'alt' value within a link is repeated in link text of the link after"
     },
     // JCH - DONE
     "RPT_Style_ExternalStyleSheet": {
@@ -363,7 +363,7 @@ let a11yNls = {
     "RPT_Script_OnclickHTML2": {
         0: "Scripts should not be used to emulate links",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that `onclick` events are not used in script to emulate a link"
+        "Potential_1": "Verify that 'onclick' events are not used in script to emulate a link"
     },
     // JCH - DONE
     "WCAG20_Table_CapSummRedundant": {
@@ -373,10 +373,10 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Input_LabelBefore": {
-        0: "Text inputs and `<select>` elements must have a label before the input control",
+        0: "Text inputs and <select> elements must have a label before the input control",
         "Pass_0": "Rule Passed",
         "Fail_1": "Text input is nested in label, so label is not before the text input control",
-        "Fail_2": "Label text is located after its associated text input or `<select>` element"
+        "Fail_2": "Label text is located after its associated text input or <select> element"
     },
     // JCH - DONE
     "WCAG20_Input_LabelAfter": {
@@ -387,27 +387,27 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Embed_HasNoEmbed": {
-        0: "`<embed>` elements should be immediately followed by a non-embedded element",
+        0: "<embed> elements should be immediately followed by a non-embedded element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the `<embed>` element is immediately followed by a non-embedded element"
+        "Potential_1": "Verify that the <embed> element is immediately followed by a non-embedded element"
     },
     // JCH - DONE
     "WCAG20_Table_Scope_Valid": {
-        0: "Value for `scope` attribute must be `\"row\"`, `\"col\"`, `\"rowgroup\"`, or `\"colgroup\"`",
+        0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Value provided is invalid for the `scope` attribute"
+        "Fail_1": "Value provided is invalid for the 'scope' attribute"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
-        0: "When the image `alt` attribute is empty, the `title` attribute must also be empty",
+        0: "When the image 'alt' attribute is empty, the 'title' attribute must also be empty",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The image `alt` attribute is empty, but the `title` attribute is not empty"
+        "Fail_1": "The image 'alt' attribute is empty, but the 'title' attribute is not empty"
     },
     // JCH - DONE
     "WCAG20_Input_InFieldSet": {
-        0: "Groups of logically related input elements should be contained within a `<fieldset>` element",
+        0: "Groups of logically related input elements should be contained within a <fieldset> element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Use the `<fieldset>` element to group logically related input elements"
+        "Potential_1": "Use the <fieldset> element to group logically related input elements"
     },
     // JCH - DONE
     "WCAG20_Input_RadioChkInFieldSet": {
@@ -415,12 +415,12 @@ let a11yNls = {
         "Pass_LoneNogroup": "{0} grouping not required for a control of this type",
         "Pass_Grouped": "{0} input is grouped with other related controls with the same name",
         "Pass_RadioNoName": "Radio input is not grouped, but passes because it has no name to group with other radio inputs",
-        "Fail_ControlNameMismatch": "{0} input found that has the same name, `\"{2}\"` as a {1} input",
+        "Fail_ControlNameMismatch": "{0} input found that has the same name, \"{2}\" as a {1} input",
         "Potential_LoneCheckbox": "Verify that this ungrouped checkbox input is not related to other checkboxes",
         "Potential_UnnamedCheckbox": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes",
-        "Fail_NotGroupedOtherGrouped": "{0} input is not in the group with another {0} with the name `\"{1}\"`",
-        "Fail_NotGroupedOtherNotGrouped": "{0} input and others with the name `\"{1}\"` are not grouped together",
-        "Fail_NotSameGroup": "{0} input is in a different group than another {0} with the name `\"{1}\"`"
+        "Fail_NotGroupedOtherGrouped": "{0} input is not in the group with another {0} with the name \"{1}\"",
+        "Fail_NotGroupedOtherNotGrouped": "{0} input and others with the name \"{1}\" are not grouped together",
+        "Fail_NotSameGroup": "{0} input is in a different group than another {0} with the name \"{1}\""
     },
     // JCH - DONE
     "WCAG20_Select_NoChangeAction": {
@@ -436,53 +436,53 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Embed_HasAlt": {
-        0: "Provide alternative content for `<embed>` elements",
+        0: "Provide alternative content for <embed> elements",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the `<embed>` element has alternative content"
+        "Potential_1": "Verify that the <embed> element has alternative content"
     },
     // JCH - DONE
     "Valerie_Noembed_HasContent": {
-        0: "`<noembed>` elements should contain descriptive text",
+        0: "<noembed> elements should contain descriptive text",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Add descriptive text to the `<noembed>` element"
+        "Potential_1": "Add descriptive text to the <noembed> element"
     },
     // JCH - DONE
     "Valerie_Caption_HasContent": {
-        0: "A `<caption>` element for a `<table>` element must contain descriptive text",
+        0: "A <caption> element for a <table> element must contain descriptive text",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<table>` element has an empty `<caption>` element"
+        "Fail_1": "The <table> element has an empty <caption> element"
     },
     // JCH - DONE
     "Valerie_Caption_InTable": {
-        0: "The `<caption>` element must be nested inside the associated `<table>` element",
+        0: "The <caption> element must be nested inside the associated <table> element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "`<caption>` element is not nested inside a `<table>` element"
+        "Fail_1": "<caption> element is not nested inside a <table> element"
     },
     // JCH - DONE
     "Valerie_Label_HasContent": {
-        0: "A `<label>` element must have non-empty descriptive text that identifies the purpose of the interactive component",
-        "Pass_Regular": "`<label>` element has accessible name with inner content",
-        "Pass_AriaLabel": "`<label>` element has accessible name via `aria-label`",
-        "Pass_LabelledBy": "`<label>` element has accessible name via `aria-labelledby`",
-        "Fail_1": "The `<label>` element does not have descriptive text that identifies the expected input"
+        0: "A <label> element must have non-empty descriptive text that identifies the purpose of the interactive component",
+        "Pass_Regular": "<label> element has accessible name with inner content",
+        "Pass_AriaLabel": "<label> element has accessible name via 'aria-label'",
+        "Pass_LabelledBy": "<label> element has accessible name via 'aria-labelledby'",
+        "Fail_1": "The <label> element does not have descriptive text that identifies the expected input"
     },
     // JCH - DONE
     "Valerie_Elem_DirValid": {
-        0: "`dir` attribute value must be `\"ltr\"`, `\"rtl\"`, or `\"auto\"`",
+        0: "'dir' attribute value must be \"ltr\", \"rtl\", or \"auto\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Invalid value used for the `dir` attribute"
+        "Fail_1": "Invalid value used for the 'dir' attribute"
     },
     // JCH - DONE
     "Valerie_Frame_SrcHtml": {
-        0: "A `<frame>` containing non-HTML content must be made accessible",
+        0: "A <frame> containing non-HTML content must be made accessible",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify `<frame>` content is accessible"
+        "Potential_1": "Verify <frame> content is accessible"
     },
     // JCH - DONE
     "Valerie_Table_DataCellRelationships": {
-        0: "For a complex data table, all `<th>` and `<td>` elements must be related via `header` or `scope` attributes",
+        0: "For a complex data table, all <th> and <td> elements must be related via 'header' or 'scope' attributes",
         "Pass_0": "Rule Passed",
-        "Fail_1": "`<th>` or `<td>` element is not related via `header` or `scope`"
+        "Fail_1": "<th> or <td> element is not related via 'header' or 'scope'"
     },
     // JCH - DONE
     "RPT_Table_LayoutTrigger": {
@@ -498,15 +498,15 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Label_RefValid": {
-        0: "The `for` attribute must reference a non-empty, unique `id` attribute of an `<input>` element",
+        0: "The 'for' attribute must reference a non-empty, unique 'id' attribute of an <input> element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<label>` `for` attribute value of `\"{0}\"` is not the `id` of a valid `<input>` element"
+        "Fail_1": "The <label> 'for' attribute value of \"{0}\" is not the 'id' of a valid <input> element"
     },
     // JCH - DONE
     "WCAG20_Elem_UniqueAccessKey": {
-        0: "`accesskey` attribute values on each element must be unique for the page",
+        0: "'accesskey' attribute values on each element must be unique for the page",
         "Pass_0": "Rule Passed",
-        "Fail_1": "`accesskey` attribute value on the element is not unique"
+        "Fail_1": "'accesskey' attribute value on the element is not unique"
     },
     // JCH - DONE
     "WCAG20_Script_FocusBlurs": {
@@ -516,9 +516,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Img_UsemapAlt": {
-        0: "An image map and each `<area>` element in an image map must have text alternative(s)",
+        0: "An image map and each <area> element in an image map must have text alternative(s)",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Image map or child `<area>` has no text alternative"
+        "Fail_1": "Image map or child <area> has no text alternative"
     },
     // JCH - DONE
     "WCAG20_Text_Emoticons": {
@@ -528,131 +528,131 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Style_BeforeAfter": {
-        0: "Do not use CSS `::before` and `::after` pseudo-elements to insert non-decorative content",
+        0: "Do not use CSS '::before' and '::after' pseudo-elements to insert non-decorative content",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify the `::before` and `::after` pseudo-elements do not insert non-decorative content"
+        "Potential_1": "Verify the '::before' and '::after' pseudo-elements do not insert non-decorative content"
     },
     // JCH - DONE
     "WCAG20_Text_LetterSpacing": {
-        0: "Use CSS `letter-spacing` to control spacing within a word",
+        0: "Use CSS 'letter-spacing' to control spacing within a word",
         "Pass_0": "Rule Passed",
         "Potential_1": "Verify space characters are not being used to create space between the letters of a word"
     },
     // JCH - DONE
     "Rpt_Aria_ValidRole": {
-        0: "Elements must have a valid `role` per WAI-ARIA specification",
+        0: "Elements must have a valid 'role' per WAI-ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `role` defined on the element is not valid per WAI-ARIA specification"
+        "Fail_1": "The 'role' defined on the element is not valid per WAI-ARIA specification"
     },
     // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
         0: "WAI-ARIA property values must be valid",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The value `\"{0}\"` specified for attribute `{1}` on element `<{2}>` is not valid"
+        "Fail_1": "The value \"{0}\" specified for attribute '{1}' on element <{2}> is not valid"
     },
     // JCH - DONE
     "Rpt_Aria_ValidIdRef": {
         0: "The WAI-ARIA property must reference a non-empty unique id of an existing element that is visible",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `id` `\"{0}\"` specified for the WAI-ARIA property `{1}` value is not valid"
+        "Fail_1": "The 'id' \"{0}\" specified for the WAI-ARIA property '{1}' value is not valid"
     },
     // JCH - DONE
     "Rpt_Aria_RequiredProperties": {
         0: "When using a WAI-ARIA role on an element, the required attributes for that role must be defined",
         "Pass_0": "Rule Passed",
-        "Fail_1": "An element with WAI-ARIA role `{0}` does not have the required WAI-ARIA attribute(s): `{1}`"
+        "Fail_1": "An element with WAI-ARIA role '{0}' does not have the required WAI-ARIA attribute(s): '{1}'"
     },
     // JCH - DONE
     "Rpt_Aria_EmptyPropertyValue": {
         0: "When specifying a required WAI-ARIA attribute, the value must not be empty",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element attribute(s): `{0}` value is empty"
+        "Fail_1": "The element attribute(s): '{0}' value is empty"
     },
     // JCH - DONE
     "Rpt_Aria_ValidProperty": {
         0: "WAI-ARIA attributes must be valid for the element's role",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The attribute(s) `{0}` referenced by the element `<{1}>` is not a valid WAI-ARIA state or property"
+        "Fail_1": "The attribute(s) '{0}' referenced by the element <{1}> is not a valid WAI-ARIA state or property"
     },
     // JCH - DONE
     "Rpt_Aria_InvalidTabindexForActivedescendant": {
-        0: "Element using `aria-activedescendant` property must have its `tabindex` attribute value set to 0 or -1 to be keyboard accessible",
+        0: "Element using 'aria-activedescendant' property must have its 'tabindex' attribute value set to 0 or -1 to be keyboard accessible",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<{0}>` element using `aria-activedescendant` set to `\"{1}\"` does not have its `tabindex` attribute value set to 0 or -1"
+        "Fail_1": "The <{0}> element using 'aria-activedescendant' set to \"{1}\" does not have its 'tabindex' attribute value set to 0 or -1"
     },
     // JCH - DONE
     "Rpt_Aria_MissingFocusableChild": {
         0: "UI component must have at least one focusable child element for keyboard access",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The descendent `<{0}>` element with `\"{1}\"` role has no focusable child element"
+        "Fail_1": "The descendent <{0}> element with \"{1}\" role has no focusable child element"
     },
     // JCH - DONE
     "Rpt_Aria_MissingKeyboardHandler": {
         0: "Interactive WAI_ARIA UI components must provide keyboard access",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify the `<{0}>` element with `\"{1}\"` role has keyboard access"
+        "Potential_1": "Verify the <{0}> element with \"{1}\" role has keyboard access"
     },
     // JCH - DONE
     "WCAG20_Img_PresentationImgHasNonNullAlt": {
-        0: "Image designated as decorative must have `alt=\"\"`",
+        0: "Image designated as decorative must have 'alt=\"\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Image designated as decorative has non-null `alt` attribute"
+        "Fail_1": "Image designated as decorative has non-null 'alt' attribute"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleSearchLandmarks": {
-        0: "Each element with `\"search\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"search\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"search\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"search\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleApplicationLandmarks": {
-        0: "Each element with `\"application\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"application\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"application\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"application\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_ApplicationLandmarkLabel": {
-        0: "An element with `\"application\"` role must have a label that describes its purpose",
+        0: "An element with \"application\" role must have a label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Element with `\"application\"` role does not have a label"
+        "Fail_1": "Element with \"application\" role does not have a label"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleDocumentRoles": {
-        0: "All elements with a `\"document\"` role must have unique labels",
+        0: "All elements with a \"document\" role must have unique labels",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with a `\"document\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with a \"document\" role do not have unique labels"
     },
     // JCH - DONE
     "WCAG20_Label_TargetInvisible": {
-        0: "Do not label hidden `<input>` elements (`type=\"hidden\"`)",
+        0: "Do not label hidden <input> elements ('type=\"hidden\")",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Hidden `<input>` element (`type=\"hidden\"`) is possibly labelled"
+        "Potential_1": "Hidden <input> element ('type=\"hidden\") is possibly labelled"
     },
     // JCH - DONE
     "HAAC_Video_HasNoTrack": {
-        0: "Media embedded with a `<video>` element must have a `<track>` element to provide text alternatives for audio or visual content",
+        0: "Media embedded with a <video> element must have a <track> element to provide text alternatives for audio or visual content",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Media embedded with a `<video>` element does not have a `<track>` element to provide text alternatives for audio or visual content"
+        "Fail_1": "Media embedded with a <video> element does not have a <track> element to provide text alternatives for audio or visual content"
     },
     // JCH - DONE
     "HAAC_Audio_Video_Trigger": {
-        0: "Media using `<audio>` and/or `<video>` elements must have keyboard accessible controls",
+        0: "Media using <audio> and/or <video> elements must have keyboard accessible controls",
         "Pass_0": "Rule Passed",
-        "Manual_1": "Verify media using `<audio>` and/or `<video>` elements have keyboard accessible controls"
+        "Manual_1": "Verify media using <audio> and/or <video> elements have keyboard accessible controls"
     },
     // JCH - DONE
     "HAAC_Input_HasRequired": {
-        0: "If the application must be accessible in Internet Explorer 8, use `aria-required` instead of the HTML5 `required` property",
+        0: "If the application must be accessible in Internet Explorer 8, use 'aria-required' instead of the HTML5 'required' property",
         "Pass_0": "Rule Passed",
-        "Potential_1": "If the application must be accessible in Internet Explorer 8, use `aria-required` instead of the HTML5 `required` property"
+        "Potential_1": "If the application must be accessible in Internet Explorer 8, use 'aria-required' instead of the HTML5 'required' property"
     },
     // JCH - DONE
     "HAAC_Aria_ImgAlt": {
-        0: "An element with `\"img\"` role must have a non-empty label",
+        0: "An element with \"img\" role must have a non-empty label",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Element with `\"img\"` role has no label",
-        "Fail_2": "Element with `\"img\"` role has no label or an empty label",
-        "Fail_3": "Element with `\"img\"` role missing non-empty `aria-label` or `aria-labelledby`"
+        "Fail_1": "Element with \"img\" role has no label",
+        "Fail_2": "Element with \"img\" role has no label or an empty label",
+        "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
     },
     // JCH - DONE
     "HAAC_BackgroundImg_HasTextOrTitle": {
@@ -662,9 +662,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Accesskey_NeedLabel": {
-        0: "An HTML element with an assigned `accesskey` attribute must have an associated label",
+        0: "An HTML element with an assigned 'accesskey' attribute must have an associated label",
         "Pass_0": "Rule Passed",
-        "Potential_1": "The HTML element with an assigned `accesskey` attribute does not have an associated label"
+        "Potential_1": "The HTML element with an assigned 'accesskey' attribute does not have an associated label"
     },
     // JCH - DONE
     "HAAC_Aria_Or_HTML5_Attr": {
@@ -674,28 +674,28 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Canvas": {
-        0: "The `<canvas>` element may not be accessible",
+        0: "The <canvas> element may not be accessible",
         "Pass_0": "Rule Passed",
-        "Manual_1": "Verify accessibility of the `<canvas>` element"
+        "Manual_1": "Verify accessibility of the <canvas> element"
     },
     // JCH - DONE
     "HAAC_Figure_label": {
-        0: "A `<figure>` element must have an associated label",
+        0: "A <figure> element must have an associated label",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<figure>` element does not have an associated label"
+        "Fail_1": "The <figure> element does not have an associated label"
     },
     // JCH - DONE
     "HAAC_Input_Placeholder": {
-        0: "HTML5 `placeholder` attribute must not be used as a visible label replacement",
+        0: "HTML5 'placeholder' attribute must not be used as a visible label replacement",
         "Pass_0": "Rule Passed",
         "Potential_1": "HTML5 placeholder is the only visible label",
-        "Potential_2": "Additional visible label referenced by `aria-labelledby` is not valid"
+        "Potential_2": "Additional visible label referenced by 'aria-labelledby' is not valid"
     },
     // JCH - DONE
     "HAAC_Aria_Native_Host_Sematics": {
         0: "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The WAI-ARIA role or attribute `{0}` is not valid for the element `<{1}>`"
+        "Fail_1": "The WAI-ARIA role or attribute '{0}' is not valid for the element <{1}>"
     },
     // JCH - DONE
     "RPT_Form_ChangeEmpty": {
@@ -719,7 +719,7 @@ let a11yNls = {
     "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
         0: "Pages must provide a way to skip directly to the main content",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA `\"main\"` landmark or a skip link)"
+        "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)"
     },
     // JCH - DONE
     "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
@@ -731,19 +731,19 @@ let a11yNls = {
     "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
         0: "An element with a WAI-ARIA role must contain required children",
         "Pass_0": "Rule Passed",
-        "Potential_1": "The element with WAI-ARIA role of `\"{0}\"` does not contain or own at least one child element with each of the following WAI-ARIA roles: `\"{1}\"`"
+        "Potential_1": "The element with WAI-ARIA role of \"{0}\" does not contain or own at least one child element with each of the following WAI-ARIA roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
         0: "An element with a WAI-ARIA role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with `\"{0}\"` role is not contained in or owned by an element with one of the following WAI-ARIA roles: `\"{1}\"`"
+        "Fail_1": "The element with \"{0}\" role is not contained in or owned by an element with one of the following WAI-ARIA roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
         0: "Elements with event handlers must have a valid WAI-ARIA role",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<{0}>` element with `{1}` does not have a valid WAI-ARIA role specified"
+        "Fail_1": "The <{0}> element with '{1}' does not have a valid WAI-ARIA role specified"
     },
     // JCH - DONE
     "Rpt_Aria_WidgetLabels_Implicit": {
@@ -759,124 +759,124 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_RegionLabel_Implicit": {
-        0: "Each element with `\"region\"` role must have a label that describes its purpose",
+        0: "Each element with \"region\" role must have a label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Section element with an implicit `\"region\"` role is not labeled with an `aria-label` or `aria-labelledby`",
-        "Fail_2": "The element with `\"region\"` role is not labeled with an `aria-label` or `aria-labelledby`"
+        "Fail_1": "Section element with an implicit \"region\" role is not labeled with an 'aria-label' or 'aria-labelledby'",
+        "Fail_2": "The element with \"region\" role is not labeled with an 'aria-label' or 'aria-labelledby'"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleMainsVisibleLabel_Implicit": {
-        0: "Each element with `\"main\"` role should have a unique visible label that describes its purpose",
+        0: "Each element with \"main\" role should have a unique visible label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"main\"` role do not have unique visible labels"
+        "Fail_1": "Multiple elements with \"main\" role do not have unique visible labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleBannerLandmarks_Implicit": {
-        0: "Each element with `\"banner\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"banner\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"banner\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"banner\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleComplementaryLandmarks_Implicit": {
-        0: "Each element with `\"complementary\"` role must have a unique label that describes its purpose", 
+        0: "Each element with \"complementary\" role must have a unique label that describes its purpose", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"complementary\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"complementary\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleContentinfoLandmarks_Implicit": {
-        0: "Each element with `\"contentinfo\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"contentinfo\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"contentinfo\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"contentinfo\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleFormLandmarks_Implicit": {
-        0: "Each element with `\"form\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"form\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"form\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"form\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleNavigationLandmarks_Implicit": {
-        0: "Each element with `\"nav\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"nav\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"nav\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"nav\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_ComplementaryLandmarkLabel_Implicit": {
-        0: "Each element with `\"complementary\"` role should have a visible label that describes its purpose",
+        0: "Each element with \"complementary\" role should have a visible label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with `\"complementary\"` role does not have a visible label"
+        "Fail_1": "The element with \"complementary\" role does not have a visible label"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleArticleRoles_Implicit": {
-        0: "Each element with `\"article\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"article\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"article\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"article\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_ArticleRoleLabel_Implicit": {
-        0: "An element with `\"article\"` role must have a label that describes its purpose", 
+        0: "An element with \"article\" role must have a label that describes its purpose", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with `\"article\"` role does not have a label"
+        "Fail_1": "The element with \"article\" role does not have a label"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleGroupRoles_Implicit": {
-        0: "Each element with `\"group\"` role must have a unique label that describes its purpose",
+        0: "Each element with \"group\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"group\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"group\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_GroupRoleLabel_Implicit": {
-        0: "An element with `\"group\"` role should have a unique label that describes its purpose",
+        0: "An element with \"group\" role should have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `<{0}>` element with `\"group\"` role does not have a label"
+        "Fail_1": "The <{0}> element with \"group\" role does not have a label"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit": {
-        0: "A page, document or application should only have one element with `\"contentinfo\"` role", 
+        0: "A page, document or application should only have one element with \"contentinfo\" role", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"contentinfo\"` role found on a page"
+        "Fail_1": "Multiple elements with \"contentinfo\" role found on a page"
     },
     // JCH - DONE
     "Rpt_Aria_OneBannerInSiblingSet_Implicit": {
-        0: "There must be only one element with `\"banner\"` role on the page", 
+        0: "There must be only one element with \"banner\" role on the page", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "There is more than one element with `\"banner\"` role on the page"
+        "Fail_1": "There is more than one element with \"banner\" role on the page"
     },
     // JCH - DONE
     "Rpt_Aria_ContentinfoWithNoMain_Implicit": {
-        0: "An element with `\"contentinfo\"` role is only permitted with an element with `\"main\"` role", 
+        0: "An element with \"contentinfo\" role is only permitted with an element with \"main\" role", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with `\"contentinfo\"` role is present without an element with `\"main\"` role"
+        "Fail_1": "The element with \"contentinfo\" role is present without an element with \"main\" role"
     },
     // JCH - DONE
     "Rpt_Aria_ComplementaryRequiredLabel_Implicit": {
-        0: "An element with `\"complementary\"` role must have a label", 
+        0: "An element with \"complementary\" role must have a label", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with `\"complementary\"` role does not have a label"
+        "Fail_1": "The element with \"complementary\" role does not have a label"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": {
-        0: "Each element with a `\"region\"` role must have a unique label",
+        0: "Each element with a \"region\" role must have a unique label",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"region\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"region\" role do not have unique labels"
     },
     // JCH - DONE
     "IBMA_Focus_Tabbable": {
         0: "Component must have at least one tabbable element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Component with `\"{0}\"` role does not have a tabbable element"
+        "Potential_1": "Component with \"{0}\" role does not have a tabbable element"
     },
     // JCH - DONE
     "IBMA_Focus_MultiTab": {
         0: "Certain components must have no more than one tabbable element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Component with `\"{0}\"` role has more than one tabbable element"
+        "Potential_1": "Component with \"{0}\" role has more than one tabbable element"
     },
     // JCH - DONE
     "WCAG20_Table_SummaryAria3": {
-        0: "Complex data tables should have a \'summary\' or an \'aria-describedby\' that references an overview of the table",
+        0: "Complex data tables should have a 'summary' or an 'aria-describedby' that references an overview of the table",
         "Pass_0": "Rule Passed",
-        "Potential_1": "A complex data table should have a \'summary\' or an \'aria-describedby\' that references an overview of the table"
+        "Potential_1": "A complex data table should have a 'summary' or an 'aria-describedby' that references an overview of the table"
     },
     // JCH - DONE
     "RPT_Style_Trigger2": {
@@ -886,9 +886,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": {
-        0: "Elements with `\"main\"` role must have unique labels",
+        0: "Elements with \"main\" role must have unique labels",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with `\"main\"` role do not have unique labels"
+        "Fail_1": "Multiple elements with \"main\" role do not have unique labels"
     },
     // JCH - DONE
     "HAAC_Media_DocumentTrigger2": {
@@ -898,31 +898,31 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Aria_ErrorMessage": {
-        0: "A custom error message must reference a valid `id` value and when triggered the message must be appropriately exposed",
+        0: "A custom error message must reference a valid 'id' value and when triggered the message must be appropriately exposed",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Custom error message has invalid reference `id` value",
+        "Fail_1": "Custom error message has invalid reference 'id' value",
         "Fail_2": "Custom error message is not visible"
     },
     // JCH - DONE
     "HAAC_List_Group_ListItem": {
-        0: "List component with `\"group\"` role must limit children to `<listitem>` elements",
+        0: "List component with \"group\" role must limit children to <listitem> elements",
         "Pass_0": "Rule Passed",
-        "Fail_1": "List component with `\"group\"` role has children that are not `<listitem>` elements"
+        "Fail_1": "List component with \"group\" role has children that are not <listitem> elements"
     },
     // JCH - DONE
     "HAAC_ActiveDescendantCheck": {
-        0: "The `aria-activedescendant` property must reference the `id` of a non-empty, non-hidden active child element",
+        0: "The 'aria-activedescendant' property must reference the 'id' of a non-empty, non-hidden active child element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `aria-activedescendant` property is empty",
-        "Fail_2": "The `aria-activedescendant` property references a hidden node",
+        "Fail_1": "The 'aria-activedescendant' property is empty",
+        "Fail_2": "The 'aria-activedescendant' property references a hidden node",
         "Fail_3": "Element is not a combobox, and the referenced active-descendant element is not a valid descendant",
         "Fail_4": "Element is a combobox, and the referenced active-descendant element is not controlled by this component"
     },
     // JCH - DONE
     "HAAC_Application_Role_Text": {
-        0: "Non-decorative static text and image content within an element with `\"application\"` role must be accessible",
+        0: "Non-decorative static text and image content within an element with \"application\" role must be accessible",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the non-decorative static text and image content within an element with `\"application\"` role are accessible"
+        "Potential_1": "Verify that the non-decorative static text and image content within an element with \"application\" role are accessible"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleToolbarUniqueLabel": {
@@ -950,27 +950,27 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Combobox_Autocomplete": {
-        0: "A combobox that supports autocompletion behavior must have the `aria-autocomplete` attribute only on its text input element",
+        0: "A combobox that supports autocompletion behavior must have the 'aria-autocomplete' attribute only on its text input element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The combobox has the `aria-autocomplete` attribute set on an element that isn't a text input"
+        "Fail_1": "The combobox has the 'aria-autocomplete' attribute set on an element that isn't a text input"
     },
     // JCH - DONE
     "HAAC_Combobox_Autocomplete_Invalid": {
-        0: "The `aria-autocomplete` attribute value for a combobox text input element must not be \"inline\"",
+        0: "The 'aria-autocomplete' attribute value for a combobox text input element must not be \"inline\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `aria-autocomplete` attribute value of `\"inline\"` is not valid for the combobox"
+        "Fail_1": "The 'aria-autocomplete' attribute value of \"inline\" is not valid for the combobox"
     },
     // JCH - DONE
     "HAAC_Combobox_Expanded": {
-        0: "The `aria-owns` or the `aria-controls` attribute of the expanded combobox must reference a valid popup `id` value",
+        0: "The 'aria-owns' or the 'aria-controls' attribute of the expanded combobox must reference a valid popup 'id' value",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id` value"
+        "Fail_1": "The 'aria-owns' or the 'aria-controls' attribute of the expanded combobox does not reference a valid popup 'id' value"
     },
     // JCH - DONE
     "HAAC_Combobox_Popup": {
-        0: "The value of the combobox `aria-haspopup` attribute must match the `role` value of the popup element",
+        0: "The value of the combobox 'aria-haspopup' attribute must match the 'role' value of the popup element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The value of the combobox `aria-haspopup` attribute does not match the `role` value of the popup element"
+        "Fail_1": "The value of the combobox 'aria-haspopup' attribute does not match the 'role' value of the popup element"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
@@ -986,9 +986,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG21_Input_Autocomplete": {
-        0: "The `autocomplete` attribute's token(s) must be appropriate for the input form field",
+        0: "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The `autocomplete` attribute's token(s) are not appropriate for the input form field"
+        "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field"
     },
     // JCH - DONE
     "WCAG20_Input_VisibleLabel": {
