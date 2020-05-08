@@ -21,8 +21,31 @@ let mapGToRule = {}
 for (const key in mapRuleToG) {
     mapGToRule[mapRuleToG[key]] = key;
 }
+
+
+// Determine which rules are in policy
+let validList = {};
+let policyMap = {};
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
+    beforeAll(async function () {
+        let config = await aChecker.getConfig();
+        config.policies.forEach(function (policy) {
+            policyMap[policy] = true;
+        });
+    
+        let rulesets = checker.rulesets;
+        rulesets.forEach(function (rs) {
+            if (rs.id in policyMap) {
+                for (const cp of rs.checkpoints) {
+                    for (const rule of cp.rules) {
+                        validList[rule.id] = true;
+                    }
+                }
+            }
+        });
+    });
+
     // Variable Decleration
     var originalTimeout;
 
