@@ -28,7 +28,6 @@ const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
-// const Violation16 = "/assets/Violation16.png";
 
 interface IHeaderState {
 }
@@ -38,7 +37,11 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
-    counts?: { [key: string]: number } | null;
+    counts?: { 
+        "total": { [key: string]: number },
+        "filtered": { [key: string]: number }
+    } | null
+
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -48,13 +51,29 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let counts = this.props.counts;
 
         if (!counts) {
-            counts = {}
+            counts = {
+                "total": {},
+                "filtered": {}
+            }
         }
+        counts.total["Violation"] = counts.total["Violation"] || 0;
+        counts.total["Needs review"] = counts.total["Needs review"] || 0;
+        counts.total["Recommendation"] = counts.total["Recommendation"] || 0;
+        counts.total["All"] = counts.total["Violation"] + counts.total["Needs review"] + counts.total["Recommendation"];
+
+        counts.filtered["Violation"] = counts.filtered["Violation"] || 0;
+        counts.filtered["Needs review"] = counts.filtered["Needs review"] || 0;
+        counts.filtered["Recommendation"] = counts.filtered["Recommendation"] || 0;
+        counts.filtered["All"] = counts.filtered["Violation"] + counts.filtered["Needs review"] + counts.filtered["Recommendation"];
+
+        let bDiff = counts.total["Violation"] !== counts.filtered["Violation"]
+            || counts.total["Needs review"] !== counts.filtered["Needs review"]
+            || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
         let headerContent = (<div className="bx--grid">
             <div className="bx--row" style={{height: "2rem"}}>
                 <div className="bx--col-sm-3">
-                    <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access </span>Accessibility Checker</div>
+                    <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
                 </div>
                 <div className="bx--col-sm-1" style={{position: "relative"}}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
@@ -86,9 +105,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                             <ReportData16 aria-label="Report" className="my-custom-class" />
                         </Button>
-                {/* <Button className="settingsButtons" size="small" hasIconOnly kind="primary" iconDescription="Report" type="button" style={{ color: "black", backgroundColor: "white"}}>
-                    <Settings16 aria-label="Report" className="my-custom-class" />
-                </Button> */}
                     </div>
                 </div>
             </div>
@@ -96,18 +112,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row summary">
                 <div className="bx--col-sm-1">
                     <img src={Violation16} alt="Needs review" />
-                    <span className="summaryBarCounts">{counts["Violation"] || 0}&nbsp;<span className="summaryBarLabels">Violations</span></span>
+                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Violation"]+"/":"")+counts.total["Violation"]}&nbsp;<span className="summaryBarLabels">Violations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={NeedsReview16} alt="Needs review" />
-                    <span className="summaryBarCounts">{counts["Needs review"] || 0}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
+                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Needs review"]+"/":"")+counts.total["Needs review"]}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={Recommendation16} alt="Recommendation" />
-                    <span className="summaryBarCounts">{counts["Recommendation"] || 0}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
+                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Recommendation"]+"/":"")+counts.total["Recommendation"]}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(counts["Violation"] || 0)+(counts["Needs review"] || 0)+(counts["Recommendation"] || 0)}&nbsp;Issues&nbsp;found</span>
+                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(bDiff?counts.filtered["All"]+"/":"")+counts.total["All"]}&nbsp;Issues&nbsp;found</span>
                 </div>
             </div>
         </div>);
