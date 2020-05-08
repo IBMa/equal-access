@@ -25,15 +25,12 @@ for (const key in mapRuleToG) {
 
 // Determine which rules are in policy
 let validList = {};
-let policyMap = {};
+let policyMap = {
+    "IBM_Accessibility": true
+};
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
-    beforeAll(async function () {
-        let config = await aChecker.getConfig();
-        config.policies.forEach(function (policy) {
-            policyMap[policy] = true;
-        });
-    
+    beforeAll(async function () {    
         let rulesets = checker.rulesets;
         rulesets.forEach(function (rs) {
             if (rs.id in policyMap) {
