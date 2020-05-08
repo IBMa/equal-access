@@ -136,7 +136,7 @@ module.exports = function (config) {
         // Test results reporter to use
         // possible values: 'dots', 'progress', 'kjhtml', 'spec'
         // Available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['jasmine-diff', 'spec', 'coverage', 'aChecker'],
+        reporters: ['spec', 'coverage', 'aChecker'],
 
         // spec reporter configuration to make it a little more readable
         // More information available at: https://www.npmjs.com/package/karma-spec-reporter

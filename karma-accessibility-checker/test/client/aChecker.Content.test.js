@@ -15,7 +15,12 @@
   *****************************************************************************/
 
 'use strict';
+const mapRuleToG = aChecker.ruleIdToLegacyId;
 
+let mapGToRule = {}
+for (const key in mapRuleToG) {
+    mapGToRule[mapRuleToG[key]] = key;
+}
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
     // Variable Decleration
@@ -76,6 +81,7 @@ describe("Rule Unit Tests As Content", function () {
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     let iframe = null;
+                    let report = null;
                     aChecker.getCompliance(unitTestURL, unitTestFile + "_content")
                     .then((result) => {
                         if (!result || !result.report) {
@@ -118,7 +124,7 @@ describe("Rule Unit Tests As Content", function () {
                                 if (pc !== 0) return pc;
                                 return b.ruleId.localeCompare(a.ruleId);
                             })
-                            expect(filtReport).to.eql(expectedInfo.results);
+                            expect(filtReport).toEqual(expectedInfo.results);
                         } else if (legacyExpectedInfo) {
                             let expectedInfo = {}
                             let actualInfo = {}
