@@ -71,7 +71,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
         let headerContent = (<div className="bx--grid">
-            <div className="bx--row" style={{height: "2rem"}}>
+            <div className="bx--row" style={{lineHeight: "2rem"}}>
                 <div className="bx--col-sm-3">
                     <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
                 </div>
@@ -79,7 +79,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
-            <div className="bx--row">
+            <div className="bx--row" style={{marginTop:'23px'}}>
                 <div className="bx--col-sm-2">
                     <Button onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
