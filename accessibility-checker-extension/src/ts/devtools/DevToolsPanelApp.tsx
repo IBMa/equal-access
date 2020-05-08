@@ -207,7 +207,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             var filename = "report.html";
-            var fileContent = "data:text/plain;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+            var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
             var a = document.createElement('a');
             a.href = fileContent;
             a.download = filename;
