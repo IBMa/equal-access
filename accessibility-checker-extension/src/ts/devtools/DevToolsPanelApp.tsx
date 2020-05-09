@@ -159,6 +159,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async onReport(message: any): Promise<any> {
         let report = message.report;
+        // JCH add itemIdx to report (used to be in message.report)
+        report.results.map((result:any, index:any) => {
+            result["itemIdx"] = index;
+        })
         let tabId = message.tabId;
         if (!report) return;
 

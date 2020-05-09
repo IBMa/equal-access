@@ -45,8 +45,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         let groupMap : {
             [key: string]: IGroup
         } | null = {};
-        let myResults = JSON.parse(JSON.stringify(this.props.report.results));
-        for (const item of myResults) {
+        for (const item of this.props.report.results) {
             if (item.value[1] === "PASS") {
                 continue;
             }
