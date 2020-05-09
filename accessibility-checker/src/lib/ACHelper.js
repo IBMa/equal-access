@@ -1107,23 +1107,25 @@ try {
                   console.log(`${i}: ${msg.args[i]}`);
               });
         }
+        let err = null,
+            retVal = null;
         async function nav() {
             // await page.goto('https://example.com');
-            if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
-                let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
-                await page.goto(urlStr);
-            } else {
-                try {
+            try {
+                if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
+                    let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
+                    await page.goto(urlStr);
+                } else {
                     await page.goto(URLorLocalFileorContent);
-                } catch (e) {
-                    console.log(e.message, URLorLocalFileorContent);
-                    return null;
                 }
+            } catch (e) {
+                err = `${e.message} ${URLorLocalFileorContent}`;
+                return null;
             }
             return page;
         }
         try {
-            return await nav();
+            retVal = await nav();
         } catch (e) {
             // Try to restart if page fails
             browser = await aChecker.getBrowserChrome(true);
@@ -1132,8 +1134,12 @@ try {
                 for (let i = 0; i < msg.args.length; ++i)
                   console.log(`${i}: ${msg.args[i]}`);
               });
-            return await nav();
+            retVal = await nav();
         }
+        if (retVal === null) {
+            console.log(err);
+        }
+        return retVal;
     };
 
     /**
