@@ -15,15 +15,15 @@ import { Tag } from "carbon-components-react";
 
 ## Why is this important?
 
-Navigating cell by cell through a complex data table is especially difficult when users have to search for the meaning of each cell. Using the `"id"` and `"header"` attributes captures complex relationships between data cells and header cells that can then be conveyed to users, supporting efficient table navigation.
+Navigating cell by cell through a complex data table is especially difficult when users have to search for the meaning of each cell. Using the `id` and `header` attributes captures complex relationships between data cells and header cells that can then be conveyed to users, supporting efficient table navigation.
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
 
-## `<th>` or `<td>` element is not related via `"header"` or `"scope"`
-For a complex data table, all `<th>` and `<td>` elements must be related via `"header"` or `"scope"` attributes
+## `<th>` or `<td>` element is not related via `header` or `scope`
+For a complex data table, all `<th>` and `<td>` elements must be related via `header` or `scope` attributes
 
 [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H43](https://www.w3.org/WAI/WCAG21/Techniques/html/H43)
 
@@ -31,8 +31,8 @@ For a complex data table, all `<th>` and `<td>` elements must be related via `"h
 
 ## What to do
 
- * Use the `"id"` attribute to provide an identifier for header cells (e.g. `<th id="school">`);
- * AND use the `"header"` attribute on data cells to identify the appropriate header cells (e.g. `<td headers="school teacher grade">`).
+ * Use the `id` attribute to provide an identifier for header cells (e.g. `<th id="school">`);
+ * AND use the `header` attribute on data cells to identify the appropriate header cells (e.g. `<td headers="school teacher grade">`).
 
 </Column>
 </Row>
