@@ -5,7 +5,8 @@ name: prod publishes
 
 on:
   push:
-    branches: ['prod']
+    branches: 
+      - prod
 
 jobs:
 ###############################################################################
