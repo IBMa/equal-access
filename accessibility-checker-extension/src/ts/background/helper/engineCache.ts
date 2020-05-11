@@ -18,8 +18,8 @@ import Fetch from "./fetch";
 import Config from "./config";
 
 export interface IPolicyDefinition {
-    id: "IBM_Accessibility",
-    name: "IBM Accessibility April 2020"
+    id: string,
+    name: string
 }
 
 export interface IArchiveDefinition {
