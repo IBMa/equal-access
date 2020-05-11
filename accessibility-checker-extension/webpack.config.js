@@ -78,8 +78,8 @@ module.exports = {
             chunks: ['options']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'usingAC.html'),
-            filename: 'usingAC.html',
+            template: path.join(sourceRootPath, 'html', 'UsingAC.html'),
+            filename: 'UsingAC.html',
             title: 'Accessibility Checker Extension - Help Page',
         }),
         new HtmlWebpackPlugin({
@@ -118,9 +118,9 @@ module.exports = {
             chunks: ['reports']
         }),
         new HtmlWebpackPlugin({
-            template: path.join(sourceRootPath, 'html', 'usingAC.html'),
+            template: path.join(sourceRootPath, 'html', 'UsingAC.html'),
             inject: 'body',
-            filename: 'usingAC.html',
+            filename: 'UsingAC.html',
             title: 'Accessibility Checker Extension - UsingAC Page',
             chunks: ['usingAC']
         }),
