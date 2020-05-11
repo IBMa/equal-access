@@ -1539,7 +1539,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
-                    level: eRulePolicy.VIOLATION
+                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
@@ -2447,7 +2447,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
-                    level: eRulePolicy.VIOLATION
+                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
