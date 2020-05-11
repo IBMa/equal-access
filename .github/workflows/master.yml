@@ -60,3 +60,4 @@ jobs:
       env: 
         BLUEMIX_USERID: apikey
         BLUEMIX_PASS: ${{ secrets.BLUEMIX_PASS }}
+        TRAVIS_BRANCH: master
