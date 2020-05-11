@@ -997,7 +997,7 @@ let a11yRulesets: Ruleset[] = [
 },
 {
     id: "WCAG_2_1",
-    name: "WCAG 2.1 Rules",
+    name: "WCAG 2.1",
     category: eRuleCategory.ACCESSIBILITY,
     "checkpoints": [
         {
@@ -1952,7 +1952,7 @@ let a11yRulesets: Ruleset[] = [
 },
 {
     id: "WCAG_2_0",
-    name: "WCAG 2.0 Rules",
+    name: "WCAG 2.0",
     category: eRuleCategory.ACCESSIBILITY,
     "checkpoints": [
         {

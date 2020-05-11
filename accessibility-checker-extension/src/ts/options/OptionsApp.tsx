@@ -77,7 +77,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
           selected_ruleset = rulesets[0];
         }
       }
-      console.log("---- archives---", archives, "---rulesets--", rulesets);
       self.setState({ archives, selected_archive, rulesets, selected_ruleset });
       self.save_options_to_storage(self.state);
     });
@@ -122,19 +121,18 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
   };
 
   handleArchiveSelect = async (item: any) => {
-    console.log("handleArchiveSelect", item);
     var rulesets = await this.getRulesets(item.selectedItem);
     var selected_ruleset = rulesets[0];
     this.setState({
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
+      show_notif: false
     });
   };
 
   handleRulesetSelect = (item: any) => {
-    console.log("handleRulesetSelect", item);
-    this.setState({ selected_ruleset: item.selectedItem });
+    this.setState({ selected_ruleset: item.selectedItem, show_notif: false });
   };
 
   handleSave = () => {
