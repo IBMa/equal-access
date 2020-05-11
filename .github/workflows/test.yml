@@ -1,0 +1,188 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: All branch testing
+
+on:
+  push:
+    branches: '*'
+
+jobs:
+###############################################################################
+# Engine test
+####
+  accessibility-checker-engine-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: rule-server
+    - run: npm install
+      working-directory: rule-server/src-gatsby
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
+      
+    - run: google-chrome --version
+    - run: npm install
+      working-directory: accessibility-checker-engine
+    - run: npx karma start --single-run --watch=false
+      working-directory: accessibility-checker-engine
+
+###############################################################################
+# Node basic test
+####
+  accessibility-checker-test-basic:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: rule-server
+      - run: npm install
+        working-directory: rule-server/src-gatsby
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: accessibility-checker
+        
+      - run: npm run build
+        working-directory: accessibility-checker
+
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
+        working-directory: accessibility-checker
+
+###############################################################################
+# Node Selenium test
+####
+  accessibility-checker-test-selenium:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: rule-server
+      - run: npm install
+        working-directory: rule-server/src-gatsby
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: accessibility-checker
+        
+      - run: npm run build
+        working-directory: accessibility-checker
+
+      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.Scans/**/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Slow1/aChecker.ObjectStructure/**/*.test.js
+        working-directory: accessibility-checker
+        
+###############################################################################
+# Karma Tests
+####
+  karma-accessibility-checker-test:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: rule-server
+      - run: npm install
+        working-directory: rule-server/src-gatsby
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: karma-accessibility-checker
+      - run: npm run setup
+        working-directory: karma-accessibility-checker
+      - run: sleep 10
+      - run: npm run build
+        working-directory: karma-accessibility-checker
+      - run: npm run installPlugin
+        working-directory: karma-accessibility-checker
+      - run: npx karma start karma.conf1.js;
+        working-directory: karma-accessibility-checker
+      - run: npx karma start karma.conf2.js;
+        working-directory: karma-accessibility-checker
+      - run: npx karma start karma.conf3.js;
+        working-directory: karma-accessibility-checker
+
+###############################################################################
+# Extension Build verification
+####
+  extension-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: report-react
+    - run: npm install
+      working-directory: accessibility-checker-extension
+    - run: npm run package:browser
+      working-directory: accessibility-checker-extension

@@ -52,9 +52,8 @@ module.exports = (config) => {
         browsers: ['ChromeCustom'],
         customLaunchers: {
             ChromeCustom: {
-                base: 'Chrome',
-                flags: process.platform === "darwin" ? ['--disable-web-security', '--crash-dumps-dir=/tmp']
-                    : ['--disable-web-security', '--headless', "--remote-debugging-port=9876"]
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security']
             }
         },
         preprocessors: {
