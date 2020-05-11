@@ -17,10 +17,16 @@ beforeAll(function() {
         spath = path.join(spath, "bin");
         spath = path.join(spath, "chromedriver");
         
+        const options = new chrome.Options();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments('--ignore-certificate-errors')
+
         const service = new chrome.ServiceBuilder(spath).build();
         chrome.setDefaultService(service);
         browser = new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
+        .setChromeOptions(options)
         .build();
     } catch (e) {
         console.log(e);

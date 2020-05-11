@@ -15,9 +15,18 @@
   *****************************************************************************/
 
 'use strict';
+const mapRuleToG = aChecker.ruleIdToLegacyId;
 
+let mapGToRule = {}
+for (const key in mapRuleToG) {
+    mapGToRule[mapRuleToG[key]] = key;
+}
+
+
+// Determine which rules are in policy
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Rule Unit Tests As Content", function () {
+
     // Variable Decleration
     var originalTimeout;
 
@@ -65,6 +74,22 @@ describe("Rule Unit Tests As Content", function () {
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
                 it('aChecker.Content.test.js: a11y scan should match expected value', function (done) {
+                    let validList = {};
+                    let policyMap = {};
+                    aChecker.Config.policies.forEach(function (policy) {
+                        policyMap[policy] = true;
+                    });
+                
+                    let rulesets = aChecker.getRulesets();
+                    rulesets.forEach(function (rs) {
+                        if (rs.id in policyMap) {
+                            for (const cp of rs.checkpoints) {
+                                for (const rule of cp.rules) {
+                                    validList[rule.id] = true;
+                                }
+                            }
+                        }
+                    });
 
                     // Extract the unitTestcase data file from the unitTestcase hash map.
                     // This will contain the full content of the testcase file. Includes the document
@@ -76,10 +101,11 @@ describe("Rule Unit Tests As Content", function () {
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
                     let iframe = null;
+                    let report = null;
                     aChecker.getCompliance(unitTestURL, unitTestFile + "_content")
                     .then((result) => {
                         if (!result || !result.report) {
-                            try { expect(false).to.equal(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
+                            try { expect(false).toEqual(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
                         }
                         report = result.report;
                         iframe = result.iframe;
@@ -118,7 +144,7 @@ describe("Rule Unit Tests As Content", function () {
                                 if (pc !== 0) return pc;
                                 return b.ruleId.localeCompare(a.ruleId);
                             })
-                            expect(filtReport).to.eql(expectedInfo.results);
+                            expect(filtReport).toEqual(expectedInfo.results);
                         } else if (legacyExpectedInfo) {
                             let expectedInfo = {}
                             let actualInfo = {}
@@ -149,7 +175,7 @@ describe("Rule Unit Tests As Content", function () {
                                 expectedInfo[ruleId].sort();
                                 actualInfo[ruleId].sort();
                             }
-                            expect(actualInfo).to.eql(expectedInfo);
+                            expect(actualInfo).toEqual(expectedInfo);
                         }
                     })
                     .then(() => {

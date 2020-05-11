@@ -19,9 +19,16 @@ before(function(done) {
         spath = path.join(spath, "chromedriver");
         
         var service = new chrome.ServiceBuilder(spath).build();
+
+        const options = new chrome.Options();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments('--ignore-certificate-errors')
+
         chrome.setDefaultService(service);
         browser = new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
+        .setChromeOptions(options)
         .build();
         expect(typeof browser).to.not.equal("undefined");
         done();
