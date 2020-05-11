@@ -202,7 +202,7 @@ Then(/^Page is accessible with label "([^"]*)"$/, { "timeout": 30000 }, function
 
 Then(/^Scan page for accessibility with label "([^"]*)"$/, { "timeout": 30000 }, function(label, done) {
     const world = this;
-    aChecker.getCompliance(this.driver, label, function(data, doc) {
+    aChecker.getCompliance(world.driver, label, function(data, doc) {
         try {
             expect(aChecker.assertCompliance(data)).to.equal(0, data === 1 ? "Results do not match baseline": "Failing issues found");
             done();
