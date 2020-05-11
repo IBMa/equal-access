@@ -47,7 +47,9 @@ var skipList = [
     path.join(testRoot, "Hidden", "unitTestisNodeVisible.html"),
     path.join(testRoot, "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
     path.join(testRoot, "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
-    path.join(testRoot, "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html")
+    path.join(testRoot, "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html"),
+    path.join(testRoot, "HAAC_Accesskey_NeedLabel_ruleunit", "AssesskeyNeedsLabelHidden.html"),
+    path.join(testRoot, "HAAC_ActiveDescendantCheck_ruleunit", "ActiveDescendant.html")
 ]
 var skipMap = {}
 skipList.forEach(function (skip) {

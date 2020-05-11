@@ -93,25 +93,10 @@ module.exports = function (config) {
         // Available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
         // All theses browsers will be started when Karma starts, more info on url above.
         browsers: ['ChromeCustom'],
-        // TODO: Travis does not support Chrome and IE yet, investigate 'ChromeCustom', 'PhantomJSCustom',
-        //browsers: ['FirefoxCustom', 'PhantomJS', 'SlimerJS', 'Chrome', 'IE', 'jsdom'],
-        // TODO: Looks like jsdom still has some issues, looks like it only works when PhantomJS is used,
-        //       will try to create a simple testcases to pass along to the Karma community to take a looks
-        //       issue looks like something wrong in the jsdom launcher.
-        // jsdom on windows works well, but on linux it has issues, all testcases fail because aChecker is not defined
-        // which means that the engine-browser.js is not loaded. Investigating.
-        //browsers: ['FirefoxCustom', 'PhantomJS', 'SlimerJS', 'jsdom'],
-
-        /* ---------------------- Start custom browser launchers ---------------------- */
-        // Create a custom firefox launcher with some preferences set and extensions
-        // installed, for this custom firefox launcher we set the following:
-        //  Preference:
-        //      blockautorefresh --> Disable meta refresh to avoid testcases from hanging
         customLaunchers: {
             ChromeCustom: {
-                base: 'Chrome',
-                flags: process.platform === "darwin" ? ['--disable-web-security', '--crash-dumps-dir=/tmp']
-                    : ['--disable-web-security', '--headless', "--remote-debugging-port=9876"]
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security']
             }
         },
 
@@ -151,7 +136,7 @@ module.exports = function (config) {
         // Test results reporter to use
         // possible values: 'dots', 'progress', 'kjhtml', 'spec'
         // Available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['jasmine-diff', 'spec', 'coverage', 'aChecker'],
+        reporters: ['spec', 'coverage', 'aChecker'],
 
         // spec reporter configuration to make it a little more readable
         // More information available at: https://www.npmjs.com/package/karma-spec-reporter

@@ -514,7 +514,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
         browsers: ['ChromeCustom', 'PhantomJSCustom'],
         customLaunchers: {
             ChromeCustom: {
-                base: 'Chrome',
+                base: 'ChromeHeadless',
                 flags: ['--disable-web-security']
             },
             PhantomJSCustom: {
