@@ -37,7 +37,7 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
                             This extension helps you identify accessibility issues, offers tips on how to fix them, 
                             and flags items that need further review.<br/><br/>
                             These automated tests don't catch all issues. Complete your accessibility assessment with 
-                            a <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick unit test for accessibility</a> 
+                            a <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick unit test for accessibility</a><span> </span>
                             or follow the <a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">full accessibility test process</a>.<br/><br/>
                             Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.
                         </div>
