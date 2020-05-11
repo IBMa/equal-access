@@ -21,27 +21,31 @@ import "./popup.scss";
 const purple_bee = "/assets/Bee_Logo@64px.png";
 
 export default class PopupApp extends React.Component {
-  handleButtonClick = () => {
-    window.open(chrome.runtime.getURL("options.html"));
-  };
+// handleButtonClick = () => {
+//     window.open(chrome.runtime.getURL("options.html"));
+//   };
 
-  async openSubpanel() {
-    var script = `inspect($x('/html'));`;
-    console.log("OPEN");
-    chrome.devtools.inspectedWindow.eval(script, function (
-      result,
-      isException
-    ) {
-      if (isException) {
-        console.error(isException);
-      }
-      if (!result) {
-        console.log("Could not select element, it may have moved");
-      }
-      //take the focus back to the Issue row.
-      //$("#" + issueRowId).focus();
-    });
-  }
+//   handleButtonClick = () => {
+//     window.open(chrome.runtime.getURL("options.html"));
+//   };
+
+//   async openSubpanel() {
+//     var script = `inspect($x('/html'));`;
+//     console.log("OPEN");
+//     chrome.devtools.inspectedWindow.eval(script, function (
+//       result,
+//       isException
+//     ) {
+//       if (isException) {
+//         console.error(isException);
+//       }
+//       if (!result) {
+//         console.log("Could not select element, it may have moved");
+//       }
+//       //take the focus back to the Issue row.
+//       //$("#" + issueRowId).focus();
+//     });
+//   }
 
   render() {
     const manifest = chrome.runtime.getManifest();
@@ -94,9 +98,8 @@ export default class PopupApp extends React.Component {
             </a>
           </div>
           <div style={{ flexGrow: 1 }}>
-            {" "}
-            <a href="#" target="_blank">
-              Docs
+          <a href={chrome.runtime.getURL("UsingAC.html")} target="_blank" rel="noopener noreferred">
+                Docs
             </a>
           </div>
         </div>
