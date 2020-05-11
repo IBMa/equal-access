@@ -1138,7 +1138,7 @@ try {
             retVal = await nav();
         }
         if (retVal === null) {
-            console.log(err);
+            console.log("[Internal Error:load content]", err);
         }
         return retVal;
     };
