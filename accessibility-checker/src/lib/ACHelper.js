@@ -1128,6 +1128,8 @@ try {
         try {
             retVal = await nav();
         } catch (e) {
+        }
+        if (!retVal) {
             // Try to restart if page fails
             browser = await aChecker.getBrowserChrome(true);
             page = await browser.newPage();
