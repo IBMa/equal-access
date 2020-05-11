@@ -1531,7 +1531,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
-                    level: eRulePolicy.RECOMMENDATION
+                    level: eRulePolicy.VIOLATION
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -2439,7 +2439,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
-                    level: eRulePolicy.RECOMMENDATION
+                    level: eRulePolicy.VIOLATION
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
