@@ -3,15 +3,15 @@
     "test": "cucumber-js"
   },
   "devDependencies": {
-    "accessibility-checker": "^1.0.9",
-    "chai": "^3.5.0",
-    "chromedriver": "^78.0.1",
-    "cucumber": "^6.0.3",
-    "cucumber-html-reporter": "^5.0.2",
-    "eslint": "^6.8.0",
+    "accessibility-checker": "^3.0.0-beta.2",
+    "chai": "^4.2.0",
+    "chromedriver": "^81.0.0",
+    "cucumber": "^6.0.5",
+    "cucumber-html-reporter": "^5.2.0",
+    "eslint": "^7.0.0",
     "html-escape": "^2.0.0",
     "line-reader": "^0.4.0",
-    "selenium-webdriver": "^4.0.0-alpha.4"
+    "selenium-webdriver": "^4.0.0-alpha.7"
   },
   "dependencies": {}
 }

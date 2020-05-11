@@ -1,5 +1,4 @@
 // Load required libraries
-require("@ibma/aat");
 
 const webdriver = require('selenium-webdriver');
 
