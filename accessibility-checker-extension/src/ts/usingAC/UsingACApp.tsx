@@ -321,19 +321,14 @@ export default class UsingACApp extends React.Component {
             the following:
             <ul>
               <li>
-                IBM WCAG 2.1 A, AA - Rules for Web Content Accessibility
-                Guidelines (WCAG ) 2.1level A and level AA. This is the current
+                IBM Accessibility April 2020 - Rules for Web Content Accessibility
+                Guidelines (WCAG ) 2.1 level A and level AA. This is the current
                 W3C recommendation and extends Web Content Accessibility
                 Guidelines 2.0. Content that conforms to WCAG 2.1 also conforms
                 to WCAG 2.0. This is the default option.
               </li>
               <li>
-                IBM WCAG 2.0 A, AA - Rules for Web Content Accessibility
-                Guidelines 2.0 level A and level AA, published as a W3C
-                Recommendation December 2008.
-              </li>
-              <li>
-                IBM extended - Rules for WCAG 2.1 level A and level AA plus
+                IBM Accessibility Experimental - Rules for WCAG 2.1 level A and level AA plus
                 additional IBM checklist supplemental requirements.
               </li>
             </ul>
@@ -443,7 +438,7 @@ export default class UsingACApp extends React.Component {
                           </li>
                           <li>
                             Open and highlight all issues in the element's
-                            child, if any (grey highlight).
+                            child, if any (light purple highlight).
                           </li>
                         </ul>
                       </li>
@@ -466,7 +461,7 @@ export default class UsingACApp extends React.Component {
                           </li>
                           <li>
                             Open and highlight issues in the element's child, if
-                            any (grey highlight).
+                            any (light purple  highlight).
                           </li>
                         </ul>
                       </li>
