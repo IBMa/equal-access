@@ -1113,9 +1113,9 @@ try {
             // await page.goto('https://example.com');
             try {
                 if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
-                    await page.goto(`data:text/html,encodeURIComponent(${URLorLocalFileorContent})`, { waitUntil: 'networkidle0' });
-                    // let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
-                    // await page.goto(urlStr);
+                    // await page.goto(`data:text/html,encodeURIComponent(${URLorLocalFileorContent})`, { waitUntil: 'networkidle0' });
+                    let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
+                    await page.goto(urlStr);
                 } else {
                     await page.goto(URLorLocalFileorContent);
                 }
