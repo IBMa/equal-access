@@ -26,7 +26,7 @@ $feature-flags: (
     }
 
     .bee-logo {
-        height: 24px;
+        height: 2rem;
         position: absolute;
         right: 1rem;
         @media only screen and (min-width: 42rem) {
@@ -66,7 +66,7 @@ $feature-flags: (
     }
 
     .summary {
-        margin-top: 16px;
+        margin-top: 20px;
 
         > div {
             border-top: solid #DCDCDC 1px;
@@ -149,7 +149,13 @@ $feature-flags: (
     }
 }
 
+.scan-button {
+    height: 24px;
+    width: 200px;
+}
+
 .mainPanel {
+
     .helpHeader {
         background-color: #be95ff;
         padding: 1rem 1rem;
