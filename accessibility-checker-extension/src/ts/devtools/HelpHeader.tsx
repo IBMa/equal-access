@@ -37,7 +37,7 @@
      
      render() {
  
-         let headerContent = (<div className="bx--grid">
+         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
              <div className="bx--row" style={{height: "2rem"}}>
                  <div className="bx--col-sm-3">
                      <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
@@ -48,7 +48,7 @@
              </div>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16} className="scan-button">Back to element roles view</Button>
+                     <Button onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >
