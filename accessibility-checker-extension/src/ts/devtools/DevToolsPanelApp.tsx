@@ -355,41 +355,44 @@ selectPath("${item.path.dom}");
                 </div>
             </React.Fragment>
         } else if (this.props.layout === "sub") {
-            if (this.state.learnMore) {
-                return <React.Fragment>
-                    <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
-                    <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                        <main>
-                            <div className="subPanel">
-                                {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
-                            </div>
-                        </main>
-                    </div>                
-                </React.Fragment>
-            } else {
             return <React.Fragment>
-                <Header 
-                    layout={this.props.layout} 
-                    counts={this.state.report && this.state.report.counts} 
-                    startScan={this.startScan.bind(this)} 
-                    reportHandler={this.reportHandler.bind(this)}
-                    collapseAll={this.collapseAll.bind(this)}
-                    />
-                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
-                    <main>
-                        {this.state.numScanning > 0 ? <Loading /> : <></>}
-                        {this.state.report && <Report 
-                            selectItem={this.selectItem.bind(this)} 
-                            rulesets={this.state.rulesets} 
-                            report={this.state.report} 
-                            getItem = {this.getItem.bind(this)} 
-                            layout = {this.props.layout}
-                            selectedTab="element"
-                            tabs={["checklist", "element", "rule"]} />}
-                    </main>
+                <div style={{height: "100%", display: this.state.learnMore ? "block" : "none"}}>
+                    {this.state.learnMore && <React.Fragment>
+                        <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
+                        <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
+                            <main>
+                                <div className="subPanel">
+                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
+                                </div>
+                            </main>
+                        </div>                
+                    </React.Fragment>}
+                </div>
+                <div style={{height: "100%", display: !this.state.learnMore ? "block" : "none"}}>
+                    <React.Fragment>
+                        <Header 
+                            layout={this.props.layout} 
+                            counts={this.state.report && this.state.report.counts} 
+                            startScan={this.startScan.bind(this)} 
+                            reportHandler={this.reportHandler.bind(this)}
+                            collapseAll={this.collapseAll.bind(this)}
+                            />
+                        <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                            <main>
+                                {this.state.numScanning > 0 ? <Loading /> : <></>}
+                                {this.state.report && <Report 
+                                    selectItem={this.selectItem.bind(this)} 
+                                    rulesets={this.state.rulesets} 
+                                    report={this.state.report} 
+                                    getItem = {this.getItem.bind(this)} 
+                                    layout = {this.props.layout}
+                                    selectedTab="element"
+                                    tabs={["checklist", "element", "rule"]} />}
+                            </main>
+                        </div>
+                    </React.Fragment>
                 </div>
             </React.Fragment>
-            }
         } else {
             return <React.Fragment>ERROR</React.Fragment>
         }
