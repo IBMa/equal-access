@@ -205,7 +205,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               />
               <p className="op_helper-text">
                 For details on rule set changes between deployments, see{" "}
-                <a href="#">Release notes</a>.
+                <a href="https://github.com/IBMa/equal-access/releases">Release notes</a>.
               </p>
               <h3>Supported rule sets</h3>
               <p>
