@@ -3,7 +3,7 @@
     "test": "cucumber-js"
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.0-beta.2",
+    "accessibility-checker": "^3.0.0-beta.3",
     "chai": "^4.2.0",
     "chromedriver": "^81.0.0",
     "cucumber": "^6.0.5",

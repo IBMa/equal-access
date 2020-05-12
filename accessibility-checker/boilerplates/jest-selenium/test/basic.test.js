@@ -5,7 +5,7 @@ const chrome = require('selenium-webdriver/chrome');
 const By = webdriver.By;
 
 const path = require("path");
-const AAT = require("@ibma/aat");
+const aChecker = require("accessibility-checker");
 
 let browser;
 beforeAll(function() {
@@ -38,24 +38,15 @@ afterAll(function(done) {
 })
 
 describe("Hello World Basics", () => {
-    test("HomePage", (done) => {
+    test("HomePage", async() => {
         const sample = path.join(__dirname, "..", "sample", "Hello.html");
-        browser.get("file://"+sample).then(async function() {
-            // Perform the accessibility scan using the IBMaScan Wrapper
-            let results = await AAT.getCompliance(browser, "HOME");
-            let report = results.report;
-            expect(AAT.assertCompliance(report)).toEqual(0);
-            done();
-        });
+        await browser.get("file://"+sample);
+        // Perform the accessibility scan using the IBMaScan Wrapper
+        await expect(browser).toBeAccessible("HOME");
     });
     
-    test("Added content", (done) => {
-        browser.findElement(By.css("#clickMe")).click()
-        .then(async () => {
-            let results = await AAT.getCompliance(browser, "HOME2");
-            let report = results.report;
-            expect(AAT.assertCompliance(report)).toEqual(0);
-            done();
-        })
+    test("Added content", async () => {
+        await browser.findElement(By.css("#clickMe")).click();
+        await expect(browser).toBeAccessible("HOME2");
     });
 });
