@@ -22,6 +22,7 @@ let a11yRulesets: Ruleset[] = [
     id: "IBM_Accessibility",
     name: "IBM Accessibility",
     category: eRuleCategory.ACCESSIBILITY,
+    description: "Rules for WCAG 2.1 (level A and level AA) plus additional IBM checklist supplemental requirements.",
     "checkpoints": [
         {
             "num": "1.1.1",
@@ -977,6 +978,7 @@ let a11yRulesets: Ruleset[] = [
     id: "WCAG_2_1",
     name: "WCAG 2.1",
     category: eRuleCategory.ACCESSIBILITY,
+    description: "Rules for Web Content Accessibility Guidelines (WCAG ) 2.1level A and level AA. This is the current W3C recommendation and extends Web Content Accessibility Guidelines 2.0. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.", 
     "checkpoints": [
         {
             "num": "1.1.1",
@@ -1932,6 +1934,7 @@ let a11yRulesets: Ruleset[] = [
     id: "WCAG_2_0",
     name: "WCAG 2.0",
     category: eRuleCategory.ACCESSIBILITY,
+    description: "Rules for Web Content Accessibility Guidelines 2.0level A and level AA, published asa W3C Recommendation December 2008.",
     "checkpoints": [
         {
             "num": "1.1.1",
@@ -2811,6 +2814,7 @@ let a11yRulesets: Ruleset[] = [
     id: "IBM_Accessibility_BETA",
     name: "IBM Accessibility Experimental",
     category: eRuleCategory.ACCESSIBILITY,
+    description: "",
     "checkpoints": [
         {
             "num": "1.1.1",
