@@ -15,7 +15,7 @@
     ]
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.0-beta.3",
+    "accessibility-checker": "^3.0.1",
     "jest": "^26.0.1"
   }
 }

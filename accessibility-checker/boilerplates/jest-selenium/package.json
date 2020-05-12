@@ -12,7 +12,7 @@
     ]
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.0-beta.3",
+    "accessibility-checker": "^3.0.1",
     "chromedriver": "^81.0.0",
     "install": "^0.10.1",
     "jest": "^26.0.1",
