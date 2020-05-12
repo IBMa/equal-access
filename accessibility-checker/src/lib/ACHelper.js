@@ -158,9 +158,9 @@ let ace;
 
     function isSelenium(content) {
         if (content && content.constructor) {
-            return content.constructor.toString().indexOf("WebDriver") !== -1 ||
+            return content.constructor.toString().indexOf("Driver") !== -1 ||
                 // check required for selenium >= 3.0.1
-                (content.constructor.name && content.constructor.name.indexOf("WebDriver") !== -1);
+                (content.constructor.name && content.constructor.name.indexOf("Driver") !== -1);
         }
         return false;
     }
