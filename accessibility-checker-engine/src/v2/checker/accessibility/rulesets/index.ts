@@ -2814,7 +2814,7 @@ let a11yRulesets: Ruleset[] = [
     id: "IBM_Accessibility_BETA",
     name: "IBM Accessibility Experimental",
     category: eRuleCategory.ACCESSIBILITY,
-    description: "",
+    description: "Rules for WCAG 2.1 (level A and level AA) plus additional IBM checklist supplemental requirements and potential new rules in Beta.",
     "checkpoints": [
         {
             "num": "1.1.1",
