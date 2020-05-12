@@ -5,7 +5,6 @@ const chrome = require('selenium-webdriver/chrome');
 const By = webdriver.By;
 
 const path = require("path");
-const aChecker = require("accessibility-checker");
 
 let browser;
 beforeAll(function() {

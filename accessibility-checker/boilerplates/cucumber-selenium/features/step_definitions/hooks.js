@@ -62,7 +62,7 @@ const {BeforeAll, AfterAll, Before} = require("cucumber");
 
         /*
         return new Promise(function(resolve, reject) {
-            AAT.onRunComplete(resolve);
+            aChecker.onRunComplete(resolve);
         });
         */
     })
