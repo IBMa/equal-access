@@ -337,7 +337,7 @@ selectPath("${item.path.dom}");
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             />
-                        <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                        <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
                             <main>
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
