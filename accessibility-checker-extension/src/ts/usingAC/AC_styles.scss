@@ -1,0 +1,35 @@
+body {
+    margin: 50px;
+    padding: 0;
+    font-size: 100%;
+    line-height: 1.5;
+    background-color: white;
+    font-family: "IBM Plex Sans";
+}
+
+.toc {
+list-style-type: none;
+}
+
+.responsive {
+  width: 100%;
+  height: auto;
+  border: 1px solid black;
+}
+
+.header {
+  padding: 10px;
+  text-align: left;
+  background: #BE98FC;
+  border-top: 10px solid black;
+  font-size: 1.2em;
+}
+
+.h2head {
+    padding-left: 60px;
+    font-size: 1.2em;
+}
+
+
+
+
