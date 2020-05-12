@@ -10,7 +10,7 @@
     "node": "4.4.x"
   },
   "devDependencies": {
-    "accessibility-checker": "^3.0.0-beta.3",
+    "accessibility-checker": "^3.0.1",
     "chai": "^3.5.0",
     "chromedriver": "^78.0.1",
     "mocha": "^3.0.2",
