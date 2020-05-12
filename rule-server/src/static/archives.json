@@ -1,14 +1,19 @@
 [
     {
-        "id": "2020AprilDeploy",
-        "name": "02 April 2020 Deployment",
-        "path": "/archives/2020.04.02",
-        "latest": true
-    },
-    {
         "id": "latest",
         "name": "Latest Archive",
         "path": "/archives/latest"
+    },
+    {
+        "id": "12May2020",
+        "name": "12 May 2020 Deployment",
+        "path": "/archives/2020.05.12",
+        "latest": true
+    },
+    {
+        "id": "2020AprilDeploy",
+        "name": "02 April 2020 Deployment",
+        "path": "/archives/2020.04.02"
     },
     {
         "id": "preview",
