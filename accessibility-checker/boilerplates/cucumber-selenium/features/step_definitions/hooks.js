@@ -1,5 +1,4 @@
 // Load required libraries
-require("@ibma/aat");
 
 const webdriver = require('selenium-webdriver');
 
@@ -63,7 +62,7 @@ const {BeforeAll, AfterAll, Before} = require("cucumber");
 
         /*
         return new Promise(function(resolve, reject) {
-            AAT.onRunComplete(resolve);
+            aChecker.onRunComplete(resolve);
         });
         */
     })

@@ -10,7 +10,7 @@
     "node": "4.4.x"
   },
   "devDependencies": {
-    "accessibility-checker": "^1.0.9",
+    "accessibility-checker": "^3.0.0-beta.3",
     "chai": "^3.5.0",
     "mocha": "^3.0.2",
     "zombie": "^4.2.1"

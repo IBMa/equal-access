@@ -1,7 +1,6 @@
 'use strict';
 
 var path = require("path");
-var AAT = require("@ibma/aat");
 
 // Describe this Suite of testscases, describe is a test Suite and 'it' is a testcase.
 describe("Hello World Basics", () => {
