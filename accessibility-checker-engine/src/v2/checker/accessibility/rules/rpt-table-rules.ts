@@ -260,9 +260,11 @@ let a11yRulesTable: Rule[] = [
             // table, which introduces a lot of noise.  In that case, only trigger this error
             // once per table.
             if (!passed && parentTable.getElementsByTagName("th").length == 0) {
-                if (parentTable.Valerie_Table_DataCellRelationships_TrigOnce)
+                if (RPTUtil.getCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", false) === true) {
                     passed = true;
-                parentTable.Valerie_Table_DataCellRelationships_TrigOnce = true;
+                } else {
+                    RPTUtil.setCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", true);
+                }
             }
 
             if (!passed) {
