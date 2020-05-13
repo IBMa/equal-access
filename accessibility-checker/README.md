@@ -18,7 +18,7 @@ $ npm install
 ```bash
 $ npm install
 $ npm run build
-$ npm run package
+$ npm run package:zip  or  npm run package:npm
 ```
 
 ### Test
