@@ -95,19 +95,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
-  //get ruleset from engine
-  //   getRulesets = async (archiveId: string) => {
-  //     let engineString = await OptionMessaging.sendToBackground("OPTIONS", {
-  //       command: "getEngine",
-  //       archiveId: archiveId,
-  //     });
-
-  //     var checker: any = {};
-  //     eval(engineString + "checker = new ace.Checker()");
-
-  //     return checker.rulesets;
-  //   };
-
   getRulesets = async (selected_archive: any) => {
     return selected_archive.policies;
   };
@@ -205,7 +192,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               />
               <p className="op_helper-text">
                 For details on rule set changes between deployments, see{" "}
-                <a href="#">Release notes</a>.
+                <a href="https://github.com/IBMa/equal-access/releases">Release notes</a>.
               </p>
               <h3>Supported rule sets</h3>
               <p>
@@ -228,11 +215,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 onChange={this.handleRulesetSelect}
               />
 
-              {/* <p className="op_helper-text">
-                Current selection is WCAG 2.1 AA: Rules that check the Web
-                Content Accessibility Guidelines 2.1 (WCAG) Level A and AA
-                requirements.
-              </p> */}
+      {selected_ruleset.description? (<p className="op_helper-text">{selected_ruleset.description}</p>):"" }
               {show_notif ? (
                 <div className="notification">
                   <InlineNotification
