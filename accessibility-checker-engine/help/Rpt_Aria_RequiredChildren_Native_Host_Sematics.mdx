@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredChildren_Native_Host_Sematics"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,25 +34,21 @@ An element with WAI-ARIA `role` must contain required children
 
 For example, the following element uses the `"radiogroup"` role. The `"radiogroup"` role requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button.
 
-```
-<div role="radiogroup">
-    <div role="radio" aria-checked="false"></div>
-    <div role="radio" aria-checked="true"></div>
-</div>
-```
+<CodeSnippet type="multi" light={true}>&lt;div role="radiogroup"&gt;
+    &lt;div role="radio" aria-checked="false"&gt;&lt;/div&gt;
+    &lt;div role="radio" aria-checked="true"&gt;&lt;/div&gt;
+&lt;/div&gt;</CodeSnippet>
 
 Example with an implicit role:
 
-```
-<table role= "treegrid">
-	 <tr>
-   	  <td>
+<CodeSnippet type="multi" light={true}>&lt;table role= "treegrid"&gt;
+	 &lt;tr&gt;
+   	  &lt;td&gt;
     		element with role= "treegrid" requires child element with role="row".
     		TR has implicit WAI-ARIA role="row", so the condition is met
-   	  <td>
-	 <tr>
-</table>
-```
+   	  &lt;td&gt;
+	 &lt;tr&gt;
+&lt;/table&gt;</CodeSnippet>
 
 </Column>
 </Row>

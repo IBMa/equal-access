@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleBannerLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,16 +35,14 @@ Each element with a `"banner"` role must have a unique label that describes its 
 
 For example:
 
-```
-<h1 id="weather">Weather portlet</h1>
-<header aria-labelledby="weather">
+<CodeSnippet type="multi" light={true}>&lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+&lt;header aria-labelledby="weather"&gt;
    ...
-</header>
+&lt;/header&gt;
 
-<div role="banner" aria-label="Stock ticker portlet">
+&lt;div role="banner" aria-label="Stock ticker portlet"&gt;
    ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

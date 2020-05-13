@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleMainsVisibleLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,18 +34,16 @@ Each element with a `"main"` role should have a visible label that is unique
 
 For example:
 
-```
-<h1 id="weather">Weather portlet</h1>
-<h1 id="stocks">Stock ticker portlet</h1>
+<CodeSnippet type="multi" light={true}>&lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+&lt;h1 id="stocks"&gt;Stock ticker portlet&lt;/h1&gt;
 
-<div role="main" aria-labelledby="weather">
+&lt;div role="main" aria-labelledby="weather"&gt;
     ...
-</div>
+&lt;/div&gt;
 
-<div role="main" aria-labelledby="stocks">
+&lt;div role="main" aria-labelledby="stocks"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

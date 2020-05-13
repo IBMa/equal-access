@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleRegionsUniqueLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,15 +37,13 @@ Multiple elements with `"region"` role must have unique labels
 
 For example:
 
-```
-<div role="region" aria-label="Weather portlet">
+<CodeSnippet type="multi" light={true}>&lt;div role="region" aria-label="Weather portlet"&gt;
 ...
-</div>
+&lt;/div&gt;
 
-<div role="region" aria-label="Stock ticker portlet">
+&lt;div role="region" aria-label="Stock ticker portlet"&gt;
 ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

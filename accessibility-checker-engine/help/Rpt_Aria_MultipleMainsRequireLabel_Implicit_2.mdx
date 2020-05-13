@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleMainsRequireLabel_Implicit_2"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,19 +38,17 @@ Multiple elements with `"main"` role must have unique labels
 
 For example:
 
-```
-<html>
-<body>
-	<main hidden aria-labelledby="title1">
-		<h1 id="title1"> Stock Ticker portlet </h1>
-	</main>
+<CodeSnippet type="multi" light={true}>&lt;html&gt;
+&lt;body&gt;
+	&lt;main hidden aria-labelledby="title1"&gt;
+		&lt;h1 id="title1"&gt; Stock Ticker portlet &lt;/h1&gt;
+	&lt;/main&gt;
 
-	<div role="main" aria-label="Weather portlet">
+	&lt;div role="main" aria-label="Weather portlet"&gt;
 		...
-	</div>
-</body>
-</html>
-```
+	&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</CodeSnippet>
 
 
 </Column>

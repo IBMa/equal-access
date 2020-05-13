@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Embed_HasNoEmbed"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,11 +37,10 @@ The `<noembed>` element is used to provide information for screen readers to dis
 
   For example:
 
- ```
- <object src="../movies/history_of_rome.mov" height="60" width="144" autostart="false">
-         <a href="../transcripts/transcript_history_rome.htm">Transcript of "The history of Rome"</a>
- </object>
- ```
+<CodeSnippet type="multi" light={true}> &lt;object src="../movies/history_of_rome.mov" height="60" width="144" autostart="false"&gt;
+         &lt;a href="../transcripts/transcript_history_rome.htm"&gt;Transcript of "The history of Rome"&lt;/a&gt;
+ &lt;/object&gt;
+ </CodeSnippet>
 
 </Column>
 </Row>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ValidProperty"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,11 +37,9 @@ In the following example the element references only valid WAI-ARIA attributes f
 
 For example:
 
-```
-<ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1">
+<CodeSnippet type="multi" light={true}>&lt;ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1"&gt;
 
-<li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"><span>Fruits</span>
-```
+&lt;li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"&gt;&lt;span&gt;Fruits&lt;/span&gt;</CodeSnippet>
 
 </Column>
 </Row>

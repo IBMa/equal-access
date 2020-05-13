@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ArticleRoleLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,13 +35,11 @@ All elements with role of `"article"` must have a label that describes their pur
 
 For example:
 
-```
-<h1 id="news">Breaking news</h1>
+<CodeSnippet type="multi" light={true}>&lt;h1 id="news"&gt;Breaking news&lt;/h1&gt;
 ...
-<div role="article" aria-labelledby="news">
+&lt;div role="article" aria-labelledby="news"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Input_VisibleLabel"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,12 +35,10 @@ The `<input>` element must have an associated visible label
 
 For example:
 
-```
-<label for="test1">License Number:</label>
-<input type="text" id="test1" aria-label="Enter driver license number"/>
-<label for="test2">First name:</label>
-<input type="text" id="test2"/>
-```
+<CodeSnippet type="multi" light={true}>&lt;label for="test1"&gt;License Number:&lt;/label&gt;
+&lt;input type="text" id="test1" aria-label="Enter driver license number"/&gt;
+&lt;label for="test2"&gt;First name:&lt;/label&gt;
+&lt;input type="text" id="test2"/&gt;</CodeSnippet>
 
 
 </Column>

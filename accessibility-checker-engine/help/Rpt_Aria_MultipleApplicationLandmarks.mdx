@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleApplicationLandmarks"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,16 +35,14 @@ Each element with an `"application"` role must have a unique label that describe
 
 For example:
 
-```
-<h1 id="weather">Weather portlet</h1>
-<div role="application" aria-labelledby="weather">
+<CodeSnippet type="multi" light={true}>&lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+&lt;div role="application" aria-labelledby="weather"&gt;
     ...
-</div>
+&lt;/div&gt;
 
-<div role="application" aria-label="Stock ticker portlet">
+&lt;div role="application" aria-label="Stock ticker portlet"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

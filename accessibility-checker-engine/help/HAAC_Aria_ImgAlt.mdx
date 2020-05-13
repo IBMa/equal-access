@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Aria_ImgAlt"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,9 +38,7 @@ Element with an `"img"` role must have a non-empty label
 
 Example:
 
-```
-<div role="img" aria-labelledby="image1"> ... <p id="image1">Text that describes the group of images.</p></div>
-```
+<CodeSnippet type="single" light={true}>&lt;div role="img" aria-labelledby="image1"&gt; ... &lt;p id="image1"&gt;Text that describes the group of images.&lt;/p&gt;&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

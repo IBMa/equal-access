@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Fieldset_HasLegend"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,15 +34,13 @@ The `<legend>` of a `<fieldset>` element provides a label or instruction for the
  * Place a single `<legend>` as the first element in the `<fieldset>` group. The legend must contain a brief description of the related fields enclosed by the `<fieldset>`.
 For example:
 
-```
-<fieldset>
-       <legend>Skill Level</legend>
-       <input type="radio" name="skillLevel" value="high" id="highLev">
-       <label for="highLev">High</label><br>
-       <input type="radio" name="skillLevel" value="novice" id="noviceLev">
-       <label for="noviceLev">Novice</label>
-</fieldset>
-```
+<CodeSnippet type="multi" light={true}>&lt;fieldset&gt;
+       &lt;legend&gt;Skill Level&lt;/legend&gt;
+       &lt;input type="radio" name="skillLevel" value="high" id="highLev"&gt;
+       &lt;label for="highLev"&gt;High&lt;/label&gt;&lt;br&gt;
+       &lt;input type="radio" name="skillLevel" value="novice" id="noviceLev"&gt;
+       &lt;label for="noviceLev"&gt;Novice&lt;/label&gt;
+&lt;/fieldset&gt;</CodeSnippet>
 
 </Column>
 </Row>

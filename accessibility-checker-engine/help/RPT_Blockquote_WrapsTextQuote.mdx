@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: RPT_Blockquote_WrapsTextQuote"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,16 +38,14 @@ Quotations should be marked with `<q>` or `<blockquote>` elements
 
 For example:
 
-```
-<p>As she walked up she said, <q>Hi, my name is Natasha.</q></p>
+<CodeSnippet type="multi" light={true}>&lt;p&gt;As she walked up she said, &lt;q&gt;Hi, my name is Natasha.&lt;/q&gt;&lt;/p&gt;
 
-<p>Quotation from <cite="http://www.shakespeare.com/loveslabourlost">Love's Labour's Lost by William Shakespeare</cite>:</p>
-<blockquote>
+&lt;p&gt;Quotation from &lt;cite="http://www.shakespeare.com/loveslabourlost"&gt;Love's Labour's Lost by William Shakespeare&lt;/cite&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
 	Painfully to pore upon a book
 	To seek the light of truth; while truth the while
 	Doth falsely blind the eyesight of his look.
-</blockquote>
-```
+&lt;/blockquote&gt;</CodeSnippet>
 
 </Column>
 </Row>

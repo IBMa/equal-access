@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Img_UsemapAlt"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,13 +36,12 @@ Add an `alt` attribute to the image that uses a non-empty `usemap` attribute to 
 
 For example:
 
-```<img src="blood.gif" width="145" height="126" alt="Blood Cells" usemap="#cellmap">
+<CodeSnippet type="multi" light={true}>&lt;img src="blood.gif" width="145" height="126" alt="Blood Cells" usemap="#cellmap"&gt;
 
-<map name="cellmap">
-<area shape="circle" coords="90,58,3"  href="redbloodcell.htm" alt="Erythrocyte">
-<area shape="circle" coords="124,58,8" href="whitebloodcell.htm" alt="Monocyte">
-</map>
-```
+&lt;map name="cellmap"&gt;
+&lt;area shape="circle" coords="90,58,3"  href="redbloodcell.htm" alt="Erythrocyte"&gt;
+&lt;area shape="circle" coords="124,58,8" href="whitebloodcell.htm" alt="Monocyte"&gt;
+&lt;/map&gt;</CodeSnippet>
 
 </Column>
 </Row>

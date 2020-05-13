@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleNavigationLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,16 +38,14 @@ Multiple elements with `"nav"` role must have unique labels
 
 For example:
 
-```
-<h2 id="weather">Weather portlet</h2>
-<nav aria-labelledby="weather">
+<CodeSnippet type="multi" light={true}>&lt;h2 id="weather"&gt;Weather portlet&lt;/h2&gt;
+&lt;nav aria-labelledby="weather"&gt;
 	...
-</nav>
+&lt;/nav&gt;
 
-<nav aria-label="Stock ticker portlet">
+&lt;nav aria-label="Stock ticker portlet"&gt;
 		...
-</nav>
-```
+&lt;/nav&gt;</CodeSnippet>
 
 
 </Column>

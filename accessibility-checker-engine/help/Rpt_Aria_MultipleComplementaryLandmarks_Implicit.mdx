@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleComplementaryLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,16 +36,14 @@ All elements with the `"complementary"` role must have a unique label
 
 For example:
 
-```
-<h2 id="weather">Weather portlet</h2>
-<div role="complementary" aria-labelledby="weather">
+<CodeSnippet type="multi" light={true}>&lt;h2 id="weather"&gt;Weather portlet&lt;/h2&gt;
+&lt;div role="complementary" aria-labelledby="weather"&gt;
    ...
-</div>
+&lt;/div&gt;
 
-<div role="complementary" aria-label="Stock ticker portlet">
+&lt;div role="complementary" aria-label="Stock ticker portlet"&gt;
    ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Table_SummaryAria3"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -39,25 +39,24 @@ Note: In HTML5 the `summary` attribute is obsolete and should be avoided.
 
 For example the following example uses the `aria-labelledby` to provide the table summary:
 
-```
-  <p id="tblSummary">The following table shows the number of boys and girls in each grade of an elementary school.</p>
+<CodeSnippet type="multi" light={true}>  &lt;p id="tblSummary"&gt;The following table shows the number of boys and girls in each grade of an elementary school.&lt;/p&gt;
 
-    <table border="1" aria-labelledby="tblSummary">
-     <tr>
-       <th id="class">Class</th>
-       <th id="teacher">Teacher</th>
-       <th id="boys"># of Boys</th>
-       <th id="girls"># of Girls</th>
-     </tr>
-     <tr>
-       <th rowspan="2" id="1stgrade">1st Grade</th>
-        <th headers="1stgrade teacher" id="MrHenry">Mr. Henry</th>
-        <td headers="1stgrade MrHenry boys">5</td>
-        <td headers="1stgrade MrHenry girls">4</td>
-     </tr>
+    &lt;table border="1" aria-labelledby="tblSummary"&gt;
+     &lt;tr&gt;
+       &lt;th id="class"&gt;Class&lt;/th&gt;
+       &lt;th id="teacher"&gt;Teacher&lt;/th&gt;
+       &lt;th id="boys"&gt;# of Boys&lt;/th&gt;
+       &lt;th id="girls"&gt;# of Girls&lt;/th&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;th rowspan="2" id="1stgrade"&gt;1st Grade&lt;/th&gt;
+        &lt;th headers="1stgrade teacher" id="MrHenry"&gt;Mr. Henry&lt;/th&gt;
+        &lt;td headers="1stgrade MrHenry boys"&gt;5&lt;/td&gt;
+        &lt;td headers="1stgrade MrHenry girls"&gt;4&lt;/td&gt;
+     &lt;/tr&gt;
     ...
-   </table>
-   ```
+   &lt;/table&gt;
+   </CodeSnippet>
 
 </Column>
 </Row>

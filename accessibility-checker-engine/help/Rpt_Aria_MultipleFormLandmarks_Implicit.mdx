@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleFormLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,24 +35,22 @@ Each element with a `"form"` role must have a unique label that describes its pu
 
 For example:
 
-```
-<h2 id="na1"> New Account</h2>
-<form  aria-labelledby="na1">
-  <fieldset>
-    <legend>Personal information:</legend>
-    <label for="fname">First name:</label>
-    <input type="text" id="fname" name="fname" value="Ashley">
-    <label for="lname">Last name:</label><br>
-    <input type="text" id="lname" name="lname" value="Levy"><br><br>
-    <input type="submit" value="Submit">
-  </fieldset>
-</form>
+<CodeSnippet type="multi" light={true}>&lt;h2 id="na1"&gt; New Account&lt;/h2&gt;
+&lt;form  aria-labelledby="na1"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Personal information:&lt;/legend&gt;
+    &lt;label for="fname"&gt;First name:&lt;/label&gt;
+    &lt;input type="text" id="fname" name="fname" value="Ashley"&gt;
+    &lt;label for="lname"&gt;Last name:&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" id="lname" name="lname" value="Levy"&gt;&lt;br&gt;&lt;br&gt;
+    &lt;input type="submit" value="Submit"&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
 
 
-<div role="form" aria-label="Ship-to Address=">
+&lt;div role="form" aria-label="Ship-to Address="&gt;
 	...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Aria_Or_HTML5_Attr"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,15 +34,13 @@ Remove one of the conflicting HTML5 or ARIA attributes from the `<input>` elemen
 
 Example using HTML5:
 
-```<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required>
-```
+<CodeSnippet type="multi" light={true}>&lt;label for="phone"&gt;* Phone number: &lt;/body&gt;
+&lt;input type="text" id="phone" name="phone" required&gt;</CodeSnippet>
 
 Example uses both HTML5 and ARIA attribute indicating the input is required without any conflict:
 
-```<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required aria-required="true">
-```
+<CodeSnippet type="multi" light={true}>&lt;label for="phone"&gt;* Phone number: &lt;/body&gt;
+&lt;input type="text" id="phone" name="phone" required aria-required="true"&gt;</CodeSnippet>
 
 
 </Column>

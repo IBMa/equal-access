@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Applet_HasAlt"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,16 +36,14 @@ Alternative text on `<applet>` elements is important for users who do not have a
 
 For example:
 
-```
-<applet CODE="banner.class" ALT="Scrolling news banner" WIDTH="200" HEIGHT="200">
+<CodeSnippet type="multi" light={true}>&lt;applet CODE="banner.class" ALT="Scrolling news banner" WIDTH="200" HEIGHT="200"&gt;
 Banner showing three things:
- <ol>
-  <li>The Dow Jones Industrial Average climbed 300 points today in heavy trading.</li>
-  <li>G8 Summit to start in Washington tomorrow.</li>
-  <li>Global nuclear non-proliferation treaty signed by all nations today.</li>
- </ol>
-</applet>
-```
+ &lt;ol&gt;
+  &lt;li&gt;The Dow Jones Industrial Average climbed 300 points today in heavy trading.&lt;/li&gt;
+  &lt;li&gt;G8 Summit to start in Washington tomorrow.&lt;/li&gt;
+  &lt;li&gt;Global nuclear non-proliferation treaty signed by all nations today.&lt;/li&gt;
+ &lt;/ol&gt;
+&lt;/applet&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleSearchLandmarks"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,14 +34,12 @@ Each element with a `"search"` role must have a unique label that describes its 
 
 For example:
 
-```
-<div role="search" aria-label="Weather portlet">
+<CodeSnippet type="multi" light={true}>&lt;div role="search" aria-label="Weather portlet"&gt;
 ...
-</div>
-<div role="search" aria-label="Stock ticker portlet">
+&lt;/div&gt;
+&lt;div role="search" aria-label="Stock ticker portlet"&gt;
 ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>
