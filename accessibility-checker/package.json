@@ -22,7 +22,8 @@
     "chromedriver": "^80.0.1",
     "deep-diff": "^0.3.4",
     "js-yaml": "^3.13.1",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "adm-zip": "^0.4.13",
