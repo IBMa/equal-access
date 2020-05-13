@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG21_Input_Autocomplete"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,29 +38,27 @@ The `autocomplete` attribute's token(s) must be appropriate for the input form f
 
 Correct example:
 
-```
-<form method="post" action="step2">
- <div>
-   <label for="fname">First Name:</label>
-  <input id="fname" type="text" autocomplete="given-name" ... />
- </div>
- <div>
-    <label for="lname">Last Name:</label>
-  <input id="lname" type="text" autocomplete="family-name" ... />
- </div>
- <div>
-    <label for="cc-num">Credit card number:</label>
-    <input type="text" id="cc-num" autocomplete="cc-number"/>
- </div>
- <div>
-    <label for="exp-date">Expiry Date:</label>
-    <input type="month" id="exp-date" autocomplete="cc-exp"/>
- </div>
- <div>
-    <input type="submit" value="Continue...">
- </div>
-</form>
-```
+<CodeSnippet type="multi" light={true}>&lt;form method="post" action="step2"&gt;
+ &lt;div&gt;
+   &lt;label for="fname"&gt;First Name:&lt;/label&gt;
+  &lt;input id="fname" type="text" autocomplete="given-name" ... /&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+    &lt;label for="lname"&gt;Last Name:&lt;/label&gt;
+  &lt;input id="lname" type="text" autocomplete="family-name" ... /&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+    &lt;label for="cc-num"&gt;Credit card number:&lt;/label&gt;
+    &lt;input type="text" id="cc-num" autocomplete="cc-number"/&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+    &lt;label for="exp-date"&gt;Expiry Date:&lt;/label&gt;
+    &lt;input type="month" id="exp-date" autocomplete="cc-exp"/&gt;
+ &lt;/div&gt;
+ &lt;div&gt;
+    &lt;input type="submit" value="Continue..."&gt;
+ &lt;/div&gt;
+&lt;/form&gt;</CodeSnippet>
 
 Example code includes material copied from or derived from [Using HTML5 Autocomplete attributes, technique H98](https://www.w3.org/WAI/WCAG21/Techniques/html/H98). Copyright © 2017-2018 W3C® (MIT, ERCIM, Keio, Beihang)
 

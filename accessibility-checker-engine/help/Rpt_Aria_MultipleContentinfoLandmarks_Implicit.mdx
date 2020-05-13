@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleContentinfoLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,15 +34,13 @@ All elements with `"contentinfo"` role must have unique labels
 
 For example:
 
-```
-<div role="contentinfo" aria-label="Weather portlet">
+<CodeSnippet type="multi" light={true}>&lt;div role="contentinfo" aria-label="Weather portlet"&gt;
 ...
-</div>
-
-<footer aria-label="Site copyright, privacy and accessibility information">
+&lt;/div&gt;
+    
+&lt;footer aria-label="Site copyright, privacy and accessibility information"&gt;
 ...
-</footer>
-```
+&lt;/footer&gt;</CodeSnippet>
 
 
 </Column>

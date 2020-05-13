@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleArticleRoles_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,16 +35,14 @@ Each element with an `"article"` role must have a unique label that describes it
 
 For example:
 
-```
-<article aria-label="weather portlet">
+<CodeSnippet type="multi" light={true}>&lt;article aria-label="weather portlet"&gt;
     ...
-</article>
-
-<div role="article" aria-labelledby="t1">
-    <h1 id="t1">Stock Ticker Portlet</h1">
+&lt;/article&gt;
+    
+&lt;div role="article" aria-labelledby="t1"&gt;
+    &lt;h1 id="t1"&gt;Stock Ticker Portlet&lt;/h1"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

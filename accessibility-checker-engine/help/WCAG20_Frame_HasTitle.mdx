@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Frame_HasTitle"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,12 +35,10 @@ Inline frames must have a unique, non-empty title
 * Use the `"title"` attribute of the `<iframe>` element to provide a unique, non-empty title that describes its contents.
 For example:
 
-```
-<iframe src="https://cloudstorage.html" id="adiframe"
-       name="adiframe" title="Cloud Storage">
-         <a href="storage-ad.html"> Cloud storage</a>
-</iframe>
-```
+<CodeSnippet type="multi" light={true}>&lt;iframe src="https://cloudstorage.html" id="adiframe"
+       name="adiframe" title="Cloud Storage"&gt;
+         &lt;a href="storage-ad.html"&gt; Cloud storage&lt;/a&gt;
+&lt;/iframe&gt;</CodeSnippet>
 
 </Column>
 </Row>
