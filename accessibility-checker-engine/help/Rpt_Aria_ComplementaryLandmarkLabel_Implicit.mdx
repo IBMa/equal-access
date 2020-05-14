@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ComplementaryLandmarkLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,13 +34,11 @@ A unique and visible label is preferred for each element with a `"complementary"
 
 For example:
 
-```
-<h1 id="weather">Weather portlet</h1>
-
-<div role="complementary" aria-labelledby="weather">
+<CodeSnippet type="multi" light={true}>&lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+    
+&lt;div role="complementary" aria-labelledby="weather"&gt;
 ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

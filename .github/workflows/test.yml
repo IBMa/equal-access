@@ -3,9 +3,7 @@
 
 name: All branch testing
 
-on:
-  push:
-    branches: '*'
+on: [ pull_request ]
 
 jobs:
 ###############################################################################

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ComplementaryRequiredLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,12 +37,10 @@ An element with `"complementary"` role must have a label
 
 For example:
 
-```
-<h1 id="news">Breaking news articles</h1>
-<div role="complementary" aria-labelledby="news">
+<CodeSnippet type="multi" light={true}>&lt;h1 id="news"&gt;Breaking news articles&lt;/h1&gt;
+&lt;div role="complementary" aria-labelledby="news"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

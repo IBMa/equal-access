@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MissingFocusableChild"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,11 +34,9 @@ UI component must have at least one focusable child element for keyboard access
 Set the value of the `tabindex` attribute equal to 0 or -1 on at least one of the required child elements to include the UI component in the tab sequence. 
 The following example shows a component with `role="tree"` with its required child with `role="treeitem"`. The child contains `tabindex="0"` which makes the `treeitem` keyboard operable:
 
-```
-<div role="tree" aria-label="Tree Widget" id="tree1" onkeypress="keyEvent();">
-    <div id="item1" role="treeitem" tabindex="0">Tree item</div>
-</div>  
-```
+<CodeSnippet type="multi" light={true}>&lt;div role="tree" aria-label="Tree Widget" id="tree1" onkeypress="keyEvent();"&gt;
+    &lt;div id="item1" role="treeitem" tabindex="0"&gt;Tree item&lt;/div&gt;
+&lt;/div&gt;  </CodeSnippet>
 
 </Column>
 </Row>

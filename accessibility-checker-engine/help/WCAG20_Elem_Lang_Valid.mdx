@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Elem_Lang_Valid"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,13 +36,11 @@ The language of content must be specified in accordance with BCP 47
 
 For example:
 
-```
-<blockquote lang="fr">
-  <p>
+<CodeSnippet type="multi" light={true}>&lt;blockquote lang="fr"&gt;
+  &lt;p&gt;
     Prouver que j’ai raison serait accorder que je puis avoir tort.
-  </p>
-</blockquote>
-```
+  &lt;/p&gt;
+&lt;/blockquote&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -98,6 +98,15 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         if (val === "Recommendation") icon = Recommendation16;
         return <div className="issueLevel">{icon}{val}</div>
     }
+
+    MyCodeSnippet = ({children, ...rest}: { children: any}) => {
+        return <div style={{margin: "1rem 0rem"}}>
+            <CodeSnippet {...rest} >
+                {children}
+            </CodeSnippet>
+        </div>
+    }
+
     ItemSnippet = () => {
         return <React.Fragment>
             <h2 id="element-location">Element location</h2>
@@ -131,6 +140,9 @@ return(
                 },
                 li: {
                     component: ListItem
+                },
+                CodeSnippet: {
+                    component: this.MyCodeSnippet
                 },
                 ItemActive: {
                     component: this.ItemActive

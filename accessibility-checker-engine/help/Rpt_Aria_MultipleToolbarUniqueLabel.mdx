@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleToolbarUniqueLabel"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,16 +35,14 @@ All toolbar components on a page must have unique labels specified
 
 The following example shows two containers created with the WAI-ARIA `"toolbar"` role. Each container is uniquely labeled with `aria-label` and `aria-labelledby` attributes.
 
-```
-<div role="toolbar" aria-label="Simple tools">
+<CodeSnippet type="multi" light={true}>&lt;div role="toolbar" aria-label="Simple tools"&gt;
     ...
-</div>
-
-<div role="toolbar" aria-labelledby="ct">
-    <h2 id="ct">Complex tools</h2>
+&lt;/div&gt;
+    
+&lt;div role="toolbar" aria-labelledby="ct"&gt;
+    &lt;h2 id="ct"&gt;Complex tools&lt;/h2&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Aria_ErrorMessage"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,17 +34,16 @@ A custom error message must reference a valid `id` and when triggered the messag
 
 Example:
 
-```<!-- Initial valid state -->
-<label for="startTime">Please enter a start time for the meeting:</label>
-<input id="startTime" type="text" aria-errormessage="msgID" value="" aria-invalid="false">
-<span id="msgID" aria-live="off" style="visibility:hidden">Invalid time:  the time must be between 9:00 AM and 5:00 PM</span>
-
-<!-- User has entered an invalid value -->
-<label for="startTime">Please enter a start time for the meeting:</label>
-
-<input id="startTime" type="text" aria-errormessage="msgID" aria-invalid="true" value="11:30" PM>
-<span id="msgID" aria-live="assertive" style="visibility:visible">Invalid time:  the time must be between 9:00 AM and 5:00 PM</span>
-```
+<CodeSnippet type="multi" light={true}>&lt;!-- Initial valid state --&gt;
+&lt;label for="startTime"&gt;Please enter a start time for the meeting:&lt;/label&gt;
+&lt;input id="startTime" type="text" aria-errormessage="msgID" value="" aria-invalid="false"&gt;
+&lt;span id="msgID" aria-live="off" style="visibility:hidden"&gt;Invalid time:  the time must be between 9:00 AM and 5:00 PM&lt;/span&gt;
+    
+&lt;!-- User has entered an invalid value --&gt;
+&lt;label for="startTime"&gt;Please enter a start time for the meeting:&lt;/label&gt;
+    
+&lt;input id="startTime" type="text" aria-errormessage="msgID" aria-invalid="true" value="11:30" PM&gt;
+&lt;span id="msgID" aria-live="assertive" style="visibility:visible"&gt;Invalid time:  the time must be between 9:00 AM and 5:00 PM&lt;/span&gt;</CodeSnippet>
 
 Note: Example code includes material copied from or derived from W3C WAI-ARIA 1.1 Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang)
 

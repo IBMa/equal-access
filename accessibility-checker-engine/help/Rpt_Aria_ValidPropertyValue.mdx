@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ValidPropertyValue"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,9 +35,8 @@ The attribute value specified on the element must be valid per WAI-ARIA 1.1 spec
 
 For example, the following paragraph element defines an `aria-live` property with a valid value of `"polite"`.
 
-``` 
-<p aria-live="polite">Live region content.</p>
-```
+<CodeSnippet type="multi" light={true}> 
+&lt;p aria-live="polite"&gt;Live region content.&lt;/p&gt;</CodeSnippet>
 
 </Column>
 </Row>

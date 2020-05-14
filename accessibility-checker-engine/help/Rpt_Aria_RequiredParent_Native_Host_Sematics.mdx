@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredParent_Native_Host_Sematics"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,11 +34,9 @@ An element with WAI-ARIA role must be contained within a valid element
 
 For example, the following `<li>` element uses an `"option"` role. The `"option"` role requires a parent element with role `"listbox"`.
 
-```
-<ul role="listbox">
-    <li role="option">list box option</li>
-</ul>
-```
+<CodeSnippet type="multi" light={true}>&lt;ul role="listbox"&gt;
+    &lt;li role="option"&gt;list box option&lt;/li&gt;
+&lt;/ul&gt;</CodeSnippet>
 
 
 </Column>

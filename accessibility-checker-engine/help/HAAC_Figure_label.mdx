@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Figure_label"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,15 +37,13 @@ The `<figure>` element must have an associated label
 
 For example:
 
-```
-<figure>
-	<figcaption>The castle through the ages: 1423, 1858, and 1999 respectively.</figcaption>
-	<figure>
-	<figcaption>Etching. Anonymous, ca. 1423.</figcaption>
-	<img src="castle1423.jpeg" alt="The castle has one tower and a tall wall around it.">
-	</figure>
-</figure>
-```
+<CodeSnippet type="multi" light={true}>&lt;figure&gt;
+	&lt;figcaption&gt;The castle through the ages: 1423, 1858, and 1999 respectively.&lt;/figcaption&gt;
+	&lt;figure&gt;
+	&lt;figcaption&gt;Etching. Anonymous, ca. 1423.&lt;/figcaption&gt;
+	&lt;img src="castle1423.jpeg" alt="The castle has one tower and a tall wall around it."&gt;
+	&lt;/figure&gt;
+&lt;/figure&gt;</CodeSnippet>
 
 </Column>
 </Row>
