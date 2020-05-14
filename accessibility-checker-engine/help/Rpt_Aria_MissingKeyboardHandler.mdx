@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MissingKeyboardHandler"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -40,11 +40,9 @@ Interactive WAI_ARIA UI components must provide keyboard access
 
 For example:
 
-```
-<div role="tree" id="tree1">
-    <div id="item1" role="treeitem" tabindex="0" onkeypress="keyEvent()">Tree item</div>
-</div>
-```
+<CodeSnippet type="multi" light={true}>&lt;div role="tree" id="tree1"&gt;
+    &lt;div id="item1" role="treeitem" tabindex="0" onkeypress="keyEvent()"&gt;Tree item&lt;/div&gt;
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

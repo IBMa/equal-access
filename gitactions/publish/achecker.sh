@@ -1,11 +1,7 @@
 if [ -n "$RELEASE_VERSION" ]; then
-    if [[ $RELEASE_VERSION =~ ([^ ]+)\#([^ ]+) ]]; then
-        cd ./accessibility-checker/src;
-        echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >.npmrc;
-        NPM_VERSION="${BASH_REMATCH[1]}";
-        EXT_VERSION="${BASH_REMATCH[2]}";
-        echo "Deploy accessibility-checker version $NPM_VERSION...";
-        npm --no-git-tag-version version $NPM_VERSION;
-        npm publish;
-    fi
+    cd ./accessibility-checker/src;
+    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >.npmrc;
+    echo "Deploy accessibility-checker version $RELEASE_VERSION...";
+    npm --no-git-tag-version version $RELEASE_VERSION;
+    npm publish;
 fi

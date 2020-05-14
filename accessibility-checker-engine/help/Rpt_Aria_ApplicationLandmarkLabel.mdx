@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ApplicationLandmarkLabel"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,13 +36,11 @@ An element with an WAI-ARIA `"application"` role must have a label
 
 For example:
 
-```
-   <h1 id="weather">Weather portlet</h1>
+<CodeSnippet type="multi" light={true}>   &lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
    ...
-   <div role="application" aria-labelledby="weather">
+   &lt;div role="application" aria-labelledby="weather"&gt;
    ...
-   </div>
-```
+   &lt;/div&gt;</CodeSnippet>
 
 
 </Column>

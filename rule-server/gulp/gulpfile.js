@@ -60,7 +60,8 @@ const archivePolicies = () => {
                         for (const rs of checker.rulesets) {
                             policies.push({
                                 id: rs.id,
-                                name: rs.name
+                                name: rs.name,
+                                description: rs.description
                             });
                         }
                         policies.sort((a,b) => a.id.localeCompare(b.id));

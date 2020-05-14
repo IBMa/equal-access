@@ -82,6 +82,15 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
             </div>
         </React.Fragment>
     }
+
+    MyCodeSnippet = ({children, ...rest}: { children: any}) => {
+        return <div style={{margin: "1rem 0rem"}}>
+            <CodeSnippet {...rest} >
+                {children}
+            </CodeSnippet>
+        </div>
+    }
+
     render() : ReactNode {
         const md = \``;
 const componentFooter = `\`;
@@ -105,6 +114,9 @@ return(
                 },
                 li: {
                     component: ListItem
+                },
+                CodeSnippet: {
+                    component: this.MyCodeSnippet
                 },
                 ItemActive: {
                     component: this.ItemActive

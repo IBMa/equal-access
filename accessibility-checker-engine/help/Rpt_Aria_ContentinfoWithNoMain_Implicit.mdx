@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ContentinfoWithNoMain_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,16 +34,14 @@ A element with `"contentinfo"` role is only permitted with an element with `"mai
 
 For example:
 
-```
-<body>
-    <div role="main">
+<CodeSnippet type="multi" light={true}>&lt;body&gt;
+    &lt;div role="main"&gt;
       ...
-    </div>
-    <div role="contentinfo">
+    &lt;/div&gt;
+    &lt;div role="contentinfo"&gt;
 	    ...
-    </div>
-</body>
-```
+    &lt;/div&gt;
+&lt;/body&gt;</CodeSnippet>
 
 </Column>
 </Row>
