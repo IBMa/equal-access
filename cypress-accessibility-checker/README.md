@@ -68,7 +68,7 @@ You can chain the commands similar to other Cypress commands.  For example, `cy.
 There is a suite of tests located in the `test/` directory which execute each of the added Cypress commands.  You can run this test suite by doing one of the following:
 
 * `npm test`: Executes the tests in a headless environment
-* `npm run test:open`: Opens the Cypress interactive mode.
+* `npm run test:open`: Opens the Cypress interactive mode.  You must run `npm run test:start-http` in order for the tests to work.
 
 
 ## Building
