@@ -275,9 +275,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>Rules</strong> - issues are organized by the rules in
-                  the rule set, with violations, items
-                  that need review, and recommendations. This view is the
-                  best way to see all the different kinds of issue at once.
+                  the rule set, with violations, items that need review, and
+                  recommendations. This view is the best way to see all the
+                  different kinds of issue at once.
                 </p>
               </li>
             </ul>
@@ -369,32 +369,34 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>IBM Accessibility</strong> - Rules for Web
-                  Content Accessibility Guidelines (WCAG ) 2.1 level A and level
-                  AA plus additional IBM checklist supplemental requirements. This is the default
-                  option.
+                  <strong>IBM Accessibility</strong> - Rules for Web Content
+                  Accessibility Guidelines (WCAG ) 2.1 level A and level AA plus
+                  additional IBM checklist supplemental requirements. This is
+                  the default option.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>IBM Accessibility Experimental</strong> - Rules for WCAG 2.1 level A and level AA plus additional IBM checklist supplemental requirements and experimental rules.
+                  <strong>IBM Accessibility Experimental</strong> - Rules for
+                  WCAG 2.1 level A and level AA plus additional IBM checklist
+                  supplemental requirements and experimental rules.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>WCAG 2.0</strong> - Rules for Web
-                  Content Accessibility Guidelines (WCAG ) 2.0 level A and level
-                  AA. These rules align with the Revised US Sec 508 standards.
+                  <strong>WCAG 2.0</strong> - Rules for Web Content
+                  Accessibility Guidelines (WCAG ) 2.0 level A and level AA.
+                  These rules align with the Revised US Sec 508 standards.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>WCAG 2.1</strong> - Rules for Web
-                  Content Accessibility Guidelines (WCAG ) 2.1 level A and level
-                  AA. These rules align with the European EN 301 549 standards.
+                  <strong>WCAG 2.1</strong> - Rules for Web Content
+                  Accessibility Guidelines (WCAG ) 2.1 level A and level AA.
+                  These rules align with the European EN 301 549 standards.
                 </p>
               </li>
             </ul>
@@ -522,9 +524,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   >
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Select an instance of an issue, or an element in the 
-                        document object model (DOM), or use the ‘Inspect element’ 
-                        command on the web page to:
+                        Select an instance of an issue, or an element in the
+                        document object model (DOM), or use the ‘Inspect
+                        element’ command on the web page to:
                       </p>
                       <ul
                         style={{
@@ -534,10 +536,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       >
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Highlight the selected element, or the element 
+                            Highlight the selected element, or the element
                             containing the selected issue, in the browser's
-                            Elements panel and highlight its location in the 
-                            web page.
+                            Elements panel and highlight its location in the web
+                            page.
                           </p>
                         </li>
                         <li>
@@ -561,7 +563,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </li>
                       </ul>
                     </li>
-                   </ul>
+                  </ul>
                 </li>
                 <li>
                   Checklist tab:
@@ -629,16 +631,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Use the <strong>‘Report’</strong> button to download a standalone html report
-                    that includes the same three views and all the help
-                    information provided in the checker.
+                    Use the <strong>‘Report’</strong> button to download a
+                    standalone html report that includes the same three views
+                    and all the help information provided in the checker.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Optionally, you can update the code in the browser's
-                    Elements panel and run <strong>'Scan'</strong> again 
-                    to confirm your code changes fix the issue.
+                    Elements panel and run <strong>'Scan'</strong> again to
+                    confirm your code changes fix the issue.
                   </p>
                 </li>
               </ol>
@@ -718,8 +720,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     The right panel displays an Accessibility Checker Report
-                    summary, while the left panel shows the scan result with the total number of issues found,
-                    with individual counts for violations, items that need review, and recommendations:{" "}
+                    summary, while the left panel shows the scan result with the
+                    total number of issues found, with individual counts for
+                    violations, items that need review, and recommendations:{" "}
                   </p>
                   <p>
                     <img
@@ -732,9 +735,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    By default, issues are shown in
-                    the 'Checklist' view, while 'Element roles' and 'Rules' tabs
-                    are also available. All views show the same set of issues.
+                    By default, issues are shown in the 'Checklist' view, while
+                    'Element roles' and 'Rules' tabs are also available. All
+                    views show the same set of issues.
                   </p>
                 </li>
                 <li>
@@ -755,10 +758,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <li>
                       <p style={{ marginTop: "0rem" }}>
                         Select an instance of an issue and the report summary is
-                        replaced with a detailed description that includes the error level, why
-                        the content is failing, what the requirement is, what
-                        resources to use, what to do to fix the issue,
-                        who it affects, and why it is important:{" "}
+                        replaced with a detailed description that includes the
+                        error level, why the content is failing, what the
+                        requirement is, what resources to use, what to do to fix
+                        the issue, who it affects, and why it is important:{" "}
                       </p>
                       <p>
                         <img
@@ -782,7 +785,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <li>
                       <p style={{ marginTop: "0rem" }}>
                         Select the <strong>'Element roles'</strong> tab to view
-                        the scan results organized by element roles in the web page.
+                        the scan results organized by element roles in the web
+                        page.
                       </p>
                     </li>
                     <li>
@@ -802,8 +806,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <li>Highlight the issue.</li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            View the detailed description for that issue in the summary
-                            pane (on the left).
+                            View the detailed description for that issue in the
+                            summary pane (on the left).
                           </p>
                         </li>
                       </ul>
@@ -840,8 +844,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                           <li>Highlight the issue.</li>
                           <li>
                             <p style={{ marginTop: "0rem" }}>
-                              View the detailed description for that issue in the summary
-                              pane (on the left).
+                              View the detailed description for that issue in
+                              the summary pane (on the left).
                             </p>
                           </li>
                         </ul>
@@ -851,9 +855,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Optionally, you can select the browser's Element panel
-                    to view the Accessibility Checker results alongside the code and
-                    test fixes.
+                    Optionally, you can select the browser's Element panel to
+                    view the Accessibility Checker results alongside the code
+                    and test fixes.
                   </p>
                 </li>
               </ol>
@@ -863,9 +867,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               By default the tool skips content that is hidden (Web pages that
               use the <var>visibility:hidden</var> or <var>display:none</var>{" "}
-              elements), if this content is displayed to the user at any
-              point, you must test the web content by fully exercising the
-              user interface according to the usage scenarios in your test plan.
+              elements), if this content is displayed to the user at any point,
+              you must test the web content by fully exercising the user
+              interface according to the usage scenarios in your test plan.
               Ensure the tests trigger the display of hidden content so that the
               Accessibility Checker can validate the content that is displayed.
             </p>
@@ -926,9 +930,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               percentage of elements with no detected violations.{" "}
             </p>
             <p>
-            <strong>Important Note:</strong> This percentage is based on automated tests
-              only. Be sure to perform additional reviews and manual tests to
-              complete the accessibility assessments. Use the{" "}
+              <strong>Important Note:</strong> This percentage is based on
+              automated tests only. Be sure to perform additional reviews and
+              manual tests to complete the accessibility assessments. Use the{" "}
               <a href="www.ibm.com/able/toolkit">IBM Equal Access Toolkit</a> as
               a guide.
             </p>
