@@ -39,7 +39,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <h2>
               IBM <strong>Accessibility</strong>
               <br />
-              Equal Access Accessibility Checker
+              Equal Access Toolkit:
+              <br />
+              Accessibility Checker
             </h2>
             <h3>
               <strong>User guide</strong>
@@ -967,7 +969,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 height="100%"
               />
             </p>
-          
           </div>
           <div className="bx--col-md-0 bx--col-lg-3 buffer"></div>
         </div>
