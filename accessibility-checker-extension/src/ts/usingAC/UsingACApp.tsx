@@ -369,7 +369,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>IBM Accessibility - Rules for Web
+                  <strong>IBM Accessibility</strong> - Rules for Web
                   Content Accessibility Guidelines (WCAG ) 2.1 level A and level
                   AA plus additional IBM checklist supplemental requirements. This is the default
                   option.
