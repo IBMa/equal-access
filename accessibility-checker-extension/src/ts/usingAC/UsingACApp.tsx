@@ -275,8 +275,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>Rules</strong> - issues are organized by the rules in
-                  the rule set, with violations listed first, followed by items
-                  that need review, and then recommendations. This view is the
+                  the rule set, with violations, items
+                  that need review, and recommendations. This view is the
                   best way to see all the violations listed together.
                 </p>
               </li>
