@@ -369,7 +369,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>IBM Accessibility &lt;date&gt;/strong> - Rules for Web
+                  <strong>IBM Accessibility &lt;date&gt;</strong> - Rules for Web
                   Content Accessibility Guidelines (WCAG ) 2.1 level A and level
                   AA plus additional IBM checklist supplemental requirements. This is the default
                   option.
@@ -384,7 +384,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
               <li>
                 <p>
-                  <strong>WCAG 2.0/strong> - Rules for Web
+                  <strong>WCAG 2.0</strong> - Rules for Web
                   Content Accessibility Guidelines (WCAG ) 2.0 level A and level
                   AA. These rules align with the Revised US Sec 508 standards.
                 </p>
@@ -392,7 +392,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
               <li>
                 <p>
-                  <strong>WCAG 2.1/strong> - Rules for Web
+                  <strong>WCAG 2.1</strong> - Rules for Web
                   Content Accessibility Guidelines (WCAG ) 2.1 level A and level
                   AA. These rules align with the European EN 301 549 standards.
                 </p>
