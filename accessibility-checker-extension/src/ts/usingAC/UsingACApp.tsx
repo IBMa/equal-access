@@ -220,7 +220,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <img src={violation} alt="violation icon " />{" "}
-                  <strong>Violation</strong>- accessibility failures that need
+                  <strong> Violation</strong>- accessibility failures that need
                   to be corrected.
                 </p>
               </li>
@@ -235,7 +235,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <img src={recommendation} alt="recommendation icon" />
-                  <strong>Recommendation</strong> - opportunities to apply best
+                  <strong> Recommendation</strong> - opportunities to apply best
                   practices to further improve accessibility.
                 </p>
               </li>
@@ -275,8 +275,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>Rules</strong> - issues are organized by the rules in
-                  the rule set, with violations listed first, followed by items
-                  that need review, and then recommendations. This view is the
+                  the rule set, with violations, items
+                  that need review, and recommendations. This view is the
                   best way to see all the violations listed together.
                 </p>
               </li>
@@ -369,20 +369,32 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>IBM Accessibility April 2020</strong> - Rules for Web
+                  <strong>IBM Accessibility &lt;date&gt;</strong> - Rules for Web
                   Content Accessibility Guidelines (WCAG ) 2.1 level A and level
-                  AA. This is the current W3C recommendation and extends Web
-                  Content Accessibility Guidelines 2.0. Content that conforms to
-                  WCAG 2.1 also conforms to WCAG 2.0. This is the default
+                  AA plus additional IBM checklist supplemental requirements. This is the default
                   option.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>IBM Accessibility Experimental</strong> - Rules for
-                  WCAG 2.1 level A and level AA plus additional IBM checklist
-                  supplemental requirements.
+                  <strong>IBM Accessibility Experimental</strong> - Potential new rules in Beta.
+                </p>
+              </li>
+
+              <li>
+                <p>
+                  <strong>WCAG 2.0</strong> - Rules for Web
+                  Content Accessibility Guidelines (WCAG ) 2.0 level A and level
+                  AA. These rules align with the Revised US Sec 508 standards.
+                </p>
+              </li>
+
+              <li>
+                <p>
+                  <strong>WCAG 2.1</strong> - Rules for Web
+                  Content Accessibility Guidelines (WCAG ) 2.1 level A and level
+                  AA. These rules align with the European EN 301 549 standards.
                 </p>
               </li>
             </ul>
@@ -542,7 +554,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <li>
                           <p style={{ marginTop: "0rem" }}>
                             Open and highlight all issues in the element's
-                            child, if any (grey highlight).
+                            child, if any (light purple highlight).
                           </p>
                         </li>
                       </ul>
@@ -580,7 +592,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <li>
                           <p style={{ marginTop: "0rem" }}>
                             Open and highlight issues in the element's child, if
-                            any (grey highlight).
+                            any (light purple highlight).
                           </p>
                         </li>
                       </ul>
@@ -748,7 +760,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     The right panel displays an Accessibility Checker Report
-                    summary:{" "}
+                    summary while the left panel shows the scan result with the total number of issues found,
+                    with individual counts for violations, items that need review, and recommendations:{" "}
                   </p>
                   <p>
                     <img
@@ -761,9 +774,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    The scan result displays the total number of issues found
-                    with individual counts for violations, items that need
-                    review, and recommendations. By default, issues are shown in
+                    By default, issues are shown in
                     the 'Checklist' view, while ‘Element roles’ and ‘Rules’ tabs
                     are also available. All views show the same set of issues.
                   </p>
@@ -842,7 +853,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   </ul>
                 </li>
                 <li>
-                  Rule tab:
+                  Rules tab:
                   <ul
                     style={{
                       listStyleType: "circle",
@@ -947,7 +958,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               The Accessibility Checker Report is an interactive report that you
               can save as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
-              the issue details organized by checklist checkpoint, by Element
+              the issue details organized by checklist checkpoints, by Element
               roles and by rules. Each instance of an issue also includes a{" "}
               <strong>'Learn more'</strong> link that opens an overlay
               containing additional help text.
