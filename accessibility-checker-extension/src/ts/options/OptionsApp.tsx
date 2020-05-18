@@ -153,7 +153,8 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
               <h2>
                 IBM <strong>Accessibility</strong>
-                <br /> Equal Access Accessibility Checker
+                <br /> Equal Access Toolkit:
+                <br /> Accessibility Checker
               </h2>
               <div className="op_version" style={{ marginTop: "8px" }}>
                 Version {manifest.version}
