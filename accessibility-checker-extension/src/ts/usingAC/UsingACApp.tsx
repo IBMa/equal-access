@@ -136,7 +136,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               The IBM Equal Access Accessibility Checker is a browser extension
               that allows users to evaluate a web-based component or solution
               for accessibility issues against the latest WCAG 2.1 standards
-              with explanations and suitable fixes right within the tool.
+              with explanations and suitable fixes within the tool.
             </p>
             <p>
               This checker is part of an open suite of accessibility automation
@@ -149,14 +149,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               development process. These tools use the same test engine as the
               Accessibility Checker.
             </p>
-            <p>
-              Learn how to design, build and test for accessibility with the{" "}
-              <a href="https://ibm.com/able/toolkit">
-                IBM Equal Access Toolkit
-              </a>
-              .
-            </p>
-
             <h3 id="prereq">1. Prerequisites</h3>
             <div className="pa">
               Supported browsers:
