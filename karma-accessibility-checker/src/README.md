@@ -230,7 +230,7 @@ aChecker.getCompliance(testDataFileContent, testFile, function (results) {
 });
 ```
 
-Refer to [Examples](https://github.com/IBMa/equal-access/karma-accessibility-checker/tree/master/boilerplates) for sample usage scenarios.
+Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/karma-accessibility-checker/boilerplates) for sample usage scenarios.
 
 ## API
 

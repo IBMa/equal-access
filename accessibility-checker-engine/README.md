@@ -44,9 +44,9 @@ checker.check(doc, ["IBM_Accessibility"])
 * `["IBM_Accessibility"]` - apply IBM accessibility rules only, IBM design rules only.
 * `report` - accessibility results contains identified accessibility issues and their descriptions from the given `doc`, and a summary of the issues. The report is in JSON format (see [details](#report)).
 
-## Rules and Checklist (TO DO)
+## Checklist and Rulesets
 
-Please review the descriptions on IBM accessibility [checklist](https://ibm.com/able/checklist) and [rules](https://ibm.com/able/checklist).
+The rule are based on the IBM [Checklist](https://www.ibm.com/able/guidelines/ci162/accessibility_checklist.html), which is a superset of WCAG 2.1 AA. We also provide a WCAG 2.0 AA rulesets. Mappings from the checklists to rules are defined in the [ruleset file](https://github.com/IBMa/equal-access/blob/master/accessibility-checker-engine/src/v2/checker/accessibility/rulesets/index.ts)
 
 ## Report
 
@@ -209,7 +209,7 @@ You can use the [accessibility-checker-extension](../accessibility-checker-exten
 
 ### Integration with test frameworks
 
-You can use the [karma-accessibility-checker](../karma-accessibility-checker) to integrate accessibility web engine into [Karma](https://karma-runner.github.io/latest/index.html) or [Selelium](https://www.selenium.dev/) test framework. For more information and instructions, please view [karma-accessibility-checker](../karma-accessibility-checker).
+You can use the [karma-accessibility-checker](../karma-accessibility-checker) to integrate accessibility web engine into [Karma](https://karma-runner.github.io/latest/index.html) or [Selenium](https://www.selenium.dev/) test framework. For more information and instructions, please view [karma-accessibility-checker](../karma-accessibility-checker).
 
 ### Reporting bugs
 
