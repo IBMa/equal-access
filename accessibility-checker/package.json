@@ -16,7 +16,7 @@
     "url": "git@github.com/IBMa/equal-access/accessibility-checker"
   },
   "engines": {
-    "node": "10.x"
+    "node": "10 || 12"
   },
   "dependencies": {
     "chromedriver": "^80.0.1",

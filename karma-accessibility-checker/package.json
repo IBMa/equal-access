@@ -27,7 +27,7 @@
     "url": "git@github.com/IBMa/equal-access/karma-accessibility-checker"
   },
   "engines": {
-    "node": "4.4.x"
+    "node": "10 || 12"
   },
   "keywords": [
     "ci",
