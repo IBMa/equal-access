@@ -61,7 +61,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
                 <li>
                   <a href="#categories" title="categories">
-                    3. Categories of issue
+                    3. Categories of accessibility issues
                   </a>
                 </li>
 
@@ -206,19 +206,27 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="categories">3. Categories of issue</h3>
+            <h3 id="categories">3. Categories of accessibility issues</h3>
             <p>The tool reports three kinds of accessibility issues:</p>
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <img src={violation} alt="violation icon " />{" "}
+                  <img
+                    src={violation}
+                    alt="violation icon "
+                    style={{ verticalAlign: "middle" }}
+                  />{" "}
                   <strong> Violation</strong> - accessibility failures that need
                   to be corrected.
                 </p>
               </li>
               <li>
                 <p>
-                  <img src={needsReview} alt="needs review icon " />{" "}
+                  <img
+                    src={needsReview}
+                    alt="needs review icon "
+                    style={{ verticalAlign: "middle" }}
+                  />{" "}
                   <strong> Needs review</strong> - issues that may not be a
                   violation. These need manual review to identify whether there
                   is an accessibility problem.
@@ -226,7 +234,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
               <li>
                 <p>
-                  <img src={recommendation} alt="recommendation icon" />{" "}
+                  <img
+                    src={recommendation}
+                    alt="recommendation icon"
+                    style={{ verticalAlign: "middle" }}
+                  />{" "}
                   <strong> Recommendation</strong> - opportunities to apply best
                   practices to further improve accessibility.
                 </p>
