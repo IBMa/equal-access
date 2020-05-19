@@ -96,7 +96,8 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                     <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4">
                         <div className="summInfo">
                             <div className="eaName">IBM <strong>Accessibility</strong></div>
-                            <div className="prodName">Equal Access Accessibility Checker Report</div>
+                            <div className="prodName">Equal Access Toolkit:</div>
+                            <div className="prodName">Accessibility Checker Report</div>
                             <div className="time">{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
                             <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                         </div>

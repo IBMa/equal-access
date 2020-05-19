@@ -1,0 +1,129 @@
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+@import "~carbon-components/scss/globals/scss/styles.scss";
+@import "~carbon-components/scss/globals/grid/grid";
+
+html,
+body {
+  @media (min-width: 66rem) {
+    height: 100%;
+  }
+  background: #f2f4f8;
+}
+
+#usingAC-root {
+  @media (min-width: 66rem) {
+    height: 100%;
+
+    .bx--grid,
+    .bx--row,
+    .leftPanel {
+      height: 100%;
+    }
+  }
+
+  .bx--grid {
+    padding: 0rem 1rem;
+  }
+
+  p {
+    margin-top: 1.5rem;
+
+    @media (min-width: 42rem) {
+      max-width: 75%;
+    }
+  }
+  
+  .toc {
+    list-style: none;
+    margin-inline-start: 1rem;
+  }
+
+  .leftPanel {
+    padding: 2rem 1rem;
+
+    .icon {
+      height: 2rem;
+    }
+
+    h2 {
+      color: #252525;
+      @include carbon--type-style("productive-heading-04");
+      margin-top: 2rem;
+    }
+
+    h3 {
+      color: #252525;
+      @include carbon--type-style("productive-heading-03");
+      margin-top: 2rem;
+    }
+
+    .op_version {
+      color: #525252;
+      @include carbon--type-style("caption-01");
+    }
+
+    p {
+      @media (min-width: 66rem) {
+        max-width: 100%;
+      }
+    }
+  }
+
+  .buffer {
+    background-color: white;
+  }
+
+  .rightPanel {
+    background-color: white;
+    padding: 3rem 1rem 1rem 1rem;
+    @media (min-width: 66rem) {
+      padding-top: 6rem;
+    }
+
+    .bx--dropdown__wrapper {
+      margin-top: 1.5rem;
+      @media (min-width: 42rem) {
+        max-width: 75%;
+      }
+    }
+
+    .op_helper-text {
+      color: #525252;
+      @include carbon--type-style("caption-01");
+      margin-top: 0.5rem;
+    }
+
+    p {
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.25rem;
+        letter-spacing: 0.16px;
+    }
+
+    .pa {
+        font-size: 0.875rem;
+        font-weight: 400;
+        line-height: 1.25rem;
+        letter-spacing: 0.16px;
+        margin-top: 0.75rem;
+    }
+
+    h2 {
+      color: #252525;
+      @include carbon--type-style("productive-heading-04");
+    }
+
+    h3 {
+      @include carbon--type-style("productive-heading-03");
+      margin-top: 1.25rem;
+    }
+
+    h4 {
+        @include carbon--type-style("productive-heading-02");
+        margin-top: 1.25rem;
+      }
+  }
+}

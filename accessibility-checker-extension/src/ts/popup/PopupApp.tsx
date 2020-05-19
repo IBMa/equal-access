@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 import React from "react";
 
 // import { Button } from "carbon-components-react";
@@ -21,31 +21,6 @@ import "./popup.scss";
 const purple_bee = "/assets/Bee_Logo@64px.png";
 
 export default class PopupApp extends React.Component {
-// handleButtonClick = () => {
-//     window.open(chrome.runtime.getURL("options.html"));
-//   };
-
-//   handleButtonClick = () => {
-//     window.open(chrome.runtime.getURL("options.html"));
-//   };
-
-//   async openSubpanel() {
-//     var script = `inspect($x('/html'));`;
-//     console.log("OPEN");
-//     chrome.devtools.inspectedWindow.eval(script, function (
-//       result,
-//       isException
-//     ) {
-//       if (isException) {
-//         console.error(isException);
-//       }
-//       if (!result) {
-//         console.log("Could not select element, it may have moved");
-//       }
-//       //take the focus back to the Issue row.
-//       //$("#" + issueRowId).focus();
-//     });
-//   }
 
   render() {
     const manifest = chrome.runtime.getManifest();
@@ -54,12 +29,15 @@ export default class PopupApp extends React.Component {
         <div style={{ display: "flex", flexWrap: "nowrap" }}>
           <div>
             <div className="popupTitle">
-              IBM <strong>Accessibility</strong><br />
-              Equal Access Accessibility Checker
+              IBM <strong>Accessibility</strong>
+              <br />
+              Equal Access Toolkit:
+              <br />
+              Accessibility Checker
             </div>
             <div className="versionDec">Version {manifest.version}</div>
           </div>
-          <div style={{ marginLeft: "6px", marginTop: "10px" }}>
+          <div style={{ marginLeft: "32px", marginTop: "10px" }}>
             <img
               src={purple_bee}
               width="36px"
@@ -87,19 +65,31 @@ export default class PopupApp extends React.Component {
 
         <div style={{ marginTop: "32px", display: "flex", fontSize: "14px" }}>
           <div style={{ flexGrow: 1 }}>
-            <a href={chrome.runtime.getURL("options.html")} target="_blank" rel="noopener noreferred">
+            <a
+              href={chrome.runtime.getURL("options.html")}
+              target="_blank"
+              rel="noopener noreferred"
+            >
               Options
             </a>
           </div>
 
           <div style={{ flexGrow: 1 }}>
-            <a href="https://github.com/IBMa/equal-access" target="_blank" rel="noopener noreferred">
+            <a
+              href="https://github.com/IBMa/equal-access"
+              target="_blank"
+              rel="noopener noreferred"
+            >
               Git Repo
             </a>
           </div>
           <div style={{ flexGrow: 1 }}>
-          <a href={chrome.runtime.getURL("UsingAC.html")} target="_blank" rel="noopener noreferred">
-                Docs
+            <a
+              href={chrome.runtime.getURL("UsingAC.html")}
+              target="_blank"
+              rel="noopener noreferred"
+            >
+              Docs
             </a>
           </div>
         </div>
