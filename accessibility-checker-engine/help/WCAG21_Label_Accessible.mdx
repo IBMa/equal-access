@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG21_Label_Accessible"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,14 +31,13 @@ Accessible name must match or contain the visible label text
 ## What to do
 
 * Provide an [accessible name value](https://www.w3.org/TR/wai-aria-1.1/#namecalculation) that matches or contains the visible label for this control. For example:
-```
-<button name="pageLink" aria-label="Next Page in the list">Next Page</button> 
 
-<label for="test2">License Number:</label>
-<input type="text" id="test2" aria-label="enter driver license number"/>
-
-<button name="lastPageLink" aria-label="last page">Last Page</button>
-```
+<CodeSnippet type="multi" light={true}>&lt;button name="pageLink" aria-label="Next Page in the list"&gt;Next Page&lt;/button&gt;
+    
+&lt;label for="test2"&gt;License Number:&lt;/label&gt;
+&lt;input type="text" id="test2" aria-label="enter driver license number"/&gt;
+    
+&lt;button name="lastPageLink" aria-label="last page"&gt;Last Page&lt;/button&gt;</CodeSnippet>
 
 </Column>
 </Row>

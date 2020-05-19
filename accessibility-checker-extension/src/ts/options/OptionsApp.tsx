@@ -77,7 +77,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
           selected_ruleset = rulesets[0];
         }
       }
-      console.log("---- archives---", archives, "---rulesets--", rulesets);
       self.setState({ archives, selected_archive, rulesets, selected_ruleset });
       self.save_options_to_storage(self.state);
     });
@@ -96,19 +95,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
-  //get ruleset from engine
-  //   getRulesets = async (archiveId: string) => {
-  //     let engineString = await OptionMessaging.sendToBackground("OPTIONS", {
-  //       command: "getEngine",
-  //       archiveId: archiveId,
-  //     });
-
-  //     var checker: any = {};
-  //     eval(engineString + "checker = new ace.Checker()");
-
-  //     return checker.rulesets;
-  //   };
-
   getRulesets = async (selected_archive: any) => {
     return selected_archive.policies;
   };
@@ -122,19 +108,18 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
   };
 
   handleArchiveSelect = async (item: any) => {
-    console.log("handleArchiveSelect", item);
     var rulesets = await this.getRulesets(item.selectedItem);
     var selected_ruleset = rulesets[0];
     this.setState({
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
+      show_notif: false
     });
   };
 
   handleRulesetSelect = (item: any) => {
-    console.log("handleRulesetSelect", item);
-    this.setState({ selected_ruleset: item.selectedItem });
+    this.setState({ selected_ruleset: item.selectedItem, show_notif: false });
   };
 
   handleSave = () => {
@@ -168,7 +153,8 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
               <h2>
                 IBM <strong>Accessibility</strong>
-                <br /> Equal Access Accessibility Checker
+                <br /> Equal Access Toolkit:
+                <br /> Accessibility Checker
               </h2>
               <div className="op_version" style={{ marginTop: "8px" }}>
                 Version {manifest.version}
@@ -207,7 +193,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               />
               <p className="op_helper-text">
                 For details on rule set changes between deployments, see{" "}
-                <a href="#">Release notes</a>.
+                <a href="https://github.com/IBMa/equal-access/releases" target="_blank" rel="noopener noreferred">Release notes</a>.
               </p>
               <h3>Supported rule sets</h3>
               <p>
@@ -230,11 +216,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 onChange={this.handleRulesetSelect}
               />
 
-              {/* <p className="op_helper-text">
-                Current selection is WCAG 2.1 AA: Rules that check the Web
-                Content Accessibility Guidelines 2.1 (WCAG) Level A and AA
-                requirements.
-              </p> */}
+      {selected_ruleset.description? (<p className="op_helper-text">{selected_ruleset.description}</p>):"" }
               {show_notif ? (
                 <div className="notification">
                   <InlineNotification

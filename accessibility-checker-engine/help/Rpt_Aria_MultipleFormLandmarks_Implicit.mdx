@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleFormLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -30,29 +30,27 @@ Each element with a `"form"` role must have a unique label that describes its pu
 
 ## What to do
 
-* For each element with a `"form"` role, either set the value of the `"aria-labelledby"` attribute of each form to the `"id"` of any visible text that appropriately and uniquely describes that form's purpose;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"form"` role.
+* For each element with a `"form"` role, either set the value of the `aria-labelledby` attribute of each form to the `id` value of any visible text that appropriately and uniquely describes that form's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"form"` role.
 
 For example:
 
-```
-<h2 id="na1"> New Account</h2>
-<form  aria-labelledby="na1">
-  <fieldset>
-    <legend>Personal information:</legend>
-    <label for="fname">First name:</label>
-    <input type="text" id="fname" name="fname" value="Ashley">
-    <label for="lname">Last name:</label><br>
-    <input type="text" id="lname" name="lname" value="Levy"><br><br>
-    <input type="submit" value="Submit">
-  </fieldset>
-</form>
-
-
-<div role="form" aria-label="Ship-to Address=">
+<CodeSnippet type="multi" light={true}>&lt;h2 id="na1"&gt; New Account&lt;/h2&gt;
+&lt;form  aria-labelledby="na1"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Personal information:&lt;/legend&gt;
+    &lt;label for="fname"&gt;First name:&lt;/label&gt;
+    &lt;input type="text" id="fname" name="fname" value="Ashley"&gt;
+    &lt;label for="lname"&gt;Last name:&lt;/label&gt;&lt;br&gt;
+    &lt;input type="text" id="lname" name="lname" value="Levy"&gt;&lt;br&gt;&lt;br&gt;
+    &lt;input type="submit" value="Submit"&gt;
+  &lt;/fieldset&gt;
+&lt;/form&gt;
+    
+    
+&lt;div role="form" aria-label="Ship-to Address="&gt;
 	...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

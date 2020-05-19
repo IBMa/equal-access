@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ApplicationLandmarkLabel"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,17 +31,16 @@ An element with an WAI-ARIA `"application"` role must have a label
 
 ## What to do
 
-* If there is visible text that appropriately describes the purpose of the content, set the element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"application"` role.
+* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"application"` role.
 
 For example:
-```
-   <h1 id="weather">Weather portlet</h1>
+
+<CodeSnippet type="multi" light={true}>   &lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
    ...
-   <div role="application" aria-labelledby="weather">
+   &lt;div role="application" aria-labelledby="weather"&gt;
    ...
-   </div>
-   ```
+   &lt;/div&gt;</CodeSnippet>
 
 
 </Column>

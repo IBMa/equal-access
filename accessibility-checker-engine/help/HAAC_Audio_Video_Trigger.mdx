@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Audio_Video_Trigger"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,14 +35,15 @@ Media using `<audio>` and / or `<video>` elements must have keyboard accessible 
 * If using custom audio and / or video controls, ensure they are made keyboard accessible by scripting;
 * OR check to ensure default playback controls provided by the browser allow easy keyboard navigation and control.
 For example:
-```<audio id="demo" src="audio.mp3"></audio>
-    <div>
-        <button onclick="document.getElementById('demo').play()">Play the Audio</button>
-        <button onclick="document.getElementById('demo').pause()">Pause the Audio</button>
-        <button onclick="document.getElementById('demo').volume+=0.1">Increase Volume</button>
-        <button onclick="document.getElementById('demo').volume-=0.1">Decrease Volume</button>
-    </div>
-```
+
+<CodeSnippet type="multi" light={true}>&lt;audio id="demo" src="audio.mp3"&gt;&lt;/audio&gt;
+    &lt;div&gt;
+        &lt;button onclick="document.getElementById('demo').play()"&gt;Play the Audio&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').pause()"&gt;Pause the Audio&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').volume+=0.1"&gt;Increase Volume&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').volume-=0.1"&gt;Decrease Volume&lt;/button&gt;
+    &lt;/div&gt;</CodeSnippet>
+
 </Column>
 </Row>
 </div>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Body_FirstASkips_Native_Host_Sematics"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -37,17 +37,16 @@ Web pages must provide a way to skip directly to the main content
  * OR, have a first link on each page that skips to the main content.
 
 For example:
-```
-<body>
-	<!-- ... -->
-	<div role="banner"><!-- Banner Content --></div>
-	<!-- ... -->
-	<div role="navigation"><!-- Navigation Menu --></div>
-	<!-- ... -->
-	<div role="main"><!-- Main Content --></div>
-	<!-- Remainder of page -->
-</body>
-```
+
+<CodeSnippet type="multi" light={true}>&lt;body&gt;
+	&lt;!-- ... --&gt;
+	&lt;div role="banner"&gt;&lt;!-- Banner Content --&gt;&lt;/div&gt;
+	&lt;!-- ... --&gt;
+	&lt;div role="navigation"&gt;&lt;!-- Navigation Menu --&gt;&lt;/div&gt;
+	&lt;!-- ... --&gt;
+	&lt;div role="main"&gt;&lt;!-- Main Content --&gt;&lt;/div&gt;
+	&lt;!-- Remainder of page --&gt;
+&lt;/body&gt;</CodeSnippet>
 
 
 </Column>

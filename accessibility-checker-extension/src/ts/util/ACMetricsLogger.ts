@@ -124,6 +124,10 @@ export class ACMetricsLogger {
         } catch (e) {
             console.error(e);
         }
-        return Promise.all(promises);
+        try {
+            return Promise.all(promises);
+        } catch (e) {
+            return;
+        }
     };
 };

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Input_LabelAfter"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,10 +34,9 @@ Checkbox and radio button elements must have the label after the element
 * Place the text of the label immediately after the checkbox or radio button element.
 
 For example:
-```
-<input id="chk1" name="chkgroup" type="checkbox"><label for="chk1">Option 1</label>
-<label><input name="chkgroup" type="checkbox">Option 1</label>
-```
+
+<CodeSnippet type="multi" light={true}>&lt;input id="chk1" name="chkgroup" type="checkbox"&gt;&lt;label for="chk1"&gt;Option 1&lt;/label&gt;
+&lt;label&gt;&lt;input name="chkgroup" type="checkbox"&gt;Option 1&lt;/label&gt;</CodeSnippet>
 
 </Column>
 </Row>

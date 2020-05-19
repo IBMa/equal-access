@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Img_LinkTextNotRedundant"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,13 +31,12 @@ When the text equivalent of an image inside or adjacent to a link is the same as
 
 ## What to do
 
-```
 * If a link has text and a redundant image, set the image `alt` attribute to `alt=“”` (null alt without any spaces);
 * OR If a link has text and an image that adds important information to the text, set the image `alt` attribute to convey the added information.
   (e.g. `<a><img alt="urgent">new mail</a>`);
 * OR If adjacent links have different targets but the same text, change the link text or the `alt` attribute on the image to distinguish the purpose of each link;
 * OR If adjacent links have the same target, combine them into a single link and set the image `alt` attribute to `alt=“”`.
-```
+
 
 
 </Column>

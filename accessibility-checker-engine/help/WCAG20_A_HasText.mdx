@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_A_HasText"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,11 +34,9 @@ Hyperlinks must have link text, a label or an image with a text alternative
 * Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
 * OR If it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
 
-```
-<h2 id="topic1">Breaking News</h2>
-<p>The central bank cut interest rates by half a percentage to protect economy.
-<a id="p1" href="news.html" aria-labelledby="p1 topic1">Read more...</a></p>
-```
+<CodeSnippet type="multi" light={true}>&lt;h2 id="topic1"&gt;Breaking News&lt;/h2&gt;
+&lt;p&gt;The central bank cut interest rates by half a percentage to protect economy.
+&lt;a id="p1" href="news.html" aria-labelledby="p1 topic1"&gt;Read more...&lt;/a&gt;&lt;/p&gt;</CodeSnippet>
 
 </Column>
 </Row>

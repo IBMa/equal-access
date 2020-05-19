@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_RegionLabel_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,16 +31,15 @@ Elements with a `"region"` role must have a label that describes their purpose
 
 ## What to do
 
-* If there is visible text that appropriately describes the region's purpose, set the region element's `"aria-labelledby"` attribute to the `"id"` value of that text (example below);
-* OR, use the `"aria-label"` attribute to add a label directly to the element with the `"region"` role.
+* If there is visible text that appropriately describes the region's purpose, set the region element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"region"` role.
 
 For example, the HTML `<section>` element has an implicit role of `"region"`:
-```
-<section aria-labelledby="log1">
-	<h3 id="log1">Real time log</h3>
+
+<CodeSnippet type="multi" light={true}>&lt;section aria-labelledby="log1"&gt;
+	&lt;h3 id="log1"&gt;Real time log&lt;/h3&gt;
 	This is the text contained within the landmark region...
-</section>
-```
+&lt;/section&gt;</CodeSnippet>
 
 
 </Column>

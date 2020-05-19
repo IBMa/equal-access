@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleComplementaryLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,20 +31,19 @@ All elements with the `"complementary"` role must have a unique label
 
 ## What to do
 
-* For each element with a `"complementary"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes that region's content;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"complementary"` role.
+* For each element with a `"complementary"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that region's content;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"complementary"` role.
 
 For example:
-```
-<h2 id="weather">Weather portlet</h2>
-<div role="complementary" aria-labelledby="weather">
-   ...
-</div>
 
-<div role="complementary" aria-label="Stock ticker portlet">
+<CodeSnippet type="multi" light={true}>&lt;h2 id="weather"&gt;Weather portlet&lt;/h2&gt;
+&lt;div role="complementary" aria-labelledby="weather"&gt;
    ...
-</div>
-```
+&lt;/div&gt;
+    
+&lt;div role="complementary" aria-label="Stock ticker portlet"&gt;
+   ...
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

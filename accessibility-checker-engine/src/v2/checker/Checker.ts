@@ -27,6 +27,7 @@ export type Ruleset = {
     id: string,
     name: string,
     category: eRuleCategory,
+    description: string,
     checkpoints: Array<{
         num: string,
         // JCH: add name of checkpoint and summary description

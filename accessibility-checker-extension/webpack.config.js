@@ -38,6 +38,7 @@ module.exports = {
         devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
         devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
+        usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
         ...contentScripts,
     },
     output: {
@@ -110,6 +111,13 @@ module.exports = {
             filename: 'reports.html',
             title: 'Accessibility Checker Extension',
             chunks: ['reports']
+        }),
+        new HtmlWebpackPlugin({
+            template: path.join(sourceRootPath, 'html', 'usingAC.html'),
+            inject: 'body',
+            filename: 'usingAC.html',
+            title: 'Accessibility Checker Extension - User Guide',
+            chunks: ['usingAC']
         }),
         new CopyWebpackPlugin([
             {

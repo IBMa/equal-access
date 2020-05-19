@@ -4,7 +4,7 @@ var webdriver = require('selenium-webdriver');
 var chrome = require('selenium-webdriver/chrome');
 
 var path = require("path");
-var AAT = require("@ibma/aat");
+const aChecker = require("accessibility-checker");
 var expect = require("chai").expect;
 
 var browser;
@@ -19,9 +19,16 @@ before(function(done) {
         spath = path.join(spath, "chromedriver");
         
         var service = new chrome.ServiceBuilder(spath).build();
+
+        const options = new chrome.Options();
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless");
+        options.addArguments('--ignore-certificate-errors')
+
         chrome.setDefaultService(service);
         browser = new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
+        .setChromeOptions(options)
         .build();
         expect(typeof browser).to.not.equal("undefined");
         done();
@@ -41,9 +48,9 @@ describe("Hello World Basics", function () {
         var sample = path.join(__dirname, "..", "sample", "Hello.html");
         browser.get("file://"+sample).then(function() {
             // Perform the accessibility scan using the IBMaScan Wrapper
-            AAT.getCompliance(browser, "HOME", function (data, doc) {
+            aChecker.getCompliance(browser, "HOME", function (data, doc) {
                 try {
-                    expect(AAT.assertCompliance(data)).to.equal(0, AAT.stringifyResults(data));
+                    expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyResults(data));
                     done();
                 } catch (e) {
                     done(e);
@@ -55,9 +62,9 @@ describe("Hello World Basics", function () {
     it("Hompage, Show Card", function (done) {
         browser.findElement({"id": "clickMe"}).click().then(function() {
             // Perform the accessibility scan using the IBMaScan Wrapper
-            AAT.getCompliance(browser, "HOME_CARD", function (data, doc) {
+            aChecker.getCompliance(browser, "HOME_CARD", function (data, doc) {
                 try {
-                    expect(AAT.assertCompliance(data)).to.equal(0, AAT.stringifyResults(data));
+                    expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyResults(data));
                     done();
                 } catch (e) {
                     done(e);

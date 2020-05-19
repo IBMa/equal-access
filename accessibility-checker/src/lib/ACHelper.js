@@ -161,9 +161,9 @@ let ace;
 
     function isSelenium(content) {
         if (content && content.constructor) {
-            return content.constructor.toString().indexOf("WebDriver") !== -1 ||
+            return content.constructor.toString().indexOf("Driver") !== -1 ||
                 // check required for selenium >= 3.0.1
-                (content.constructor.name && content.constructor.name.indexOf("WebDriver") !== -1);
+                (content.constructor.name && content.constructor.name.indexOf("Driver") !== -1);
         }
         return false;
     }
@@ -1125,24 +1125,29 @@ try {
                   console.log(`${i}: ${msg.args[i]}`);
               });
         }
+        let err = null,
+            retVal = null;
         async function nav() {
             // await page.goto('https://example.com');
-            if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
-                let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
-                await page.goto(urlStr);
-            } else {
-                try {
+            try {
+                if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
+                    // await page.goto(`data:text/html,encodeURIComponent(${URLorLocalFileorContent})`, { waitUntil: 'networkidle0' });
+                    let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
+                    await page.goto(urlStr);
+                } else {
                     await page.goto(URLorLocalFileorContent);
-                } catch (e) {
-                    console.log(e.message, URLorLocalFileorContent);
-                    return null;
                 }
+            } catch (e) {
+                err = `${e.message} ${URLorLocalFileorContent}`;
+                return null;
             }
             return page;
         }
         try {
-            return await nav();
+            retVal = await nav();
         } catch (e) {
+        }
+        if (!retVal) {
             // Try to restart if page fails
             browser = await aChecker.getBrowserChrome(true);
             page = await browser.newPage();
@@ -1150,8 +1155,12 @@ try {
                 for (let i = 0; i < msg.args.length; ++i)
                   console.log(`${i}: ${msg.args[i]}`);
               });
-            return await nav();
+            retVal = await nav();
         }
+        if (retVal === null) {
+            console.log("[Internal Error:load content]", err);
+        }
+        return retVal;
     };
 
     /**

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_OrphanedContent_Native_Host_Sematics"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -32,7 +32,6 @@ All content must reside within an element with a landmark role
 ## What to do
 
 * Enclose the content within an HTML5 sectioning element with an implicit landmark role (e.g. `<main>Content</main>`);
-
 * OR use the `"role"` attribute on an enclosing element to specify an appropriate WAI-ARIA landmark value (e.g. `<div role="contentinfo">...</div>`).
 
 

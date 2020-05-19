@@ -230,7 +230,7 @@ aChecker.getCompliance(testDataFileContent, testFile, function (results) {
 });
 ```
 
-Refer to [Examples](https://github.com/IBMa/equal-access/karma-accessibility-checker/tree/master/boilerplates) for sample usage scenarios.
+Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/karma-accessibility-checker/boilerplates) for sample usage scenarios.
 
 ## API
 
@@ -514,7 +514,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
         browsers: ['ChromeCustom', 'PhantomJSCustom'],
         customLaunchers: {
             ChromeCustom: {
-                base: 'Chrome',
+                base: 'ChromeHeadless',
                 flags: ['--disable-web-security']
             },
             PhantomJSCustom: {

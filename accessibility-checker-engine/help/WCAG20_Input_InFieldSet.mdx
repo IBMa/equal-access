@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Input_InFieldSet"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,20 +34,19 @@ Groups of logically related input elements should be contained within a `<fields
  * Use a `<fieldset>` element to group the related input elements.
 
 For example:
-```
-<form action="..." method="post">
-    <fieldset>
-        <legend>Legend text: Personal Information</legend>
-        <p>Fieldset text: Please enter your personal information.</p>
 
-        <label for="fn1">First Name</label>
-        <input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name">
-
-        <label for="ln1">Last Name</label>
-        <input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name">
-    </fieldset>
-</form>
-```
+<CodeSnippet type="multi" light={true}>&lt;form action="..." method="post"&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Legend text: Personal Information&lt;/legend&gt;
+        &lt;p&gt;Fieldset text: Please enter your personal information.&lt;/p&gt;
+    
+        &lt;label for="fn1"&gt;First Name&lt;/label&gt;
+        &lt;input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name"&gt;
+    
+        &lt;label for="ln1"&gt;Last Name&lt;/label&gt;
+        &lt;input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name"&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</CodeSnippet>
 
 </Column>
 </Row>

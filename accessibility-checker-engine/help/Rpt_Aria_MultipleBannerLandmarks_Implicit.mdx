@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleBannerLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -30,20 +30,19 @@ Each element with a `"banner"` role must have a unique label that describes its 
 
 ## What to do
 
-* For each `<header>` element that is a descendant of the `<body>` element, and each element with `role="banner"`, either set the value of the `"aria-labelledby"` attribute of each banner to the `"id"` of any visible text that appropriately and uniquely describes that banner's purpose;
+* For each `<header>` element that is a descendant of the `<body>` element, and each element with `role="banner"`, either set the value of the `aria-labelledby` attribute of each banner to the `id` value of any visible text that appropriately and uniquely describes that banner's purpose;
 * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"banner"` role.
 
 For example:
-```
-<h1 id="weather">Weather portlet</h1>
-<header aria-labelledby="weather">
-   ...
-</header>
 
-<div role="banner" aria-label="Stock ticker portlet">
+<CodeSnippet type="multi" light={true}>&lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+&lt;header aria-labelledby="weather"&gt;
    ...
-</div>
-```
+&lt;/header&gt;
+    
+&lt;div role="banner" aria-label="Stock ticker portlet"&gt;
+   ...
+&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -283,6 +283,8 @@ var aChecker = {
         return result;
     };
 
+    aChecker.getRulesets = () => new ace.Checker().rulesets;
+
     /**
      * This function is responsible for running the scan by calling the IBMa.validate function with the
      * provided content.

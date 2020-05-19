@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: IBMA_Focus_MultiTab"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -10,35 +10,28 @@ import { Tag } from "carbon-components-react";
 
 ## Who does this affect?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with tremor or other movement disorders
 
 ## Why is this important?
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+The primary keyboard navigation convention uses Tab and `Shift+Tab` key commands to move focus from one UI component to another. Other keys (primarily the arrow keys) move focus within components comprised of multiple focusable elements. Authors must follow this convention and provide no more than one tab stop per component (providing keyboard focus).
 
 </Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
 
-## Image does not have a short text alternative
-Images that convey meaning must have a short text alternative.
+## The component has more than one tabbable element
+The component must have no more than one tabbable element
 
-[IBM 1.1.1 Non-text content]() | [WCAG technique H37]()
+[IBM 2.1.1 Keyboard](https://www.ibm.com/able/guidelines/ci162/keyboard.html) | [The Tab Sequence](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_general_between)
 
 <div id="locSnippet"></div>
 
 ## What to do
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+* Modify the widget’s keyboard navigation model to contain only one tab stop to set focus in or on the widget. (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
 
 
 </Column>

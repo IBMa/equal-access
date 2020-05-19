@@ -2,9 +2,15 @@
 
 # equal-access
 
-Note: This tool release is currently beta. Some links may not resolve.
-
 This Git repository hosts tools that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit) and supporting components.
+
+## Overview
+
+This README covers topics for developers. For non-developer usage, see the following instruction for individual tools:
+* [accessibility-checker-extension for Chrome](https://chrome.google.com/webstore/detail/ibm-equal-access-accessib/lkcagbfjnkomcinoddgooolagloogehp) : web browser extensions that adds automated accessibility checking capabilities to Chrome and other browser that support the Chromium web-extension API
+* [accessibility-checker-extension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extensions that adds automated accessibility checking capabilities to Firefox
+* [accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing for Node-based test environments
+* [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
 
 
 ## Getting started

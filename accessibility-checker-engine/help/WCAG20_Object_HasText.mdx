@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Object_HasText"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -22,8 +22,8 @@ Alternative descriptions are important for users whose browsers do not support t
 
 <div id="locLevel"></div>
 
-## An `<object>` element does not have a text alternative 
-`<object>` elements must have a text alternative that describes the content rendered by the object 
+## An `<object>` element does not have a text alternative
+`<object>` elements must have a text alternative that describes the content rendered by the object
 
 [IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique H53](https://www.w3.org/WAI/WCAG21/Techniques/html/H53)
 
@@ -36,11 +36,10 @@ Alternative descriptions are important for users whose browsers do not support t
 
 For example:
 
-``` <object classid="java:Press.class" width="500" height="500" title="Java applet: how temperature affects pressure.">
-<applet code="java:Press.class" width="500" height="500"> As temperature increases the velocity of the molecules in the balloon...
-</applet>
-</object>
-```
+<CodeSnippet type="multi" light={true}> &lt;object classid="java:Press.class" width="500" height="500" title="Java applet: how temperature affects pressure."&gt;
+&lt;applet code="java:Press.class" width="500" height="500"&gt; As temperature increases the velocity of the molecules in the balloon...
+&lt;/applet&gt;
+&lt;/object&gt;</CodeSnippet>
 
 </Column>
 </Row>

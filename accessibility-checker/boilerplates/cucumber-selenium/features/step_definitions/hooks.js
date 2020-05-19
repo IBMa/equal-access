@@ -1,5 +1,4 @@
 // Load required libraries
-require("@ibma/aat");
 
 const webdriver = require('selenium-webdriver');
 
@@ -24,11 +23,17 @@ function getBrowserChrome() {
     let spath = require('chromedriver').path;
     spath = path.join(spath, "..", "..", "..", "bin", "chromedriver");
 
+    const options = new chrome.Options();
+    options.addArguments("--disable-dev-shm-usage");
+    options.addArguments("--headless");
+    options.addArguments('--ignore-certificate-errors')
+
     let service = new chrome.ServiceBuilder(spath).build();
     chrome.setDefaultService(service);
 
     return new webdriver.Builder()
         .withCapabilities(webdriver.Capabilities.chrome())
+        .setChromeOptions(options)
         .build();
 }
 
@@ -57,7 +62,7 @@ const {BeforeAll, AfterAll, Before} = require("cucumber");
 
         /*
         return new Promise(function(resolve, reject) {
-            AAT.onRunComplete(resolve);
+            aChecker.onRunComplete(resolve);
         });
         */
     })

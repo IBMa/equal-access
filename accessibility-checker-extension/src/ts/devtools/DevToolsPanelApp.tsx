@@ -159,6 +159,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async onReport(message: any): Promise<any> {
         let report = message.report;
+        // JCH add itemIdx to report (used to be in message.report)
+        report.results.map((result:any, index:any) => {
+            result["itemIdx"] = index;
+        })
         let tabId = message.tabId;
         if (!report) return;
 
@@ -207,7 +211,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             var filename = "report.html";
-            var fileContent = "data:text/plain;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+            var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
             var a = document.createElement('a');
             a.href = fileContent;
             a.download = filename;
@@ -333,7 +337,7 @@ selectPath("${item.path.dom}");
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             />
-                        <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                        <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
                             <main>
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 

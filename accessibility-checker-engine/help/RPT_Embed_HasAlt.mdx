@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: RPT_Embed_HasAlt"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,9 +36,8 @@ Provide alternative content for `<embed>` elements
  * Provide a short alternative text description that represents the function of the `<embed>` element's content. Use a functional label based on the context in which the object is used, rather than a visual description. Alternative content can be provided with the `alt` attribute.
 
 For example:
-```
-<embed src="speech.au" alt="Last week's speech"></embed>
-```
+
+<CodeSnippet type="single" light={true}>&lt;embed src="speech.au" alt="Last week's speech"&gt;&lt;/embed&gt;</CodeSnippet>
 
 </Column>
 </Row>

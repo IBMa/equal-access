@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Elem_UniqueAccessKey"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,11 +35,11 @@ Setting the `accesskey` attribute on elements allows quick access to the element
 * Update the `accesskey` attribute on the element with a unique non-empty value.
 
 For example:
- ``` 
- <button type="button" name="testButton1" id="button1" accesskey="a">Accept</button>
- <button type="button" name="testButton2" id="button2" accesskey="r">Reject</button> 
- ```
-        		
+
+<CodeSnippet type="multi" light={true}> &lt;button type="button" name="testButton1" id="button1" accesskey="a"&gt;Accept&lt;/button&gt;
+ &lt;button type="button" name="testButton2" id="button2" accesskey="r"&gt;Reject&lt;/button&gt;
+ </CodeSnippet>
+
 </Column>
 </Row>
 </div>

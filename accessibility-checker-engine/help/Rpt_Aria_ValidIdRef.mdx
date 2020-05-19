@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_ValidIdRef"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,13 +34,12 @@ The WAI-ARIA property must reference a non-empty unique id of an existing elemen
  * Update the WAI-ARIA property value with the unique `id` value of a valid visible element.
 
 For example:
-```
-<form action="" method="post">
-      <label for="ln1">Last Name</label>
-      <input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name" aria-describedby="ln2">
-</form>
-<div id="ln2" role="tooltip">Last Name must be alpha only characters</div>
-```
+
+<CodeSnippet type="multi" light={true}>&lt;form action="" method="post"&gt;
+      &lt;label for="ln1"&gt;Last Name&lt;/label&gt;
+      &lt;input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name" aria-describedby="ln2"&gt;
+&lt;/form&gt;
+&lt;div id="ln2" role="tooltip"&gt;Last Name must be alpha only characters&lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleContentinfoLandmarks_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -29,19 +29,18 @@ All elements with `"contentinfo"` role must have unique labels
 
 ## What to do
 
-* For each element with a `"contentinfo"` role, either set the value of the `"aria-labelledby"` attribute to the `"id"` of any visible text that appropriately and uniquely describes that region's content;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"contentinfo"` role.
+* For each element with a `"contentinfo"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that region's content;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"contentinfo"` role.
 
 For example:
-```
-<div role="contentinfo" aria-label="Weather portlet">
-...
-</div>
 
-<footer aria-label="Site copyright, privacy and accessibility information">
+<CodeSnippet type="multi" light={true}>&lt;div role="contentinfo" aria-label="Weather portlet"&gt;
 ...
-</footer>
-```
+&lt;/div&gt;
+    
+&lt;footer aria-label="Site copyright, privacy and accessibility information"&gt;
+...
+&lt;/footer&gt;</CodeSnippet>
 
 
 </Column>

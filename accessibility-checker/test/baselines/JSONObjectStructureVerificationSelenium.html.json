@@ -1,108 +1,108 @@
 {
     "nls": {
         "HAAC_Application_Role_Text": {
-            "0": "Non-decorative static text or images within \"application\" role must receive accessible focus.",
+            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
             "Pass_0": "Rule Passed"
         },
         "HAAC_Aria_Native_Host_Sematics": {
-            "0": "The WAI-ARIA role(s) and/or attribute(s) must be valid for the relevant element.",
+            "0": "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
             "Pass_0": "Rule Passed"
         },
         "HAAC_BackgroundImg_HasTextOrTitle": {
-            "0": "Verify that important background image information is conveyed when the system is in high contrast mode.",
+            "0": "Background images that convey important information must have a text alternative that describes the image",
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA": {
-            "0": "Contrast of foreground and background must be sufficient to meet WCAG AA requirements.",
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
-            "0": "Contrast of foreground and background must be sufficient to meet WCAG AA requirements.",
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed"
         },
         "RPT_Block_ShouldBeHeading": {
-            "0": "Use HEADER element to define text that looks like a heading where appropriate.",
+            "0": "Heading text must use a heading element",
             "Pass_0": "Rule Passed"
         },
         "RPT_Blockquote_WrapsTextQuote": {
-            "0": "Quotations should be marked with Q or BLOCKQUOTE elements.",
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
             "Pass_0": "Rule Passed"
         },
         "RPT_Elem_UniqueId": {
-            "0": "Element ids must be unique within the document.",
-            "Fail_2": "The {0} element has the id \"{1}\" that is already in use.",
+            "0": "Element 'id' attribute values must be unique within a document",
+            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use",
             "Pass_0": "Rule Passed"
         },
         "RPT_Header_HasContent": {
-            "0": "Provide descriptive headings for Web page sections.",
+            "0": "Heading elements must provide descriptive text",
             "Pass_0": "Rule Passed"
         },
         "RPT_Headers_FewWords": {
-            "0": "Make sure HEADER elements are used as a heading for a section and not used to format text for presentation.",
+            "0": "Heading elements must not be used for presentation",
             "Pass_0": "Rule Passed"
         },
         "RPT_Html_SkipNav": {
-            "0": "Provide a mechanism to bypass blocks of content that are repeated on multiple Web pages.",
+            "0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
             "Pass_0": "Rule Passed"
         },
         "RPT_List_UseMarkup": {
-            "0": "Use proper HTML LIST elements to create lists.",
+            "0": "Use proper HTML list elements to create lists",
             "Pass_0": "Rule Passed"
         },
         "RPT_Text_SensoryReference": {
-            "0": "Usage of sensory words must be meaningful to users who may not have sensory perception of size, sound, shape, or location.",
+            "0": "Instructions must be meaningful without shape or location words",
             "Pass_0": "Rule Passed"
         },
         "RPT_Title_Valid": {
-            "0": "Provide a descriptive TITLE for Web pages.",
+            "0": "Page <title> should be a descriptive title, rather than a filename",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_MissingKeyboardHandler": {
-            "0": "Keyboard handlers must be provided",
+            "0": "Interactive WAI_ARIA UI components must provide keyboard access",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
-            "0": "All content must reside within a HTML5 Sectioning element, WAI-ARIA landmark or labelled region role.",
+            "0": "All content must reside within an element with a landmark role",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
-            "0": "An element with WAI-ARIA 'role' must contain required children.",
+            "0": "An element with a WAI-ARIA role must contain required children",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_ValidRole": {
-            "0": "Elements that use 'role' must reference a valid WAI-ARIA role.",
+            "0": "Elements must have a valid 'role' per WAI-ARIA specification",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_A_HasText": {
-            "0": "Hyperlinks must contain link text or an image with alt text.",
-            "Pass_0": "Hyperlink contains content that is readable by assistive technologies."
-        },
+            "0": "Hyperlinks must have a text description of their purpose",
+            "Pass_0": "Hyperlink has a description of its purpose"
+         },
         "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
-            "0": "Check that the description of the first hyperlink communicates that it links to the main content.",
+            "0": "The description of a hyperlink used to skip content must communicate where it links to",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
-            "0": "The page must provide a link to skip directly to the main page content as the first link on each page or use WAI-ARIA landmarks.",
+            "0": "Pages must provide a way to skip directly to the main content",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Doc_HasTitle": {
-            "0": "The page should have a title that correctly identifies the subject of the page.",
+            "0": "The page should have a title that correctly identifies the subject of the page",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Elem_Lang_Valid": {
-            "0": "Lang and/or xml:lang attribute on any element on the page to identify change in language must conform to BCP: 47.",
+            "0": "The language of content must be specified in accordance with BCP 47",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Html_HasLang": {
-            "0": "Page must identify the default language of the document with a lang attribute",
-            "Pass_0": "Page language detected as {0}"
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Pass_0": "Page language detected as \"{0}\""
         },
         "WCAG20_Text_Emoticons": {
-            "0": "Provide text alternatives for emoticons.",
+            "0": "Emoticons must have a short text alternative that describes their purpose",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Text_LetterSpacing": {
-            "0": "Use CSS 'letter-spacing' to control spacing within a word.",
+            "0": "Use CSS 'letter-spacing' to control spacing within a word",
             "Pass_0": "Rule Passed"
         }
     },
@@ -117,7 +117,7 @@
                 "width": 2700
             },
             "category": "Accessibility",
-            "message": "The div element has the id \"firstDiv\" that is already in use.",
+            "message": "The <div> element has the id \"firstDiv\" that is already in use",
             "messageArgs": [
                 "div",
                 "firstDiv"
@@ -146,7 +146,7 @@
                 "width": 2732
             },
             "category": "Accessibility",
-            "message": "Page language detected as en",
+            "message": "Page language detected as \"en\"",
             "messageArgs": [
                 "en"
             ],
@@ -1918,7 +1918,7 @@
                 "width": 112
             },
             "category": "Accessibility",
-            "message": "Hyperlink contains content that is readable by assistive technologies.",
+            "message": "Hyperlink has a description of its purpose",
             "messageArgs": [],
             "path": {
                 "aria": "/document[1]/navigation[1]/link[1]",

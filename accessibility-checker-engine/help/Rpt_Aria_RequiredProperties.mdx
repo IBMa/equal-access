@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredProperties"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,22 +31,20 @@ When using a WAI-ARIA role on an element, the required attributes for that role 
 
 ## What to do
 
-
 * Define the missing state or property attributes for the element according to its role.
 
 The following example shows all the required properties defined for the `scrollbar` role:
-```
- <div id="content1">Lorem ipsum ...</div>
-   <div
+
+<CodeSnippet type="multi" light={true}> &lt;div id="content1"&gt;Lorem ipsum ...&lt;/div&gt;
+   &lt;div
       role="scrollbar"
       aria-controls="content1"
       aria-orientation="vertical"
       aria-valuemax="100"
       aria-valuemin="0"
-      aria-valuenow="25">
-       <div class="scrollhandle"></div>
-   </div>
-```
+      aria-valuenow="25"&gt;
+       &lt;div class="scrollhandle"&gt;&lt;/div&gt;
+   &lt;/div&gt;</CodeSnippet>
 
 </Column>
 </Row>

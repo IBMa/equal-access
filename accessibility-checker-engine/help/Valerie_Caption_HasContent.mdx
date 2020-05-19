@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Valerie_Caption_HasContent"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -33,16 +33,15 @@ A `<caption>` element for a `<table>` element must contain descriptive text
 * Add descriptive text to the `<caption>` element.
 
 For example:
-```
-<table id="data_table1" border="1">
-<caption>Boys and Girls in Elementary School Classes</caption>
-	<tr>
-		<th scope="col">Class</th>
-		<th scope="col"># of Boys</th>
-		<th scope="col"># of Girls</th>
-	</tr>
-</table>
-```
+
+<CodeSnippet type="multi" light={true}>&lt;table id="data_table1" border="1"&gt;
+&lt;caption&gt;Boys and Girls in Elementary School Classes&lt;/caption&gt;
+	&lt;tr&gt;
+		&lt;th scope="col"&gt;Class&lt;/th&gt;
+		&lt;th scope="col"&gt;# of Boys&lt;/th&gt;
+		&lt;th scope="col"&gt;# of Girls&lt;/th&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</CodeSnippet>
 
 </Column>
 </Row>

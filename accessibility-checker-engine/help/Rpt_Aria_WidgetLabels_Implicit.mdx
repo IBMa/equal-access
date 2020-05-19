@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_WidgetLabels_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,9 +38,8 @@ Interactive component must have a programatically associated name
 
 The following code snippet shows a tree widget labelled with an `aria-labelledby` attribute to reference the heading text:
 
-   ```<h1 id="contents">Table of contents</h1>
-   <div role="tree" aria-labelledby="contents" tabindex="0">...</div>
-   ```
+<CodeSnippet type="multi" light={true}>&lt;h1 id="contents"&gt;Table of contents&lt;/h1&gt;
+&lt;div role="tree" aria-labelledby="contents" tabindex="0"&gt;...&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_OneBannerInSiblingSet_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,13 +34,12 @@ There must be only one element with `"banner"` role used on the page
 * Remove `"banner"` role from all but one element. (The`<header>` element has an implicit role of banner when it is a descendent of the body element.)
 
 For example:
-```
- <body>
-	<div role="banner">banner content...</div>
-	<div role="search">Search widget</div>
-	<div role="contentinfo">Copyright information...</div>
-</body>
-```
+
+<CodeSnippet type="multi" light={true}> &lt;body&gt;
+	&lt;div role="banner"&gt;banner content...&lt;/div&gt;
+	&lt;div role="search"&gt;Search widget&lt;/div&gt;
+	&lt;div role="contentinfo"&gt;Copyright information...&lt;/div&gt;
+&lt;/body&gt;</CodeSnippet>
 
 </Column>
 </Row>

@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Table_CapSummRedundant"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,16 +34,16 @@ The table summary must not duplicate the caption
   * If the table caption describes the table purpose and structure fully, remove the summary;
   * OR if information beyond the caption is needed, write a summary that describes the table structure without duplicating information in the caption. The summary should be referenced with an `aria-describedby` attribute.  The `summary` attribute is obsolete in HTML5.
 
-```
-<p id="table1_summary">
-    The age demographics of each North American country includes age structures from 0-14 years, 15-64 years, and 65 years and older.
-</p>
+  For example:
 
-<table aria-describedby="table1_summary">
-    <caption>Age Demographics of North American Countries</caption>
+<CodeSnippet type="multi" light={true}>&lt;p id="table1_summary"&gt;
+    The age demographics of each North American country includes age structures from 0-14 years, 15-64 years, and 65 years and older.
+&lt;/p&gt;
+    
+&lt;table aria-describedby="table1_summary"&gt;
+    &lt;caption&gt;Age Demographics of North American Countries&lt;/caption&gt;
       . . .
-</table>
-```
+&lt;/table&gt;</CodeSnippet>
 
 </Column>
 </Row>

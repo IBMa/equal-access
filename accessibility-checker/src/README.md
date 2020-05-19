@@ -164,7 +164,7 @@ aChecker.getCompliance(testDataFileContent, testLabel).then((results) => {
 });
 ```
 
-Refer to [Examples](https://github.com/IBMa/equal-access-boilerplates) for sample usage scenarios.
+Refer to [Examples](https://github.com/IBMa/equal-access/tree/master/accessibility-checker/boilerplates) for sample usage scenarios.
 
 ## APIs
 

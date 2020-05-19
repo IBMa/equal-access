@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Input_ExplicitLabel"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -32,11 +32,8 @@ Each UI control must have an associated label
 ## What to do
 
 * Add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
-
 * OR put the UI element inside a visible `<label>` element;
-
 * OR add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
-
 * OR only if the design cannot have a visible label, use the `title` attribute to provide a label.
 
 

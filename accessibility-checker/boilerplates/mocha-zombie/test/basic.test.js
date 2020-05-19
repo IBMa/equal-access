@@ -2,12 +2,12 @@
 
 var path = require("path");
 var zombie = require("zombie");
-var AAT = require("@ibma/aat");
+const aChecker = require("accessibility-checker");
 var expect = require("chai").expect;
 var browser = new zombie();
 
 /** Temporary solution for output until reporting is completed */
-AAT.stringifyConsole = function(data) {
+aChecker.stringifyConsole = function(data) {
     var s = "\n";
     data.reports && data.reports.forEach(function(report) {
         report.issues.forEach(function(issue) {
@@ -27,8 +27,8 @@ describe("Hello World Basics", function () {
         var sample = path.join(__dirname, "..", "sample", "Hello.html");
         browser.visit("file://"+sample, function() {
             // Perform the accessibility scan using the IBMaScan Wrapper
-            AAT.getCompliance(browser.document, "HOME", function (data, doc) {
-                expect(AAT.assertCompliance(data)).to.equal(0, AAT.stringifyConsole(data));
+            aChecker.getCompliance(browser.document, "HOME", function (data, doc) {
+                expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyConsole(data));
                 done();
             });
         });
@@ -37,8 +37,8 @@ describe("Hello World Basics", function () {
     it("Hompage, Show Card", function (done) {
         browser.clickLink("#clickMe", function() {
             // Perform the accessibility scan using the IBMaScan Wrapper
-            AAT.getCompliance(browser.document, "HOME_CARD", function (data, doc) {
-                expect(AAT.assertCompliance(data)).to.equal(0, AAT.stringifyConsole(data));
+            aChecker.getCompliance(browser.document, "HOME_CARD", function (data, doc) {
+                expect(aChecker.assertCompliance(data)).to.equal(0, aChecker.stringifyConsole(data));
                 done();
             });
         });

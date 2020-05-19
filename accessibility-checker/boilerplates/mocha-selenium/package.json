@@ -7,10 +7,10 @@
     "test": "mocha test/*.test.js"
   },
   "engines": {
-    "node": "4.4.x"
+    "node": "10 || 12"
   },
   "devDependencies": {
-    "accessibility-checker": "^1.0.9",
+    "accessibility-checker": "^3.0.1",
     "chai": "^3.5.0",
     "chromedriver": "^78.0.1",
     "mocha": "^3.0.2",

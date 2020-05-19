@@ -7,7 +7,7 @@
     "test": "node_modules/jest/bin/jest.js test/*.test.js"
   },
   "engines": {
-    "node": "12.13.x"
+    "node": "10 || 12"
   },
   "jest": {
     "setupFilesAfterEnv": [
@@ -15,7 +15,7 @@
     ]
   },
   "devDependencies": {
-    "accessibility-checker": "^1.0.9",
-    "jest": "^24.9.0"
+    "accessibility-checker": "^3.0.1",
+    "jest": "^26.0.1"
   }
 }

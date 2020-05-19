@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Img_PresentationImgHasNonNullAlt"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,7 +34,8 @@ Image designated as decorative must have a null text alternative
 Set the `alt` attribute to an empty (or null) string (i.e., `<img alt="">`) for images with `role="presentation"` or `role="none"`.
 
 Example:
-```<img src="demomovie.gif" role="presentation" alt="" />```
+
+<CodeSnippet type="single" light={true}>&lt;img src="demomovie.gif" role="presentation" alt="" /&gt;</CodeSnippet>
 
 </Column>
 </Row>

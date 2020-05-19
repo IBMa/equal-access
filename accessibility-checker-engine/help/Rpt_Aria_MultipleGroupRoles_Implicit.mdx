@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleGroupRoles_Implicit"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -31,21 +31,19 @@ All elements with a `"group"` role must have unique labels
 
 ## What to do
 
-* For each element with a `"group"` role, either set the value of the `"aria-labelledby"` attribute of each group to the `"id"` of any visible text that appropriately and uniquely describes that group's purpose;
-* OR, use the `"aria-label"` attribute to add an invisible, unique, non-empty label to each element with the `"group"` role.
+* For each element with a `"group"` role, either set the value of the `aria-labelledby` attribute of each group to the `id` value of any visible text that appropriately and uniquely describes that group's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"group"` role.
 
 For example:
-```
-<h2 id="stories">Breaking News Stories</h2>
-<div role="group" aria-labelledby="stories">
-...
-</div>
 
-
-<div role="group" aria-label="Market outlook stories">
+<CodeSnippet type="multi" light={true}>&lt;h2 id="stories"&gt;Breaking News Stories&lt;/h2&gt;
+&lt;div role="group" aria-labelledby="stories"&gt;
 ...
-</div>
-```
+&lt;/div&gt;
+    
+&lt;div role="group" aria-label="Market outlook stories"&gt;
+...
+&lt;/div&gt;</CodeSnippet>
 
 
 </Column>

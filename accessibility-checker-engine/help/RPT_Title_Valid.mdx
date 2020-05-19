@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: RPT_Title_Valid"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -35,12 +35,11 @@ Page `<title>` should be a descriptive title, rather than a filename
  * Change the text in the `<title>` element to a meaningful description of the page purpose.  A filename is not an appropriate title for a Web page. 
  
  For example:
-```
-<html lang="en">
-<head>
-    <title>IBM Accessibility</title>
-</head>
-```
+ 
+<CodeSnippet type="multi" light={true}>&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;title&gt;IBM Accessibility&lt;/title&gt;
+&lt;/head&gt;</CodeSnippet>
 
 </Column>
 </Row>

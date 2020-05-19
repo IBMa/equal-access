@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: RPT_Table_DataHeadingsAria"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,8 +34,8 @@ Data table must identify headers
 ## What to do
 
  * If this is a simple data table, use the `<th>` element to identify headers in the first row;
- * OR if this is complex data table, add the `"scope"` attribute to the `<th>` element to identify headers and define the scope of the header for each data cell;
- * OR if this is a complex table with multiple rows or columns as headers, use the `"id"` attribute with the `<th>` element and the `"headers"` attribute with the `<td>` element to identify multiple headers for each data cell (e.g. `<td headers="h1 h2">`);
+ * OR if this is complex data table, add the `scope` attribute to the `<th>` element to identify headers and define the scope of the header for each data cell;
+ * OR if this is a complex table with multiple rows or columns as headers, use the `id` attribute with the `<th>` element and the `headers` attribute with the `<td>` element to identify multiple headers for each data cell (e.g. `<td headers="h1 h2">`);
  * OR if this is not a data table (no relational data), use CSS instead of a `<table>` element to layout your content.
 
 </Column>
