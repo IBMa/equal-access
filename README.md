@@ -21,13 +21,13 @@ This README covers topics for developers. For non-developer usage, see the follo
 
 ```bash
 $ git clone --branch=master https://github.com/IBMa/equal-access.git
-$ cd accessibility-checker
+$ cd equal-access
 ```
 or with SSH
 
 ```bash
 $ git clone --branch=master git@github.com:IBMa/equal-access.git
-$ cd accessibility-checker
+$ cd equal-access
 ```
 
 ### Install dependencies
