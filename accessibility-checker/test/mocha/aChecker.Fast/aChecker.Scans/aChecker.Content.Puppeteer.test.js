@@ -60,7 +60,10 @@ before(async function () {
 })
 
 after(async function () {
-    await browser.close();
+    if (browser) {
+        await browser.close();
+        browser = null;
+    }
 })
 
 gdirs.forEach(function (gdir) {
