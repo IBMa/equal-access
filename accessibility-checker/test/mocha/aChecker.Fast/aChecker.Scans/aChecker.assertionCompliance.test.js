@@ -93,6 +93,7 @@ describe("Rule Unit Tests With Assertion", function () {
                 it('a11y scan should assert results', async function () {
                     this.timeout(30000);
                     let returnCode = -1;
+                    let resultsStr = "";
                     try {
                         // Extract the unitTestcase data file from the unitTestcase hash map.
                         // This will contain the full content of the testcase file. Includes the document
@@ -104,11 +105,12 @@ describe("Rule Unit Tests With Assertion", function () {
                         // Call the aChecker assertion function which is used to compare the results with baseline object if we can find one that
                         // matches the same label which was provided.
                         returnCode = aChecker.assertCompliance(results.report);
+                        resultsStr = JSON.stringify(results.report);
                     } catch (e) {
                         console.error(e);
                     }
                     // In the case that the violationData is not defined then trigger an error right away.
-                    expect(returnCode).to.be.above(-1, "Scanning " + unitTestFile + " failed." + JSON.stringify(results.report));
+                    expect(returnCode).to.be.above(-1, "Scanning " + unitTestFile + " failed." + resultsStr);
                 });
             });
         }(unitTestFile));
