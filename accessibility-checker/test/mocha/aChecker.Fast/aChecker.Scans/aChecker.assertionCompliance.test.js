@@ -92,7 +92,7 @@ describe("Rule Unit Tests With Assertion", function () {
                 // Note the done that is passed in, this is used to wait for asyn functions.
                 it('a11y scan should assert results', async function () {
                     this.timeout(30000);
-                    let returnCode = 0;
+                    let returnCode = -1;
                     try {
                         // Extract the unitTestcase data file from the unitTestcase hash map.
                         // This will contain the full content of the testcase file. Includes the document
@@ -103,7 +103,7 @@ describe("Rule Unit Tests With Assertion", function () {
                         const results = await aChecker.getCompliance(unitTestDataFileContent, unitTestFile + "_assertion");
                         // Call the aChecker assertion function which is used to compare the results with baseline object if we can find one that
                         // matches the same label which was provided.
-                        const returnCode = aChecker.assertCompliance(results.report);
+                        returnCode = aChecker.assertCompliance(results.report);
                     } catch (e) {
                         console.error(e);
                     }
