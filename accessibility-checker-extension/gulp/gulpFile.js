@@ -91,6 +91,10 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         </div>
     }
 
+    MyLink = ({children, title, href, ...rest}: { children: any, title: string, href: string}) => {
+        return <a href={href} target="_blank" rel="noopener noreferrer" title={title} {...rest}>{children}</a>
+    }
+
     render() : ReactNode {
         const md = \``;
 const componentFooter = `\`;
@@ -114,6 +118,9 @@ return(
                 },
                 li: {
                     component: ListItem
+                },
+                a: {
+                    component: this.MyLink
                 },
                 CodeSnippet: {
                     component: this.MyCodeSnippet
