@@ -181,39 +181,30 @@ Then(/^I should see "([^"]*)"$/, function(text) {
     return this.driver.wait(condition, 8000);
 });
 
-Then(/^Page is accessible with label "([^"]*)"$/, { "timeout": 30000 }, function(label, done) {
+Then(/^Page is accessible with label "([^"]*)"$/, { "timeout": 30000 }, async function(label) {
     const world = this;
-    aChecker.getCompliance(world.driver, label, function(data, doc) {
-        try {
-            // If assert fails, value is either 1 or 2 depending on if there's a baseline
-            expect(aChecker.assertCompliance(data)).to.equal(0, data === 1 ? "Results do not match baseline": "Failing issues found");
-            done();
-        } catch (e) {
-            world.attach(escape(aChecker.stringifyResults(data)));
-            world.driver.takeScreenshot().then(function (buffer) {
-                return world.attach(buffer, 'image/png');
-            })
-            .then(function() {
-                done(e);
-            });
-        }
-    });
+    const { report } = await aChecker.getCompliance(world.driver, label);
+    try {
+        // If assert fails, value is either 1 or 2 depending on if there's a baseline
+        let assertResult = aChecker.assertCompliance(report);
+        expect(assertResult).to.equal(0, assertResult === 1 ? "Results do not match baseline": "Failing issues found");
+    } catch (e) {
+        world.attach(escape(aChecker.stringifyResults(report)));
+        const buffer = await world.driver.takeScreenshot();
+        await world.attach(buffer, 'image/png');
+        return Promise.reject(e);
+    }
 })
 
-Then(/^Scan page for accessibility with label "([^"]*)"$/, { "timeout": 30000 }, function(label, done) {
+Then(/^Scan page for accessibility with label "([^"]*)"$/, { "timeout": 30000 }, async function(label) {
     const world = this;
-    aChecker.getCompliance(world.driver, label, function(data, doc) {
-        try {
-            expect(aChecker.assertCompliance(data)).to.equal(0, data === 1 ? "Results do not match baseline": "Failing issues found");
-            done();
-        } catch (e) {
-            world.attach(escape(aChecker.stringifyResults(data)));
-            world.driver.takeScreenshot().then(function (buffer) {
-                return world.attach(buffer, 'image/png');
-            })
-            .then(function() {
-                done();
-            });
-        }
-    });
+    const { report } = await aChecker.getCompliance(world.driver, label);
+    try {
+        let assertResult = aChecker.assertCompliance(report);
+        expect(assertResult).to.equal(0, assertResult === 1 ? "Results do not match baseline": "Failing issues found");
+    } catch (e) {
+        world.attach(escape(aChecker.stringifyResults(report)));
+        const buffer = await world.driver.takeScreenshot();
+        await world.attach(buffer, 'image/png');
+    };
 })

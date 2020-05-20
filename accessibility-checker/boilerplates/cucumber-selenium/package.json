@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "cucumber-js"
+    "test": "cucumber-js",
+    "test:cucumber:report": "cucumber-js -f json:results/cucumber_report.json; node generate;"
   },
   "devDependencies": {
     "accessibility-checker": "^3.0.1",
