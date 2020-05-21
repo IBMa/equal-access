@@ -67,15 +67,15 @@ let ace;
         return aChecker.loadLocalEngine();
     }
 
-    var loggerFunction = function (output) {
+    let loggerFunction = function (output) {
         aChecker.DEBUG && console.log(output);
     };
 
-    var loggerCreate = function (type) {
+    let loggerCreate = function (type) {
         return logger;
     };
 
-    var logger = {
+    let logger = {
         debug: loggerFunction,
         info: loggerFunction,
         error: loggerFunction,
@@ -98,8 +98,8 @@ let ace;
      */
     aChecker.initializeSummary = function () {
         // Variable Decleration
-        var scanSummary = {};
-        var reportLevels = aChecker.Config.reportLevels;
+        let scanSummary = {};
+        let reportLevels = aChecker.Config.reportLevels;
 
         // Initialize counts
         scanSummary.counts = {};
@@ -169,10 +169,10 @@ let ace;
     }
 
     function areValidPolicy(valPolicies, curPol) {
-        var isValPol = false;
-        var errorPolicy = "";
+        let isValPol = false;
+        let errorPolicy = "";
 
-        for (var i = 0; i < curPol.length; ++i) {
+        for (let i = 0; i < curPol.length; ++i) {
             if (valPolicies.indexOf(curPol[i]) === -1) {
                 errorPolicy += "" + curPol[i] + ",";
             } else {
@@ -199,21 +199,21 @@ let ace;
     aChecker.loadEngine = async function (content) {
         if (isPuppeteer(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer");
-            var page = content;
+            let page = content;
             const winHandle = await page.evaluateHandle('window');
             const docHandle = await page.evaluateHandle('document');
             await page.evaluate((window, document, scriptUrl) => {
                 try {
                     if ('undefined' === typeof(ace)) {
                         return new Promise((resolve, reject) => {
-                            var script = document.createElement('script');
+                            let script = document.createElement('script');
                             script.setAttribute('type', 'text/javascript');
                             script.setAttribute('aChecker', 'ACE');
                             script.setAttribute('src', scriptUrl);
                             script.addEventListener('load', function () {
                                 resolve();
                             });
-                            var heads = document.getElementsByTagName('head');
+                            let heads = document.getElementsByTagName('head');
                             if (heads.length > 0) { heads[0].appendChild(script); }
                             else if (document.body) { document.body.appendChild(script); }
                             else { Promise.reject("Invalid document"); }
@@ -227,20 +227,20 @@ let ace;
         } else if (isSelenium(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
             try {
-                var browser = content;
+                let browser = content;
                 // Selenium
-                var scriptStr =
-`var cb = arguments[arguments.length - 1];
+                let scriptStr =
+`let cb = arguments[arguments.length - 1];
 try {
     if ('undefined' === typeof(ace)) {
-        var script = document.createElement('script');
+        let script = document.createElement('script');
         script.setAttribute('type', 'text/javascript');
         script.setAttribute('aChecker', 'ACE');
         script.setAttribute('src', '${aChecker.Config.rulePack + "/ace.js"}');
         script.addEventListener('load', function() {
             cb();
         });
-        var heads = document.getElementsByTagName('head');
+        let heads = document.getElementsByTagName('head');
         if (heads.length > 0) { heads[0].appendChild(script); }
         else { document.body.appendChild(script); }
     } else {
@@ -250,7 +250,7 @@ try {
     cb(e);
 }
 `
-                var manage = browser.manage();
+                let manage = browser.manage();
                 if (manage.timeouts) {
                     manage.timeouts().setScriptTimeout(60000);
                 } else if (manage.setTimeouts) {
@@ -287,11 +287,11 @@ try {
                     console.log("Cannot read: " + aChecker.Config.rulePack + "/ace-node.js");
                 }
                 data = data.body;
-                var engineDir = path.join(__dirname, "engine");
+                let engineDir = path.join(__dirname, "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir);
                 }
-                var cacheDir = path.join(engineDir, "cache");
+                let cacheDir = path.join(engineDir, "cache");
                 if (!fs.existsSync(cacheDir)) {
                     fs.mkdirSync(cacheDir);
                 }
@@ -352,7 +352,7 @@ try {
         }
 
         // Variable Decleration
-        var URL;
+        let URL;
 
         // Since we need to handle multiple variation of possible ways to scan items, we need to handle
         // each one differently as each one requires specific actions/setup.
@@ -368,7 +368,7 @@ try {
 
             // Handle local file and URL's
             if (typeof content === "string") {
-                var isURLRegex = /^(ftp|http|https):\/\//;
+                let isURLRegex = /^(ftp|http|https):\/\//;
 
                 if (isURLRegex.test(content)) {
                     URL = content;
@@ -376,7 +376,7 @@ try {
 
                 // Since this is a string, we consider this as either URL or local file
                 // so build an iframe based on this and get the frame doc and then scan this.
-                return await aChecker.buildIframeAndGetDoc(content);
+                return aChecker.buildIframeAndGetDoc(content);
             } else if (isSelenium(content) || isPuppeteer(content)) {
 
             }
@@ -411,8 +411,8 @@ try {
         if (label === null || typeof label === "undefined" || label === undefined) {
 
             // Variable Decleration
-            var testcaseWhichIsMissingRequiredLabel = null;
-            var generalErrorMessageLabelNotUnique = "\n[Error] labelNotProvided: Label must be provided when calling aChecker.getCompliance.";
+            let testcaseWhichIsMissingRequiredLabel = null;
+            let generalErrorMessageLabelNotUnique = "\n[Error] labelNotProvided: Label must be provided when calling aChecker.getCompliance.";
 
             // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
             // This way we can make it the error more descriptive and would help the user identify where the issues is.
@@ -433,13 +433,13 @@ try {
 
         // Check to make sure that the label that is provided is unique with all the other ones
         // that we have gone through.
-        var labelUnique = aChecker.isLabelUnique(label);
+        let labelUnique = aChecker.isLabelUnique(label);
 
         // In the case that the label is not unique
         if (!labelUnique) {
             // Variable Decleration dependencies/tools-rules-html/v2/a11y/test/g471/Table-DataNoSummaryARIA.html
-            var testcaseDoesNotUseUniqueLabel = null;
-            var generalErrorMessageLabelNotUnique = "\n[Error] labelNotUnique: Label provided to aChecker.getCompliance should be unique across all testcases in a single accessibility-checker session.";
+            let testcaseDoesNotUseUniqueLabel = null;
+            let generalErrorMessageLabelNotUnique = "\n[Error] labelNotUnique: Label provided to aChecker.getCompliance should be unique across all testcases in a single accessibility-checker session.";
 
             // Get the caller of the aChecker.getCompliance function which will be the testcase that is calling this function
             // This way we can make it the error more descriptive and would help the user identify where the issues is.
@@ -460,10 +460,10 @@ try {
 
         // Get the Data when the scan is started
         // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        var policies = aChecker.Config.policies;
-        var curPol = null;
+        let policies = aChecker.Config.policies;
+        let curPol = null;
         if (policies) {
-            var curPol = JSON.parse(JSON.stringify(policies));
+            curPol = JSON.parse(JSON.stringify(policies));
         }
         if (isSelenium(parsed)) {
             aChecker.DEBUG && console.log("getComplianceHelper:Selenium");
@@ -478,14 +478,15 @@ try {
     }
 
     aChecker.getComplianceHelperSelenium = async (label, parsed, curPol) => {
-        var startScan = Date.now();
-        // NOTE: Engine should already be loaded
-        var browser = parsed;
-        // Selenium
-        var scriptStr =
-            `var cb = arguments[arguments.length - 1];
+        try {
+            let startScan = Date.now();
+            // NOTE: Engine should already be loaded
+            let browser = parsed;
+            // Selenium
+            let scriptStr =
+                `let cb = arguments[arguments.length - 1];
 try {
-    var policies = ${JSON.stringify(aChecker.Config.policies)};
+    let policies = ${JSON.stringify(aChecker.Config.policies)};
 
     let checker = new window.ace.Checker();
     setTimeout(function() {
@@ -499,237 +500,211 @@ try {
 } catch (e) {
     cb(e);
 }`
-        var manage = browser.manage();
-        if (manage.timeouts) {
-            manage.timeouts().setScriptTimeout(60000);
-        } else if (manage.setTimeouts) {
-            manage.setTimeouts({
-                "script": 60000
-            })
-        }
-        return browser.executeAsyncScript(scriptStr).then(function (report) {
-            var getPolicies = "return new window.ace.Checker().rulesetIds;";
+            let manage = browser.manage();
+            if (manage.timeouts) {
+                manage.timeouts().setScriptTimeout(60000);
+            } else if (manage.setTimeouts) {
+                manage.setTimeouts({
+                    "script": 60000
+                })
+            }
+
+            const report = await browser.executeAsyncScript(scriptStr);
+            const getPolicies = "return new window.ace.Checker().rulesetIds;";
             if (curPol != null && !aChecker.Config.checkPolicy) {
                 aChecker.Config.checkPolicy = true;
-                browser.executeScript(getPolicies).then(function (valPolicies) {
-                    areValidPolicy(valPolicies, curPol);
-                });
+                const valPolicies = await browser.executeScript(getPolicies);
+                areValidPolicy(valPolicies, curPol);
             }
 
             // If there is something to report...
             if (report.results) {
                 // Add URL to the result object
-                return browser.getCurrentUrl().then(function (url) {
-                    report.summary = report.summary || {}
-                    report.summary.URL = url;
-                    report.counts = {}
-                    let origReport = JSON.parse(JSON.stringify(report));
-                    origReport = aChecker.buildReport(origReport, url, label, startScan);
+                const url = await browser.getCurrentUrl();
+                report.summary = report.summary || {}
+                report.summary.URL = url;
+                report.counts = {}
+                let origReport = JSON.parse(JSON.stringify(report));
+                origReport = aChecker.buildReport(origReport, url, label, startScan);
 
-                    // Filter the violations based on the reporLevels
-                    report = aChecker.filterViolations(report);
+                // Filter the violations based on the reporLevels
+                report = aChecker.filterViolations(report);
 
-                    // Add the count object, to data a recount after the filtering of violations is done.
-                    report = aChecker.updateViolationCount(report);
+                // Add the count object, to data a recount after the filtering of violations is done.
+                report = aChecker.updateViolationCount(report);
 
-                    // Add the violation count to global summary object
-                    aChecker.addToSummaryCount(report.counts);
+                // Add the violation count to global summary object
+                aChecker.addToSummaryCount(report.counts);
 
-                    // Build the report object for this scan, to follow a specific format. Refer to the
-                    // function prolog for more information on the object creation.
-                    report = aChecker.buildReport(report, url, label, startScan);
+                // Build the report object for this scan, to follow a specific format. Refer to the
+                // function prolog for more information on the object creation.
+                report = aChecker.buildReport(report, url, label, startScan);
 
-                    // Add the scan results to global karma result object which can be accessed when users testcase
-                    // finishes, user can also access it to alter it for any reason.
-                    aChecker.addResultsToGlobal(report);
+                // Add the scan results to global karma result object which can be accessed when users testcase
+                // finishes, user can also access it to alter it for any reason.
+                aChecker.addResultsToGlobal(report);
 
-                    // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-                    // saved to a file by the server side reporter.
-                    aChecker.sendResultsToReporter(origReport, report, "Selenium");
+                // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+                // saved to a file by the server side reporter.
+                aChecker.sendResultsToReporter(origReport, report, "Selenium");
 
-                    if (aChecker.Config.captureScreenshots && browser.takeScreenshot) {
-                        return browser.getCurrentUrl().then(function (url) {
-                            return browser.takeScreenshot().then(function (image, err) {
-                                var screenshotResult = {
-                                    image: image,
-                                    label: label,
-                                    scanID: report.scanID
-                                };
+                if (aChecker.Config.captureScreenshots && browser.takeScreenshot) {
+                    const image = await browser.takeScreenshot();
+                    let screenshotResult = {
+                        image: image,
+                        label: label,
+                        scanID: report.scanID
+                    };
 
-                                aChecker.sendScreenShotToReporter(screenshotResult);
-
-                                // Call the user provided callback function after the filtering, building report and summary count tasks
-                                // call the user callback function with results and content object (this object can be document of Iframe which was created etc...)
-                                // The content will not be exposed to the user, unless they really need it. We use this to simplfy checking for violations.
-                                return {
-                                    "report": report,
-                                    "webdriver": parsed
-                                };
-                            });
-                        });
-                    } else {
-                        return {
-                            "report": report,
-                            "webdriver": parsed
-                        }
-                    }
-                });
+                    aChecker.sendScreenShotToReporter(screenshotResult);
+                }
             }
-            if (!aChecker.Config.captureScreenshots) {
-                // Call the user provided callback function after the filtering, building report and summary count tasks
-                // call the user callback function with results and content object (this object can be document of Iframe which was created etc...)
-                // The content will not be exposed to the user, unless they really need it. We use this to simplfy checking for violations.
-                return {
-                    "report": report,
-                    "webdriver": parsed
-                };
+            return {
+                "report": report,
+                "webdriver": parsed
             }
-        }).catch(function (err) {
-            console.log(err);
-        });
+        } catch (err) {
+            console.error(err);
+            return Promise.reject(err);
+        };
     }
 
     aChecker.getComplianceHelperPuppeteer = async (label, parsed, curPol) => {
-        var startScan = Date.now();
-        // NOTE: Engine should already be loaded
-        var page = parsed;
-        let winHandle = await page.evaluateHandle("window");
-        let report = await page.evaluate((window, policies) => {
-            let checker = new window.ace.Checker();
-            return new Promise((resolve, reject) => {
-                setTimeout(function () {
-                    checker.check(document, policies).then(function (report) {
-                        for (const result of report.results) {
-                            delete result.node;
-                        }
-                        resolve(report);
-                    })
-                }, 0)
-            })
-        }, winHandle, aChecker.Config.policies);
-        if (curPol != null && !aChecker.Config.checkPolicy) {
-            let valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
-            aChecker.Config.checkPolicy = true;
-            areValidPolicy(valPolicies, curPol);
-        }
-
-        // If there is something to report...
-        if (report.results) {
-            let url = await page.evaluate("document.location.href");
-            report.summary = report.summary || {}
-            report.summary.URL = url;
-            report.counts = {}
-
-            let origReport = JSON.parse(JSON.stringify(report));
-            origReport = aChecker.buildReport(origReport, url, label, startScan);
-
-            // Filter the violations based on the reporLevels
-            report = aChecker.filterViolations(report);
-
-            // Add the count object, to data a recount after the filtering of violations is done.
-            report = aChecker.updateViolationCount(report);
-
-            // Add the violation count to global summary object
-            aChecker.addToSummaryCount(report.counts);
-
-            // Build the report object for this scan, to follow a specific format. Refer to the
-            // function prolog for more information on the object creation.
-            report = aChecker.buildReport(report, URL, label, startScan);
-
-            // Add the scan results to global karma result object which can be accessed when users testcase
-            // finishes, user can also access it to alter it for any reason.
-            aChecker.addResultsToGlobal(report);
-
-            // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-            // saved to a file by the server side reporter.
-            aChecker.sendResultsToReporter(origReport, report, "Puppeteer");
-
-            if (aChecker.Config.captureScreenshots) {
-                let image = await page.screenshot({
-                    fullPage: true,
-                    encoding: "base64"
-                });
-                var screenshotResult = {
-                    image: image,
-                    label: label,
-                    scanID: report.scanID
-                };
-
-                aChecker.sendScreenShotToReporter(screenshotResult);
-
-                // Call the user provided callback function after the filtering, building report and summary count tasks
-                // call the user callback function with results and content object (this object can be document of Iframe which was created etc...)
-                // The content will not be exposed to the user, unless they really need it. We use this to simplfy checking for violations.
-
-                return {
-                    "report": report,
-                    "puppeteer": parsed
-                };
+        try {
+            const startScan = Date.now();
+            // NOTE: Engine should already be loaded
+            const page = parsed;
+            const winHandle = await page.evaluateHandle("window");
+            const report = await page.evaluate((window, policies) => {
+                let checker = new window.ace.Checker();
+                return new Promise((resolve, reject) => {
+                    setTimeout(function () {
+                        checker.check(document, policies).then(function (report) {
+                            for (const result of report.results) {
+                                delete result.node;
+                            }
+                            resolve(report);
+                        })
+                    }, 0)
+                })
+            }, winHandle, aChecker.Config.policies);
+            if (curPol != null && !aChecker.Config.checkPolicy) {
+                const valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
+                aChecker.Config.checkPolicy = true;
+                areValidPolicy(valPolicies, curPol);
             }
-        }
 
-        if (!aChecker.Config.captureScreenshots) {
-            // Call the user provided callback function after the filtering, building report and summary count tasks
-            // call the user callback function with results and content object (this object can be document of Iframe which was created etc...)
-            // The content will not be exposed to the user, unless they really need it. We use this to simplfy checking for violations.
+            // If there is something to report...
+            if (report.results) {
+                let url = await page.evaluate("document.location.href");
+                report.summary = report.summary || {}
+                report.summary.URL = url;
+                report.counts = {}
+
+                let origReport = JSON.parse(JSON.stringify(report));
+                origReport = aChecker.buildReport(origReport, url, label, startScan);
+
+                // Filter the violations based on the reporLevels
+                report = aChecker.filterViolations(report);
+
+                // Add the count object, to data a recount after the filtering of violations is done.
+                report = aChecker.updateViolationCount(report);
+
+                // Add the violation count to global summary object
+                aChecker.addToSummaryCount(report.counts);
+
+                // Build the report object for this scan, to follow a specific format. Refer to the
+                // function prolog for more information on the object creation.
+                report = aChecker.buildReport(report, url, label, startScan);
+
+                // Add the scan results to global karma result object which can be accessed when users testcase
+                // finishes, user can also access it to alter it for any reason.
+                aChecker.addResultsToGlobal(report);
+
+                // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+                // saved to a file by the server side reporter.
+                aChecker.sendResultsToReporter(origReport, report, "Puppeteer");
+
+                if (aChecker.Config.captureScreenshots) {
+                    let image = await page.screenshot({
+                        fullPage: true,
+                        encoding: "base64"
+                    });
+                    let screenshotResult = {
+                        image: image,
+                        label: label,
+                        scanID: report.scanID
+                    };
+
+                    aChecker.sendScreenShotToReporter(screenshotResult);
+                }
+            }
             return {
                 "report": report,
                 "puppeteer": parsed
             };
-        }
+        } catch (err) {
+            console.error(err);
+            return Promise.reject(err);
+        };
     }
 
     aChecker.getComplianceHelperLocal = async (label, parsed, curPol) => {
-        var startScan = Date.now();
-        let checker = new ace.Checker();
-        let report = await checker.check(parsed, aChecker.Config.policies)
-            .then(function (report) {
-                for (const result of report.results) {
-                    delete result.node;
-                }
-                return report;
-            })
+        try {
+            let startScan = Date.now();
+            let checker = new ace.Checker();
+            let report = await checker.check(parsed, aChecker.Config.policies)
+                .then(function (report) {
+                    for (const result of report.results) {
+                        delete result.node;
+                    }
+                    return report;
+                })
 
-        if (curPol != null && !aChecker.Config.checkPolicy) {
-            let valPolicies = new ace.Checker().rulesetIds;
-            aChecker.Config.checkPolicy = true;
-            areValidPolicy(valPolicies, curPol);
-        }
+            if (curPol != null && !aChecker.Config.checkPolicy) {
+                let valPolicies = new ace.Checker().rulesetIds;
+                aChecker.Config.checkPolicy = true;
+                areValidPolicy(valPolicies, curPol);
+            }
 
-        // If there is something to report...
-        if (report.results) {
-            let url = parsed.location && parsed.location.href;
-            report.summary = report.summary || {}
-            report.summary.URL = url;
-            report.counts = {}
+            // If there is something to report...
+            if (report.results) {
+                let url = parsed.location && parsed.location.href;
+                report.summary = report.summary || {}
+                report.summary.URL = url;
+                report.counts = {}
 
-            let origReport = JSON.parse(JSON.stringify(report));
-            origReport = aChecker.buildReport(origReport, url, label, startScan);
+                let origReport = JSON.parse(JSON.stringify(report));
+                origReport = aChecker.buildReport(origReport, url, label, startScan);
 
-            // Filter the violations based on the reporLevels
-            report = aChecker.filterViolations(report);
+                // Filter the violations based on the reporLevels
+                report = aChecker.filterViolations(report);
 
-            // Add the count object, to data a recount after the filtering of violations is done.
-            report = aChecker.updateViolationCount(report);
+                // Add the count object, to data a recount after the filtering of violations is done.
+                report = aChecker.updateViolationCount(report);
 
-            // Add the violation count to global summary object
-            aChecker.addToSummaryCount(report.counts);
+                // Add the violation count to global summary object
+                aChecker.addToSummaryCount(report.counts);
 
-            // Build the report object for this scan, to follow a specific format. Refer to the
-            // function prolog for more information on the object creation.
-            report = aChecker.buildReport(report, URL, label, startScan);
+                // Build the report object for this scan, to follow a specific format. Refer to the
+                // function prolog for more information on the object creation.
+                report = aChecker.buildReport(report, URL, label, startScan);
 
-            // Add the scan results to global karma result object which can be accessed when users testcase
-            // finishes, user can also access it to alter it for any reason.
-            aChecker.addResultsToGlobal(report);
+                // Add the scan results to global karma result object which can be accessed when users testcase
+                // finishes, user can also access it to alter it for any reason.
+                aChecker.addResultsToGlobal(report);
 
-            // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
-            // saved to a file by the server side reporter.
-            aChecker.sendResultsToReporter(origReport, report, "Native");
-        }
+                // Need to call a karma API to send the results of a single scan to the accessibility-checker reporter so that they can be
+                // saved to a file by the server side reporter.
+                aChecker.sendResultsToReporter(origReport, report, "Native");
+            }
 
-        return {
-            "report": report
+            return {
+                "report": report
+            };
+        } catch (err) {
+            console.error(err);
+            return Promise.reject(err);
         };
     }
 
@@ -748,7 +723,7 @@ try {
         aChecker.DEBUG && console.log("START 'aChecker.isLabelUnique' function");
 
         // Variable Decleration
-        var labelExists = false;
+        let labelExists = false;
 
         aChecker.DEBUG && console.log("Checking if label: " + label + " is unique.");
 
@@ -799,7 +774,7 @@ try {
 
     try {
         // If cucumber is the platform...
-        var {AfterAll} = require('cucumber');
+        let {AfterAll} = require('cucumber');
         AfterAll(function (done) {
             initialize().then(() => metricsLogger.sendLogsV2(() => aChecker.close().then(done), aChecker.Config.rulePack));
         });
@@ -1009,7 +984,7 @@ try {
         if (aChecker.Config.disableIgnore === undefined || aChecker.Config.disableIgnore == false || aChecker.Config.disableIgnore === null) {
             // set ignore:true for previously seen violations
             // retrieve baseline
-            var baselineReport = aChecker.getBaseline(label);
+            let baselineReport = aChecker.getBaseline(label);
 
             // set ignore:true for previously seen violations and set ignore to false if no ignore fields exist yet
             if (baselineReport) {
@@ -1020,7 +995,7 @@ try {
             }
         }
 
-        var lvlIdx = {
+        let lvlIdx = {
             "violation": 1,
             "potentialviolation": 2,
             "recommendation": 3,
@@ -1030,8 +1005,8 @@ try {
         };
 
         report.results.sort(function (a, b) {
-            var aLvl = lvlIdx[a.level];
-            var bLvl = lvlIdx[b.level];
+            let aLvl = lvlIdx[a.level];
+            let bLvl = lvlIdx[b.level];
             if (!aLvl) aLvl = 7;
             if (!bLvl) bLvl = 7;
             return aLvl != bLvl && aLvl - bLvl ||
@@ -1066,7 +1041,7 @@ try {
         //       "potentialrecommendation": 0,
         //       "manual": 0
         //   }
-        var pageSummaryObject = {
+        let pageSummaryObject = {
             label: results.label,
             counts: results.summary.counts
         };
@@ -1270,15 +1245,15 @@ try {
     aChecker.filterViolations = function (report) {
 
         // Variable Decleration
-        var reportLevels = aChecker.Config.reportLevels;
-        var pageResults = report.results;
-        for (var iDis = 0; aChecker.Config.disable && iDis < aChecker.Config.disable.length; ++iDis) {
+        let reportLevels = aChecker.Config.reportLevels;
+        let pageResults = report.results;
+        for (let iDis = 0; aChecker.Config.disable && iDis < aChecker.Config.disable.length; ++iDis) {
             aChecker.Config.disable[iDis] = "" + aChecker.Config.disable[iDis];
         }
         // Loop over all the violations and filter them, if the violation level does not match with, what user has
         // requested to be reported. Also handle hidden at this point right now.
         // TODO: Posible to filter the results directly in the engine, to avoid the need to do all this in each of the tools.
-        for (var i = 0; i < pageResults.length; ++i) {
+        for (let i = 0; i < pageResults.length; ++i) {
 
             // Set the default ignore value to false if disableIgnore field in config file is not true
             if (aChecker.Config.disableIgnore === undefined || aChecker.Config.disableIgnore == false || aChecker.Config.disableIgnore === null){
@@ -1291,7 +1266,7 @@ try {
             // Remove violation which are not in the reportLevels
             if (reportLevels) {
                 // Fetch the level from the results
-                var reportLevel = pageResults[i].value;
+                let reportLevel = pageResults[i].value;
                 if (reportLevel[1] === "PASS") {
                     reportLevel = "pass";
                 } else if ((reportLevel[0] === "VIOLATION" || reportLevel[0] === "RECOMMENDATION") && reportLevel[1] === "MANUAL") {
@@ -1429,11 +1404,11 @@ try {
     aChecker.updateViolationCount = function (report) {
 
         // Variable Decleration
-        var reportLevels = aChecker.Config.reportLevels;
+        let reportLevels = aChecker.Config.reportLevels;
 
         // Build violation count object which will contain the updated count based on filter which
         // which occured in filterViolations function.
-        var violationCount = {};
+        let violationCount = {};
 
         // In the case that report levels are provided then populate the count object in
         // violationCount object with the levels which were provided in reportLevels
@@ -1489,8 +1464,8 @@ try {
     aChecker.addToSummaryCount = function (pageCount) {
 
         // Variable Decleration
-        var ACScanSummary = aChecker.scanSummary.counts || {};
-        var addedToSummary = false;
+        let ACScanSummary = aChecker.scanSummary.counts || {};
+        let addedToSummary = false;
 
         // In the case ACScanSummary is empty, simply assign pageCount to ACScanSummary
         if (Object.keys(ACScanSummary).length === 0) {
@@ -1507,7 +1482,7 @@ try {
             // and add it to the accessibility-checker violation summary object.
             // This will keep track of an overall summary of the violations for all testscases, that
             // were run for a single karma run.
-            for (var level in pageCount) {
+            for (let level in pageCount) {
                 ACScanSummary[level] += pageCount[level];
             }
         }
@@ -1544,17 +1519,17 @@ try {
 
         // Get the label directly from the results object, the same label has to match
         // the baseline object which is available in the global space.
-        var label = actualResults.label;
+        let label = actualResults.label;
 
         // Fetch the baseline object based on the label provided
-        var expected = aChecker.getBaseline(label);
+        let expected = aChecker.getBaseline(label);
 
         // In the case there are no baseline found then run a different assertion algo,
         // when there is baseline compare the baselines in the case there is no baseline then
         // check to make sure there are no violations that are listed in the fails on.
         if (expected !== null && typeof (expected) !== "undefined") {
             // Run the diff algo to get the list of differences
-            var differences = aChecker.diffResultsWithExpected(actualResults, expected, true);
+            let differences = aChecker.diffResultsWithExpected(actualResults, expected, true);
 
             //console.log(JSON.stringify(differences, null, '    '));
 
@@ -1579,7 +1554,7 @@ try {
                     if (pc !== 0) return pc;
                     return b.ruleId.localeCompare(a.ruleId);
                 })
-                var differences2 = aChecker.diffResultsWithExpected({ 
+                let differences2 = aChecker.diffResultsWithExpected({ 
                     results: modActual,
                     summary: actualResults.summary
                 }, { 
@@ -1599,7 +1574,7 @@ try {
         } else {
             // In the case that there was no baseline data found compare the results based on
             // the failLevels array, which was defined by the user.
-            var returnCode = aChecker.compareBasedOnFailLevels(actualResults);
+            let returnCode = aChecker.compareBasedOnFailLevels(actualResults);
 
             // In the case there are no violations that match the fail on then return as success
             if (returnCode === 0) {
@@ -1635,7 +1610,7 @@ try {
         }
 
         // Variable Decleration
-        var failLevels = aChecker.Config.failLevels;
+        let failLevels = aChecker.Config.failLevels;
 
         // Loop over all the issues to check for any level that is in failLevels
         // console.log(report);
@@ -1702,7 +1677,7 @@ try {
         }
 
         // Run Deep diff function to compare the actual and expected values.
-        var differences = DeepDiff.diff(actual, expected);
+        let differences = DeepDiff.diff(actual, expected);
 
         // Return the results of the diff, which will include the differences between the objects
         return differences;
@@ -1769,7 +1744,7 @@ try {
 
         // Loop over all the issues and remove the keys that are not needed for the compare
         // Only leave the ruleId and xpath keys for compare.
-        for (var idx = 0; idx < objectToClean.results.length; ++idx) {
+        for (let idx = 0; idx < objectToClean.results.length; ++idx) {
             const issue = objectToClean.results[idx];
             if (issue.level === "pass") {
                 objectToClean.results.splice(idx--, 1);
@@ -1842,7 +1817,7 @@ try {
     aChecker.stringifyResults = function (report) {
         // console.log(report);
         // Variable Decleration
-        var resultsString = `Scan: ${report.label}\n`;
+        let resultsString = `Scan: ${report.label}\n`;
 
         // Loop over the reports and build the string version of the the issues within each report
         report.results && report.results.forEach(function (issue) {
@@ -2042,23 +2017,23 @@ try {
     }
 
     aChecker.ignoreExtraBaselineViolations = function (actualReport, baselineReport) {
-        var result = null;
-        var existingRuleIDs = [];
+        let result = null;
+        let existingRuleIDs = [];
         // Using for loop to make is sync code
-        var ignoredCount = 0;
-        var changedCounts = actualReport.summary.counts;
+        let ignoredCount = 0;
+        let changedCounts = actualReport.summary.counts;
 
-        var currentActualReport = actualReport.results;
+        let currentActualReport = actualReport.results;
         const currentBaselineReport = baselineReport;
         // a report exists in the baseline for the iframe
         if (currentBaselineReport && currentBaselineReport.length === 1) {
             let legacyBaseline = !!currentBaselineReport[0].issues;
             for (const issue of currentActualReport) {
-                var currentRuleID = issue.ruleId;
-                var currentLevel = issue.level;
-                var currentXPATH = issue.path.dom;
+                let currentRuleID = issue.ruleId;
+                let currentLevel = issue.level;
+                let currentXPATH = issue.path.dom;
                 //check if the issue exists in baseline already
-                var result =
+                let result =
                     legacyBaseline && currentBaselineReport[0].issues.filter(issue => issue.ruleId in aChecker.ruleIdToLegacyId && aChecker.ruleIdToLegacyId[issue.ruleId] === currentRuleID && issue.level === currentLevel && issue.xpath === currentXPATH)
                     || !legacyBaseline && currentBaselineReport.results.filter(issue => issue.ruleId === currentRuleID && issue.level === currentLevel && issue.dom.path === currentXPATH);
                 if (result && result.length !== 0) {
