@@ -509,7 +509,7 @@ try {
                 })
             }
 
-            const report = await browser.executeAsyncScript(scriptStr);
+            let report = await browser.executeAsyncScript(scriptStr);
             const getPolicies = "return new window.ace.Checker().rulesetIds;";
             if (curPol != null && !aChecker.Config.checkPolicy) {
                 aChecker.Config.checkPolicy = true;
@@ -575,7 +575,7 @@ try {
             // NOTE: Engine should already be loaded
             const page = parsed;
             const winHandle = await page.evaluateHandle("window");
-            const report = await page.evaluate((window, policies) => {
+            let report = await page.evaluate((window, policies) => {
                 let checker = new window.ace.Checker();
                 return new Promise((resolve, reject) => {
                     setTimeout(function () {
