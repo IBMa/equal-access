@@ -753,6 +753,7 @@ try {
      * @memberOf this
      */
     aChecker.sendResultsToReporter = function (unFilteredResults, results, profile) {
+        aChecker.DEBUG && console.log("sendResultsToReporter:", aChecker.Config.outputFormat);
         if (aChecker.Config.outputFormat.indexOf("json") != -1) {
             reporterJSON.report(results);
         }

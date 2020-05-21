@@ -72,7 +72,7 @@ var ACReporterHTML = function (aChecker) {
      * @memberOf this
      */
     this.onRunComplete = function () {
-        Config.DEBUG && console.log("START 'onRunComplete' function");
+        Config.DEBUG && console.log("START 'ACReporterHTML:onRunComplete' function");
 
         // Add End time when the whole karma run is done
         // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
@@ -81,7 +81,7 @@ var ACReporterHTML = function (aChecker) {
         // Save summary object to a HTML file.
         saveSummary(scanSummary);
 
-        Config.DEBUG && console.log("END 'onRunComplete' function");
+        Config.DEBUG && console.log("END 'ACReporterHTML:onRunComplete' function");
     };
 
     /**

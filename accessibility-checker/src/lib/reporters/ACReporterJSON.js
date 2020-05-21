@@ -71,7 +71,7 @@ var ACReporterJSON = function (aChecker) {
      * @memberOf this
      */
     this.onRunComplete = function () {
-        Config.DEBUG && console.log("START 'onRunComplete' function");
+        Config.DEBUG && console.log("START 'ACReporterJSON:onRunComplete' function");
 
         // Add End time when the whole karma run is done
         // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
@@ -80,7 +80,7 @@ var ACReporterJSON = function (aChecker) {
         // Save summary object to a JSON file.
         saveSummary(scanSummary);
 
-        Config.DEBUG && console.log("END 'onRunComplete' function");
+        Config.DEBUG && console.log("END 'ACReporterJSON:onRunComplete' function");
     };
 
     /**
