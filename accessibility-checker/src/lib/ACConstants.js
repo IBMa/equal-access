@@ -24,7 +24,7 @@ var pathLib = require('path');
 
 // Used to specify all the constant
 var constants = {
-    DEBUG: false,
+    DEBUG: process.env.DEBUG === "true",
 
     policies: ["IBM_Accessibility"],
 
