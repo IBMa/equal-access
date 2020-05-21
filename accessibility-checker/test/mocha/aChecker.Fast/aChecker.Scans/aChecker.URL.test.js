@@ -37,6 +37,7 @@ let validList = {};
 let policyMap = {};
 const checker = new ace.Checker();
 before(async function () {
+    console.log("before aChecker.URL.test.js");
     let config = await aChecker.getConfig();
     config.policies.forEach(function (policy) {
         policyMap[policy] = true;
@@ -52,6 +53,7 @@ before(async function () {
             }
         }
     });
+    console.log("/before aChecker.URL.test.js");
 });
 
 gdirs.forEach(function (gdir) {

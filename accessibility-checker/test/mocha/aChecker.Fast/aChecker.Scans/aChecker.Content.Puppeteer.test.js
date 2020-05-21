@@ -40,6 +40,7 @@ const puppeteer = require('puppeteer');
 let browser;
 let page;
 before(async function () {
+    console.log("before aChecker.Content.Puppeteer.test.js");
     let config = await aChecker.getConfig();
     browser = await puppeteer.launch({ headless: config.headless, ignoreHTTPSErrors: aChecker.Config.ignoreHTTPSErrors || false});
     page = await browser.newPage();
@@ -57,6 +58,7 @@ before(async function () {
             }
         }
     });
+    console.log("/before aChecker.Content.Puppeteer.test.js");
 })
 
 after(async function () {

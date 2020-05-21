@@ -74,7 +74,7 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: DEBUG=true npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
         working-directory: accessibility-checker
 
 ###############################################################################
