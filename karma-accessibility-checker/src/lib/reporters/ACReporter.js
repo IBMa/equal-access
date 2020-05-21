@@ -160,23 +160,28 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
      * @memberOf this
      */
     emitter.on('browser_info', function (browser, results) {
-        ACReporterCommon.log.debug("START 'browser_info' emitter function");
+        try {
+            ACReporterCommon.log.debug("START 'browser_info' emitter function");
 
-        // Extract the scan results for the page
-        var scanResults = results.pageResults;
+            // Extract the scan results for the page
+            const scanResults = results.pageResults;
 
-        // Save the results of a single scan to a JSON file based on the label provided
-        ACReporterJSON.savePageResults(config, results.scanResults);
-        ACReporterHTML.savePageResults(config, result.unFilteredResults);
+            // Save the results of a single scan to a JSON file based on the label provided
+            ACReporterJSON.savePageResults(config, scanResults);
+            ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
 
-        // Update the overall summary object count object to include the new scan that was performed
-        ACReporterCommon.addToSummaryCount(scanResults.summary.counts);
+            // Update the overall summary object count object to include the new scan that was performed
+            ACReporterCommon.addToSummaryCount(scanResults.summary.counts);
 
-        // Save the summary of this scan into global space of this reporter, to be logged
-        // once the whole scan is done.
-        ACReporterCommon.addResultsToGlobal(scanResults);
+            // Save the summary of this scan into global space of this reporter, to be logged
+            // once the whole scan is done.
+            ACReporterCommon.addResultsToGlobal(scanResults);
 
-        ACReporterCommon.log.debug("END 'browser_info' emitter function");
+            ACReporterCommon.log.debug("END 'browser_info' emitter function");
+        } catch (err) {
+            console.error(err);
+            throw err;
+        }
     });
 
     /**

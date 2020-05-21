@@ -46,7 +46,7 @@ var ACReporterHTML = {
      *
      * @memberOf this
      */
-    savePageResults: function (config, results) {
+    savePageResults: function (config, results, rulesets) {
         ACReporterCommon.log.debug("START 'savePageResults' function");
 
         // Extract the outputFolder from the ACConfig (this is the user config that they provid)
@@ -67,7 +67,7 @@ var ACReporterHTML = {
         ***************************************************************************************************************************************/
 
         // Write the results object as HTML to a file.
-        ACReporterHTML.writeObjectToFileAsHTML(resultsFileName, results);
+        ACReporterHTML.writeObjectToFileAsHTML(resultsFileName, results, rulesets);
 
         ACReporterCommon.log.debug("END 'savePageResults' function");
     },
@@ -81,7 +81,7 @@ var ACReporterHTML = {
      *
      * @memberOf this
      */
-    writeObjectToFileAsHTML: function (fileName, content) {
+    writeObjectToFileAsHTML: function (fileName, content, rulesets) {
         const valueMap = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",
@@ -122,7 +122,7 @@ var ACReporterHTML = {
                     total: { }
                 }
             },
-            rulesets: aChecker.getRulesets(),
+            rulesets: rulesets,
             tabURL: content.summary.URL
         }
         outReport.report.counts.total.All = 0;
