@@ -62,11 +62,9 @@ describe("JSON Structure Verification Zombie", function () {
             describe("Load Test: " + unitTestFile, function () {
 
                 before(async function () {
-                    console.log("before aChecker.getCompliance.JSONObjectVerification.test.js")
                     let config = await aChecker.getConfig();
                     originalPolicies = config.policies;
                     config.policies = ["IBM_Accessibility"];
-                    console.log("/before aChecker.getCompliance.JSONObjectVerification.test.js")
                 });
 
                 // The Individual testcase for each of the unittestcases.
