@@ -50,7 +50,7 @@
     "gulp-util": "^3.0.7",
     "gulp-zip": "^5.0.0",
     "jasmine": "^3.5.0",
-    "mocha": "^6.2.0",
+    "mocha": "^7.1.0",
     "natives": "1.1.6",
     "rimraf": "^3.0.0",
     "selenium-webdriver": "^3.6.0",
