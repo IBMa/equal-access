@@ -309,6 +309,8 @@ selectPath("${item.path.dom}");
                             console.log('Could not select element, it may have moved');
                         }
                     });
+
+                    this.onFilter(item.path.dom)
                 }
             }
         }
