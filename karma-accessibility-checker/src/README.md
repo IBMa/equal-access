@@ -182,8 +182,7 @@ reportLevels:
     - potentialrecommendation
     - manual
 
-# Optional - Which type should the results be outputted to
-#   outputFormat: json
+# Optional - In what format types the results should be output in (json, html)
 # Default: json
 outputFormat:
     - json

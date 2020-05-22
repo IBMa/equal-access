@@ -17,7 +17,9 @@
 var expect = require('chai').expect;
 var aChecker = require("../../../../src");
 
-before(async () => aChecker.Config = await aChecker.getConfig());
+before(async () => {
+    aChecker.Config = await aChecker.getConfig();
+});
 
 // Make sure the aChecker.Config is defined
 describe("aChecker.Config", function () {

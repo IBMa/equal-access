@@ -17,7 +17,9 @@
 var expect = require('chai').expect;
 var aChecker = require("../../../../src");
 
-before(async () => aChecker.Config = await aChecker.getConfig());
+before(async () => {
+    aChecker.Config = await aChecker.getConfig();
+});
 
 // This Test Suite is to make sure all the objects/function added by ACHelper.js is added
 describe("Check objects/function added by ACHelper.js are defined", function () {
