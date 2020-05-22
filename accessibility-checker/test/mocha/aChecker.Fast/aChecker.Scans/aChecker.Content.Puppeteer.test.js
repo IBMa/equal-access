@@ -41,7 +41,7 @@ let browser;
 let page;
 before(async function () {
     let config = await aChecker.getConfig();
-    browser = await puppeteer.launch({ headless: config.headless, ignoreHTTPSErrors: aChecker.Config.ignoreHTTPSErrors || false});
+    browser = await puppeteer.launch({ headless: config.headless, ignoreHTTPSErrors: config.ignoreHTTPSErrors || false});
     page = await browser.newPage();
     config.policies.forEach(function (policy) {
         policyMap[policy] = true;
