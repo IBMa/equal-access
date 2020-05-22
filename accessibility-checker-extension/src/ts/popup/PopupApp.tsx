@@ -85,7 +85,7 @@ export default class PopupApp extends React.Component {
           </div>
           <div style={{ flexGrow: 1 }}>
             <a
-              href={chrome.runtime.getURL("UsingAC.html")}
+              href={chrome.runtime.getURL("usingAC.html")}
               target="_blank"
               rel="noopener noreferred"
             >
