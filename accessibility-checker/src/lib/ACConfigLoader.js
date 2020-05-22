@@ -308,7 +308,7 @@ function loadConfigFromYAMLorJSONFile() {
  * @memberOf this
  */
 async function processConfiguration(config) {
-    constants.DEBUG && console.log("START 'processKarmaConfiguration' function");
+    constants.DEBUG && console.log("START 'processConfiguration' function");
 
     // Variable Decleration
     var ACConfig = null;
@@ -347,7 +347,7 @@ async function processConfiguration(config) {
     // In the case the Karma config is set to config.LOG_DEBUG then also enable the accessibility-checker debuging
     ACConfig.DEBUG = constants.DEBUG;
 
-    constants.DEBUG && console.log("END 'processKarmaConfiguration' function");
+    constants.DEBUG && console.log("END 'processConfiguration' function");
     return ACConfig;
 }
 

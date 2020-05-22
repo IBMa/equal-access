@@ -89,8 +89,8 @@ reportLevels:
     - potentialrecommendation
     - manual
 
-# Optional - Which type should the results be outputted to
-# Valid values: json, csv
+# Optional - In which fornats should the results be output
+# Valid values: json, csv, html
 # Default: json
 outputFormat:
     - json
