@@ -316,7 +316,9 @@ selectPath("${item.path.dom}");
         }
     }
 
-    getItem(item: IReportItem) {
+    getItem = (event:any, item: IReportItem) =>{
+        console.log("get item event", event);
+        event.stopPropagation();
         this.setState({learnMore: true, learnItem: item});
     }
 

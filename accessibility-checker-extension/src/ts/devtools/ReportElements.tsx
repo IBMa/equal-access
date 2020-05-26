@@ -27,7 +27,7 @@ interface IReportElementsState {
 interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
-    getItem: (item: IReportItem) => void,
+    getItem: (event: any, item: IReportItem) => void,
     layout: string
 }
 

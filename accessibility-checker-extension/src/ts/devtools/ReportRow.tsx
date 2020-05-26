@@ -41,7 +41,7 @@ interface IReportRowProps {
     report: IReport,
     group: IReportRowGroup;
     selectItem: (item: IReportItem) => void,
-    getItem: (item: IReportItem) => void,
+    getItem: (event:any, item: IReportItem)=> void,
     layout: string
 }
 
@@ -137,7 +137,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
-                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.getItem.bind(this, item)} >Learn more</a></React.Fragment>) : ""}
+                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={(event) => this.props.getItem(event, item)} >Learn more</a></React.Fragment>) : ""}
                             
                         </div>
                     </div>
