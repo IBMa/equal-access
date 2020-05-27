@@ -42,7 +42,7 @@
         }
      }
      render() {
- console.log('----zhen---')
+ 
          let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
              <div className="bx--row" style={{height: "2rem"}}>
                  <div className="bx--col-sm-3">

@@ -80,7 +80,7 @@ interface IReportProps {
     selectedTab: "checklist" | "element" | "rule",
     tabs: ("checklist" | "element" | "rule")[],
     selectItem: (item: IReportItem) => void,
-    getItem: (event: any, item: IReportItem) => void,
+    getItem: (item: IReportItem) => void,
     layout: string
 }
 
