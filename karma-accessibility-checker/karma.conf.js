@@ -222,6 +222,10 @@ module.exports = function (config) {
 
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: Infinity
+        concurrency: Infinity,
+
+        // Enable or disable failure on running empty test-suites. 
+        // If disabled the program will return exit-code 0 and display a warning
+        failOnEmptyTestSuite: false
     });
 };
