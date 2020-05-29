@@ -396,7 +396,7 @@ let a11yRulesInput: Rule[] = [
                     // Must be an unnamed checkbox
                     if (ctxGroup === null) {
                         if ((formCache.checkboxByName[""] || []).length > 1) {
-                            return RulePotential("Potential_UnnamedCheckbox");
+                            return RulePotential("Potential_UnnamedCheckbox", [ctxType]);
                         } else {
                             return RulePass("Pass_LoneNogroup", [ctxType]);
                         }
@@ -422,11 +422,11 @@ let a11yRulesInput: Rule[] = [
                     } else {
                         return RulePass("Pass_Grouped", [ctxType]);
                     }
-                } else if (ctxType === "Checkbox" && formCache.numCheckboxes > 1 && numCheckboxesWithName.length === 1) {
+                } else if (ctxType === "Checkbox" && formCache.numCheckboxes > 1 && numCheckboxesWithName === 1) {
                     // We have only one checkbox with this name, but there are other checkboxes in the form. 
                     // If we're not grouped, ask them to examine it
                     if (ctxGroup === null) {
-                        return RulePotential("Potential_LoneCheckbox");
+                        return RulePotential("Potential_LoneCheckbox", [ctxType]);
                     } else {
                         return RulePass("Pass_Grouped", [ctxType]);
                     }
@@ -445,7 +445,7 @@ let a11yRulesInput: Rule[] = [
                         return RuleFail("Fail_NotSameGroup", [ctxType, ctxName]);
                     } else {
                         // We're all grouped up!
-                        return RulePass("Pass_Grouped");
+                        return RulePass("Pass_Grouped", [ctxType]);
                     }
                 }
             }
