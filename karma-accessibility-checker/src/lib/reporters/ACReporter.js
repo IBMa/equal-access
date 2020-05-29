@@ -166,7 +166,7 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
             // Extract the scan results for the page
             const scanResults = results.pageResults;
             if (!scanResults) {
-                console.error("ERROR in browser_info. scanResults:", scanResults);
+                console.error("ERROR in browser_info. scanResults:", results);
             }
             // Save the results of a single scan to a JSON file based on the label provided
             ACReporterJSON.savePageResults(config, scanResults);
