@@ -161,10 +161,11 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
      */
     emitter.on('browser_info', function (browser, results) {
         try {
-            ACReporterCommon.log.debug("START 'browser_info' emitter function");
-
             // Extract the scan results for the page
             const scanResults = results.pageResults;
+            if (!scanResults) return;
+            ACReporterCommon.log.debug("START 'browser_info' emitter function");
+
             if (!scanResults) {
                 console.error("ERROR in browser_info. scanResults:", results);
             }
