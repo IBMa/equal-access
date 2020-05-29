@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Table_CapSummRedundant"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -36,16 +36,14 @@ The table summary must not duplicate the caption
 
   For example:
 
-```
-<p id="table1_summary">
+<CodeSnippet type="multi" light={true}>&lt;p id="table1_summary"&gt;
     The age demographics of each North American country includes age structures from 0-14 years, 15-64 years, and 65 years and older.
-</p>
-
-<table aria-describedby="table1_summary">
-    <caption>Age Demographics of North American Countries</caption>
+&lt;/p&gt;
+    
+&lt;table aria-describedby="table1_summary"&gt;
+    &lt;caption&gt;Age Demographics of North American Countries&lt;/caption&gt;
       . . .
-</table>
-```
+&lt;/table&gt;</CodeSnippet>
 
 </Column>
 </Row>

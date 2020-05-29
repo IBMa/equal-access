@@ -18,13 +18,14 @@
 var pathLib = require('path');
 var fs = require('fs');
 require("../ACConfigLoader");
+const { genReport } = require("./genReport");
 
 // Global aChecker Summary Holder
 var scanSummary = {};
 
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
- * the scan results, such as writing the page results and the summary to a JSON file. This reporter function
+ * the scan results, such as writing the page results and the summary to a HTML file. This reporter function
  * is registered with Karma server and triggered based on events that are triggered by the karma communication.
  *
  * @param {Object} baseReporterDecorator - the base karma reporter, which had the base functions which we override
@@ -39,7 +40,7 @@ var scanSummary = {};
  *
  * @memberOf this
  */
-var ACReporterJSON = function (aChecker) {
+var ACReporterHTML = function (aChecker) {
     let Config = aChecker.Config;
     Config.DEBUG && console.log("START ACReporter Constructor");
     // Override adapters
@@ -49,7 +50,7 @@ var ACReporterJSON = function (aChecker) {
     this.report = function(info) {
         Config.DEBUG && console.log("START 'info' emitter function");
 
-        // Save the results of a single scan to a JSON file based on the label provided
+        // Save the results of a single scan to a HTML file based on the label provided
         savePageResults(info);
 
         // Update the overall summary object count object to include the new scan that was performed
@@ -71,20 +72,20 @@ var ACReporterJSON = function (aChecker) {
      * @memberOf this
      */
     this.onRunComplete = function () {
-        Config.DEBUG && console.log("START 'ACReporterJSON:onRunComplete' function");
+        Config.DEBUG && console.log("START 'ACReporterHTML:onRunComplete' function");
 
         // Add End time when the whole karma run is done
         // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
         scanSummary.endReport = Date.now();
 
-        // Save summary object to a JSON file.
+        // Save summary object to a HTML file.
         saveSummary(scanSummary);
 
-        Config.DEBUG && console.log("END 'ACReporterJSON:onRunComplete' function");
+        Config.DEBUG && console.log("END 'ACReporterHTML:onRunComplete' function");
     };
 
     /**
-     * This function is responsible for saving a single scans results to a file as JSON. On a side note
+     * This function is responsible for saving a single scans results to a file as HTML. On a side note
      * this function will also extract the label which will be the file names where the results will be
      * saved.
      *
@@ -103,7 +104,7 @@ var ACReporterJSON = function (aChecker) {
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // configuration.
-        var resultsFileName = pathLib.join(resultDir, results.label + '.json');
+        var resultsFileName = pathLib.join(resultDir, results.label + '.html');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
         // Debug example which has label which has unix "/" in them.
@@ -113,23 +114,38 @@ var ACReporterJSON = function (aChecker) {
         var resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
         ***************************************************************************************************************************************/
 
-        // Write the results object as JSON to a file.
-        writeObjectToFileAsJSON(resultsFileName, results);
+        // Write the results object as HTML to a file.
+        writeObjectToFileAsHTML(resultsFileName, results);
 
         Config.DEBUG && console.log("END 'savePageResults' function");
     }
 
     /**
-     * This function is responsible for converting a javascript object into JSON and then writing that to a
+     * This function is responsible for converting a javascript object into HTML and then writing that to a
      * json file.
      *
-     * @param {String} fileName - Full path of file where the JSON object should be stored
-     * @param {String} content - The javascript object which should be converted and saved to file as JSON.
+     * @param {String} fileName - Full path of file where the HTML object should be stored
+     * @param {String} content - The javascript object which should be converted and saved to file as HTML.
      *
      * @memberOf this
      */
-    var writeObjectToFileAsJSON = function (fileName, content) {
-        Config.DEBUG && console.log("START 'writeObjectToFileAsJSON' function");
+    var writeObjectToFileAsHTML = function (fileName, content) {
+        const valueMap = {
+            "VIOLATION": {
+                "POTENTIAL": "Needs review",
+                "FAIL": "Violation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            },
+            "RECOMMENDATION": {
+                "POTENTIAL": "Recommendation",
+                "FAIL": "Recommendation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            }
+        };
+        
+        Config.DEBUG && console.log("START 'writeObjectToFileAsHTML' function");
 
         // Extract the parent directory of the file name that is provided
         var parentDir = pathLib.dirname(fileName);
@@ -145,13 +161,32 @@ var ACReporterJSON = function (aChecker) {
 
         Config.DEBUG && console.log("Object will be written to file: \"" + fileName + "\"");
 
-        // Convert the Object into JSON string and write that to the file
-        // Make sure to use utf-8 encoding to avoid an issues specify to OS.
-        // In terms of the JSON string that is constructed use 4 spaces to format the JSON object, before
-        // writing it to the file.
-        fs.writeFileSync(fileName, JSON.stringify(content, null, '    '), { encoding: 'utf-8' });
+        let outReport = {
+            report: {
+                timestamp: content.summary.startScan,
+                nls: content.nls,
+                results: content.results,
+                counts: {
+                    total: { }
+                }
+            },
+            rulesets: aChecker.getRulesets(),
+            tabURL: content.summary.URL
+        }
+        outReport.report.counts.total.All = 0;
+        for (const item of content.results) {
+            let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
+            outReport.report.counts.total[val] = (outReport.report.counts.total[val] || 0) + 1;    
+            ++outReport.report.counts.total.All;
+        }
 
-        Config.DEBUG && console.log("END 'writeObjectToFileAsJSON' function");
+        // Convert the Object into HTML string and write that to the file
+        // Make sure to use utf-8 encoding to avoid an issues specify to OS.
+        // In terms of the HTML string that is constructed use 4 spaces to format the HTML object, before
+        // writing it to the file.
+        fs.writeFileSync(fileName, genReport(outReport), { encoding: 'utf-8' });
+
+        Config.DEBUG && console.log("END 'writeObjectToFileAsHTML' function");
     }
 
     /**
@@ -263,51 +298,7 @@ var ACReporterJSON = function (aChecker) {
      * @memberOf this
      */
     var saveSummary = function (summary) {
-        if (Config.outputFormat.indexOf("json") === -1) {
-            return;
-        }
-        Config.DEBUG && console.log("START 'saveSummary' function");
 
-        // Fetch the start time of the report from the summary object
-        var startReportTime = summary.startReport;
-
-        // Extract the outputFolder from the ACConfig (this is the user config that they provid)
-        var resultDir = Config.outputFolder;
-
-        Config.DEBUG && console.log("Converting: " + startReportTime);
-
-        // Now we need to take the from epoch format date and convert it to readable data
-        // Construct a new Data object with the start report time
-        var formattedData = new Date(startReportTime);
-
-        // Extract all the date fields which are needed to construct the filename
-        var year = datePadding(formattedData.getUTCFullYear());
-        var month = datePadding(formattedData.getUTCMonth()+1); // UTC Month is provid in a range of A Number, from 0-11, representing the month
-        var date = datePadding(formattedData.getUTCDate());
-        var hour = datePadding(formattedData.getHours());
-        var minute = datePadding(formattedData.getMinutes());
-        var seconds = datePadding(formattedData.getUTCSeconds());
-
-        Config.DEBUG && console.log("Year: " + year);
-        Config.DEBUG && console.log("Month: " + month);
-        Config.DEBUG && console.log("Date: " + date);
-        Config.DEBUG && console.log("Hour: " + hour);
-        Config.DEBUG && console.log("Minute: " + minute);
-        Config.DEBUG && console.log("Seconds: " + seconds);
-
-        // Build the summary file name based on the following format: summary_2016-06-20-13-26-45GMT.json
-        //  summary_<year>-<month>-<date>-<hour>-<minute>-<seconds>GMT.json
-        var filename = "summary_" + year + "-" + month + "-" + date + "-" + hour + "-" + minute + "-" + seconds + "GMT.json";
-
-        // Add the results dir to the filename so that all the summary files can be saved under the output folder
-        filename = pathLib.join(resultDir, filename);
-
-        Config.DEBUG && console.log("Filename Constructed: " + filename);
-
-        // Write the summary object as json to the summary file.
-        writeObjectToFileAsJSON(filename, summary);
-
-        Config.DEBUG && console.log("END 'saveSummary' function");
     }
 
     /**
@@ -428,4 +419,4 @@ var ACReporterJSON = function (aChecker) {
 };
 
 // Export this function, which will be called when accessibility-checker loads
-module.exports = ACReporterJSON;
+module.exports = ACReporterHTML;

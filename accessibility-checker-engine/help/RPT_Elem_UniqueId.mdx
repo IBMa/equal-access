@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: RPT_Elem_UniqueId"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,14 +34,12 @@ Element `id` attribute values must be unique within a document
 
 For example:
 
-```
-<h1 id="news">Breaking news</h1>
-<p id="newsintro">The latest stories from our correspondents around the world.</p>
+<CodeSnippet type="multi" light={true}>&lt;h1 id="news"&gt;Breaking news&lt;/h1&gt;
+&lt;p id="newsintro"&gt;The latest stories from our correspondents around the world.&lt;/p&gt;
 ...
-<div role="article" aria-labelledby="news" aria-describedby="newsintro">
+&lt;div role="article" aria-labelledby="news" aria-describedby="newsintro"&gt;
     ...
-</div>
-```
+&lt;/div&gt;</CodeSnippet>
 </Column>
 </Row>
 </div>

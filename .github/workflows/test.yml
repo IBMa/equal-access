@@ -3,9 +3,7 @@
 
 name: All branch testing
 
-on:
-  push:
-    branches: '*'
+on: [ pull_request ]
 
 jobs:
 ###############################################################################
@@ -76,7 +74,21 @@ jobs:
       - run: npm run build
         working-directory: accessibility-checker
 
-      - run: npx mocha -R dot test/mocha/aChecker.Fast/**/*.test.js
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Zombie.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.URL.test.js
         working-directory: accessibility-checker
 
 ###############################################################################

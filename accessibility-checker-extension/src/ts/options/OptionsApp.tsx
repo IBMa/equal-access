@@ -153,7 +153,8 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
               <h2>
                 IBM <strong>Accessibility</strong>
-                <br /> Equal Access Accessibility Checker
+                <br /> Equal Access Toolkit:
+                <br /> Accessibility Checker
               </h2>
               <div className="op_version" style={{ marginTop: "8px" }}>
                 Version {manifest.version}
@@ -192,7 +193,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               />
               <p className="op_helper-text">
                 For details on rule set changes between deployments, see{" "}
-                <a href="https://github.com/IBMa/equal-access/releases">Release notes</a>.
+                <a href="https://github.com/IBMa/equal-access/releases" target="_blank" rel="noopener noreferred">Release notes</a>.
               </p>
               <h3>Supported rule sets</h3>
               <p>

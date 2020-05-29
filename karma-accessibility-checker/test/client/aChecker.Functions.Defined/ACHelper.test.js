@@ -28,16 +28,16 @@ describe("Check objects/function added by ACHelper.js are defined", function () 
         expect(typeof aChecker.initializeSummary).not.toBe("undefined");
     });
 
-    it("window.aChecker.scanSummary Should be defined", function() {
-        expect(typeof window.aChecker.scanSummary).not.toBe("undefined");
+    it("aChecker.scanSummary Should be defined", function() {
+        expect(typeof aChecker.scanSummary).not.toBe("undefined");
     });
 
-    it("window.aChecker.diffResults Should be defined", function() {
-        expect(typeof window.aChecker.diffResults).not.toBe("undefined");
+    it("aChecker.diffResults Should be defined", function() {
+        expect(typeof aChecker.diffResults).not.toBe("undefined");
     });
 
-    it("window.aChecker.scanResults Should be defined", function() {
-        expect(typeof window.aChecker.scanResults).not.toBe("undefined");
+    it("aChecker.scanResults Should be defined", function() {
+        expect(typeof aChecker.scanResults).not.toBe("undefined");
     });
 
     it("aChecker.getCompliance Should be defined", function() {

@@ -72,7 +72,7 @@ var ACReporter = function (aChecker) {
      *
      * @memberOf this
      */
-    this.onRunComplete = function (done) {
+    this.onRunComplete = function () {
         Config.DEBUG && console.log("START 'ACReporterCSV::onRunComplete' function");
 
         // Add End time when the whole karma run is done
@@ -80,7 +80,7 @@ var ACReporter = function (aChecker) {
         scanSummary.endReport = Date.now();
 
         // Save summary object to a JSON file.
-        saveSummary(scanSummary, done);
+        saveSummary(scanSummary);
 
         Config.DEBUG && console.log("END 'ACReporterCSV::onRunComplete' function");
     };
@@ -203,13 +203,10 @@ var ACReporter = function (aChecker) {
      */
     var saveSummary = function (summary, done) {
         if (Config.outputFormat.indexOf("csv") === -1) {
-            done && done();
             return;
         }
         Config.DEBUG && console.log("START 'saveSummary' function");
         writeObjectToFile("results.csv", this.resultStr);
-        done && done();
-
         Config.DEBUG && console.log("END 'saveSummary' function");
     }
 
@@ -250,7 +247,8 @@ var ACReporter = function (aChecker) {
     var myThis = this;
     if (typeof(after) !== "undefined") {
         after(function(done) {
-            myThis.onRunComplete(done);
+            myThis.onRunComplete();
+            done && done();
         });
     } else {
         process.on('beforeExit', function() {

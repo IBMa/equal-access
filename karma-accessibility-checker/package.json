@@ -14,8 +14,9 @@
     "test:server:ava": "ava --verbose",
     "startLocalRuleServer": "forever start RuleServerLocal.js",
     "dependencies": "gulp --gulpfile gulp/gulpfile.js dependencies",
+    "build:report": "(cd ../report-react && npm run build && cd ../karma-accessibility-checker && cp ../report-react/build/genReport.js ./src/lib/reporters/)",
     "build:doc": "gulp --gulpfile gulp/gulpfile.js build-doc",
-    "build": "gulp --gulpfile gulp/gulpfile.js build",
+    "build": "npm run build:report && gulp --gulpfile gulp/gulpfile.js build",
     "deploy": "gulp --gulpfile gulp/gulpfile.js --user $GSA_USER --pw $GSA_PASS upload",
     "uploadCoverage": "gulp --gulpfile gulp/gulpfile.js --user $GSA_USER --pw $GSA_PASS uploadCoverage",
     "localDevInstall": "cd src && npm link && npm link karma-ibma",
@@ -27,7 +28,7 @@
     "url": "git@github.com/IBMa/equal-access/karma-accessibility-checker"
   },
   "engines": {
-    "node": "4.4.x"
+    "node": "10 || 12"
   },
   "keywords": [
     "ci",

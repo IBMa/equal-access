@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Combobox_Expanded"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -38,17 +38,15 @@ The `aria-owns` or the `aria-controls` attribute of the expanded combobox must r
 
 Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
 
-```
- <label for="tag_combo">Tag</label>
-  <input type="text" id="tag_combo"
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
       role="combobox" aria-autocomplete="list"
       aria-haspopup="listbox" aria-expanded="true"
-      aria-controls="popup_listbox" aria-activedescendant="selected_option">
-  <ul role="listbox" id="popup_listbox">
-   <li role="option">Zebra</li>
-   <li role="option" id="selected_option">Zoom</li>
-  </ul>
-```
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+  &lt;ul role="listbox" id="popup_listbox"&gt;
+   &lt;li role="option"&gt;Zebra&lt;/li&gt;
+   &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+  &lt;/ul&gt;</CodeSnippet>
 
 Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
 

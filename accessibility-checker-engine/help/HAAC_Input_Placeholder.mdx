@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: HAAC_Input_Placeholder"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -46,9 +46,9 @@ HTML5 `<placeholder>` attribute must not be used as a visible label replacement
 
 For example:
 
-```<label>Email Address: <input type="email" name="address1" placeholder="john@example.net"></label>```
+<CodeSnippet type="single" light={true}>&lt;label&gt;Email Address: &lt;input type="email" name="address1" placeholder="john@example.net"&gt;&lt;/label&gt;</CodeSnippet>
 
-```<label for="address2">Address</label>```
+<CodeSnippet type="single" light={true}>&lt;label for="address2"&gt;Address&lt;/label&gt;</CodeSnippet>
 
 
 

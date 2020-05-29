@@ -123,7 +123,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts">{(bDiff?counts.filtered["Recommendation"]+"/":"")+counts.total["Recommendation"]}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(bDiff?counts.filtered["All"]+"/":"")+counts.total["All"]}&nbsp;Issues&nbsp;found</span>
+                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(bDiff?counts.filtered["All"]+"/":"")+counts.total["All"]}&nbsp;Issues&nbsp;{(bDiff?"selected":"found")}</span>
                 </div>
             </div>
         </div>);

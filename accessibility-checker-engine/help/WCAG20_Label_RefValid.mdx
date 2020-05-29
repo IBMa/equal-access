@@ -2,7 +2,7 @@
 title: "Accessibility Checker Rule Help: WCAG20_Label_RefValid"
 ---
 import "../../../styles/ToolHelp.scss"
-import { Tag } from "carbon-components-react";
+import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
@@ -34,10 +34,8 @@ The `for` attribute must reference a non-empty, unique `id` attribute of an `<in
 
 * Set the value of the `for` attribute to the `id` value of the valid `<input>` element to be labeled. Make sure the `id` value is unique. For example:
 
-```
-<label id="label2" for="ln1">Last Name</label>
-<input type="text" name="lastname" id="ln1" value="enter last name">
-```
+<CodeSnippet type="multi" light={true}>&lt;label id="label2" for="ln1"&gt;Last Name&lt;/label&gt;
+&lt;input type="text" name="lastname" id="ln1" value="enter last name"&gt;</CodeSnippet>
 
 </Column>
 </Row>
