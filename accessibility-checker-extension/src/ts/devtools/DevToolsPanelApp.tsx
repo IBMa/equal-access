@@ -62,9 +62,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
     
     ignoreNext = false;
+    leftPanelRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
+        this.leftPanelRef = React.createRef()
         // Only listen to element events on the subpanel
         if (this.props.layout=== "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -137,6 +139,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
         }
+
+        
+
     }
 
     async startScan() {
@@ -328,11 +333,12 @@ selectPath("${item.path.dom}");
         if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
-                    <div style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
+                    <div ref={this.leftPanelRef} style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
                         {!this.state.report && <ReportSplash /> }
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
                     </div>
+                    {this.leftPanelRef.current?.scrollTo(0,0)}
                     <div style={{flex: "1 1 50%"}} className="mainPanelRight">
                         <Header 
                             layout={this.props.layout} 
