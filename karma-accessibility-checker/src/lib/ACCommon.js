@@ -332,7 +332,11 @@ var ACCommon = {
                     url: `${baseA11yServerURL}/archives.json`, 
                     rejectUnauthorized: false
                 }, function (error, response, body) {
-                    resolve(JSON.parse(body));
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(body);
+                    }
                 });
             });
             fs.writeFileSync(pathLib.join(__dirname, "archives.json"), archiveJson);
