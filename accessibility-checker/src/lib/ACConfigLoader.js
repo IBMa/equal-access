@@ -108,8 +108,9 @@ async function processACConfig(ACConfig) {
                 request.get(ruleArchiveFile, function (error, response, body) {
                     if (error) {
                         reject(error);
+                    } else {
+                        resolve(JSON.parse(body));
                     }
-                    resolve(JSON.parse(body));
                 });
             });
         } catch (err) {
