@@ -349,6 +349,7 @@ selectPath("${item.path.dom}");
                                     rulesets={this.state.rulesets} 
                                     report={this.state.report} 
                                     getItem = {this.getItem.bind(this)} 
+                                    learnItem={this.state.learnItem}
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
@@ -387,6 +388,7 @@ selectPath("${item.path.dom}");
                             rulesets={this.state.rulesets} 
                             report={this.state.report} 
                             getItem = {this.getItem.bind(this)} 
+                            learnItem={this.state.learnItem}
                             layout = {this.props.layout}
                             selectedTab="element"
                             tabs={["checklist", "element", "rule"]} />}
