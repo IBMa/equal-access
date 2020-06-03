@@ -41,7 +41,7 @@ interface IReportRowProps {
     report: IReport,
     group: IReportRowGroup;
     selectItem: (item: IReportItem) => void,
-    getItem: (item: IReportItem)=> void,
+    getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string
 }
@@ -58,7 +58,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
 
     componentDidMount(){
         this.learnRef.current?.focus();
-     }
+    }
 
     setRow(bOpen: boolean) {
         if (this.state.expanded != bOpen) {
@@ -76,13 +76,13 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
     }
 
-    learnMoreClickHandler = (e:any, item:IReportItem)=>{
+    learnMoreClickHandler(e:any, item:IReportItem){
         e.preventDefault();
         e.stopPropagation();
         this.props.getItem(item);
     }
 
-    learnMoreKeyDownHandler = (e:any, item:IReportItem)=>{
+    learnMoreKeyDownHandler(e:any, item:IReportItem){
         if (e.keyCode === 13) {
             e.preventDefault();
             e.stopPropagation();
@@ -90,7 +90,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
     }
 
-    learnMoreRef = (item: IReportItem) => {
+    learnMoreRef(item: IReportItem){
         var learnItem = this.props.learnItem;
         if(learnItem && item.path.dom === learnItem?.path.dom && item.ruleId==learnItem.ruleId){
             return this.learnRef;

@@ -321,7 +321,7 @@ selectPath("${item.path.dom}");
         }
     }
 
-    getItem = (item: IReportItem) =>{
+    getItem(item: IReportItem) {
         this.setState({learnMore: true, learnItem: item});
     }
 
