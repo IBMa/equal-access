@@ -107,7 +107,7 @@ async function processACConfig(ACConfig) {
             ruleArchiveParse = await new Promise((resolve, reject) => {
                 request.get(ruleArchiveFile, function (error, response, body) {
                     if (error) {
-                        throw error;
+                        reject(error);
                     }
                     resolve(JSON.parse(body));
                 });
