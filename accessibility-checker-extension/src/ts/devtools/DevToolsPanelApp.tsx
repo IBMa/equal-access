@@ -63,10 +63,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
+    rightPanelRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
-        this.leftPanelRef = React.createRef()
+        this.leftPanelRef = React.createRef();
+        this.rightPanelRef = React.createRef();
         // Only listen to element events on the subpanel
         if (this.props.layout=== "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -359,7 +361,6 @@ selectPath("${item.path.dom}");
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
-                                    
                             </main>
                         </div>
                     </div>
@@ -368,14 +369,16 @@ selectPath("${item.path.dom}");
         } else if (this.props.layout === "sub") {
             if (this.state.learnMore) {
                 return <React.Fragment>
-                    <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
-                    <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                        <main>
-                            <div className="subPanel">
-                                {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
-                            </div>
-                        </main>
-                    </div>                
+                    <div ref={this.rightPanelRef}>
+                        <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
+                        <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
+                            <main>
+                                <div className="subPanel">
+                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
+                                </div>
+                            </main>
+                        </div> 
+                    </div>               
                 </React.Fragment>
             } else {
             return <React.Fragment>
