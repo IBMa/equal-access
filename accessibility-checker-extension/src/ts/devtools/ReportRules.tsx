@@ -28,6 +28,7 @@ interface IReportRulesProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 interface IGroup {
@@ -98,6 +99,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         report={this.props.report} 
                         group={group}
                         getItem={this.props.getItem}
+                        learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout}
                     />                
