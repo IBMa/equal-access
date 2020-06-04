@@ -370,17 +370,17 @@ selectPath("${item.path.dom}");
         } else if (this.props.layout === "sub") {
             if (this.state.learnMore) {
                 return <React.Fragment>
+                    <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                     <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
-                        <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
                             <main>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
                                 </div>
                             </main>
-                        </div> 
-                    </div>  
-                    {console.log("scrollTopSub = ",this.leftPanelRef.current?.scrollTop)}
+                        </div>
+                    </div>
+                    {console.log("scrollTopSub = ",this.subPanelRef.current?.scrollTop)}
                     {this.subPanelRef.current?.scrollTo(0,0)}             
                 </React.Fragment>
             } else {
