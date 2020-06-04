@@ -63,12 +63,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
-    rightPanelRef: React.RefObject<HTMLDivElement>;
+    subPanelRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
         this.leftPanelRef = React.createRef();
-        this.rightPanelRef = React.createRef();
+        this.subPanelRef = React.createRef();
         // Only listen to element events on the subpanel
         if (this.props.layout=== "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -340,6 +340,7 @@ selectPath("${item.path.dom}");
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
                     </div>
+                    {console.log("scrollTopAccessor = ",this.leftPanelRef.current?.scrollTop)}
                     {this.leftPanelRef.current?.scrollTo(0,0)}
                     <div style={{flex: "1 1 50%"}} className="mainPanelRight">
                         <Header 
@@ -369,7 +370,7 @@ selectPath("${item.path.dom}");
         } else if (this.props.layout === "sub") {
             if (this.state.learnMore) {
                 return <React.Fragment>
-                    <div ref={this.rightPanelRef}>
+                    <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
                         <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
                             <main>
@@ -378,7 +379,9 @@ selectPath("${item.path.dom}");
                                 </div>
                             </main>
                         </div> 
-                    </div>               
+                    </div>  
+                    {console.log("scrollTopSub = ",this.leftPanelRef.current?.scrollTop)}
+                    {this.subPanelRef.current?.scrollTo(0,0)}             
                 </React.Fragment>
             } else {
             return <React.Fragment>
