@@ -113,7 +113,7 @@ Cypress.Commands.add(
               .forEach((curErr) => {
                 Cypress.log({
                   name,
-                  message: curErr.ruleId,
+                  message: curErr.message,
                   consoleProps: () => {
                     return {
                       curErr
