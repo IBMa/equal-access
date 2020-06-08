@@ -126,7 +126,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                                 {/* <span><CheckmarkFilled16 aria-label="Checkmark" className="icon-status-checkmark-filled" /></span> */}
                             </div>
                                 <div className="tile-score">{elementNoFailures}%</div>
-                            <div className="tile-description">Percentage of elements with no detected violations</div>
+                            <div className="tile-description">Percentage of elements with no detected violations or items to review</div>
                         </Tile>
                     </div>
                     <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
