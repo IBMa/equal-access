@@ -4,8 +4,8 @@
     "description": "IBM accessibility tools",
     "private": false,
     "scripts": {
-        "install": "(cd accessibility-checker-engine && npm install); (cd accessibility-checker && npm install); (cd karma-accessibility-checker && npm install); (cd rule-server && npm install); (cd accessibility-checker-extension && npm install); (cd report-react && npm install)",
-        "build": "(cd accessibility-checker-engine && npm run build); (cd accessibility-checker && npm run package:npm); (cd karma-accessibility-checker && npm run build); (cd rule-server && npm run build); (cd accessibility-checker-extension && npm run build:prod)"
+        "install": "(cd accessibility-checker-engine && npm install); (cd accessibility-checker && npm install); (cd karma-accessibility-checker && npm install); (cd rule-server && npm install); (cd accessibility-checker-extension && npm install); (cd report-react && npm install); (cd cypress-accessibility-checker && npm install)",
+        "build": "(cd accessibility-checker-engine && npm run build); (cd accessibility-checker && npm run package:npm); (cd karma-accessibility-checker && npm run build); (cd rule-server && npm run build); (cd accessibility-checker-extension && npm run build:prod); (cd cypress-accessibility-checker && npm run package:npm)"
     },
     "author": "IBM",
     "license": "SEE LICENSE IN LICENSE file",
