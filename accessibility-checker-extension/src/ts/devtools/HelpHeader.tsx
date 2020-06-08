@@ -37,10 +37,11 @@
      
      componentDidMount(){
         var button = document.getElementById('backToListView');
-        if(button){
+        if (button) {
             button.focus();
         }
      }
+
      render() {
  
          let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>

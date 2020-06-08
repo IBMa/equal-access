@@ -63,10 +63,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
+    subPanelRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: any) {
         super(props);
-        this.leftPanelRef = React.createRef()
+        this.leftPanelRef = React.createRef();
+        this.subPanelRef = React.createRef();
         // Only listen to element events on the subpanel
         if (this.props.layout=== "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -264,47 +266,47 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
 
                     var script =
-`function lookup(doc, xpath) {
-    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
-    let element = nodes.iterateNext();
-    if (element) {
-        return element;
-    } else {
-        return null;
-    }
-}
-function selectPath(srcPath) {
-    let doc = document;
-    let element = null;
-    while (srcPath && srcPath.includes("iframe")) {
-        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-        let iframe = lookup(doc, parts[1]);
-        element = iframe || element;
-        if (iframe && iframe.contentDocument && iframe.contentDocument) {
-            doc = iframe.contentDocument;
-            srcPath = parts[2];
-        } else {
-            srcPath = null;
-        }
-    }
-    if (srcPath) {
-        element = lookup(doc, srcPath) || element;
-    }
-    if (element) {
-        inspect(element);
-        var elementRect = element.getBoundingClientRect();
-        var absoluteElementTop = elementRect.top + window.pageYOffset;
-        var middle = absoluteElementTop - 100;
-        element.ownerDocument.defaultView.scrollTo({
-            top: middle,
-            behavior: 'smooth'
-        });
-        return true;
-    }
-    return;
-}
-selectPath("${item.path.dom}");
-`
+                    `function lookup(doc, xpath) {
+                        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                        let element = nodes.iterateNext();
+                        if (element) {
+                            return element;
+                        } else {
+                            return null;
+                        }
+                    }
+                    function selectPath(srcPath) {
+                        let doc = document;
+                        let element = null;
+                        while (srcPath && srcPath.includes("iframe")) {
+                            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+                            let iframe = lookup(doc, parts[1]);
+                            element = iframe || element;
+                            if (iframe && iframe.contentDocument && iframe.contentDocument) {
+                                doc = iframe.contentDocument;
+                                srcPath = parts[2];
+                            } else {
+                                srcPath = null;
+                            }
+                        }
+                        if (srcPath) {
+                            element = lookup(doc, srcPath) || element;
+                        }
+                        if (element) {
+                            inspect(element);
+                            var elementRect = element.getBoundingClientRect();
+                            var absoluteElementTop = elementRect.top + window.pageYOffset;
+                            var middle = absoluteElementTop - 100;
+                            element.ownerDocument.defaultView.scrollTo({
+                                top: middle,
+                                behavior: 'smooth'
+                            });
+                            return true;
+                        }
+                        return;
+                    }
+                    selectPath("${item.path.dom}");
+                    `
                     this.ignoreNext = true;
                     chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
                         if (isException) {
@@ -313,6 +315,13 @@ selectPath("${item.path.dom}");
                         if (!result) {
                             console.log('Could not select element, it may have moved');
                         }
+                        // do focus after inspected Window script
+                        setTimeout(() => { 
+                            var button = document.getElementById('backToListView');
+                            if (button) {
+                                button.focus();
+                            } 
+                        }, 0);
                     });
 
                     this.onFilter(item.path.dom)
@@ -359,7 +368,6 @@ selectPath("${item.path.dom}");
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
-                                    
                             </main>
                         </div>
                     </div>
@@ -369,13 +377,16 @@ selectPath("${item.path.dom}");
             if (this.state.learnMore) {
                 return <React.Fragment>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
-                    <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                        <main>
-                            <div className="subPanel">
-                                {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
-                            </div>
-                        </main>
-                    </div>                
+                    <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
+                        <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
+                            <main>
+                                <div className="subPanel">
+                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
+                                </div>
+                            </main>
+                        </div>
+                    </div>
+                    {this.subPanelRef.current?.scrollTo(0,0)}             
                 </React.Fragment>
             } else {
             return <React.Fragment>
