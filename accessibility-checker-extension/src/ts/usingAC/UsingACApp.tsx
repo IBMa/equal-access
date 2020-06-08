@@ -931,7 +931,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </p>
             <p>
               The current accessibility status of the Web content displays as a
-              percentage of elements with no detected violations.{" "}
+              percentage of elements with no detected violations or items to review.{" "}
             </p>
             <p>
               <strong>Important Note:</strong> This percentage is based on
