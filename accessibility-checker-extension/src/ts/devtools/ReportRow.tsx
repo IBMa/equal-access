@@ -78,14 +78,14 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
 
     learnMoreClickHandler(e:any, item:IReportItem){
         e.preventDefault();
-        e.stopPropagation();
+        // e.stopPropagation(); // if present learn more clickhandler will not select row
         this.props.getItem(item);
     }
 
     learnMoreKeyDownHandler(e:any, item:IReportItem){
         if (e.keyCode === 13) {
             e.preventDefault();
-            e.stopPropagation();
+            // e.stopPropagation(); // if present learn more keydown will not select row
             this.props.getItem(item);
         }
     }
@@ -166,7 +166,6 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
-                            
                         </div>
                     </div>
                 </div>)})}
