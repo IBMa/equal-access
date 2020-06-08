@@ -25,6 +25,16 @@ $feature-flags: (
         }
     }
 
+    h4 {
+        color: #171717;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-top: 0.25rem;
+        @media only screen and (min-width: 30rem) {
+            font-size: 1rem;
+        }
+    }
+
     .bee-logo {
         height: 2rem;
         position: absolute;
