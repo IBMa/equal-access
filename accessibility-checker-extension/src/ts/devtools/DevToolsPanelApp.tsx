@@ -316,6 +316,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         if (!result) {
                             console.log('Could not select element, it may have moved');
                         }
+                        // do focus after inspected Window script
+                        setTimeout(() => { 
+                            var button = document.getElementById('backToListView');
+                            if (button) {
+                                button.focus();
+                            } 
+                        }, 0);
                     });
 
                     this.onFilter(item.path.dom)
