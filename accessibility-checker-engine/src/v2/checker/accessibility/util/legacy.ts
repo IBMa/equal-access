@@ -1752,7 +1752,9 @@ export class RPTUtil {
             }
         }
         if (ele.nodeName.toLowerCase() === "input") {
-            return (RPTUtil.getLabelForElement(ele) || "").trim();
+            const label = RPTUtil.getLabelForElement(ele);
+            if (!label) return "";
+            return (RPTUtil.getAriaLabel(label) || label.innerText || "").trim();
         }
         return "";
     }

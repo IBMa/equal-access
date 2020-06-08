@@ -38,26 +38,26 @@ function calcSummary(report: IReport) {
     let results = report.results.filter((result: any) => {
         return result.value[1] !== "PASS";
     })
-    console.log("report.results.length"+report.results.length);
-    console.log("all issues = "+results.length);
+    // console.log("report.results.length = "+report.results.length);
+    // console.log("all issues = "+results.length);
 
     let violations = results.filter((result: any) => {
         return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
     })
     summaryResults.push(violations.length);
-    console.log("Violations = "+summaryResults[0]);
+    // console.log("Violations = "+summaryResults[0]);
 
     let potentials = results.filter((result: any) => {
         return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
     })
     summaryResults.push(potentials.length);
-    console.log("summaryPotential = "+summaryResults[1]);
+    // console.log("summaryPotential = "+summaryResults[1]);
 
     let recommendations = results.filter((result: any) => {
         return result.value[0] === "RECOMMENDATION";
     })
     summaryResults.push(recommendations.length);
-    console.log("summaryRecommendation = "+summaryResults[2]);
+    // console.log("summaryRecommendation = "+summaryResults[2]);
 
     let failXpaths: string[] = [];
     results.map((result:any) => {
@@ -65,7 +65,7 @@ function calcSummary(report: IReport) {
     })
     let failUniqueElements = Array.from(new Set(failXpaths));
     summaryResults.push(failUniqueElements.length);
-    console.log("elementsWithIssues = "+summaryResults[3]);
+    // console.log("elementsWithIssues = "+summaryResults[3]);
 
     let passXpaths: any = [];
     let passResults = report.results.filter((result: any) => {
@@ -78,7 +78,7 @@ function calcSummary(report: IReport) {
     
     let passUniqueElements = Array.from(new Set(passXpaths));
     summaryResults[4] = passUniqueElements.length;
-    console.log("totalElements = "+summaryResults[4]);
+    // console.log("totalElements = "+summaryResults[4]);
     return summaryResults;
 }
 

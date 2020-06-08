@@ -215,7 +215,13 @@ export class Engine implements IEngine {
                         if (!depMatch[dep]) fulfillsDependencies = false;
                     }
                     if (fulfillsDependencies) {
-                        let results : RuleDetails[] = matchingRule.run(this, context,options);
+                        let results : RuleDetails[] = [];
+                        try {
+                            results = matchingRule.run(this, context,options);
+                        } catch (err) {
+                            // Wrapper shows error in console. Skip this rule as N/A
+                            // We don't want to kill the engine
+                        }
                         // If out of scope, it fulfills the dependency
                         if (results.length === 0) {
                             depMatch[matchingRule.rule.id] = true;
