@@ -39,7 +39,6 @@
         var button = document.getElementById('backToListView');
         if (button) {
             button.focus();
-            console.log("HelpHeader: Current focus is ", document.activeElement?.tagName);
         }
      }
 

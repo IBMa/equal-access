@@ -140,7 +140,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
             }
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
-            console.log("DevToolsPanelApp: Current focus is ", document.activeElement?.tagName);
         }
 
         
@@ -348,7 +347,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
                     </div>
-                    {console.log("scrollTopAccessor = ",this.leftPanelRef.current?.scrollTop)}
                     {this.leftPanelRef.current?.scrollTo(0,0)}
                     <div style={{flex: "1 1 50%"}} className="mainPanelRight">
                         <Header 
@@ -388,7 +386,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </main>
                         </div>
                     </div>
-                    {console.log("scrollTopSub = ",this.subPanelRef.current?.scrollTop)}
                     {this.subPanelRef.current?.scrollTo(0,0)}             
                 </React.Fragment>
             } else {
