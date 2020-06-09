@@ -113,7 +113,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row summary">
                 <div className="bx--col-sm-1">
                     <img src={Violation16} alt="Needs review" />
-                    {console.log(noScan)}
                     <span className="summaryBarCounts">{noScan?((bDiff?counts.filtered["Violation"]+"/":"")+counts.total["Violation"]):" "}&nbsp;<span className="summaryBarLabels">Violations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
