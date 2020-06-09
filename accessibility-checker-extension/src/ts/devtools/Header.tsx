@@ -49,6 +49,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     
     render() {
         let counts = this.props.counts;
+        let noScan = counts?true:false;
 
         if (!counts) {
             counts = {
@@ -112,18 +113,19 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row summary">
                 <div className="bx--col-sm-1">
                     <img src={Violation16} alt="Needs review" />
-                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Violation"]+"/":"")+counts.total["Violation"]}&nbsp;<span className="summaryBarLabels">Violations</span></span>
+                    {console.log(noScan)}
+                    <span className="summaryBarCounts">{noScan?((bDiff?counts.filtered["Violation"]+"/":"")+counts.total["Violation"]):" "}&nbsp;<span className="summaryBarLabels">Violations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={NeedsReview16} alt="Needs review" />
-                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Needs review"]+"/":"")+counts.total["Needs review"]}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
+                    <span className="summaryBarCounts">{noScan?((bDiff?counts.filtered["Needs review"]+"/":"")+counts.total["Needs review"]):" "}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={Recommendation16} alt="Recommendation" />
-                    <span className="summaryBarCounts">{(bDiff?counts.filtered["Recommendation"]+"/":"")+counts.total["Recommendation"]}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
+                    <span className="summaryBarCounts">{noScan?((bDiff?counts.filtered["Recommendation"]+"/":"")+counts.total["Recommendation"]):" "}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
                 </div>
                 <div className="bx--col-sm-1">
-                    <span className="summaryBarCounts" style={{fontWeight:400}}>{(bDiff?counts.filtered["All"]+"/":"")+counts.total["All"]}&nbsp;Issues&nbsp;{(bDiff?"selected":"found")}</span>
+                    <span className="summaryBarCounts" style={{fontWeight:400}}>{noScan?((bDiff?counts.filtered["All"]+"/":"")+counts.total["All"]):" "}&nbsp;Issues&nbsp;{(bDiff?"selected":"found")}</span>
                 </div>
             </div>
         </div>);
