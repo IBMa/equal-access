@@ -42,17 +42,23 @@ interface IReportRowProps {
     group: IReportRowGroup;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
     scrollRef : RefObject<HTMLDivElement> = React.createRef();
+    learnRef : RefObject<HTMLAnchorElement> = React.createRef();
 
     state: IReportRowState = {
         expanded: false,
         lastTimestamp: this.props.report.timestamp,
         scrollTo: false
     };
+
+    componentDidMount(){
+        this.learnRef.current?.focus();
+    }
 
     setRow(bOpen: boolean) {
         if (this.state.expanded != bOpen) {
@@ -68,6 +74,28 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         if (e.keyCode === 13) {
             e.target.click();
         }
+    }
+
+    learnMoreClickHandler(e:any, item:IReportItem){
+        e.preventDefault();
+        // e.stopPropagation(); // if present learn more clickhandler will not select row
+        this.props.getItem(item);
+    }
+
+    learnMoreKeyDownHandler(e:any, item:IReportItem){
+        if (e.keyCode === 13) {
+            e.preventDefault();
+            // e.stopPropagation(); // if present learn more keydown will not select row
+            this.props.getItem(item);
+        }
+    }
+
+    learnMoreRef(item: IReportItem){
+        var learnItem = this.props.learnItem;
+        if(learnItem && item.path.dom === learnItem?.path.dom && item.ruleId==learnItem.ruleId){
+            return this.learnRef;
+        } 
+        return null;
     }
 
     static getDerivedStateFromProps(props: IReportRowProps, state: IReportRowState) {
@@ -137,12 +165,11 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {val === "Needs review" && <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>}
                             {val === "Recommendation" && <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>}
                             <span style={{fontSize:"12px"}}>{item.message}</span>
-                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onClick={this.props.getItem.bind(this, item)} >Learn more</a></React.Fragment>) : ""}
-                            
+                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                         </div>
                     </div>
                 </div>)})}
             </React.Fragment> }
         </div>
     }
-}
+}   

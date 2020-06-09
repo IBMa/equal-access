@@ -29,6 +29,7 @@ interface IReportChecklistProps {
     report: IReport,
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 
@@ -109,6 +110,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         report={this.props.report} 
                         group={group}
                         getItem={this.props.getItem}
+                        learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout} 
                     />;

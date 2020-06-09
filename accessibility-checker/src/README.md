@@ -143,7 +143,7 @@ module.exports = {
 
 ### Command-line
 
-The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. Run `npx achecker` for more information.
+The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. Create a .txt file with path(s) to files, directories or a list of urls to be scan. Provide the npx acherer the full path of the .txt file to start the scan, e.g. npx archerer path/to/your/file.txt. Run `npx achecker` for more information.
 
 ### Programmatic
 

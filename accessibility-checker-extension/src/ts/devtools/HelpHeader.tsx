@@ -35,6 +35,13 @@
  export default class HelpHeader extends React.Component<IHeaderProps, IHeaderState> {
      state: IHeaderState = {};
      
+     componentDidMount(){
+        var button = document.getElementById('backToListView');
+        if (button) {
+            button.focus();
+        }
+     }
+
      render() {
  
          let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
@@ -48,7 +55,7 @@
              </div>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
+                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >

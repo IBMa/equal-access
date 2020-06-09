@@ -77,7 +77,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
             <div className="bx--row">
                 <div className="bx--col scLeft">
                     <div className="score">{elementNoFailures}%</div>
-                    <div>Percentage of elements with no detected violations</div>
+                    <div>Percentage of elements with no detected violations or items to review</div>
                 </div>
                 <div className="bx--col">
                     <div>
