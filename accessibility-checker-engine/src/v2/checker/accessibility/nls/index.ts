@@ -500,7 +500,7 @@ let a11yNls = {
     "WCAG20_Label_RefValid": {
         0: "The 'for' attribute must reference a non-empty, unique 'id' attribute of an <input> element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The value \"{0}\" of the `<label>` `for` attribute is not the `id` of a valid `<input>` element"
+        "Fail_1": "The value "{0}" of the 'for' attribute is not the 'id' of a valid <input> element"
     },
     // JCH - DONE
     "WCAG20_Elem_UniqueAccessKey": {
