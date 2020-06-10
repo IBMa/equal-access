@@ -482,7 +482,7 @@ let a11yNls = {
     "Valerie_Table_DataCellRelationships": {
         0: "For a complex data table, all <th> and <td> elements must be related via 'header' or 'scope' attributes",
         "Pass_0": "Rule Passed",
-        "Fail_1": "<th> or <td> element is not related via 'header' or 'scope'"
+        "Fail_1": "Complex table does not have headers for each cell properly defined with 'header' or 'scope'"
     },
     // JCH - DONE
     "RPT_Table_LayoutTrigger": {
