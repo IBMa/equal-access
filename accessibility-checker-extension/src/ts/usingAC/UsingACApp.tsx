@@ -139,10 +139,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               with explanations and suitable fixes within the tool.
             </p>
             <p>
-              The extension showcases two views, the checker view is a code scanner for developers looking to find and fix errors quickly as they are building a component, while the assessment view provides explanation and suggested solutions for each issue reported.
-              This checker is part of an open suite of accessibility automation
-              tools. For teams seeking integrated accessibility testing, IBM
-              offers{" "}
+              The extension showcases two views, the <strong>Assessment</strong> panel helps you identify accessibility issues and understand how to fix them, while the <strong> Accessibility Checker tab in the Elements panel in Chrome or the Inspector panel in Firefox</strong> helps you to locate your issues in the code and on the page. This checker is part of an open suite of accessibility automation tools. For teams seeking integrated accessibility testing, IBM offers{" "}
               <a href="https://github.com/IBMa/equal-access/blob/master/README.md">
                 plug-ins and modules for NodeJS and Karma
               </a>{" "}
