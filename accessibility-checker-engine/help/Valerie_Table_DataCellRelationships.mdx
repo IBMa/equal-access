@@ -31,7 +31,9 @@ For a complex data table, all `<th>` and `<td>` elements must be related via `he
 
 ## What to do
 
- * Use the `id` attribute to provide an identifier for header cells (e.g. `<th id="school">`);
+ * If this is not a data table (no relational data), use CSS instead of a `<table>` element to lay out your content (highly recommended); 
+ * OR, identify the table as layout with `role="presentation"`  or `role="none"`;
+ * OR, Use the `id` attribute to provide an identifier for header cells (e.g. `<th id="school">`);
  * AND use the `header` attribute on data cells to identify the appropriate header cells (e.g. `<td headers="school teacher grade">`).
 
 </Column>

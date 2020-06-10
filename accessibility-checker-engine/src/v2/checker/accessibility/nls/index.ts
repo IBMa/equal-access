@@ -494,13 +494,13 @@ let a11yNls = {
     "RPT_Table_DataHeadingsAria": {
         0: "Data table must identify headers",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Data table has no headers identified"
+        "Fail_1": "Table has no headers identified"
     },
     // JCH - DONE
     "WCAG20_Label_RefValid": {
         0: "The 'for' attribute must reference a non-empty, unique 'id' attribute of an <input> element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The <label> 'for' attribute value of \"{0}\" is not the 'id' of a valid <input> element"
+        "Fail_1": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid <input> element"
     },
     // JCH - DONE
     "WCAG20_Elem_UniqueAccessKey": {
@@ -713,7 +713,7 @@ let a11yNls = {
     "IBMA_Color_Contrast_WCAG2AA_PV": {
         0: "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that image layers between the foreground and background or color gradients do not reduce the text contrast (calculated at {0}) below WCAG 2.1 AA requirements for text of size {1}px and weight of {2}"
+        "Potential_1": "Verify the contrast ratio of the text against the lightest and the darkest colors of the background meets the WCAG 2.1 AA minimum requirements for text of size {1}px and weight of {2}"
     },
     // JCH - DONE
     "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
