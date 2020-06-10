@@ -139,9 +139,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               with explanations and suitable fixes within the tool.
             </p>
             <p>
-              This checker is part of an open suite of accessibility automation
-              tools. For teams seeking integrated accessibility testing, IBM
-              offers{" "}
+              The extension showcases two views, the{" "}
+              <strong>Accessibility Assessment</strong> panel helps you identify
+              accessibility issues and understand how to fix them, while the{" "}
+              <strong>Accessibility Checker</strong> tab in the Elements panel
+              in Chrome or the Inspector panel in Firefox helps you to locate
+              your issues in the code and on the page. This checker is part of
+              an open suite of accessibility automation tools. For teams seeking
+              integrated accessibility testing, IBM offers{" "}
               <a href="https://github.com/IBMa/equal-access/blob/master/README.md">
                 plug-ins and modules for NodeJS and Karma
               </a>{" "}
@@ -155,14 +160,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <ul
                 style={{ listStyleType: "circle", marginInlineStart: "1rem" }}
               >
-                <li>Google Chrome Version 81.x or later</li>
-                <li>Mozilla Firefox Version 68.x or later</li>
+                <li>Google Chrome version 81.x or later</li>
+                <li>Mozilla Firefox version 68.x or later</li>
               </ul>
             </div>
 
             <h3 id="install">2. Installation</h3>
             <div className="pa">
-              Follow the steps below to install the browser extension on Google
+              Follow the steps below to install the browser extension for Google
               Chrome:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
@@ -184,8 +189,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
             <div className="pa">
-              Follow the steps below to install the browser extension on Mozilla
-              Firefox:
+              Follow the steps below to install the browser extension for
+              Mozilla Firefox:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
@@ -228,8 +233,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     style={{ verticalAlign: "middle" }}
                   />{" "}
                   <strong> Needs review</strong> - issues that may not be a
-                  violation. These need manual review to identify whether there
-                  is an accessibility problem.
+                  violation. These need a manual review to identify whether
+                  there is an accessibility problem.
                 </p>
               </li>
               <li>
@@ -281,7 +286,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <strong>Rules</strong> - issues are organized by the rules in
                   the rule set, with violations, items that need review, and
                   recommendations. This view is the best way to see all the
-                  different kinds of issue at once.
+                  different kinds of issues at once.
                 </p>
               </li>
             </ul>
@@ -291,7 +296,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               By default, the IBM Equal Access Accessibility Checker uses a set
               of rules that correspond to the most recent WCAG standards, and
               these rules are updated regularly. If you need to test against a
-              different standard or a specific rule set version, use the options
+              different standard or a specific ruleset version, use the options
               to select the archived rule set by date of deployment and standard
               used.
             </p>
@@ -353,7 +358,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>Preview</strong> - this option extends the Latest rule
-                  set to include a preview of new rules that may be added in
+                  set to include a preview of new rules that may be added in the
                   future. These rules are experimental and liable to change.
                   This option is not recommended if testing results must be
                   replicated in the future.
@@ -374,7 +379,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>IBM Accessibility</strong> - Rules for Web Content
-                  Accessibility Guidelines (WCAG ) 2.1 level A and level AA plus
+                  Accessibility Guidelines WCAG 2.1 level A and level AA, plus
                   additional IBM checklist supplemental requirements. This is
                   the default option.
                 </p>
@@ -391,16 +396,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>WCAG 2.0</strong> - Rules for Web Content
-                  Accessibility Guidelines (WCAG ) 2.0 level A and level AA.
-                  These rules align with the Revised US Sec 508 standards.
+                  Accessibility Guidelines WCAG 2.0 level A and level AA. These
+                  rules align with the Revised US Sec 508 standards.
                 </p>
               </li>
 
               <li>
                 <p>
                   <strong>WCAG 2.1</strong> - Rules for Web Content
-                  Accessibility Guidelines (WCAG ) 2.1 level A and level AA.
-                  These rules align with the European EN 301 549 standards.
+                  Accessibility Guidelines WCAG 2.1 level A and level AA. These
+                  rules align with the European EN 301 549 standards.
                 </p>
               </li>
             </ul>
@@ -439,20 +444,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        in Firefox: From the browser ‘Tools‘ menu, select ‘Web
+                        In Firefox: From the browser ‘Tools‘ menu, select ‘Web
                         Developer’ and then select ‘Toggle Tools’, or
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        press <strong>Command+Option+I</strong> on MacOS® or{" "}
+                        Press <strong>Command+Option+I</strong> on MacOS® or{" "}
                         <strong>Control+Shift+I</strong> on Microsoft Windows®,
                         or
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        right click on a page element and select ‘Inspect’
+                        Right-click on a page element and select ‘Inspect’
                         (Chrome) or ‘Inspect Element’ (Firefox).
                       </p>
                     </li>
@@ -489,14 +494,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The scan result displays the total number of issues found
                     with individual counts for violations, items that need
                     review, and recommendations. By default, the issues are
-                    shown in the ‘Element roles’ view (see previous definition),
-                    while ‘Checklist’ and ‘Rules’ tabs are also available. All
-                    views show the same set of issues.
+                    shown in the ‘Element roles’ view (see the previous
+                    definition), while ‘Checklist’ and ‘Rules’ tabs are also
+                    available. All views show the same set of issues.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Select the expand icon next to an element role, checkpoint
+                    Select the expand icon next to an element role, checkpoint,
                     or rule in the table to display the corresponding issues
                     found.
                   </p>
@@ -505,7 +510,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     Select the link for an issue to view more detailed help
                     information that describes the issue and how to fix it. The
-                    help includes links to more detailed explanations, and
+                    help includes links to more detailed explanation, and
                     summarizes why this issue is important, and who is affected
                     by it.
                   </p>
@@ -542,7 +547,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                           <p style={{ marginTop: "0rem" }}>
                             Highlight the selected element, or the element
                             containing the selected issue, in the browser's
-                            Elements panel and highlight its location in the web
+                            Elements panel and highlight its location on the web
                             page.
                           </p>
                         </li>
@@ -636,7 +641,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Use the <strong>‘Report’</strong> button to download a
-                    standalone html report that includes the same three views
+                    standalone HTML report that includes the same three views
                     and all the help information provided in the checker.
                   </p>
                 </li>
@@ -675,20 +680,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        in Firefox: From the browser ‘Tools menu, select ‘Web
+                        In Firefox: From the browser ‘Tools menu, select ‘Web
                         Developer’ and then select ‘Toggle Tools’, or
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        press <strong>Command+Option+I</strong> on MacOS® or{" "}
+                        Press <strong>Command+Option+I</strong> on MacOS® or{" "}
                         <strong>Control+Shift+I</strong> on Microsoft Windows®,
                         or
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        right click on a page element and select ‘Inspect’
+                        Right-click on a page element and select ‘Inspect’
                         (Chrome) or ‘Inspect Element’ (Firefox).
                       </p>
                     </li>
@@ -789,7 +794,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <li>
                       <p style={{ marginTop: "0rem" }}>
                         Select the <strong>'Element roles'</strong> tab to view
-                        the scan results organized by element roles in the web
+                        the scan results organized by element roles on the web
                         page.
                       </p>
                     </li>
@@ -807,7 +812,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                           marginInlineStart: "2rem",
                         }}
                       >
-                        <li>Highlight the issue.</li>
+                        <li>
+                          <p style={{ marginTop: "0rem" }}>
+                            Highlight the issue.
+                          </p>
+                        </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
                             View the detailed description for that issue in the
@@ -845,7 +854,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             marginInlineStart: "2rem",
                           }}
                         >
-                          <li>Highlight the issue.</li>
+                          <li>
+                            <p style={{ marginTop: "0rem" }}>
+                              Highlight the issue.
+                            </p>
+                          </li>
                           <li>
                             <p style={{ marginTop: "0rem" }}>
                               View the detailed description for that issue in
@@ -869,12 +882,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h4 id="t_select_hidden_settings">6.3 Hidden content scanning</h4>
             <p>
-              By default the tool skips content that is hidden (Web pages that
-              use the <var>visibility:hidden</var> or <var>display:none</var>{" "}
-              elements), if this content is displayed to the user at any point,
-              you must test the web content by fully exercising the user
-              interface according to the usage scenarios in your test plan.
-              Ensure the tests trigger the display of hidden content so that the
+              By default, the tool skips hidden content (Web pages that use the{" "}
+              <var>visibility:hidden</var> or <var>display:none</var> elements),
+              if this content is displayed to the user at any point, you must
+              test the web content by fully exercising the user interface
+              according to the usage scenarios in your test plan. Ensure the
+              tests trigger the display of hidden content so that the
               Accessibility Checker can validate the content that is displayed.
             </p>
 
@@ -925,13 +938,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               can save as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
               the issue details organized by checklist checkpoints, by element
-              roles and by rules. Each instance of an issue also includes a{" "}
+              roles, and by rules. Each instance of an issue also includes a{" "}
               <strong>'Learn more'</strong> link that opens an overlay
               containing a more detailed description of the issue.
             </p>
             <p>
               The current accessibility status of the Web content displays as a
-              percentage of elements with no detected violations or items to review.{" "}
+              percentage of elements with no detected violations or items to
+              review.{" "}
             </p>
             <p>
               <strong>Important Note:</strong> This percentage is based on
