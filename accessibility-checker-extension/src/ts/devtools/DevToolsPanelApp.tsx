@@ -357,7 +357,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             collapseAll={this.collapseAll.bind(this)}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
-                            <main>
+                            <main aria-label="issue details">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
                                     selectItem={this.selectItem.bind(this)} 
@@ -398,7 +398,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     collapseAll={this.collapseAll.bind(this)}
                     />
                 <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
-                    <main>
+                    <main aria-label="issue details">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
                             selectItem={this.selectItem.bind(this)} 
