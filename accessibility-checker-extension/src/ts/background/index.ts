@@ -159,3 +159,4 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         tabUrl: tab.url
     });
 });
+
