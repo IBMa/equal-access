@@ -164,6 +164,7 @@ You can view the accessibility report for the page:
 The following code snippet demonstrates how to use ACE to test a web page for accessibility in an embedded Chrome environment (`puppeteer`). See [accessibility-checker](../accessibility-checker) for a more complete tool for this environment.
 
 ```javascript
+(async () => {
   const chromeLauncher = require('chrome-launcher');
   const axios = require('axios');
   const puppeteer = require('puppeteer');
@@ -178,9 +179,6 @@ The following code snippet demonstrates how to use ACE to test a web page for ac
   const { webSocketDebuggerUrl } = response.data;
 
   // Connect puppeteer to the chrome instance using the endpoint
-  const browser = await puppeteer.connect({ browserWSEndpoint: webSocketDebuggerUrl });
-
-  // Connecting the instance using `browserWSEndpoint`
   const browser = await puppeteer.connect({ browserWSEndpoint: webSocketDebuggerUrl });
 
   //get the page
@@ -200,7 +198,7 @@ The following code snippet demonstrates how to use ACE to test a web page for ac
             }
         });
   });
-}
+})();
 ```
 
 ### Browser extensions

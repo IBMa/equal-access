@@ -41,6 +41,7 @@ interface IPanelState {
     filter: string | null,
     tabURL: string,
     tabId: number,
+    tabTitle: string,
     selectedItem?: IReportItem,
     rulesets: IRuleset[] | null,
     selectedCheckpoint? : ICheckpoint,
@@ -56,6 +57,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         filter: null,
         tabURL: "",
         tabId: -1,
+        tabTitle: "",
         rulesets: null,
         learnMore: false,
         learnItem: null
@@ -144,7 +146,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id,  tabTitle: tabs[0].title });
         }
 
         
@@ -224,7 +226,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     snippet: result.snippet
                 });
             }
-            var filename = "report.html";
+
+            var tabTitle: string = this.state.tabTitle;
+            var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
+            var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
+            //replace illegal characters in file name
+            filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
+
             var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
             var a = document.createElement('a');
             a.href = fileContent;
