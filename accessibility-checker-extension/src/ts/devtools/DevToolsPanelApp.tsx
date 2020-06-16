@@ -129,10 +129,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // get tab id like in DAP
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         chrome.tabs.get(thisTabId, async function(tab) { 
-            console.log("ourTab = ",tab);
             var url = tab.url;
             var title = tab.title
-            console.log("thisTab = ",thisTabId);
             if (tab.id && tab.url && tab.id && tab.title) {
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
                 url = tab.url;
