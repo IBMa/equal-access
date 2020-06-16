@@ -127,30 +127,30 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         var self = this;
 
         // get tab id like in DAP
-        let thisTab = chrome.devtools.inspectedWindow.tabId;
-        let tabObj = chrome.tabs.get(thisTab, function callback);
-        console.log("thisTab = ",thisTab);
-        let tabs = await PanelMessaging.sendToBackground("TAB_INFO", { })
-        console.log("tabs[0].id = ", tabs[0].id);
-        if (tabs[0] && tabs[0].url && tabs[0].id) {
-            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
-            var url = tabs[0].url;
-            if (!self.state.listenerRegistered) {
-                PanelMessaging.addListener("TAB_UPDATED", async message => {
-                    if (message.tabId === self.state.tabId && message.status === "loading") {
-                        if (message.tabUrl && message.tabUrl != self.state.tabURL) {
-                            self.setState({ report: null, tabURL: message.tabUrl });
+        let thisTabId = chrome.devtools.inspectedWindow.tabId;
+        chrome.tabs.get(thisTabId, async function(tab) { 
+            console.log("ourTab = ",tab);
+            var url = tab.url;
+            var title = tab.title
+            console.log("thisTab = ",thisTabId);
+            if (tab.id && tab.url && tab.id && tab.title) {
+                let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
+                url = tab.url;
+                title = tab.title;
+                if (!self.state.listenerRegistered) {
+                    PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        if (message.tabId === self.state.tabId && message.status === "loading") {
+                            if (message.tabUrl && message.tabUrl != self.state.tabURL) {
+                                self.setState({ report: null, tabURL: message.tabUrl });
+                            }
                         }
-                    }
-                });
-                PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
+                    });
+                    PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
+                }
+                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tab.id,  tabTitle: title });
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id,  tabTitle: tabs[0].title });
-        }
-
-        
-
+        });
     }
 
     async startScan() {
