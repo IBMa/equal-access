@@ -126,7 +126,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         var self = this;
 
-        // get tab id like in DAP
+        // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
+        // and get url using chrome.tabs.get
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         chrome.tabs.get(thisTabId, async function(tab) { 
             var url = tab.url;
