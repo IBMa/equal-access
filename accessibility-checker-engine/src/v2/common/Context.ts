@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { IMapResult } from "../api/IMapper";
+import { RuleContextHierarchy } from "../api/IEngine";
 
 // Context that will cause this rule to execute. 
 // Context syntax:
@@ -98,7 +99,7 @@ export class PartInfo {
         }
 
     public matches( 
-        contextHier: { [namespace: string] : IMapResult[] },
+        contextHier: RuleContextHierarchy,
         hierLevel: number) : boolean 
     {
         const rulePart = this;

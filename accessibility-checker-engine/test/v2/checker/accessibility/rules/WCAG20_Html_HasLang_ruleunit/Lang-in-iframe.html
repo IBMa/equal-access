@@ -1,0 +1,26 @@
+<html lang="en-US">
+    <head>
+        <title>Lang in iframe</title>
+    </head>
+    <body>
+        <main>
+            Some content
+            <iframe role="presentation" aria-hidden="true" src="Lang-in-iframe-helper.html"></iframe>
+        </main>
+    </body>
+    <script type="text/javascript">
+        //<![CDATA[
+          if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+          if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+          OpenAjax.a11y.ruleCoverage = [
+            {
+              ruleId: "490",
+              passedXpaths: [
+              ],
+              failedXpaths: [
+              ]
+            },
+          ];
+        //]]>
+    </script>
+</html>
