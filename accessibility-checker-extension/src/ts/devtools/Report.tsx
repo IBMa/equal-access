@@ -81,6 +81,7 @@ interface IReportProps {
     tabs: ("checklist" | "element" | "rule")[],
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 
@@ -185,15 +186,15 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 role="presentation"
                                 className={"tab-content-"+tabId}
                             >
-                                <div role="table">
+                                <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
                                     {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
                                     </div>}
                                 </div>
                             </Tab>

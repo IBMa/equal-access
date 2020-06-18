@@ -28,6 +28,7 @@ interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 
@@ -73,7 +74,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         // })
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report">
+        return <div className="bx--grid report" role="table" aria-label="Issues grouped by element role">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
@@ -97,6 +98,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         report={this.props.report} 
                         group={group}
                         getItem={this.props.getItem}
+                        learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem} 
                         layout={this.props.layout}
                     />

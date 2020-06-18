@@ -28,6 +28,7 @@ interface IReportRulesProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 interface IGroup {
@@ -74,7 +75,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         // })
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report">
+        return <div className="bx--grid report" role="table" aria-label="Issues grouped by rule">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
@@ -98,6 +99,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         report={this.props.report} 
                         group={group}
                         getItem={this.props.getItem}
+                        learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout}
                     />                

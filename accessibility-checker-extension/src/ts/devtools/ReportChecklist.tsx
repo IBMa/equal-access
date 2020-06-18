@@ -29,6 +29,7 @@ interface IReportChecklistProps {
     report: IReport,
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    learnItem: IReportItem | null,
     layout: string
 }
 
@@ -85,7 +86,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
         let scrollFirst = true;
-        return <div className="bx--grid report">
+        return <div className="bx--grid report" role="table" aria-label="Issues grouped by checkpoint">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
@@ -109,6 +110,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         report={this.props.report} 
                         group={group}
                         getItem={this.props.getItem}
+                        learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout} 
                     />;

@@ -14,8 +14,9 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
+import { AncestorUtil } from "../util/ancestor";
 
 let a11yRulesTitle: Rule[] = [
 
@@ -28,7 +29,11 @@ let a11yRulesTitle: Rule[] = [
         // Note: context is HTML, because a document with no head at all is also missing a title.
         // HTMLUnit seems to add a head in anyway, but we cannot rely on that.
         context: "dom:html",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+        run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+            // This rule does not apply inside a presentational frame
+            if (AncestorUtil.isPresentationFrame(contextHierarchies)) {
+                return null;
+            }
             const ruleContext = context["dom"].node as Node;
             // JCH - NO OUT OF SCOPE hidden in context
             let offNode = ruleContext;
