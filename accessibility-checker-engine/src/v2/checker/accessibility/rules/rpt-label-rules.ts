@@ -228,7 +228,7 @@ let a11yRulesLabel: Rule[] = [
 
                     let element = labelElem ? labelElem : ruleContext;
 
-                    let elementsToSkipContentCheck = ["meter", "output", "progress", "select"];
+                    let elementsToSkipContentCheck = ["meter", "output", "progress", "select", "textarea"];
                     if (!labelElem && elementsToSkipContentCheck.indexOf(nodeName) !== -1) {
                         text = ""; // skip content check for some elements
                     } else {
