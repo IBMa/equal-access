@@ -14,14 +14,19 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
+import { AncestorUtil } from "../util/ancestor";
 
 let a11yRulesBody: Rule[] = [
     {
         id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
         context: "dom:body",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+        run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+            // This rule does not apply inside a presentational frame
+            if (AncestorUtil.isPresentationFrame(contextHierarchies)) {
+                return null;
+            }
             const ruleContext = context["dom"].node as Element;
             // Get the anchors on the page
             let doc = ruleContext.ownerDocument;
