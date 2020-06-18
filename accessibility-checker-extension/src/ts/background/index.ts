@@ -114,6 +114,15 @@ BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) =>
     return true;
 });
 
+BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
+    return await new Promise((resolve, _reject) => {
+        chrome.tabs.get(message.tabId, async function(tab: any) {
+        //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+            resolve(tab);
+        });
+    });
+});
+
 BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
 
