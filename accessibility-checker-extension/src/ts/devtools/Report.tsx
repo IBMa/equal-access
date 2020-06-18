@@ -186,7 +186,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 role="presentation"
                                 className={"tab-content-"+tabId}
                             >
-                                <div role="table">
+                                <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
                                         <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report}/>
                                     </div>}
