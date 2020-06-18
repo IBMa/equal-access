@@ -110,6 +110,8 @@ export type RuleDetails = RuleResult & {
     snippet: string
 }
 
+export type RuleContextHierarchy = { [namespace: string] : IMapResult[] };
+
 export type RuleContext = {
     [namespace: string] : IMapResult
 }
@@ -125,7 +127,7 @@ export type Rule = {
     // Array of rules that must pass to allow this validate to run - they must have the same rulecontext
     dependencies?: string[]
 
-    run: (context: RuleContext, options?: {}) => RuleResult | RuleResult[]
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) => RuleResult | RuleResult[]
 
     enabled?: boolean
 }
