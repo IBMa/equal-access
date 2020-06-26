@@ -8,14 +8,14 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
  * People who rely on keyboard control
  * Blind people using a screen reader
  * People with low vision using screen magnification
  * People with dexterity impairment
 
-## Why is this important?
+### Why is this important?
 
 If the content of a `<frame>` is not HTML, it may not be accessible. For example, if the source of the `<frame>` element is an image file, assistive technology cannot read the content because you cannot add `alt` text to the image in the `<frame>` source. The user opens the frame and hears nothing or perhaps the name of the image file. The `<frame>` element is obsolete and ideally should not be used. When used, the frame source must be accessible.
 
@@ -24,14 +24,14 @@ If the content of a `<frame>` is not HTML, it may not be accessible. For example
 
 <div id="locLevel"></div>
 
-## Verify `<frame>` content is accessible
+### Verify `<frame>` content is accessible
 A `<frame>` containing non-HTML content must be made accessible
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
  * HTML `<frame>` is obsolete, if possible avoid its use;
  * OR, verify that interactive content inside the frame is accessible by keyboard;

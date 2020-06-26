@@ -139,9 +139,9 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                 }
             }, 0)
         }
-        let subIdx = this.props.idx+1;
+        let rowindex = this.props.idx;
         return <div className="itemRow">
-            <div tabIndex={0} role="row" aria-rowindex={this.props.idx} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
+            <div tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
                 <div role="cell" className="bx--col-sm-1">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
@@ -157,7 +157,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    return (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={subIdx} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
+                    return (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                     <div role="cell" className="bx--col-sm-1"> </div>
                     <div role="cell" className="bx--col-sm-3">
                         <div className="itemMessage">

@@ -8,13 +8,13 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * Many older adults
 * People with learning disabilities
 
-## Why is this important?
+### Why is this important?
 
 Forms that are designed to automatically submit when all the fields are filled out or when focus leaves the last field pose problems for accessibility. If users are not warned, they may leave a field to get more context and be confused when the information is submitted. 
 
@@ -23,14 +23,14 @@ Forms that are designed to automatically submit when all the fields are filled o
 
 <div id="locLevel"></div>
 
-## Confirm the form does not submit automatically without warning
+### Confirm the form does not submit automatically without warning
 A form should not be submitted automatically without warning the user
 
 [IBM 3.2.2 On Input](http://www.ibm.com/able/guidelines/ci162/on_input.html) | [WCAG 2.1 technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13) | [WCAG 2.1 failure technique F36](https://www.w3.org/WAI/WCAG21/Techniques/failures/F36)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Verify that the `onchange` function does not automatically submit the form;
 * OR, if the form is automatically submitted, verify that the user is warned in advance;

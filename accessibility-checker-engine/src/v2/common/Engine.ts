@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IEngine, Report, Rule, RuleDetails, RuleResult, eRuleConfidence, RuleContext, NlsMap, HelpMap } from "../api/IEngine";
+import { IEngine, Report, Rule, RuleDetails, RuleResult, eRuleConfidence, RuleContext, NlsMap, HelpMap, RuleContextHierarchy } from "../api/IEngine";
 import { DOMWalker } from "../dom/DOMWalker";
 import { Context, PartInfo, AttrInfo } from "./Context";
 import { Config } from "../config/Config";
@@ -80,11 +80,11 @@ class WrappedRule {
         return nodeSnippet;
     }
 
-    run(engine: Engine, context: RuleContext, options?: {}) : RuleDetails[] {
+    run(engine: Engine, context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) : RuleDetails[] {
         const startTime = new Date().getTime();
         let results: RuleResult | RuleResult[];
         try {
-            results = this.rule.run(context, options);
+            results = this.rule.run(context, options, contextHierarchies);
         } catch (e) {
             const err: Error = e;
             console.error("RULE EXCEPTION:",this.rule.id, context.dom.rolePath, err.stack);
@@ -176,7 +176,7 @@ export class Engine implements IEngine {
         // Initialize the context detector
         do {
             // Get the context information from the rule mappers
-            const contextHierarchies : { [namespace: string] : IMapResult[] } = {}
+            const contextHierarchies : RuleContextHierarchy = {}
             for (const namespace in this.mappers) {
                 if (!walker.bEndTag) {
                     contextHierarchies[namespace] = this.mappers[namespace].openScope(walker.node);
@@ -217,7 +217,7 @@ export class Engine implements IEngine {
                     if (fulfillsDependencies) {
                         let results : RuleDetails[] = [];
                         try {
-                            results = matchingRule.run(this, context,options);
+                            results = matchingRule.run(this, context, options, contextHierarchies);
                         } catch (err) {
                             // Wrapper shows error in console. Skip this rule as N/A
                             // We don't want to kill the engine
@@ -351,7 +351,7 @@ export class Engine implements IEngine {
     }
 
     private static match(ruleParts: PartInfo[],
-        contextHier: { [namespace: string] : IMapResult[] }) : boolean
+        contextHier: RuleContextHierarchy) : boolean
     {
         let partIdx = ruleParts.length-1;
         let hierIdx = contextHier["dom"].length-1;
@@ -401,7 +401,7 @@ export class Engine implements IEngine {
         return partIdx === -1;
     }
 
-    private getMatchingRules(ctxHier : { [namespace: string] : IMapResult[] }) : WrappedRule[] {
+    private getMatchingRules(ctxHier : RuleContextHierarchy) : WrappedRule[] {
         let dupeCheck = {};
         let matches : WrappedRule[] = [];
         function addMatches(rules: WrappedRule[]) {

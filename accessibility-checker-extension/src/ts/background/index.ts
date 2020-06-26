@@ -112,12 +112,13 @@ BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) =>
         metrics.sendLogsV2();
     }
     return true;
-})
+});
 
-BackgroundMessaging.addListener("TAB_INFO", async (_message: any) => {
+BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
     return await new Promise((resolve, _reject) => {
-        chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
-            resolve(tabs);
+        chrome.tabs.get(message.tabId, async function(tab: any) {
+        //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+            resolve(tab);
         });
     });
 });
@@ -159,3 +160,4 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         tabUrl: tab.url
     });
 });
+

@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 An HTML `<form>` element with a label or title, or any element with a `"form"` role is a type of WAI-ARIA landmark region. When there are multiple `"form"` regions, they must have unique labels, so people who use assistive technologies can quickly identify and navigate to each form region.
 
@@ -21,14 +21,14 @@ An HTML `<form>` element with a label or title, or any element with a `"form"` r
 
 <div id="locLevel"></div>
 
-## Multiple elements with `"form"` role do not have unique labels
+### Multiple elements with `"form"` role do not have unique labels
 Each element with a `"form"` role must have a unique label that describes its purpose
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * For each element with a `"form"` role, either set the value of the `aria-labelledby` attribute of each form to the `id` value of any visible text that appropriately and uniquely describes that form's purpose;
 * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"form"` role.

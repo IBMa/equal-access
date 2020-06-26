@@ -74,7 +74,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let headerContent = (<div className="bx--grid">
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
-                    <h4>IBM Equal Access Accessibility Checker</h4>
+                    <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
                 <div className="bx--col-sm-1" style={{ position: "relative" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
@@ -93,12 +93,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         >
                             <Reset16 className="my-custom-class" />
                         </Button>
-                        {/* <Button 
-                            disabled={!this.props.counts}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button" 
-                            >
-                            <SettingsAdjust16 aria-label="Filter" className="my-custom-class" />
-                        </Button> */}
                         <Button
                             disabled={!this.props.counts}
                             onClick={this.props.reportHandler}
@@ -110,7 +104,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
 
-            <div className="bx--row summary">
+            <div className="bx--row summary" role="region" arial-label='Issue count'>
                 <div className="bx--col-sm-1">
                     <img src={Violation16} alt="Violations" />
                     <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}&nbsp;<span className="summaryBarLabels">Violations</span></span>

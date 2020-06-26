@@ -126,10 +126,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         var self = this;
 
-        let tabs = await PanelMessaging.sendToBackground("TAB_INFO", { })
-        if (tabs[0] && tabs[0].url && tabs[0].id) {
-            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
-            var url = tabs[0].url;
+        // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
+        // and get url using chrome.tabs.get via message "TAB_INFO"
+        let thisTabId = chrome.devtools.inspectedWindow.tabId;
+        let tab = await PanelMessaging.sendToBackground("TAB_INFO", {tabId: thisTabId });
+        
+        if (tab.id && tab.url && tab.id && tab.title) {
+            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
+            
             if (!self.state.listenerRegistered) {
                 PanelMessaging.addListener("TAB_UPDATED", async message => {
                     if (message.tabId === self.state.tabId && message.status === "loading") {
@@ -139,13 +143,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                 });
                 PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
+                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id,  tabTitle: tabs[0].title });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, tabId: tab.id,  tabTitle: tab.title });
         }
-
-        
-
     }
 
     async startScan() {
@@ -365,7 +366,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             collapseAll={this.collapseAll.bind(this)}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
-                            <main aria-label="issue details">
+                            <div role="region" aria-label="issue list"  className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
                                     selectItem={this.selectItem.bind(this)} 
@@ -376,7 +377,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]} />}
-                            </main>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -387,11 +388,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                     <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                            <main>
+                            <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
                                 </div>
-                            </main>
+                            </div>
                         </div>
                     </div>
                     {this.subPanelRef.current?.scrollTo(0,0)}             
@@ -406,7 +407,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     collapseAll={this.collapseAll.bind(this)}
                     />
                 <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
-                    <main aria-label="issue details">
+                    <div role="region" aria-label="issue list"  className="issueList">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
                             selectItem={this.selectItem.bind(this)} 
@@ -417,7 +418,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             layout = {this.props.layout}
                             selectedTab="element"
                             tabs={["checklist", "element", "rule"]} />}
-                    </main>
+                    </div>
                 </div>
             </React.Fragment>
             }
