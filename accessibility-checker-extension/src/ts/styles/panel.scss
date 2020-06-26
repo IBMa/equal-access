@@ -93,6 +93,20 @@ $feature-flags: (
             font-weight: 600;
         }
 
+        .summaryBarViolationButton {
+            height: 24px;
+            width: 77px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
         .summaryBarLabels {
             display:none;
             

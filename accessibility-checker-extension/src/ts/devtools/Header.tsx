@@ -111,9 +111,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             </div>
 
             <div className="bx--row summary">
-                <div className="bx--col-sm-1">
+                <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
                     <img src={Violation16} alt="Violations" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}&nbsp;<span className="summaryBarLabels">Violations</span></span>
+                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
+                        
+                    </span>
+                    &nbsp;<Button kind="ghost" className="summaryBarViolationButton">Violations</Button>
+                    <span>
+
+                    </span>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={NeedsReview16} alt="Needs review" />
