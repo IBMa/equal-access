@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People with dexterity impairment using voice control
 
-## Why is this important?
+### Why is this important?
 
 When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.1 specifies which attributes are valid for that role. If invalid WAI-ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
 
@@ -22,14 +22,14 @@ When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.1 specifies which attri
 
 <div id="locLevel"></div>
 
-## The attribute(s) `{0}` referenced by the element `<{1}>` is not a valid WAI-ARIA state or property
+### The attribute(s) `{0}` referenced by the element `<{1}>` is not a valid WAI-ARIA state or property
 WAI-ARIA attributes must be valid for the element's role
 
 [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WC3 WAI-ARIA 1.1 states and properties](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Remove WAI-ARIA state or property attributes that are not valid for the element role;
 * OR, change the `role` value to a role that supports the intended behavior of the element, using the WAI-ARIA 1.1 specification as a guide.

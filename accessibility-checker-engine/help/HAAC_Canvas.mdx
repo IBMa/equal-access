@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
  * People who rely on keyboard control
  * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements. However, canvas content is not exposed to assistive technologies like semantic HTML. To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
 
@@ -22,14 +22,14 @@ The HTML5 `<canvas>` element can be used to create a canvas area on the page whe
 
 <div id="locLevel"></div>
 
-## Verify accessibility of the `<canvas>` element
+### Verify accessibility of the `<canvas>` element
 The `<canvas>` element may not be accessible
 
 [IBM 1.1.1 Non-Text Content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html) | [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
  * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element;
  * OR, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
