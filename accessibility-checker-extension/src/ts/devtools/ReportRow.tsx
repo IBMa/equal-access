@@ -140,19 +140,25 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         let rowindex = this.props.idx;
+        let showAll = false;
+        let showOnlyV = true;
+        let showOnlyNR = false;
+        let showOnlyR = false;
         return <div className="itemRow">
+            { showAll || showOnlyV && vCount > 0 || showOnlyNR && nrCount > 0 || showOnlyR && rCount > 0 ? 
             <div tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
                 <div role="cell" className="bx--col-sm-1">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
-                    { vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</span></> }
-                    { nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</span></> }
-                    { rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></> }
+                    { (showAll || showOnlyV) && vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</span></> }
+                    { (showAll || showOnlyNR) && nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</span></> }
+                    { (showAll || showOnlyR) && rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></> }
                 </div>
                 <div role="cell" className="bx--col-sm-3">
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
                 </div>
             </div>
+            : "" }
             { !open && <div className="bx--row itemDetail" /> }
             { open && <React.Fragment>
                 {group.items.map(item => {
