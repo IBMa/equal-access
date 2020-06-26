@@ -262,6 +262,13 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-01');
+
+                margin-top: 0rem;
+                margin-bottom: .5rem;
+            }
+
             p {
                 @include carbon--type-style('body-long-01');
 
@@ -286,6 +293,12 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
             p {
                 @include carbon--type-style('body-long-01');
 

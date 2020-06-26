@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers.
 
-## Why is this important?
+### Why is this important?
 
 Using both an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an `<input>` element can cause a conflict that allows one of the attributes to override the other. This can lead to unexpected and confusing assistive technology behavior.
 
@@ -21,14 +21,14 @@ Using both an HTML5 attribute and the associated ARIA attribute with the same se
 
 <div id="locLevel"></div>
 
-## HTML5 attribute is in conflict with the associated WAI-ARIA attribute used on an input element
+### HTML5 attribute is in conflict with the associated WAI-ARIA attribute used on an input element
 HTML5 attributes must not conflict with the associated WAI-ARIA attribute used on an input element
 
 [IBM 3.3.2 Labels and Instructions](http://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 Remove one of the conflicting HTML5 or ARIA attributes from the `<input>` element.
 
