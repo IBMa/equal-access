@@ -82,7 +82,8 @@ interface IReportProps {
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
-    layout: string
+    layout: string,
+    dataFromParent: boolean[]
 }
 
 export const valueMap: { [key: string]: { [key2: string]: string } } = {
@@ -160,6 +161,8 @@ export default class Report extends React.Component<IReportProps, IReportState> 
             }
         }
 
+        console.log("In Report showIssueTypeFilter = ",this.props.dataFromParent);
+
         return <React.Fragment>
             <div className="bx--grid" style={{paddingLeft: "1rem", paddingRight: "1rem", marginTop: '1rem'}}>
                 <div className="bx--row">
@@ -188,13 +191,13 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report}/>
+                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent}/>
                                     </div>}
                                     {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset}/>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent}/>
                                     </div>}
                                 </div>
                             </Tab>

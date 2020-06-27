@@ -33,7 +33,7 @@ export interface IReportRowGroup {
 interface IReportRowState {
     expanded: boolean,
     lastTimestamp: number,
-    scrollTo: boolean
+    scrollTo: boolean,
 }
 
 interface IReportRowProps {
@@ -43,7 +43,8 @@ interface IReportRowProps {
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
-    layout: string
+    layout: string,
+    dataFromParent: boolean[]
 }
 
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
@@ -140,20 +141,17 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         let rowindex = this.props.idx;
-        let showAll = false;
-        let showOnlyV = true;
-        let showOnlyNR = false;
-        let showOnlyR = false;
+        //console.log("In ReportRow render: dataFromParent = ",this.props.dataFromParent);
         return <React.Fragment>
-            { showAll || showOnlyV && vCount > 0 || showOnlyNR && nrCount > 0 || showOnlyR && rCount > 0 ? 
+            { this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0 ? 
             <div className="itemRow">
             <div tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
                 <div role="cell" className="bx--col-sm-1">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
-                    { (showAll || showOnlyV) && vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</span></> }
-                    { (showAll || showOnlyNR) && nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</span></> }
-                    { (showAll || showOnlyR) && rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></> }
+                    { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</span></> }
+                    { (this.props.dataFromParent[0] || this.props.dataFromParent[2]) && nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</span></> }
+                    { (this.props.dataFromParent[0] || this.props.dataFromParent[3]) && rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></> }
                 </div>
                 <div role="cell" className="bx--col-sm-3">
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
@@ -165,26 +163,26 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     let val = valueMap[item.value[0]][item.value[1]];
                     
                     return <React.Fragment>
-                    { (showAll || showOnlyV && val === "Violation" || showOnlyNR && val === "Needs review" || showOnlyR && val === "Recommendation") ?
+                    { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
                     (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                     <div role="cell" className="bx--col-sm-1"> </div>
                     <div role="cell" className="bx--col-sm-3">
                         <div className="itemMessage">
-                            { (showAll || showOnlyV) && val === "Violation" && 
+                            { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 
                             <React.Fragment>
                             <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Violation" /></span>
                             <span style={{fontSize:"12px"}}>{item.message}</span>
                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                             </React.Fragment>
                             }
-                            { (showAll || showOnlyNR) && val === "Needs review" && 
+                            { (this.props.dataFromParent[0] || this.props.dataFromParent[2]) && val === "Needs review" && 
                             <React.Fragment>
                             <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>
                             <span style={{fontSize:"12px"}}>{item.message}</span>
                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                             </React.Fragment>
                             }
-                            { (showAll || showOnlyR) && val === "Recommendation" && 
+                            { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Recommendation" && 
                             <React.Fragment>
                             <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>
                             <span style={{fontSize:"12px"}}>{item.message}</span>
