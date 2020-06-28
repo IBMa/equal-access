@@ -437,7 +437,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     collapseAll={this.collapseAll.bind(this)}
                     showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                     />
-                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
                     <main aria-label="issue details">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 

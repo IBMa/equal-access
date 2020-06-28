@@ -94,7 +94,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
-            <div className="bx--row" style={{ marginTop: '16px' }}>
+            <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2">
                     <Button onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
@@ -124,7 +124,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
 
-            <div className="bx--row summary">
+            <div className="bx--row summary" style={{marginTop:"14px"}}>
                 <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
                     <img src={Violation16} alt="Violations" />
                     <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
@@ -140,7 +140,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}
                     &nbsp;</span>
                     <Button kind="ghost" 
-                            className="summaryBarViolationButton"
+                            className="summaryBarNeedsReviewButton"
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}>
                             Needs Review
                     </Button>
@@ -150,7 +150,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}
                     &nbsp;</span>
                     <Button kind="ghost" 
-                        className="summaryBarViolationButton"
+                        className="summaryBarRecommendationButton"
                         onClick={() => this.sendShowIssueTypeData("Recommendations")}>
                         Recommendations
                     </Button>

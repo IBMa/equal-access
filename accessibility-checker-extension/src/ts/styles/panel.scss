@@ -14,7 +14,7 @@ $feature-flags: (
     top: 0;
     left: 0;
     width: 100%;
-    padding-top: 1rem;
+    padding-top: .5rem;
 
     .eaacTitle {
         color: #171717;
@@ -76,7 +76,7 @@ $feature-flags: (
     }
 
     .summary {
-        margin-top: 20px;
+        margin-top: 10px;
 
         > div {
             border-top: solid #DCDCDC 1px;
@@ -84,7 +84,8 @@ $feature-flags: (
             padding: .5rem 0rem .5rem 1rem;
             overflow:hidden;
             text-overflow: ellipsis;
-            white-space:nowrap
+            white-space:nowrap;
+            height: 32px
         }
 
         .summaryBarCounts {
@@ -95,7 +96,7 @@ $feature-flags: (
 
         .summaryBarViolationButton {
             height: 24px;
-            width: 77px;
+            width: 65px;
             padding: 0;
             border: 0;
             min-height: 0;
@@ -106,6 +107,35 @@ $feature-flags: (
             font-size: 14px;
             font-weight: 600;
         }
+
+        .summaryBarNeedsReviewButton {
+            height: 24px;
+            width: 95px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .summaryBarRecommendationButton {
+            height: 24px;
+            width: 123px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
 
         .summaryBarLabels {
             display:none;
