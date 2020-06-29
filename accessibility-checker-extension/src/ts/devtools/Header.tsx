@@ -29,11 +29,7 @@ import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
-export interface IHeaderState {
-    showAll: boolean,
-    showOnlyV: boolean,
-    showOnlyNR: boolean,
-    showOnlyR: boolean
+interface IHeaderState {
 }
 
 interface IHeaderProps {
@@ -45,18 +41,13 @@ interface IHeaderProps {
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
-    } | null
-
+    } | null,
+    dataFromParent: boolean[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
-    state: IHeaderState = {
-        showAll: true,
-        showOnlyV: false,
-        showOnlyNR: false,
-        showOnlyR: false
-    };
-
+    state: IHeaderState = {};
+        
     sendShowIssueTypeData(type:string) {
         this.props.showIssueTypeCallback(type);
     }
@@ -131,7 +122,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </span>&nbsp;
                     <Button kind="ghost" 
                             className="summaryBarViolationButton"
-                            onClick={() => this.sendShowIssueTypeData("Violations")}>
+                            onClick={() => this.sendShowIssueTypeData("Violations")}
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {color:"#252525"} : {color:"#888888"}}>
                             Violations
                     </Button>
                 </div>
@@ -141,7 +133,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     &nbsp;</span>
                     <Button kind="ghost" 
                             className="summaryBarNeedsReviewButton"
-                            onClick={() => this.sendShowIssueTypeData("NeedsReview")}>
+                            onClick={() => this.sendShowIssueTypeData("NeedsReview")}
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {color:"#252525"} : {color:"#888888"}}>
                             Needs Review
                     </Button>
                 </div>
@@ -151,7 +144,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     &nbsp;</span>
                     <Button kind="ghost" 
                         className="summaryBarRecommendationButton"
-                        onClick={() => this.sendShowIssueTypeData("Recommendations")}>
+                        onClick={() => this.sendShowIssueTypeData("Recommendations")}
+                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {color:"#252525"} : {color:"#888888"}}>
                         Recommendations
                     </Button>
                 </div>

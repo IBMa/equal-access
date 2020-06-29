@@ -182,7 +182,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                             </React.Fragment>
                             }
-                            { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Recommendation" && 
+                            { (this.props.dataFromParent[0] || this.props.dataFromParent[3]) && val === "Recommendation" && 
                             <React.Fragment>
                             <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>
                             <span style={{fontSize:"12px"}}>{item.message}</span>

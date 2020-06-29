@@ -391,7 +391,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                            
+                            dataFromParent = {this.state.showIssueTypeFilter}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
                             <main aria-label="issue details">
@@ -436,6 +436,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     reportHandler={this.reportHandler.bind(this)}
                     collapseAll={this.collapseAll.bind(this)}
                     showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                    dataFromParent = {this.state.showIssueTypeFilter}
                     />
                 <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
                     <main aria-label="issue details">
