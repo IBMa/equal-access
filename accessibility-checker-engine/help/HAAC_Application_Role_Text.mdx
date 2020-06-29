@@ -8,13 +8,13 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision who have trouble finding or tracking a pointer indicator on the screen
 * People who physically cannot use a pointing device
 
-## Why is this important?
+### Why is this important?
 
 Within an element with the role `"application"`, only focusable elements are accessible to users of some assistive technologies by default. Therefore, to ensure access to any non-decorative static text or image content that does not receive focus by default, it must be implemented in an accessible way.
 
@@ -23,14 +23,14 @@ Within an element with the role `"application"`, only focusable elements are acc
 
 <div id="locLevel"></div>
 
-## Verify that non-decorative static text or image content within the element with role of `"application"` is accessible
+### Verify that non-decorative static text or image content within the element with role of `"application"` is accessible
 Non-decorative static text and image content within an element with role of `"application"` must be accessible
 
 [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WAI ARIA 1.2: Application Role](https://www.w3.org/TR/wai-aria-1.2/#application)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Verify that the content is decorative;
 * OR, associate the content with a focusable element using the `aria-labelledby` or `aria-describedby` attribute;
