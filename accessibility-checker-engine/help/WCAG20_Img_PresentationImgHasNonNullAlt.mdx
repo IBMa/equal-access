@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
 
-## Why is this important?
+### Why is this important?
 
 Roles of `presentation` and `none` on an image indicate the element is decorative and should be ignored by assistive technologies. Providing a non-null text alternative conflicts with that decorative designation.
 
@@ -22,14 +22,14 @@ Roles of `presentation` and `none` on an image indicate the element is decorativ
 
 <div id="locLevel"></div>
 
-## Image designated as decorative has non-null text alternative
+### Image designated as decorative has non-null text alternative
 Image designated as decorative must have a null text alternative
 
 [IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 Set the `alt` attribute to an empty (or null) string (i.e., `<img alt="">`) for images with `role="presentation"` or `role="none"`.
 

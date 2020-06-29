@@ -382,7 +382,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             dataFromParent = {this.state.showIssueTypeFilter}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
-                            <main aria-label="issue details">
+                            <div role="region" aria-label="issue list"  className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
                                     selectItem={this.selectItem.bind(this)} 
@@ -395,7 +395,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     tabs={["checklist", "element", "rule"]}
                                     dataFromParent = {this.state.showIssueTypeFilter} 
                                     />}
-                            </main>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -406,11 +406,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                     <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                            <main>
+                            <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
                                 </div>
-                            </main>
+                            </div>
                         </div>
                     </div>
                     {this.subPanelRef.current?.scrollTo(0,0)}             
@@ -427,7 +427,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     dataFromParent = {this.state.showIssueTypeFilter}
                     />
                 <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
-                    <main aria-label="issue details">
+                    <div role="region" aria-label="issue list"  className="issueList">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
                             selectItem={this.selectItem.bind(this)} 
@@ -440,7 +440,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             tabs={["checklist", "element", "rule"]}
                             dataFromParent = {this.state.showIssueTypeFilter} 
                             />}
-                    </main>
+                    </div>
                 </div>
             </React.Fragment>
             }

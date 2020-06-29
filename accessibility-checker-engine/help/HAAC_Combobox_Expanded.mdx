@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using a screen reader
 * People with low vision using a screen reader
 
-## Why is this important?
+### Why is this important?
 
 A combobox combines a text input element and a popup element that helps the user set the value of the input. The popup becomes visible when the combobox is in an expanded state and is controlled by using an attribute `aria-owns` or `aria-controls` referencing its `id`. When the value of the `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`, assistive technologies may not be able to present and control the content correctly.
 
@@ -22,14 +22,14 @@ A combobox combines a text input element and a popup element that helps the user
 
 <div id="locLevel"></div>
 
-## The `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`
+### The `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`
 The `aria-owns` or the `aria-controls` attribute of the expanded combobox must reference a valid popup `id`
 
 [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 
  * Code the combobox as in the WAI-ARIA 1.2 example below;

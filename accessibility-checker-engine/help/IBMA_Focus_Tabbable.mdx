@@ -8,13 +8,13 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People who physically cannot use a pointing device
 * People with tremor or other movement disorders
 
-## Why is this important?
+### Why is this important?
 
 Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with ARIA - authors must incorporate the code for keyboard access.
 
@@ -23,14 +23,14 @@ Unlike native HTML form elements, browsers do not provide keyboard support for g
 
 <div id="locLevel"></div>
 
-## The component does not have a tabbable element
+### The component does not have a tabbable element
 The component must have at least one tabbable element
 
 [IBM 1.1.1 Non-text content]() | [WCAG technique H37]()
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 Use the HTML tabindex attribute to include the component in the tab sequence.  (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
 

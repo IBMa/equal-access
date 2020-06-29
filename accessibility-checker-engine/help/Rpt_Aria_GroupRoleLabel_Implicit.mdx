@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 An HTML `<details>` element or an element with an explicit `"group"` role is used to form a logical collection of items in a component, such as a collection of siblings in a hierarchy. A group label helps people using assistive technologies to find and navigate the logical collections.
 
@@ -21,14 +21,14 @@ An HTML `<details>` element or an element with an explicit `"group"` role is use
 
 <div id="locLevel"></div>
 
-## The {0} element with a `"group"` role does not have a label
+### The {0} element with a `"group"` role does not have a label
 Elements with a `"group"` role should have a label that describes the logical collection
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Group Role](https://www.w3.org/TR/wai-aria-1.1/#group)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * If there is visible text that appropriately describes the purpose of the group content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
 * OR, use the `aria-label` attribute to add a label directly to the element with the `"group"` role.

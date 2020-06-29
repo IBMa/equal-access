@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People with dexterity impairment using voice control
 
-## Why is this important?
+### Why is this important?
 
 The WAI-ARIA specification provides a collection of accessibility roles as the main indicator of the type of control. This is used to support platform accessibility APIs. Using a valid WAI-ARIA `role` on an element as defined in the WAI-ARIA specification allows assistive technologies to use the role semantics to present and support consistent object interaction.
 
@@ -23,14 +23,14 @@ The WAI-ARIA specification provides a collection of accessibility roles as the m
 
 <div id="locLevel"></div>
 
-## The `role` defined on the element is not valid per WAI-ARIA specification
+### The `role` defined on the element is not valid per WAI-ARIA specification
 Elements must have a valid `role` per WAI-ARIA specification
 
 [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1](https://www.w3.org/TR/wai-aria-1.1/)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Update the element with a valid `role` that fits the type of control as intended, using the WAI-ARIA 1.1 specification as a guide.
 The following example shows an element with a valid `role="scrollbar"` intended to provide scrollbar functionality:

@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 Elements with a `"complementary"` role are a type of region used to enclose content that is complementary to the main content on the page. Providing a visible label for each `"complementary"` region on the page provides better context for all users including people using assistive technologies. These landmark labels help to identify and navigate to the content.
 
@@ -21,14 +21,14 @@ Elements with a `"complementary"` role are a type of region used to enclose cont
 
 <div id="locLevel"></div>
 
-## An element with a `"complementary"` role does not have a visible label
+### An element with a `"complementary"` role does not have a visible label
 A unique and visible label is preferred for each element with a `"complementary"` role
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Complementary Role](https://www.w3.org/TR/wai-aria-1.1/#complementary)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * For each `<aside>` element or element with `role="complementary"`, set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes the complementary content.
 

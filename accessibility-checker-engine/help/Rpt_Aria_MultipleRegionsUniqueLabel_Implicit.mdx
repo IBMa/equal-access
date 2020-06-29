@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision using a screen reader
 
-## Why is this important?
+### Why is this important?
 
 When there are multiple elements with a `"region"` role, they must have unique labels that clearly describe the region's content. This includes labelled `<section>` elements. This label helps people using assistive technologies to quickly find and navigate to each region.
 
@@ -23,14 +23,14 @@ When there are multiple elements with a `"region"` role, they must have unique l
 
 <div id="locLevel"></div>
 
-## Multiple elements with `"region"` role do not have unique labels
+### Multiple elements with `"region"` role do not have unique labels
 Multiple elements with `"region"` role must have unique labels
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [W3C WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6) |  [W3C WCAG 2.1 technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * For each element with a `"region"` role, either set the value of the `aria-labelledby` attribute of each region to the `id` value of any visible text that appropriately and uniquely describes that region's content;
 * OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to each element with the `"region"` role.
