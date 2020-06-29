@@ -8,14 +8,14 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
  * Blind people using screen readers
  * People with low vision
  * People with tremor or other movement disorders
  * People who rely on keyboard control
 
-## Why is this important?
+### Why is this important?
 
 Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with WAI-ARIA. Authors need to implement keyboard access using keyboard handlers such as `onkeydown` or `onkeypress`.
 
@@ -24,14 +24,14 @@ Unlike native HTML form elements, browsers do not provide keyboard support for g
 
 <div id="locLevel"></div>
 
-## Interactive WAI_ARIA UI component does not have keyboard handlers implemented for keyboard access
+### Interactive WAI_ARIA UI component does not have keyboard handlers implemented for keyboard access
 Interactive WAI_ARIA UI components must provide keyboard access
 
 [IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [WAI-ARIA Authoring Practices 1.2, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex) | [W3C WAI-ARIA 1.2, Developing a Keyboard Interface](https://www.w3.org/TR/wai-aria-practices-1.2/#keyboard)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
  * Confirm you can use only the keyboard to navigate to and interact with the UI component;
  * OR, if the component is not keyboard accessible, implement `onkeydown` or `onkeypress` keyboard handlers on the element itself using the [ARIA 1.2 Authoring practices guidance](https://www.w3.org/TR/wai-aria-practices-1.2);

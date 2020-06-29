@@ -74,7 +74,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
 
     ItemSnippet = () => {
         return <React.Fragment>
-            <h2 id="element-location">Element location</h2>
+            <h3 id="element-location">Element location</h3>
             <div style={{margin: "1rem 0rem"}}>
                 <CodeSnippet type="single" light={true} >
                     {this.props.item.snippet}

@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 Elements with a `"main"` role are a type of region used to enclose the main content on the page. Providing a visible label for each main region on the page provides better context to all users including people using assistive technologies who rely on landmarks, to identify and navigate to the main content.
 
@@ -21,14 +21,14 @@ Elements with a `"main"` role are a type of region used to enclose the main cont
 
 <div id="locLevel"></div>
 
-## Multiple elements with a `"main"` role do not have unique visible labels
+### Multiple elements with a `"main"` role do not have unique visible labels
 Each element with a `"main"` role should have a visible label that is unique
 
 [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
  * For each `<main>` element or element with `role="main"`, set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that main content.
 
