@@ -350,30 +350,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     showIssueTypeCallback (type:string) {
-        console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
-            console.log("Show only violation issues");
             this.setState({ showIssueTypeFilter: [false, true, false, false] });
-            console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
-            console.log("Show only needs review issues");
             this.setState({ showIssueTypeFilter: [false, false, true, false] });
-            console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
-            console.log("Show only recommendation issues");
             this.setState({ showIssueTypeFilter: [false, false, false, true] });
-            console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         } else { 
-            console.log("Show all issues");
             this.setState({ showIssueTypeFilter: [true, false, false, false] });
-            console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         }    
     }
     
-
     render() {
-        
-        console.log("In showIssueType: showIssueTypeFilter = ",this.state.showIssueTypeFilter);
         if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">

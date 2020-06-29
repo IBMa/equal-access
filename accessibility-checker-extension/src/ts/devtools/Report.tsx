@@ -161,8 +161,6 @@ export default class Report extends React.Component<IReportProps, IReportState> 
             }
         }
 
-        console.log("In Report showIssueTypeFilter = ",this.props.dataFromParent);
-
         return <React.Fragment>
             <div className="bx--grid" style={{paddingLeft: "1rem", paddingRight: "1rem", marginTop: '1rem'}}>
                 <div className="bx--row">
