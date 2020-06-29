@@ -18,8 +18,6 @@ limitations under the License.
 
 import React from "react";
 
-//import { Restart16, Save16 } from "@carbon/icons-react";
-
 import beeLogoUrl from "../../assets/Bee_Logo.svg";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
@@ -31,23 +29,28 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
   state: UsingACAppState = {};
 
   render() {
+    const manifest = chrome.runtime.getManifest();
+
     return (
       <div className="bx--grid bx--grid--full-width">
         <div className="bx--row">
           <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4 leftPanel">
-            <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-            <h2>
-              IBM <strong>Accessibility</strong>
-              <br />
-              Equal Access Toolkit:
-              <br />
-              Accessibility Checker
-            </h2>
-            <h3>
-              <strong>User guide</strong>
-            </h3>
-            <div style={{ marginTop: "2.625rem", lineHeight: "32px" }}>
-              <ul className="toc">
+            <div role="banner">
+              <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
+              <h3>
+                IBM <strong>Accessibility</strong>
+                <br />
+                Equal Access Toolkit:
+                <br />
+                Accessibility Checker
+              </h3>
+            </div>
+            <div
+              style={{ marginTop: "2.625rem", lineHeight: "32px" }}
+              role="navigation"
+            >
+              <h1>User guide</h1>
+              <ul className="toc" style={{marginTop: "1rem"}}>
                 <li>
                   <a href="#prereq" title="prerequisites">
                     1. Prerequisites
@@ -129,8 +132,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </div>
           </div>
           <div className="bx--col-md-0 bx--col-lg-1 buffer"></div>
-          <div className="bx--col-md-8 bx--col-lg-8 rightPanel">
-            <h2>About Equal Access Accessibility Checker</h2>
+          <div
+            className="bx--col-md-8 bx--col-lg-8 rightPanel"
+            role="main"
+            aria-label="User guide details"
+          >
+            <h1>IBM Accessibility Checker user guide</h1>
+            <div className="versionDec">Version {manifest.version}</div>
 
             <p>
               The IBM Equal Access Accessibility Checker is a browser extension
@@ -154,7 +162,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               development process. These tools use the same test engine as the
               Accessibility Checker.
             </p>
-            <h3 id="prereq">1. Prerequisites</h3>
+            <h2 id="prereq">1. Prerequisites</h2>
             <div className="pa">
               Supported browsers:
               <ul
@@ -165,7 +173,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ul>
             </div>
 
-            <h3 id="install">2. Installation</h3>
+            <h2 id="install">2. Installation</h2>
             <div className="pa">
               Follow the steps below to install the browser extension for Google
               Chrome:
@@ -211,7 +219,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="categories">3. Categories of accessibility issues</h3>
+            <h2 id="categories">3. Categories of accessibility issues</h2>
             <p>The tool reports three kinds of accessibility issues:</p>
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
@@ -256,7 +264,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               accessibility test process.
             </p>
 
-            <h3 id="view">4. Ways to view the issues</h3>
+            <h2 id="view">4. Ways to view the issues</h2>
             <p>
               There are three ways to view and explore the issues identified by
               the tool. All views show the same set of issues:
@@ -291,7 +299,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ul>
 
-            <h3 id="t_select_settings">5. Options</h3>
+            <h2 id="t_select_settings">5. Options</h2>
             <p>
               By default, the IBM Equal Access Accessibility Checker uses a set
               of rules that correspond to the most recent WCAG standards, and
@@ -335,7 +343,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               />
             </p>
 
-            <h4 id="rule_deploy">5.1 Rule set deployment</h4>
+            <h3 id="rule_deploy">5.1 Rule set deployment</h3>
             <p>
               {" "}
               From the <strong>‘Rule set deployment’</strong> dropdown choose
@@ -370,7 +378,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               the <strong>'Reset'</strong> button to discard changes.
             </p>
 
-            <h4 id="ruleset">5.2 Rule set</h4>
+            <h3 id="ruleset">5.2 Rule set</h3>
             <p>
               From the <strong>‘Select rule set’</strong> dropdown choose one of
               the following:
@@ -410,7 +418,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ul>
 
-            <h3 id="usage">6. Usage</h3>
+            <h2 id="usage">6. Usage</h2>
             <p>
               The IBM Equal Access Accessibility Checker offers two views, the
               Accessibility Checker view is a code scanner for developers
@@ -419,7 +427,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               explanation and suggested solutions for each issue reported.
             </p>
 
-            <h4 id="a11y_check">6.1 Accessibility Checker</h4>
+            <h3 id="a11y_check">6.1 Accessibility Checker</h3>
             <div className="pa">
               <ol
                 style={{
@@ -655,7 +663,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h4 id="a11y_assess">6.2 Accessibility Assessment</h4>
+            <h3 id="a11y_assess">6.2 Accessibility Assessment</h3>
             <div className="pa">
               <ol
                 style={{
@@ -880,7 +888,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h4 id="t_select_hidden_settings">6.3 Hidden content scanning</h4>
+            <h3 id="t_select_hidden_settings">6.3 Hidden content scanning</h3>
             <p>
               By default, the tool skips hidden content (Web pages that use the{" "}
               <var>visibility:hidden</var> or <var>display:none</var> elements),
@@ -891,7 +899,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               Accessibility Checker can validate the content that is displayed.
             </p>
 
-            <h3 id="the_report">7. Accessibility Checker report</h3>
+            <h2 id="the_report">7. Accessibility Checker report</h2>
             <p>
               The Accessibility Checker provides a full report that you can
               download as HTML. To open the Accessibility Checker report:
@@ -932,7 +940,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ol>
 
-            <h4 id="t_view_report">7.1 Review the report</h4>
+            <h3 id="t_view_report">7.1 Review the report</h3>
             <p>
               The Accessibility Checker Report is an interactive report that you
               can save as an HTML file for future use. It includes the report
