@@ -115,7 +115,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
 
-            <div className="bx--row summary" style={{marginTop:"14px"}}>
+            <div className="bx--row summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
                 <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
                     <img src={Violation16} alt="Violations" />
                     <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
