@@ -67,7 +67,9 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         //archives have not been changed
         if (
           selected_archive &&
-          archives.find((archive: any) =>  {return archive.id == selected_archive.id} )
+          archives.find((archive: any) => {
+            return archive.id == selected_archive.id;
+          })
         ) {
           //do nothing
         } else {
@@ -90,8 +92,8 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
   };
 
   getLatestArchive = (archives: any) => {
-    return archives.find((archive: any) => { 
-        return archive.id == "latest";
+    return archives.find((archive: any) => {
+      return archive.id == "latest";
     });
   };
 
@@ -114,7 +116,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
-      show_notif: false
+      show_notif: false,
     });
   };
 
@@ -193,7 +195,14 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               />
               <p className="op_helper-text">
                 For details on rule set changes between deployments, see{" "}
-                <a href="https://github.com/IBMa/equal-access/releases" target="_blank" rel="noopener noreferred">Release notes</a>.
+                <a
+                  href="https://github.com/IBMa/equal-access/releases"
+                  target="_blank"
+                  rel="noopener noreferred"
+                >
+                  Release notes
+                </a>
+                .
               </p>
               <h3>Supported rule sets</h3>
               <p>
@@ -216,7 +225,11 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 onChange={this.handleRulesetSelect}
               />
 
-      {selected_ruleset.description? (<p className="op_helper-text">{selected_ruleset.description}</p>):"" }
+              {selected_ruleset.description ? (
+                <p className="op_helper-text">{selected_ruleset.description}</p>
+              ) : (
+                ""
+              )}
               {show_notif ? (
                 <div className="notification">
                   <InlineNotification
