@@ -152,22 +152,26 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         <div className="bx--grid bx--grid--full-width">
           <div className="bx--row">
             <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4 leftPanel">
-              <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-              <h2>
-                IBM <strong>Accessibility</strong>
-                <br /> Equal Access Toolkit:
-                <br /> Accessibility Checker
-              </h2>
-              <div className="op_version" style={{ marginTop: "8px" }}>
-                Version {manifest.version}
+              <div role="banner">
+                <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
+                <h2>
+                  IBM <strong>Accessibility</strong>
+                  <br /> Equal Access Toolkit:
+                  <br /> Accessibility Checker
+                </h2>
               </div>
-              <p>
-                By default, the Accessibility Checker uses a set of rules that
-                correspond to the most recent WCAG standards, and these rules
-                are updated regularly. If you need to test against a specific
-                rule set version, use these options to select the archived rule
-                set by date of deployment and standard used.
-              </p>
+              <aside aria-labelledby="">
+                <div className="op_version" style={{ marginTop: "8px" }}>
+                  Version {manifest.version}
+                </div>
+                <p>
+                  By default, the Accessibility Checker uses a set of rules that
+                  correspond to the most recent WCAG standards, and these rules
+                  are updated regularly. If you need to test against a specific
+                  rule set version, use these options to select the archived
+                  rule set by date of deployment and standard used.
+                </p>
+              </aside>
             </div>
             <div className="bx--col-md-0 bx--col-lg-1 buffer"></div>
             <div className="bx--col-md-8 bx--col-lg-8 rightPanel">
