@@ -112,35 +112,29 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
                 <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
                     <img src={Violation16} alt="Violations" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
-                    </span>&nbsp;
                     <Button kind="ghost" 
                             className="summaryBarViolationButton"
                             onClick={() => this.sendShowIssueTypeData("Violations")}
                             style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {color:"#252525"} : {color:"#888888"}}>
-                            Violations
+                            {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
                     </Button>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={NeedsReview16} alt="Needs review" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}
-                    &nbsp;</span>
                     <Button kind="ghost" 
                             className="summaryBarNeedsReviewButton"
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}
                             style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {color:"#252525"} : {color:"#888888"}}>
-                            Needs Review
+                            {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs Review
                     </Button>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={Recommendation16} alt="Recommendation" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}
-                    &nbsp;</span>
                     <Button kind="ghost" 
                         className="summaryBarRecommendationButton"
                         onClick={() => this.sendShowIssueTypeData("Recommendations")}
                         style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {color:"#252525"} : {color:"#888888"}}>
-                        Recommendations
+                        {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
                     </Button>
                 </div>
                 <div className="bx--col-sm-1">
