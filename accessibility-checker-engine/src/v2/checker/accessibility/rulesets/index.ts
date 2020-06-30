@@ -74,6 +74,10 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
+                    id: "RPT_Style_BackgroundImage",
+                    level: eRulePolicy.VIOLATION
+                },
+                {
                     id: "WCAG20_Img_LinkTextNotRedundant",
                     level: eRulePolicy.VIOLATION
                 },
@@ -108,6 +112,14 @@ let a11yRulesets: Ruleset[] = [
                 
                 {
                     id: "RPT_Embed_HasAlt",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "RPT_Style_Trigger2",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "HAAC_BackgroundImg_HasTextOrTitle",
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
@@ -213,10 +225,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
-                    id: "RPT_Style_BackgroundImage",
-                    level: eRulePolicy.VIOLATION
-                },
-                {
                     id: "RPT_List_UseMarkup",
                     level: eRulePolicy.VIOLATION
                 },
@@ -285,16 +293,8 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
-                    id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.RECOMMENDATION
-                },
-                {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION
-                },
-                {
-                    id: "RPT_Style_Trigger2",
-                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -976,7 +976,7 @@ let a11yRulesets: Ruleset[] = [
 },
 {
     id: "WCAG_2_1",
-    name: "WCAG 2.1",
+    name: "WCAG 2.1 (A, AA)",
     category: eRuleCategory.ACCESSIBILITY,
     description: "Rules for WCAG 2.1 AA. This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.", 
     "checkpoints": [
@@ -1030,6 +1030,10 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
+                    id: "RPT_Style_BackgroundImage",
+                    level: eRulePolicy.VIOLATION
+                },
+                {
                     id: "WCAG20_Img_LinkTextNotRedundant",
                     level: eRulePolicy.VIOLATION
                 },
@@ -1064,6 +1068,14 @@ let a11yRulesets: Ruleset[] = [
                 
                 {
                     id: "RPT_Embed_HasAlt",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "RPT_Style_Trigger2",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "HAAC_BackgroundImg_HasTextOrTitle",
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
@@ -1169,10 +1181,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
-                    id: "RPT_Style_BackgroundImage",
-                    level: eRulePolicy.VIOLATION
-                },
-                {
                     id: "RPT_List_UseMarkup",
                     level: eRulePolicy.VIOLATION
                 },
@@ -1241,16 +1249,8 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
-                    id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.RECOMMENDATION
-                },
-                {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION
-                },
-                {
-                    id: "RPT_Style_Trigger2",
-                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -1932,7 +1932,7 @@ let a11yRulesets: Ruleset[] = [
 },
 {
     id: "WCAG_2_0",
-    name: "WCAG 2.0",
+    name: "WCAG 2.0 (A, AA)",
     category: eRuleCategory.ACCESSIBILITY,
     description: "Rules for WCAG 2.0 AA. Referenced by US Section 508, but not the latest W3C recommendation.",
     "checkpoints": [
@@ -1986,6 +1986,10 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
+                    id: "RPT_Style_BackgroundImage",
+                    level: eRulePolicy.VIOLATION
+                },
+                {
                     id: "WCAG20_Img_LinkTextNotRedundant",
                     level: eRulePolicy.VIOLATION
                 },
@@ -2020,6 +2024,14 @@ let a11yRulesets: Ruleset[] = [
                 
                 {
                     id: "RPT_Embed_HasAlt",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "RPT_Style_Trigger2",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "HAAC_BackgroundImg_HasTextOrTitle",
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
@@ -2125,10 +2137,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
-                    id: "RPT_Style_BackgroundImage",
-                    level: eRulePolicy.VIOLATION
-                },
-                {
                     id: "RPT_List_UseMarkup",
                     level: eRulePolicy.VIOLATION
                 },
@@ -2197,16 +2205,8 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
-                    id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.RECOMMENDATION
-                },
-                {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION
-                },
-                {
-                    id: "RPT_Style_Trigger2",
-                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -2812,7 +2812,7 @@ let a11yRulesets: Ruleset[] = [
 },
 {
     id: "IBM_Accessibility_BETA",
-    name: "IBM Accessibility Experimental",
+    name: "IBM Accessibility BETA",
     category: eRuleCategory.ACCESSIBILITY,
     description: "Rules for WCAG 2.1 AA plus additional IBM checklist supplemental requirements and experimental rules.",
     "checkpoints": [
@@ -2866,6 +2866,10 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
+                    id: "RPT_Style_BackgroundImage",
+                    level: eRulePolicy.VIOLATION
+                },
+                {
                     id: "WCAG20_Img_LinkTextNotRedundant",
                     level: eRulePolicy.VIOLATION
                 },
@@ -2900,6 +2904,14 @@ let a11yRulesets: Ruleset[] = [
                 
                 {
                     id: "RPT_Embed_HasAlt",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "RPT_Style_Trigger2",
+                    level: eRulePolicy.RECOMMENDATION
+                },
+                {
+                    id: "HAAC_BackgroundImg_HasTextOrTitle",
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
@@ -3005,10 +3017,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION
                 },
                 {
-                    id: "RPT_Style_BackgroundImage",
-                    level: eRulePolicy.VIOLATION
-                },
-                {
                     id: "RPT_List_UseMarkup",
                     level: eRulePolicy.VIOLATION
                 },
@@ -3077,16 +3085,8 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION
                 },
                 {
-                    id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.RECOMMENDATION
-                },
-                {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION
-                },
-                {
-                    id: "RPT_Style_Trigger2",
-                    level: eRulePolicy.RECOMMENDATION
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",

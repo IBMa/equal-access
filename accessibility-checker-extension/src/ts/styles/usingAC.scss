@@ -48,7 +48,7 @@ body {
       height: 2rem;
     }
 
-    h2 {
+    h1 {
       color: #252525;
       @include carbon--type-style("productive-heading-04");
       margin-top: 2rem;
@@ -111,17 +111,26 @@ body {
         margin-top: 0.75rem;
     }
 
-    h2 {
+    .versionDec {
+        color: #3C3838;
+        font-family: "IBM Plex Sans";
+        font-size: 11px;
+        letter-spacing: 0.13px;
+        line-height: 18px;
+        margin-top: 3px;
+    }
+
+    h1 {
       color: #252525;
       @include carbon--type-style("productive-heading-04");
     }
 
-    h3 {
+    h2 {
       @include carbon--type-style("productive-heading-03");
       margin-top: 1.25rem;
     }
 
-    h4 {
+    h3 {
         @include carbon--type-style("productive-heading-02");
         margin-top: 1.25rem;
       }
