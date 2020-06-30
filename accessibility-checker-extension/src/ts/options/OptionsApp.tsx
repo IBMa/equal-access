@@ -175,107 +175,113 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             </div>
             <div className="bx--col-md-0 bx--col-lg-1 buffer"></div>
             <div className="bx--col-md-8 bx--col-lg-8 rightPanel">
-              <h2>Advanced options</h2>
+              <main aria-labelledby="options">
+                <h1 id="options">IBM Accessibility Checker options</h1>
 
-              <p>
-                Choose to always use the latest version of the rule sets, use
-                the version from a specific date, or try a preview of future
-                rule sets. By default the latest rule set version is selected.
-              </p>
+                <h2>Rule set versions </h2>
 
-              <Dropdown
-                ariaLabel="Deployment selection dropdown"
-                disabled={false}
-                helperText="Rule set deployment"
-                id="archivedRuleset"
-                items={archives}
-                itemToString={(item: any) => (item ? item["name"] : "")}
-                label="Rule set deployment"
-                light={false}
-                titleText=""
-                type="default"
-                selectedItem={selected_archive}
-                onChange={this.handleArchiveSelect}
-              />
-              <p className="op_helper-text">
-                For details on rule set changes between deployments, see{" "}
-                <a
-                  href="https://github.com/IBMa/equal-access/releases"
-                  target="_blank"
-                  rel="noopener noreferred"
-                >
-                  Release notes
-                </a>
-                .
-              </p>
-              <h3>Supported rule sets</h3>
-              <p>
-                Choose which rule set to use. This will affect the issues
-                detected.
-              </p>
+                <p>
+                  Choose to always use the latest version of the rule sets, use
+                  the version from a specific date, or try a preview of future
+                  rule sets. By default the latest rule set version is selected.
+                </p>
 
-              <Dropdown
-                ariaLabel="ruleset selection dropdown"
-                disabled={false}
-                helperText="Select rule set"
-                id="archivedRuleset"
-                items={rulesets}
-                itemToString={(item: any) => (item ? item["name"] : "")}
-                label="Rule set deployment"
-                light={false}
-                titleText=""
-                type="default"
-                selectedItem={selected_ruleset}
-                onChange={this.handleRulesetSelect}
-              />
+                <Dropdown
+                  ariaLabel="Deployment selection dropdown"
+                  disabled={false}
+                  helperText="Rule set deployment"
+                  id="archivedRuleset"
+                  items={archives}
+                  itemToString={(item: any) => (item ? item["name"] : "")}
+                  label="Rule set deployment"
+                  light={false}
+                  titleText=""
+                  type="default"
+                  selectedItem={selected_archive}
+                  onChange={this.handleArchiveSelect}
+                />
+                <p className="op_helper-text">
+                  For details on rule set changes between deployments, see{" "}
+                  <a
+                    href="https://github.com/IBMa/equal-access/releases"
+                    target="_blank"
+                    rel="noopener noreferred"
+                  >
+                    Release notes
+                  </a>
+                  .
+                </p>
+                <h2>Supported rule sets</h2>
+                <p>
+                  Choose which rule set to use. This will affect the issues
+                  detected.
+                </p>
 
-              {selected_ruleset.description ? (
-                <p className="op_helper-text">{selected_ruleset.description}</p>
-              ) : (
-                ""
-              )}
-              {show_notif ? (
-                <div className="notification">
-                  <InlineNotification
-                    role="alert"
-                    kind="success"
-                    lowContrast={true}
-                    title="Success"
-                    subtitle=" Your changes have been saved"
-                    className=""
-                    iconDescription="close notification"
-                    onCloseButtonClick={() => {
-                      this.setState({ show_notif: false });
-                    }}
-                  />
+                <Dropdown
+                  ariaLabel="ruleset selection dropdown"
+                  disabled={false}
+                  helperText="Select rule set"
+                  id="archivedRuleset"
+                  items={rulesets}
+                  itemToString={(item: any) => (item ? item["name"] : "")}
+                  label="Rule set deployment"
+                  light={false}
+                  titleText=""
+                  type="default"
+                  selectedItem={selected_ruleset}
+                  onChange={this.handleRulesetSelect}
+                />
+
+                {selected_ruleset.description ? (
+                  <p className="op_helper-text">
+                    {selected_ruleset.description}
+                  </p>
+                ) : (
+                  ""
+                )}
+                {show_notif ? (
+                  <div className="notification">
+                    <InlineNotification
+                      role="alert"
+                      kind="success"
+                      lowContrast={true}
+                      title="Success"
+                      subtitle=" Your changes have been saved"
+                      className=""
+                      iconDescription="close notification"
+                      onCloseButtonClick={() => {
+                        this.setState({ show_notif: false });
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+                <div className="buttonRow">
+                  <Button
+                    disabled={false}
+                    kind="tertiary"
+                    onClick={this.handlReset}
+                    renderIcon={Restart16}
+                    size="default"
+                    tabIndex={0}
+                    type="button"
+                  >
+                    Reset
+                  </Button>
+                  <Button
+                    disabled={false}
+                    kind="primary"
+                    onClick={this.handleSave}
+                    renderIcon={Save16}
+                    size="default"
+                    tabIndex={0}
+                    type="button"
+                  >
+                    Save
+                  </Button>
                 </div>
-              ) : (
-                ""
-              )}
-              <div className="buttonRow">
-                <Button
-                  disabled={false}
-                  kind="tertiary"
-                  onClick={this.handlReset}
-                  renderIcon={Restart16}
-                  size="default"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Reset
-                </Button>
-                <Button
-                  disabled={false}
-                  kind="primary"
-                  onClick={this.handleSave}
-                  renderIcon={Save16}
-                  size="default"
-                  tabIndex={0}
-                  type="button"
-                >
-                  Save
-                </Button>
-              </div>
+              </main>
             </div>
             <div className="bx--col-md-0 bx--col-lg-3 buffer"></div>
           </div>
