@@ -705,7 +705,7 @@ let a11yNls = {
     },
     // JCH - DONE
     "IBMA_Color_Contrast_WCAG2AA": {
-        0: "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
+        0: "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
         "Pass_0": "Rule Passed",
         "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}"
     },
