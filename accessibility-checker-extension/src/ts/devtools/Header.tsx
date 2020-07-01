@@ -37,15 +37,20 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
+    showIssueTypeCallback: (type:string) => void
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
-    } | null
-
+    } | null,
+    dataFromParent: boolean[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     state: IHeaderState = {};
+        
+    sendShowIssueTypeData(type:string) {
+        this.props.showIssueTypeCallback(type);
+    }
 
     render() {
         let counts = this.props.counts;
@@ -80,7 +85,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
-            <div className="bx--row" style={{ marginTop: '16px' }}>
+            <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2">
                     <Button onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
@@ -104,18 +109,33 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
 
-            <div className="bx--row summary" role="region" arial-label='Issue count'>
-                <div className="bx--col-sm-1">
+            <div className="bx--row summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
+                <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
                     <img src={Violation16} alt="Violations" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}&nbsp;<span className="summaryBarLabels">Violations</span></span>
+                    <Button kind="ghost" 
+                            className="summaryBarViolationButton"
+                            onClick={() => this.sendShowIssueTypeData("Violations")}
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {color:"#252525"} : {color:"#888888"}}>
+                            {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
+                    </Button>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={NeedsReview16} alt="Needs review" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}&nbsp;<span className="summaryBarLabels">Needs&nbsp;review</span></span>
+                    <Button kind="ghost" 
+                            className="summaryBarNeedsReviewButton"
+                            onClick={() => this.sendShowIssueTypeData("NeedsReview")}
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {color:"#252525"} : {color:"#888888"}}>
+                            {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs Review
+                    </Button>
                 </div>
                 <div className="bx--col-sm-1">
                     <img src={Recommendation16} alt="Recommendation" />
-                    <span className="summaryBarCounts">{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}&nbsp;<span className="summaryBarLabels">Recommendations</span></span>
+                    <Button kind="ghost" 
+                        className="summaryBarRecommendationButton"
+                        onClick={() => this.sendShowIssueTypeData("Recommendations")}
+                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {color:"#252525"} : {color:"#888888"}}>
+                        {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
+                    </Button>
                 </div>
                 <div className="bx--col-sm-1">
                     <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span>

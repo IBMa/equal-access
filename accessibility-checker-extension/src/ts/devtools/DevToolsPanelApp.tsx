@@ -46,7 +46,8 @@ interface IPanelState {
     rulesets: IRuleset[] | null,
     selectedCheckpoint? : ICheckpoint,
     learnMore : boolean,
-    learnItem : IReportItem | null
+    learnItem : IReportItem | null,
+    showIssueTypeFilter: boolean[]
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -60,7 +61,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabTitle: "",
         rulesets: null,
         learnMore: false,
-        learnItem: null
+        learnItem: null,
+        showIssueTypeFilter: [true, false, false, false]
     }
     
     ignoreNext = false;
@@ -347,6 +349,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({learnMore: false});
     }
 
+    showIssueTypeCallback (type:string) {
+        if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
+            this.setState({ showIssueTypeFilter: [false, true, false, false] });
+        } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
+            this.setState({ showIssueTypeFilter: [false, false, true, false] });
+        } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
+            this.setState({ showIssueTypeFilter: [false, false, false, true] });
+        } else { 
+            this.setState({ showIssueTypeFilter: [true, false, false, false] });
+        }    
+    }
+    
     render() {
         if (this.props.layout === "main") {
             return <React.Fragment>
@@ -364,6 +378,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             startScan={this.startScan.bind(this)} 
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
+                            showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                            dataFromParent = {this.state.showIssueTypeFilter}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
                             <div role="region" aria-label="issue list"  className="issueList">
@@ -376,7 +392,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     learnItem={this.state.learnItem}
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
-                                    tabs={["checklist", "element", "rule"]} />}
+                                    tabs={["checklist", "element", "rule"]}
+                                    dataFromParent = {this.state.showIssueTypeFilter} 
+                                    />}
                             </div>
                         </div>
                     </div>
@@ -405,8 +423,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     startScan={this.startScan.bind(this)} 
                     reportHandler={this.reportHandler.bind(this)}
                     collapseAll={this.collapseAll.bind(this)}
+                    showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                    dataFromParent = {this.state.showIssueTypeFilter}
                     />
-                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
+                <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
                     <div role="region" aria-label="issue list"  className="issueList">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
@@ -416,8 +436,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             getItem = {this.getItem.bind(this)} 
                             learnItem={this.state.learnItem}
                             layout = {this.props.layout}
-                            selectedTab="element"
-                            tabs={["checklist", "element", "rule"]} />}
+                            selectedTab="checklist"
+                            tabs={["checklist", "element", "rule"]}
+                            dataFromParent = {this.state.showIssueTypeFilter} 
+                            />}
                     </div>
                 </div>
             </React.Fragment>
