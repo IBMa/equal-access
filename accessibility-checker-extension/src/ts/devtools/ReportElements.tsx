@@ -29,7 +29,8 @@ interface IReportElementsProps {
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
-    layout: string
+    layout: string,
+    dataFromParent: boolean[]
 }
 
 interface IGroup {
@@ -101,6 +102,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem} 
                         layout={this.props.layout}
+                        dataFromParent={this.props.dataFromParent}
                     />
                 })}
             </div>
