@@ -1,6 +1,7 @@
-package-lock.json
 dist
 routes
 api
 certs
 node_modules
+package-lock.json
+!src-gatsby/package-lock.json
