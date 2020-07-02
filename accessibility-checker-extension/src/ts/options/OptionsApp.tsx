@@ -116,7 +116,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
-      show_notif: false,
+      show_notif: false
     });
   };
 
@@ -187,13 +187,13 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </p>
 
                 <Dropdown
-                  ariaLabel="Deployment selection dropdown"
+                  ariaLabel=""
                   disabled={false}
                   helperText="Rule set deployment"
                   id="archivedRuleset"
                   items={archives}
                   itemToString={(item: any) => (item ? item["name"] : "")}
-                  label="Rule set deployment"
+                  label="Rule set deployment selection"
                   light={false}
                   titleText=""
                   type="default"
@@ -218,13 +218,13 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </p>
 
                 <Dropdown
-                  ariaLabel="ruleset selection dropdown"
+                  ariaLabel=""
                   disabled={false}
                   helperText="Select rule set"
                   id="archivedRuleset"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}
-                  label="Rule set deployment"
+                  label="Rule set selection"
                   light={false}
                   titleText=""
                   type="default"
