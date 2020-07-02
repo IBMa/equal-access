@@ -221,7 +221,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   ariaLabel=""
                   disabled={false}
                   helperText="Select rule set"
-                  id="archivedRuleset"
+                  id="rulesetSelection"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}
                   label="Rule set selection"
