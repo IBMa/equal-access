@@ -187,7 +187,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </p>
 
                 <Dropdown
-                  ariaLabel=""
+                  ariaLabel={undefined}
                   disabled={false}
                   helperText="Rule set deployment"
                   id="archivedRuleset"
@@ -218,7 +218,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </p>
 
                 <Dropdown
-                  ariaLabel=""
+                  ariaLabel={undefined}
                   disabled={false}
                   helperText="Select rule set"
                   id="rulesetSelection"
