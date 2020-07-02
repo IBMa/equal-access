@@ -160,7 +160,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   <br /> Accessibility Checker
                 </h2>
               </div>
-              <aside aria-labelledby="">
+              <aside aria-label = "About Accessibility Checker Options">
                 <div className="op_version" style={{ marginTop: "8px" }}>
                   Version {manifest.version}
                 </div>
