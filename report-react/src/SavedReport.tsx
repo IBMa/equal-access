@@ -95,17 +95,20 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 <div className="bx--row">
                     <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4">
                         <div className="summInfo">
-                            <div className="eaName">IBM <strong>Accessibility</strong></div>
-                            <div className="prodName">Equal Access Toolkit:</div>
-                            <div className="prodName">Accessibility Checker Report</div>
+                            <h1 className="prodName">
+                                IBM <strong>Accessibility</strong><br/>
+                                Equal Access Toolkit:<br/>
+                                Accessibility Checker Report<br/>
+                            </h1>
                             <div className="time">{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
                             <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                         </div>
                     </div>
-                    <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-12">
+                    <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-12" role="region" aria-label="Report overview: current status">
                         <SummScoreCard title="Current status" report={this.props.reportData.report} />
                     </div>
                 </div>
+                <section aria-label="Report overview: score cards">
                 <div className="bx--row">
                     <div className="bx--col-sm-2 bx--col-md-4 bx--offset-lg-4 bx--col-lg-4">
                         <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violations" icon={Violation16}>
@@ -125,10 +128,12 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                         
                     </div>
                 </div>
+                </section>
+                <section aria-label="Report details">
                 <div className="bx--row">
                     <div className="bx--col-sm-4 bx--col-md-8 bx--offset-lg-4 bx--col-lg-12">
                         <div className="summReport">
-                            <div className="title">Results organized by checklist</div>
+                            <h2 className="title">Results organized by checklist</h2>
                             <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
                         </div>
                     </div>
@@ -136,11 +141,12 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 <div className="bx--row">
                     <div className="bx--col-sm-4 bx--col-md-8 bx--offset-lg-4 bx--col-lg-12">
                         <div className="summReport">
-                            <div className="title">Results organized by rules</div>
+                            <h2 className="title">Results organized by rules</h2>
                             <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
                         </div>
                     </div>
                 </div>
+                </section>
             </div>
             <ComposedModal
                 open={!!this.state.selectedItem}
