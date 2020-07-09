@@ -148,11 +148,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </p>
             <p>
               The extension showcases two views, the{" "}
-              <strong>Accessibility Assessment</strong> panel helps you identify
+              <strong>Accessibility Assessment</strong> panel is a comprehensive accessibility assessment tool to help you identify
               accessibility issues and understand how to fix them, while the{" "}
               <strong>Accessibility Checker</strong> tab in the Elements panel
-              in Chrome or the Inspector panel in Firefox helps you to locate
-              your issues in the code and on the page. This checker is part of
+              in Chrome or the Inspector panel in Firefox is a code scanner for developers looking to find and fix issues in code and on the page quickly. This checker is part of
               an open suite of accessibility automation tools. For teams seeking
               integrated accessibility testing, IBM offers{" "}
               <a href="https://github.com/IBMa/equal-access/blob/master/README.md">
@@ -301,12 +300,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="t_select_settings">5. Options</h2>
             <p>
+              Use the options page to change the default ruleset for a supported standard or a date of rule set deployment.
               By default, the IBM Equal Access Accessibility Checker uses a set
-              of rules that correspond to the most recent WCAG standards, and
-              these rules are updated regularly. If you need to test against a
-              different standard or a specific ruleset version, use the options
-              to select the archived rule set by date of deployment and standard
-              used.
+              of rules that correspond to the most recent WCAG standards, plus some additional IBM requirements. Rule sets with rules that map to specific WCAG versions are also available to choose from as per you needs.
+              These rule sets are updated regularly and each update has a date of deploymrnt. If you need to replicate an earlier test, choose the deployment date of the original test.
             </p>
             <p>
               Follow the steps below to open the Accessibility Checker options
@@ -509,6 +506,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
+                    Press the any issue type toggle button in the scan results to filter issues by violations, needs review or by recommendations.
+                    Press the issue type button again to see all issue types.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
                     Select the expand icon next to an element role, checkpoint,
                     or rule in the table to display the corresponding issues
                     found.
@@ -553,8 +556,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       >
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Highlight the selected element, or the element
-                            containing the selected issue, in the browser's
+                            Highlight the selected element (purple highlight), in the DOM under the browser's
                             Elements panel and highlight its location on the web
                             page.
                           </p>
