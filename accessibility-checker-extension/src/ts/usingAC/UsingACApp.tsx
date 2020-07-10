@@ -301,8 +301,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <h2 id="t_select_settings">5. Options</h2>
             <p>
               Use the options page to change the default ruleset for a supported standard or a date of rule set deployment.
-              By default, the IBM Equal Access Accessibility Checker uses a set
-              of rules that correspond to the most recent WCAG standards, plus some additional IBM requirements. Rule sets with rules that map to specific WCAG versions are also available to choose from as per you needs.
+              By default, the IBM Equal Access Accessibility Checker uses the latest deployment with a set
+              of rules that correspond to the most recent WCAG standards, plus some additional IBM requirements. Rule sets with rules that map to specific WCAG versions are also available to choose from as needed.
               These rule sets are updated regularly and each update has a date of deploymrnt. If you need to replicate an earlier test, choose the deployment date of the original test.
             </p>
             <p>
@@ -506,8 +506,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Press the any issue type toggle button in the scan results to filter issues by violations, needs review or by recommendations.
-                    Press the issue type button again to see all issue types.
+                    To <strong>filter</strong> issues by type, press any issue type toggle button in the scan results, by violations, needs review or by recommendations.
+                    Press the same issue type button again to see all issue types.
                   </p>
                 </li>
                 <li>
@@ -570,14 +570,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Open and highlight all issues in the element, if any
+                           Any additional issues for the same element, if any, also open and get highlighted
                             (purple highlight)
                           </p>
                         </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Open and highlight all issues in the element's
-                            child, if any (light purple highlight).
+                            All issues in the element's
+                            child, if any, open and get highlighted (light purple highlight) as well.
                           </p>
                         </li>
                       </ul>
