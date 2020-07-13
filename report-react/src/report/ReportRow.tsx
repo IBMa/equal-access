@@ -90,6 +90,12 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         this.setState({ expanded: !this.state.expanded });
     }
 
+    onKeyDown(e: any) {
+        if (e.keyCode === 13) {
+            e.target.click();
+        }
+    }
+
     static getDerivedStateFromProps(props: IReportRowProps, state: IReportRowState) {
         if (props.report.timestamp > state.lastTimestamp) {
             return {
@@ -130,7 +136,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         return <div className="itemRow">
-            <div className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} tabIndex={0}>
+            <div className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} tabIndex={0} onKeyDown={this.onKeyDown.bind(this)}>
                 <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
