@@ -83,12 +83,12 @@ html, body {
             margin-top: .5rem;
         }
 
-        h2 {
+        h1 {
             color: #252525;
             @include carbon--type-style('productive-heading-04');
         }
 
-        h3 {
+        h2 {
             @include carbon--type-style('productive-heading-03');
             margin-top: 3rem;
         }
