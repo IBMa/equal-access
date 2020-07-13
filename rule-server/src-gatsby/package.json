@@ -11,7 +11,7 @@
   "dependencies": {
     "carbon-icons": "^7.0.7",
     "gatsby": "^2.20.3",
-    "gatsby-theme-carbon": "^1.22.1",
+    "gatsby-theme-carbon": "^1.25.2",
     "gatsby-transformer-remark": "^2.7.1",
     "jszip": "^3.2.2",
     "num-to-words": "^0.2.1",
