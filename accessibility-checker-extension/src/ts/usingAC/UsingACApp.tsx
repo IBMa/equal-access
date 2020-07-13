@@ -300,10 +300,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="t_select_settings">5. Options</h2>
             <p>
-              Use the options page to change the default ruleset for a supported standard or a date of rule set deployment.
+              Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
               By default, the IBM Equal Access Accessibility Checker uses the latest deployment with a set
               of rules that correspond to the most recent WCAG standards, plus some additional IBM requirements. Rule sets with rules that map to specific WCAG versions are also available to choose from as needed.
-              These rule sets are updated regularly and each update has a date of deploymrnt. If you need to replicate an earlier test, choose the deployment date of the original test.
+              These rule sets are updated regularly and each update has a date of deployment. If you need to replicate an earlier test, choose the deployment date of the original test.
             </p>
             <p>
               Follow the steps below to open the Accessibility Checker options
