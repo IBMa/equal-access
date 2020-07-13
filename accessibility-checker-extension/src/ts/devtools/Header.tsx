@@ -115,7 +115,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                             className="summaryBarViolationButton"
                             onClick={() => this.sendShowIssueTypeData("Violations")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {color:"#252525"} : {color:"#888888"}}>
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {fontWeight: 600} : {fontWeight: 400}}>
                             {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
                     </Button>
                 </div>
@@ -124,7 +124,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                             className="summaryBarNeedsReviewButton"
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {color:"#252525"} : {color:"#888888"}}>
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {fontWeight: 600} : {fontWeight: 400}}>
                             {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs Review
                     </Button>
                 </div>
@@ -133,11 +133,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                         className="summaryBarRecommendationButton"
                         onClick={() => this.sendShowIssueTypeData("Recommendations")}
-                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {color:"#252525"} : {color:"#888888"}}>
+                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {fontWeight: 600} : {fontWeight: 400}}>
                         {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
                     </Button>
                 </div>
-                <div className="bx--col-sm-1">
+                <div className="bx--col-sm-1" role="status">
                     <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span>
                 </div>
             </div>
