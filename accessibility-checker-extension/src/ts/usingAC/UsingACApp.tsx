@@ -334,7 +334,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               <img
                 src="assets/img/options.png"
-                alt="Options screenshot"
+                alt="Options page screenshot - a page where you can select a Rule set depolyment and a Rule set for your checker to use."
                 width="100%"
                 height="100%"
               />
@@ -482,7 +482,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p>
                     <img
                       src="assets/img/a11yCheck.png"
-                      alt="Accessibility Checker screenshot"
+                      alt="Accessibility Checker screenshot - a code scanner for developers"
                       width="100%"
                       height="100%"
                     />
@@ -531,7 +531,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p>
                     <img
                       src="assets/img/checkResults.png"
-                      alt="Accessibility Checker results screenshot"
+                      alt="Accessibility Checker screenshot - a sample report of Accessibility Checker"
                       width="100%"
                       height="100%"
                     />
@@ -717,7 +717,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p>
                     <img
                       src="assets/img/a11yAssess.png"
-                      alt="Accessibility Assessment screenshot"
+                      alt="Accessibility Assessment screenshot - A comprehensive accessibility assessment tool"
                       width="100%"
                       height="100%"
                     />
@@ -746,7 +746,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p>
                     <img
                       src="assets/img/assessReport.png"
-                      alt="Accessibility Checker report screenshot"
+                      alt="Accessibility Assessment report screenshot - a sample report of Accessibility Assessment"
                       width="100%"
                       height="100%"
                     />
@@ -785,7 +785,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       <p>
                         <img
                           src="assets/img/helpPanel.png"
-                          alt="Accessibility Assessment help panel screenshot"
+                          alt="Accessibility Assessment help panel screenshot - a sample help panel of Accessibility Assessment "
                           width="100%"
                           height="100%"
                         />
@@ -934,7 +934,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                   <img
                     src="assets/img/fullReport.png"
-                    alt="Accessibility Checker report screenshot"
+                    alt="Accessibility Checker report download screenshot - button for report download"
                     width="100%"
                     height="100%"
                   />
@@ -967,7 +967,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               <img
                 src="assets/img/report.png"
-                alt="Screen shot of the Accessibility Checker Report"
+                alt="Screen shot of a Accessibility Checker Report"
                 width="100%"
                 height="100%"
               />
