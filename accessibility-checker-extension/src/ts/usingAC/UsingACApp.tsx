@@ -506,7 +506,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    To <strong>filter</strong> issues and focus only on violations, needs review or by recommendations, select the issue type in the issue count region below the 'Scan' button.
+                    To <strong>filter</strong> issues and focus only on violations, items that need review or recommendations, select the issue type in the issue count region below the 'Scan' button.
                     Select the same issue type again to see all issue types.
                   </p>
                 </li>
