@@ -576,7 +576,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <li>
                           <p style={{ marginTop: "0rem" }}>
                             Open and highlight all issues in the element's
-                            child, if any (light purple highlight).
+                            children, if any (light purple highlight).
                           </p>
                         </li>
                       </ul>
