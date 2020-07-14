@@ -29,8 +29,7 @@ import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
-interface IHeaderState {
-}
+interface IHeaderState {}
 
 interface IHeaderProps {
     layout: "main" | "sub",
@@ -42,7 +41,8 @@ interface IHeaderProps {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
     } | null,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    scanning: boolean
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -138,7 +138,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </Button>
                 </div>
                 <div className="bx--col-sm-1" role="status">
-                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span>
+                    {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}
+                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Please Scan" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
         </div>);
