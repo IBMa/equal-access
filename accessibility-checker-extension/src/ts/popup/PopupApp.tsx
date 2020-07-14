@@ -17,7 +17,7 @@
 import React from "react";
 
 // import { Button } from "carbon-components-react";
-import "./popup.scss";
+import "../styles/popup.scss";
 const purple_bee = "/assets/Bee_Logo@64px.png";
 
 export default class PopupApp extends React.Component {
