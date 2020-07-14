@@ -149,7 +149,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
                 <div className="bx--col-sm-1" role="status">
                     {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}
-                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Start Scan" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
+                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
         </div>);
