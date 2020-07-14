@@ -55,6 +55,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     render() {
         let counts = this.props.counts;
         let noScan = counts ? true : false;
+        if (this.props.scanning == true) {
+            noScan = true;
+        }
+
 
         if (!counts) {
             counts = {
@@ -117,7 +121,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             onClick={() => this.sendShowIssueTypeData("Violations")}
                             style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {fontWeight: 600} : {fontWeight: 400}}
                             aria-pressed = {this.props.dataFromParent[1]}
-                            aria-label= {!this.props.dataFromParent[1] ? "Show only violations" : "Show all issues"}>
+                            aria-label= "Show only violations">
                             {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
                     </Button>
                 </div>
@@ -128,8 +132,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}
                             style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {fontWeight: 600} : {fontWeight: 400}}
                             aria-pressed = {this.props.dataFromParent[2]}
-                            aria-label= {!this.props.dataFromParent[2] ? "Show only violations" : "Show all issues"}>
-                            {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs Review
+                            aria-label= "Show only needs review">
+                            {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs review
                     </Button>
                 </div>
                 <div className="bx--col-sm-1">
@@ -139,13 +143,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         onClick={() => this.sendShowIssueTypeData("Recommendations")}
                         style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {fontWeight: 600} : {fontWeight: 400}}
                         aria-pressed = {this.props.dataFromParent[3]}
-                        aria-label= {!this.props.dataFromParent[3] ? "Show only violations" : "Show all issues"}>
+                        aria-label= "Show only needs recommendations">
                         {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
                     </Button>
                 </div>
                 <div className="bx--col-sm-1" role="status">
                     {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}
-                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Please Scan" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
+                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Start Scan" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
         </div>);
