@@ -498,7 +498,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     The scan result displays the total number of issues found
                     with individual counts for violations, items that need
-                    review, and recommendations in the "Issue Count" region. By default, the issue list is
+                    review, and recommendations in the issue count region. By default, the issue list is
                     shown in the ‘Element roles’ view (see the previous
                     definition), while ‘Checklist’ and ‘Rules’ tabs are also
                     available. All views show the same set of issues.
