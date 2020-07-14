@@ -115,7 +115,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                             className="summaryBarViolationButton"
                             onClick={() => this.sendShowIssueTypeData("Violations")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {fontWeight: 600} : {fontWeight: 400}}>
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {fontWeight: 600} : {fontWeight: 400}}
+                            aria-pressed = {this.props.dataFromParent[1]}
+                            aria-label= {!this.props.dataFromParent[1] ? "Show only violations" : "Show all issues"}>
                             {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
                     </Button>
                 </div>
@@ -124,7 +126,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                             className="summaryBarNeedsReviewButton"
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {fontWeight: 600} : {fontWeight: 400}}>
+                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {fontWeight: 600} : {fontWeight: 400}}
+                            aria-pressed = {this.props.dataFromParent[2]}
+                            aria-label= {!this.props.dataFromParent[2] ? "Show only violations" : "Show all issues"}>
                             {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs Review
                     </Button>
                 </div>
@@ -133,7 +137,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <Button kind="ghost" 
                         className="summaryBarRecommendationButton"
                         onClick={() => this.sendShowIssueTypeData("Recommendations")}
-                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {fontWeight: 600} : {fontWeight: 400}}>
+                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {fontWeight: 600} : {fontWeight: 400}}
+                        aria-pressed = {this.props.dataFromParent[3]}
+                        aria-label= {!this.props.dataFromParent[3] ? "Show only violations" : "Show all issues"}>
                         {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
                     </Button>
                 </div>
