@@ -498,7 +498,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     The scan result displays the total number of issues found
                     with individual counts for violations, items that need
-                    review, and recommendations. By default, the issues are
+                    review, and recommendations in the "Issue Count" region. By default, the issue list is
                     shown in the ‘Element roles’ view (see the previous
                     definition), while ‘Checklist’ and ‘Rules’ tabs are also
                     available. All views show the same set of issues.
@@ -506,8 +506,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    To <strong>filter</strong> issues by violations, needs review or by recommendations, press any issue type toggle button in the scan results.
-                    Press the same issue type button again to see all issue types.
+                    To <strong>filter</strong> issues and focus only on violations, needs review or by recommendations, select the issue type in the issue count region below the 'Scan' button.
+                    Select the same issue type again to see all issue types.
                   </p>
                 </li>
                 <li>
@@ -556,7 +556,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       >
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Highlight the selected element (purple highlight), in the DOM under the browser's
+                            Highlight the selected element, or the element containing the selected issue, in the DOM under the browser's
                             Elements panel and highlight its location on the web
                             page.
                           </p>
@@ -570,14 +570,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                           Any additional issues for the same element, if any, also open and get highlighted
-                            (purple highlight)
+                           Open and highlight all issues in the element, if any (purple highlight)
                           </p>
                         </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            All issues in the element's
-                            child, if any, open and get highlighted (light purple highlight) as well.
+                            Open and highlight all issues in the element's
+                            child, if any (light purple highlight).
                           </p>
                         </li>
                       </ul>
