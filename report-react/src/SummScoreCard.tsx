@@ -73,7 +73,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
         elementNoFailures = (((summaryNumbers[4]-summaryNumbers[3])/summaryNumbers[4])*100).toFixed(0);
 
         return <div className="summScoreCard">
-            <div className="title">{this.props.title}</div>
+            <h2 className="title">{this.props.title}</h2>
             <div className="bx--row">
                 <div className="bx--col scLeft">
                     <div className="score">{elementNoFailures}%</div>
