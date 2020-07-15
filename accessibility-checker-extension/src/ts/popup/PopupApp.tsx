@@ -25,25 +25,27 @@ const assessment_chrome = "/assets/img/chromeAssessment.jpeg";
 const assessment_firefox = "/assets/img/firefoxAssessment.jpeg";
 
 export default class PopupApp extends React.Component {
-
   isChrome = () => {
-    return !this.isFirefrox()
+    return !this.isFirefrox();
   };
 
-  isFirefrox =() =>{
-    if ("InstallTrigger" in window){   
-        return true;
+  isFirefrox = () => {
+    if ("InstallTrigger" in window) {
+      return true;
     } else {
-        return false;
+      return false;
     }
-  }
-
+  };
 
   render() {
     const manifest = chrome.runtime.getManifest();
 
-    const checker_screen_copy = this.isChrome()? checker_chrome: checker_firefox;
-    const assessment_screen_copy = this.isChrome()? assessment_chrome: assessment_firefox;
+    const checker_screen_copy = this.isChrome()
+      ? checker_chrome
+      : checker_firefox;
+    const assessment_screen_copy = this.isChrome()
+      ? assessment_chrome
+      : assessment_firefox;
 
     return (
       <div className="popupPanel">
@@ -113,7 +115,7 @@ export default class PopupApp extends React.Component {
             </a>
           </div>
 
-          <div style={{marginLeft:"2rem" }}>
+          <div style={{ marginLeft: "2rem" }}>
             <a
               href="https://github.com/IBMa/equal-access"
               target="_blank"
@@ -122,7 +124,7 @@ export default class PopupApp extends React.Component {
               Git Repo
             </a>
           </div>
-          <div style={{marginLeft:"2rem" }}>
+          <div style={{ marginLeft: "2rem" }}>
             <a
               href={chrome.runtime.getURL("usingAC.html")}
               target="_blank"
