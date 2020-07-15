@@ -16,8 +16,8 @@
 
 import React from "react";
 
-// import { Button } from "carbon-components-react";
 import "../styles/popup.scss";
+
 const purple_bee = "/assets/Bee_Logo@64px.png";
 const checker_chrome = "/assets/img/chromeChecker.jpeg";
 const checker_firefox = "/assets/img/firefoxChecker.jpeg";
@@ -103,7 +103,7 @@ export default class PopupApp extends React.Component {
           />
         </div>
         <div style={{ marginTop: "12px", display: "flex", fontSize: "14px" }}>
-          <div style={{ flexGrow: 1 }}>
+          <div>
             <a
               href={chrome.runtime.getURL("options.html")}
               target="_blank"
@@ -113,7 +113,7 @@ export default class PopupApp extends React.Component {
             </a>
           </div>
 
-          <div style={{ flexGrow: 1 }}>
+          <div style={{marginLeft:"2rem" }}>
             <a
               href="https://github.com/IBMa/equal-access"
               target="_blank"
@@ -122,7 +122,7 @@ export default class PopupApp extends React.Component {
               Git Repo
             </a>
           </div>
-          <div style={{ flexGrow: 1 }}>
+          <div style={{marginLeft:"2rem" }}>
             <a
               href={chrome.runtime.getURL("usingAC.html")}
               target="_blank"
