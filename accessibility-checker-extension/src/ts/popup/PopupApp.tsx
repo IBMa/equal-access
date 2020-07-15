@@ -19,25 +19,50 @@ import React from "react";
 // import { Button } from "carbon-components-react";
 import "../styles/popup.scss";
 const purple_bee = "/assets/Bee_Logo@64px.png";
+const checker_chrome = "/assets/img/chromeChecker.jpeg";
+const checker_firefox = "/assets/img/firefoxChecker.jpeg";
+const assessment_chrome = "/assets/img/chromeAssessment.jpeg";
+const assessment_firefox = "/assets/img/firefoxAssessment.jpeg";
 
 export default class PopupApp extends React.Component {
 
+  isChrome = () => {
+    return !this.isFirefrox()
+  };
+
+  isFirefrox =() =>{
+    if ("InstallTrigger" in window){   
+        return true;
+    } else {
+        return false;
+    }
+  }
+
+
   render() {
     const manifest = chrome.runtime.getManifest();
+
+    const checker_screen_copy = this.isChrome()? checker_chrome: checker_firefox;
+    const assessment_screen_copy = this.isChrome()? assessment_chrome: assessment_firefox;
+
     return (
       <div className="popupPanel">
         <div style={{ display: "flex", flexWrap: "nowrap" }}>
           <div>
             <div className="popupTitle">
-              IBM <strong>Accessibility</strong>
-              <br />
-              Equal Access Toolkit:
+              IBM <strong>Equal Access</strong>
               <br />
               Accessibility Checker
             </div>
             <div className="versionDec">Version {manifest.version}</div>
           </div>
-          <div style={{ marginLeft: "32px", marginTop: "10px" }}>
+          <div
+            style={{
+              float: "right",
+              marginTop: "0.625rem",
+              marginLeft: "auto",
+            }}
+          >
             <img
               src={purple_bee}
               width="36px"
@@ -49,21 +74,35 @@ export default class PopupApp extends React.Component {
 
         <div className="popupSubTitle">Accessibility Assessment</div>
 
-        <div className="popupPanelDesc" style={{ width: "182px" }}>
+        <div className="popupPanelDesc" style={{ width: "406px" }}>
           A comprehensive accessibility assessment tool. Start using by
-          navigating to the “Accessibility Assessment” tab in Dev Tools.
+          navigating to the “Accessibility Assessment” panel in Dev Tools.
         </div>
-
+        <div style={{ marginTop: "10px" }}>
+          <img
+            src={assessment_screen_copy}
+            width="542px"
+            height="182px"
+            alt="Chrome Accessibility Assessment panel icon"
+          />
+        </div>
         <div className="popupSubTitle" style={{ marginTop: "17px" }}>
           Accessibility Checker
         </div>
-        <div className="popupPanelDesc" style={{ width: "173px" }}>
+        <div className="popupPanelDesc" style={{ width: "406px" }}>
           A code scanner for developers looking to find and fix errors quickly.
-          Start using by navigating to the “Accessibility Checker” tab in Dev
+          Start using by navigating to the “Accessibility Checker” panel in Dev
           Tools.
         </div>
-
-        <div style={{ marginTop: "32px", display: "flex", fontSize: "14px" }}>
+        <div style={{ marginTop: "10px" }}>
+          <img
+            src={checker_screen_copy}
+            width="542px"
+            height="182px"
+            alt="Chrome Accessibility Assessment panel icon"
+          />
+        </div>
+        <div style={{ marginTop: "12px", display: "flex", fontSize: "14px" }}>
           <div style={{ flexGrow: 1 }}>
             <a
               href={chrome.runtime.getURL("options.html")}

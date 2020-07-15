@@ -1,6 +1,6 @@
 .popupPanel {
-  width: 240px;
-  height: 335px;
+  width: 594px;
+  //height: 650px;
   margin: 23px;
 }
 
@@ -11,9 +11,9 @@
 
 .popupTitle {
   //font-weight: bold;
-  font-size: 16px;
+  font-size: 1rem;
   letter-spacing: 0;
-  line-height: 20px;
+  line-height: 1.25rem;
   color: #252525;
   font-family: "IBM Plex Sans";
 //   display: flex;
@@ -31,19 +31,18 @@
 }
 .popupSubTitle {
   color: #252525;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.14px;
-  line-height: 18px;
-  margin-top: 32px;
+  font-size: 0.875rem;
+  letter-spacing: 0.01rem;
+  line-height: 1.125rem;
+  margin-top: 1.5rem;
 }
 
 .popupPanelDesc {
   color: #565151;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0;
-  line-height: 14px;
-  margin-top: "8px";
+  line-height: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .links {
