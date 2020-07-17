@@ -90,7 +90,42 @@ html, body {
 
         h2 {
             @include carbon--type-style('productive-heading-03');
-            margin-top: 3rem;
+            margin-top: 1rem;
+        }
+
+        .accordion {
+            margin-top: 1rem;
+            @media (min-width: 42rem) {
+                max-width: 75%;
+            }
+
+            .bx--dropdown__wrapper {
+                margin-top: 1.5rem;
+                @media (min-width: 42rem) {
+                    max-width: 100%;
+                }
+            }
+
+            
+            .accordionItem {
+                @media (min-width: 42rem) {
+                    max-width: 100%;
+                }
+            }
+
+            p {
+                @media (min-width: 42rem) {
+                    max-width: 100%;
+                }
+            }
+        }
+
+        .rulesetDate {
+            color: #262626;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            line-height: 1.375rem;
         }
 
         .buttonRow {

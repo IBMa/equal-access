@@ -17,7 +17,7 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import { Dropdown, Button, InlineNotification } from "carbon-components-react";
+import { Dropdown, Button, InlineNotification, Accordion, AccordionItem } from "carbon-components-react";
 
 import { Restart16, Save16 } from "@carbon/icons-react";
 import OptionMessaging from "../util/optionMessaging";
@@ -136,6 +136,22 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
+  getRuleSetDate = (selected_archive : any)=> {
+
+    if(selected_archive == null){
+        return null;
+    }
+
+    var archiveId = selected_archive.id;
+    if(archiveId == 'latest'){
+        return selected_archive.name;
+    } else if (archiveId == 'preview') {
+        return selected_archive.name;
+    } else {
+        return selected_archive.name.substring(0, 11);
+    }
+  }
+
   render() {
     let {
       archives,
@@ -146,6 +162,9 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     } = {
       ...this.state,
     };
+
+    var rulesetDate = this.getRuleSetDate(selected_archive);
+
     const manifest = chrome.runtime.getManifest();
     if (archives && rulesets) {
       return (
@@ -178,49 +197,56 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               <main aria-labelledby="options">
                 <h1 id="options">IBM Accessibility Checker options</h1>
 
-                <h2>Rule set versions </h2>
+                <div style={{marginLeft: "0.6875rem"}}>
+                <div className="rulesetDate"  style={{marginTop: "1rem"}}>Rule set date: {rulesetDate}</div>
 
-                <p>
-                  Choose to always use the latest version of the rule sets, use
-                  the version from a specific date, or try a preview of future
-                  rule sets. By default the latest rule set version is selected.
-                </p>
+                <Accordion  align="start"  className="accordion">
+                    <AccordionItem
+                        title="Select a different date"
+                        open={false} 
+                        iconDescription="expendo icon"
+                        className="accordion_item">
+                        <p>
+                        Choose to always use the latest version of the rule sets, use
+                        the version from a specific date, or try a preview of future
+                        rule sets. By default the latest rule set version is selected.
+                        </p>
 
+                        <Dropdown
+                            ariaLabel={undefined}
+                            disabled={false}
+                            helperText="Rule set deployment"
+                            id="archivedRuleset"
+                            items={archives}
+                            itemToString={(item: any) => (item ? item["name"] : "")}
+                            label="Rule set deployment selection"
+                            light={false}
+                            titleText=""
+                            type="default"
+                            selectedItem={selected_archive}
+                            onChange={this.handleArchiveSelect}
+                        />
+                        <p className="op_helper-text">
+                        For details on rule set changes between deployments, see{" "}
+                        <a
+                            href="https://github.com/IBMa/equal-access/releases"
+                            target="_blank"
+                            rel="noopener noreferred"
+                        >
+                            Release notes
+                        </a>
+                        .
+                        </p>
+                    </AccordionItem>
+                </Accordion>
+                </div>
+
+
+                <h2 style={{marginTop:'2rem'}}>Supported accessibility standards</h2>
                 <Dropdown
                   ariaLabel={undefined}
                   disabled={false}
-                  helperText="Rule set deployment"
-                  id="archivedRuleset"
-                  items={archives}
-                  itemToString={(item: any) => (item ? item["name"] : "")}
-                  label="Rule set deployment selection"
-                  light={false}
-                  titleText=""
-                  type="default"
-                  selectedItem={selected_archive}
-                  onChange={this.handleArchiveSelect}
-                />
-                <p className="op_helper-text">
-                  For details on rule set changes between deployments, see{" "}
-                  <a
-                    href="https://github.com/IBMa/equal-access/releases"
-                    target="_blank"
-                    rel="noopener noreferred"
-                  >
-                    Release notes
-                  </a>
-                  .
-                </p>
-                <h2>Supported rule sets</h2>
-                <p>
-                  Choose which rule set to use. This will affect the issues
-                  detected.
-                </p>
-
-                <Dropdown
-                  ariaLabel={undefined}
-                  disabled={false}
-                  helperText="Select rule set"
+                  helperText="Select a standard"
                   id="rulesetSelection"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}
