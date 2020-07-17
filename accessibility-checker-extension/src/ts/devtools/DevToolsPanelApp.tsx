@@ -47,7 +47,8 @@ interface IPanelState {
     selectedCheckpoint? : ICheckpoint,
     learnMore : boolean,
     learnItem : IReportItem | null,
-    showIssueTypeFilter: boolean[]
+    showIssueTypeFilter: boolean[],
+    scanning: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -62,7 +63,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         rulesets: null,
         learnMore: false,
         learnItem: null,
-        showIssueTypeFilter: [true, false, false, false]
+        showIssueTypeFilter: [true, false, false, false],
+        scanning: false
     }
     
     ignoreNext = false;
@@ -127,7 +129,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-
         // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
         // and get url using chrome.tabs.get via message "TAB_INFO"
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
@@ -145,9 +146,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                 });
                 PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+                
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, tabId: tab.id,  tabTitle: tab.title });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, tabId: tab.id, tabTitle: tab.title });
+            
         }
     }
 
@@ -157,7 +160,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // componentDidMount is not done initializing yet
             setTimeout(this.startScan.bind(this), 100);
         } else {
-            this.setState({ numScanning: this.state.numScanning + 1 });
+            this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
             await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
         }
     }
@@ -190,6 +193,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 selectedItem: undefined
             });
         }
+        this.setState({ scanning: false});
         return true;
     }
 
@@ -380,6 +384,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
+                            scanning={this.state.scanning}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
                             <div role="region" aria-label="issue list"  className="issueList">
@@ -425,6 +430,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     collapseAll={this.collapseAll.bind(this)}
                     showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                     dataFromParent = {this.state.showIssueTypeFilter}
+                    scanning={this.state.scanning}
                     />
                 <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
                     <div role="region" aria-label="issue list"  className="issueList">
@@ -436,7 +442,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             getItem = {this.getItem.bind(this)} 
                             learnItem={this.state.learnItem}
                             layout = {this.props.layout}
-                            selectedTab="checklist"
+                            selectedTab="element"
                             tabs={["checklist", "element", "rule"]}
                             dataFromParent = {this.state.showIssueTypeFilter} 
                             />}
