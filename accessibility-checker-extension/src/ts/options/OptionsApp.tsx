@@ -17,7 +17,13 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
-import { Dropdown, Button, InlineNotification, Accordion, AccordionItem } from "carbon-components-react";
+import {
+  Dropdown,
+  Button,
+  InlineNotification,
+  Accordion,
+  AccordionItem
+} from "carbon-components-react";
 
 import { Restart16, Save16 } from "@carbon/icons-react";
 import OptionMessaging from "../util/optionMessaging";
@@ -136,21 +142,20 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
-  getRuleSetDate = (selected_archive : any)=> {
-
-    if(selected_archive == null){
-        return null;
+  getRuleSetDate = (selected_archive: any) => {
+    if (selected_archive == null) {
+      return null;
     }
 
     var archiveId = selected_archive.id;
-    if(archiveId == 'latest'){
-        return selected_archive.name;
-    } else if (archiveId == 'preview') {
-        return selected_archive.name;
+    if (archiveId == "latest") {
+      return selected_archive.name;
+    } else if (archiveId == "preview") {
+      return selected_archive.name;
     } else {
-        return selected_archive.name.substring(0, 11);
+      return selected_archive.name.substring(0, 11);
     }
-  }
+  };
 
   render() {
     let {
@@ -179,7 +184,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   <br /> Accessibility Checker
                 </h2>
               </div>
-              <aside aria-label = "About Accessibility Checker Options">
+              <aside aria-label="About Accessibility Checker Options">
                 <div className="op_version" style={{ marginTop: "8px" }}>
                   Version {manifest.version}
                 </div>
@@ -197,52 +202,57 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               <main aria-labelledby="options">
                 <h1 id="options">IBM Accessibility Checker options</h1>
 
-                <div style={{marginLeft: "0.6875rem"}}>
-                <div className="rulesetDate"  style={{marginTop: "1rem"}}>Rule set date: {rulesetDate}</div>
+                <div style={{ marginLeft: "0.6875rem" }}>
+                  <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                    Rule set date: {rulesetDate}
+                  </div>
 
-                <Accordion  align="start"  className="accordion">
+                  <Accordion align="start" className="accordion">
                     <AccordionItem
-                        title="Select a different date"
-                        open={false} 
-                        iconDescription="expendo icon"
-                        className="accordion_item">
-                        <p>
-                        Choose to always use the latest version of the rule sets, use
-                        the version from a specific date, or try a preview of future
-                        rule sets. By default the latest rule set version is selected.
-                        </p>
+                      title="Select a different date"
+                      open={false}
+                      iconDescription="expendo icon"
+                      className="accordion_item"
+                    >
+                      <p>
+                        Choose to always use the latest version of the rule
+                        sets, use the version from a specific date, or try a
+                        preview of future rule sets. By default the latest rule
+                        set version is selected.
+                      </p>
 
-                        <Dropdown
-                            ariaLabel={undefined}
-                            disabled={false}
-                            helperText="Rule set deployment"
-                            id="archivedRuleset"
-                            items={archives}
-                            itemToString={(item: any) => (item ? item["name"] : "")}
-                            label="Rule set deployment selection"
-                            light={false}
-                            titleText=""
-                            type="default"
-                            selectedItem={selected_archive}
-                            onChange={this.handleArchiveSelect}
-                        />
-                        <p className="op_helper-text">
+                      <Dropdown
+                        ariaLabel={undefined}
+                        disabled={false}
+                        helperText="Rule set deployment"
+                        id="archivedRuleset"
+                        items={archives}
+                        itemToString={(item: any) => (item ? item["name"] : "")}
+                        label="Rule set deployment selection"
+                        light={false}
+                        titleText=""
+                        type="default"
+                        selectedItem={selected_archive}
+                        onChange={this.handleArchiveSelect}
+                      />
+                      <p className="op_helper-text">
                         For details on rule set changes between deployments, see{" "}
                         <a
-                            href="https://github.com/IBMa/equal-access/releases"
-                            target="_blank"
-                            rel="noopener noreferred"
+                          href="https://github.com/IBMa/equal-access/releases"
+                          target="_blank"
+                          rel="noopener noreferred"
                         >
-                            Release notes
+                          Release notes
                         </a>
                         .
-                        </p>
+                      </p>
                     </AccordionItem>
-                </Accordion>
+                  </Accordion>
                 </div>
 
-
-                <h2 style={{marginTop:'2rem'}}>Supported accessibility standards</h2>
+                <h2 style={{ marginTop: "2rem" }}>
+                  Supported accessibility standards
+                </h2>
                 <Dropdown
                   ariaLabel={undefined}
                   disabled={false}
