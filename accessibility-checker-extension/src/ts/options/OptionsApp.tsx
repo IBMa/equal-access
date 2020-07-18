@@ -142,18 +142,21 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
-  getRuleSetDate = (selected_archive: any) => {
+  getRuleSetDate = (selected_archive: any, archives: any) => {
     if (selected_archive == null) {
       return null;
     }
 
     var archiveId = selected_archive.id;
     if (archiveId == "latest") {
-      return selected_archive.name;
+      var latestArchive = archives.find((archive: any) => {
+        return archive.latest == true;
+      });
+      return latestArchive.name.substring(0, 12) + " - Latest Archive";
     } else if (archiveId == "preview") {
       return selected_archive.name;
     } else {
-      return selected_archive.name.substring(0, 11);
+      return selected_archive.name.substring(0, 12);
     }
   };
 
@@ -168,7 +171,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       ...this.state,
     };
 
-    var rulesetDate = this.getRuleSetDate(selected_archive);
+    var rulesetDate = this.getRuleSetDate(selected_archive, archives);
 
     const manifest = chrome.runtime.getManifest();
     if (archives && rulesets) {
