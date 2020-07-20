@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import React from "react";
-import BrowserDetection from "../util/browserDetection "
+import BrowserDetection from "../util/browserDetection";
 import "../styles/popup.scss";
 
 const purple_bee = "/assets/Bee_Logo@64px.png";
