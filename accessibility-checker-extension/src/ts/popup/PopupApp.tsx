@@ -19,10 +19,10 @@ import React from "react";
 import "../styles/popup.scss";
 
 const purple_bee = "/assets/Bee_Logo@64px.png";
-const checker_chrome = "/assets/img/chromeChecker.jpeg";
-const checker_firefox = "/assets/img/firefoxChecker.jpeg";
-const assessment_chrome = "/assets/img/chromeAssessment.jpeg";
-const assessment_firefox = "/assets/img/firefoxAssessment.jpeg";
+const checker_chrome = "/assets/img/Chrome_Checker.png";
+const checker_firefox = "/assets/img/Firefox_Checker.png";
+const assessment_chrome = "/assets/img/Chrome_Assessment.png";
+const assessment_firefox = "/assets/img/Firefox_Assessment.png";
 
 export default class PopupApp extends React.Component {
   isChrome = () => {
@@ -74,37 +74,37 @@ export default class PopupApp extends React.Component {
           </div>
         </div>
 
-        <div className="popupSubTitle">Accessibility Assessment</div>
+        <h2 className="popupSubTitle">Accessibility Assessment</h2>
 
         <div className="popupPanelDesc" style={{ width: "406px" }}>
           A comprehensive accessibility assessment tool. Start using by
           navigating to the “Accessibility Assessment” panel in Dev Tools.
         </div>
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "8px" }}>
           <img
             src={assessment_screen_copy}
-            width="542px"
-            height="182px"
+            width="446px"
+            height="149px"
             alt="Chrome Accessibility Assessment panel icon"
           />
         </div>
-        <div className="popupSubTitle" style={{ marginTop: "17px" }}>
+        <h2 className="popupSubTitle" style={{ marginTop: "17px" }}>
           Accessibility Checker
-        </div>
+        </h2>
         <div className="popupPanelDesc" style={{ width: "406px" }}>
           A code scanner for developers looking to find and fix errors quickly.
           Start using by navigating to the “Accessibility Checker” panel in Dev
           Tools.
         </div>
-        <div style={{ marginTop: "10px" }}>
+        <div style={{ marginTop: "8px" }}>
           <img
             src={checker_screen_copy}
-            width="542px"
-            height="182px"
+            width="446px"
+            height="149px"
             alt="Chrome Accessibility Assessment panel icon"
           />
         </div>
-        <div style={{ marginTop: "12px", display: "flex", fontSize: "14px" }}>
+        <div style={{ marginTop: "8px", display: "flex", fontSize: "14px" }}>
           <div>
             <a
               href={chrome.runtime.getURL("options.html")}
