@@ -34,9 +34,10 @@ interface IReportElementsProps {
 }
 
 interface IGroup {
-    title: string,
-    counts: { [key: string]: number }
-    items: IReportItem[]
+    title: string,  // aria path for the element role row
+    counts: { [key: string]: number }   // number of Violations, Needs Review, Recommendations 
+                                        // associated with the element role
+    items: IReportItem[]    // issue rows associated with the element role
 };
 
 export default class ReportElements extends React.Component<IReportElementsProps, IReportElementsState> {
@@ -45,7 +46,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
     
     render() {
         let itemIdx = 0;
-        let groups : IGroup[] = []
+        let groups : IGroup[] = []   
         let groupMap : {
             [key: string]: IGroup
         } | null = {};
@@ -70,9 +71,21 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
         }
 
-        // this.props.report.sort((a,b) => {
-        //     return a.path.aria.localeCompare(b.path.aria);
-        // })
+        // to sort issue according to type in order Violations, Needs Review, Recommendations
+        // need to sort the items according to their value
+        const valPriority = ["Violation", "Needs review", "Recommendation"]
+        let groupVals = [];
+        groups.map(group => {
+            groupVals.length = 0;
+            group.items.sort( function(a,b) {
+                let aVal = valueMap[a.value[0]][a.value[1]] || a.value[0] + "_" + a.value[1];
+                let bVal = valueMap[b.value[0]][b.value[1]] || b.value[0] + "_" + b.value[1]
+                let aIndex = valPriority.indexOf(aVal);
+                let bIndex = valPriority.indexOf(bVal);
+                return aIndex - bIndex;
+            })
+        })
+        
         let idx=0;
         let scrollFirst = true;
         return <div className="bx--grid report" role="table" aria-label="Issues grouped by element role">
