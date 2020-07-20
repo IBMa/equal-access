@@ -72,7 +72,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         }
 
         // to sort issue according to type in order Violations, Needs Review, Recommendations
-        // need to sort the items according to their value
+        // within each group need to sort the items according to their value
         const valPriority = ["Violation", "Needs review", "Recommendation"]
         let groupVals = [];
         groups.map(group => {
