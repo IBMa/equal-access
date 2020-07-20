@@ -1,6 +1,10 @@
 .popupPanel {
   width: 500px;
-  margin: 26px;
+//   margin-left: 26px;
+//   margin-right: 26px;
+//   margin-top: 26px;
+//   margin-bottom: 24px;
+    margin: 26px 26px 24px 26px
 }
 
 .popupPanel a {
@@ -14,7 +18,7 @@
   line-height: 1.25rem;
   color: #252525;
   font-family: "IBM Plex Sans";
-  padding-top: 10px;
+  padding-top: 8px;
 }
 
 .versionDec {
