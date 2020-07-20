@@ -15,7 +15,7 @@
   *****************************************************************************/
 
 import React from "react";
-
+import BrowserDetection from "../util/browserDetection "
 import "../styles/popup.scss";
 
 const purple_bee = "/assets/Bee_Logo@64px.png";
@@ -25,25 +25,14 @@ const assessment_chrome = "/assets/img/Chrome_Assessment.png";
 const assessment_firefox = "/assets/img/Firefox_Assessment.png";
 
 export default class PopupApp extends React.Component {
-  isChrome = () => {
-    return !this.isFirefrox();
-  };
-
-  isFirefrox = () => {
-    if ("InstallTrigger" in window) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   render() {
     const manifest = chrome.runtime.getManifest();
 
-    const checker_screen_copy = this.isChrome()
+    const checker_screen_copy = BrowserDetection.isChrome()
       ? checker_chrome
       : checker_firefox;
-    const assessment_screen_copy = this.isChrome()
+    const assessment_screen_copy = BrowserDetection.isChrome()
       ? assessment_chrome
       : assessment_firefox;
 
