@@ -15,6 +15,7 @@
   *****************************************************************************/
 
 import React from "react";
+import BrowserDetection from "../util/browserDetection";
 
 const splashScreen = "/assets/splash_screen.svg";
 
@@ -37,8 +38,8 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
                             <div className="version">Version {manifest.version}</div>
                         </h2>
                         <div className="description">
-                            This extension helps you identify accessibility issues, offers tips on how to fix them,
-                            and flags items that need further review.<br /><br />
+                            This extension helps you identify accessibility issues and understand how to fix them. Use the <span style={{ fontWeight: 600 }}>'Accessibility Checker' tab in 
+                            the {BrowserDetection.isChrome()?"Elements":"Inspector" } panel</span> to locate your issues in the code and on the page.<br /><br />
                             These automated tests don't catch all issues. Complete your accessibility assessment with
                             a <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick unit test for accessibility</a><span> </span>
                             or follow the <a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">full accessibility test process</a>.<br /><br />

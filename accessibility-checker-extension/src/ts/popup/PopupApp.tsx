@@ -15,29 +15,45 @@
   *****************************************************************************/
 
 import React from "react";
+import BrowserDetection from "../util/browserDetection";
+import "../styles/popup.scss";
 
-// import { Button } from "carbon-components-react";
-import "./popup.scss";
 const purple_bee = "/assets/Bee_Logo@64px.png";
+const checker_chrome = "/assets/img/Chrome_Checker.png";
+const checker_firefox = "/assets/img/Firefox_Checker.png";
+const assessment_chrome = "/assets/img/Chrome_Assessment.png";
+const assessment_firefox = "/assets/img/Firefox_Assessment.png";
 
 export default class PopupApp extends React.Component {
 
   render() {
     const manifest = chrome.runtime.getManifest();
+
+    const checker_screen_copy = BrowserDetection.isChrome()
+      ? checker_chrome
+      : checker_firefox;
+    const assessment_screen_copy = BrowserDetection.isChrome()
+      ? assessment_chrome
+      : assessment_firefox;
+
     return (
       <div className="popupPanel">
         <div style={{ display: "flex", flexWrap: "nowrap" }}>
           <div>
             <div className="popupTitle">
-              IBM <strong>Accessibility</strong>
-              <br />
-              Equal Access Toolkit:
+              IBM <strong>Equal Access</strong>
               <br />
               Accessibility Checker
             </div>
             <div className="versionDec">Version {manifest.version}</div>
           </div>
-          <div style={{ marginLeft: "32px", marginTop: "10px" }}>
+          <div
+            style={{
+              float: "right",
+              marginTop: "0.625rem",
+              marginLeft: "auto",
+            }}
+          >
             <img
               src={purple_bee}
               width="36px"
@@ -47,24 +63,38 @@ export default class PopupApp extends React.Component {
           </div>
         </div>
 
-        <div className="popupSubTitle">Accessibility Assessment</div>
+        <h2 className="popupSubTitle">Accessibility Assessment</h2>
 
-        <div className="popupPanelDesc" style={{ width: "182px" }}>
+        <div className="popupPanelDesc" style={{ width: "406px" }}>
           A comprehensive accessibility assessment tool. Start using by
-          navigating to the “Accessibility Assessment” tab in Dev Tools.
+          navigating to the “Accessibility Assessment” panel in Dev Tools.
         </div>
-
-        <div className="popupSubTitle" style={{ marginTop: "17px" }}>
+        <div style={{ marginTop: "8px" }}>
+          <img
+            src={assessment_screen_copy}
+            width="446px"
+            height="149px"
+            alt="Chrome Accessibility Assessment panel icon"
+          />
+        </div>
+        <h2 className="popupSubTitle" style={{ marginTop: "17px" }}>
           Accessibility Checker
-        </div>
-        <div className="popupPanelDesc" style={{ width: "173px" }}>
+        </h2>
+        <div className="popupPanelDesc" style={{ width: "406px" }}>
           A code scanner for developers looking to find and fix errors quickly.
-          Start using by navigating to the “Accessibility Checker” tab in Dev
+          Start using by navigating to the “Accessibility Checker” panel in Dev
           Tools.
         </div>
-
-        <div style={{ marginTop: "32px", display: "flex", fontSize: "14px" }}>
-          <div style={{ flexGrow: 1 }}>
+        <div style={{ marginTop: "8px" }}>
+          <img
+            src={checker_screen_copy}
+            width="446px"
+            height="149px"
+            alt="Chrome Accessibility Assessment panel icon"
+          />
+        </div>
+        <div style={{ marginTop: "8px", display: "flex", fontSize: "14px" }}>
+          <div>
             <a
               href={chrome.runtime.getURL("options.html")}
               target="_blank"
@@ -74,7 +104,7 @@ export default class PopupApp extends React.Component {
             </a>
           </div>
 
-          <div style={{ flexGrow: 1 }}>
+          <div style={{ marginLeft: "2rem" }}>
             <a
               href="https://github.com/IBMa/equal-access"
               target="_blank"
@@ -83,7 +113,7 @@ export default class PopupApp extends React.Component {
               Git Repo
             </a>
           </div>
-          <div style={{ flexGrow: 1 }}>
+          <div style={{ marginLeft: "2rem" }}>
             <a
               href={chrome.runtime.getURL("usingAC.html")}
               target="_blank"
