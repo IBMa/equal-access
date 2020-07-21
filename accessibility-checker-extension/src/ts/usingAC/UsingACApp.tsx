@@ -334,7 +334,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               <img
                 src="assets/img/options.png"
-                alt="Options page screenshot - a page where you can select a Rule set depolyment and a Rule set for your checker to use."
+                alt="Options page screenshot - a page where you can select a Rule set deployment and a Rule set for your checker to use."
                 width="100%"
                 height="100%"
               />
@@ -422,6 +422,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
+              <strong>Note</strong>On rare occasions the Accessibility checker extension does not show up in the developer tools for some non standard sites. The work around is to use a standard site, launch the checker in the developer tools and then load the non standard site.
             </p>
 
             <h3 id="a11y_check">6.1 Accessibility Checker</h3>
