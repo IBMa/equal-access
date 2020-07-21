@@ -91,7 +91,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             </div>
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2">
-                    <Button onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                    <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative" }}>
                     <div className="headerTools" >
