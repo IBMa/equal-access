@@ -83,13 +83,13 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
 
         // to sort issue according to type in order Violations, Needs Review, Recommendations
         // within each group need to sort the items according to their value
-        const valPriority = ["Violation", "Needs review", "Recommendation"]
+        const valPriority = ["Violation", "Needs review", "Recommendation"];
         let groupVals = [];
         groups.map(group => {
             groupVals.length = 0;
             group.items.sort( function(a,b) {
                 let aVal = valueMap[a.value[0]][a.value[1]] || a.value[0] + "_" + a.value[1];
-                let bVal = valueMap[b.value[0]][b.value[1]] || b.value[0] + "_" + b.value[1]
+                let bVal = valueMap[b.value[0]][b.value[1]] || b.value[0] + "_" + b.value[1];
                 let aIndex = valPriority.indexOf(aVal);
                 let bIndex = valPriority.indexOf(bVal);
                 return aIndex - bIndex;
