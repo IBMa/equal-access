@@ -48,7 +48,7 @@ interface IPanelState {
     learnMore : boolean,
     learnItem : IReportItem | null,
     showIssueTypeFilter: boolean[],
-    scanning: boolean
+    scanning: boolean   // true when scan taking place
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
