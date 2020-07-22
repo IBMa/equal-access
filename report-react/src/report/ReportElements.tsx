@@ -66,7 +66,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         // this.props.report.sort((a,b) => {
         //     return a.path.aria.localeCompare(b.path.aria);
         // })
-        return <div className="bx--grid report">
+        return <div className="bx--grid report" role="rowgroup">
             <div className="bx--row reportHeader">
                 <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
                     <div className="label" style={{marginLeft:"2rem"}}>Issues</div>
