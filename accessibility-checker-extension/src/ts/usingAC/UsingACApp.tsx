@@ -114,6 +114,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         6.3 Hidden content scanning
                       </a>
                     </li>
+                    <li>
+                      <a href="#scan_local_files" title="Scan local files">
+                        6.4 Scanning local files
+                      </a>
+                    </li>
                   </ul>
                 </li>
                 <li>
@@ -900,6 +905,28 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               tests trigger the display of hidden content so that the
               Accessibility Checker can validate the content that is displayed.
             </p>
+            
+            <h3 id="scan_local_files">6.4 Scan local files</h3>
+            <div className="pa">
+              Follow the steps below to allow scanning of local .html or .htm files:
+              <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>Open the Chrome browser.</li>
+                <li>
+                  Select <strong>'Window'</strong> from the browser menu.
+                </li>
+                <li>
+                  Select <strong>'Extensions'</strong> menu option to see all installed extensions.
+                </li>
+                <li>
+                  Select <strong>'Details'</strong> button of the IBM Equal Access Accessibility Checker Extension.
+                </li>
+                <li>
+                  Scroll down to <strong>'Allow access to file URLs'</strong> and press the selection button to on.
+                </li>
+              </ol>
+            </div>
 
             <h2 id="the_report">7. Accessibility Checker report</h2>
             <p>
