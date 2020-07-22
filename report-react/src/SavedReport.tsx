@@ -156,7 +156,6 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 <ModalBody aria-label="This modal has scrolling content">
                     {this.state.selectedItem && <HelpSwitcher report={this.props.reportData.report} item={this.state.selectedItem} />}
                 </ModalBody>
-                {/* <ModalFooter {...footerProps} /> */}
             </ComposedModal>
         </div>
     }
