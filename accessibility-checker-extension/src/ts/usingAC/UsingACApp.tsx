@@ -427,7 +427,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
-              <strong>Note</strong>: On rare occasions the Accessibility Checker extension does not appear in the developer tools for some non-standard sites. The workaround is to go to a standard site, launch the checker in the developer tools and then load the non standard site in the same browser tab.
+              <strong>Note</strong>: On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site that you know the checker launches, launch the checker in the developer tools and then load the site that did not launch, in the same browser tab.
             </p>
 
             <h3 id="a11y_check">6.1 Accessibility Checker</h3>
