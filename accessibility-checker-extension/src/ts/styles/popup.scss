@@ -1,0 +1,54 @@
+.popupPanel {
+  width: 500px;
+//   margin-left: 26px;
+//   margin-right: 26px;
+//   margin-top: 26px;
+//   margin-bottom: 24px;
+    margin: 26px 26px 24px 26px
+}
+
+.popupPanel a {
+  color: #0062ff;
+  text-decoration: none;
+}
+
+.popupTitle {
+  font-size: 1rem;
+  letter-spacing: 0;
+  line-height: 1.25rem;
+  color: #252525;
+  font-family: "IBM Plex Sans";
+  padding-top: 8px;
+}
+
+.versionDec {
+  color: #3c3838;
+  font-family: "IBM Plex Sans";
+  font-size: 11px;
+  letter-spacing: 0.13px;
+  line-height: 18px;
+  margin-top: 3px;
+}
+
+.popupSubTitle {
+  color: #252525;
+  font-size: 0.875rem;
+  letter-spacing: 0.01rem;
+  line-height: 1.125rem;
+  margin-top: 1rem;
+}
+
+.popupPanelDesc {
+  color: #565151;
+  font-size: 0.6875rem;
+  letter-spacing: 0;
+  line-height: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.links {
+  color: #0062ff;
+  font-size: 14px;
+  letter-spacing: 0.16px;
+  line-height: 18px;
+}
