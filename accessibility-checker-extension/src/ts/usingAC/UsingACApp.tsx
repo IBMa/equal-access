@@ -923,7 +923,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   Select <strong>'Details'</strong> button of the IBM Equal Access Accessibility Checker Extension.
                 </li>
                 <li>
-                  Scroll down to <strong>'Allow access to file URLs'</strong> and press the selection button to on.
+                  Scroll down to <strong>'Allow access to file URLs'</strong> and turn this option on.
                 </li>
               </ol>
             </div>
