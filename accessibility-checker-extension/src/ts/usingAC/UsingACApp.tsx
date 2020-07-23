@@ -914,7 +914,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               >
                 <li>Open the Chrome browser.</li>
                 <li>
-                  Select <strong>'Window'</strong> from the browser menu.
+                  Open the <strong>'Window'</strong> menu.
                 </li>
                 <li>
                   Select the <strong>'Extensions'</strong> menu option to see all installed extensions.
