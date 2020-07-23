@@ -908,7 +908,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             
             <h3 id="scan_local_files">6.4 Scan local files</h3>
             <div className="pa">
-              Follow the steps below to allow scanning of local .html or .htm files:
+              The Accessibility checker is able to scan local .html or .htm files launched in the Firefox browser by default.
+              Follow the steps below to allow scanning of local .html or .htm files in the Chrome browser:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
