@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 import React from "react";
 
 import {
@@ -31,10 +31,10 @@ interface IReportRulesProps {
 
 export default class ReportRules extends React.Component<IReportRulesProps, IReportRulesState> {
     state: IReportRulesState = {};
-    
+
     render() {
-        // let itemIdx = 0;
-        let groupMap : {
+
+        let groupMap: {
             [key: string]: {
                 title: string,
                 counts: { [key: string]: number }
@@ -45,7 +45,6 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             if (item.value[1] === "PASS") {
                 continue;
             }
-            // item.itemIdx = itemIdx++;
 
             if (!(item.ruleId in groupMap)) {
                 groupMap[item.ruleId] = {
@@ -65,13 +64,11 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         for (const ruleId in groupMap) {
             groups.push(groupMap[ruleId]);
         }
-        // this.props.report.sort((a,b) => {
-        //     return a.path.aria.localeCompare(b.path.aria);
-        // })
-        return <div className="bx--grid report">
+
+        return <div className="bx--grid report" role="rowgroup">
             <div className="bx--row reportHeader">
                 <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
-                    <div className="label" style={{marginLeft:"2rem"}}>Issues</div>
+                    <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </div>
                 <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
                     <div className="label">Rule</div>

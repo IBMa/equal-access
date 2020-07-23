@@ -83,11 +83,11 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
                     <div>
                         This report summarizes automated tests. You have to perform additional manual 
                         tests to complete accessibility assessments. Use 
-                        the <a href="https://ibm.com/able/toolkit" target="_blank" rel="noopener noreferrer">IBM Equal Access Toolkit</a> to guide you.
+                        the <a href="https://ibm.com/able/toolkit" target="_blank" rel="noopener noreferrer" style={{color:'#002D9C'}}>IBM Equal Access Toolkit</a> to guide you.
                     </div>
                     <div>More resources:</div>
-                    <div><a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">Quick unit test for accessibility</a></div>
-                    <div><a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">Full accessibility test process</a></div>
+                    <div><a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank" style={{color:'#002D9C'}}>Quick unit test for accessibility</a></div>
+                    <div><a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank" style={{color:'#002D9C'}}>Full accessibility test process</a></div>
                 </div>
             </div>
         </div>
