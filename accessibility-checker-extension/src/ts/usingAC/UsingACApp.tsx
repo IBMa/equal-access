@@ -917,7 +917,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   Select <strong>'Window'</strong> from the browser menu.
                 </li>
                 <li>
-                  Select <strong>'Extensions'</strong> menu option to see all installed extensions.
+                  Select the <strong>'Extensions'</strong> menu option to see all installed extensions.
                 </li>
                 <li>
                   Select <strong>'Details'</strong> button of the IBM Equal Access Accessibility Checker Extension.
