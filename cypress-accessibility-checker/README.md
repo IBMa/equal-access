@@ -4,7 +4,7 @@ Cypress plugin for Accessibility Testing
 
 ## Bugs and Issues
 
-All bugs or issues related to the karma-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+All bugs or issues related to the cypress-accessibility-checker code can be created in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
 
 ## Requirements
 
