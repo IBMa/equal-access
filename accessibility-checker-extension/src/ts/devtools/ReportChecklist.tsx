@@ -99,7 +99,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" aria-label="Issues grouped by checkpoint">
+        return <div className="bx--grid report" role="table" style={{paddingLeft:"0"}} aria-label="Issues grouped by checkpoint">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
