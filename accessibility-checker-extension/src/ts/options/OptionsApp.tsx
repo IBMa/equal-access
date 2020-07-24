@@ -193,10 +193,8 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
-                  correspond to the most recent WCAG standards, and these rules
-                  are updated regularly. If you need to test against a specific
-                  rule set version, use these options to select the archived
-                  rule set by date of deployment and standard used.
+                  correspond to the most recent WCAG standards plus some additional IBM requirements. Rule sets for specific WCAG versions are also available. The rule sets 
+                  are updated regularly, and each update has a date of deployment. If you need to replicate an earlier test, choose the deployment date of the original test.
                 </p>
               </aside>
             </div>
