@@ -88,7 +88,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" aria-label="Issues grouped by element role">
+        return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem"}} aria-label="Issues grouped by element role">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
