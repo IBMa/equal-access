@@ -97,7 +97,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-sm-2">
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
                     <div className="headerTools" >
                         <Button
                             disabled={!this.props.counts}

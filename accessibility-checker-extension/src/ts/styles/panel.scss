@@ -46,8 +46,8 @@ $feature-flags: (
     }
 
     .headerTools {
-        position: absolute;
-        right: .5rem;
+        // position: absolute;
+        // right: .5rem;
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
         }
