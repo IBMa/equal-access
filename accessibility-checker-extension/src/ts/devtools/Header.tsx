@@ -84,12 +84,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let violationFilterButtonAriaLabel = noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " ";
         violationFilterButtonAriaLabel += " Violations Filter show only violations";
 
-        let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
+        let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative" }}>
+                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>

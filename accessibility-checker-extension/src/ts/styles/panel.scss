@@ -38,8 +38,8 @@ $feature-flags: (
 
     .bee-logo {
         height: 2rem;
-        position: absolute;
-        right: 1rem;
+        // position: absolute;
+        // right: 1rem;
         @media only screen and (min-width: 42rem) {
             right: 0px;
         }
@@ -512,7 +512,7 @@ $feature-flags: (
         top: 1rem;
 
         .bx--grid {
-            padding: 0rem 1rem;
+            padding: 0rem 0rem;
         }
 
         .fixed-header .headerTools {
