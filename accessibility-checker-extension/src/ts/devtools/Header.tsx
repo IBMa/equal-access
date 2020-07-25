@@ -145,7 +145,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Button
                             disabled={!this.props.counts}
                             style={{paddingTop:"0px", paddingBottom:"0px"}}
-                            onClick={() => this.sendShowIssueTypeData("Violations")}
+                            onClick={() => this.sendShowIssueTypeData("NeedsReview")}
                             aria-pressed = {this.props.dataFromParent[2]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >

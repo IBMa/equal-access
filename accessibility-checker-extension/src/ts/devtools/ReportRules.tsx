@@ -85,7 +85,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
 
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem"}} aria-label="Issues grouped by rule">
+        return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by rule">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
