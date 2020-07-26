@@ -135,7 +135,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[1]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <img src={ViolationsFiltered}/>
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[1] ? <img src={ViolationsFiltered}/> : <Filter16/>)}    
                         </Button>
                     </span>
                 </div>
@@ -152,7 +152,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[2]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <img src={NeedsReviewFiltered}/>
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[2] ? <img src={NeedsReviewFiltered}/> : <Filter16/>)}
                         </Button>
                     </span>
                 </div>
@@ -169,7 +169,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[3]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <img src={RecommendationsFiltered}/>    
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[3] ? <img src={RecommendationsFiltered}/> : <Filter16/>)} 
                         </Button>
                     </span>
                 </div>
