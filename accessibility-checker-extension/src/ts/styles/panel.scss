@@ -104,13 +104,17 @@ $feature-flags: (
 
     .countRow{
         display: flex;
-        flex-wrap: wrap;
+        //flex-wrap: wrap;
     }
       
     .countItem {
         margin-bottom: 2px;
         text-align: left;
         flex-grow: 1;
+    }
+
+    filterViolationButtonColor {
+        fill: rebeccapurple
     }
 
     .summary {

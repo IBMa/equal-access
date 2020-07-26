@@ -29,6 +29,9 @@ import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 import { Filter16 } from '@carbon/icons-react';
+import ViolationsFiltered from "../../assets/ViolationsFiltered.svg";
+import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
+import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
 
 interface IHeaderState {}
 
@@ -132,7 +135,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[1]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <Filter16 className="my-custom-class" />
+                            <img src={ViolationsFiltered}/>
                         </Button>
                     </span>
                 </div>
@@ -149,7 +152,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[2]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <Filter16 className="my-custom-class" />
+                            <img src={NeedsReviewFiltered}/>
                         </Button>
                     </span>
                 </div>
@@ -166,7 +169,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             aria-pressed = {this.props.dataFromParent[3]}
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
                             >
-                            <Filter16 className="my-custom-class" />
+                            <img src={RecommendationsFiltered}/>    
                         </Button>
                     </span>
                 </div>
