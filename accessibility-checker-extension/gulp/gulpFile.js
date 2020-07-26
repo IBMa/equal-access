@@ -73,9 +73,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     }
 
     handleCodeCopy = (codeString: string) => {
-        //const str = this.props.item.snippet;
         const element = document.createElement("textarea");
-        //element.value = str;
         element.value = codeString;
         document.body.appendChild(element);
         element.select();
