@@ -4,7 +4,6 @@ var replace = require('gulp-replace');
 var ext_replace = require('gulp-ext-replace');
 
 const componentHeader = `import React, { ReactNode } from "react";
-//import ReactDOMServer from 'react-dom/server';
 import Markdown from 'markdown-to-jsx';
 import { IReportItem, IReport } from '../devtools/Report';
 import Violation16 from "../../assets/Violation16.svg";
@@ -100,11 +99,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         var snippet = '';
 
         if(children.length > 1){
-            
-            //children.forEach((element:any) => console.log('------', element.props.children[0]));
             children.forEach((element:any) => {snippet = snippet + element.props.children[0] + '\\n'});
-            //snippet = ReactDOMServer.renderToStaticMarkup(children);
-            //snippet = snippet.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"');
         } else  if(children.length = 1){
             snippet = children[0];
         }
