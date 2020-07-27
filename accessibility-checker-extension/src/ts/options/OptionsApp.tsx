@@ -36,6 +36,7 @@ interface OptionsAppState {
   rulesets: any;
   selected_ruleset: any;
   show_notif: boolean;
+  show_reset_notif: boolean;
 }
 
 class OptionsApp extends React.Component<{}, OptionsAppState> {
@@ -45,6 +46,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     rulesets: null,
     selected_ruleset: null,
     show_notif: false,
+    show_reset_notif: false
   };
 
   async componentDidMount() {
@@ -132,14 +134,21 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
   handleSave = () => {
     this.save_options_to_storage(this.state);
-    this.setState({ show_notif: true });
+    this.setState({ show_notif: true, show_reset_notif: false });
   };
 
   handlReset = () => {
-    var self = this;
-    chrome.storage.local.get("OPTIONS", async function (result: any) {
-      self.setState(result.OPTIONS);
-    });
+    //var self = this;
+    // chrome.storage.local.get("OPTIONS", async function (result: any) {
+    //   self.setState(result.OPTIONS);
+    // });
+
+    var selected_archive: any = this.getLatestArchive(this.state.archives);
+    var selected_ruleset: any = this.state.rulesets[0];
+
+    this.setState({ selected_archive, selected_ruleset, show_reset_notif: true, show_notif:false });
+    //this.save_options_to_storage(this.state);
+
   };
 
   getRuleSetDate = (selected_archive: any, archives: any) => {
@@ -157,7 +166,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       return latestArchive.name.substring(0, latestArchive.name.indexOf("Deployment")) + " - Latest Deployment";
 
     } else if (archiveId == "preview") {
-      return "To be determined";
+      return "Preview rules - to be determined";
     } else {
       return selected_archive.name.substring(0, selected_archive.name.indexOf("Deployment"));
     }
@@ -170,6 +179,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       rulesets,
       selected_ruleset,
       show_notif,
+      show_reset_notif
     } = {
       ...this.state,
     };
@@ -297,6 +307,24 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 ) : (
                   ""
                 )}
+                {show_reset_notif ? (
+                  <div className="notification">
+                    <InlineNotification
+                      role="alert"
+                      kind="warning"
+                      lowContrast={true}
+                      title="Warning"
+                      subtitle=" Click Save button to save your changes"
+                      className=""
+                      iconDescription="close notification"
+                      onCloseButtonClick={() => {
+                        this.setState({ show_reset_notif: false });
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
                 <div className="buttonRow">
                   <Button
                     disabled={false}
@@ -307,7 +335,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                     tabIndex={0}
                     type="button"
                   >
-                    Reset
+                    Reset to defaults
                   </Button>
                   <Button
                     disabled={false}
