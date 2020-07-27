@@ -154,7 +154,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       });
       return latestArchive.name.substring(0, 12) + " - Latest Archive";
     } else if (archiveId == "preview") {
-      return selected_archive.name;
+      return "To be determined";
     } else {
       return selected_archive.name.substring(0, 12);
     }
