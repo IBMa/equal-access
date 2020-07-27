@@ -44,7 +44,7 @@ let a11yRulesVideo: Rule[] = [
             if (passed) {
                 return RulePass("Pass_0");
             } else {
-                return RuleFail("Fail_1");
+                return RulePotential("Potential_1");
             }
         }
     },
