@@ -93,7 +93,18 @@ let a11yRulesInput: Rule[] = [
                     if (!passed) POF = 2 + textTypes.length + buttonTypes.indexOf(type);
                 }
             } else if (type == "buttonelem") {
-                passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext);
+                // If I am an image and I have alt text - accessibility-web-engine#269
+                let bAlt = false;
+                if (ruleContext.nodeName.toLowerCase() === "img" && ruleContext.hasAttribute("alt")) {
+                    let alt = ruleContext.getAttribute("alt");
+                    if (alt.trim().length == 0 && alt.length != 0) {
+                        bAlt = false;
+                    } else {
+                        bAlt = true;
+                    }
+                };
+                passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext) || bAlt;
+    
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
             }
 
