@@ -72,11 +72,20 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         return <div className="issueLevel">{icon}{val}</div>
     }
 
+    handleCodeCopy = (codeString: string) => {
+        const element = document.createElement("textarea");
+        element.value = codeString;
+        document.body.appendChild(element);
+        element.select();
+        document.execCommand("copy");
+        document.body.removeChild(element);
+      };
+
     ItemSnippet = () => {
         return <React.Fragment>
             <h3 id="element-location">Element location</h3>
             <div style={{margin: "1rem 0rem"}}>
-                <CodeSnippet type="single" light={true} >
+                <CodeSnippet type="single" light={true} onClick={() => this.handleCodeCopy(this.props.item.snippet)}>
                     {this.props.item.snippet}
                 </CodeSnippet>
             </div>
@@ -84,8 +93,17 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     }
 
     MyCodeSnippet = ({children, ...rest}: { children: any}) => {
+        
+        var snippet = '';
+
+        if(children.length > 1){
+            children.forEach((element:any) => {snippet = snippet + element.props.children[0] + '\\n'});
+        } else  if(children.length = 1){
+            snippet = children[0];
+        }
+
         return <div style={{margin: "1rem 0rem"}}>
-            <CodeSnippet {...rest} >
+            <CodeSnippet {...rest} onClick={() => this.handleCodeCopy(snippet)}>
                 {children}
             </CodeSnippet>
         </div>
