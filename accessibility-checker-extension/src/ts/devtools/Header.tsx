@@ -126,7 +126,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
                         <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span>
                     </span>
-                    {/* <Filter16 style={{verticalAlign:"middle"}} className="my-custom-class" /> */}
                     <span className="filterButtons">
                         <Button
                             disabled={!this.props.counts}
