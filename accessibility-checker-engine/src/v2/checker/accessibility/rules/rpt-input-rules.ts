@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
-import { RPTUtil } from "../util/legacy";
+import { RPTUtil, NodeWalker } from "../util/legacy";
 
 let a11yRulesInput: Rule[] = [
 
@@ -220,21 +220,20 @@ let a11yRulesInput: Rule[] = [
 
             // Get only the non-hidden labels for element
             let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
-
-            if (labelElem == null || !RPTUtil.hasInnerContentHidden(labelElem)) {
+            if (labelElem === null || !RPTUtil.hasInnerContentHidden(labelElem)) {
                 // Due to dependency, label must be done via title - this rule doesn't apply
                 return null;
             }
             let value = RPTUtil.compareNodeOrder(labelElem, ruleContext);
             let passed;
-            if (value == -2) {
+            if (value === -2) {
                 // input nested in label
                 passed = false;
-                let walkNode = ruleContext.nextSibling;
-                while (!passed && walkNode != null) {
-                    passed = ((walkNode.nodeName.toLowerCase() == "#text" && walkNode.nodeValue.trim().length > 0)
-                        || (walkNode.nodeName.toLowerCase() == "span" && walkNode.textContent.trim().length > 0));
-                    walkNode = walkNode.nextSibling;
+                let walkNode = new NodeWalker(labelElem);
+                walkNode.node = ruleContext;
+                while (!passed && walkNode.nextNode()) {
+                    passed = ((walkNode.node.nodeName.toLowerCase() === "#text" && walkNode.node.nodeValue.trim().length > 0)
+                        || (walkNode.node.nodeName.toLowerCase() === "span" && walkNode.node.textContent.trim().length > 0));
                 }
                 if (!passed) {
                     // Input nested in label and text before input
