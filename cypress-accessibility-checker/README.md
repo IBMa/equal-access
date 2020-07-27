@@ -46,7 +46,7 @@ import 'cypress-accessibility-checker';
 ```
 
 ## Usage
-The usage of the commands maps directly to the description of the API located [https://github.com/IBMa/equal-access/blob/master/accessibility-checker/README.md](in this readme).  The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
+The usage of the commands maps directly to the description of the API located [in this readme](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/README.md).  The names of the APIs within Cypress are just slightly different so they are globally unique in the Cypress namespace.
 
 - `cy.getA11yCompliance(content: string, label)`
 - `cy.getA11yComplianceOfDocument(label)`
