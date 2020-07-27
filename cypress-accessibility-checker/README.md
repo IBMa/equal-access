@@ -60,8 +60,10 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
 
 - `cy.getA11yCompliance(content: string, label)`
   - `content` must only be a string of HTML.  Due to the nature of how the plugin works, only string version of HTML is supported.
+  - Returned data ([defined here](https://www.npmjs.com/package/accessibility-checker#async-acheckergetcompliance-content--label--string)) will only contain the `report` object.
 - `cy.getA11yComplianceOfDocument(label)`
   - Similar to `getCompliance()` in the reference API above, however it will automatically pass in the document.
+  - Returned data ([defined here](https://www.npmjs.com/package/accessibility-checker#async-acheckergetcompliance-content--label--string)) will only contain the `report` object.
 - `cy.assertA11yCompliance(shouldFail?: boolean)`
   - If `shouldFail` is set to false, this will not fail your test.  This is useful for testing what needs to be fixed without failing the test.
 - `cy.getA11yDiffResults(label)`
