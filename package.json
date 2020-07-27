@@ -4,8 +4,21 @@
     "description": "IBM accessibility tools",
     "private": false,
     "scripts": {
-        "install": "(cd accessibility-checker-engine && npm install); (cd accessibility-checker && npm install); (cd karma-accessibility-checker && npm install); (cd rule-server && npm install); (cd accessibility-checker-extension && npm install); (cd report-react && npm install); (cd cypress-accessibility-checker && npm install)",
-        "build": "(cd accessibility-checker-engine && npm run build); (cd accessibility-checker && npm run package:npm); (cd karma-accessibility-checker && npm run build); (cd rule-server && npm run build); (cd accessibility-checker-extension && npm run build:prod); (cd cypress-accessibility-checker && npm run package:npm)"
+        "install:engine": "cd accessibility-checker-engine && npm install",
+        "install:accessibility-checker": "cd accessibility-checker && npm install",
+        "install:karma-accessibility-checker": "cd karma-accessibility-checker && npm install",
+        "install:rule-server": "cd rule-server && npm install",
+        "install:extension": "cd accessibility-checker-extension && npm install",
+        "install:report": "cd report-react && npm install",
+        "install:cypress-accessibility-checker": "cd cypress-accessibility-checker && npm install",
+        "install": "npm-run-all install:engine install:report install:rule-server install:extension install:accessibility-checker install:karma-accessibility-checker install:cypress-accessibility-checker",
+        "build:engine": "cd accessibility-checker-engine && npm run build",
+        "build:accessibility-checker": "cd accessibility-checker && npm run package:npm",
+        "build:karma-accessibility-checker": "cd karma-accessibility-checker && npm run build",
+        "build:rule-server": "cd rule-server && npm run build",
+        "build:extension": "cd accessibility-checker-extension && npm run build:prod",
+        "build:cypress-accessibility-checker": "cd cypress-accessibility-checker && npm run package:npm",
+        "build": "npm-run-all build:engine build:accessibility-checker build:karma-accessibility-checker build:rule-server build:extension build:cypress-accessibility-checker"
     },
     "author": "IBM",
     "license": "SEE LICENSE IN LICENSE file",
@@ -13,5 +26,8 @@
     "repository": {
         "type": "git",
         "url": "git@github.com/IBMa/equal-access"
+    },
+    "devDependencies": {
+        "npm-run-all": "^4.1.5"
     }
 }

@@ -114,6 +114,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         6.3 Hidden content scanning
                       </a>
                     </li>
+                    <li>
+                      <a href="#scan_local_files" title="Scan local files">
+                        6.4 Scanning local files
+                      </a>
+                    </li>
                   </ul>
                 </li>
                 <li>
@@ -334,7 +339,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               <img
                 src="assets/img/options.png"
-                alt="Options page screenshot - a page where you can select a Rule set depolyment and a Rule set for your checker to use."
+                alt="Options page screenshot - a page where you can select a Rule set deployment and a Rule set for your checker to use."
                 width="100%"
                 height="100%"
               />
@@ -422,6 +427,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
+              <strong>Note</strong>: On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
             </p>
 
             <h3 id="a11y_check">6.1 Accessibility Checker</h3>
@@ -899,6 +905,29 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               tests trigger the display of hidden content so that the
               Accessibility Checker can validate the content that is displayed.
             </p>
+            
+            <h3 id="scan_local_files">6.4 Scan local files</h3>
+            <div className="pa">
+              The Accessibility Checker is able to scan local .html or .htm files launched in the Firefox browser by default.
+              Follow the steps below to allow scanning of local .html or .htm files in the Chrome browser:
+              <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>Open the Chrome browser.</li>
+                <li>
+                  Open the <strong>'Window'</strong> menu.
+                </li>
+                <li>
+                  Select the <strong>'Extensions'</strong> menu option to see all installed extensions.
+                </li>
+                <li>
+                  Select the <strong>'Details'</strong> button of the IBM Equal Access Accessibility Checker Extension.
+                </li>
+                <li>
+                  Scroll down to <strong>'Allow access to file URLs'</strong> and turn this option on.
+                </li>
+              </ol>
+            </div>
 
             <h2 id="the_report">7. Accessibility Checker report</h2>
             <p>
