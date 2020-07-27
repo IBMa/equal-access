@@ -14,7 +14,7 @@
 		"clean:all": "shx rm -rf ./dist && shx rm -rf ./coverage && shx rm -rf ./package && shx rm -rf ./node_modules",
 		"test": "jest",
 		"test:coverage": "jest --collect-coverage",
-		"package:browser": "npm run build:prod && mkdir -p package && cd dist && zip -Zd -r ../package/accessibility-checker-extension.zip ."
+		"package:browser": "npm run build:prod && shx mkdir -p package && cd dist && zip -Zd -r ../package/accessibility-checker-extension.zip ."
 	},
 	"license": "Apache-2.0",
 	"dependencies": {

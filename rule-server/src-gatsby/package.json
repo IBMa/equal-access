@@ -19,6 +19,7 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "copyfiles": "^2.3.0"
+    "copyfiles": "^2.3.0",
+    "shx": "^0.3.2"
   }
 }

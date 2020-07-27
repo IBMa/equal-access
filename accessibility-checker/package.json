@@ -9,8 +9,8 @@
     "test": "mocha -R dot test/mocha/**/*.test.js",
     "build": "npm run build:report && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
     "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
-    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js && cd package && npm pack",
-    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js"
+    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js && cd package && npm pack",
+    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js"
   },
   "repository": {
     "type": "git",

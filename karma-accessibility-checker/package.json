@@ -107,6 +107,7 @@
     "npm-run-all": "^2.3.0",
     "nyc": "^10.0.0",
     "serve-index": "^1.7.3",
+    "shx": "^0.3.2",
     "sinon": "^1.17.6",
     "tap-diff": "^0.1.1",
     "tap-difflet": "^0.7.0",

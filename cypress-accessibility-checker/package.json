@@ -7,7 +7,7 @@
     "test": "start-server-and-test 'npm run test:start-http' 8080 'cd test && cypress run'",
     "test:open": "cd test && cypress open",
     "test:start-http": "http-server -c-1 --silent",
-    "package:common": "shx rm -rf package && mkdir package && shx cp -R *.js src package/ && shx cp package.json package/",
+    "package:common": "shx rm -rf package && shx mkdir package && shx cp -R *.js src package/ && shx cp package.json package/",
     "package:zip": "npm run package:common && cd package && npm pack",
     "package:npm": "npm run package:common"
   },
