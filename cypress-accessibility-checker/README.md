@@ -56,6 +56,8 @@ The typical use case will be to get the accessibility compliance of a document a
 cy.getA11yComplianceOfDocument('my scan').assertA11yCompliance()
 ```
 
+Examples on how to use each of the APIs below can be found in the `achecker.js` test file [located here](https://github.com/IBMa/equal-access/blob/master/cypress-accessibility-checker/test/cypress/integration/achecker.js).
+
 - `cy.getA11yCompliance(content: string, label)`
   - `content` must only be a string of HTML.  Due to the nature of how the plugin works, only string version of HTML is supported.
 - `cy.getA11yComplianceOfDocument(label)`
