@@ -149,14 +149,17 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
     var archiveId = selected_archive.id;
     if (archiveId == "latest") {
-      var latestArchive = archives.find((archive: any) => {
+      
+        var latestArchive = archives.find((archive: any) => {
         return archive.latest == true;
       });
-      return latestArchive.name.substring(0, 12) + " - Latest Deployment";
+
+      return latestArchive.name.substring(0, latestArchive.name.indexOf("Deployment")) + " - Latest Deployment";
+
     } else if (archiveId == "preview") {
       return "To be determined";
     } else {
-      return selected_archive.name.substring(0, 12);
+      return selected_archive.name.substring(0, selected_archive.name.indexOf("Deployment"));
     }
   };
 
