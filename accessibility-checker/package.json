@@ -8,9 +8,9 @@
     "lint": "eslint src",
     "test": "mocha -R dot test/mocha/**/*.test.js",
     "build": "npm run build:report && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
-    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && npx copyfiles ../report-react/build/genReport.js ./src/lib/reporters/)",
-    "package:zip": "rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js && cd package && npm pack",
-    "package:npm": "rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js"
+    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
+    "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js && cd package && npm pack",
+    "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && chmod u+x package/bin/*.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,6 @@
   "devDependencies": {
     "adm-zip": "^0.4.13",
     "chai": "^4.2.0",
-    "copyfiles": "^2.3.0",
     "eslint": "^6.8.0",
     "express": "^4.17.1",
     "gulp": "^4.0.2",
@@ -56,6 +55,7 @@
     "rimraf": "^3.0.0",
     "selenium-webdriver": "^3.6.0",
     "serve-index": "^1.7.3",
+    "shx": "^0.3.2",
     "tmp": "0.1.0",
     "url-exists": "^1.0.3",
     "ws": "^7.1.2",

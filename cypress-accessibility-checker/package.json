@@ -7,7 +7,7 @@
     "test": "start-server-and-test 'npm run test:start-http' 8080 'cd test && cypress run'",
     "test:open": "cd test && cypress open",
     "test:start-http": "http-server -c-1 --silent",
-    "package:common": "rm -rf package && mkdir package && npx copyfiles -R *.js src package/ && npx copyfiles package.json package/",
+    "package:common": "shx rm -rf package && mkdir package && shx cp -R *.js src package/ && shx cp package.json package/",
     "package:zip": "npm run package:common && cd package && npm pack",
     "package:npm": "npm run package:common"
   },
@@ -32,12 +32,12 @@
     "cypress": "^3 || ^4"
   },
   "devDependencies": {
-    "copyfiles": "^2.3.0",
     "cypress": "^4.5.0",
     "eslint": "^7.0.0",
     "eslint-plugin-cypress": "^2.10.3",
     "http-server": "^0.12.3",
     "prettier": "^2.0.5",
+    "shx": "^0.3.2",
     "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
