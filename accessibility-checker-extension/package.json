@@ -4,17 +4,17 @@
 	"description": "Accessibility Checker Extension for Browsers",
 	"main": "index.js",
 	"scripts": {
-		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
+		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
 		"build:help": "gulp --gulpfile ./gulp/gulpFile.js",
 		"build:dev": "npm run build:report && npm run build:help && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
 		"build:prod": "npm run build:report && npm run build:help && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -p",
 		"build:watch": "npm run build:report && npm run build:help && cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
 		"build:watch:local": "npm run build:report && npm run build:help && cross-env NODE_ENV=watch_local SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
-		"clean": "rm -rf ./dist && rm -rf ./package",
-		"clean:all": "rm -rf ./dist && rm -rf ./coverage && rm -rf ./package && rm -rf ./node_modules",
+		"clean": "shx rm -rf ./dist && shx rm -rf ./package",
+		"clean:all": "shx rm -rf ./dist && shx rm -rf ./coverage && shx rm -rf ./package && shx rm -rf ./node_modules",
 		"test": "jest",
 		"test:coverage": "jest --collect-coverage",
-		"package:browser": "npm run build:prod && mkdir -p package && cd dist && zip -Zd -r ../package/accessibility-checker-extension.zip ."
+		"package:browser": "npm run build:prod && shx mkdir -p package && cd dist && zip -Zd -r ../package/accessibility-checker-extension.zip ."
 	},
 	"license": "Apache-2.0",
 	"dependencies": {
@@ -57,6 +57,7 @@
 		"react-test-renderer": "^16.12.0",
 		"resize-observer-polyfill": "^1.5.1",
 		"sass-loader": "^8.0.2",
+		"shx": "^0.3.2",
 		"style-loader": "^1.1.2",
 		"ts-jest": "^24.2.0",
 		"tslint": "^5.20.1",

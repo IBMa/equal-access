@@ -144,10 +144,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Media_AudioTrigger",
                     level: eRulePolicy.RECOMMENDATION
-                },
-                {
-                    id: "HAAC_Video_HasNoTrack",
-                    level: eRulePolicy.VIOLATION
                 }
             ]
         },
@@ -1100,10 +1096,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Media_AudioTrigger",
                     level: eRulePolicy.RECOMMENDATION
-                },
-                {
-                    id: "HAAC_Video_HasNoTrack",
-                    level: eRulePolicy.VIOLATION
                 }
             ]
         },
@@ -2056,10 +2048,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Media_AudioTrigger",
                     level: eRulePolicy.RECOMMENDATION
-                },
-                {
-                    id: "HAAC_Video_HasNoTrack",
-                    level: eRulePolicy.VIOLATION
                 }
             ]
         },
@@ -2936,10 +2924,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Media_AudioTrigger",
                     level: eRulePolicy.RECOMMENDATION
-                },
-                {
-                    id: "HAAC_Video_HasNoTrack",
-                    level: eRulePolicy.VIOLATION
                 }
             ]
         },
