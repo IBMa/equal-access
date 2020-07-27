@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby clean && gatsby build --prefix-paths",
-    "start": "cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby develop",
+    "build": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby clean && gatsby build --prefix-paths",
+    "start": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby develop",
     "start:clean": "gatsby clean && gatsby develop",
-    "serve": "cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby serve"
+    "serve": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby serve"
   },
   "dependencies": {
     "carbon-icons": "^7.0.7",
@@ -17,5 +17,8 @@
     "num-to-words": "^0.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "shx": "^0.3.2"
   }
 }
