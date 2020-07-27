@@ -138,17 +138,15 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
   };
 
   handlReset = () => {
-    //var self = this;
-    // chrome.storage.local.get("OPTIONS", async function (result: any) {
-    //   self.setState(result.OPTIONS);
-    // });
-
     var selected_archive: any = this.getLatestArchive(this.state.archives);
     var selected_ruleset: any = this.state.rulesets[0];
 
-    this.setState({ selected_archive, selected_ruleset, show_reset_notif: true, show_notif:false });
-    //this.save_options_to_storage(this.state);
-
+    this.setState({
+      selected_archive,
+      selected_ruleset,
+      show_reset_notif: true,
+      show_notif: false
+    });
   };
 
   getRuleSetDate = (selected_archive: any, archives: any) => {
@@ -158,17 +156,23 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
     var archiveId = selected_archive.id;
     if (archiveId == "latest") {
-      
-        var latestArchive = archives.find((archive: any) => {
+      var latestArchive = archives.find((archive: any) => {
         return archive.latest == true;
       });
 
-      return latestArchive.name.substring(0, latestArchive.name.indexOf("Deployment")) + " - Latest Deployment";
-
+      return (
+        latestArchive.name.substring(
+          0,
+          latestArchive.name.indexOf("Deployment")
+        ) + " - Latest Deployment"
+      );
     } else if (archiveId == "preview") {
       return "Preview rules - to be determined";
     } else {
-      return selected_archive.name.substring(0, selected_archive.name.indexOf("Deployment"));
+      return selected_archive.name.substring(
+        0,
+        selected_archive.name.indexOf("Deployment")
+      );
     }
   };
 
@@ -206,8 +210,12 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
-                  correspond to the most recent WCAG standards plus some additional IBM requirements. Rule sets for specific WCAG versions are also available. The rule sets 
-                  are updated regularly, and each update has a date of deployment. If you need to replicate an earlier test, choose the deployment date of the original test.
+                  correspond to the most recent WCAG standards plus some
+                  additional IBM requirements. Rule sets for specific WCAG
+                  versions are also available. The rule sets are updated
+                  regularly, and each update has a date of deployment. If you
+                  need to replicate an earlier test, choose the deployment date
+                  of the original test.
                 </p>
               </aside>
             </div>
