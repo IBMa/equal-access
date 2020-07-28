@@ -58,10 +58,11 @@ Cypress.Commands.add(
   'assertA11yCompliance',
   { prevSubject: true },
   (priorResults, shouldFail) => {
-    cy.task('accessibilityChecker', {
-      task: 'assertCompliance',
-      data: { report: priorResults.report }
-    })
+    const taskResult = cy
+      .task('accessibilityChecker', {
+        task: 'assertCompliance',
+        data: { report: priorResults.report }
+      })
       .then((result) => {
         const name = 'A11y';
         if (result === 0) {
@@ -133,13 +134,22 @@ Cypress.Commands.add(
         }
       })
       .then((result) => {
-        if ((result !== 0 && shouldFail === undefined) || shouldFail === true) {
-          assert.fail(
-            'accessibility-checker: See previous logs for accessibility violation data'
-          );
-        }
         return cy.wrap(result, { log: false });
       });
+
+    if (shouldFail === true) {
+      assert.fail(
+        'accessibility-checker: See previous logs for accessibility violation data'
+      );
+    } else if (shouldFail === undefined) {
+      taskResult.should(
+        'eq',
+        0,
+        'accessibility-checker: See previous logs for accessibility violation data'
+      );
+    }
+
+    return taskResult;
   }
 );
 
