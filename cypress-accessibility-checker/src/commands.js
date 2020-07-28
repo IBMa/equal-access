@@ -57,7 +57,7 @@ Cypress.Commands.add('getA11yComplianceOfDocument', (label) => {
 Cypress.Commands.add(
   'assertA11yCompliance',
   { prevSubject: true },
-  (priorResults, shouldFail) => {
+  (priorResults, failOnError = true) => {
     const taskResult = cy
       .task('accessibilityChecker', {
         task: 'assertCompliance',
@@ -137,12 +137,10 @@ Cypress.Commands.add(
         return cy.wrap(result, { log: false });
       });
 
-    const message =
-      'accessibility-checker: See previous logs for accessibility violation data';
+    if (!!failOnError) {
+      const message =
+        'accessibility-checker: See previous logs for accessibility violation data';
 
-    if (shouldFail === true) {
-      assert.fail(message);
-    } else if (shouldFail === undefined) {
       taskResult.should('eq', 0, message);
     }
 
