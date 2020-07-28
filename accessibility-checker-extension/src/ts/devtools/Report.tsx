@@ -162,7 +162,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         return <React.Fragment>
-            <div className="bx--grid" style={{paddingLeft: "1rem", paddingRight: "1rem", marginTop: '1rem'}}>
+            <div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
                 <div className="bx--row">
                     <div className="bx--col-sm-4">
                         <Tabs
@@ -186,6 +186,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 // renderContent={function noRefCheck() { }}
                                 role="presentation"
                                 className={"tab-content-"+tabId}
+                                style={{paddingTop:"6px"}}
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
