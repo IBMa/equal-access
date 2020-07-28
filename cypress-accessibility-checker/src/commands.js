@@ -137,16 +137,13 @@ Cypress.Commands.add(
         return cy.wrap(result, { log: false });
       });
 
+    const message =
+      'accessibility-checker: See previous logs for accessibility violation data';
+
     if (shouldFail === true) {
-      assert.fail(
-        'accessibility-checker: See previous logs for accessibility violation data'
-      );
+      assert.fail(message);
     } else if (shouldFail === undefined) {
-      taskResult.should(
-        'eq',
-        0,
-        'accessibility-checker: See previous logs for accessibility violation data'
-      );
+      taskResult.should('eq', 0, message);
     }
 
     return taskResult;
