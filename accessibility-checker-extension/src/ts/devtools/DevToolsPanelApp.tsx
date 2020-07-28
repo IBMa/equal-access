@@ -133,7 +133,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // and get url using chrome.tabs.get via message "TAB_INFO"
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", {tabId: thisTabId });
-        
         if (tab.id && tab.url && tab.id && tab.title) {
             let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
             
@@ -149,7 +148,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, tabId: tab.id, tabTitle: tab.title });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
+                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false] });
             
         }
     }
