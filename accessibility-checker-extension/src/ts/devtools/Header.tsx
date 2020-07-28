@@ -28,6 +28,10 @@ const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
+import { Filter16 } from '@carbon/icons-react';
+import ViolationsFiltered from "../../assets/ViolationsFiltered.svg";
+import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
+import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
 
 interface IHeaderState {}
 
@@ -80,12 +84,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
-        let headerContent = (<div className="bx--grid">
+        let violationFilterButtonAriaLabel = noScan ? ((bDiff ? counts.filtered["Violation"] + " of " : "") + counts.total["Violation"]) : " ";
+        console.log(violationFilterButtonAriaLabel);
+        // violationFilterButtonAriaLabel += " Violations Filter show only violations";
+
+        let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative" }}>
+                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
@@ -93,7 +101,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-sm-2">
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
                     <div className="headerTools" >
                         <Button
                             disabled={!this.props.counts}
@@ -113,43 +121,66 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
 
-            <div className="bx--row summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
-                <div className="bx--col-sm-1" style={{paddingBottom:"0"}}>
-                    <img src={Violation16} alt="Violations" />
-                    <Button kind="ghost" 
-                            className="summaryBarViolationButton"
+            <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
+                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
+                    <img src={Violation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Violations" />
+                    <span
+                        style={{lineHeight:"32px"}} className="summaryBarCounts" >
+                        {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
+                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span>
+                    </span>
+                    <span className="filterButtons">
+                        <Button
+                            disabled={!this.props.counts}
+                            style={{paddingTop:"0px", paddingBottom:"0px"}}
                             onClick={() => this.sendShowIssueTypeData("Violations")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[1] ? {fontWeight: 600} : {fontWeight: 400}}
                             aria-pressed = {this.props.dataFromParent[1]}
-                            aria-label= "Show only violations">
-                            {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "} Violations
-                    </Button>
+                            aria-label={"Filter by violations"}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
+                            >
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[1] ? <img src={ViolationsFiltered}/> : <Filter16/>)}    
+                        </Button>
+                    </span>
                 </div>
-                <div className="bx--col-sm-1">
-                    <img src={NeedsReview16} alt="Needs review" />
-                    <Button kind="ghost" 
-                            className="summaryBarNeedsReviewButton"
+                <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
+                    <img src={NeedsReview16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Needs review" />
+                    <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}
+                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Needs review</span>
+                    </span>
+                    <span className="filterButtons">
+                        <Button
+                            disabled={!this.props.counts}
+                            style={{paddingTop:"0px", paddingBottom:"0px"}}
                             onClick={() => this.sendShowIssueTypeData("NeedsReview")}
-                            style={this.props.dataFromParent[0] || this.props.dataFromParent[2] ? {fontWeight: 600} : {fontWeight: 400}}
                             aria-pressed = {this.props.dataFromParent[2]}
-                            aria-label= "Show only needs review">
-                            {noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "} Needs review
-                    </Button>
+                            aria-label={"Filter by Needs review"}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
+                            >
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[2] ? <img src={NeedsReviewFiltered}/> : <Filter16/>)}
+                        </Button>
+                    </span>
                 </div>
-                <div className="bx--col-sm-1">
-                    <img src={Recommendation16} alt="Recommendation" />
-                    <Button kind="ghost" 
-                        className="summaryBarRecommendationButton"
-                        onClick={() => this.sendShowIssueTypeData("Recommendations")}
-                        style={this.props.dataFromParent[0] || this.props.dataFromParent[3] ? {fontWeight: 600} : {fontWeight: 400}}
-                        aria-pressed = {this.props.dataFromParent[3]}
-                        aria-label= "Show only needs recommendations">
-                        {noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "} Recommendations
-                    </Button>
+                <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
+                    <img src={Recommendation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Recommendation" />
+                    <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}
+                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Recommendations</span>
+                    </span>
+                    <span className="filterButtons">
+                        <Button
+                            disabled={!this.props.counts}
+                            style={{paddingTop:"0px", paddingBottom:"0px"}}
+                            onClick={() => this.sendShowIssueTypeData("Recommendations")}
+                            aria-pressed = {this.props.dataFromParent[3]}
+                            aria-label={"Filter by Recommendations"}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
+                            >
+                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[3] ? <img src={RecommendationsFiltered}/> : <Filter16/>)} 
+                        </Button>
+                    </span>
                 </div>
-                <div className="bx--col-sm-1" role="status">
+                <div className="countItem" role="status" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"right", overflow:"visible"}}>
                     {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}
-                    <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
+                    <span className="summaryBarCounts" style={{fontWeight: 400,lineHeight:"32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
         </div>);
