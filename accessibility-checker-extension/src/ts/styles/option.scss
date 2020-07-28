@@ -107,6 +107,10 @@ body {
         }
       }
 
+      .bx--accordion__content {
+        padding-right: 15%;
+    }
+
       .accordionItem {
         @media (min-width: 42rem) {
           max-width: 100%;
@@ -117,6 +121,17 @@ body {
         @media (min-width: 42rem) {
           max-width: 100%;
         }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+          }
+        
+          li::before {
+            content: "—"; 
+            padding-right: 0.5rem;
+          }
       }
     }
 
