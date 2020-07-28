@@ -30,7 +30,8 @@ interface IReportChecklistProps {
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
-    layout: string
+    layout: string,
+    dataFromParent: boolean[]
 }
 
 interface IGroup {
@@ -80,13 +81,25 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
         }
 
-        // this.props.report.sort((a,b) => {
-        //     return a.path.aria.localeCompare(b.path.aria);
-        // })
+        // to sort issue according to type in order Violations, Needs Review, Recommendations
+        // within each group need to sort the items according to their value
+        const valPriority = ["Violation", "Needs review", "Recommendation"];
+        let groupVals = [];
+        groups.map(group => {
+            groupVals.length = 0;
+            group.items.sort( function(a,b) {
+                let aVal = valueMap[a.value[0]][a.value[1]] || a.value[0] + "_" + a.value[1];
+                let bVal = valueMap[b.value[0]][b.value[1]] || b.value[0] + "_" + b.value[1];
+                let aIndex = valPriority.indexOf(aVal);
+                let bIndex = valPriority.indexOf(bVal);
+                return aIndex - bIndex;
+            })
+        })
+
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" aria-label="Issues grouped by checkpoint">
+        return <div className="bx--grid report" role="table"  style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by checkpoint">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
@@ -113,6 +126,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout} 
+                        dataFromParent={this.props.dataFromParent} 
                     />;
                 })}
             </div>

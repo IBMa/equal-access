@@ -14,7 +14,7 @@ $feature-flags: (
     top: 0;
     left: 0;
     width: 100%;
-    padding-top: 1rem;
+    padding-top: .5rem;
 
     .eaacTitle {
         color: #171717;
@@ -25,11 +25,12 @@ $feature-flags: (
         }
     }
 
-    h4 {
+    h1 {
         color: #171717;
         font-size: 0.75rem;
         font-weight: 600;
         margin-top: 0.25rem;
+        line-height: 1rem;
         @media only screen and (min-width: 30rem) {
             font-size: 1rem;
         }
@@ -37,16 +38,16 @@ $feature-flags: (
 
     .bee-logo {
         height: 2rem;
-        position: absolute;
-        right: 1rem;
+        // position: absolute;
+        // right: 1rem;
         @media only screen and (min-width: 42rem) {
             right: 0px;
         }
     }
 
     .headerTools {
-        position: absolute;
-        right: .5rem;
+        // position: absolute;
+        // right: .5rem;
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
         }
@@ -75,8 +76,49 @@ $feature-flags: (
         }
     }
 
+    .filterButtons {
+        button .bx--assistive-text {
+            top: -1.5rem;
+        }
+        button::before {
+            top: 0rem;
+        }
+        button.bx--btn {
+            color: black;
+            background-color: white;
+        }
+    
+        button.bx--btn.bx--btn--disabled {
+            color: #c6c6c6;
+            border-width: 0px;
+            background-color: white;
+        }
+    
+        button.bx--btn.bx--btn--disabled:hover {
+            color: #c6c6c6;
+            svg {
+                fill: #c6c6c6;
+            }
+        }
+    }
+
+    .countRow{
+        display: flex;
+        //flex-wrap: wrap;
+    }
+      
+    .countItem {
+        margin-bottom: 2px;
+        text-align: left;
+        flex-grow: 1;
+    }
+
+    filterViolationButtonColor {
+        fill: rebeccapurple
+    }
+
     .summary {
-        margin-top: 20px;
+        margin-top: 10px;
 
         > div {
             border-top: solid #DCDCDC 1px;
@@ -84,7 +126,8 @@ $feature-flags: (
             padding: .5rem 0rem .5rem 1rem;
             overflow:hidden;
             text-overflow: ellipsis;
-            white-space:nowrap
+            white-space:nowrap;
+            height: 32px
         }
 
         .summaryBarCounts {
@@ -92,6 +135,49 @@ $feature-flags: (
             font-size: 14px;
             font-weight: 600;
         }
+
+        .summaryBarViolationButton {
+            height: 24px;
+            width: 90px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .summaryBarNeedsReviewButton {
+            height: 24px;
+            width: 115px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .summaryBarRecommendationButton {
+            height: 24px;
+            width: 140px;
+            padding: 0;
+            border: 0;
+            min-height: 0;
+            position: relative;
+            top: -4px;
+            left: 4px;
+            color: #252525;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
 
         .summaryBarLabels {
             display:none;
@@ -261,6 +347,13 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-01');
+
+                margin-top: 0rem;
+                margin-bottom: .5rem;
+            }
+
             p {
                 @include carbon--type-style('body-long-01');
 
@@ -285,6 +378,12 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-03');
+
+                margin-top: 2rem;
+                margin-bottom: .5rem;
+            }
             p {
                 @include carbon--type-style('body-long-01');
 
@@ -417,11 +516,14 @@ $feature-flags: (
         top: 1rem;
 
         .bx--grid {
-            padding: 0rem 1rem;
+            padding: 0rem 0rem;
         }
 
         .fixed-header .headerTools {
             right: 1.5rem;
+        }
+        .fixed-header .filterButtons {
+            left: 8rem;
         }
         .fixed-header .bee-logo {
             right: 2rem;
@@ -570,6 +672,16 @@ $feature-flags: (
 }
 
 main {
+    overflow-y: scroll;
+    margin-right: 0rem;
+    height: 100%;
+
+    >div {
+        padding-right: 1rem;
+    }
+}
+
+.issueList {
     overflow-y: scroll;
     margin-right: 0rem;
     height: 100%;

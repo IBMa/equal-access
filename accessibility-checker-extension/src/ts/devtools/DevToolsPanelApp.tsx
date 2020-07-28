@@ -46,7 +46,9 @@ interface IPanelState {
     rulesets: IRuleset[] | null,
     selectedCheckpoint? : ICheckpoint,
     learnMore : boolean,
-    learnItem : IReportItem | null
+    learnItem : IReportItem | null,
+    showIssueTypeFilter: boolean[],
+    scanning: boolean   // true when scan taking place
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -60,7 +62,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabTitle: "",
         rulesets: null,
         learnMore: false,
-        learnItem: null
+        learnItem: null,
+        showIssueTypeFilter: [true, false, false, false],
+        scanning: false
     }
     
     ignoreNext = false;
@@ -125,11 +129,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-
-        let tabs = await PanelMessaging.sendToBackground("TAB_INFO", { })
-        if (tabs[0] && tabs[0].url && tabs[0].id) {
-            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tabs[0].id })
-            var url = tabs[0].url;
+        // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
+        // and get url using chrome.tabs.get via message "TAB_INFO"
+        let thisTabId = chrome.devtools.inspectedWindow.tabId;
+        let tab = await PanelMessaging.sendToBackground("TAB_INFO", {tabId: thisTabId });
+        if (tab.id && tab.url && tab.id && tab.title) {
+            let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
+            
             if (!self.state.listenerRegistered) {
                 PanelMessaging.addListener("TAB_UPDATED", async message => {
                     if (message.tabId === self.state.tabId && message.status === "loading") {
@@ -139,13 +145,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                 });
                 PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tabs[0].id })
+                
+                PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: url, tabId: tabs[0].id,  tabTitle: tabs[0].title });
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
+                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false] });
+            
         }
-
-        
-
     }
 
     async startScan() {
@@ -154,7 +160,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // componentDidMount is not done initializing yet
             setTimeout(this.startScan.bind(this), 100);
         } else {
-            this.setState({ numScanning: this.state.numScanning + 1 });
+            this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
             await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
         }
     }
@@ -187,6 +193,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 selectedItem: undefined
             });
         }
+        this.setState({ scanning: false});
         return true;
     }
 
@@ -346,6 +353,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({learnMore: false});
     }
 
+    showIssueTypeCallback (type:string) {
+        if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
+            this.setState({ showIssueTypeFilter: [false, true, false, false] });
+        } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
+            this.setState({ showIssueTypeFilter: [false, false, true, false] });
+        } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
+            this.setState({ showIssueTypeFilter: [false, false, false, true] });
+        } else { 
+            this.setState({ showIssueTypeFilter: [true, false, false, false] });
+        }    
+    }
+    
     render() {
         if (this.props.layout === "main") {
             return <React.Fragment>
@@ -363,9 +382,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             startScan={this.startScan.bind(this)} 
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
+                            showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                            dataFromParent = {this.state.showIssueTypeFilter}
+                            scanning={this.state.scanning}
                             />
                         <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
-                            <main aria-label="issue details">
+                            <div role="region" aria-label="issue list"  className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report 
                                     selectItem={this.selectItem.bind(this)} 
@@ -375,8 +397,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     learnItem={this.state.learnItem}
                                     layout = {this.props.layout}
                                     selectedTab="checklist"
-                                    tabs={["checklist", "element", "rule"]} />}
-                            </main>
+                                    tabs={["checklist", "element", "rule"]}
+                                    dataFromParent = {this.state.showIssueTypeFilter} 
+                                    />}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -387,11 +411,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                     <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
-                            <main>
+                            <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
                                 </div>
-                            </main>
+                            </div>
                         </div>
                     </div>
                     {this.subPanelRef.current?.scrollTo(0,0)}             
@@ -404,9 +428,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     startScan={this.startScan.bind(this)} 
                     reportHandler={this.reportHandler.bind(this)}
                     collapseAll={this.collapseAll.bind(this)}
+                    showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                    dataFromParent = {this.state.showIssueTypeFilter}
+                    scanning={this.state.scanning}
                     />
-                <div style={{marginTop: "9rem", height: "calc(100% - 9rem)"}}>
-                    <main aria-label="issue details">
+                <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
+                    <div role="region" aria-label="issue list"  className="issueList">
                         {this.state.numScanning > 0 ? <Loading /> : <></>}
                         {this.state.report && <Report 
                             selectItem={this.selectItem.bind(this)} 
@@ -416,8 +443,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             learnItem={this.state.learnItem}
                             layout = {this.props.layout}
                             selectedTab="element"
-                            tabs={["checklist", "element", "rule"]} />}
-                    </main>
+                            tabs={["checklist", "element", "rule"]}
+                            dataFromParent = {this.state.showIssueTypeFilter} 
+                            />}
+                    </div>
                 </div>
             </React.Fragment>
             }

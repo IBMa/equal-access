@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "start-server-and-test 'npm run test:start-http' 8080 'cypress run'",
+    "test:start-http": "http-server -c-1 --silent"
+  },
+  "devDependencies": {
+    "cypress": "^4.11.0",
+    "cypress-accessibility-checker": "*",
+    "eslint": "^7.5.0",
+    "eslint-plugin-cypress": "^2.11.1",
+    "http-server": "^0.12.3",
+    "start-server-and-test": "^1.11.0"
+  },
+  "dependencies": {}
+}

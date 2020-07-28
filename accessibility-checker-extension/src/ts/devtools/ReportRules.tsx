@@ -29,7 +29,8 @@ interface IReportRulesProps {
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
-    layout: string
+    layout: string,
+    dataFromParent: boolean[]
 }
 interface IGroup {
     title: string,
@@ -70,12 +71,21 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         for (const ruleId in groupMap) {
             groups.push(groupMap[ruleId]);
         }
-        // this.props.report.sort((a,b) => {
-        //     return a.path.aria.localeCompare(b.path.aria);
-        // })
+        
+        // to sort issue according to type in order Violations, Needs Review, Recommendations
+        // at the group level
+        const valPriority = ["Violation", "Needs review", "Recommendation"];
+        groups.sort( function(a,b) {
+            let aVal = valueMap[a.items[0].value[0]][a.items[0].value[1]] || a.items[0].value[0] + "_" + a.items[0].value[1];
+            let bVal = valueMap[b.items[0].value[0]][b.items[0].value[1]] || b.items[0].value[0] + "_" + b.items[0].value[1];
+            let aIndex = valPriority.indexOf(aVal);
+            let bIndex = valPriority.indexOf(bVal);
+            return aIndex - bIndex;
+        })
+
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" aria-label="Issues grouped by rule">
+        return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by rule">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
                     <div className="bx--col-sm-1" role="columnheader">
@@ -102,6 +112,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         learnItem={this.props.learnItem}
                         selectItem={this.props.selectItem}
                         layout={this.props.layout}
+                        dataFromParent={this.props.dataFromParent}
                     />                
                 })}
             </div>

@@ -648,7 +648,7 @@ let a11yHelp = {
     "HAAC_Video_HasNoTrack": {
         0: `${Config.helpRoot}/HAAC_Video_HasNoTrack`,
         "Pass_0": `${Config.helpRoot}/HAAC_Video_HasNoTrack`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Video_HasNoTrack`
+        "Potential_1": `${Config.helpRoot}/HAAC_Video_HasNoTrack`
     },
     // JCH - DONE
     "HAAC_Audio_Video_Trigger": {

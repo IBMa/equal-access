@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision using screen magnification
@@ -17,7 +17,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 * People with reading disabilities
 * Many older adults
 
-## Why is this important?
+### Why is this important?
 
 Some individuals might need more time to read or interact with a page than the author expects. If the page auto-refreshes while they are still reading/working, it might prevent access to content by resetting their location on the page.
 
@@ -26,14 +26,14 @@ Some individuals might need more time to read or interact with a page than the a
 
 <div id="locLevel"></div>
 
-## Check if a page is being caused to refresh automatically
+### Check if a page is being caused to refresh automatically
 Pages should not refresh automatically
 
 [IBM 2.2.1 Timing Adjustable](https://www.ibm.com/able/guidelines/ci162/timing_adjustable.html) | [WACG 2.1 failure technique F41](https://www.w3.org/WAI/WCAG21/Techniques/failures/F41)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
  * Remove the `<META>` tag that causes an automatic page refresh (e.g. `<META HTTP-EQUIV="Refresh" CONTENT="10">`) and use a different method to update information on the page;
  * OR, provide an option to turn off, extend, or adjust the timing of the page refresh;

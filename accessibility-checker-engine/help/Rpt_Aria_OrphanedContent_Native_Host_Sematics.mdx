@@ -8,12 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 * People who physically cannot use a pointing device
 
-## Why is this important?
+### Why is this important?
 
 Landmark roles provide programmatic access to sections of a web page, making it easy for the user to understand the structure of the page and easily navigate to different sections. They also enable users to skip over blocks of content that are repeated on multiple pages.
 
@@ -22,14 +22,14 @@ Landmark roles provide programmatic access to sections of a web page, making it 
 
 <div id="locLevel"></div>
 
-## Content is not within a landmark element
+### Content is not within a landmark element
 All content must reside within an element with a landmark role
 
 [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WCAG 2.1 technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11) | [HTML5 Sectioning elements](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Enclose the content within an HTML5 sectioning element with an implicit landmark role (e.g. `<main>Content</main>`);
 * OR use the `"role"` attribute on an enclosing element to specify an appropriate WAI-ARIA landmark value (e.g. `<div role="contentinfo">...</div>`).

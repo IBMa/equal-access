@@ -6,8 +6,8 @@
     "scripts": {
         "build:ace": "cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && cd ../rule-server",
         "build:ace:debug": "cd ../accessibility-checker-engine && npm install && npm run build-debug && npm run build-node && cd ../rule-server",
-        "build:help": "rm -rf ./src-gatsby/src/pages/tools && mkdir ./src-gatsby/src/pages/tools && cp -r ../accessibility-checker-engine/help ./src-gatsby/src/pages/tools/help && cd src-gatsby && npm run build && cd ..",
-        "build": "rm -rf dist && npm run build:ace && npm run build:help && mkdir -p src/routes && mkdir -p api && mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
+        "build:help": "shx rm -rf ./src-gatsby/src/pages/tools && shx mkdir ./src-gatsby/src/pages/tools && shx cp -r ../accessibility-checker-engine/help ./src-gatsby/src/pages/tools/help && cd src-gatsby && npm run build && cd ..",
+        "build": "shx rm -rf dist && npm run build:ace && npm run build:help && shx mkdir -p src/routes && shx mkdir -p api && shx mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
         "start": "npm run build && cd dist && node main.js",
         "debug": "npm run build && TS_NODE_PROJECT=./src/tsconfig.json node --nolazy --inspect-brk=9229 -r ts-node/register ./src/main.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -34,6 +34,7 @@
         "gulp-modify-file": "^1.0.1",
         "nano": "^8.1.0",
         "pem": "^1.14.4",
+        "shx": "^0.3.2",
         "ts-node": "^8.6.2"
     },
     "engines": {

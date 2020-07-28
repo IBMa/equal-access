@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
-## Who does this affect?
+### Who does this affect?
 
 * Blind people using screen readers
 
-## Why is this important?
+### Why is this important?
 
 When an image is decorative and has an empty `alt` attribute, the `title` attribute should not be included. This ensures the image is ignored by assistive technologies.
 
@@ -21,14 +21,14 @@ When an image is decorative and has an empty `alt` attribute, the `title` attrib
 
 <div id="locLevel"></div>
 
-## The image `alt` text attribute is empty, but the `title` attribute is not empty
+### The image `alt` text attribute is empty, but the `title` attribute is not empty
 When the image `alt` text attribute is empty, the `title` attribute must also be empty
 
 [IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique H67](https://www.w3.org/TR/WCAG20-TECHS/H67)
 
 <div id="locSnippet"></div>
 
-## What to do
+### What to do
 
 * Use a null `alt` text attribute and no `title` attribute on an image that assistive technologies should ignore.
 

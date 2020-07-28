@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 import React from "react";
 import "./report.scss";
 
@@ -33,10 +33,10 @@ interface IReportChecklistProps {
 
 export default class ReportChecklist extends React.Component<IReportChecklistProps, IReportChecklistState> {
     state: IReportChecklistState = {};
-    
+
     render() {
-        // let itemIdx = 0;
-        let ruleToGroups : {
+
+        let ruleToGroups: {
             [key: string]: {
                 title: string,
                 counts: { [key: string]: number }
@@ -64,7 +64,6 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             if (item.value[1] === "PASS") {
                 continue;
             }
-            // item.itemIdx = itemIdx++;
 
             if (item.ruleId in ruleToGroups) {
                 let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
@@ -75,13 +74,10 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
         }
 
-        // this.props.report.sort((a,b) => {
-        //     return a.path.aria.localeCompare(b.path.aria);
-        // })
-        return <div className="bx--grid report">
+        return <div className="bx--grid report" role="rowgroup">
             <div className="bx--row reportHeader">
                 <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
-                    <div className="label" style={{marginLeft:"2rem"}}>Issues</div>
+                    <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </div>
                 <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
                     <div className="label">Checkpoint</div>
