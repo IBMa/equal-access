@@ -238,9 +238,19 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                     >
                       <p>
                         <ul>
-                            <li>Latest deployment: Choose to always use the latest version of the rule set  (default)</li>
-                            <li>Dated deployment: Use a rule set from a specific date for consistent testing throughout a project or to replicate an earlier test</li>
-                            <li>Preview rules: Try an experimental preview of possible future rule set</li>
+                          <li>
+                            Latest deployment: Choose to always use the latest
+                            version of the rule set (default)
+                          </li>
+                          <li>
+                            Dated deployment: Use a rule set from a specific
+                            date for consistent testing throughout a project or
+                            to replicate an earlier test
+                          </li>
+                          <li>
+                            Preview rules: Try an experimental preview of
+                            possible future rule set
+                          </li>
                         </ul>
                       </p>
 
@@ -274,7 +284,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
 
                 <h2 style={{ marginTop: "2rem" }}>
-                    Supported accessibility guidelines
+                  Supported accessibility guidelines
                 </h2>
                 <Dropdown
                   ariaLabel={undefined}
