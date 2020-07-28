@@ -1649,32 +1649,32 @@ export class RPTUtil {
 
     // Return true if element has valid implicit label
     public static hasImplicitLabel(element) {
-        let parentNode = element.parentNode;
+        let parentNode = RPTUtil.getAncestor(element, "label");
         // Test  a) if the parent is a label which is the implicit label
         //       b) if the form element is the first child of the label
         //       c) if the form element requires an implicit or explicit label : "input",  "textarea", "select", "keygen", "progress", "meter", "output"
         // form elements that do not require implicit or explicit label element are:
         // "optgroup", "option", "datalist"(added later). These were handled differently in the main rule, might need to refactor the code later
 
-        if (parentNode.tagName.toLowerCase() === "label" && RPTUtil.isFirstFormElement(parentNode, element)) {
+        if (parentNode && parentNode.tagName.toLowerCase() === "label" && RPTUtil.isFirstFormElement(parentNode, element)) {
             let parentClone = parentNode.cloneNode(true);
             // exclude all form elements from the label since they might also have inner content
             parentClone = RPTUtil.removeAllFormElementsFromLabel(parentClone);
             return RPTUtil.hasInnerContentHidden(parentClone);
-        } else
+        } else {
             return false;
+        }
     }
 
     public static isFirstFormElement(parentNode, element) {
         let formElementsRequiringLabel = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
-        let childNodes = parentNode.childNodes;
-        for (let i = 0; i < childNodes.length; i++) {
-            if (formElementsRequiringLabel.indexOf(childNodes[i].nodeName.toLowerCase()) === -1)
-                continue;
-            else if (childNodes[i] !== element)
-                return false;
-            else
-                return true;
+        if (parentNode.firstChild != null) {
+            let nw = new NodeWalker(parentNode);
+            while (nw.nextNode()) {
+                if (formElementsRequiringLabel.indexOf(nw.node.nodeName.toLowerCase()) !== -1) {
+                    return nw.node === element;
+                }
+            }
         }
         return false;
     }
@@ -2041,7 +2041,7 @@ export class RPTUtil {
         return RPTUtil.hasInnerContentHiddenHyperLink(element, false);
     }
     public static hasInnerContentHiddenHyperLink(element, hyperlink_flag) {
-
+        if (!element) return false;
         // Variable Decleration
         let childElement = element.firstElementChild;
         let hasContent = false;
