@@ -30,10 +30,14 @@ let a11yRulesApp: Rule[] = [
         const ruleContext = context["dom"].node as Element;
             let passed = true;
             if (RPTUtil.hasRoleInSemantics(ruleContext, "application")) {
-                let children = ruleContext.children;
+                let children = ruleContext.childNodes;
                 for (let i = 0; passed && i < children.length; i++) {
-                    if (RPTUtil.isNodeVisible(children[i])) {
-                        passed = RPTUtil.hasRoleInSemantics(children[i], "document") || RPTUtil.hasRoleInSemantics(children[i], "article");
+                    if (children[i].nodeType === 1) {
+                        if (RPTUtil.isNodeVisible(children[i])) {
+                            passed = RPTUtil.hasRoleInSemantics(children[i], "document") || RPTUtil.hasRoleInSemantics(children[i], "article");
+                        }
+                    } else if (children[i].nodeType === 3) {
+                        passed = children[i].nodeValue.trim().length === 0;
                     }
                 }
             }
