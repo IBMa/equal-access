@@ -408,7 +408,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         } else if (this.props.layout === "sub") {
             
             return <React.Fragment>
-                <div style={{display: this.state.learnMore ? "" : "none"}}>
+                <div style={{display: this.state.learnMore ? "" : "none", height:"100%"}}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
                     <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
                         <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
@@ -421,7 +421,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0,0)}             
                 </div>
-                <div style={{display: this.state.learnMore ? "none" : ""}}>
+                <div style={{display: this.state.learnMore ? "none" : "", height:"100%"}}>
                     <Header 
                         layout={this.props.layout} 
                         counts={this.state.report && this.state.report.counts} 
