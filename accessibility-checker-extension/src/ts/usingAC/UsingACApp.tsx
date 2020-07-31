@@ -333,6 +333,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                   Select <strong>'Options'</strong> in the overlay. The options
                   will open in a new browser tab.
+                  <strong>Note</strong> In the FireFox browser when the Enhanced Tracking Protection option is set to Strict, causes some sites or content to break and may prevent the options page from opening.
                 </p>
               </li>
             </ol>
