@@ -22,7 +22,7 @@ import {
   Button,
   InlineNotification,
   Accordion,
-  AccordionItem
+  AccordionItem,
 } from "carbon-components-react";
 
 import { Restart16, Save16 } from "@carbon/icons-react";
@@ -46,7 +46,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     rulesets: null,
     selected_ruleset: null,
     show_notif: false,
-    show_reset_notif: false
+    show_reset_notif: false,
   };
 
   async componentDidMount() {
@@ -124,7 +124,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
-      show_notif: false
+      show_notif: false,
     });
   };
 
@@ -145,7 +145,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive,
       selected_ruleset,
       show_reset_notif: true,
-      show_notif: false
+      show_notif: false,
     });
   };
 
@@ -183,7 +183,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       rulesets,
       selected_ruleset,
       show_notif,
-      show_reset_notif
+      show_reset_notif,
     } = {
       ...this.state,
     };
@@ -210,12 +210,10 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
-                  correspond to the most recent WCAG standards plus some
+                  correspond to the most recent WCAG guidelines plus some
                   additional IBM requirements. Rule sets for specific WCAG
                   versions are also available. The rule sets are updated
-                  regularly, and each update has a date of deployment. If you
-                  need to replicate an earlier test, choose the deployment date
-                  of the original test.
+                  regularly to continuously improve coverage and accuracy.
                 </p>
               </aside>
             </div>
