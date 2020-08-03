@@ -126,7 +126,7 @@ let a11yRulesLabeling: Rule[] = [
 
             //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
             if (!passed) {
-                return RuleFail("Fail_0", [myLabel]);
+                return RuleFail("Fail_1", [myLabel]);
             } else {
                 return RulePass("Pass_0");
             }
