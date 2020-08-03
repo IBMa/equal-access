@@ -210,7 +210,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
-                  correspond to the most recent WCAG guidlines plus some
+                  correspond to the most recent WCAG guidelines plus some
                   additional IBM requirements. Rule sets for specific WCAG
                   versions are also available. The rule sets are updated
                   regularly to continuously improve coverage and accuracy.
