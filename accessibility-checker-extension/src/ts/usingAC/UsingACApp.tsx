@@ -50,7 +50,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               role="navigation"
             >
               <h1>User guide</h1>
-              <ul className="toc" style={{marginTop: "1rem"}}>
+              <ul className="toc" style={{ marginTop: "1rem" }}>
                 <li>
                   <a href="#prereq" title="prerequisites">
                     1. Prerequisites
@@ -153,12 +153,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </p>
             <p>
               The extension showcases two views, the{" "}
-              <strong>Accessibility Assessment</strong> panel is a comprehensive accessibility assessment tool to help you identify
-              accessibility issues and understand how to fix them, while the{" "}
+              <strong>Accessibility Assessment</strong> panel is a comprehensive
+              accessibility assessment tool to help you identify accessibility
+              issues and understand how to fix them, while the{" "}
               <strong>Accessibility Checker</strong> tab in the Elements panel
-              in Chrome or the Inspector panel in Firefox is a code scanner for developers looking to find and fix issues in code and on the page quickly. This checker is part of
-              an open suite of accessibility automation tools. For teams seeking
-              integrated accessibility testing, IBM offers{" "}
+              in Chrome or the Inspector panel in Firefox is a code scanner for
+              developers looking to find and fix issues in code and on the page
+              quickly. This checker is part of an open suite of accessibility
+              automation tools. For teams seeking integrated accessibility
+              testing, IBM offers{" "}
               <a href="https://github.com/IBMa/equal-access/blob/master/README.md">
                 plug-ins and modules for NodeJS and Karma
               </a>{" "}
@@ -305,10 +308,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="t_select_settings">5. Options</h2>
             <p>
-              Use the options page to change the default rule set for a supported standard or a date of rule set deployment.
-              By default, the IBM Equal Access Accessibility Checker uses the latest deployment with a set
-              of rules that correspond to the most recent WCAG standards, plus some additional IBM requirements. Rule sets with rules that map to specific WCAG versions are also available to choose from as needed.
-              These rule sets are updated regularly and each update has a date of deployment. If you need to replicate an earlier test, choose the deployment date of the original test.
+              Use the options page to change the default rule set for a
+              supported standard or a date of rule set deployment. By default,
+              the IBM Equal Access Accessibility Checker uses the latest
+              deployment with a set of rules that correspond to the most recent
+              WCAG standards, plus some additional IBM requirements. Rule sets
+              with rules that map to specific WCAG versions are also available
+              to choose from as needed. These rule sets are updated regularly
+              and each update has a date of deployment. If you need to replicate
+              an earlier test, choose the deployment date of the original test.
             </p>
             <p>
               Follow the steps below to open the Accessibility Checker options
@@ -333,7 +341,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                   Select <strong>'Options'</strong> in the overlay. The options
                   will open in a new browser tab.
-                  <strong>Note</strong> In the FireFox browser when the Enhanced Tracking Protection option is set to Strict, causes some sites or content to break and may prevent the options page from opening.
+                  <strong>Note</strong> In the FireFox browser when the Enhanced
+                  Tracking Protection option is set to Strict, causes some sites
+                  or content to break and may prevent the options page from
+                  opening.
                 </p>
               </li>
             </ol>
@@ -428,7 +439,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
-              <strong>Note</strong>: On rare occasions the Accessibility Checker extension does not appear in the developer tools for some sites due to a bug in the developer tools. The workaround is to go to a site where you know the checker will launch, and launch the checker in the developer tools. Then, in the same browser tab, load the site that did not launch.
+              <strong>Note</strong>: On rare occasions the Accessibility Checker
+              extension does not appear in the developer tools for some sites
+              due to a bug in the developer tools. The workaround is to go to a
+              site where you know the checker will launch, and launch the
+              checker in the developer tools. Then, in the same browser tab,
+              load the site that did not launch.
             </p>
 
             <h3 id="a11y_check">6.1 Accessibility Checker</h3>
@@ -505,16 +521,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     The scan result displays the total number of issues found
                     with individual counts for violations, items that need
-                    review, and recommendations in the issue count region. By default, the issue list is
-                    shown in the ‘Element roles’ view (see the previous
-                    definition), while ‘Checklist’ and ‘Rules’ tabs are also
-                    available. All views show the same set of issues.
+                    review, and recommendations in the issue count region. By
+                    default, the issue list is shown in the ‘Element roles’ view
+                    (see the previous definition), while ‘Checklist’ and ‘Rules’
+                    tabs are also available. All views show the same set of
+                    issues.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    To <strong>filter</strong> issues and focus only on violations, items that need review or recommendations, select the issue type in the issue count region below the 'Scan' button.
-                    Select the same issue type again to see all issue types.
+                    To <strong>filter</strong> issues and focus only on
+                    violations, items that need review or recommendations,
+                    select the issue type in the issue count region below the
+                    'Scan' button. Select the same issue type again to see all
+                    issue types.
                   </p>
                 </li>
                 <li>
@@ -563,9 +583,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       >
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                            Highlight the selected element, or the element containing the selected issue, in the DOM under the browser's
-                            Elements panel and highlight its location on the web
-                            page.
+                            Highlight the selected element, or the element
+                            containing the selected issue, in the DOM under the
+                            browser's Elements panel and highlight its location
+                            on the web page.
                           </p>
                         </li>
                         <li>
@@ -577,7 +598,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </li>
                         <li>
                           <p style={{ marginTop: "0rem" }}>
-                           Open and highlight all issues in the element, if any (purple highlight)
+                            Open and highlight all issues in the element, if any
+                            (purple highlight)
                           </p>
                         </li>
                         <li>
@@ -906,11 +928,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               tests trigger the display of hidden content so that the
               Accessibility Checker can validate the content that is displayed.
             </p>
-            
+
             <h3 id="scan_local_files">6.4 Scan local files</h3>
             <div className="pa">
-              The Accessibility Checker is able to scan local .html or .htm files launched in the Firefox browser by default.
-              Follow the steps below to allow scanning of local .html or .htm files in the Chrome browser:
+              The Accessibility Checker is able to scan local .html or .htm
+              files launched in the Firefox browser by default. Follow the steps
+              below to allow scanning of local .html or .htm files in the Chrome
+              browser:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
@@ -919,13 +943,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   Open the <strong>'Window'</strong> menu.
                 </li>
                 <li>
-                  Select the <strong>'Extensions'</strong> menu option to see all installed extensions.
+                  Select the <strong>'Extensions'</strong> menu option to see
+                  all installed extensions.
                 </li>
                 <li>
-                  Select the <strong>'Details'</strong> button of the IBM Equal Access Accessibility Checker Extension.
+                  Select the <strong>'Details'</strong> button of the IBM Equal
+                  Access Accessibility Checker Extension.
                 </li>
                 <li>
-                  Scroll down to <strong>'Allow access to file URLs'</strong> and turn this option on.
+                  Scroll down to <strong>'Allow access to file URLs'</strong>{" "}
+                  and turn this option on.
                 </li>
               </ol>
             </div>
