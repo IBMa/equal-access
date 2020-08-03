@@ -84,10 +84,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
-        let violationFilterButtonAriaLabel = noScan ? ((bDiff ? counts.filtered["Violation"] + " of " : "") + counts.total["Violation"]) : " ";
-        console.log(violationFilterButtonAriaLabel);
-        // violationFilterButtonAriaLabel += " Violations Filter show only violations";
-
         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
