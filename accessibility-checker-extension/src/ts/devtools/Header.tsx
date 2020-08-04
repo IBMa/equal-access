@@ -17,7 +17,7 @@
 import React from "react";
 
 import {
-    Button
+    MultiSelect, Button
 } from 'carbon-components-react';
 
 import { Reset16 } from '@carbon/icons-react';
@@ -40,7 +40,8 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
-    showIssueTypeCallback: (type:string) => void
+    showIssueTypeCallback: (type:string) => void,
+    showIssueTypeMenuCallback: (type:string[]) => void,
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
@@ -51,6 +52,26 @@ interface IHeaderProps {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     state: IHeaderState = {};
+
+    processSelectedIssueTypes (items:any) {
+        let newItems = ["", "", ""];
+        items.map((item:any) => {
+            if (item.id === "Violations") {
+                newItems[0] = "Violations";
+            } else if (item.id === "NeedsReview") {
+                newItems[1] = "NeedsReview";
+            } else if (item.id === "Recommendations") {
+                newItems[2] = "Recommendations";
+            }
+        })
+        if (items.length == 0) {
+            this.props.showIssueTypeMenuCallback(["Violations", "NeedsReview", "Recommendations"]);
+        }
+        if (items.length > 0) {
+            this.props.showIssueTypeMenuCallback([newItems[0], newItems[1], newItems[2]]);
+        }
+    }
+        
         
     sendShowIssueTypeData(type:string) {
         this.props.showIssueTypeCallback(type);
@@ -62,6 +83,21 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (this.props.scanning == true) {
             noScan = true;
         }
+
+        const items = [
+            {
+                id: 'Violations',
+                label: 'Show Violations'
+            },
+            {
+                id: 'NeedsReview',
+                label: 'Show Needs Review'
+            },
+            {
+                id: 'Recommendations',
+                label: 'Show Recommendations'
+            }
+        ]
 
 
         if (!counts) {
@@ -97,8 +133,26 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-sm-2">
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
-                    <div className="headerTools" >
+                <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                    <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
+                        <div style={{width:250}}>
+                        <MultiSelect
+                            items={items}
+                            onChange={(value) => this.processSelectedIssueTypes(value.selectedItems)}
+                            direction="bottom"
+                            disabled={false}
+                            id="Filter issues"
+                            initialSelectedItems={[items[0], items[1], items[2]]}
+                            invalidText="Invalid Selection"
+                            label="Filter issues"
+                            light={false}
+                            locale="en"
+                            open={false}
+                            selectionFeedback="top-after-reopen"
+                            size="sm"
+                            type="default"
+                        />
+                        </div>
                         <Button
                             disabled={!this.props.counts}
                             onClick={this.props.collapseAll}
@@ -125,7 +179,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
                         <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span>
                     </span>
-                    <span className="filterButtons">
+                    {/* <span className="filterButtons">
                         <Button
                             disabled={!this.props.counts}
                             style={{paddingTop:"0px", paddingBottom:"0px"}}
@@ -136,14 +190,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                             {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[1] ? <img src={ViolationsFiltered}/> : <Filter16/>)}    
                         </Button>
-                    </span>
+                    </span> */}
                 </div>
                 <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
                     <img src={NeedsReview16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Needs review" />
                     <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}
                         <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Needs review</span>
                     </span>
-                    <span className="filterButtons">
+                    {/* <span className="filterButtons">
                         <Button
                             disabled={!this.props.counts}
                             style={{paddingTop:"0px", paddingBottom:"0px"}}
@@ -154,14 +208,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                             {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[2] ? <img src={NeedsReviewFiltered}/> : <Filter16/>)}
                         </Button>
-                    </span>
+                    </span> */}
                 </div>
                 <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
                     <img src={Recommendation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Recommendation" />
                     <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}
                         <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Recommendations</span>
                     </span>
-                    <span className="filterButtons">
+                    {/* <span className="filterButtons">
                         <Button
                             disabled={!this.props.counts}
                             style={{paddingTop:"0px", paddingBottom:"0px"}}
@@ -172,7 +226,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                             {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[3] ? <img src={RecommendationsFiltered}/> : <Filter16/>)} 
                         </Button>
-                    </span>
+                    </span> */}
                 </div>
                 <div className="countItem" role="status" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"right", overflow:"visible"}}>
                     {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}

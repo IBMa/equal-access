@@ -353,6 +353,24 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({learnMore: false});
     }
 
+    showIssueTypeMenuCallback (type:string[]) {
+        if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
+            this.setState({ showIssueTypeFilter: [true, false, false, false] });
+        } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] !== "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, true, false, false] });
+        } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, false, true, false] });
+        } else if (type[0] !== "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, false, false, true] });
+        } else if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, true, true, false] });
+        } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, true, false, true] });
+        } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
+            this.setState({ showIssueTypeFilter: [false, false, true, true] });
+        }
+    }
+
     showIssueTypeCallback (type:string) {
         if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
             this.setState({ showIssueTypeFilter: [false, true, false, false] });
@@ -383,6 +401,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                            showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
                             />
@@ -429,6 +448,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         reportHandler={this.reportHandler.bind(this)}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                        showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
                         />
