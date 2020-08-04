@@ -87,15 +87,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         const items = [
             {
                 id: 'Violations',
-                label: 'Show Violations'
+                label: 'Violations'
             },
             {
                 id: 'NeedsReview',
-                label: 'Show Needs Review'
+                label: 'Needs Review'
             },
             {
                 id: 'Recommendations',
-                label: 'Show Recommendations'
+                label: 'Recommendations'
             }
         ]
 
@@ -135,12 +135,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative" }}>
                     <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
-                        <div style={{width:250}}>
+                        <div style={{width:210, paddingRight:"16px"}}>
                         <MultiSelect
                             items={items}
                             onChange={(value) => this.processSelectedIssueTypes(value.selectedItems)}
                             direction="bottom"
-                            disabled={false}
+                            disabled={!this.props.counts}
                             id="Filter issues"
                             initialSelectedItems={[items[0], items[1], items[2]]}
                             invalidText="Invalid Selection"
