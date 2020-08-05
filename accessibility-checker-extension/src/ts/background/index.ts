@@ -35,7 +35,7 @@ async function initTab(tabId: number, archiveId: string) {
             resolve(res[0] !== "undefined");
         })
     });
-    
+
     // Switch to the appropriate engine for this archiveId
     let engineCode = await EngineCache.getEngine(archiveId);
     await new Promise((resolve, reject) => {
@@ -78,7 +78,7 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         // Determine which archive we're scanning with
         let archiveId = Config.defaultArchiveId + "";
         const archives = await EngineCache.getArchives();
-        const validArchive = ((id : string) => id && archives.some(archive => archive.id === id));
+        const validArchive = ((id: string) => id && archives.some(archive => archive.id === id));
 
         if (!validArchive(archiveId)) archiveId = "latest";
         if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
@@ -87,15 +87,15 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         let selectedArchive = archives.filter(archive => archive.id === archiveId)[0];
 
         // Determine which policy we're scanning with
-        let policyId : string = selectedArchive.policies[0].id;
-        const validPolicy = ((id : string) => id && selectedArchive.policies.some(policy => policy.id === id));
+        let policyId: string = selectedArchive.policies[0].id;
+        const validPolicy = ((id: string) => id && selectedArchive.policies.some(policy => policy.id === id));
         if (!validPolicy(policyId)) policyId = "IBM_Accessibility";
         if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
             policyId = result.OPTIONS.selected_ruleset.id;
         }
 
         await initTab(message.tabId, archiveId);
-        await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", { 
+        await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
             tabId: message.tabId,
             archiveId: archiveId,
             policyId: policyId
@@ -116,8 +116,8 @@ BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) =>
 
 BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
     return await new Promise((resolve, _reject) => {
-        chrome.tabs.get(message.tabId, async function(tab: any) {
-        //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+        chrome.tabs.get(message.tabId, async function (tab: any) {
+            //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
             resolve(tab);
         });
     });
@@ -148,8 +148,8 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
                     }
                     resolve(res[0]);
                 })
-            } 
-            catch(err) {
+            }
+            catch (err) {
                 reject(err);
             }
         })
@@ -162,7 +162,7 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     BackgroundMessaging.sendToPanel("TAB_UPDATED", {
         tabId: tabId,
-        status: changeInfo&&changeInfo.status,
+        status: changeInfo && changeInfo.status,
         tabUrl: tab.url
     });
 });
