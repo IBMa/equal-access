@@ -48,7 +48,8 @@ interface IPanelState {
     learnMore : boolean,
     learnItem : IReportItem | null,
     showIssueTypeFilter: boolean[],
-    scanning: boolean   // true when scan taking place
+    scanning: boolean,   // true when scan taking place
+    error: string | null
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -64,7 +65,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnMore: false,
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
-        scanning: false
+        scanning: false,
+        error: null
     }
     
     ignoreNext = false;
@@ -135,7 +137,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", {tabId: thisTabId });
         if (tab.id && tab.url && tab.id && tab.title) {
             let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
-            
+
+            if(rulesets.error){
+                self.setError(rulesets);
+                return;
+            }
+
             if (!self.state.listenerRegistered) {
                 PanelMessaging.addListener("TAB_UPDATED", async message => {
                     if (message.tabId === self.state.tabId && message.status === "loading") {
@@ -149,9 +156,37 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false] });
+                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false], error: null });
             
         }
+    }
+
+    setError = (data:any) => {
+
+        if(data.error){
+            this.setState({error: data.error});
+        }
+    };
+
+    errorHandler = (error: string | null) => {
+        
+        if(error && error.indexOf('Cannot access contents of url "file://') != -1){
+ 
+            let sub_s = error.substring(error.indexOf("\"") + 1);
+            let sub_e = sub_s.substring(0, sub_s.indexOf("\""));
+            
+            return (
+                    <React.Fragment>
+                        <p>Can not scan local file: <span style={{fontWeight: "bold"}}>{sub_e}</span></p>
+                        <br/>
+                        <p>Follow the {" "}
+                            <a href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User Guide</a>
+                             {" "}to allow scanning of local .html or .htm files in your browser</p>
+                    </React.Fragment>
+                    )
+        } 
+
+       return;
     }
 
     async startScan() {
@@ -366,7 +401,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
     
     render() {
-        if (this.props.layout === "main") {
+        let error = this.state.error;
+
+        if(error) {
+            return this.errorHandler(error);
+        }
+        else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
                     <div ref={this.leftPanelRef} style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
