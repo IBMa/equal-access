@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 export default class CommonMessaging {
 
     public static addListener(type: string, listener: (message: any) => Promise<any>) {
@@ -27,11 +27,11 @@ export default class CommonMessaging {
                         }
                         sendResponse(result);
                         return result;
-                    }).catch (err =>{
-                            sendResponse(JSON.stringify({error: err}));
-                            return true;
-                        });
-                
+                    }).catch(err => {
+                        sendResponse(JSON.stringify({ error: err }));
+                        return true;
+                    });
+
                     let isFirefox = navigator.userAgent.indexOf('Firefox') !== -1;
                     if (isFirefox) {
                         return response;
