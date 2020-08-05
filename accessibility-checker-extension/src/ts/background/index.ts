@@ -135,17 +135,23 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
                 archiveId = result.OPTIONS.selected_archive.id;
             }
 
-            await initTab(message.tabId, archiveId);
-            chrome.tabs.executeScript(message.tabId, {
-                code: "new window.ace.Checker().rulesets;",
-                frameId: 0,
-                matchAboutBlank: true
-            }, function (res) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                }
-                resolve(res[0]);
-            })
+            try {
+                await initTab(message.tabId, archiveId);
+
+                chrome.tabs.executeScript(message.tabId, {
+                    code: "new window.ace.Checker().rulesets;",
+                    frameId: 0,
+                    matchAboutBlank: true
+                }, function (res) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res[0]);
+                })
+            } 
+            catch(err) {
+                reject(err);
+            }
         })
 
     });
