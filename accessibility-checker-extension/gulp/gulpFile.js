@@ -101,7 +101,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
                 if(element.props){
                     snippet = snippet + element.props.children[0] + '\\n'
                 } else {
-                    element + '\\n'
+                    snippet = snippet + element + '\\n'
                 }
             });
         } else  if(children.length = 1){
