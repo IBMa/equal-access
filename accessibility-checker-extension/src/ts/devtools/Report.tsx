@@ -151,7 +151,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         const tabLabels : { [key: string] : string }= {
             element: "Element roles",
             rule: "Rules",
-            checklist: "Checklist"
+            checklist: "Checkpoints"
         }
 
         let ruleset : IRuleset | null = null;
