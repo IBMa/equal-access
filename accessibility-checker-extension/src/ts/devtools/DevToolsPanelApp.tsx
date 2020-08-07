@@ -155,11 +155,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({
-                rulesets: rulesets, listenerRegistered: true, tabURL: tab.url,
-                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false], error: null
-            });
 
+            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
+                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
         }
     }
 
@@ -390,18 +388,52 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ learnMore: false });
     }
 
-    showIssueTypeCallback(type: string) {
-        if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
-            this.setState({ showIssueTypeFilter: [false, true, false, false] });
-        } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
-            this.setState({ showIssueTypeFilter: [false, false, true, false] });
-        } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
-            this.setState({ showIssueTypeFilter: [false, false, false, true] });
+
+    // showIssueTypeMenuCallback (type:string[]) {
+    //     if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
+    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] !== "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
+    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
+    //     } else if (type[0] !== "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
+    //     } else if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, true, true, false] });
+    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, true, false, true] });
+    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
+    //         this.setState({ showIssueTypeFilter: [false, false, true, true] });
+    //     }
+    // }
+
+    showIssueTypeCheckBoxCallback (checked:boolean[]) {
+        console.log("In showIssueTypeCheckBoxCallback",checked);
+        if (checked[1] == true && checked[2] == true && checked[3] == true) {
+            console.log("All true");
+            this.setState({ showIssueTypeFilter: [true, checked[1], checked[2], checked[3]] });
+        } else if (checked[1] == false && checked[2] == false && checked[3] == false) {
+            console.log("All false");
+            this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         } else {
-            this.setState({ showIssueTypeFilter: [true, false, false, false] });
+            console.log("Mixed");
+            this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         }
+        console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
     }
 
+    // showIssueTypeCallback (type:string) {
+    //     if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
+    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
+    //     } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
+    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
+    //     } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
+    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
+    //     } else { 
+    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
+    //     }    
+    // }
+    
     render() {
         let error = this.state.error;
 
@@ -424,8 +456,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
-                            showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                            dataFromParent={this.state.showIssueTypeFilter}
+                            // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                            // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
+                            showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
+                            dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
                         />
                         <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
@@ -470,8 +504,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         collapseAll={this.collapseAll.bind(this)}
-                        showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                        dataFromParent={this.state.showIssueTypeFilter}
+                        // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
+                        // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
+                        showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
+                        dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
                     />
                     <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>

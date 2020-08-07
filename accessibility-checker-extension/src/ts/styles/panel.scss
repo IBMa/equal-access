@@ -102,6 +102,10 @@ $feature-flags: (
         }
     }
 
+    .bx--checkbox-wrapper {
+        display: inline;
+    }
+
     .countRow{
         display: flex;
         //flex-wrap: wrap;
