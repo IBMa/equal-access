@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 import React from "react";
 import Header from "./Header";
 import Help from "./Help";
@@ -44,11 +44,12 @@ interface IPanelState {
     tabTitle: string,
     selectedItem?: IReportItem,
     rulesets: IRuleset[] | null,
-    selectedCheckpoint? : ICheckpoint,
-    learnMore : boolean,
-    learnItem : IReportItem | null,
+    selectedCheckpoint?: ICheckpoint,
+    learnMore: boolean,
+    learnItem: IReportItem | null,
     showIssueTypeFilter: boolean[],
-    scanning: boolean   // true when scan taking place
+    scanning: boolean,   // true when scan taking place
+    error: string | null
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -64,9 +65,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnMore: false,
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
-        scanning: false
+        scanning: false,
+        error: null
     }
-    
+
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
@@ -76,7 +78,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
         // Only listen to element events on the subpanel
-        if (this.props.layout=== "sub") {
+        if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
                 chrome.devtools.inspectedWindow.eval(`((node) => {
                     let countNode = (node) => { 
@@ -132,10 +134,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
         // and get url using chrome.tabs.get via message "TAB_INFO"
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
-        let tab = await PanelMessaging.sendToBackground("TAB_INFO", {tabId: thisTabId });
+        let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
         if (tab.id && tab.url && tab.id && tab.title) {
             let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
-            
+
+            if (rulesets.error) {
+                self.setError(rulesets);
+                return;
+            }
+
             if (!self.state.listenerRegistered) {
                 PanelMessaging.addListener("TAB_UPDATED", async message => {
                     if (message.tabId === self.state.tabId && message.status === "loading") {
@@ -145,13 +152,43 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                 });
                 PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-                
+
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false] });
-            
+            self.setState({
+                rulesets: rulesets, listenerRegistered: true, tabURL: tab.url,
+                tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, false, false, false], error: null
+            });
+
         }
+    }
+
+    setError = (data: any) => {
+
+        if (data.error) {
+            this.setState({ error: data.error });
+        }
+    };
+
+    errorHandler = (error: string | null) => {
+
+        if (error && error.indexOf('Cannot access contents of url "file://') != -1) {
+
+            let sub_s = error.substring(error.indexOf("\"") + 1);
+            let sub_e = sub_s.substring(0, sub_s.indexOf("\""));
+
+            return (
+                <React.Fragment>
+                    <p>Can not scan local file: <span style={{ fontWeight: "bold" }}>{sub_e}</span></p>
+                    <br />
+                    <p>Follow the {" "}
+                        <a href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User Guide</a>
+                        {" "}to allow scanning of local .html or .htm files in your browser</p>
+                </React.Fragment>
+            )
+        }
+
+        return;
     }
 
     async startScan() {
@@ -176,24 +213,24 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let report = message.report;
         // JCH add itemIdx to report (used to be in message.report)
         if (!report) return;
-        
-        report.results.map((result:any, index:any) => {
+
+        report.results.map((result: any, index: any) => {
             result["itemIdx"] = index;
         })
         let tabId = message.tabId;
-        
+
 
         if (this.state.tabId === tabId) {
             report.timestamp = new Date().getTime();
             report.filterstamp = new Date().getTime();
-            this.setState({ 
-                filter: null, 
-                numScanning: Math.max(0, this.state.numScanning - 1), 
-                report: preprocessReport(report, null, false), 
+            this.setState({
+                filter: null,
+                numScanning: Math.max(0, this.state.numScanning - 1),
+                report: preprocessReport(report, null, false),
                 selectedItem: undefined
             });
         }
-        this.setState({ scanning: false});
+        this.setState({ scanning: false });
         return true;
     }
 
@@ -204,9 +241,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    reportHandler = async ()=>{
+    reportHandler = async () => {
         if (this.state.report && this.state.rulesets) {
-            var reportObj : any = {
+            var reportObj: any = {
                 tabURL: this.state.tabURL,
                 rulesets: this.state.rulesets,
                 report: {
@@ -251,7 +288,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 for (const resultItem of this.state.report.results) {
                     resultItem.selected = false;
                 }
-                this.setState({selectedItem: undefined, report: this.state.report});
+                this.setState({ selectedItem: undefined, report: this.state.report });
             } else {
                 if (this.props.layout === "main") {
                     if (this.state.rulesets && !checkpoint) {
@@ -271,17 +308,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     for (const resultItem of this.state.report.results) {
                         resultItem.selected = resultItem.itemIdx === item.itemIdx;
                     }
-                    this.setState({selectedItem: item, report: this.state.report, selectedCheckpoint: checkpoint});
+                    this.setState({ selectedItem: item, report: this.state.report, selectedCheckpoint: checkpoint });
                 } else if (this.props.layout === "sub") {
                     if (this.state.report) {
                         for (const resultItem of this.state.report.results) {
                             resultItem.selected = resultItem.path.dom === item.path.dom;
                         }
-                        this.setState({report: this.state.report});
+                        this.setState({ report: this.state.report });
                     }
 
                     var script =
-                    `function lookup(doc, xpath) {
+                        `function lookup(doc, xpath) {
                         let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
                         let element = nodes.iterateNext();
                         if (element) {
@@ -331,11 +368,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             console.log('Could not select element, it may have moved');
                         }
                         // do focus after inspected Window script
-                        setTimeout(() => { 
+                        setTimeout(() => {
                             var button = document.getElementById('backToListView');
                             if (button) {
                                 button.focus();
-                            } 
+                            }
                         }, 0);
                     });
 
@@ -346,106 +383,111 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getItem(item: IReportItem) {
-        this.setState({learnMore: true, learnItem: item});
+        this.setState({ learnMore: true, learnItem: item });
     }
 
     learnHelp() {
-        this.setState({learnMore: false});
+        this.setState({ learnMore: false });
     }
 
-    showIssueTypeCallback (type:string) {
+    showIssueTypeCallback(type: string) {
         if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
             this.setState({ showIssueTypeFilter: [false, true, false, false] });
         } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
             this.setState({ showIssueTypeFilter: [false, false, true, false] });
         } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
             this.setState({ showIssueTypeFilter: [false, false, false, true] });
-        } else { 
+        } else {
             this.setState({ showIssueTypeFilter: [true, false, false, false] });
-        }    
+        }
     }
-    
+
     render() {
-        if (this.props.layout === "main") {
+        let error = this.state.error;
+
+        if (error) {
+            return this.errorHandler(error);
+        }
+        else if (this.props.layout === "main") {
             return <React.Fragment>
-                <div style={{display: "flex", height: "100%", maxWidth: "50%"}} className="mainPanel">
-                    <div ref={this.leftPanelRef} style={{flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll": undefined}}>
-                        {!this.state.report && <ReportSplash /> }
+                <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel">
+                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
+                        {!this.state.report && <ReportSplash />}
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
-                        {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} /> }
+                        {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} />}
                     </div>
-                    {this.leftPanelRef.current?.scrollTo(0,0)}
-                    <div style={{flex: "1 1 50%"}} className="mainPanelRight">
-                        <Header 
-                            layout={this.props.layout} 
-                            counts={this.state.report && this.state.report.counts} 
-                            startScan={this.startScan.bind(this)} 
+                    {this.leftPanelRef.current?.scrollTo(0, 0)}
+                    <div style={{ flex: "1 1 50%" }} className="mainPanelRight">
+                        <Header
+                            layout={this.props.layout}
+                            counts={this.state.report && this.state.report.counts}
+                            startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                            dataFromParent = {this.state.showIssueTypeFilter}
+                            dataFromParent={this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
-                            />
-                        <div style={{marginTop: "7rem", height: "calc(100% - 7rem)"}}>
-                            <div role="region" aria-label="issue list"  className="issueList">
+                        />
+                        <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
+                            <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
-                                {this.state.report && <Report 
-                                    selectItem={this.selectItem.bind(this)} 
-                                    rulesets={this.state.rulesets} 
-                                    report={this.state.report} 
-                                    getItem = {this.getItem.bind(this)} 
+                                {this.state.report && <Report
+                                    selectItem={this.selectItem.bind(this)}
+                                    rulesets={this.state.rulesets}
+                                    report={this.state.report}
+                                    getItem={this.getItem.bind(this)}
                                     learnItem={this.state.learnItem}
-                                    layout = {this.props.layout}
+                                    layout={this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
-                                    dataFromParent = {this.state.showIssueTypeFilter} 
-                                    />}
+                                    dataFromParent={this.state.showIssueTypeFilter}
+                                />}
                             </div>
                         </div>
                     </div>
                 </div>
             </React.Fragment>
         } else if (this.props.layout === "sub") {
-            
+
             return <React.Fragment>
-                <div style={{display: this.state.learnMore ? "" : "none", height:"100%"}}>
-                    <HelpHeader learnHelp={this.learnHelp.bind(this)}  layout={this.props.layout}></HelpHeader>
-                    <div style={{overflowY:"scroll", height:"100%"}} ref={this.subPanelRef}>
-                        <div style={{marginTop: "6rem", height: "calc(100% - 6rem)"}}>
+                <div style={{ display: this.state.learnMore ? "" : "none", height: "100%" }}>
+                    <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
+                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                        <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
                             <div>
                                 <div className="subPanel">
-                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} /> }
+                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {this.subPanelRef.current?.scrollTo(0,0)}             
+                    {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                <div style={{display: this.state.learnMore ? "none" : "", height:"100%"}}>
-                    <Header 
-                        layout={this.props.layout} 
-                        counts={this.state.report && this.state.report.counts} 
-                        startScan={this.startScan.bind(this)} 
+                <div style={{ display: this.state.learnMore ? "none" : "", height: "100%" }}>
+                    <Header
+                        layout={this.props.layout}
+                        counts={this.state.report && this.state.report.counts}
+                        startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                        dataFromParent = {this.state.showIssueTypeFilter}
+                        dataFromParent={this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
-                        />
-                    <div style={{marginTop: "8rem", height: "calc(100% - 8rem)"}}>
-                        <div role="region" aria-label="issue list"  className="issueList">
+                    />
+                    <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
+                        <div role="region" aria-label="issue list" className="issueList">
                             {this.state.numScanning > 0 ? <Loading /> : <></>}
-                            {this.state.report && <Report 
-                                selectItem={this.selectItem.bind(this)} 
-                                rulesets={this.state.rulesets} 
-                                report={this.state.report} 
-                                getItem = {this.getItem.bind(this)} 
+                            {this.state.report && <Report
+                                selectItem={this.selectItem.bind(this)}
+                                rulesets={this.state.rulesets}
+                                report={this.state.report}
+                                getItem={this.getItem.bind(this)}
                                 learnItem={this.state.learnItem}
-                                layout = {this.props.layout}
+                                layout={this.props.layout}
                                 selectedTab="element"
                                 tabs={["checklist", "element", "rule"]}
-                                dataFromParent = {this.state.showIssueTypeFilter} 
-                                />}
+                                dataFromParent={this.state.showIssueTypeFilter}
+                            />}
                         </div>
                     </div>
                 </div>
