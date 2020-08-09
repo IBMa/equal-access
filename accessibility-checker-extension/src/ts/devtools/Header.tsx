@@ -203,8 +203,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter"
-                            aria-label="Filter Violations"
+                            title="Filter violations"
+                            aria-label="Filter violations"
                             defaultChecked
                             id="Violations"
                             indeterminate={false}
@@ -220,8 +220,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter"
-                            aria-label="Filter Needs Review"
+                            title="Filter needs review"
+                            aria-label="Filter needs review"
                             defaultChecked
                             id="NeedsReview"
                             indeterminate={false}
@@ -237,8 +237,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter"
-                            aria-label="Filter Recommendations"
+                            title="Filter recommendations"
+                            aria-label="Filter recommendations"
                             defaultChecked
                             id="Recommendations"
                             indeterminate={false}
