@@ -484,7 +484,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         } else if (this.props.layout === "sub") {
 
             return <React.Fragment>
-                <div style={{ display: this.state.learnMore ? "" : "none", height: "100%" }}>
+                <div style={{ display: this.state.learnMore ? "" : "none" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
@@ -497,7 +497,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                <div style={{ display: this.state.learnMore ? "none" : "", height: "100%" }}>
+                <div style={{ display: this.state.learnMore ? "none" : "" }}>
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
@@ -510,20 +510,22 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
                     />
-                    <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
-                        <div role="region" aria-label="issue list" className="issueList">
-                            {this.state.numScanning > 0 ? <Loading /> : <></>}
-                            {this.state.report && <Report
-                                selectItem={this.selectItem.bind(this)}
-                                rulesets={this.state.rulesets}
-                                report={this.state.report}
-                                getItem={this.getItem.bind(this)}
-                                learnItem={this.state.learnItem}
-                                layout={this.props.layout}
-                                selectedTab="element"
-                                tabs={["checklist", "element", "rule"]}
-                                dataFromParent={this.state.showIssueTypeFilter}
-                            />}
+                    <div style={{overflowY:"scroll", height:"100%"}}>
+                        <div style={{ marginTop: "15%", height: "calc(100% - 25%)" }}>
+                            <div role="region" aria-label="issue list" className="issueList">
+                                {this.state.numScanning > 0 ? <Loading /> : <></>}
+                                {this.state.report && <Report
+                                    selectItem={this.selectItem.bind(this)}
+                                    rulesets={this.state.rulesets}
+                                    report={this.state.report}
+                                    getItem={this.getItem.bind(this)}
+                                    learnItem={this.state.learnItem}
+                                    layout={this.props.layout}
+                                    selectedTab="element"
+                                    tabs={["checklist", "element", "rule"]}
+                                    dataFromParent={this.state.showIssueTypeFilter}
+                                />}
+                            </div>
                         </div>
                     </div>
                 </div>
