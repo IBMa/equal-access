@@ -100,8 +100,23 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     }
 
     MyCodeSnippet = ({children, ...rest}: { children: any}) => {
+        
+        var snippet = '';
+
+        if(children.length > 1){
+            children.forEach((element:any) => {
+                if(element.props){
+                    snippet = snippet + element.props.children[0] + '\\n'
+                } else {
+                    snippet = snippet + element + '\\n'
+                }
+            });
+        } else  if(children.length = 1){
+            snippet = children[0];
+        }
+
         return <div style={{margin: "1rem 0rem"}}>
-            <CodeSnippet {...rest} >
+            <CodeSnippet {...rest} onClick={() => this.handleCodeCopy(snippet)}>
                 {children}
             </CodeSnippet>
         </div>
@@ -111,11 +126,20 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         return <a href={href} target="_blank" rel="noopener noreferrer" title={title} {...rest}>{children}</a>
     }
 
+    handleCodeCopy = (codeString: string) => {
+        navigator.clipboard.writeText(codeString).then(() => {
+          // Success!
+        })
+        .catch((err) => {
+          console.log("handleCodeCopy error:", err);
+        });
+    };
+
     ItemSnippet = () => {
         return <React.Fragment>
             <h2 id="element-location">Element location</h2>
             <div style={{margin: "1rem 0rem"}}>
-                <CodeSnippet type="single" light={true} >
+                <CodeSnippet type="single" light={true} onClick={() => this.handleCodeCopy(this.props.item.snippet)}>
                     {this.props.item.snippet}
                 </CodeSnippet>
             </div>
