@@ -24,7 +24,7 @@ import {
 
 import { Reset16 } from '@carbon/icons-react';
 // import { SettingsAdjust16 } from '@carbon/icons-react';
-import { ReportData16 } from '@carbon/icons-react';
+import { ReportData16, DocumentExport16 } from '@carbon/icons-react';
 
 const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
@@ -42,6 +42,7 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
+    multiScanReportHandler: () => void,
     // showIssueTypeCallback: (type:string) => void,
     // showIssueTypeMenuCallback: (type:string[]) => void,
     showIssueTypeCheckBoxCallback: (checked:boolean[]) => void,
@@ -192,6 +193,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report" type="button"
                         >
                             <ReportData16 className="my-custom-class" />
+                        </Button>
+                        <Button
+                            disabled={!this.props.counts}
+                            onClick={this.props.multiScanReportHandler}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Muti-scan Report" type="button"
+                        >
+                            <DocumentExport16 className="my-custom-class" />
                         </Button>
                     </div>
                 </div>

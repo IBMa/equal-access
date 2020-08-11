@@ -280,6 +280,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    multiScanReportHandler = () => {
+        chrome.tabs.create({url:  chrome.runtime.getURL("multiScanReports.html")});
+    }
+
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
             if (!item) {
@@ -455,6 +459,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             counts={this.state.report && this.state.report.counts}
                             startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
+                            multiScanReportHandler={this.multiScanReportHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                             // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
@@ -503,6 +508,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         counts={this.state.report && this.state.report.counts}
                         startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
+                        multiScanReportHandler={this.multiScanReportHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                         // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
