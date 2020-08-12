@@ -67,7 +67,7 @@ async function getFiles(dir) {
         } else {
             f = path.join(dir, f);
             if (fs.lstatSync(f).isDirectory()) {
-                retVal = retVal.concat(getFiles(f));
+                retVal = retVal.concat(await getFiles(f));
             } else if (f.endsWith(".htm") || f.endsWith(".html")) {
                 retVal.push(f);
             }

@@ -64,7 +64,6 @@ const archivePolicies = () => {
                                 description: rs.description
                             });
                         }
-                        policies.sort((a,b) => a.id.localeCompare(b.id));
                     } catch (e) {}
                     archive.policies = policies;
                     if (archive.latest) {
