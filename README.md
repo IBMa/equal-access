@@ -11,6 +11,7 @@ This README covers topics for developers. For non-developer usage, see the follo
 * [accessibility-checker-extension for Firefox](https://addons.mozilla.org/en-US/firefox/addon/accessibility-checker/) : web browser extensions that adds automated accessibility checking capabilities to Firefox
 * [accessibility-checker](https://www.npmjs.com/package/accessibility-checker): automated accessibility testing for Node-based test environments
 * [karma-accessibility-checker](https://www.npmjs.com/package/karma-accessibility-checker): automated accessibility testing for the Karma environment
+* [cypress-accessibility-checker](https://www.npmjs.com/package/cypress-accessibility-checker): wrapped of accessibility-checker in the Cypress environment
 
 
 ## Getting started
@@ -48,6 +49,7 @@ Tools (description above):
 * [accessibility-checker-extension](accessibility-checker-extension/README.md): A web browser extensions that adds automated accessibility checking capabilities
 * [accessibility-checker](accessibility-checker/README.md): Automated accessibility testing for Node-based test environments
 * [karma-accessibility-checker](karma-accessibility-checker/README.md): Automated accessibility testing for the Karma environment
+* [cypress-accessibility-checker](cypress-accessibility-checker/README.md): Wrapped for accessibility-checker for the Cypress environment
 
 Components:
 * [accessibility-checker-engine](accessibility-checker-engine/README.md): accessibility rules and evaluation engine used by 
