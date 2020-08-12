@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Audio_Video_Trigger"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision who have trouble finding or tracking a pointer indicator on the screen
+* People who physically cannot use a pointing device
+
+### Why is this important?
+
+HTML5 `<audio>` and `<video>` elements are used to embed media on the page. Keyboard-only users must have keyboard access to the media controls to play, pause, increase and decrease volume.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Check media using `<audio>` and/or `<video>` element has keyboard accessible controls
+Media using `<audio>` and / or `<video>` elements must have keyboard accessible controls
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) 
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If using custom audio and / or video controls, ensure they are made keyboard accessible by scripting;
+* OR check to ensure default playback controls provided by the browser allow easy keyboard navigation and control.
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;audio id="demo" src="audio.mp3"&gt;&lt;/audio&gt;
+    &lt;div&gt;
+        &lt;button onclick="document.getElementById('demo').play()"&gt;Play the Audio&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').pause()"&gt;Pause the Audio&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').volume+=0.1"&gt;Increase Volume&lt;/button&gt;
+        &lt;button onclick="document.getElementById('demo').volume-=0.1"&gt;Decrease Volume&lt;/button&gt;
+    &lt;/div&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleToolbarUniqueLabel"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+
+### Why is this important?
+
+When there is more than one toolbar on a page, each must be uniquely labeled to help assistive technology users understand each toolbar’s purpose.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Multiple toolbar components do not have unique labels
+All toolbar components on a page must have unique labels specified
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1 technique ARIA16](http://www.w3.org/TR/WCAG20-TECHS/ARIA16)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* For each element with a `"toolbar"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that toolbar's purpose;
+* OR, use the `aria-label` attribute to add an invisible, unique, non-empty label to an element with the `"toolbar"` role.
+
+The following example shows two containers created with the WAI-ARIA `"toolbar"` role. Each container is uniquely labeled with `aria-label` and `aria-labelledby` attributes.
+
+<CodeSnippet type="multi" light={true}>&lt;div role="toolbar" aria-label="Simple tools"&gt;
+    ...
+&lt;/div&gt;
+    
+&lt;div role="toolbar" aria-labelledby="ct"&gt;
+    &lt;h2 id="ct"&gt;Complex tools&lt;/h2&gt;
+    ...
+&lt;/div&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

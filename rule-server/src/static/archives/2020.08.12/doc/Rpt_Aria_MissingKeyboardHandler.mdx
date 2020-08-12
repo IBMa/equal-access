@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MissingKeyboardHandler"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision
+ * People with tremor or other movement disorders
+ * People who rely on keyboard control
+
+### Why is this important?
+
+Unlike native HTML form elements, browsers do not provide keyboard support for graphical user interface (GUI) components that are made accessible with WAI-ARIA. Authors need to implement keyboard access using keyboard handlers such as `onkeydown` or `onkeypress`.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Interactive WAI_ARIA UI component does not have keyboard handlers implemented for keyboard access
+Interactive WAI_ARIA UI components must provide keyboard access
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [WAI-ARIA Authoring Practices 1.2, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex) | [W3C WAI-ARIA 1.2, Developing a Keyboard Interface](https://www.w3.org/TR/wai-aria-practices-1.2/#keyboard)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Confirm you can use only the keyboard to navigate to and interact with the UI component;
+ * OR, if the component is not keyboard accessible, implement `onkeydown` or `onkeypress` keyboard handlers on the element itself using the [ARIA 1.2 Authoring practices guidance](https://www.w3.org/TR/wai-aria-practices-1.2);
+ * OR, if the inaccessible component has required children, implement `onkeydown` or `onkeypress` keyboard handlers on all the required children (example below) or a grandchild of each required child;
+ * OR, use other methods to provide keyboard access as described in [WAI-ARIA Authoring Practices 1.2, Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex).
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;div role="tree" id="tree1"&gt;
+    &lt;div id="item1" role="treeitem" tabindex="0" onkeypress="keyEvent()"&gt;Tree item&lt;/div&gt;
+&lt;/div&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
