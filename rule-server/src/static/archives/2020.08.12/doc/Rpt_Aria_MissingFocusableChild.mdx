@@ -1,0 +1,45 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MissingFocusableChild"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+
+### Why is this important?
+
+Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### UI component has no focusable child element
+UI component must have at least one focusable child element for keyboard access
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+Set the value of the `tabindex` attribute equal to 0 or -1 on at least one of the required child elements to include the UI component in the tab sequence. 
+The following example shows a component with `role="tree"` with its required child with `role="treeitem"`. The child contains `tabindex="0"` which makes the `treeitem` keyboard operable:
+
+<CodeSnippet type="multi" light={true}>&lt;div role="tree" aria-label="Tree Widget" id="tree1" onkeypress="keyEvent();"&gt;
+    &lt;div id="item1" role="treeitem" tabindex="0"&gt;Tree item&lt;/div&gt;
+&lt;/div&gt;  </CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

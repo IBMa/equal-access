@@ -1,0 +1,43 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Script_FocusBlurs"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People who physically cannot use a pointing device
+
+### Why is this important?
+
+The system focus indicator is an important part of accessibility for keyboard users.  When focus is removed from a control via a script, the focus is transferred to another location, often to the browser window.
+An example failure is `<input type="submit" onFocus="this.blur();">` This action interrupts the focus cycle and prevents keyboard users from being able to reach all of the links and controls on the page. In this situation, users can only reach the content with a pointing device.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Check script does not remove focus from content that normally receives focus
+Scripting must not remove focus from content that normally receives focus
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html) | [IBM 3.2.1 On Focus](http://www.ibm.com/able/guidelines/ci162/on_focus.html) | [WCAG 2.1 failure technique F55](https://www.w3.org/WAI/WCAG21/Techniques/failures/F55)
+
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If `blur` is being used simply to avoid the visual focus effect, this is a violation. Remove the call to `blur`;
+ * OR, if there is a reason why keyboard focus must be removed from this element, make sure you can still reach all interactive elements on this page using only the Tab key.
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

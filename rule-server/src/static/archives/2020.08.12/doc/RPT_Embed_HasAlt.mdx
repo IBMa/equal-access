@@ -1,0 +1,46 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Embed_HasAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People who turn off image-loading on their web browsers
+
+### Why is this important?
+
+This is important for users of assistive technologies to provide information about the `<embed>` object if they are unable to understand or perceive the object.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Verify that the `<embed>` element has alternative content
+Provide alternative content for `<embed>` elements
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Provide a short alternative text description that represents the function of the `<embed>` element's content. Use a functional label based on the context in which the object is used, rather than a visual description. Alternative content can be provided with the `alt` attribute.
+
+For example:
+
+<CodeSnippet type="single" light={true}>&lt;embed src="speech.au" alt="Last week's speech"&gt;&lt;/embed&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,43 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Form_TargetAndText"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with cognitive limitations
+* Many older adults
+
+### Why is this important?
+
+If entering data in a form or selecting a form control causes be a change in context, users need to be informed. Interactive components with unpredictable behavior might change the user's context before they are ready, causing frustration or confusion.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Check that interacting with content does not initiate a change of context
+User should be informed in advance when interacting with content causes a change of context
+
+[IBM 3.2.2 On Input](http://www.ibm.com/able/guidelines/ci162/on_input.html) | [WCAG 2.1 technique 13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13) | [WCAG 2.1 technique 80](https://www.w3.org/WAI/WCAG21/Techniques/general/G80)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Provide a submit button using an `<input>` element with a `type="submit"` attribute to intitate a change in context;
+* OR, describe what will happen when interacting with content, before the change happens (see [WCAG 2.1 technique 13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13).)
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
