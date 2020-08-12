@@ -58,6 +58,29 @@ jobs:
         env: 
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  cypress-accessibility-checker-publish:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set env
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+      - run: npm install
+        working-directory: cypress-accessibility-checker
+      - run: npm run package:npm
+        working-directory: cypress-accessibility-checker
+      - run: gitactions/publish/cypress-achecker.sh
+        env: 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   extension-build:
     runs-on: ubuntu-latest
 
