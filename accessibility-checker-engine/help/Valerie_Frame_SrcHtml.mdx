@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * People who rely on keyboard control
- * Blind people using a screen reader
- * People with low vision using screen magnification
- * People with dexterity impairment
-
-### Why is this important?
-
-If the content of a `<frame>` is not HTML, it may not be accessible. For example, if the source of the `<frame>` element is an image file, assistive technology cannot read the content because you cannot add `alt` text to the image in the `<frame>` source. The user opens the frame and hears nothing or perhaps the name of the image file. The `<frame>` element is obsolete and ideally should not be used. When used, the frame source must be accessible.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +22,20 @@ A `<frame>` containing non-HTML content must be made accessible
  * HTML `<frame>` is obsolete, if possible avoid its use;
  * OR, verify that interactive content inside the frame is accessible by keyboard;
  * AND, verify that content inside the frame can be accessed by assistive technologies such as a screen reader.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using a screen reader
+ * People with low vision using screen magnification
+ * People with dexterity impairment
+
+### Why is this important?
+
+If the content of a `<frame>` is not HTML, it may not be accessible. For example, if the source of the `<frame>` element is an image file, assistive technology cannot read the content because you cannot add `alt` text to the image in the `<frame>` source. The user opens the frame and hears nothing or perhaps the name of the image file. The `<frame>` element is obsolete and ideally should not be used. When used, the frame source must be accessible.
 
 </Column>
 </Row>

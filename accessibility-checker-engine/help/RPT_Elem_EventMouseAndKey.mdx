@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with low vision
-* People with tremor or other movement disorders
-* People who rely on keyboard control
-
-### Why is this important?
-
-Scripted mouse-specific event handlers can be used to trigger actions on graphical user interface (GUI) controls. Equivalent keyboard-specific handlers allow individuals who rely on a keyboard or keyboard interface to access the same functionality.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -45,6 +31,20 @@ All interactive content with mouse event handlers must have equivalent keyboard 
 | onmouseout    | onblur        |
 
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision
+* People with tremor or other movement disorders
+* People who rely on keyboard control
+
+### Why is this important?
+
+Scripted mouse-specific event handlers can be used to trigger actions on graphical user interface (GUI) controls. Equivalent keyboard-specific handlers allow individuals who rely on a keyboard or keyboard interface to access the same functionality.
 
 </Column>
 </Row>

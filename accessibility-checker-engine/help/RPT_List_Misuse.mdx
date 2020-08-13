@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with low vision using screen readers
-
-### Why is this important?
-
-Lists add structural information that helps users navigate without vision. Using list markup improperly hinders accessibility by making it difficult for users with specialized software to understand the organization of the page or to navigate through it.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -35,6 +23,18 @@ List elements should only be used for lists of related items
  * Check that list items are represented with `<li>` elements and enclosed within list elements `<ul>` or `<ol>`;
  * AND check that definition list items are represented with `<dt>`, or `<di>` and enclosed within a definition list element `<dl>`;
  * AND check that elements within a list element do form a list.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+### Why is this important?
+
+Lists add structural information that helps users navigate without vision. Using list markup improperly hinders accessibility by making it difficult for users with specialized software to understand the organization of the page or to navigate through it.
 
 </Column>
 </Row>

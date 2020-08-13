@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
- * People who turn off image-loading on their web browsers
-
-### Why is this important?
-
-This is important for users of assistive technologies to provide information about the `<embed>` object if they are unable to understand or perceive the object.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -38,6 +24,20 @@ Provide alternative content for `<embed>` elements
 For example:
 
 <CodeSnippet type="single" light={true}>&lt;embed src="speech.au" alt="Last week's speech"&gt;&lt;/embed&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People who turn off image-loading on their web browsers
+
+### Why is this important?
+
+This is important for users of assistive technologies to provide information about the `<embed>` object if they are unable to understand or perceive the object.
 
 </Column>
 </Row>

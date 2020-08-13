@@ -6,22 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People with low vision using screen magnification
- * People who rely on keyboard control
- * People with dexterity impairment
- * People with cognitive limitations
-
-### Why is this important?
-
-When using the `<select>` element, the user should be allowed to control when an action is performed, rather than having an action occur as a side effect of choosing a value. This mechanism provides the user with an opportunity to inspect the different values of the `<select>` element, or to correct a choice. When the user is satisfied with their choice, they can select a button to perform the action. This interaction is particularly important for users who are choosing the value of the `<select>` element via the keyboard, because navigating through the options of the `<select>` element changes the value of the control and would otherwise submit the value after seeing only the first option.
-
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +21,22 @@ No changes of context should occur when a selection value receives focus
 
  * Use the keyboard to navigate to and within the `<select>` component;
  * AND, verify that when each selection option receives focus, no [change of context](https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html#dfn-changes-of-context) is triggered.
+
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People with low vision using screen magnification
+ * People who rely on keyboard control
+ * People with dexterity impairment
+ * People with cognitive limitations
+
+### Why is this important?
+
+When using the `<select>` element, the user should be allowed to control when an action is performed, rather than having an action occur as a side effect of choosing a value. This mechanism provides the user with an opportunity to inspect the different values of the `<select>` element, or to correct a choice. When the user is satisfied with their choice, they can select a button to perform the action. This interaction is particularly important for users who are choosing the value of the `<select>` element via the keyboard, because navigating through the options of the `<select>` element changes the value of the control and would otherwise submit the value after seeing only the first option.
 
 
 </Column>

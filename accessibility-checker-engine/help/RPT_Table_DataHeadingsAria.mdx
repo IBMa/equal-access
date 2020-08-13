@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-
-* Blind people using screen readers
-* People with low vision using screen readers
-
-
-### Why is this important?
-
-Data tables are used to display relational data. Associating data cells with appropriate headers allows assistive technologies to announce the header(s) for each data cell so a user can understand the complex relationship of the tabular data.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -39,6 +25,20 @@ Data table must identify headers
  * OR, if this is complex data table, add the `scope` attribute to the `<th>` element to identify headers and define the scope of the header for each data cell;
  * OR, if this is a complex table with multiple rows or columns as headers, use the `id` attribute with the `<th>` element and the `headers` attribute with the `<td>` element to identify multiple headers for each data cell (e.g. `<td headers="h1 h2">`).
  
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+
+### Why is this important?
+
+Data tables are used to display relational data. Associating data cells with appropriate headers allows assistive technologies to announce the header(s) for each data cell so a user can understand the complex relationship of the tabular data.
 
 </Column>
 </Row>

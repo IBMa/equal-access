@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using screen readers
- * People who physically cannot use a pointing device
-
-### Why is this important?
-
-All focus indicators should be highly visible and distinguishable. When navigating a Web page with a keyboard, users need to know which element has the keyboard focus. A visual focus indicator might be a vertical bar (a typical cursor) or a visible border surrounding a user interface control.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +25,18 @@ The keyboard focus indicator must be highly visible when default border or outli
  * OR, use interface components that are highlighted by the user agent when they receive focus;
  * OR, use a script to change the background color or border of the element to make it visually distinct when it receives focus
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People who physically cannot use a pointing device
+
+### Why is this important?
+
+All focus indicators should be highly visible and distinguishable. When navigating a Web page with a keyboard, users need to know which element has the keyboard focus. A visual focus indicator might be a vertical bar (a typical cursor) or a visible border surrounding a user interface control.
 
 </Column>
 </Row>

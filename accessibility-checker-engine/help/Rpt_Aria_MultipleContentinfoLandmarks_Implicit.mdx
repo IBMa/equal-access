@@ -6,16 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-### Why is this important?
-When there are multiple elements with a `"contentinfo"` role, they must have unique labels that clearly describe each region's content. This includes HTML `<footer>` elements when their context is a `<body>` element. These labels help people using assistive technologies to quickly find and navigate to each region.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -42,6 +32,16 @@ For example:
 ...
 &lt;/footer&gt;</CodeSnippet>
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+### Why is this important?
+When there are multiple elements with a `"contentinfo"` role, they must have unique labels that clearly describe each region's content. This includes HTML `<footer>` elements when their context is a `<body>` element. These labels help people using assistive technologies to quickly find and navigate to each region.
 
 </Column>
 </Row>

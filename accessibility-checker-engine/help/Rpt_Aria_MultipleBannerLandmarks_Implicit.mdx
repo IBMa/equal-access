@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-### Why is this important?
-
-An HTML `<header>` element that is a descendant of the `<body>` element, or any element with an explicit `"banner"` role is a type of WAI-ARIA landmark region that identifies site-oriented content at the beginning of the page. When the page includes more than one banner region, each should have a unique label, so people who use assistive technologies can quickly identify and navigate to each `"banner"` region.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -43,6 +32,17 @@ For example:
 &lt;div role="banner" aria-label="Stock ticker portlet"&gt;
    ...
 &lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+### Why is this important?
+
+An HTML `<header>` element that is a descendant of the `<body>` element, or any element with an explicit `"banner"` role is a type of WAI-ARIA landmark region that identifies site-oriented content at the beginning of the page. When the page includes more than one banner region, each should have a unique label, so people who use assistive technologies can quickly identify and navigate to each `"banner"` region.
 
 </Column>
 </Row>

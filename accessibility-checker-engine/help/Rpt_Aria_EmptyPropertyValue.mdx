@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using screen readers
-
-### Why is this important?
-
-For each WAI-ARIA attribute (a property or a state) used in an element, a valid value for the attribute must be specified. This enables assistive technologies to present the element appropriately.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -35,6 +24,17 @@ When specifying a required WAI-ARIA attribute, the value must be non-empty
 For example, the following element uses an `aria-live` property. The `aria-live` property requires a valid non-empty value set, one of which is `"polite"`.
 
 <CodeSnippet type="single" light={true}>&lt;div role="range" aria-live="polite"&gt;Live region content.&lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+
+### Why is this important?
+
+For each WAI-ARIA attribute (a property or a state) used in an element, a valid value for the attribute must be specified. This enables assistive technologies to present the element appropriately.
 
 </Column>
 </Row>

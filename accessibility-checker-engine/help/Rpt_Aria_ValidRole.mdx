@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with dexterity impairment using voice control
-
-### Why is this important?
-
-The WAI-ARIA specification provides a collection of accessibility roles as the main indicator of the type of control. This is used to support platform accessibility APIs. Using a valid WAI-ARIA `role` on an element as defined in the WAI-ARIA specification allows assistive technologies to use the role semantics to present and support consistent object interaction.
-
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -45,6 +32,19 @@ The following example shows an element with a valid `role="scrollbar"` intended 
       aria-valuenow="25"&gt;
        &lt;div class="scrollhandle"&gt;&lt;/div&gt;
    &lt;/div&gt;</CodeSnippet>
+
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with dexterity impairment using voice control
+
+### Why is this important?
+
+The WAI-ARIA specification provides a collection of accessibility roles as the main indicator of the type of control. This is used to support platform accessibility APIs. Using a valid WAI-ARIA `role` on an element as defined in the WAI-ARIA specification allows assistive technologies to use the role semantics to present and support consistent object interaction.
 
 
 </Column>

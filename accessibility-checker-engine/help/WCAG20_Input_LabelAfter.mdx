@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using screen readers
- * People with low vision using screen magnification
-
-### Why is this important?
-
-Applications generally place the labels for radio button and check box elements after the element itself. Users expect this convention to be followed consistently. When labels are placed before a radio button or checkbox element, users can become disoriented.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +25,18 @@ For example:
 
 <CodeSnippet type="multi" light={true}>&lt;input id="chk1" name="chkgroup" type="checkbox"&gt;&lt;label for="chk1"&gt;Option 1&lt;/label&gt;
 &lt;label&gt;&lt;input name="chkgroup" type="checkbox"&gt;Option 1&lt;/label&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen magnification
+
+### Why is this important?
+
+Applications generally place the labels for radio button and check box elements after the element itself. Users expect this convention to be followed consistently. When labels are placed before a radio button or checkbox element, users can become disoriented.
 
 </Column>
 </Row>

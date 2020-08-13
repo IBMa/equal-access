@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with low vision using screen magnification
-
-### Why is this important?
-
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +25,18 @@ Hyperlinks must have link text, a label or an image with a text alternative
 <CodeSnippet type="multi" light={true}>&lt;h2 id="topic1"&gt;Breaking News&lt;/h2&gt;
 &lt;p&gt;The central bank cut interest rates by half a percentage to protect economy.
 &lt;a id="p1" href="news.html" aria-labelledby="p1 topic1"&gt;Read more...&lt;/a&gt;&lt;/p&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen magnification
+
+### Why is this important?
+
+When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
 
 </Column>
 </Row>

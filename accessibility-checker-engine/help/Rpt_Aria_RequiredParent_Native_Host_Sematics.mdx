@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using a screen reader
-
-### Why is this important?
-
-If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA parent element that is required for that role must also be set for the element. If the parent element's native WAI-ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -38,6 +27,17 @@ For example, the following `<li>` element uses an `"option"` role. The `"option"
     &lt;li role="option"&gt;list box option&lt;/li&gt;
 &lt;/ul&gt;</CodeSnippet>
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using a screen reader
+
+### Why is this important?
+
+If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA parent element that is required for that role must also be set for the element. If the parent element's native WAI-ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
 
 </Column>
 </Row>

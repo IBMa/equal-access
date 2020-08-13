@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers 
-* People with dexterity impairment using voice control
-
-### Why is this important?
-
-Assistive technologies use labels to identify form controls. Providing more than one label for the same form control causes confusion, and may be handled differently by different browsers.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -33,6 +21,18 @@ Form controls should have exactly one label
 
  * If the `for` attribute references a form control, find all `<label>` elements with this `for` attribute value. Decide which is the intended label and remove or change the others;
  * OR, if the `for` attribute does not reference a form control, remove the label or the `for` attribute.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers 
+* People with dexterity impairment using voice control
+
+### Why is this important?
+
+Assistive technologies use labels to identify form controls. Providing more than one label for the same form control causes confusion, and may be handled differently by different browsers.
 
 </Column>
 </Row>

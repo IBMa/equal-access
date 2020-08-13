@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People who physically cannot use a pointing device
-
-### Why is this important?
-
-Landmark roles provide programmatic access to sections of a web page, making it easy for the user to understand the structure of the page and easily navigate to different sections. They also enable users to skip over blocks of content that are repeated on multiple pages.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -34,6 +22,18 @@ All content must reside within an element with a landmark role
 * Enclose the content within an HTML5 sectioning element with an implicit landmark role (e.g. `<main>Content</main>`);
 * OR use the `"role"` attribute on an enclosing element to specify an appropriate WAI-ARIA landmark value (e.g. `<div role="contentinfo">...</div>`).
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+
+### Why is this important?
+
+Landmark roles provide programmatic access to sections of a web page, making it easy for the user to understand the structure of the page and easily navigate to different sections. They also enable users to skip over blocks of content that are repeated on multiple pages.
 
 </Column>
 </Row>

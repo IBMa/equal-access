@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
- * People who turn off image-loading on their web browsers
-
-### Why is this important?
-
-The content of the `<noembed>` element is provided to screen reader users or in browsers when an embedded object cannot be displayed. However, this is a deprecated element.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -40,6 +26,20 @@ The content of the `<noembed>` element is provided to screen reader users or in 
 <CodeSnippet type="multi" light={true}>&lt;object src="../movies/history_of_rome.mov" height="60" width="144" autostart="false"&gt;
         &lt;a href="../transcripts/transcript_history_rome.htm"&gt;Transcript of "The history of Rome"&lt;/a&gt;
 &lt;/object&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People who turn off image-loading on their web browsers
+
+### Why is this important?
+
+The content of the `<noembed>` element is provided to screen reader users or in browsers when an embedded object cannot be displayed. However, this is a deprecated element.
 
 </Column>
 </Row>

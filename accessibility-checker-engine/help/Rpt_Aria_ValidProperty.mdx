@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with dexterity impairment using voice control
-
-### Why is this important?
-
-When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.1 specifies which attributes are valid for that role. If invalid WAI-ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -40,6 +28,18 @@ For example:
 <CodeSnippet type="multi" light={true}>&lt;ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1"&gt;
     
 &lt;li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"&gt;&lt;span&gt;Fruits&lt;/span&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with dexterity impairment using voice control
+
+### Why is this important?
+
+When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.1 specifies which attributes are valid for that role. If invalid WAI-ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
 
 </Column>
 </Row>

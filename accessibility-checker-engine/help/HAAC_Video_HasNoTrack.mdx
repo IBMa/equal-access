@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People who are deaf or hard of hearing
-
-### Why is this important?
-
-Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -38,6 +26,18 @@ For example:
 <CodeSnippet type="multi" light={true}>&lt;video src="..."&gt;
       &lt;track src="myvideo.srt" kind="captions" &gt;
 &lt;/video&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who are deaf or hard of hearing
+
+### Why is this important?
+
+Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
 
 </Column>
 </Row>

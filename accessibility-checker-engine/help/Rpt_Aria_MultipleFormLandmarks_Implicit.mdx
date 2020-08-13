@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-### Why is this important?
-
-An HTML `<form>` element with a label or title, or any element with a `"form"` role is a type of WAI-ARIA landmark region. When there are multiple `"form"` regions, they must have unique labels, so people who use assistive technologies can quickly identify and navigate to each form region.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -52,6 +41,17 @@ For example:
 	...
 &lt;/div&gt;</CodeSnippet>
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+### Why is this important?
+
+An HTML `<form>` element with a label or title, or any element with a `"form"` role is a type of WAI-ARIA landmark region. When there are multiple `"form"` regions, they must have unique labels, so people who use assistive technologies can quickly identify and navigate to each form region.
 
 </Column>
 </Row>

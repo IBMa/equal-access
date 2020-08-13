@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using screen readers
- * People who turn off image-loading on their web browsers
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
-
-### Why is this important?
-
-When an image contains important information that is not available in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +23,20 @@ Check the `"alt"` attribute value is a good alternative for the image
 * OR, if the image is decorative or the same information is also available in text, use the `"alt"` attribute with an empty string as its value (e.g.  `<img alt="">`).
 
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People who turn off image-loading on their web browsers
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+
+### Why is this important?
+
+When an image contains important information that is not available in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
 
 </Column>
 </Row>

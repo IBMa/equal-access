@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People with cognitive limitations
-* Many older adults
-
-### Why is this important?
-
-Submit buttons and image buttons allow users to explicitly request submission of the form and to control the change of context. Forms that are submitted by other mechanisms might change the user's context before they are ready, causing frustration or confusion.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -35,6 +22,19 @@ A `<form>` element should have a submit button or an image button
 * Provide a submit button using an `<input>` element with a `type="submit"` attribute;
 * OR, uses a server-side script (specified in the action attribute) that redirects the user to the requested page (see Example 2 in [WCAG 2.1 technique H32](https://www.w3.org/WAI/WCAG21/Techniques/html/H32).)
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with cognitive limitations
+* Many older adults
+
+### Why is this important?
+
+Submit buttons and image buttons allow users to explicitly request submission of the form and to control the change of context. Forms that are submitted by other mechanisms might change the user's context before they are ready, causing frustration or confusion.
 
 </Column>
 </Row>

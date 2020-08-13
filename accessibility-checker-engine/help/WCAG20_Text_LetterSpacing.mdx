@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People with reading disabilities
- * People who view interfaces using an adapted layout
-
-### Why is this important?
-
-The visual appearance of spacing in text should be accomplished using style sheets to maintain meaningful text sequencing. Simply adding blank characters to control the spacing may change the meaning, pronunciation or the interpretation of the word or cause the word not to be programmatically recognized as a single word.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -35,6 +22,19 @@ Use CSS `letter-spacing` to control spacing within a word
  * Verify space characters are not being used to create space between the letters of a word;
  * OR, if the letters of a word letters need to be spaced out, [use the CSS `letter-spacing` property](https://www.w3.org/WAI/WCAG21/Techniques/css/C8.html).
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People with reading disabilities
+ * People who view interfaces using an adapted layout
+
+### Why is this important?
+
+The visual appearance of spacing in text should be accomplished using style sheets to maintain meaningful text sequencing. Simply adding blank characters to control the spacing may change the meaning, pronunciation or the interpretation of the word or cause the word not to be programmatically recognized as a single word.
 
 </Column>
 </Row>

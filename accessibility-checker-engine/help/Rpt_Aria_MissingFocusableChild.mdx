@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People who physically cannot use a pointing device
-
-### Why is this important?
-
-Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +25,18 @@ The following example shows a component with `role="tree"` with its required chi
 <CodeSnippet type="multi" light={true}>&lt;div role="tree" aria-label="Tree Widget" id="tree1" onkeypress="keyEvent();"&gt;
     &lt;div id="item1" role="treeitem" tabindex="0"&gt;Tree item&lt;/div&gt;
 &lt;/div&gt;  </CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+
+### Why is this important?
+
+Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
 
 </Column>
 </Row>

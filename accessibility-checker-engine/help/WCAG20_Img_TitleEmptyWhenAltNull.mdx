@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-### Why is this important?
-
-When an image is decorative and has an empty `alt` attribute, the `title` attribute should not be included. This ensures the image is ignored by assistive technologies.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +25,17 @@ For example:
 
 <CodeSnippet type="single" light={true}>&lt;img src="squiggle.gif" width="20" height="20" alt="" /&gt;</CodeSnippet>
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+### Why is this important?
+
+When an image is decorative and has an empty `alt` attribute, the `title` attribute should not be included. This ensures the image is ignored by assistive technologies.
 
 </Column>
 </Row>

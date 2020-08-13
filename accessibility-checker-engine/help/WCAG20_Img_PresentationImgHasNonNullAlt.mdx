@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-
-### Why is this important?
-
-Roles of `presentation` and `none` on an image indicate the element is decorative and should be ignored by assistive technologies. Providing a non-null text alternative conflicts with that decorative designation.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +24,18 @@ Set the `alt` attribute to an empty (or null) string (i.e., `<img alt="">`) for 
 Example:
 
 <CodeSnippet type="single" light={true}>&lt;img src="demomovie.gif" role="presentation" alt="" /&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+
+### Why is this important?
+
+Roles of `presentation` and `none` on an image indicate the element is decorative and should be ignored by assistive technologies. Providing a non-null text alternative conflicts with that decorative designation.
 
 </Column>
 </Row>

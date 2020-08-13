@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers.
-
-### Why is this important?
-
-Using both an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an `<input>` element can cause a conflict that allows one of the attributes to override the other. This can lead to unexpected and confusing assistive technology behavior.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -42,6 +31,17 @@ Example uses both HTML5 and ARIA attribute indicating the input is required with
 <CodeSnippet type="multi" light={true}>&lt;label for="phone"&gt;* Phone number: &lt;/body&gt;
 &lt;input type="text" id="phone" name="phone" required aria-required="true"&gt;</CodeSnippet>
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers.
+
+### Why is this important?
+
+Using both an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an `<input>` element can cause a conflict that allows one of the attributes to override the other. This can lead to unexpected and confusing assistive technology behavior.
 
 </Column>
 </Row>

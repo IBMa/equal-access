@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
-
-### Why is this important?
-
-The HTML `<blockquote>` element tells assistive technologies which content is part of a quotation or citation. Using the element for indention or formatting can mislead assistive technology users as to its meaning and purpose.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -34,6 +21,19 @@ Use `<blockquote>` only for quotations, not indentation
 
  * Verify that `<blockquote>` is being used for actual quoted text;
  * OR, do not use `<blockquote>` for this content.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+
+### Why is this important?
+
+The HTML `<blockquote>` element tells assistive technologies which content is part of a quotation or citation. Using the element for indention or formatting can mislead assistive technology users as to its meaning and purpose.
 
 </Column>
 </Row>

@@ -6,20 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People who physically cannot use a pointing device
-
-### Why is this important?
-
-Elements use `aria-activedescendant` property to manage the focus of their active descendants. 
-Setting the tabindex value to 0 or -1  ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access. 
-Using values greater than 0 should be avoided as it can break the logical tab order.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -40,6 +26,20 @@ The following example shows a toolbar element using the `aria-activedescendant` 
          &lt;div class="toolbar-item" id="button1" role="button"&gt;tool 1 &lt;/div&gt;
          &lt;div class="toolbar-item" id="button2" role="button"&gt;tool 2 &lt;/div&gt;  
 &lt;/div&gt;  </CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+
+### Why is this important?
+
+Elements use `aria-activedescendant` property to manage the focus of their active descendants. 
+Setting the tabindex value to 0 or -1  ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access. 
+Using values greater than 0 should be avoided as it can break the logical tab order.
 
 </Column>
 </Row>

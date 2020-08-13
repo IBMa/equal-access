@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* People with low vision using screen magnification
-
-### Why is this important?
-
-To support people with low vision, any visually rendered text must scale up to 200% of the default content size, without loss of content or functionality and without requiring scrolling in two dimensions. When viewport units are applied to text (generally via font-size in CSS), they are relative to the viewport and this does not allow for text resize by browser zooming or adjusting text-size.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -32,6 +21,17 @@ The text must scale up to 200% without loss of content or functionality
 
 * Implement any of the sufficient techniques of the related WCAG requirement using font size units or technology that can scale up to 200% without loss of content or functionality, and without requiring scrolling in two dimensions.
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* People with low vision using screen magnification
+
+### Why is this important?
+
+To support people with low vision, any visually rendered text must scale up to 200% of the default content size, without loss of content or functionality and without requiring scrolling in two dimensions. When viewport units are applied to text (generally via font-size in CSS), they are relative to the viewport and this does not allow for text resize by browser zooming or adjusting text-size.
 
 </Column>
 </Row>

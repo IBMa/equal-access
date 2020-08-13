@@ -6,21 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * People with visual impairment using color contrast enhancement
- * People who use alternate backgrounds to increase legibility
- * People who personalize their display colors for easier reading
- * People using text only, monochrome or braille displays
- * People using text-based browsers (e.g., Lynx) or audio interfaces
-
-### Why is this important?
-
-The CSS `::before` and `::after` pseudo-elements specify the location of content to be inserted before and after an element's document tree content. For users who need to customize or turn off style information so that they can view content according to their needs, assistive technologies might not be able to access the information that is inserted using CSS.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -37,6 +22,21 @@ Do not use CSS `::before` and `::after` pseudo-elements to insert non-decorative
  * Verify that any content inserted by the CSS `::before` and `::after` pseudo-elements is purely decorative;
  * OR, disable CSS styles and verify that non-decorative information in the inserted content is still available;
  * OR, include the important information directly in the page.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * People with visual impairment using color contrast enhancement
+ * People who use alternate backgrounds to increase legibility
+ * People who personalize their display colors for easier reading
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+
+### Why is this important?
+
+The CSS `::before` and `::after` pseudo-elements specify the location of content to be inserted before and after an element's document tree content. For users who need to customize or turn off style information so that they can view content according to their needs, assistive technologies might not be able to access the information that is inserted using CSS.
 
 </Column>
 </Row>

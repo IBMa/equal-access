@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* People who physically cannot use a pointing device
-* People with dexterity impairment using voice control
-
-### Why is this important?
-
-Setting the `accesskey` attribute on elements allows quick access to the element by focusing or activating the element using the keyboard. Having a unique `accesskey` value allows the user agents to determine which element to activate when a user triggers the access key.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -39,6 +26,19 @@ For example:
 <CodeSnippet type="multi" light={true}> &lt;button type="button" name="testButton1" id="button1" accesskey="a"&gt;Accept&lt;/button&gt;
  &lt;button type="button" name="testButton2" id="button2" accesskey="r"&gt;Reject&lt;/button&gt;
  </CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with dexterity impairment using voice control
+
+### Why is this important?
+
+Setting the `accesskey` attribute on elements allows quick access to the element by focusing or activating the element using the keyboard. Having a unique `accesskey` value allows the user agents to determine which element to activate when a user triggers the access key.
 
 </Column>
 </Row>

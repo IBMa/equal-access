@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-* Many older adults
-* People with learning disabilities
-
-### Why is this important?
-
-Forms that are designed to automatically submit when all the fields are filled out or when focus leaves the last field pose problems for accessibility. If users are not warned, they may leave a field to get more context and be confused when the information is submitted. 
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +23,19 @@ A form should not be submitted automatically without warning the user
 * OR, if the form is automatically submitted, verify that the user is warned in advance;
 * OR, use the standard behavior of a `<form>` element by providing a "submit" button or the use of an Enter key to submit the form.
 
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* Many older adults
+* People with learning disabilities
+
+### Why is this important?
+
+Forms that are designed to automatically submit when all the fields are filled out or when focus leaves the last field pose problems for accessibility. If users are not warned, they may leave a field to get more context and be confused when the information is submitted. 
 
 </Column>
 </Row>

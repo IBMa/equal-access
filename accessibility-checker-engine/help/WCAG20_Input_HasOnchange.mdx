@@ -6,19 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using a screen reader
- * People with low vision using screen magnification
- * People with cognitive limitations
-
-### Why is this important?
-
-Changing the value of an input does not typically result in a [change of context](https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html#dfn-changes-of-context). If it does, this can be very disorientating to users who cannot see the changes. It is important that users are told in advance that the change of context will occur. For example, if filling in the final field of a form causes the form to be submitted, this should be made clear before the user interacts with it.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +23,19 @@ If changing an input's value changes the context, provide an explanation in adva
  * OR, verify that the Web page explains what will happen when values are selected for this input component. This explanation must appear earlier in the reading order than the component itself;
  * OR, add an explanation as described;
  * OR, trigger the change of context on an explicit user action.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People with low vision using screen magnification
+ * People with cognitive limitations
+
+### Why is this important?
+
+Changing the value of an input does not typically result in a [change of context](https://www.w3.org/WAI/WCAG21/Understanding/on-focus.html#dfn-changes-of-context). If it does, this can be very disorientating to users who cannot see the changes. It is important that users are told in advance that the change of context will occur. For example, if filling in the final field of a form causes the form to be submitted, this should be made clear before the user interacts with it.
 
 </Column>
 </Row>

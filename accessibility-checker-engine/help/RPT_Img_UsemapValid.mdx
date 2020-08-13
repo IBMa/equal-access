@@ -6,17 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
-* Blind people using screen readers
-
-### Why is this important?
-
-Server-side image maps are images in which regions of the image contain "hot-spots" where a user can click to follow a link. Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -31,6 +20,17 @@ Server-side image map hot-spots must have text links
 ### What to do
 
 * Use the `<a>` element with `"href"` attribute to provide text links corresponding to all hot-spots for the server-side image map on the page.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+### Why is this important?
+
+Server-side image maps are images in which regions of the image contain "hot-spots" where a user can click to follow a link. Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
 
 </Column>
 </Row>

@@ -6,18 +6,6 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Who does this affect?
-
- * Blind people using screen readers
- * People with low vision using screen magnification
-
-### Why is this important?
-
-Complex data tables require programmatical association between data cells and header cell using the `scope` attribute. This data-to-header relationship is conveyed through assistive technology and helps the user understand the data presented in the table.
-
-</Column>
 <Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 <div id="locLevel"></div>
@@ -36,6 +24,18 @@ Value for `scope` attribute must be "row", "col", "rowgroup", or "colgroup"
  * OR, to indicate a header for a group of rows, use `<th scope="rowgroup">`;
  * OR, to indicate a column header, use `<th scope="column">`;
  * OR, to indicate a header for a group of columns, use `<th scope="colgroup">`.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen magnification
+
+### Why is this important?
+
+Complex data tables require programmatical association between data cells and header cell using the `scope` attribute. This data-to-header relationship is conveyed through assistive technology and helps the user understand the data presented in the table.
 
 </Column>
 </Row>
