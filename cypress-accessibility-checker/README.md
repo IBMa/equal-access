@@ -20,7 +20,7 @@ npm install cypress-accessibility-checker --save-dev
 
 ## Configuration
 
-The configuration for the plugin is driven by a configuration file called `.achecker.yml` that you will need to put in the same directory as your `cypress.json` file. See details on the syntax of this file [here](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/README.md).
+The configuration for the plugin is driven by a configuration file called `.achecker.yml` that you will need to put in the same directory as your `cypress.json` file. See details on the syntax of this file [here](https://github.com/IBMa/equal-access/blob/master/accessibility-checker/src/README.md#configuring-accessibility-checker).
 
 ## Setup Cypress
 
