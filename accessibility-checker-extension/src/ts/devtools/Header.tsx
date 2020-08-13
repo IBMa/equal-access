@@ -17,7 +17,9 @@
 import React from "react";
 
 import {
-    Button
+    // MultiSelect, 
+    Button, 
+    Checkbox
 } from 'carbon-components-react';
 
 import { Reset16 } from '@carbon/icons-react';
@@ -28,10 +30,10 @@ const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
-import { Filter16 } from '@carbon/icons-react';
-import ViolationsFiltered from "../../assets/ViolationsFiltered.svg";
-import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
-import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
+// import { Filter16 } from '@carbon/icons-react';
+// import ViolationsFiltered from "../../assets/ViolationsFiltered.svg";
+// import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
+// import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
 
 interface IHeaderState {}
 
@@ -40,7 +42,9 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
-    showIssueTypeCallback: (type:string) => void
+    // showIssueTypeCallback: (type:string) => void,
+    // showIssueTypeMenuCallback: (type:string[]) => void,
+    showIssueTypeCheckBoxCallback: (checked:boolean[]) => void,
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
@@ -51,10 +55,53 @@ interface IHeaderProps {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     state: IHeaderState = {};
-        
-    sendShowIssueTypeData(type:string) {
-        this.props.showIssueTypeCallback(type);
+
+    // processSelectedIssueTypes (items:any) {
+    //     let newItems = ["", "", ""];
+    //     items.map((item:any) => {
+    //         if (item.id === "Violations") {
+    //             newItems[0] = "Violations";
+    //         } else if (item.id === "NeedsReview") {
+    //             newItems[1] = "NeedsReview";
+    //         } else if (item.id === "Recommendations") {
+    //             newItems[2] = "Recommendations";
+    //         }
+    //     })
+    //     if (items.length == 0) {
+    //         this.props.showIssueTypeMenuCallback(["Violations", "NeedsReview", "Recommendations"]);
+    //     }
+    //     if (items.length > 0) {
+    //         this.props.showIssueTypeMenuCallback([newItems[0], newItems[1], newItems[2]]);
+    //     }
+    // }
+
+    processFilterCheckBoxes (value:boolean, id:string) {
+        console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
+        let newItems = this.props.dataFromParent;
+        if (id === "Violations") {
+            newItems[1] = value;
+        } else if (id === "NeedsReview") {
+            newItems[2] = value;
+        } else if (id === "Recommendations") {
+            newItems[3] = value;
+        }
+        if (newItems[1] == true && newItems[2] == true && newItems[3] == true) {
+            console.log("All true");
+            newItems[0] = true;
+            this.setState({ showIssueTypeFilter: newItems });
+        } else if (newItems[1] == false && newItems[2] == false && newItems[3] == false) {
+            console.log("All false");
+            newItems[0] = true;
+            this.setState({ showIssueTypeFilter: newItems });
+        } else {
+            console.log("Mixed");
+            newItems[0] = false;
+            this.setState({ showIssueTypeFilter: newItems });
+        }
+        console.log("After process: ", newItems);
+        this.props.showIssueTypeCheckBoxCallback(newItems);
     }
+        
 
     render() {
         let counts = this.props.counts;
@@ -62,6 +109,21 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (this.props.scanning == true) {
             noScan = true;
         }
+
+        // const items = [
+        //     {
+        //         id: 'Violations',
+        //         label: 'Violations'
+        //     },
+        //     {
+        //         id: 'NeedsReview',
+        //         label: 'Needs Review'
+        //     },
+        //     {
+        //         id: 'Recommendations',
+        //         label: 'Recommendations'
+        //     }
+        // ]
 
 
         if (!counts) {
@@ -84,10 +146,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
-        let violationFilterButtonAriaLabel = noScan ? ((bDiff ? counts.filtered["Violation"] + " of " : "") + counts.total["Violation"]) : " ";
-        console.log(violationFilterButtonAriaLabel);
-        // violationFilterButtonAriaLabel += " Violations Filter show only violations";
-
         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
@@ -101,8 +159,26 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-sm-2">
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
-                    <div className="headerTools" >
+                <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                    <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
+                        <div style={{width:210, paddingRight:"16px"}}>
+                        {/* <MultiSelect
+                            items={items}
+                            onChange={(value) => this.processSelectedIssueTypes(value.selectedItems)}
+                            direction="bottom"
+                            disabled={!this.props.counts}
+                            id="Filter issues"
+                            initialSelectedItems={[items[0], items[1], items[2]]}
+                            invalidText="Invalid Selection"
+                            label="Filter issues"
+                            light={false}
+                            locale="en"
+                            open={false}
+                            selectionFeedback="top-after-reopen"
+                            size="sm"
+                            type="default"
+                        /> */}
+                        </div>
                         <Button
                             disabled={!this.props.counts}
                             onClick={this.props.collapseAll}
@@ -123,59 +199,54 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
             <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
                 <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <img src={Violation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Violations" />
-                    <span
-                        style={{lineHeight:"32px"}} className="summaryBarCounts" >
-                        {noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}
-                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span>
-                    </span>
-                    <span className="filterButtons">
-                        <Button
+                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                        <Checkbox
+                            className="checkboxLabel"
                             disabled={!this.props.counts}
-                            style={{paddingTop:"0px", paddingBottom:"0px"}}
-                            onClick={() => this.sendShowIssueTypeData("Violations")}
-                            aria-pressed = {this.props.dataFromParent[1]}
-                            aria-label={"Filter by violations"}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
-                            >
-                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[1] ? <img src={ViolationsFiltered}/> : <Filter16/>)}    
-                        </Button>
+                            title="Filter violations"
+                            aria-label="Filter violations"
+                            defaultChecked
+                            id="Violations"
+                            indeterminate={false}
+                            labelText={<React.Fragment><img src={Violation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span></span></React.Fragment>}
+                            // hideLabel
+                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            wrapperClassName="checkboxWrapper"
+                        />
                     </span>
                 </div>
-                <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <img src={NeedsReview16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Needs review" />
-                    <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}
-                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Needs review</span>
-                    </span>
-                    <span className="filterButtons">
-                        <Button
+                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
+                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                        <Checkbox
+                            className="checkboxLabel"
                             disabled={!this.props.counts}
-                            style={{paddingTop:"0px", paddingBottom:"0px"}}
-                            onClick={() => this.sendShowIssueTypeData("NeedsReview")}
-                            aria-pressed = {this.props.dataFromParent[2]}
-                            aria-label={"Filter by Needs review"}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
-                            >
-                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[2] ? <img src={NeedsReviewFiltered}/> : <Filter16/>)}
-                        </Button>
+                            title="Filter needs review"
+                            aria-label="Filter needs review"
+                            defaultChecked
+                            id="NeedsReview"
+                            indeterminate={false}
+                            labelText={<React.Fragment><img src={NeedsReview16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Needs review</span></span></React.Fragment>}
+                            // hideLabel
+                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            wrapperClassName="checkboxWrapper"
+                        />
                     </span>
                 </div>
-                <div className="countItem" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <img src={Recommendation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Recommendation" />
-                    <span style={{lineHeight:"32px"}} className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}
-                        <span className="summaryBarLabels" style={{marginLeft:"4px"}}>Recommendations</span>
-                    </span>
-                    <span className="filterButtons">
-                        <Button
+                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
+                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                        <Checkbox
+                            className="checkboxLabel"
                             disabled={!this.props.counts}
-                            style={{paddingTop:"0px", paddingBottom:"0px"}}
-                            onClick={() => this.sendShowIssueTypeData("Recommendations")}
-                            aria-pressed = {this.props.dataFromParent[3]}
-                            aria-label={"Filter by Recommendations"}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Filter" type="button"
-                            >
-                            {(!noScan || this.props.scanning) ? <Filter16/> : (this.props.dataFromParent[0] || this.props.dataFromParent[3] ? <img src={RecommendationsFiltered}/> : <Filter16/>)} 
-                        </Button>
+                            title="Filter recommendations"
+                            aria-label="Filter recommendations"
+                            defaultChecked
+                            id="Recommendations"
+                            indeterminate={false}
+                            labelText={<React.Fragment><img src={Recommendation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Recommendations</span></span></React.Fragment>}
+                            // hideLabel
+                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            wrapperClassName="checkboxWrapper"
+                        />
                     </span>
                 </div>
                 <div className="countItem" role="status" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"right", overflow:"visible"}}>

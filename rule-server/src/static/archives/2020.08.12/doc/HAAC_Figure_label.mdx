@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Figure_label"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+### Why is this important?
+
+A `<figure>` element is usually used to annotate illustrations, diagrams, photos, code listings, etc. Associating a label makes the same information available through audio or other channels.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### The `<figure>` element does not have an associated label
+The `<figure>` element must have an associated label
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique ARIA10](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA10)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Add a `<figcaption>` element inside the `<figure>` element to provide a visual caption that describes the figure; 
+* OR, add the `aria-labelledby` attribute to the `<figure>` element. It must point to visible text on the page that is meaningful as a label;
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;figure&gt;
+	&lt;figcaption&gt;The castle through the ages: 1423, 1858, and 1999 respectively.&lt;/figcaption&gt;
+	&lt;figure&gt;
+	&lt;figcaption&gt;Etching. Anonymous, ca. 1423.&lt;/figcaption&gt;
+	&lt;img src="castle1423.jpeg" alt="The castle has one tower and a tall wall around it."&gt;
+	&lt;/figure&gt;
+&lt;/figure&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

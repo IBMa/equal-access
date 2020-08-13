@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Combobox_Autocomplete"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+### Why is this important?
+
+A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. Only the text entry element can have the `aria-autocomplete` attribute, otherwise assistive technologies may be unable to understand and present the component's autocomplete functionality effectively. 
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### The combobox has the `aria-autocomplete` attribute set on an element that isn't a text input
+A combobox that supports autocompletion behavior must have the `aria-autocomplete` attribute only on its text input element
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.2/#combobox)
+
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove the `aria-autocomplete` attribute from combobox elements that are not text input elements;
+* AND, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
+
+For example: 
+
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+&lt;ul role="listbox" id="popup_listbox"&gt;
+   &lt;li role="option"&gt;Zebra&lt;/li&gt;
+   &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+&lt;/ul&gt;</CodeSnippet>
+
+Note, example code includes material copied from or derived from [W3C, ARIA 1.1 Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/examples/combobox/aria1.1pattern/listbox-combo.html). Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang).
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

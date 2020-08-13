@@ -1,0 +1,45 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_LabelAfter"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen magnification
+
+### Why is this important?
+
+Applications generally place the labels for radio button and check box elements after the element itself. Users expect this convention to be followed consistently. When labels are placed before a radio button or checkbox element, users can become disoriented.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Label text is located before its associated checkbox or radio button element
+Checkbox and radio button elements must have the label after the element
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Place the text of the label immediately after the checkbox or radio button element.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;input id="chk1" name="chkgroup" type="checkbox"&gt;&lt;label for="chk1"&gt;Option 1&lt;/label&gt;
+&lt;label&gt;&lt;input name="chkgroup" type="checkbox"&gt;Option 1&lt;/label&gt;</CodeSnippet>
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

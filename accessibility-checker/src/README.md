@@ -143,7 +143,7 @@ module.exports = {
 
 ### Command-line
 
-The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. Create a .txt file with path(s) to files, directories or a list of urls to be scan. Provide the npx acherer the full path of the .txt file to start the scan, e.g. npx archerer path/to/your/file.txt. Run `npx achecker` for more information.
+The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. You can also create a .txt file with path(s) to files, directories or a list of urls to be scanned, then provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`). Run `npx achecker` for more information.
 
 ### Programmatic
 
@@ -182,7 +182,7 @@ Execute accessibility scan on provided content. `content` can be in the followin
 
 Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using puppeteer, aChecker.getCompliance expects the Page object.
 
-Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibilty-checker APIs.
+Using a callback mechanism (`callback`) to extract the results and perform assertion using accessibility-checker APIs.
 
 -   `content` - (String | HTMLElement | HTMLDocument | Selenium WebDriver) content to be scanned for accessibility violations.
 -   `label` - (String) unique label to identify this accessibility scan from others. Using "/" in the label allows for directory hierarchy when results are saved.

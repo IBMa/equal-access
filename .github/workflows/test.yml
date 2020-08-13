@@ -177,6 +177,41 @@ jobs:
         working-directory: karma-accessibility-checker
 
 ###############################################################################
+# Cypress test
+####
+  cypress-checker-test-basic:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: rule-server
+      - run: npm install
+        working-directory: rule-server/src-gatsby
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: cypress-accessibility-checker
+        
+      - run: npm test
+        working-directory: cypress-accessibility-checker
+
+###############################################################################
 # Extension Build verification
 ####
   extension-test:

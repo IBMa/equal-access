@@ -1,0 +1,42 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Blockquote_HasCite"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+
+### Why is this important?
+
+The HTML `<blockquote>` element tells assistive technologies which content is part of a quotation or citation. Using the element for indention or formatting can mislead assistive technology users as to its meaning and purpose.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Verify that `<blockquote>` is used only for quotations, not indentation
+Use `<blockquote>` only for quotations, not indentation
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify that `<blockquote>` is being used for actual quoted text;
+ * OR, do not use `<blockquote>` for this content.
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

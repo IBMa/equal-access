@@ -1,0 +1,42 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Table_LayoutTrigger"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+ * Blind people using screen readers or braille displays
+ * People with reading disabilities
+ * People with cognitive differences who view interfaces using an adapted layout
+
+### Why is this important?
+
+Some users consume a linearized version of a Web page, with each element following the previous one. In linearized form, tables are read from cell to cell horizontally across each row, moving down the rows from top to bottom. If this reading order is not appropriate for the content, users will not be able to make sense of it.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Verify table is not being used to format text content in columns unless the table can be linearized
+Avoid using tables to format text documents in columns unless the table can be linearized
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If a table is being used for presentation purposes, separate content from presentation by using CSS instead of a table to achieve the desired layout;
+ * OR, if a table must be used, add `role="none"` and structure the table so that a left-to-right, top-to-bottom reading of the table gives a natural reading order for the content.
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

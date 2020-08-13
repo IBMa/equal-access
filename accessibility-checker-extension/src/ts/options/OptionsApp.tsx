@@ -22,7 +22,7 @@ import {
   Button,
   InlineNotification,
   Accordion,
-  AccordionItem
+  AccordionItem,
 } from "carbon-components-react";
 
 import { Restart16, Save16 } from "@carbon/icons-react";
@@ -46,7 +46,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     rulesets: null,
     selected_ruleset: null,
     show_notif: false,
-    show_reset_notif: false
+    show_reset_notif: false,
   };
 
   async componentDidMount() {
@@ -124,7 +124,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive: item.selectedItem,
       rulesets,
       selected_ruleset,
-      show_notif: false
+      show_notif: false,
     });
   };
 
@@ -145,7 +145,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       selected_archive,
       selected_ruleset,
       show_reset_notif: true,
-      show_notif: false
+      show_notif: false,
     });
   };
 
@@ -167,7 +167,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         ) + " - Latest Deployment"
       );
     } else if (archiveId == "preview") {
-      return "Preview rules - to be determined";
+      return "Preview (TBD)";
     } else {
       return selected_archive.name.substring(
         0,
@@ -183,7 +183,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       rulesets,
       selected_ruleset,
       show_notif,
-      show_reset_notif
+      show_reset_notif,
     } = {
       ...this.state,
     };
@@ -210,12 +210,10 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
-                  correspond to the most recent WCAG standards plus some
+                  correspond to the most recent WCAG guidelines plus some
                   additional IBM requirements. Rule sets for specific WCAG
                   versions are also available. The rule sets are updated
-                  regularly, and each update has a date of deployment. If you
-                  need to replicate an earlier test, choose the deployment date
-                  of the original test.
+                  regularly to continuously improve coverage and accuracy.
                 </p>
               </aside>
             </div>
@@ -237,20 +235,31 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                       className="accordion_item"
                     >
                       <p>
-                        Choose to always use the latest version of the rule
-                        sets, use the version from a specific date, or try a
-                        preview of future rule sets. By default the latest rule
-                        set version is selected.
+                        <ul>
+                          <li>
+                            Latest deployment: Choose to always use the latest
+                            version of the rule set (default)
+                          </li>
+                          <li>
+                            Dated deployment: Use a rule set from a specific
+                            date for consistent testing throughout a project or
+                            to replicate an earlier test
+                          </li>
+                          <li>
+                            Preview rules: Try an experimental preview of
+                            possible future rule set
+                          </li>
+                        </ul>
                       </p>
 
                       <Dropdown
                         ariaLabel={undefined}
                         disabled={false}
-                        helperText="Rule set deployment"
+                        helperText="Rule set deployment date"
                         id="archivedRuleset"
                         items={archives}
                         itemToString={(item: any) => (item ? item["name"] : "")}
-                        label="Rule set deployment selection"
+                        label="Rule set deployment date"
                         light={false}
                         titleText=""
                         type="default"
@@ -273,16 +282,16 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 </div>
 
                 <h2 style={{ marginTop: "2rem" }}>
-                  Supported accessibility standards
+                  Supported accessibility guidelines
                 </h2>
                 <Dropdown
                   ariaLabel={undefined}
                   disabled={false}
-                  helperText="Select a standard"
+                  helperText="Select a guideline"
                   id="rulesetSelection"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}
-                  label="Rule set selection"
+                  label="Guideline selection"
                   light={false}
                   titleText=""
                   type="default"

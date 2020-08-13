@@ -5,10 +5,15 @@
         "path": "/archives/latest"
     },
     {
+        "id": "12Aug2020",
+        "name": "12 August 2020 Deployment",
+        "path": "/archives/2020.08.12",
+        "latest": true
+    },
+    {
         "id": "18June2020",
         "name": "18 June 2020 Deployment",
-        "path": "/archives/2020.06.18",
-        "latest": true
+        "path": "/archives/2020.06.18"
     },
     {
         "id": "03June2020",

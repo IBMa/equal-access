@@ -44,6 +44,9 @@
       </article>
  </article>
 
+<!-- fail case -->
+<div role="application" id = "app1">text
+</div>
 
 <!-- Pass case -->
 <div role="application" id = "app2">
@@ -102,7 +105,8 @@
       ],
       failedXpaths: [
     	  "/html/body/div",
-    	  "/html/body/article"
+    	  "/html/body/article",
+    	  "/html/body/div[2]"
       ]
     }
   ];
