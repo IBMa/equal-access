@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Elem_EventMouseAndKey"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision
+* People with tremor or other movement disorders
+* People who rely on keyboard control
+
+### Why is this important?
+
+Scripted mouse-specific event handlers can be used to trigger actions on graphical user interface (GUI) controls. Equivalent keyboard-specific handlers allow individuals who rely on a keyboard or keyboard interface to access the same functionality.
+
+</Column>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+<div id="locLevel"></div>
+
+### Check that interactive content with mouse event handlers has equivalent keyboard access
+All interactive content with mouse event handlers must have equivalent keyboard access
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)) | [WCAG technique SCR20](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR20)
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Using only the keyboard, make sure you can access all the functionality provided by the mouse event handlers.
+* AND, if there is no equivalent keyboard access, follow the event handler table below to provide the corresponding keyboard event handlers:
+
+| Use           | with          |
+| :------------ | :------------ |
+| onmousedown   | onkeydown     |
+| onmouseup     | onkeyup       |
+| onclick       | onkeypress    |
+| onmouseover   | onfocus 		|
+| onmouseout    | onblur        |
+
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

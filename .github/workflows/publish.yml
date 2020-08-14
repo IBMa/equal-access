@@ -58,6 +58,29 @@ jobs:
         env: 
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+  cypress-accessibility-checker-publish:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set env
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
+      - run: npm install
+        working-directory: cypress-accessibility-checker
+      - run: npm run package:npm
+        working-directory: cypress-accessibility-checker
+      - run: gitactions/publish/cypress-achecker.sh
+        env: 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   extension-build:
     runs-on: ubuntu-latest
 
@@ -79,7 +102,7 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: |
         if [ -n "$RELEASE_VERSION" ]; then 
-          sed -i 's/"version": "3.0.0"/"version": "$RELEASE_VERSION"/g' ./manifest.json
+          sed -i 's/"version": "3.0.0"/"version": "'"$RELEASE_VERSION"'"/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: npm run package:browser
