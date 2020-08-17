@@ -51,11 +51,11 @@ export default class SinglePageReport {
 
         var definition_sheet = workbook.addWorksheet('Definition of fields');
         this.create_definition_sheet(definition_sheet);
-        
+
         return workbook;
     }
 
-    public static create_header_sheet(report: IReport | null, header_sheet: any){
+    public static create_header_sheet(report: IReport | null, header_sheet: any) {
 
         header_sheet.columns = [
             { header: 'Package', key: 'package_name' },
@@ -72,11 +72,69 @@ export default class SinglePageReport {
         return header_sheet;
     }
 
-    public static create_issues_sheet(report: IReport | null, issues_sheet: any){
+    public static create_issues_sheet(report: IReport | null, issues_sheet: any) {
         return issues_sheet;
     }
 
-    public static create_definition_sheet(definition_sheet: any){
+    public static create_definition_sheet(definition_sheet: any) {
+        definition_sheet.columns = [
+            { header: 'Field', key: 'field', width: 15 },
+            { header: 'Definition', key: 'definition', width: 50 },
+            { header: 'Questions/Comments', key: 'qc', width: 50 }
+        ];
+
+        var field_col = definition_sheet.getColumn('field');
+        var def_col = definition_sheet.getColumn('definition');
+        var qc_col = definition_sheet.getColumn('qc');
+
+        field_col.values = ['Field',
+            'Page',
+            'IssueID',
+            'IssueType',
+            'ToolkitLevel',
+            'Checkpoint',
+            'Standard',
+            'WCAGLevel',
+            'RuleId',
+            'Issue',
+            'Element',
+            'Code',
+            'Xpath',
+            'Line number',
+            'Help'];
+
+        def_col.values = ['Definition',
+            'Identifies the page or html file that was scanned',
+            'Unique identifier for the issue',
+            'Violation, Needs review, or Recommendation',
+            'Our level 1-3',
+            'WCAG/IBM checkpoint',
+            'WCAG 2.1, WCAG 2.0, 508, EN501, IBM',
+            'A, AA, AAA',
+            'Numerical ID of the engine rule that fired',
+            'Active message describing the issue',
+            'Type of HTML element where the issue is found',
+            'Actual HTML element where the issue is found',
+            'Xpath of the element where the issue is found',
+            'Line number in the source code where the issue is located',
+            'Link to our checker help for the issue'];
+
+        qc_col.values = ['Questions/Comments',
+            '',
+            'To support mapping to issues in a tracking system',
+            'Any issues with replacing the old types? (violation, potentialviolation, etc)',
+            'Serves as a quick way to prioritize',
+            'Helps with mapping to our checklists',
+            'Would this be a list or would it be WCAG 2.1 for everything required by that standard, and something else for other requirements not in 2.1?',
+            'Some teams currently prioritize by WCAG level',
+            'Hides the messy rule names from external users but allows easier reporting of issues with the rules (we\'d also include the same ID number in the help)',
+            'Includes token values',
+            'Allows for sorting by element type to address all issues with certain kinds of element, e.g. images',
+            'Helps with identifying the element with the issue',
+            '',
+            'Is this feasible for static HTML files?',
+            ''];
+
         return definition_sheet;
     }
 
