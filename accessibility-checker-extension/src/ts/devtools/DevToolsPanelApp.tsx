@@ -21,6 +21,8 @@ import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
+import SinglePageReport from "../multiScanReports/singlePageReport/xlsx/singlePageReport";
+
 import {
     Loading
 } from 'carbon-components-react';
@@ -284,6 +286,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         chrome.tabs.create({url:  chrome.runtime.getURL("multiScanReports.html")});
     }
 
+    xlsxReportHandler = () => {
+
+        SinglePageReport.single_page_xlsx_download(this.state.report, this.state.tabTitle);
+        
+    }
+
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
             if (!item) {
@@ -460,6 +468,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             multiScanReportHandler={this.multiScanReportHandler}
+                            xlsxReportHandler = {this.xlsxReportHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                             // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
@@ -509,6 +518,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         multiScanReportHandler={this.multiScanReportHandler}
+                        xlsxReportHandler = {this.xlsxReportHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
                         // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}

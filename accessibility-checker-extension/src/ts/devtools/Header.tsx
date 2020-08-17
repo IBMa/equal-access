@@ -43,6 +43,7 @@ interface IHeaderProps {
     collapseAll: () => void,
     reportHandler: () => void,
     multiScanReportHandler: () => void,
+    xlsxReportHandler: () => void,
     // showIssueTypeCallback: (type:string) => void,
     // showIssueTypeMenuCallback: (type:string[]) => void,
     showIssueTypeCheckBoxCallback: (checked:boolean[]) => void,
@@ -196,8 +197,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </Button>
                         <Button
                             disabled={!this.props.counts}
-                            onClick={this.props.multiScanReportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Muti-scan Report" type="button"
+                            onClick={this.props.xlsxReportHandler}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in xlsx" type="button"
                         >
                             <DocumentExport16 className="my-custom-class" />
                         </Button>
