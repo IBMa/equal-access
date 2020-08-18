@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Media embedded with a `<video>` element does not have a `<track>`element to provide text alternatives for audio or visual content
 
 <div id="locLevel"></div>
 
-### Media embedded with a `<video>` element does not have a `<track>`element to provide text alternatives for audio or visual content
 Media embedded with a `<video>` element must have a `<track>` element to provide text alternatives for audio or visual content
 
-[IBM 1.2.1 Audio-only and Video-only (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_and_video.html) | [WCAG 2.1 technique H96](https://www.w3.org/WAI/WCAG21/Techniques/html/H96)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
 
 <div id="locSnippet"></div>
 
@@ -30,14 +38,15 @@ For example:
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 1.2.1 Audio-only and Video-only (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_and_video.html)
+[WCAG 2.1 technique H96](https://www.w3.org/WAI/WCAG21/Techniques/html/H96)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People who are deaf or hard of hearing
-
-### Why is this important?
-
-Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
 
 </Column>
 </Row>

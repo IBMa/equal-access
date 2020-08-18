@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Initial DOM focus is not correctly set on the combobox
 
 <div id="locLevel"></div>
 
-### Initial DOM focus is not correctly set on the combobox
 Initial DOM focus on the combobox must be set on the `<text>` input
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WAI-ARIA v1.1 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. When a combobox receives focus, the focus should be set on the `<text>` input element that can either display the current value or supports editing, so people who use assistive technologies are able accurately navigate and interact with the content.
 
 <div id="locSnippet"></div>
 
@@ -21,18 +29,18 @@ Initial DOM focus on the combobox must be set on the `<text>` input
 
 * Set the initial DOM focus only on the combobox’s `<text>` input element. (Note: This was necessary for the Combobox using ARIA 1.1 implementation which should be avoided due to problems with implementation. Follow the guidance for combobox in [ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/#combobox) which has changed significantly.)
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WAI-ARIA v1.1 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox)
 
 ### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision using screen readers
-
-### Why is this important?
-
-A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. When a combobox receives focus, the focus should be set on the `<text>` input element that can either display the current value or supports editing, so people who use assistive technologies are able accurately navigate and interact with the content.
 
 </Column>
 </Row>

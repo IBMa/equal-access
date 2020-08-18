@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The HTML element with an assigned `accesskey` attribute does not have an associated label
 
 <div id="locLevel"></div>
 
-### The HTML element with an assigned `accesskey` attribute does not have an associated label
 An HTML element with an assigned `accesskey` attribute must have an associated label
 
-[IBM 3.3.2 Labels and Instructions](http://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The label of an HTML element with an `accesskey` attribute allows the user agent to display a list of access keys with a name describing each access key’s function. It also allows voice control users to speak the label to activate its function.
 
 <div id="locSnippet"></div>
 
@@ -27,15 +35,15 @@ An HTML element with an assigned `accesskey` attribute must have an associated l
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 3.3.2 Labels and Instructions](http://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html)
+
 ### Who does this affect?
 
  * Blind people using screen readers
  * People who physically cannot use a pointing device
  * People with dexterity impairment using voice control
-
-### Why is this important?
-
-The label of an HTML element with an `accesskey` attribute allows the user agent to display a list of access keys with a name describing each access key’s function. It also allows voice control users to speak the label to activate its function.
 
 </Column>
 </Row>

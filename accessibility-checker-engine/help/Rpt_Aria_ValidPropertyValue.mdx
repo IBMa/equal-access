@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The value `"{0}"` specified for attribute `{1}` on element `<{2}>` is not valid
 
 <div id="locLevel"></div>
 
-### The value `"{0}"` specified for attribute `{1}` on element `<{2}>` is not valid
 The attribute value specified on the element must be valid per WAI-ARIA 1.1 specification
 
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WC3 WAI-ARIA 1.1 states and properties](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When elements are assigned a WAI-ARIA `role`, there are required attributes for that role. These attributes represent states and properties of the element. The WAI-ARIA attributes accept a specific set of tokens as values along with implicit values termed as ‘default’ when no values are indicated. The correct value of the attribute must be specified as it dictates the behavior of the control and is used by the user agent (Browsers) to process the behavior of the control as prescribed.
 
 <div id="locSnippet"></div>
 
@@ -29,14 +37,15 @@ For example, the following paragraph element defines an `aria-live` property wit
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WC3 WAI-ARIA 1.1 states and properties](https://www.w3.org/WAI/PF/aria-1.1/states_and_properties)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People with dexterity impairment using voice control
-
-### Why is this important?
-
-When elements are assigned a WAI-ARIA `role`, there are required attributes for that role. These attributes represent states and properties of the element. The WAI-ARIA attributes accept a specific set of tokens as values along with implicit values termed as ‘default’ when no values are indicated. The correct value of the attribute must be specified as it dictates the behavior of the control and is used by the user agent (Browsers) to process the behavior of the control as prescribed.
 
 </Column>
 </Row>

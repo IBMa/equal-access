@@ -6,14 +6,21 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Interactive component does not have a programatically associated name
 
 <div id="locLevel"></div>
 
-### Interactive component does not have a programatically associated name
 Interactive component must have a programatically associated name
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1 Specification for Widget Roles](https://www.w3.org/TR/wai-aria-1.1/#widget_roles) | [WAI-ARIA Specification for Accessible Name Computation](https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_name)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+Interactive UI components with certain implicit or explicit WAI-ARIA roles require an [accessible name](https://www.w3.org/TR/accname-1.1/#dfn-accessible-name). Without proper labels or the programmatically associated name, assistive technologies may not be able to accurately present the component's name and purpose to the user. This affects the user’s navigation and ability to interact with the content.
 
 <div id="locSnippet"></div>
 
@@ -29,18 +36,20 @@ The following code snippet shows a tree widget labelled with an `aria-labelledby
 <CodeSnippet type="multi" light={true}>&lt;h1 id="contents"&gt;Table of contents&lt;/h1&gt;
 &lt;div role="tree" aria-labelledby="contents" tabindex="0"&gt;...&lt;/div&gt;</CodeSnippet>
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[W3C WAI-ARIA 1.1 Specification for Widget Roles](https://www.w3.org/TR/wai-aria-1.1/#widget_roles)
+[WAI-ARIA Specification for Accessible Name Computation](https://www.w3.org/TR/accname-1.1/#mapping_additional_nd_name)
 
 ### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision using screen magnification
 * People with dexterity impairment using voice control
-
-### Why is this important?
-Interactive UI components with certain implicit or explicit WAI-ARIA roles require an [accessible name](https://www.w3.org/TR/accname-1.1/#dfn-accessible-name). Without proper labels or the programmatically associated name, assistive technologies may not be able to accurately present the component's name and purpose to the user. This affects the user’s navigation and ability to interact with the content.
 
 </Column>
 </Row>

@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Provide a descriptive `<title>` for Web pages
 
 <div id="locLevel"></div>
 
-### Provide a descriptive `<title>` for Web pages
 Page `<title>` should be a descriptive title, rather than a filename
 
-[IBM 2.4.2 Page Titled](https://www.ibm.com/able/guidelines/ci162/page_titled.html) | [WCAG 2.1 technique G88](https://www.w3.org/WAI/WCAG21/Techniques/general/G88)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Descriptive titles help users find relevant content and navigate through it. The `<title>` element labels your page. It is typically the first part of the page that users see (or hear), and it allows them to differentiate your page from others.  Browsers put the title in the title bar of the page window where it is quickly accessible, and automated tools such as search engines use the title to index and classify the page.
 
 <div id="locSnippet"></div>
 
@@ -31,15 +39,16 @@ Page `<title>` should be a descriptive title, rather than a filename
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 2.4.2 Page Titled](https://www.ibm.com/able/guidelines/ci162/page_titled.html)
+[WCAG 2.1 technique G88](https://www.w3.org/WAI/WCAG21/Techniques/general/G88)
+
 ### Who does this affect?
 
  * Blind people using screen readers
  * People with low vision using screen magnification
  * People with dexterity impairment using voice control
-
-### Why is this important?
-
-Descriptive titles help users find relevant content and navigate through it. The `<title>` element labels your page. It is typically the first part of the page that users see (or hear), and it allows them to differentiate your page from others.  Browsers put the title in the title bar of the page window where it is quickly accessible, and automated tools such as search engines use the title to index and classify the page.
 
 </Column>
 </Row>

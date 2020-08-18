@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Element attribute(s): `{0}` value is empty
 
 <div id="locLevel"></div>
 
-### Element attribute(s): `{0}` value is empty
 When specifying a required WAI-ARIA attribute, the value must be non-empty
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA 1.1 Taxonomy of States and Properties](https://www.w3.org/TR/wai-aria-1.1/#state_prop_taxonomy)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+For each WAI-ARIA attribute (a property or a state) used in an element, a valid value for the attribute must be specified. This enables assistive technologies to present the element appropriately.
 
 <div id="locSnippet"></div>
 
@@ -28,13 +36,14 @@ For example, the following element uses an `aria-live` property. The `aria-live`
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[W3C WAI-ARIA 1.1 Taxonomy of States and Properties](https://www.w3.org/TR/wai-aria-1.1/#state_prop_taxonomy)
+
 ### Who does this affect?
 
  * Blind people using screen readers
-
-### Why is this important?
-
-For each WAI-ARIA attribute (a property or a state) used in an element, a valid value for the attribute must be specified. This enables assistive technologies to present the element appropriately.
 
 </Column>
 </Row>

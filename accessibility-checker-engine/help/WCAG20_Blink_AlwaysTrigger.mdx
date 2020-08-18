@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Content found that blinks persistently
 
 <div id="locLevel"></div>
 
-### Content found that blinks persistently
 Content that blinks persistently must not be used
 
-[IBM 2.2.2 Pause, Stop, Hide](http://www.ibm.com/able/guidelines/ci162/pause_stop_hide.html) | [WCAG 2.1 failure technique F47](https://www.w3.org/WAI/WCAG21/Techniques/failures/F47)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The text inside a `blink` element can blink at a predetermined rate as there is no way to interrupt or disable blinking. Although blinking draws attention to content, it can be a problem for some users if it persists and may make it difficult or impossible to interact with the rest of the page. The use of the `blink` element has been deprecated.
 
 <div id="locSnippet"></div>
 
@@ -23,9 +31,13 @@ Content that blinks persistently must not be used
 * OR, provide an option to turn off blinking;
 * OR, provide a link to an alternative page without the blinking content.
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.2.2 Pause, Stop, Hide](http://www.ibm.com/able/guidelines/ci162/pause_stop_hide.html)
+[WCAG 2.1 failure technique F47](https://www.w3.org/WAI/WCAG21/Techniques/failures/F47)
 
 ### Who does this affect?
 
@@ -33,10 +45,6 @@ Content that blinks persistently must not be used
 * People with reading disabilities
 * People with intellectual disabilities
 * People with low vision
-
-### Why is this important?
-
-The text inside a `blink` element can blink at a predetermined rate as there is no way to interrupt or disable blinking. Although blinking draws attention to content, it can be a problem for some users if it persists and may make it difficult or impossible to interact with the rest of the page. The use of the `blink` element has been deprecated.
 
 </Column>
 </Row>

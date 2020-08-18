@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Verify that the file designated by the `"longdesc"` attribute contains valid HTML content
 
 <div id="locLevel"></div>
 
-### Verify that the file designated by the `"longdesc"` attribute contains valid HTML content
 The `"longdesc"` attribute must reference HTML content
 
-[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique H45](https://www.w3.org/WAI/WCAG21/Techniques/html/H45)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Text alternatives provide important information that cannot be visually perceived by some people. When a short description is not sufficient, the `"longdesc"` attribute can link to a URL containing a longer description of the image.
 
 <div id="locSnippet"></div>
 
@@ -29,16 +37,17 @@ For example:
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG 2.1 technique H45](https://www.w3.org/WAI/WCAG21/Techniques/html/H45)
+
 ### Who does this affect?
 
  * Blind people using a screen reader
  * People using text only, monochrome or braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
  * People who turn off image-loading on their web browsers
-
-### Why is this important?
-
-Text alternatives provide important information that cannot be visually perceived by some people. When a short description is not sufficient, the `"longdesc"` attribute can link to a URL containing a longer description of the image.
 
 </Column>
 </Row>

@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Imagemap is missing text alternative(s)
 
 <div id="locLevel"></div>
 
-### Imagemap is missing text alternative(s)
 An image map must have text alternative(s)
 
-[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG  2.1 technique H24](https://www.w3.org/TR/WCAG20-TECHS/H24)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+An image map is an image divided into selectable regions defined by area elements. When the image map contains important information, providing a text alternative for the map makes the same information accessible through audio or other channels.
 
 <div id="locSnippet"></div>
 
@@ -33,15 +41,16 @@ For example:
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG  2.1 technique H24](https://www.w3.org/TR/WCAG20-TECHS/H24)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People who turn off image-loading on their web browsers
 * People using text-based browsers (e.g., Lynx) or audio interfaces
-
-### Why is this important?
-
-An image map is an image divided into selectable regions defined by area elements. When the image map contains important information, providing a text alternative for the map makes the same information accessible through audio or other channels.
 
 </Column>
 </Row>

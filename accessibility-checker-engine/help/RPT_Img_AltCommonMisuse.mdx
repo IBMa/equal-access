@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### File name used to describe an image
 
 <div id="locLevel"></div>
 
-### File name used to describe an image
 Check the `"alt"` attribute value is a good alternative for the image
 
-[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique H37](https://www.w3.org/WAI/WCAG21/Techniques/html/H37)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When an image contains important information that is not available in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
 
 <div id="locSnippet"></div>
 
@@ -22,10 +30,13 @@ Check the `"alt"` attribute value is a good alternative for the image
 * If the image conveys meaning, the value of the `"alt"` attribute should be a short description that serves the same purpose as the image. Include any important words from the image in the short description (e.g. `<img alt="submit">`). Do not use a file name;
 * OR, if the image is decorative or the same information is also available in text, use the `"alt"` attribute with an empty string as its value (e.g.  `<img alt="">`).
 
-
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG 2.1 technique H37](https://www.w3.org/WAI/WCAG21/Techniques/html/H37)
 
 ### Who does this affect?
 
@@ -34,13 +45,8 @@ Check the `"alt"` attribute value is a good alternative for the image
  * People using text only, monochrome or braille displays
  * People using text-based browsers (e.g., Lynx) or audio interfaces
 
-### Why is this important?
-
-When an image contains important information that is not available in text on the page, providing a text alternative makes the same information accessible through audio or other channels.
-
 </Column>
 </Row>
 </div>
 
 export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
-

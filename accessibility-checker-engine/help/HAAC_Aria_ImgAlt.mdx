@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### WAI-ARIA widget with an `"img"` role has no label or an empty label
 
 <div id="locLevel"></div>
 
-### WAI-ARIA widget with an `"img"` role has no label or an empty label
 Element with an `"img"` role must have a non-empty label
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16) | [WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
 
 <div id="locSnippet"></div>
 
@@ -30,15 +38,17 @@ Example:
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WCAG 2.1 technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16)
+[WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People who turn off image-loading on their web browsers
 * People using text-based browsers (e.g., Lynx) or audio interfaces
-
-### Why is this important?
-
-A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
 
 </Column>
 </Row>

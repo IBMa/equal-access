@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### UI component has no focusable child element
 
 <div id="locLevel"></div>
 
-### UI component has no focusable child element
 UI component must have at least one focusable child element for keyboard access
 
-[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
 
 <div id="locSnippet"></div>
 
@@ -29,14 +37,14 @@ The following example shows a component with `role="tree"` with its required chi
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People who physically cannot use a pointing device
-
-### Why is this important?
-
-Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
 
 </Column>
 </Row>

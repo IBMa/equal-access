@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Server-side image map hot-spots do not have text links
 
 <div id="locLevel"></div>
 
-### Server-side image map hot-spots do not have text links
 Server-side image map hot-spots must have text links
 
-[IBM 1.1.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Server-side image maps are images in which regions of the image contain "hot-spots" where a user can click to follow a link. Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
 
 <div id="locSnippet"></div>
 
@@ -24,13 +32,13 @@ Server-side image map hot-spots must have text links
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 1.1.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+
 ### Who does this affect?
 
 * Blind people using screen readers
-
-### Why is this important?
-
-Server-side image maps are images in which regions of the image contain "hot-spots" where a user can click to follow a link. Because the actual links are stored on the server, the browser cannot provide information about the links to a user who cannot see the graphics.
 
 </Column>
 </Row>

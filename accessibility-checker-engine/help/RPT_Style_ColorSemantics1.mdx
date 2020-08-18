@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check color is not used as the only visual means of conveying information
 
 <div id="locLevel"></div>
 
-### Check color is not used as the only visual means of conveying information
 Combine color and descriptive markup to convey information
 
-[IBM 1.4.1 Use of color](http://www.ibm.com/able/guidelines/ci162/color.html)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Using descriptive markup and visual differences together with color enables users who cannot see color to understand the meaning conveyed through color differences.
 
 <div id="locSnippet"></div>
 
@@ -22,19 +30,18 @@ Combine color and descriptive markup to convey information
 * If color is used to indicate required fields, also use an asterisk ('*') to visually indicate required fields without color (e.g.  “required fields are red and indicated with '*' ") and indicate them programmatically with the `required` attribute;
 * OR if use of color conveys other meaning or information, check that there is another visual indicator together with programmatic or text information that conveys the same information (e.g. use “green checkmarks” and “red crosses” instead of just “red” and “green” indicators).
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.4.1 Use of color](http://www.ibm.com/able/guidelines/ci162/color.html)
 
 ### Who does this affect?
 
  * People who cannot see color, have limited color vision or have color blindness
  * People using text only, monochrome or braille displays
  * People who personalize their display colors for easier reading
-
-### Why is this important?
-
-Using descriptive markup and visual differences together with color enables users who cannot see color to understand the meaning conveyed through color differences.
 
 </Column>
 </Row>

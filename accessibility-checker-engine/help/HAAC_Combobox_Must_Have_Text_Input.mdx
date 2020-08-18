@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The text input `role` or number of lines is not valid for a combobox
 
 <div id="locLevel"></div>
 
-### The text input `role` or number of lines is not valid for a combobox
 A combobox must have a single line text input element with a valid `role`
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox combines a text input element and a popup element that helps the user set the value of the input. The text input element must be a single line text field with an appropriate role, otherwise assistive technologies may not be able to present and control the content correctly.
 
 <div id="locSnippet"></div>
 
@@ -37,18 +45,18 @@ Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due t
 
 Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
 
 ### Who does this affect?
 
  * Blind people using screen readers
  * People with low vision using screen readers
-
-### Why is this important?
-
-A combobox combines a text input element and a popup element that helps the user set the value of the input. The text input element must be a single line text field with an appropriate role, otherwise assistive technologies may not be able to present and control the content correctly.
 
 </Column>
 </Row>

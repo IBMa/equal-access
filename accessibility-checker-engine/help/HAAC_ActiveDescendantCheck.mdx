@@ -6,15 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The `aria-activedescendant` property of the component does not reference the `id` of a valid child element.
 
 <div id="locLevel"></div>
 
-### The `aria-activedescendant` property of the component does not reference the `id` of a valid child element.
 The `aria-activedescendant` property must reference the `id` of a non-empty, non-hidden active child element.
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WAI-ARIA v1.2: Managing Focus in Composites Using aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.2/#kbd_focus_activedescendant)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
+### Why is this important?
+
+In a composite component where the child elements are not normally able to take keyboard focus, the `aria-activedescendant` attribute can be used to identify the child element that currently has focus. This enables proper keyboard control of the component, and allows assistive technologies to gather information about the component and its state.
 
 <div id="locSnippet"></div>
 
@@ -37,18 +44,18 @@ The following example* shows a radio group using `aria-activedescendant` to indi
    
 * Example code includes material copied from or derived from ARIA 1.2 Practices - Radio Group Example Using aria-activedescendant. Copyright © 2018-2019 W3C® (MIT, ERCIM, Keio, Beihang).
 
-
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WAI-ARIA v1.2: Managing Focus in Composites Using aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.2/#kbd_focus_activedescendant)
 
 ### Who does this affect?
 
 * Blind people using screen readers
 * People with low vision using screen readers
-
-### Why is this important?
-
-In a composite component where the child elements are not normally able to take keyboard focus, the `aria-activedescendant` attribute can be used to identify the child element that currently has focus. This enables proper keyboard control of the component, and allows assistive technologies to gather information about the component and its state.
 
 </Column>
 </Row>

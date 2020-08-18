@@ -6,14 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Inline frame does not have a title
 
 <div id="locLevel"></div>
 
-### Inline frame does not have a title
 Inline frames must have a unique, non-empty title
 
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique H64](https://www.w3.org/WAI/WCAG21/Techniques/html/H64)
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+An inline frame’s title provides a label for the frame that describes its content to the user. With this information a user can determine which frame to enter and explore in detail.
 
 <div id="locSnippet"></div>
 
@@ -30,15 +38,16 @@ For example:
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WCAG 2.1 technique H64](https://www.w3.org/WAI/WCAG21/Techniques/html/H64)
+
 ### Who does this affect?
 
 * Blind people using screen readers
 * People who physically cannot use a pointing device
 * People with dexterity impairment who navigate web pages with a keyboard
-
-### Why is this important?
-
-An inline frame’s title provides a label for the frame that describes its content to the user. With this information a user can determine which frame to enter and explore in detail.
 
 </Column>
 </Row>
