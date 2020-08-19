@@ -1,5 +1,7 @@
 # accessibility-checker-engine
 
+For information on creating, modifying rules, see [README-RULES.md]
+
 ## Overview
 
 accessibility-checker-engine contains IBM accessibility rules and evaluation engine to help users to check their web pages to identify and report accessibility issues.
