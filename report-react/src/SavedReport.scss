@@ -45,14 +45,16 @@ $feature-flags: (
     }
 
     .toolHelp {
-        background-color: white;
+        background-color: #be95ff;
 
         .bx--list--unordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
         }
 
         .bx--list--ordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
         }
 
         > .bx--grid {
@@ -64,12 +66,39 @@ $feature-flags: (
             margin: 0px;
         }
 
+        .toolHead {
+            h3 {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 600;
+                padding-top: 8px;
+                padding-bottom: 4px;
+            }
+
+            p {
+                font-size: 12px;
+                padding-bottom: 6x;
+            }
+        }
+
+        .issueLevel {
+            font-size: 12px;
+            font-weight: 600;
+            vertical-align: middle;
+
+            img {
+                margin-right: 4px;
+                height: 20px;
+                vertical-align: -5px;
+            }
+        }
+
         .toolTop {
             color:#ffffff;
             background: linear-gradient(to right, #5f3196 , #31175c);
-            padding: 1rem;
+            padding: 1rem ;
             p {
-                margin-top: .5rem;
+                margin-top: 8px;
                 font-size:12px;
                 font-family:IBMPlexSans-SemiBold;
             }
@@ -101,21 +130,29 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-01');
+
+                margin-top: 0rem;
+                margin-bottom: .5rem;
+            }
+
             p {
                 @include carbon--type-style('body-long-01');
 
                 margin-top: 0px;
+                margin-bottom: 14px;
             }
         }
         .toolMain {
-            padding: 1rem;
+            padding: 0,1rem,1rem,1rem;
             background-color: #f4f4f4;
             
             .level-violation {
+                position: absolute;
                 font-family:IBMPlexSans-SemiBold;
                 font-size:11px;
                 color:#ff399b;
-                line-height:1;
             }
 
             h2 {
@@ -125,6 +162,14 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-03');
+                font-size: 16px;
+                font-weight: 600;
+                margin-top: 14px;
+                margin-bottom: .5rem;
+                line-height: 20px;
+            }
             p {
                 @include carbon--type-style('body-long-01');
 
@@ -133,9 +178,10 @@ $feature-flags: (
 
             .issueLevel {
                 @include carbon--type-style('heading-01');
-                //font-weight: 600;
+                font-weight: 600;
+                font-size: 12px;
 
-                svg {
+                img {
                     margin-right: 4px;
                     height: 20px;
                     vertical-align: -5px;

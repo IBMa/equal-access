@@ -262,7 +262,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 {headerContent}
             </div>
         } else {
-            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)" }}>
+            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)",width:"100%" }}>
                 {headerContent}
             </div>
         }
