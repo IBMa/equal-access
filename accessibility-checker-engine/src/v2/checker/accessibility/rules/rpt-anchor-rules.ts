@@ -34,6 +34,7 @@ let a11yRulesAnchor: Rule[] = [{
             RPTUtil.hasInnerContentHiddenHyperLink(ruleContext, true)
             || RPTUtil.attributeNonEmpty(ruleContext, "aria-label")
             || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
+            || RPTUtil.attributeNonEmpty(ruleContext, "title")
             || RPTUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
             return RuleFail("Fail_1");
