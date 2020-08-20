@@ -121,10 +121,10 @@ export type Rule = {
     // NLS codes and help sources will be based off of this id
     id: string;
 
-    // See util/ContextParser for valid contexts
+    // See src/v2/common/Context.ts for valid contexts
     context: string;
 
-    // Array of rules that must pass to allow this validate to run - they must have the same rulecontext
+    // Array of rules that must pass to allow this validate to run - they must have the same context property
     dependencies?: string[]
 
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy) => RuleResult | RuleResult[]

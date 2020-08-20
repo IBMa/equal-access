@@ -20,15 +20,16 @@ import { RuleContextHierarchy } from "../api/IEngine";
 // Context that will cause this rule to execute. 
 // Context syntax:
 //   Triggers:
-//     role - Triggers on element with ARIA role role
-//     role[attribute] - Triggers on elements with the equivalent logical 
+//     aria:role - Triggers on element with ARIA role role
+//     aria:role[attribute] - Triggers on elements with the equivalent logical 
 //       aria- attribute (e.g., button[disabled] will trigger on 
 //       <button disabled> or <div role="button" aria-disabled="true">)
 //     role[attribute=value] - Similar to above, with case-sensitive match
 //       to value
 //     role[attribute~value] - Similar to above, with case-insensitive match
-//     Note: Wrapping role in <>'s will trigger on HTML elements or attributes
-//       (avoid when possible)
+//     dom:element - Triggers on an element with the specified name
+//     dom:element[attribute] - Triggers on a dom element with the specified attribute
+//     dom:*[attribute] - Triggers on all elements with the specified attribute
 //   Combining triggers:
 //     trigger1 trigger2 - Triggers on elements with trigger2 within an 
 //       element with trigger1

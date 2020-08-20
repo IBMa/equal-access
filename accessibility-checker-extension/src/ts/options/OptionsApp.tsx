@@ -373,7 +373,15 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         </div>
       );
     } else {
-      return <div>error: can not get archives or rulesets</div>;
+      return (
+        <div>
+        <p>An error occurred while loading this page. Please check your internet connection and try again.</p>
+        <br />
+        <p> Please also follow  {" "}
+            <a href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User Guide</a>
+            {" "} to give the browser permission to run the Option page. </p>
+        </div>
+      )
     }
   }
 }
