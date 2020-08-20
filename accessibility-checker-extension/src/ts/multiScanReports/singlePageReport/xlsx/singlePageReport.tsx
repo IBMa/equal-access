@@ -15,28 +15,27 @@
  *****************************************************************************/
 
 import ReportUti from "../../reportUtil";
-import { IReport } from '../../../devtools/Report';
 
 var Excel = require('exceljs');
 
 export default class SinglePageReport {
 
-    public static async single_page_xlsx_download(report: IReport | null, tab_title: string) {
+    public static async single_page_xlsx_download(xlsx_props: any) {
 
-        var report_workbook = SinglePageReport.create_report_workbook(report);
+        var report_workbook = SinglePageReport.create_report_workbook(xlsx_props);
 
         report_workbook.xlsx.writeBuffer().then(function (data: Blob) {
 
             const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-            const file_name = ReportUti.single_page_report_file_name(tab_title);
+            const file_name = ReportUti.single_page_report_file_name(xlsx_props.tab_title);
 
             ReportUti.download_file(blob, file_name);
         });
 
     }
 
-    public static create_report_workbook(report: IReport | null) {
+    public static create_report_workbook(xlsx_props: any) {
 
         var workbook = new Excel.Workbook();
 
@@ -44,10 +43,10 @@ export default class SinglePageReport {
         workbook.created = new Date();
 
         var header_sheet = workbook.addWorksheet('Header');
-        this.create_header_sheet(report, header_sheet);
+        this.create_header_sheet(xlsx_props, header_sheet);
 
         var issues_sheet = workbook.addWorksheet('Issues');
-        this.create_issues_sheet(report, issues_sheet);
+        this.create_issues_sheet(xlsx_props, issues_sheet);
 
         var definition_sheet = workbook.addWorksheet('Definition of fields');
         this.create_definition_sheet(definition_sheet);
@@ -55,25 +54,181 @@ export default class SinglePageReport {
         return workbook;
     }
 
-    public static create_header_sheet(report: IReport | null, header_sheet: any) {
+    public static create_header_sheet(xlsx_props: any, header_sheet: any) {
+        console.log('----report------', xlsx_props.report);
+        var report = xlsx_props.report;
+        var tab_url = xlsx_props.tabURL;
 
-        header_sheet.columns = [
-            { header: 'Package', key: 'package_name' },
-            { header: 'Author', key: 'author_name' }
+        var violation = report?.counts.total.Violation;
+        var needs_review = report?.counts.total["Needs review"];
+        var recommendation = report?.counts.total.Recommendation;
+        //var pass = report?.counts.total.Pass;
+
+        //set column width
+        header_sheet.getColumn('A').width=10;
+        header_sheet.getColumn('B').width=25;
+        header_sheet.getColumn('C').width=25;
+        header_sheet.getColumn('D').width=40;
+        header_sheet.getColumn('E').width=15;
+        header_sheet.getColumn('F').width=15;
+        header_sheet.getColumn('G').width=20;
+
+        var report_title = header_sheet.getCell('A1');
+        report_title.value = 'Accessibility Scan Report';
+        report_title.font = {
+            bold: true
+        };
+
+        var tool = header_sheet.getCell('A3');
+        var tool_info = header_sheet.getCell('B3');
+        tool.value = 'Tool:';
+        tool_info.value = 'IBM Equal Access Accessibility Checker';
+
+        var version = header_sheet.getCell('A4');
+        var version_info = header_sheet.getCell('B4');
+        version.value = 'Version:';
+        version_info.value = chrome.runtime.getManifest().version;
+
+        var rule_set = header_sheet.getCell('A5');
+        var rule_set_info = header_sheet.getCell('B5');
+        rule_set.value = 'Rule set:';
+        rule_set_info.value = report.option.deployment.name;
+
+        var guidelines = header_sheet.getCell('A6');
+        var guidelines_info = header_sheet.getCell('B6');
+        guidelines.value = 'Guidelines:';
+        guidelines_info.value = report.option.guideline.name;
+
+        var scan_date = header_sheet.getCell('A7');
+        var scan_date_info = header_sheet.getCell('B7');
+        scan_date.value = 'Scan date:';
+        scan_date_info.value = new Date(report.timestamp);
+        scan_date_info.alignment = {horizontal: 'left'};
+
+        var scans = header_sheet.getCell('A9');
+        var scans_info = header_sheet.getCell('B9');
+        scans.value = 'Scans:';
+        scans_info.value = '1';
+
+
+        var summary = header_sheet.getCell('A11');
+        summary.value = 'Summary';
+        summary.font = {
+            bold: true
+        };
+
+        var summary_row_header = header_sheet.getRow(13);
+        summary_row_header.values = ['Scan',
+            'Page',
+            '% elements without violations',
+            '% elements without violations or items to review',
+            '# violations', '# needs review',
+            '# recommendations'];
+
+        var summary_row_info = header_sheet.getRow(14);
+        summary_row_info.values = ['1',
+            tab_url,
+            '',
+            '',
+            violation,
+            needs_review,
+            recommendation
         ];
-
-        // Add row using key mapping to columns
-        header_sheet.addRow(
-            { package_name: "ABC", author_name: "Author 1" },
-            { package_name: "XYZ", author_name: "Author 2" }
-        );
-
 
         return header_sheet;
     }
 
-    public static create_issues_sheet(report: IReport | null, issues_sheet: any) {
+    public static create_issues_sheet(xlsx_props: any, issues_sheet: any) {
+
+        issues_sheet.columns = [
+            { header: 'Page', key: 'page', width: 20 },
+            { header: 'IssueID', key: 'issue_id', width: 10 },
+            { header: 'IssueType', key: 'issue_type', width: 15 },
+            { header: 'ToolkitLevel', key: 'toolkit_level', width: 10 },
+            { header: 'Checkpoint', key: 'checkpoint', width: 25 },
+            { header: 'Standard', key: 'standard', width: 10 },
+            { header: 'WCAGLevel', key: 'wcag_level', width: 10 },
+            { header: 'RuleId', key: 'rule_id', width: 25 },
+            { header: 'Issue', key: 'issue', width: 50 },
+            { header: 'Element', key: 'element', width: 10 },
+            { header: 'Code', key: 'code', width: 50 },
+            { header: 'Xpath', key: 'xpath', width: 50 },
+            { header: 'Line number', key: 'line_number', width: 11 },
+            { header: 'Help', key: 'help', width: 50 }
+
+        ];
+
+        this.issues_sheet_rows(xlsx_props, issues_sheet)
+
         return issues_sheet;
+    }
+
+    public static issues_sheet_rows(xlsx_props: any, issues_sheet: any) {
+
+
+        var report = xlsx_props.report;
+        var tab_url = xlsx_props.tabURL;
+        const engine_end_point = process.env.engineEndpoint;
+
+        const valueMap: { [key: string]: { [key2: string]: string } } = {
+            "VIOLATION": {
+                "POTENTIAL": "Needs review",
+                "FAIL": "Violation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            },
+            "RECOMMENDATION": {
+                "POTENTIAL": "Recommendation",
+                "FAIL": "Recommendation",
+                "PASS": "Pass",
+                "MANUAL": "Recommendation"
+            }
+        };
+
+        console.log('---create_issues_sheet---report', report, '---tab_url---', tab_url);
+
+        if (report == null) {
+            return;
+        }
+
+        let itemIdx = 0;
+
+        for (const item of report.results) {
+            if (item.value[1] === "PASS") {
+                continue;
+            }
+
+            item.itemIdx = itemIdx++;
+
+            issues_sheet.addRow({
+                page: tab_url,
+                issue_id: item.itemIdx,
+                issue_type: valueMap[item.value[0]][item.value[1]],
+                toolkit_level: '',
+                checkpoint: '',
+                standard: '',
+                wcag_level: '',
+                rule_id: item.ruleId,
+                issue: item.message,
+                element: this.get_element(item.snippet),
+                code: item.snippet,
+                xpath: item.path.aria,
+                line_number: '',
+                help: engine_end_point + '/tools/help/'+item.ruleId
+            });
+        }
+
+    }
+
+    public static get_element(code: string){
+
+        if(code){
+            const ind_s = code.indexOf(' ');
+            const ind_br = code.indexOf('>');
+            return (ind_s > 0 && ind_s< ind_br) ? code.substring(1, ind_s) : code.substring(1, ind_br) 
+        }
+
+        return '';
     }
 
     public static create_definition_sheet(definition_sheet: any) {
