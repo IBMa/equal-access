@@ -50,11 +50,17 @@ $feature-flags: (
         .bx--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         .bx--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         > .bx--grid {
@@ -91,6 +97,12 @@ $feature-flags: (
                 height: 20px;
                 vertical-align: -5px;
             }
+
+            svg {
+                margin-right: 4px;
+                height: 20px;
+                vertical-align: -5px;
+            }
         }
 
         .toolTop {
@@ -119,8 +131,8 @@ $feature-flags: (
 
             .bx--list__item {
                 color: black;
-                font-size: .875rem;
-                line-height: 18px;
+                font-size: 12px;
+                line-height: 16px;
             }
             
             h2 {
@@ -172,8 +184,9 @@ $feature-flags: (
             }
             p {
                 @include carbon--type-style('body-long-01');
-
                 margin-top: 0px;
+                font-size: 12px;
+                line-height: 16px;
             }
 
             .issueLevel {
@@ -182,6 +195,12 @@ $feature-flags: (
                 font-size: 12px;
 
                 img {
+                    margin-right: 4px;
+                    height: 20px;
+                    vertical-align: -5px;
+                }
+
+                svg {
                     margin-right: 4px;
                     height: 20px;
                     vertical-align: -5px;

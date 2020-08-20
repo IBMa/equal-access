@@ -302,11 +302,17 @@ $feature-flags: (
         .bx--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         .bx--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         > .bx--grid {
@@ -371,8 +377,8 @@ $feature-flags: (
 
             .bx--list__item {
                 color: black;
-                font-size: .875rem;
-                line-height: 18px;
+                font-size: 12px;
+                line-height: 16px;
             }
             
             h2 {
@@ -424,7 +430,8 @@ $feature-flags: (
             }
             p {
                 @include carbon--type-style('body-long-01');
-
+                font-size: 12px;
+                line-height: 16px;
                 margin-top: 0px;
             }
 
@@ -615,11 +622,17 @@ $feature-flags: (
         .bx--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         .bx--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         > .bx--grid {
@@ -684,8 +697,8 @@ $feature-flags: (
 
             .bx--list__item {
                 color: black;
-                font-size: .875rem;
-                line-height: 18px;
+                font-size: 12px;
+                line-height: 16px;
             }
             
             h2 {
@@ -704,9 +717,8 @@ $feature-flags: (
 
             p {
                 @include carbon--type-style('body-long-01');
-
                 margin-top: 0px;
-                margin-bottom: 14px;
+                margin-bottom: 12px;
             }
         }
         .toolMain {
@@ -737,7 +749,8 @@ $feature-flags: (
             }
             p {
                 @include carbon--type-style('body-long-01');
-
+                font-size: 12px;
+                line-height: 16px;
                 margin-top: 0px;
             }
 

@@ -137,7 +137,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
 
     ItemSnippet = () => {
         return <React.Fragment>
-            <h2 id="element-location">Element location</h2>
+            <h3 id="element-location">Element location</h3>
             <div style={{margin: "1rem 0rem"}}>
                 <CodeSnippet type="single" light={true} onClick={() => this.handleCodeCopy(this.props.item.snippet)}>
                     {this.props.item.snippet}
@@ -200,11 +200,11 @@ function copyFiles() {
         .pipe(replace("export default ({ children }) => (<React.Fragment>{children}</React.Fragment>)", ""))
         .pipe(replace(/className=\"toolHead\">(.|\n)*?\<\/Column\>/,`className="toolHead">
 
-<ItemActive item={this.props.item} />
+<h3><ItemActive item={this.props.item} /></h3>
 
-<div id="locSnippet"></div>
+<div id="locLevel"></div>
 
-<ItemPassive item={this.props.item} />
+<p><ItemPassive item={this.props.item} /></p>
 
 </Column>`))
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))

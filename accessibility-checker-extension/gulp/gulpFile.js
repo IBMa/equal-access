@@ -174,11 +174,11 @@ function copyFiles() {
         .pipe(replace("export default ({ children }) => (<React.Fragment>{children}</React.Fragment>)", ""))
         .pipe(replace(/className=\"toolHead\">(.|\n)*?\<\/Column\>/,`className="toolHead">
 
-<ItemActive item={this.props.item} />
+<h3><ItemActive item={this.props.item} /></h3>
 
-<div id="locSnippet"></div>
+<div id="locLevel"></div>
 
-<ItemPassive item={this.props.item} />
+<p><ItemPassive item={this.props.item} /></p>
 
 </Column>`))
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
