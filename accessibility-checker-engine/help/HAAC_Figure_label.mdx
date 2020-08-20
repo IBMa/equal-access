@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The `<figure>` element does not have an associated label
 
-* Blind people using screen readers
-* People who turn off image-loading on their web browsers
-* People using text-based browsers (e.g., Lynx) or audio interfaces
+<div id="locLevel"></div>
+
+The `<figure>` element must have an associated label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 A `<figure>` element is usually used to annotate illustrations, diagrams, photos, code listings, etc. Associating a label makes the same information available through audio or other channels.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The `<figure>` element does not have an associated label
-The `<figure>` element must have an associated label
-
-[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG 2.1 technique ARIA10](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA10)
 
 <div id="locSnippet"></div>
 
@@ -44,6 +39,20 @@ For example:
 	&lt;img src="castle1423.jpeg" alt="The castle has one tower and a tall wall around it."&gt;
 	&lt;/figure&gt;
 &lt;/figure&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG 2.1 technique ARIA10](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA10)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </Column>
 </Row>

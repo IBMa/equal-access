@@ -49,7 +49,7 @@
                  <div className="bx--col-sm-3">
                      <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
                  </div>
-                 <div className="bx--col-sm-1" style={{position: "relative"}}>
+                 <div className="bx--col-sm-1" style={{position: "relative", textAlign:"right"}}>
                      <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                  </div>
              </div>
@@ -71,7 +71,7 @@
                  {headerContent}                        
              </div>
          } else {
-             return <div className="fixed-header" style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)"}}>
+             return <div className="fixed-header" style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)", width: "100%"}}>
                  {headerContent}            
              </div>
          }

@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The {0} element with WAI-ARIA `presentation` role or `none` role has structural element(s) and/or attribute(s) {1}
 
-* Blind people using screen readers
-* People with low vision using screen readers
+<div id="locLevel"></div>
+
+Table elements with `role=presentation` or `role=none` should not have structural elements or attributes
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Assistive technologies use structural elements (`<th>`, `<caption>`) and attributes (`summary`, `scope`, `header`) to help users navigate and understand data tables. Including these features in layout tables makes the purpose of the table unclear.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The {0} element with WAI-ARIA `presentation` role or `none` role has structural element(s) and/or attribute(s) {1}
-Table elements with `role=presentation` or `role=none` should not have structural elements or attributes
-
-[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique F46](https://www.w3.org/WAI/WCAG21/Techniques/failures/F46.html) | [WCAG 2.1 Technique F92](https://www.w3.org/WAI/WCAG21/Techniques/failures/F92.html)
 
 <div id="locSnippet"></div>
 
@@ -34,6 +30,20 @@ Table elements with `role=presentation` or `role=none` should not have structura
  * If the table is a data table, remove the `role` attribute;
  * OR, if a table is used for layout, use CSS-based layouts instead;
  * OR, if a layout table must be used, remove `<th>` elements, `<caption>` elements, `summary` attributes, and `scope` or `header` attributes on `<td>` elements.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 technique F46](https://www.w3.org/WAI/WCAG21/Techniques/failures/F46.html)
+[WCAG 2.1 Technique F92](https://www.w3.org/WAI/WCAG21/Techniques/failures/F92.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
 
 </Column>
 </Row>

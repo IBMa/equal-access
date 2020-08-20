@@ -6,28 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The `autocomplete` attribute's token(s) are not appropriate for the input form field
 
- * Blind people using screen readers
- * People with tremor or other movement disorders
- * People with memory limitations
- * People with cognitive limitations
+<div id="locLevel"></div>
+
+The `autocomplete` attribute's token(s) must be appropriate for the input form field
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Using an appropriate autocomplete token for a form field that collects user information makes the input’s purpose programmatically determinable. This helps user agents and assistive technologies to present the programmatically determined purpose of the inputs to users in different modalities. The `autocomplete` attribute can also assist with pre-populating form fields with values the user has previously input.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The `autocomplete` attribute's token(s) are not appropriate for the input form field
-The `autocomplete` attribute's token(s) must be appropriate for the input form field
-
-[IBM 1.3.5 Identify Input Purpose](https://www.ibm.com/able/guidelines/ci162/identify_input_purpose_71.html)
 
 <div id="locSnippet"></div>
 
@@ -62,6 +56,19 @@ Correct example:
 
 Example code includes material copied from or derived from [Using HTML5 Autocomplete attributes, technique H98](https://www.w3.org/WAI/WCAG21/Techniques/html/H98). Copyright © 2017-2018 W3C® (MIT, ERCIM, Keio, Beihang)
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.5 Identify Input Purpose](https://www.ibm.com/able/guidelines/ci162/identify_input_purpose_71.html)
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with tremor or other movement disorders
+ * People with memory limitations
+ * People with cognitive limitations
 
 </Column>
 </Row>

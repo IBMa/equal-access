@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### `<fieldset>` does not have a non-empty, unique `<legend>`
 
-* Blind people using screen readers
-* People with dexterity impairment using voice control
+<div id="locLevel"></div>
+
+`<fieldset>` elements must have a single, non-empty `<legend>` as a label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The `<legend>` of a `<fieldset>` element provides a label or instruction for the group of controls within the `<fieldset>`. This label helps users to recognize that the controls are related. Controls grouping is most important for related radio buttons and checkboxes, but can also be useful for other sets of controls that are not as tightly related.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### `<fieldset>` does not have a non-empty, unique `<legend>`
-`<fieldset>` elements must have a single, non-empty `<legend>` as a label
-
-[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H71](https://www.w3.org/WAI/WCAG21/Techniques/html/H71)
 
 <div id="locSnippet"></div>
 
@@ -41,6 +37,19 @@ For example:
        &lt;input type="radio" name="skillLevel" value="novice" id="noviceLev"&gt;
        &lt;label for="noviceLev"&gt;Novice&lt;/label&gt;
 &lt;/fieldset&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 technique H71](https://www.w3.org/WAI/WCAG21/Techniques/html/H71)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with dexterity impairment using voice control
 
 </Column>
 </Row>

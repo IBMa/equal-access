@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### `<th>` or `<td>` element is not related via `header` or `scope`
 
- * Blind people using screen readers
- * People with low vision using screen magnification
+<div id="locLevel"></div>
+
+For a complex data table, all `<th>` and `<td>` elements must be related via `header` or `scope` attributes
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Navigating cell by cell through a complex data table is especially difficult when users have to search for the meaning of each cell. Using the `id` and `header` attributes captures complex relationships between data cells and header cells that can then be conveyed to users, supporting efficient table navigation.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### `<th>` or `<td>` element is not related via `header` or `scope`
-For a complex data table, all `<th>` and `<td>` elements must be related via `header` or `scope` attributes
-
-[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H43](https://www.w3.org/WAI/WCAG21/Techniques/html/H43)
 
 <div id="locSnippet"></div>
 
@@ -35,6 +31,19 @@ For a complex data table, all `<th>` and `<td>` elements must be related via `he
  * OR, identify the table as layout with `role="presentation"`  or `role="none"`;
  * OR, Use the `id` attribute to provide an identifier for header cells (e.g. `<th id="school">`);
  * AND use the `header` attribute on data cells to identify the appropriate header cells (e.g. `<td headers="school teacher grade">`).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 technique H43](https://www.w3.org/WAI/WCAG21/Techniques/html/H43)
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen magnification
 
 </Column>
 </Row>
