@@ -22,6 +22,7 @@ import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
 import SinglePageReport from "../multiScanReports/singlePageReport/xlsx/singlePageReport";
+import OptionMessaging from "../util/optionMessaging";
 
 import {
     Loading
@@ -211,8 +212,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async onReport(message: any): Promise<any> {
         let report = message.report;
+        let archives = await this.getArchives();
+
         // JCH add itemIdx to report (used to be in message.report)
         if (!report) return;
+
+       let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
         report.results.map((result: any, index: any) => {
             result["itemIdx"] = index;
@@ -223,6 +228,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.state.tabId === tabId) {
             report.timestamp = new Date().getTime();
             report.filterstamp = new Date().getTime();
+            report.option = check_option;
+
             this.setState({
                 filter: null,
                 numScanning: Math.max(0, this.state.numScanning - 1),
@@ -232,6 +239,25 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
         this.setState({ scanning: false });
         return true;
+    }
+
+    getArchives = async () => {
+        return await OptionMessaging.sendToBackground("OPTIONS", {
+          command: "getArchives",
+        });
+    };
+
+    getCheckOption = (archiveId: string, policyId: string, archives: any) => {
+        
+        var option = archives.find( (element: any) => element.id === archiveId);
+        
+        var policy = option.policies;
+
+        var guideline = policy.find( (element: any) => element.id === policyId);
+
+        var ret = {deployment: {id: archiveId, name: option.name}, guideline: {id: policyId, name: guideline.name}}; 
+        
+        return ret;
     }
 
     onFilter(filter: string) {
@@ -287,8 +313,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     xlsxReportHandler = () => {
+        var xlsx_props = {
+            report: this.state.report,
+            tabTitle: this.state.tabTitle,
+            tabURL: this.state.tabURL
+        }
 
-        SinglePageReport.single_page_xlsx_download(this.state.report, this.state.tabTitle);
+        SinglePageReport.single_page_xlsx_download(xlsx_props);
         
     }
 
