@@ -153,7 +153,7 @@ export default class SinglePageReport {
         issues_sheet.columns = [
             { header: 'Page', key: 'page', width: 20 },
             { header: 'Scan Label', key: 'scan_label', width: 20 },
-            { header: 'Issue ID', key: 'issue_id', width: 10 },
+            { header: 'Issue ID', key: 'issue_id', width: 15 },
             { header: 'Issue Type', key: 'issue_type', width: 15 },
             { header: 'Toolkit Level', key: 'toolkit_level', width: 10 },
             { header: 'Checkpoint', key: 'checkpoint', width: 25 },
