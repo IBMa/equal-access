@@ -18,6 +18,7 @@ import ReportUti from "../../reportUtil";
 import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 var Excel = require('exceljs');
+const stringHash = require("string-hash");
 
 export default class SinglePageReport {
 
@@ -60,7 +61,7 @@ export default class SinglePageReport {
         var report = xlsx_props.report;
         var tab_url = xlsx_props.tabURL;
 
-        
+
         var summaryNumbers = ReportSummaryUtil.calcSummary(report);
         var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
         var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
@@ -72,13 +73,13 @@ export default class SinglePageReport {
 
 
         //set column width
-        header_sheet.getColumn('A').width=10;
-        header_sheet.getColumn('B').width=25;
-        header_sheet.getColumn('C').width=25;
-        header_sheet.getColumn('D').width=40;
-        header_sheet.getColumn('E').width=15;
-        header_sheet.getColumn('F').width=15;
-        header_sheet.getColumn('G').width=20;
+        header_sheet.getColumn('A').width = 10;
+        header_sheet.getColumn('B').width = 25;
+        header_sheet.getColumn('C').width = 25;
+        header_sheet.getColumn('D').width = 40;
+        header_sheet.getColumn('E').width = 15;
+        header_sheet.getColumn('F').width = 15;
+        header_sheet.getColumn('G').width = 20;
 
         var report_title = header_sheet.getCell('A1');
         report_title.value = 'Accessibility Scan Report';
@@ -110,7 +111,7 @@ export default class SinglePageReport {
         var scan_date_info = header_sheet.getCell('B7');
         scan_date.value = 'Scan date:';
         scan_date_info.value = new Date(report.timestamp);
-        scan_date_info.alignment = {horizontal: 'left'};
+        scan_date_info.alignment = { horizontal: 'left' };
 
         var scans = header_sheet.getCell('A9');
         var scans_info = header_sheet.getCell('B9');
@@ -125,16 +126,18 @@ export default class SinglePageReport {
         };
 
         var summary_row_header = header_sheet.getRow(13);
-        summary_row_header.values = ['Scan',
+        summary_row_header.values = [
             'Page',
+            'Scan Label',
             '% elements without violations',
             '% elements without violations or items to review',
             '# violations', '# needs review',
             '# recommendations'];
 
         var summary_row_info = header_sheet.getRow(14);
-        summary_row_info.values = ['1',
+        summary_row_info.values = [
             tab_url,
+            this.format_date(report.timestamp),
             element_no_violations,
             element_no_failures,
             violation,
@@ -149,18 +152,17 @@ export default class SinglePageReport {
 
         issues_sheet.columns = [
             { header: 'Page', key: 'page', width: 20 },
-            { header: 'IssueID', key: 'issue_id', width: 10 },
-            { header: 'IssueType', key: 'issue_type', width: 15 },
-            { header: 'ToolkitLevel', key: 'toolkit_level', width: 10 },
+            { header: 'Scan Label', key: 'scan_label', width: 20 },
+            { header: 'Issue ID', key: 'issue_id', width: 10 },
+            { header: 'Issue Type', key: 'issue_type', width: 15 },
+            { header: 'Toolkit Level', key: 'toolkit_level', width: 10 },
             { header: 'Checkpoint', key: 'checkpoint', width: 25 },
-            { header: 'Standard', key: 'standard', width: 10 },
-            { header: 'WCAGLevel', key: 'wcag_level', width: 10 },
-            { header: 'RuleId', key: 'rule_id', width: 25 },
+            { header: 'WCAG Level', key: 'wcag_level', width: 10 },
+            { header: 'Rule', key: 'rule', width: 25 },
             { header: 'Issue', key: 'issue', width: 50 },
             { header: 'Element', key: 'element', width: 10 },
             { header: 'Code', key: 'code', width: 50 },
             { header: 'Xpath', key: 'xpath', width: 50 },
-            { header: 'Line number', key: 'line_number', width: 11 },
             { header: 'Help', key: 'help', width: 50 }
 
         ];
@@ -192,8 +194,6 @@ export default class SinglePageReport {
             }
         };
 
-        console.log('---create_issues_sheet---report', report, '---tab_url---', tab_url);
-
         if (report == null) {
             return;
         }
@@ -209,30 +209,29 @@ export default class SinglePageReport {
 
             issues_sheet.addRow({
                 page: tab_url,
-                issue_id: item.itemIdx,
+                scan_label: this.format_date(report.timestamp),
+                issue_id: stringHash(item.ruleId + item.path.aria),
                 issue_type: valueMap[item.value[0]][item.value[1]],
                 toolkit_level: '',
                 checkpoint: '',
-                standard: '',
                 wcag_level: '',
-                rule_id: item.ruleId,
+                rule: item.ruleId,
                 issue: item.message,
                 element: this.get_element(item.snippet),
                 code: item.snippet,
                 xpath: item.path.aria,
-                line_number: '',
-                help: engine_end_point + '/tools/help/'+item.ruleId
+                help: engine_end_point + '/tools/help/' + item.ruleId
             });
         }
 
     }
 
-    public static get_element(code: string){
+    public static get_element(code: string) {
 
-        if(code){
+        if (code) {
             const ind_s = code.indexOf(' ');
             const ind_br = code.indexOf('>');
-            return (ind_s > 0 && ind_s< ind_br) ? code.substring(1, ind_s) : code.substring(1, ind_br) 
+            return (ind_s > 0 && ind_s < ind_br) ? code.substring(1, ind_s) : code.substring(1, ind_br)
         }
 
         return '';
@@ -241,68 +240,62 @@ export default class SinglePageReport {
     public static create_definition_sheet(definition_sheet: any) {
         definition_sheet.columns = [
             { header: 'Field', key: 'field', width: 15 },
-            { header: 'Definition', key: 'definition', width: 50 },
-            { header: 'Questions/Comments', key: 'qc', width: 50 }
+            { header: 'Definition', key: 'definition', width: 50 }
         ];
 
         var field_col = definition_sheet.getColumn('field');
         var def_col = definition_sheet.getColumn('definition');
-        var qc_col = definition_sheet.getColumn('qc');
 
         field_col.values = ['Field',
             'Page',
+            'Scan Label',
             'IssueID',
             'IssueType',
             'ToolkitLevel',
             'Checkpoint',
-            'Standard',
             'WCAGLevel',
-            'RuleId',
+            'Rule',
             'Issue',
             'Element',
             'Code',
             'Xpath',
-            'Line number',
             'Help'];
 
-        def_col.values = ['Definition',
-            'Identifies the page or html file that was scanned',
-            'Unique identifier for the issue',
-            'Violation, Needs review, or Recommendation',
-            'Our level 1-3',
-            'WCAG/IBM checkpoint',
-            'WCAG 2.1, WCAG 2.0, 508, EN501, IBM',
-            'A, AA, AAA',
-            'Numerical ID of the engine rule that fired',
-            'Active message describing the issue',
-            'Type of HTML element where the issue is found',
-            'Actual HTML element where the issue is found',
-            'Xpath of the element where the issue is found',
-            'Line number in the source code where the issue is located',
-            'Link to our checker help for the issue'];
+        var field_cell = definition_sheet.getCell('A1');
+        field_cell.font = {
+            bold: true
+        };
 
-        qc_col.values = ['Questions/Comments',
-            '',
-            'To support mapping to issues in a tracking system',
-            'Any issues with replacing the old types? (violation, potentialviolation, etc)',
-            'Serves as a quick way to prioritize',
-            'Helps with mapping to our checklists',
-            'Would this be a list or would it be WCAG 2.1 for everything required by that standard, and something else for other requirements not in 2.1?',
-            'Some teams currently prioritize by WCAG level',
-            'Hides the messy rule names from external users but allows easier reporting of issues with the rules (we\'d also include the same ID number in the help)',
-            'Includes token values',
-            'Allows for sorting by element type to address all issues with certain kinds of element, e.g. images',
-            'Helps with identifying the element with the issue',
-            '',
-            'Is this feasible for static HTML files?',
-            ''];
+        var definition_cell = definition_sheet.getCell('B1');
+        definition_cell.font = {
+            bold: true
+        };
+
+        def_col.values = ['Definition',
+            'Identifies the page or html file that was scanned.',
+            'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.',
+            'Identifier for this issue within this page.',
+            'Violation, needs review, or recommendation',
+            '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details',
+            'WCAG checkpoints this issue falls into.',
+            'A, AA or AAA. WCAG level for this issue.',
+            'Name of the accessibility test rule that detected this issue.',
+            'Message describing the issue.',
+            'Type of HTML element where the issue is found.',
+            'Actual HTML element where the issue is found.',
+            'Xpath of the HTML element where the issue is found.',
+            'Link to a more detailed description of the issue and suggested solutions.'];
 
         return definition_sheet;
     }
 
+    public static format_date(timestamp: string) {
+        var date = new Date(timestamp);
 
+        return date.getFullYear() + '-' + ("00" + (date.getMonth() + 1)).slice(-2) + "-" +
+            ("00" + date.getDate()).slice(-2) + "-" +
+            ("00" + date.getHours()).slice(-2) + "-" +
+            ("00" + date.getMinutes()).slice(-2) + "-" +
+            ("00" + date.getSeconds()).slice(-2);
+    }
 }
-
-
-
-
