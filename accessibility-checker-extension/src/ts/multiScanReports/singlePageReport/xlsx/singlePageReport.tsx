@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import ReportUti from "../../reportUtil";
+import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 var Excel = require('exceljs');
 
@@ -59,10 +60,16 @@ export default class SinglePageReport {
         var report = xlsx_props.report;
         var tab_url = xlsx_props.tabURL;
 
+        
+        var summaryNumbers = ReportSummaryUtil.calcSummary(report);
+        var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
+        var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
+
         var violation = report?.counts.total.Violation;
         var needs_review = report?.counts.total["Needs review"];
         var recommendation = report?.counts.total.Recommendation;
         //var pass = report?.counts.total.Pass;
+
 
         //set column width
         header_sheet.getColumn('A').width=10;
@@ -128,8 +135,8 @@ export default class SinglePageReport {
         var summary_row_info = header_sheet.getRow(14);
         summary_row_info.values = ['1',
             tab_url,
-            '',
-            '',
+            element_no_violations,
+            element_no_failures,
             violation,
             needs_review,
             recommendation
