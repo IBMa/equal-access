@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### List element is missing or improperly structured
 
-* Blind people using screen readers
-* People with low vision using screen readers
+<div id="locLevel"></div>
+
+List elements should only be used for lists of related items
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Lists add structural information that helps users navigate without vision. Using list markup improperly hinders accessibility by making it difficult for users with specialized software to understand the organization of the page or to navigate through it.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### List element is missing or improperly structured
-List elements should only be used for lists of related items
-
-
-[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H48](https://www.w3.org/WAI/WCAG21/Techniques/html/H48)
 
 <div id="locSnippet"></div>
 
@@ -35,6 +30,19 @@ List elements should only be used for lists of related items
  * Check that list items are represented with `<li>` elements and enclosed within list elements `<ul>` or `<ol>`;
  * AND check that definition list items are represented with `<dt>`, or `<di>` and enclosed within a definition list element `<dl>`;
  * AND check that elements within a list element do form a list.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 technique H48](https://www.w3.org/WAI/WCAG21/Techniques/html/H48)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
 
 </Column>
 </Row>

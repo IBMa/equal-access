@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### An element with a `"complementary"` role does not have a visible label
 
-* Blind people using screen readers
+<div id="locLevel"></div>
+
+A unique and visible label is preferred for each element with a `"complementary"` role
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Elements with a `"complementary"` role are a type of region used to enclose content that is complementary to the main content on the page. Providing a visible label for each `"complementary"` region on the page provides better context for all users including people using assistive technologies. These landmark labels help to identify and navigate to the content.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### An element with a `"complementary"` role does not have a visible label
-A unique and visible label is preferred for each element with a `"complementary"` role
-
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Complementary Role](https://www.w3.org/TR/wai-aria-1.1/#complementary)
 
 <div id="locSnippet"></div>
 
@@ -40,6 +37,17 @@ For example:
 ...
 &lt;/div&gt;</CodeSnippet>
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+[WAI-ARIA 1.1 Complementary Role](https://www.w3.org/TR/wai-aria-1.1/#complementary)
+
+### Who does this affect?
+
+* Blind people using screen readers
 
 </Column>
 </Row>

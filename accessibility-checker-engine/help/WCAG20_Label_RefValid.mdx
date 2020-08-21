@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The value \"{0}\" of the `<label>` `for` attribute is not the `id` of a valid `<input>` element
 
-* Blind people using screen readers
-* People with low vision using screen readers
-* People with dexterity impairment using voice control
+<div id="locLevel"></div>
+
+The `for` attribute must reference a non-empty, unique `id` attribute of an `<input>` element
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 A `label` element is attached to a specific `<input>` element through the use of the `for` attribute. When a `<label>` does not reference the corresponding unique `id` in a valid lableable `<input>` element, assistive technologies will not be able to associate the label with the element.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The value \"{0}\" of the `<label>` `for` attribute is not the `id` of a valid `<input>` element
-The `for` attribute must reference a non-empty, unique `id` attribute of an `<input>` element
-
-[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
 
 <div id="locSnippet"></div>
 
@@ -36,6 +31,20 @@ The `for` attribute must reference a non-empty, unique `id` attribute of an `<in
 
 <CodeSnippet type="multi" light={true}>&lt;label id="label2" for="ln1"&gt;Last Name&lt;/label&gt;
 &lt;input type="text" name="lastname" id="ln1" value="enter last name"&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+* People with dexterity impairment using voice control
 
 </Column>
 </Row>

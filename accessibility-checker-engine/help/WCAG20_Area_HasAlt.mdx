@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### `<area>` element in an image map has no text alternative
 
-* Blind people using screen readers
-* People who turned off image-loading on their web browsers
-* People using text-based browsers (e.g., Lynx) or audio interfaces
+<div id="locLevel"></div>
+
+`<area>` elements in an image map must have a text alternative
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 An image map is an image divided into selectable regions defined by `<area>` elements. When the selectable `<area>` elements contain important information, providing a text alternative for each `<area>` element makes the same information accessible through audio or other channels.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### `<area>` element in an image map has no text alternative
-`<area>` elements in an image map must have a text alternative
-
-[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [WCAG  2.1 HTML technique H24](https://www.w3.org/TR/WCAG20-TECHS/H24)
 
 <div id="locSnippet"></div>
 
@@ -43,6 +38,20 @@ Example:
 &lt;/map&gt;</CodeSnippet>
 
 Note: Example code includes material copied from or derived from [WCAG 2.1 technique H24](https://www.w3.org/TR/WCAG20-TECHS/H24) Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG  2.1 HTML technique H24](https://www.w3.org/TR/WCAG20-TECHS/H24)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who turned off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </Column>
 </Row>

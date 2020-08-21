@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Invalid value used for the `dir` attribute
 
- * Blind people using screen readers
+<div id="locLevel"></div>
+
+`dir` attribute value must be `"ltr"`, `"rtl"`, or `"auto"`
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The `dir` attribute specifies the rendering order of text content. It is used by assistive technology to read or present information in the intended order.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Invalid value used for the `dir` attribute
-`dir` attribute value must be `"ltr"`, `"rtl"`, or `"auto"`
-
-[IBM 1.3.2 Meaningful Sequence](https://www.ibm.com/able/guidelines/ci162/meaningful_sequence.html)
 
 <div id="locSnippet"></div>
 
@@ -33,6 +30,17 @@ The `dir` attribute specifies the rendering order of text content. It is used by
  * For text that should be read from left to right, use `dir="ltr"`;
  * OR, for text that should be read from right to left, use `dir="rtl"`;
  * OR, if the direction of the text is truly unknown, use `dir="auto"`.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.2 Meaningful Sequence](https://www.ibm.com/able/guidelines/ci162/meaningful_sequence.html)
+
+### Who does this affect?
+
+ * Blind people using screen readers
 
 </Column>
 </Row>

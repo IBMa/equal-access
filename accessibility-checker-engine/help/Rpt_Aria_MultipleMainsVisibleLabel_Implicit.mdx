@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Multiple elements with a `"main"` role do not have unique visible labels
 
-* Blind people using screen readers
+<div id="locLevel"></div>
+
+Each element with a `"main"` role should have a visible label that is unique
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Elements with a `"main"` role are a type of region used to enclose the main content on the page. Providing a visible label for each main region on the page provides better context to all users including people using assistive technologies who rely on landmarks, to identify and navigate to the main content.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Multiple elements with a `"main"` role do not have unique visible labels
-Each element with a `"main"` role should have a visible label that is unique
-
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
 
 <div id="locSnippet"></div>
 
@@ -45,6 +42,16 @@ For example:
     ...
 &lt;/div&gt;</CodeSnippet>
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
 
 </Column>
 </Row>

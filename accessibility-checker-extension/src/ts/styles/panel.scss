@@ -13,7 +13,7 @@ $feature-flags: (
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    //width: 100%;
     padding-top: .5rem;
 
     .eaacTitle {
@@ -271,7 +271,7 @@ $feature-flags: (
 
 
     .toolHelp, .toolHelp .bx--row:nth-child(1) {
-        height: 100%;
+        //height: 100px;
     }
     @media (min-width: 99rem) {
         .toolHelp .bx--grid {
@@ -294,15 +294,25 @@ $feature-flags: (
         }
     }
 
+    
+
     .toolHelp {
-        background-color: white;
+        background-color: #be95ff;
 
         .bx--list--unordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         .bx--list--ordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         > .bx--grid {
@@ -312,6 +322,33 @@ $feature-flags: (
 
         .bx--row {
             margin: 0px;
+        }
+
+        .toolHead {
+            h3 {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 600;
+                padding-top: 8px;
+                padding-bottom: 4px;
+            }
+
+            p {
+                font-size: 12px;
+                padding-bottom: 6px;
+            }
+        }
+
+        .issueLevel {
+            font-size: 12px;
+            font-weight: 600;
+            vertical-align: middle;
+
+            img {
+                margin-right: 4px;
+                height: 20px;
+                vertical-align: -5px;
+            }
         }
 
         .toolTop {
@@ -340,8 +377,8 @@ $feature-flags: (
 
             .bx--list__item {
                 color: black;
-                font-size: .875rem;
-                line-height: 18px;
+                font-size: 12px;
+                line-height: 16px;
             }
             
             h2 {
@@ -362,10 +399,11 @@ $feature-flags: (
                 @include carbon--type-style('body-long-01');
 
                 margin-top: 0px;
+                margin-bottom: 14px;
             }
         }
         .toolMain {
-            padding: 1rem;
+            padding: 0,1rem,1rem,1rem;
             background-color: #f4f4f4;
             
             .level-violation {
@@ -384,19 +422,23 @@ $feature-flags: (
 
             h3 {
                 @include carbon--type-style('productive-heading-03');
-
-                margin-top: 2rem;
+                font-size: 16px;
+                font-weight: 600;
+                margin-top: 14px;
                 margin-bottom: .5rem;
+                line-height: 20px;
             }
             p {
                 @include carbon--type-style('body-long-01');
-
+                font-size: 12px;
+                line-height: 16px;
                 margin-top: 0px;
             }
 
             .issueLevel {
                 @include carbon--type-style('heading-01');
-                //font-weight: 600;
+                font-weight: 600;
+                font-size: 12px;
 
                 img {
                     margin-right: 4px;
@@ -512,9 +554,9 @@ $feature-flags: (
     }
 
     .mainPanelRight {
-        position:fixed;
+        //position:fixed;
         height: 100%;
-        left: 50%;
+        //left: 50%;
         width: 50%;
         background-color: white;
         top: 1rem;
@@ -551,7 +593,7 @@ $feature-flags: (
 
 
     .toolHelp, .toolHelp .bx--row:nth-child(1) {
-        height: 100%;
+        background-color: #be95ff;
     }
     @media (min-width: 99rem) {
         .toolHelp .bx--grid {
@@ -575,14 +617,22 @@ $feature-flags: (
     }
 
     .toolHelp {
-        background-color: white;
+        background-color: #be95ff;
 
         .bx--list--unordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         .bx--list--ordered {
-            margin: 1rem;
+            margin-top: .5rem;
+            margin-left: 1rem;
+            margin-bottom: 1rem;
+            font-size: 12px;
+            line-height: 16px;
         }
 
         > .bx--grid {
@@ -592,6 +642,33 @@ $feature-flags: (
 
         .bx--row {
             margin: 0px;
+        }
+
+        .toolHead {
+            h3 {
+                font-size: 16px;
+                line-height: 20px;
+                font-weight: 600;
+                padding-top: 8px;
+                padding-bottom: 4px;
+            }
+
+            p {
+                font-size: 12px;
+                padding-bottom: 6px;
+            }
+        }
+
+        .issueLevel {
+            font-size: 12px;
+            font-weight: 600;
+            vertical-align: middle;
+
+            img {
+                margin-right: 4px;
+                height: 20px;
+                vertical-align: -5px;
+            }
         }
 
         .toolTop {
@@ -620,8 +697,8 @@ $feature-flags: (
 
             .bx--list__item {
                 color: black;
-                font-size: .875rem;
-                line-height: 18px;
+                font-size: 12px;
+                line-height: 16px;
             }
             
             h2 {
@@ -631,14 +708,21 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-01');
+
+                margin-top: 0rem;
+                margin-bottom: .5rem;
+            }
+
             p {
                 @include carbon--type-style('body-long-01');
-
                 margin-top: 0px;
+                margin-bottom: 12px;
             }
         }
         .toolMain {
-            padding: 1rem;
+            padding: 0,1rem,1rem,1rem;
             background-color: #f4f4f4;
             
             .level-violation {
@@ -655,15 +739,25 @@ $feature-flags: (
                 margin-bottom: .5rem;
             }
 
+            h3 {
+                @include carbon--type-style('productive-heading-03');
+                font-size: 16px;
+                font-weight: 600;
+                margin-top: 14px;
+                margin-bottom: .5rem;
+                line-height: 20px;
+            }
             p {
                 @include carbon--type-style('body-long-01');
-
+                font-size: 12px;
+                line-height: 16px;
                 margin-top: 0px;
             }
 
             .issueLevel {
                 @include carbon--type-style('heading-01');
-                //font-weight: 600;
+                font-weight: 600;
+                font-size: 12px;
 
                 img {
                     margin-right: 4px;

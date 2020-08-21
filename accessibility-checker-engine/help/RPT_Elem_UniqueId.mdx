@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The `<{0}>` element has the `id` \"{1}\" that is not unique
 
- * Blind people using a screen reader
+<div id="locLevel"></div>
+
+Element `id` attribute values must be unique within a document
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The `id` attribute provides a machine-readable identifier for the elements of the page. A unique value for `id` allows browsers and assistive technologies to interpret and parse the content accurately.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The `<{0}>` element has the `id` \"{1}\" that is not unique
-Element `id` attribute values must be unique within a document
-
-[IBM 4.1.1 Parsing ](http://www.ibm.com/able/guidelines/ci162/parsing.html) | [WCAG 2.1 technique H93](https://www.w3.org/WAI/WCAG21/Techniques/html/H93) | [WCAG 2.1 failure technique F77](https://www.w3.org/WAI/WCAG21/Techniques/failures/F77)
 
 <div id="locSnippet"></div>
 
@@ -40,6 +37,20 @@ For example:
 &lt;div role="article" aria-labelledby="news" aria-describedby="newsintro"&gt;
     ...
 &lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.1 Parsing ](http://www.ibm.com/able/guidelines/ci162/parsing.html)
+[WCAG 2.1 technique H93](https://www.w3.org/WAI/WCAG21/Techniques/html/H93)
+[WCAG 2.1 failure technique F77](https://www.w3.org/WAI/WCAG21/Techniques/failures/F77)
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+
 </Column>
 </Row>
 </div>

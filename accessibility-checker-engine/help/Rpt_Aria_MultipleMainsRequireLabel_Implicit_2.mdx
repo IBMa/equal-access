@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Multiple elements with `"main"` role do not have unique labels
 
-* Blind people using screen readers
-* People with low vision using a screen reader
-* People with dexterity impairment using voice control
+<div id="locLevel"></div>
+
+Multiple elements with `"main"` role must have unique labels
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The `<main>` element has an implicit landmark role of `"main"` that represents the central topic of the document. This provides a non-obtrusive alternative for a “skip to main content” link. It is possible, but not desirable, to have more than one element with a `"main"` role, for example through DOM nesting (e.g. a document within a document) or by use of the `aria-owns` attribute. In this situation, an associated unique label that describes each area of main content is needed to allow users of assistive technologies to understand the purpose of each main area, and navigate to them. Ideally the author SHOULD mark no more than one element with the `"main"` role.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Multiple elements with `"main"` role do not have unique labels
-Multiple elements with `"main"` role must have unique labels
-
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)  | [W3C WAI-ARIA 1.1 Main Landmark](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
 
 <div id="locSnippet"></div>
 
@@ -50,6 +45,19 @@ For example:
 &lt;/body&gt;
 &lt;/html&gt;</CodeSnippet>
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+[W3C WAI-ARIA 1.1 Main Landmark](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using a screen reader
+* People with dexterity impairment using voice control
 
 </Column>
 </Row>

@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Form controls share `name=\"{1}\"` but are not grouped
 
- * Blind people using screen readers
+<div id="locLevel"></div>
+
+Related sets of radio buttons or checkboxes should be programmatically grouped
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Grouping related radio buttons and checkboxes enables assistive technology to convey the group relationship to users (e.g. "group of 5 radio buttons").
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Form controls share `name=\"{1}\"` but are not grouped
-Related sets of radio buttons or checkboxes should be programmatically grouped
-
-[IBM 1.3.1 Info and relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
 
 <div id="locSnippet"></div>
 
@@ -35,6 +32,16 @@ Related sets of radio buttons or checkboxes should be programmatically grouped
  * OR, group related checkboxes by using `role="group"`;
  * OR, disassociate unrelated controls or controls of different types by using different `"name"` attribute values.
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and relationships](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+
+### Who does this affect?
+
+ * Blind people using screen readers
 
 </Column>
 </Row>
