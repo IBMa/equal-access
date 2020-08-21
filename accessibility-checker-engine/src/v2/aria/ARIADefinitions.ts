@@ -429,7 +429,34 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "landmark"
         },
-
+        "graphics-document": {
+            container: null,
+            props: ["aria-expanded"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "graphics-object": {
+            container: null,
+            props: ["aria-expanded"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            nameRequired: false,
+            nameFrom: ["contents", "author"]
+        },
+        "graphics-symbol": {
+            container: null,
+            props: ["aria-expanded"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            nameRequired: true,
+            nameFrom: ["author"],
+            presentationalChildren: true
+        },
         "grid": {
             container: null,
             props: ["aria-level", "aria-multiselectable", "aria-readonly", "aria-activedescendant", "aria-expanded", "aria-colcount", "aria-rowcount"],
