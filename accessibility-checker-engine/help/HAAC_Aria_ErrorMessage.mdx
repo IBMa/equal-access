@@ -6,25 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Custom error message has invalid reference `id`
 
-* Blind people using screen readers
+<div id="locLevel"></div>
+
+A custom error message must reference a valid `id` and when triggered the message must be appropriately exposed
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 When a user input is detected as invalid, users expect to be informed about the error. Using a custom error message and making the content of the error message available and exposed programmatically makes the error message accessible through audio or other channels.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Custom error message has invalid reference `id`
-A custom error message must reference a valid `id` and when triggered the message must be appropriately exposed
-
-[IBM 3.3.1 Error Identification](http://www.ibm.com/able/guidelines/ci162/error_id.html) | [WCAG 2.1 technique G85](https://www.w3.org/WAI/WCAG21/Techniques/general/G84)
 
 <div id="locSnippet"></div>
 
@@ -46,6 +43,18 @@ Example:
 &lt;span id="msgID" aria-live="assertive" style="visibility:visible"&gt;Invalid time:  the time must be between 9:00 AM and 5:00 PM&lt;/span&gt;</CodeSnippet>
 
 Note: Example code includes material copied from or derived from W3C WAI-ARIA 1.1 Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang)
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 3.3.1 Error Identification](http://www.ibm.com/able/guidelines/ci162/error_id.html)
+[WCAG 2.1 technique G85](https://www.w3.org/WAI/WCAG21/Techniques/general/G84)
+
+### Who does this affect?
+
+* Blind people using screen readers
 
 </Column>
 </Row>

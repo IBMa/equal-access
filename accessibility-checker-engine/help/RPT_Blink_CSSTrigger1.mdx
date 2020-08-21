@@ -6,30 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Check the `blink` value of the CSS `text-decoration` property is not used for more than than five seconds
 
- * People with attention deficit disorders
- * People with reading disabilities
- * People with intellectual disabilities
- * People with low literacy
- * People with low vision 
+<div id="locLevel"></div>
 
+Do not use the `blink` value of the CSS `text-decoration` property for more than than five seconds
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Blinking content can be a severe distraction, preventing some people from attending to other content. Blinking for up to 5 seconds gives time to get a user's attention, but is short enough for them to wait out the distraction before reading the page.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Check the `blink` value of the CSS `text-decoration` property is not used for more than than five seconds
-Do not use the `blink` value of the CSS `text-decoration` property for more than than five seconds
-
-[IBM 2.2.2 Pause, Stop, Hide](https://www.ibm.com/able/guidelines/ci162/pause_stop_hide.html) | [WCAG 2.1 technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13)
 
 <div id="locSnippet"></div>
 
@@ -38,6 +30,22 @@ Do not use the `blink` value of the CSS `text-decoration` property for more than
  * Do not use the `blink` value on the CSS `text-decoration` property;
  * OR, provide a control on the Web page that allows users to stop the blinking;
  * OR, use scripts to stop the blinking after 5 seconds.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.2.2 Pause, Stop, Hide](https://www.ibm.com/able/guidelines/ci162/pause_stop_hide.html)
+[WCAG 2.1 technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13)
+
+### Who does this affect?
+
+ * People with attention deficit disorders
+ * People with reading disabilities
+ * People with intellectual disabilities
+ * People with low literacy
+ * People with low vision
 
 </Column>
 </Row>

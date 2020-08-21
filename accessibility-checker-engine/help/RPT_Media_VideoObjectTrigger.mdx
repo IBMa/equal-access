@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Verify captions are provided for live media (streaming video with audio)
 
- * People who are deaf or hard of hearing
- * People in noisy or very quiet environments
- * People in a situation where they cannot use audio on their devices
+<div id="locLevel"></div>
+
+Live media (streaming video with audio) should have captions for audio content
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Providing captions for real-time presentations enables viewers to understand the audio content when they cannot hear it, or the sound is off.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Verify captions are provided for live media (streaming video with audio)
-Live media (streaming video with audio) should have captions for audio content
-
-[IBM 1.2.4 Captions (Live)](http://www.ibm.com/able/guidelines/ci162/captions_live.html) | [WCAG 2.1 technique G9](https://www.w3.org/WAI/WCAG21/Techniques/general/G9)
 
 <div id="locSnippet"></div>
 
@@ -35,6 +30,20 @@ Live media (streaming video with audio) should have captions for audio content
  * Verify that the live media has closed captions (embeds the dialogue and important sounds as text in a way that is not visible unless the user requests it);
  * OR, verify that the live media has open captions (embeds the dialogue and important sounds as text in the video track);
  * OR, add captions to the live media.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.2.4 Captions (Live)](http://www.ibm.com/able/guidelines/ci162/captions_live.html)
+[WCAG 2.1 technique G9](https://www.w3.org/WAI/WCAG21/Techniques/general/G9)
+
+### Who does this affect?
+
+ * People who are deaf or hard of hearing
+ * People in noisy or very quiet environments
+ * People in a situation where they cannot use audio on their devices
 
 </Column>
 </Row>

@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The data table has no summary
 
-* Blind people using screen readers
-* People with low vision using screen readers
+<div id="locLevel"></div>
+
+Data tables should have a summary that gives an overview of the table
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 A table summary provides a brief overview of how data has been organized into a data table and is specifically useful when the table is large with many rows and columns or when the table has a complex structure (multiple row or column headers). The table summary should not duplicate the caption.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The data table has no summary
-Data tables should have a summary that gives an overview of the table
-
-[IBM 1.3.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html) | [WCAG 2.1 HTML technique H73](https://www.w3.org/WAI/WCAG21/Techniques/html/H73.html)
 
 <div id="locSnippet"></div>
 
@@ -56,6 +52,19 @@ For example the following example uses the `aria-labelledby` to provide the tabl
      &lt;/tr&gt;
     ...
    &lt;/table&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[WCAG 2.1 HTML technique H73](https://www.w3.org/WAI/WCAG21/Techniques/html/H73.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
 
 </Column>
 </Row>
