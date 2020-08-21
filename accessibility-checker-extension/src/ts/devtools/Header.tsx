@@ -24,7 +24,7 @@ import {
 
 import { Reset16 } from '@carbon/icons-react';
 // import { SettingsAdjust16 } from '@carbon/icons-react';
-import { ReportData16, DocumentExport16 } from '@carbon/icons-react';
+import { ReportData16, Xls16 } from '@carbon/icons-react';
 
 const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
@@ -191,16 +191,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Button
                             disabled={!this.props.counts}
                             onClick={this.props.reportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report" type="button"
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in HTML" type="button"
                         >
                             <ReportData16 className="my-custom-class" />
                         </Button>
                         <Button
                             disabled={!this.props.counts}
                             onClick={this.props.xlsxReportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in xlsx" type="button"
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in XLSX" type="button"
                         >
-                            <DocumentExport16 className="my-custom-class" />
+                            <Xls16 className="my-custom-class" />
                         </Button>
                     </div>
                 </div>
