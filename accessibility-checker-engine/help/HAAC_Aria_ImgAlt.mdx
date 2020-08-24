@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### WAI-ARIA widget with an `"img"` role has no label or an empty label
 
-* Blind people using screen readers
-* People who turn off image-loading on their web browsers
-* People using text-based browsers (e.g., Lynx) or audio interfaces
+<div id="locLevel"></div>
+
+Element with an `"img"` role must have a non-empty label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### WAI-ARIA widget with an `"img"` role has no label or an empty label
-Element with an `"img"` role must have a non-empty label
-
-[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html) | [WCAG 2.1 technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16) | [WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
 
 <div id="locSnippet"></div>
 
@@ -39,6 +34,21 @@ Element with an `"img"` role must have a non-empty label
 Example:
 
 <CodeSnippet type="single" light={true}>&lt;div role="img" aria-labelledby="image1"&gt; ... &lt;p id="image1"&gt;Text that describes the group of images.&lt;/p&gt;&lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WCAG 2.1 technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16)
+[WCAG 2.1 technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </Column>
 </Row>

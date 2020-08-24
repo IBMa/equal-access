@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Elements with an WAI-ARIA `"application"` role does not have a label
 
-* Blind people using screen readers
+<div id="locLevel"></div>
+
+An element with an WAI-ARIA `"application"` role must have a label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Elements with an `"application"` role structure must have a label specified with an accessible name. This information helps people using assistive technologies to find and navigate the content.
-
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Elements with an WAI-ARIA `"application"` role does not have a label
-An element with an WAI-ARIA `"application"` role must have a label
-
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [WAI-ARIA 1.1 Application Role](https://www.w3.org/TR/wai-aria-1.1/#application)
 
 <div id="locSnippet"></div>
 
@@ -42,6 +38,17 @@ For example:
    ...
    &lt;/div&gt;</CodeSnippet>
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+[WAI-ARIA 1.1 Application Role](https://www.w3.org/TR/wai-aria-1.1/#application)
+
+### Who does this affect?
+
+* Blind people using screen readers
 
 </Column>
 </Row>

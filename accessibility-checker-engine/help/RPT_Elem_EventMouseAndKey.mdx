@@ -6,28 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Check that interactive content with mouse event handlers has equivalent keyboard access
 
-* Blind people using screen readers
-* People with low vision
-* People with tremor or other movement disorders
-* People who rely on keyboard control
+<div id="locLevel"></div>
+
+All interactive content with mouse event handlers must have equivalent keyboard access
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 Scripted mouse-specific event handlers can be used to trigger actions on graphical user interface (GUI) controls. Equivalent keyboard-specific handlers allow individuals who rely on a keyboard or keyboard interface to access the same functionality.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Check that interactive content with mouse event handlers has equivalent keyboard access
-All interactive content with mouse event handlers must have equivalent keyboard access
-
-[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)) | [WCAG technique SCR20](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR20)
 
 <div id="locSnippet"></div>
 
@@ -44,7 +38,20 @@ All interactive content with mouse event handlers must have equivalent keyboard 
 | onmouseover   | onfocus 		|
 | onmouseout    | onblur        |
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
+### About this requirement
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html))
+[WCAG technique SCR20](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR20)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision
+* People with tremor or other movement disorders
+* People who rely on keyboard control
 
 </Column>
 </Row>

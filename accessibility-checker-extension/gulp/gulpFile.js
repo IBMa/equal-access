@@ -172,9 +172,17 @@ function copyFiles() {
         .pipe(replace(/`/g, "\\`"))
         .pipe(replace("export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)", ""))
         .pipe(replace("export default ({ children }) => (<React.Fragment>{children}</React.Fragment>)", ""))
+        .pipe(replace(/className=\"toolHead\">(.|\n)*?\<\/Column\>/,`className="toolHead">
+
+<h3><ItemActive item={this.props.item} /></h3>
+
+<div id="locLevel"></div>
+
+<p><ItemPassive item={this.props.item} /></p>
+
+</Column>`))
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
         .pipe(replace("<div id=\"locLevel\"></div>", "<ItemLevel item={this.props.item} />"))
-        .pipe(replace(/(## (.|\n)*?## (.|\n)*?## ).*?\n(.|\n)*?\n\n/, "$1<ItemActive item={this.props.item} />\n<ItemPassive item={this.props.item} />\n\n"))
         .pipe(replace(/^[^<]*/, componentHeader))
         .pipe(replace(/$/, componentFooter))
         .pipe(gulp.dest("../src/ts/help/"));

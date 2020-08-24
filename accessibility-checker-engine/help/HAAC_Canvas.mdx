@@ -6,26 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### Verify accessibility of the `<canvas>` element
 
- * People who rely on keyboard control
- * Blind people using screen readers
+<div id="locLevel"></div>
+
+The `<canvas>` element may not be accessible
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The HTML5 `<canvas>` element can be used to create a canvas area on the page where an author can draw to or include graphic elements. However, canvas content is not exposed to assistive technologies like semantic HTML. To make a `<canvas>` element accessible, any image content must be described in text, and interactive content must be made available in canvas fallback content that has keyboard access.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### Verify accessibility of the `<canvas>` element
-The `<canvas>` element may not be accessible
-
-[IBM 1.1.1 Non-Text Content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html) | [IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html) | [IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html) | [IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
 
 <div id="locSnippet"></div>
 
@@ -50,6 +46,21 @@ This example shows an interactive `&lt;canvas&gt;` with equivalent accessible in
 &lt;canvas id="roundButton" onmousedown="..." onmouseup="..." onclick="..." onkeydown="..." onkeyup="..."&gt;
     &lt;div tabindex="0" role="button"&gt;ok&lt;/div&gt;
 &lt;/canvas&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-Text Content](http://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)
+[IBM 2.4.7 Focus Visible](http://www.ibm.com/able/guidelines/ci162/focus_visible.html)
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using screen readers
 
 </Column>
 </Row>

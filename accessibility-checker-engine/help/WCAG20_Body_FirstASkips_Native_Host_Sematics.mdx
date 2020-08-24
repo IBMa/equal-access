@@ -6,27 +6,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div className="toolHelp">
 <Row>
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Who does this affect?
+### The web page does not provide a way to quickly navigate to the main content
 
-* Blind people using screen readers
-* People with low vision using a screen reader
-* People who rely on keyboard control
+<div id="locLevel"></div>
+
+Web pages must provide a way to skip directly to the main content
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
 
 ### Why is this important?
 
 The skip to main link or an element with the `"main"` role allows people who use only a keyboard to skip over content that is repeated on several pages such as, banners and navigation menus and quickly navigate to the main content.
-
-</Column>
-<Column colLg={11} colMd={5} colSm={4} className="toolMain">
-
-<div id="locLevel"></div>
-
-### The web page does not provide a way to quickly navigate to the main content
-Web pages must provide a way to skip directly to the main content
-
-[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html) | [ARIA Practices 1.1 Main Landmark ](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
 
 <div id="locSnippet"></div>
 
@@ -48,6 +43,19 @@ For example:
 	&lt;!-- Remainder of page --&gt;
 &lt;/body&gt;</CodeSnippet>
 
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+[ARIA Practices 1.1 Main Landmark ](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using a screen reader
+* People who rely on keyboard control
 
 </Column>
 </Row>
