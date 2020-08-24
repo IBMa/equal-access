@@ -76,7 +76,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         if (
           selected_archive &&
           archives.find((archive: any) => {
-            return archive.id == selected_archive.id;
+            return archive.id == selected_archive.id && archive.name == selected_archive.name;
           })
         ) {
           //do nothing
