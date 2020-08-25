@@ -996,7 +996,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right'</strong> or the <strong>'left'</strong> arrow keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Checkpoints'</strong> view and the <strong>'Rules'</strong> view.
+                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right arrow'</strong> or the <strong>'left arrow'</strong> keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Checkpoints'</strong> view and the <strong>'Rules'</strong> view.
                       </p>
                     </li>
                     <li>
