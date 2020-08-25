@@ -968,7 +968,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>The Accessibility Checker tool is responsive to user's preferred font size and colors.
+                <li>The Accessibility Checker tool is responsive to the user's preferred font size and colors.
                 </li>
                 <li>Both the Accessibility Assessment view and the Accessibility Checker view are fully keyboard accessible, navigate as follows:
                 </li>
