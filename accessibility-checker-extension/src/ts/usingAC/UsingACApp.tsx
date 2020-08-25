@@ -1001,7 +1001,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate to the <strong>issue grouping</strong> and use the <strong>'enter'</strong> to open or close the issue grouping. Press the <strong>'tab'</strong> key to navigate to each issue, and press the <strong>'enter'</strong> key to select any issue.
+                        Press the <strong>'tab'</strong> key to navigate through the <strong>issue groupings</strong> associated with each checkpoint, element role or rule. Use the <strong>'enter'</strong> key to open or close an issue grouping. Within an open grouping, press the <strong>'tab'</strong> key to navigate to each issue, and press the <strong>'enter'</strong> key to select the current issue.
                       </p>
                     </li>
                     <li>
