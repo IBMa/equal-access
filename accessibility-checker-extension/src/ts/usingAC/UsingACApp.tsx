@@ -986,17 +986,17 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        After running the scan, press the <strong>'tab'</strong> key again, to navigate to the <strong>Reset Selections</strong> icon and the <strong>Report</strong> icon.
+                        After running the scan, press the <strong>'tab'</strong> key again, to navigate to the <strong>'Reset Selections'</strong> icon and the <strong>'Report'</strong> icon.
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate to the checkbox by each issue type and press the <strong>'Enter'</strong> key to filter the list of issue by <strong>Violations</strong>, <strong>Needs review</strong> and/or by <strong>Recommendations</strong>.
+                        Press the <strong>'tab'</strong> key to navigate to the checkbox by each issue type and press the <strong>'enter'</strong> key to filter the list of issue by <strong>Violations</strong>, <strong>Needs review</strong> and/or by <strong>Recommendations</strong>.
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right'</strong> or the <strong>'left'</strong> arrow keys to navigate between the <strong>Element Roles</strong> view, the <strong>Checkpoints</strong> view and the <strong>Rules</strong> view.
+                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right'</strong> or the <strong>'left'</strong> arrow keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Checkpoints'</strong> view and the <strong>'Rules'</strong> view.
                       </p>
                     </li>
                     <li>
@@ -1006,12 +1006,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to move to the <strong>Learn more</strong> link or to move to the next issue.
+                        Press the <strong>'tab'</strong> key to move to the <strong>'Learn more'</strong> link or to move to the next issue.
                       </p>
                     </li>
                   </ul>  
                 <li>
-                  Use the <strong>'headings'</strong> hierarchy or the implemented <strong>'landmarks'</strong> to quickly navigate from one section to another. The list of implemented landmarks are as follows:
+                  Use the <strong>headings</strong> hierarchy or the implemented <strong>landmarks</strong> to quickly navigate from one section to another. The list of implemented landmarks are as follows:
                 </li>
                   <ul
                     style={{
@@ -1021,7 +1021,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   >
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        The <strong>IBM Accessibility Assessment</strong> or the <strong>IBM Accessibility Checker</strong>, main landmark: contains the main functionality of the tool in each view and includes,
+                        The <strong>IBM Accessibility Assessment</strong> or the <strong>IBM Accessibility Checker</strong> main landmark: contains the main functionality of the tool in each view and includes,
                       </p>
                       <ul
                           style={{
@@ -1031,19 +1031,24 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         >
                           <li>
                             <p style={{ marginTop: "0rem" }}>
-                              The <strong>Issue Count</strong>, region: contains the issue count by issue type as well as the total number of issues found.
+                              The <strong>Issue Count</strong> region: contains the issue count by issue type as well as the total number of issues found.
                             </p>
                           </li>
                           <li>
                             <p style={{ marginTop: "0rem" }}>
-                              The <strong>Issue List</strong>, region: contains the list of issue grouped by Element Roles, Checkpoints or by Rules.
+                              The <strong>Issue List</strong> region: contains the list of issues grouped by Element Roles, by Checkpoints or by Rules.
                             </p>
                           </li>
                         </ul>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        The <strong>Scan Summary</strong> or the <strong>Issue help</strong>, aside or the complementary landmark: in the Accessibility Assessment view, contains the scan summary, after the scan completes or shows the issue help when any issue is selected.
+                        The Accessibility Assessment view <strong>Scan Summary</strong> aside or the complementary landmark: contains the scan summary, after the scan completes or shows the issue help when any issue is selected.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        The Accessibility Assessment view <strong>Issue Help</strong> aside or the complementary landmark: contains the issue help when any issue is selected.
                       </p>
                     </li>
                   </ul>
