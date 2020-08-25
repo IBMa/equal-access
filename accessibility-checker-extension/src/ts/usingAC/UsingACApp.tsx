@@ -964,7 +964,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h3 id="a11y_considerations">6.5 Accessibility Considerations</h3>
             <div className="pa">
-               Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality with keyboard or with a screen reader: 
+               Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
