@@ -83,7 +83,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     }
 
     flipSwitch (index:number) {
-        console.log("flipSwitch index = ",index);
         let focusValue = false;
         if (index == 0) {
             focusValue = true;
@@ -154,14 +153,14 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Switch 
                             text="Focus"
                             onClick ={() => {
-                                console.log('Focus click');
+                                // console.log('Focus click');
                             }}
                             onKeyDown={this.onKeyDown.bind(this)} 
                         />
                         <Switch
                             text="All"
                             onClick ={() => {
-                                console.log('All click');
+                                // console.log('All click');
                             }}
                             onKeyDown={this.onKeyDown.bind(this)} 
                         />

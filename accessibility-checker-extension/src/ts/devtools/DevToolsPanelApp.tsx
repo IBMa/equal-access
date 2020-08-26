@@ -391,23 +391,22 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
-        console.log("In showIssueTypeCheckBoxCallback",checked);
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
-            console.log("All true");
+            // console.log("All true");
             this.setState({ showIssueTypeFilter: [true, checked[1], checked[2], checked[3]] });
         } else if (checked[1] == false && checked[2] == false && checked[3] == false) {
-            console.log("All false");
+            // console.log("All false");
             this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         } else {
-            console.log("Mixed");
+            // console.log("Mixed");
             this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         }
-        console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
+        // console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
     }
 
     focusedViewCallback (focus:boolean) {
         this.setState({ focusedViewFilter: focus});
-        console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
+        // console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
     }
     
     render() {
