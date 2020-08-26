@@ -45,7 +45,9 @@ interface IReportRowProps {
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    focusedViewFilter: boolean,
+    atLeastOnSelected: boolean
 }
 
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
@@ -142,13 +144,24 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         // focused view 
-        let focusedView = false;
-        group.items.map((item) => { // check if any selected in the group
-            if (item.selected == true || item.selectedChild == true) {
-                focusedView = true;
-            }   
-        });
-        console.log("focusedView = ", focusedView, "   group.title", group.title);
+        let focusedView:boolean = true;
+        if (this.props.focusedViewFilter == true) { // focus switch on Focus
+            group.items.map((item) => { // check if any selected in the group
+                if (item.selected == true || item.selectedChild == true) {
+                    focusedView = true;
+                } else {
+                    focusedView = false;
+                }
+            });
+        } else { // focus switch on All
+            focusedView = true; // true for every issue
+        }
+        console.log("focusedView = ", focusedView, "   group.title = ", group.title);
+        if (this.props.atLeastOnSelected == false) {
+            group.items.map(() => { // check if any selected in the group
+                    focusedView = true;
+            });
+        }
 
         let rowindex = this.props.idx;
         //console.log("In ReportRow render: dataFromParent = ",this.props.dataFromParent);
@@ -173,7 +186,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     let val = valueMap[item.value[0]][item.value[1]];
                     
                         return <React.Fragment>
-                        {focusedView && item.selected == true || item.selectedChild == true ?
+                        {focusedView ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
                                 (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                                     <div role="cell" className="bx--col-sm-1"> </div>

@@ -31,7 +31,8 @@ interface IReportChecklistProps {
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    focusedViewFilter: boolean
 }
 
 interface IGroup {
@@ -96,6 +97,18 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             })
         })
 
+        // are any selected items in any of the groups
+        let atLeastOneSelected:boolean = false;
+        groups.map(group => {
+            group.items.map(item => {
+                if (item.selected == true || item.selectedChild == true) {
+                    atLeastOneSelected = true;
+                }
+            })
+        });
+
+        console.log("atLeastOneSelected = ",atLeastOneSelected);
+
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
         let scrollFirst = true;
@@ -128,6 +141,8 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         selectItem={this.props.selectItem}
                         layout={this.props.layout} 
                         dataFromParent={this.props.dataFromParent} 
+                        focusedViewFilter={this.props.focusedViewFilter}
+                        atLeastOnSelected={atLeastOneSelected}
                     />;
                 })}
             </div>

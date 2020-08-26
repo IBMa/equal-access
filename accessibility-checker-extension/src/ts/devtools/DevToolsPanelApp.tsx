@@ -453,6 +453,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
                                     dataFromParent={this.state.showIssueTypeFilter}
+                                    focusedViewFilter={this.state.focusedViewFilter}
                                 />}
                             </div>
                         </div>
@@ -504,6 +505,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     selectedTab="element"
                                     tabs={[ "element", "checklist", "rule"]}
                                     dataFromParent={this.state.showIssueTypeFilter}
+                                    focusedViewFilter={this.state.focusedViewFilter}
                                 />}
                             </div>
                         </div>
