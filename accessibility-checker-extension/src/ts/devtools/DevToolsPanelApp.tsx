@@ -49,7 +49,8 @@ interface IPanelState {
     learnItem: IReportItem | null,
     showIssueTypeFilter: boolean[],
     scanning: boolean,   // true when scan taking place
-    error: string | null
+    error: string | null,
+    focusedViewFilter: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -66,7 +67,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
-        error: null
+        error: null,
+        focusedViewFilter: false
     }
 
     ignoreNext = false;
@@ -388,25 +390,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ learnMore: false });
     }
 
-
-    // showIssueTypeMenuCallback (type:string[]) {
-    //     if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
-    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
-    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
-    //     } else if (type[0] !== "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
-    //     } else if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, true, false] });
-    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, true] });
-    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, true] });
-    //     }
-    // }
-
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         console.log("In showIssueTypeCheckBoxCallback",checked);
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
@@ -422,17 +405,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
     }
 
-    // showIssueTypeCallback (type:string) {
-    //     if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
-    //     } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
-    //     } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
-    //     } else { 
-    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
-    //     }    
-    // }
+    focusedViewCallback (focus:boolean) {
+        this.setState({ focusedViewFilter: focus});
+        console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
+    }
     
     render() {
         let error = this.state.error;
@@ -461,6 +437,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
+                            focusedViewCallback={this.focusedViewCallback.bind(this)}
+                            focusedViewFilter={this.state.focusedViewFilter}
                         />
                         <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -509,6 +487,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
+                        focusedViewCallback={this.focusedViewCallback.bind(this)}
+                        focusedViewFilter={this.state.focusedViewFilter}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
