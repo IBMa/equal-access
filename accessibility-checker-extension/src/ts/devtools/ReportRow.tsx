@@ -156,7 +156,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         } else { // focus switch on All
             focusedView = true; // true for every issue
         }
-        console.log("focusedView = ", focusedView, "   group.title = ", group.title);
+        //console.log("focusedView = ", focusedView, "   group.title = ", group.title);
         if (this.props.atLeastOnSelected == false) {
             group.items.map(() => { // check if any selected in the group
                     focusedView = true;

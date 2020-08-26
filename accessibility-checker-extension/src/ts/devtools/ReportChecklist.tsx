@@ -107,7 +107,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             })
         });
 
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
+        // console.log("atLeastOneSelected = ",atLeastOneSelected);
 
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);

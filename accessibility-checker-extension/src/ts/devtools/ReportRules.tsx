@@ -94,7 +94,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             })
         });
 
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
+        // console.log("atLeastOneSelected = ",atLeastOneSelected);
 
         let idx=0;
         let scrollFirst = true;

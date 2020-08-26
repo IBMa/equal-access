@@ -97,7 +97,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
             })
         });
 
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
+        // console.log("atLeastOneSelected = ",atLeastOneSelected);
         
         let idx=0;
         let scrollFirst = true;
