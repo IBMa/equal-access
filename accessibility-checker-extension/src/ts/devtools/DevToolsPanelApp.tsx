@@ -305,6 +305,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             var e = document.createEvent('MouseEvents');
             e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             a.dispatchEvent(e);
+
+            this.xlsxReportHandler();
         }
     }
 
