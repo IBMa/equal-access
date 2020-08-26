@@ -75,6 +75,8 @@ jobs:
         run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
       - run: npm install
         working-directory: cypress-accessibility-checker
+      - run: npm run build:report
+        working-directory: cypress-accessibility-checker
       - run: npm run package:npm
         working-directory: cypress-accessibility-checker
       - run: gitactions/publish/cypress-achecker.sh

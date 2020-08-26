@@ -14,7 +14,12 @@
     limitations under the License.
   *****************************************************************************/
 
-const aChecker = require('accessibility-checker');
+const aChecker = require("./lib/ACHelper");
+
+function sendResultsToReporter( {report, origReport}) {
+    aChecker.sendResultsToReporter(origReport, report, "default");
+    return null;
+}
 
 /**
  * Object format:
@@ -38,7 +43,10 @@ function getCompliance({ html, label }) {
  * report: Report data from `getCompliance()` call
  */
 function assertCompliance({ report }) {
-  return aChecker.assertCompliance(report);
+    return aChecker.getConfig()
+        .then(() => {
+            return aChecker.assertCompliance(report);
+        });
 }
 
 /**
@@ -115,6 +123,8 @@ function close() {
  */
 module.exports = ({ task, data }) => {
   switch (task) {
+    case 'sendResultsToReporter':
+        return sendResultsToReporter(data);
     case 'getCompliance':
       return getCompliance(data);
     case 'assertCompliance':

@@ -16,38 +16,24 @@
 
 /// <reference types="Cypress" />
 
-/**
- * Scans the sent HTML and returns a report.
- */
-Cypress.Commands.add('getA11yCompliance', (html, label) => {
-  return cy
-    .task('accessibilityChecker', {
-      task: 'getCompliance',
-      data: {
-        html,
-        label
-      }
-    })
-    .then((result) => {
-      return cy.wrap(result, { log: false });
-    });
-});
+const AChecker = require("./lib/ACHelper");
 
-/**
- * Scans and returns a report using the entire `document` and the sent label.
- */
-Cypress.Commands.add('getA11yComplianceOfDocument', (label) => {
-  return cy.document({ log: false }).then((doc) => {
-    cy.task('accessibilityChecker', {
-      task: 'getCompliance',
-      data: {
-        html: doc.getElementsByTagName('html')[0].outerHTML,
-        label
-      }
-    }).then((result) => {
-      return cy.wrap(result, { log: false });
-    });
-  });
+Cypress.Commands.add("getCompliance", (scanLabel) => {
+    return cy.document({ log: false })
+        .then((doc) => {
+            return AChecker.getConfig().then(() => doc);
+        })
+        .then({timeout:20000},(doc) => {
+            return AChecker.getCompliance(doc, scanLabel);
+        })
+        .then((result) => {
+            return cy.task('accessibilityChecker', {
+                task: 'sendResultsToReporter',
+                data: result
+            }).then(() => {
+                return cy.wrap(result, { log: false });
+            });
+        })
 });
 
 /**
