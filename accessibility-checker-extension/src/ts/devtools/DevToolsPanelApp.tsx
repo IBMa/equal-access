@@ -50,7 +50,8 @@ interface IPanelState {
     showIssueTypeFilter: boolean[],
     scanning: boolean,   // true when scan taking place
     error: string | null,
-    focusedViewFilter: boolean
+    focusedViewFilter: boolean,
+    focusedViewText: string
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -68,7 +69,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
         error: null,
-        focusedViewFilter: false
+        focusedViewFilter: false,
+        focusedViewText: ""
     }
 
     ignoreNext = false;
@@ -157,7 +159,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-
+            this.selectElementInElements();
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                 tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
         }
@@ -382,6 +384,42 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    getCurrentSelectedElement() {
+        let mythis = this;
+        chrome.devtools.inspectedWindow.eval("$0.tagName", 
+            { useContentScriptContext: true },
+            (result:string, isException) => {
+                if (isException) {
+                    console.error(isException);
+                }
+                if (!result) {
+                    console.log('Could not get selected element');
+                }
+                // get current element after inspected Window script
+                setTimeout(() => {
+                    console.log("result = ",result);
+                    mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
+                }, 0);
+            });
+    }
+
+    selectElementInElements () {
+        chrome.devtools.inspectedWindow.eval("inspect(document.body)", 
+            { useContentScriptContext: true },
+            (result:string, isException) => {
+                if (isException) {
+                    console.error(isException);
+                }
+                if (!result) {
+                    console.log('Could not select element');
+                }
+                // select element after inspected Window script
+                setTimeout(() => {
+                    console.log("selected element");
+                }, 0);
+            });
+    }
+
     getItem(item: IReportItem) {
         this.setState({ learnMore: true, learnItem: item });
     }
@@ -438,6 +476,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             scanning={this.state.scanning}
                             focusedViewCallback={this.focusedViewCallback.bind(this)}
                             focusedViewFilter={this.state.focusedViewFilter}
+                            focusedViewText={this.state.focusedViewText}
+                            getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         />
                         <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -489,6 +529,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         scanning={this.state.scanning}
                         focusedViewCallback={this.focusedViewCallback.bind(this)}
                         focusedViewFilter={this.state.focusedViewFilter}
+                        focusedViewText={this.state.focusedViewText}
+                        getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>

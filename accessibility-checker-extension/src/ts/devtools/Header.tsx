@@ -49,7 +49,9 @@ interface IHeaderProps {
     dataFromParent: boolean[],
     scanning: boolean,
     focusedViewCallback: (focus:boolean) => void,
-    focusedViewFilter: boolean
+    focusedViewFilter: boolean,
+    focusedViewText: string,
+    getCurrentSelectedElement: () => void
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -127,6 +129,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
+        this.props.getCurrentSelectedElement();
+        let focusText = this.props.focusedViewText;
+        console.log("focusText = ", focusText);
+
         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
@@ -137,36 +143,51 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
             <div className="bx--row" style={{ marginTop: '10px' }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-md-4">
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
-                <div className="bx--col-sm-1">
-                    <ContentSwitcher
-                        selectionMode="manual"
-                        selectedIndex = {1}
-                        onChange={((obj:any) => {
-                            // console.log("the index: ",obj.index);
-                            this.flipSwitch(obj.index);
-                        })}
-                        
-                    >
-                        <Switch 
-                            text="Focus"
-                            onClick ={() => {
-                                // console.log('Focus click');
-                            }}
-                            onKeyDown={this.onKeyDown.bind(this)} 
-                        />
-                        <Switch
-                            text="All"
-                            onClick ={() => {
-                                // console.log('All click');
-                            }}
-                            onKeyDown={this.onKeyDown.bind(this)} 
-                        />
-                    </ContentSwitcher> 
+                <div className="bx--col-md-1" style={{height: "28px"}}>
+
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative" }}>
+
+                {/* <div className="bx--col-md-1" style={{height: "28px"}}>
+
+                </div> */}
+                
+                <div className="bx--col-md-2">
+                          
+                    {this.props.layout === "sub" ?
+                        <ContentSwitcher
+                            style={{height: "28px"}}
+                            selectionMode="manual"
+                            selectedIndex = {1}
+                            onChange={((obj:any) => {
+                                // console.log("the index: ",obj.index);
+                                this.flipSwitch(obj.index);
+                            })}
+                        >
+                            <Switch 
+                                disabled={!this.props.counts}
+                                text={focusText}
+                                onClick ={() => {
+                                    // console.log('Focus click');
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)} 
+                            />
+                            <Switch
+                                disabled={!this.props.counts}
+                                text="All"
+                                onClick ={() => {
+                                    // console.log('All click');
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)} 
+                            />
+                        </ContentSwitcher> 
+                    : "" }
+                </div>  
+                
+                
+                <div className="bx--col-md-1">
                     <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
                         <Button
                             disabled={!this.props.counts}
@@ -184,6 +205,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </Button>
                     </div>
                 </div>
+                   
             </div>
 
             <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
