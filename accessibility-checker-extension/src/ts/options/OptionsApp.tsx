@@ -72,21 +72,25 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         rulesets = result.OPTIONS.rulesets;
         selected_ruleset = result.OPTIONS.selected_ruleset;
 
-        //archives have not been changed
-        if (
-          selected_archive &&
-          archives.find((archive: any) => {
-            return archive.id == selected_archive.id;
-          })
-        ) {
-          //do nothing
-        } else {
-          //pre-selected archive has been deleted
-          selected_archive = self.getLatestArchive(archives);
-          rulesets = self.getRulesets(selected_ruleset.id);
-          selected_ruleset = rulesets[0];
+        if (selected_archive) {
+            if (archives.some((archive: any) => (archive.id === selected_archive.id && archive.name === selected_archive.name))) {
+                // do nothing
+            } else if (archives.some((archive: any) => (archive.id === selected_archive.id))) {
+                // Name change
+                selected_archive.name = archives.find((archive: any) => (archive.id === selected_archive.id)).name;
+            } else {
+                // Archive missing
+                selected_archive = null;
+            }
+        }
+        if (!selected_archive) {
+            // No pre-selected archive
+            selected_archive = self.getLatestArchive(archives);
+            rulesets = self.getRulesets(selected_ruleset.id);
+            selected_ruleset = rulesets[0];
         }
       }
+
       self.setState({ archives, selected_archive, rulesets, selected_ruleset });
       self.save_options_to_storage(self.state);
     });
