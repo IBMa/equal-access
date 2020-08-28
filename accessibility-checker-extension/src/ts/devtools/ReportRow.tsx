@@ -145,9 +145,11 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
         // focused view 
         let focusedView:boolean = true;
+        let count = 0;
         if (this.props.focusedViewFilter == true) { // focus switch on Focus
             group.items.map((item) => { // check if any selected in the group
                 if (item.selected == true || item.selectedChild == true) {
+                    count++;
                     focusedView = true;
                 } else {
                     focusedView = false;
@@ -156,7 +158,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         } else { // focus switch on All
             focusedView = true; // true for every issue
         }
-        //console.log("focusedView = ", focusedView, "   group.title = ", group.title);
+        console.log("selected count = ", count);
+        console.log("focusedView = ", focusedView, "   group.title = ", group.title);
         if (this.props.atLeastOnSelected == false) {
             group.items.map(() => { // check if any selected in the group
                     focusedView = true;

@@ -81,6 +81,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
+        this.getCurrentSelectedElement();
         // Only listen to element events on the subpanel
         if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -159,7 +160,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            this.selectElementInElements();
+            // this.selectElementInElements();
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                 tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
         }
@@ -240,6 +241,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
+            this.getCurrentSelectedElement();
         }
     }
 
