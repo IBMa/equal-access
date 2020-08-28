@@ -21,7 +21,6 @@ const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
 const ACConfigLoader = require("./ACConfigLoader");
-const request = require("request");
 
 const myrequest = (url) => {
     if (typeof cy !== "undefined") {
@@ -31,6 +30,7 @@ const myrequest = (url) => {
             })
     } else {
         return new Promise((resolve, reject) => {
+            const request = require("request");
             request.get(url, function (error, response, body) {
                 if (error) {
                     reject(error);
@@ -236,13 +236,17 @@ let ace;
 
         if (typeof cy === "undefined") {
             // We aren't loading the engine in tasks outside of the cypress browser engine
-            return Promise.resolve();
+            if (ace) {
+                return Promise.resolve();
+            } else {
+                return aChecker.loadLocalEngine();
+            }
         }
         return cy.window()
         .then((win) => {
             myWindow = win.parent;
             if (!myWindow.ace) {
-                return aChecker.loadLocalEngine()
+                return aChecker.loadCypressEngine()
                 .then(() => {
                     win.ace = myWindow.ace;
                     win.ace.checker = new ace.Checker();
@@ -256,9 +260,43 @@ let ace;
     };
 
     aChecker.loadLocalEngine = function () {
-        aChecker.DEBUG && console.log("START 'aChecker.loadLocalEngine' function");
         if (ace) {
-            aChecker.DEBUG && console.log("END 'aChecker.loadLocalEngine' function");
+            return Promise.resolve();
+        }
+        return new Promise((resolve, reject) => {
+            const request = require("request");
+            const fs = require("fs");
+            request.get(aChecker.Config.rulePack + "/ace-node.js", function (err, data) {
+                if (!data) {
+                    console.log("Cannot read: " + aChecker.Config.rulePack + "/ace-node.js");
+                }
+                data = data.body;
+                let engineDir = path.join(__dirname, "engine");
+                if (!fs.existsSync(engineDir)) {
+                    fs.mkdirSync(engineDir);
+                }
+                let cacheDir = path.join(engineDir, "cache");
+                if (!fs.existsSync(cacheDir)) {
+                    fs.mkdirSync(cacheDir);
+                }
+                fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
+                    try {
+                        err && console.log(err);
+                        ace = require("./engine/ace-node");
+                    } catch (e) {
+                        console.log(e);
+                        return reject(e);
+                    }
+                    resolve();
+                });
+            });
+        });
+    };
+
+    aChecker.loadCypressEngine = function () {
+        aChecker.DEBUG && console.log("START 'aChecker.loadCypressEngine' function");
+        if (ace) {
+            aChecker.DEBUG && console.log("END 'aChecker.loadCypressEngine' function");
             return Promise.resolve();
         }
         return myrequest(aChecker.Config.rulePack + "/ace.js")
@@ -267,7 +305,7 @@ let ace;
                 script.innerHTML = data;
                 myWindow.document.documentElement.appendChild(script);
                 ace = myWindow.ace;
-                aChecker.DEBUG && console.log("END 'aChecker.loadLocalEngine' function");
+                aChecker.DEBUG && console.log("END 'aChecker.loadCypressEngine' function");
             })
     };
 
@@ -373,10 +411,10 @@ let ace;
         }
 
         aChecker.DEBUG && console.log("getComplianceHelper:Cypress");
-        return await aChecker.getComplianceHelperLocal(label, content, curPol);
+        return await aChecker.getComplianceHelperCypress(label, content, curPol);
     }
 
-    aChecker.getComplianceHelperLocal = async (label, parsed, curPol) => {
+    aChecker.getComplianceHelperCypress = async (label, parsed, curPol) => {
         try {
             let startScan = Date.now();
             let checker = new ace.Checker();
@@ -416,7 +454,7 @@ let ace;
 
                 // Build the report object for this scan, to follow a specific format. Refer to the
                 // function prolog for more information on the object creation.
-                report = aChecker.buildReport(report, URL, label, startScan);
+                report = aChecker.buildReport(report, url, label, startScan);
 
                 // Add the scan results to global karma result object which can be accessed when users testcase
                 // finishes, user can also access it to alter it for any reason.

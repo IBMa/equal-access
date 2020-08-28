@@ -242,7 +242,7 @@ var ACReporter = function (aChecker) {
 
     }
 
-    scanSummary = initializeSummary();
+    scanSummary = initializeSummary.bind(this)();
 
     var myThis = this;
     if (typeof(after) !== "undefined") {

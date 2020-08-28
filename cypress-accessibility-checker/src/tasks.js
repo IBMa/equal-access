@@ -32,7 +32,7 @@ function getCompliance({ html, label }) {
     aChecker.getCompliance(html, label).then(
       /* Only send back the report.  If we send back Puppeteer object is creates circular JSON and breaks. */
       (result) => resolve({ report: result.report }),
-      () => reject('A11y: Failed to get compliance')
+      () => reject('accessibility-checker: Failed to get compliance')
     );
   });
 }
@@ -96,7 +96,7 @@ function getConfig() {
   return new Promise((resolve, reject) => {
     aChecker.getConfig().then(
       (config) => resolve(config),
-      () => reject('A11y: Failed to get config')
+      () => reject('accessibility-checker: Failed to get config')
     );
   });
 }
@@ -110,7 +110,7 @@ function close() {
   return new Promise((resolve, reject) => {
     aChecker.close().then(
       () => resolve(true),
-      () => reject('A11y: Failed to close resources')
+      () => reject('accessibility-checker: Failed to close resources')
     );
   });
 }

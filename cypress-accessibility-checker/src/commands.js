@@ -18,13 +18,21 @@
 
 const AChecker = require("./lib/ACHelper");
 
-Cypress.Commands.add("getCompliance", (scanLabel) => {
-    return cy.document({ log: false })
-        .then((doc) => {
-            return AChecker.getConfig().then(() => doc);
-        })
-        .then({timeout:20000},(doc) => {
-            return AChecker.getCompliance(doc, scanLabel);
+Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
+    let p;
+    if (typeof cyObj === "string") {
+        p = cy.document({ log: false })
+            .then((doc) => {
+                scanLabel = cyObj;
+                cyObj = doc;
+            })
+    } else {
+        // We already have a cypress object to scan
+        p = cy.wrap({});
+    }
+    return p.then(() => AChecker.getConfig()
+        .then({timeout:20000},() => {
+            return AChecker.getCompliance(cyObj, scanLabel);
         })
         .then((result) => {
             return cy.task('accessibilityChecker', {
@@ -33,15 +41,15 @@ Cypress.Commands.add("getCompliance", (scanLabel) => {
             }).then(() => {
                 return cy.wrap(result, { log: false });
             });
-        })
+        }))
 });
 
 /**
- * Asserts a11y compliance against a baseline or failure level of violation.  If a failure
+ * Asserts accessibility compliance against a baseline or failure level of violation.  If a failure
  * is logged then the test will have an assertion fail.
  */
 Cypress.Commands.add(
-  'assertA11yCompliance',
+  'assertCompliance',
   { prevSubject: true },
   (priorResults, failOnError = true) => {
     const taskResult = cy
@@ -61,7 +69,7 @@ Cypress.Commands.add(
         } else if (result === 1) {
           // 1  - results don't match baseline
           // Get the diff between the results/baseline and put in console
-          cy.getA11yDiffResults(priorResults.report.label).then((diff) => {
+          cy.getDiffResults(priorResults.report.label).then((diff) => {
             const message =
               'Does not match baseline.  See console for scan diff.';
             Cypress.log({
@@ -94,7 +102,7 @@ Cypress.Commands.add(
           });
 
           // Individual violations
-          return cy.getA11yConfig().then(({ failLevels }) => {
+          return cy.getACheckerConfig().then(({ failLevels }) => {
             priorResults.report.results
               .filter((curErr) => failLevels.indexOf(curErr.level) !== -1)
               .forEach((curErr) => {
@@ -137,7 +145,7 @@ Cypress.Commands.add(
 /**
  * Retrieves the diff of the results for the given label against the baseline.
  */
-Cypress.Commands.add('getA11yDiffResults', (label) => {
+Cypress.Commands.add('getDiffResults', (label) => {
   cy.task('accessibilityChecker', {
     task: 'getDiffResults',
     data: { label }
@@ -149,7 +157,7 @@ Cypress.Commands.add('getA11yDiffResults', (label) => {
 /**
  * Retrieves the baseline associated with the label.
  */
-Cypress.Commands.add('getA11yBaseline', (label) => {
+Cypress.Commands.add('getBaseline', (label) => {
   cy.task('accessibilityChecker', {
     task: 'getBaseline',
     data: { label }
@@ -162,7 +170,7 @@ Cypress.Commands.add('getA11yBaseline', (label) => {
  * Compare provided actual and expected objects and get the differences if there are any.
  */
 Cypress.Commands.add(
-  'diffA11yResultsWithExpected',
+  'diffResultsWithExpected',
   (actual, expected, clean) => {
     cy.task('accessibilityChecker', {
       task: 'diffResultsWithExpected',
@@ -177,7 +185,7 @@ Cypress.Commands.add(
  * Retrieve the readable stringified representation of the scan results.
  */
 Cypress.Commands.add(
-  'stringifyA11yResults',
+  'stringifyResults',
   { prevSubject: true },
   (report) => {
     // Send proper report property
@@ -195,7 +203,7 @@ Cypress.Commands.add(
 /**
  * Retrieve the configuration object used by accessibility-checker.
  */
-Cypress.Commands.add('getA11yConfig', () => {
+Cypress.Commands.add('getACheckerConfig', () => {
   cy.task('accessibilityChecker', {
     task: 'getConfig',
     data: {}
@@ -207,7 +215,7 @@ Cypress.Commands.add('getA11yConfig', () => {
 /**
  * Close puppeteer pages and other resources that may be used by accessibility-checker.
  */
-Cypress.Commands.add('closeA11y', () => {
+Cypress.Commands.add('closeAChecker', () => {
   cy.task('accessibilityChecker', {
     task: 'close',
     data: {}
