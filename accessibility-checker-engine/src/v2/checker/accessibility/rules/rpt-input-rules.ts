@@ -881,25 +881,9 @@ let a11yRulesInput: Rule[] = [
                 passed = (labelElem != null && RPTUtil.hasInnerContentHidden(labelElem)) ||
                     RPTUtil.hasImplicitLabel(ruleContext) ||
                     type === "file"; // input type=file has a visible default.
-            } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
-                if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
-                    // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
-                    passed = true;
-                } else {
-                    passed = RPTUtil.attributeNonEmpty(ruleContext, "value");
-                }
-            } else if (type == "buttonelem") {
-                let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true); // check label 'for'
-                passed = (labelElem != null && RPTUtil.hasInnerContentHidden(labelElem)) || RPTUtil.hasInnerContentHidden(ruleContext);
-                if (!passed) {
-                    // check implicit label around button.
-                    let parentNode = ruleContext.parentElement;
-                    if (parentNode.tagName.toLowerCase() === "label") {
-                        let parentClone = parentNode.cloneNode(true);
-                        parentClone = RPTUtil.removeAllFormElementsFromLabel(parentClone)
-                        passed = RPTUtil.hasInnerContentHidden(parentClone);
-                    }
-                }
+            } else if (buttonTypes.indexOf(type) !== -1 || type == "buttonelem") {
+                // Buttons are not in scope for this success criteria (IBMa/equal-access#204)
+                return null;
             }
 
             // check if there is a visible label pointed to by the aria-labelledby attribute.
