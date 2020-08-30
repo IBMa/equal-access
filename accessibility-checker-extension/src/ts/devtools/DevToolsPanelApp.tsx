@@ -317,6 +317,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     xlsxReportHandler = () => {
         var xlsx_props = {
             report: this.state.report,
+            rulesets: this.state.rulesets,
             tabTitle: this.state.tabTitle,
             tabURL: this.state.tabURL
         }
