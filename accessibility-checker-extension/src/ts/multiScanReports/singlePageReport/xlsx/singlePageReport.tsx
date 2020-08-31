@@ -172,6 +172,59 @@ export default class SinglePageReport {
         return issues_sheet;
     }
 
+    public static create_definition_sheet(definition_sheet: any) {
+        definition_sheet.columns = [
+            { header: 'Field', key: 'field', width: 15 },
+            { header: 'Definition', key: 'definition', width: 50 }
+        ];
+
+        var field_col = definition_sheet.getColumn('field');
+        var def_col = definition_sheet.getColumn('definition');
+
+        field_col.values = ['Field',
+            'Page',
+            'Scan Label',
+            'IssueID',
+            'Issue Type',
+            'Toolkit Level',
+            'Checkpoint',
+            'WCAG Level',
+            'Rule',
+            'Issue',
+            'Element',
+            'Code',
+            'Xpath',
+            'Help'];
+
+        var field_cell = definition_sheet.getCell('A1');
+        field_cell.font = {
+            bold: true
+        };
+
+        var definition_cell = definition_sheet.getCell('B1');
+        definition_cell.font = {
+            bold: true
+        };
+
+        def_col.values = ['Definition',
+            'Identifies the page or html file that was scanned.',
+            'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.',
+            'Identifier for this issue within this page.',
+            'Violation, needs review, or recommendation',
+            '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details',
+            'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.',
+            'A, AA or AAA. WCAG level for this issue.',
+            'Name of the accessibility test rule that detected this issue.',
+            'Message describing the issue.',
+            'Type of HTML element where the issue is found.',
+            'Actual HTML element where the issue is found.',
+            'Xpath of the HTML element where the issue is found.',
+            'Link to a more detailed description of the issue and suggested solutions.'];
+
+        return definition_sheet;
+    }
+
+
     public static issues_sheet_rows(xlsx_props: any, issues_sheet: any) {
 
         var report = xlsx_props.report;
@@ -336,58 +389,6 @@ export default class SinglePageReport {
         }
 
         return '';
-    }
-
-    public static create_definition_sheet(definition_sheet: any) {
-        definition_sheet.columns = [
-            { header: 'Field', key: 'field', width: 15 },
-            { header: 'Definition', key: 'definition', width: 50 }
-        ];
-
-        var field_col = definition_sheet.getColumn('field');
-        var def_col = definition_sheet.getColumn('definition');
-
-        field_col.values = ['Field',
-            'Page',
-            'Scan Label',
-            'IssueID',
-            'IssueType',
-            'ToolkitLevel',
-            'Checkpoint',
-            'WCAGLevel',
-            'Rule',
-            'Issue',
-            'Element',
-            'Code',
-            'Xpath',
-            'Help'];
-
-        var field_cell = definition_sheet.getCell('A1');
-        field_cell.font = {
-            bold: true
-        };
-
-        var definition_cell = definition_sheet.getCell('B1');
-        definition_cell.font = {
-            bold: true
-        };
-
-        def_col.values = ['Definition',
-            'Identifies the page or html file that was scanned.',
-            'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.',
-            'Identifier for this issue within this page.',
-            'Violation, needs review, or recommendation',
-            '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details',
-            'WCAG checkpoints this issue falls into.',
-            'A, AA or AAA. WCAG level for this issue.',
-            'Name of the accessibility test rule that detected this issue.',
-            'Message describing the issue.',
-            'Type of HTML element where the issue is found.',
-            'Actual HTML element where the issue is found.',
-            'Xpath of the HTML element where the issue is found.',
-            'Link to a more detailed description of the issue and suggested solutions.'];
-
-        return definition_sheet;
     }
 
     public static format_date(timestamp: string) {
