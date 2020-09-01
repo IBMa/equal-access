@@ -20,7 +20,7 @@
     "node": "10 || 12"
   },
   "dependencies": {
-    "chromedriver": "^83.0.0",
+    "chromedriver": "^85.0.0",
     "deep-diff": "^0.3.4",
     "js-yaml": "^3.13.1",
     "puppeteer": "^2.0.0",

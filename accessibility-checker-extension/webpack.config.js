@@ -38,6 +38,7 @@ module.exports = {
         devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
         devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
+        multiScanReports: path.join(sourceRootPath, 'ts', 'multiScanReports', 'index.tsx'),
         usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
         ...contentScripts,
     },
@@ -111,6 +112,13 @@ module.exports = {
             filename: 'reports.html',
             title: 'Accessibility Checker Extension',
             chunks: ['reports']
+        }),
+        new HtmlWebpackPlugin({
+            template: path.join(sourceRootPath, 'html', 'multiScanReports.html'),
+            inject: 'body',
+            filename: 'multiScanReports.html',
+            title: 'Multi-Scan reports',
+            chunks: ['multiScanReports']
         }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'usingAC.html'),
