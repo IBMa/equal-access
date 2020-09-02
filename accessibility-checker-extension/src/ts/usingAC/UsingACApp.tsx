@@ -444,6 +444,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
+              To report an issue, or to learn about any existing checker issues, visit the{" "}
+              <a href="https://github.com/IBMa/equal-access">
+                tools Git repository. 
+              </a>{" "}
               <strong>Note</strong>: On rare occasions the Accessibility Checker
               extension does not appear in the developer tools for some sites
               due to a bug in the developer tools. The workaround is to go to a
