@@ -37,9 +37,24 @@
 
 <script>
     UnitTest = {
-            ruleIds: ["RPT_Text_SensoryReference"],
-            results: [
-          {
+        ruleIds: ["RPT_Text_SensoryReference"],
+        results: [{
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+            "INFORMATION",
+            "PASS"
+            ],
+            "path": {
+            "dom": "/html[1]/body[1]",
+            "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+        },
+        {
             "ruleId": "RPT_Text_SensoryReference",
             "value": [
               "INFORMATION",
@@ -54,7 +69,7 @@
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
-          }]
+        }]
     }
 </script>
 </main>
