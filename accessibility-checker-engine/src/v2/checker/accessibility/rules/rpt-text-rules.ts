@@ -25,7 +25,7 @@ let a11yRulesText: Rule[] = [
          * Origin: RPT 5.6 G502
          */
         id: "RPT_Text_SensoryReference",
-        context: "dom:body dom:*",
+        context: "dom:body, dom:body dom:*",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const validateParams = {
                 sensoryText: {
