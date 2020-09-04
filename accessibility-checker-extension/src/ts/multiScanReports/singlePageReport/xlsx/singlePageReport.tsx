@@ -17,41 +17,92 @@
 import ReportUti from "../../reportUtil";
 import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
-var Excel = require('exceljs');
+//var Excel = require('exceljs');
+import XLSX from 'xlsx';
 const stringHash = require("string-hash");
 
 export default class SinglePageReport {
 
     public static async single_page_xlsx_download(xlsx_props: any) {
 
+        //create workbook
         var report_workbook = SinglePageReport.create_report_workbook(xlsx_props);
 
-        report_workbook.xlsx.writeBuffer().then(function (data: Blob) {
+        //write workbook into binary
+        var wbout = XLSX.write(report_workbook, { bookType: 'xlsx', type: 'binary' });
 
-            const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        //sheet to ArrayBuffer
+        var buf = this.s2ab(wbout);
 
-            const file_name = ReportUti.single_page_report_file_name(xlsx_props.tab_title);
+        //create xlsx blob
+        const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
-            ReportUti.download_file(blob, file_name);
-        });
+        const file_name = ReportUti.single_page_report_file_name(xlsx_props.tab_title);
 
+        ReportUti.download_file(blob, file_name);
     }
 
-    public static create_report_workbook(xlsx_props: any) {
+    public static s2ab(s: any) {
+		var buf = new ArrayBuffer(s.length);
+		var view = new Uint8Array(buf);
+		for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+		return buf;
+    }
+    
+    // public static create_report_workbook(xlsx_props: any) {
 
-        var workbook = new Excel.Workbook();
+    //     var workbook = new Excel.Workbook();
 
-        workbook.creator = 'IBM Equal Access';
-        workbook.created = new Date();
+    //     workbook.creator = 'IBM Equal Access';
+    //     workbook.created = new Date();
 
-        var header_sheet = workbook.addWorksheet('Header');
-        this.create_header_sheet(xlsx_props, header_sheet);
+    //     var header_sheet = workbook.addWorksheet('Header');
+    //     this.create_header_sheet(xlsx_props, header_sheet);
 
-        var issues_sheet = workbook.addWorksheet('Issues');
-        this.create_issues_sheet(xlsx_props, issues_sheet);
+    //     var issues_sheet = workbook.addWorksheet('Issues');
+    //     this.create_issues_sheet(xlsx_props, issues_sheet);
 
-        var definition_sheet = workbook.addWorksheet('Definition of fields');
-        this.create_definition_sheet(definition_sheet);
+    //     var definition_sheet = workbook.addWorksheet('Definition of fields');
+    //     this.create_definition_sheet(definition_sheet);
+
+    //     return workbook;
+    // }
+
+      public static create_report_workbook(xlsx_props: any) {
+    
+        var workbook = XLSX.utils.book_new();
+
+        workbook.Props = {
+            Title: "Accessibility Checker Report",
+            Subject: "xlsx report",
+            Author: "IBM Equal Access",
+            CreatedDate: new Date()
+        }
+
+
+
+        workbook.SheetNames.push("Test Sheet");
+        var ws_data = [['hello', 'world']];
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        workbook.Sheets["Test Sheet"] = ws;
+
+
+
+
+
+        //var workbook = new Excel.Workbook();
+
+        // workbook.creator = 'IBM Equal Access';
+        // workbook.created = new Date();
+
+        // var header_sheet = workbook.addWorksheet('Header');
+        // this.create_header_sheet(xlsx_props, header_sheet);
+
+        // var issues_sheet = workbook.addWorksheet('Issues');
+        // this.create_issues_sheet(xlsx_props, issues_sheet);
+
+        // var definition_sheet = workbook.addWorksheet('Definition of fields');
+        // this.create_definition_sheet(definition_sheet);
 
         return workbook;
     }
