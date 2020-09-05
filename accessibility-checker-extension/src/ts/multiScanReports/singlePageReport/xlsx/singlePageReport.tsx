@@ -43,33 +43,14 @@ export default class SinglePageReport {
     }
 
     public static s2ab(s: any) {
-		var buf = new ArrayBuffer(s.length);
-		var view = new Uint8Array(buf);
-		for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-		return buf;
+        var buf = new ArrayBuffer(s.length);
+        var view = new Uint8Array(buf);
+        for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+        return buf;
     }
-    
-    // public static create_report_workbook(xlsx_props: any) {
 
-    //     var workbook = new Excel.Workbook();
+    public static create_report_workbook(xlsx_props: any) {
 
-    //     workbook.creator = 'IBM Equal Access';
-    //     workbook.created = new Date();
-
-    //     var header_sheet = workbook.addWorksheet('Header');
-    //     this.create_header_sheet(xlsx_props, header_sheet);
-
-    //     var issues_sheet = workbook.addWorksheet('Issues');
-    //     this.create_issues_sheet(xlsx_props, issues_sheet);
-
-    //     var definition_sheet = workbook.addWorksheet('Definition of fields');
-    //     this.create_definition_sheet(definition_sheet);
-
-    //     return workbook;
-    // }
-
-      public static create_report_workbook(xlsx_props: any) {
-    
         var workbook = XLSX.utils.book_new();
 
         workbook.Props = {
@@ -79,35 +60,118 @@ export default class SinglePageReport {
             CreatedDate: new Date()
         }
 
-
-
-        workbook.SheetNames.push("Test Sheet");
-        var ws_data = [['hello', 'world']];
-        var ws = XLSX.utils.aoa_to_sheet(ws_data);
-        workbook.Sheets["Test Sheet"] = ws;
-
-
-
-
-
-        //var workbook = new Excel.Workbook();
-
-        // workbook.creator = 'IBM Equal Access';
-        // workbook.created = new Date();
-
-        // var header_sheet = workbook.addWorksheet('Header');
-        // this.create_header_sheet(xlsx_props, header_sheet);
-
-        // var issues_sheet = workbook.addWorksheet('Issues');
-        // this.create_issues_sheet(xlsx_props, issues_sheet);
-
-        // var definition_sheet = workbook.addWorksheet('Definition of fields');
-        // this.create_definition_sheet(definition_sheet);
+        this.create_header_sheet(xlsx_props, workbook);
+        this.create_issues_sheet(xlsx_props, workbook);
+        this.create_definition_sheet(workbook);
 
         return workbook;
     }
 
-    public static create_header_sheet(xlsx_props: any, header_sheet: any) {
+    // public static create_header_sheet(xlsx_props: any, header_sheet: any) {
+    //     console.log('----report------', xlsx_props.report);
+    //     var report = xlsx_props.report;
+    //     var tab_url = xlsx_props.tabURL;
+
+
+    //     var summaryNumbers = ReportSummaryUtil.calcSummary(report);
+    //     var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
+    //     var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
+
+    //     var violation = report?.counts.total.Violation;
+    //     var needs_review = report?.counts.total["Needs review"];
+    //     var recommendation = report?.counts.total.Recommendation;
+    //     //var pass = report?.counts.total.Pass;
+
+
+    //     //set column width
+    //     header_sheet.getColumn('A').width = 10;
+    //     header_sheet.getColumn('B').width = 25;
+    //     header_sheet.getColumn('C').width = 25;
+    //     header_sheet.getColumn('D').width = 40;
+    //     header_sheet.getColumn('E').width = 15;
+    //     header_sheet.getColumn('F').width = 15;
+    //     header_sheet.getColumn('G').width = 20;
+
+    //     var report_title = header_sheet.getCell('A1');
+    //     report_title.value = 'Accessibility Scan Report';
+    //     report_title.font = {
+    //         bold: true
+    //     };
+
+    //     var tool = header_sheet.getCell('A3');
+    //     var tool_info = header_sheet.getCell('B3');
+    //     tool.value = 'Tool:';
+    //     tool_info.value = 'IBM Equal Access Accessibility Checker';
+
+    //     var version = header_sheet.getCell('A4');
+    //     var version_info = header_sheet.getCell('B4');
+    //     version.value = 'Version:';
+    //     version_info.value = chrome.runtime.getManifest().version;
+
+    //     var rule_set = header_sheet.getCell('A5');
+    //     var rule_set_info = header_sheet.getCell('B5');
+    //     rule_set.value = 'Rule set:';
+    //     rule_set_info.value = report.option.deployment.name;
+
+    //     var guidelines = header_sheet.getCell('A6');
+    //     var guidelines_info = header_sheet.getCell('B6');
+    //     guidelines.value = 'Guidelines:';
+    //     guidelines_info.value = report.option.guideline.name;
+
+    //     var scan_date = header_sheet.getCell('A7');
+    //     var scan_date_info = header_sheet.getCell('B7');
+    //     scan_date.value = 'Scan date:';
+    //     scan_date_info.value = new Date(report.timestamp);
+    //     scan_date_info.alignment = { horizontal: 'left' };
+
+    //     var scans = header_sheet.getCell('A9');
+    //     var scans_info = header_sheet.getCell('B9');
+    //     scans.value = 'Scans:';
+    //     scans_info.value = '1';
+
+
+    //     var summary = header_sheet.getCell('A11');
+    //     summary.value = 'Summary';
+    //     summary.font = {
+    //         bold: true
+    //     };
+
+    //     var summary_row_header = header_sheet.getRow(13);
+    //     summary_row_header.values = [
+    //         'Page',
+    //         'Scan Label',
+    //         '% elements without violations',
+    //         '% elements without violations or items to review',
+    //         '# violations', '# needs review',
+    //         '# recommendations'];
+
+    //     var summary_row_info = header_sheet.getRow(14);
+    //     summary_row_info.values = [
+    //         tab_url,
+    //         this.format_date(report.timestamp),
+    //         element_no_violations,
+    //         element_no_failures,
+    //         violation,
+    //         needs_review,
+    //         recommendation
+    //     ];
+
+    //     return header_sheet;
+    // }
+
+    public static create_header_sheet(xlsx_props: any, workbook: any) {
+
+        workbook.SheetNames.push("Header");
+
+        var ws:any = {};
+        ws["!ref"]="A1:B1";
+        ws.A1 = {v: "Accessibility Scan Report", t: "s", s: "b"}
+
+
+        workbook.Sheets["Header"] = ws;
+
+/*
+
         console.log('----report------', xlsx_props.report);
         var report = xlsx_props.report;
         var tab_url = xlsx_props.tabURL;
@@ -197,86 +261,63 @@ export default class SinglePageReport {
         ];
 
         return header_sheet;
+        */
     }
+    
+    public static create_issues_sheet(xlsx_props: any, workbook: any) {
 
-    public static create_issues_sheet(xlsx_props: any, issues_sheet: any) {
+        workbook.SheetNames.push("Issues");
 
-        issues_sheet.columns = [
-            { header: 'Page', key: 'page', width: 20 },
-            { header: 'Scan Label', key: 'scan_label', width: 20 },
-            { header: 'Issue ID', key: 'issue_id', width: 15 },
-            { header: 'Issue Type', key: 'issue_type', width: 15 },
-            { header: 'Toolkit Level', key: 'toolkit_level', width: 10 },
-            { header: 'Checkpoint', key: 'checkpoint', width: 25 },
-            { header: 'WCAG Level', key: 'wcag_level', width: 10 },
-            { header: 'Rule', key: 'rule', width: 25 },
-            { header: 'Issue', key: 'issue', width: 50 },
-            { header: 'Element', key: 'element', width: 10 },
-            { header: 'Code', key: 'code', width: 50 },
-            { header: 'Xpath', key: 'xpath', width: 50 },
-            { header: 'Help', key: 'help', width: 50 }
+        var ws_data: any = [];
 
+        var ws_data_header: any = [
+            'Page', 'Scan Label', 'Issue ID', 'Issue Type', 'Toolkit Level', 'Checkpoint', 'WCAG Level', 'Rule', 'Issue', 'Element', 'Code', 'Xpath', 'Help'
         ];
 
-        this.issues_sheet_rows(xlsx_props, issues_sheet)
+        ws_data.push(ws_data_header);
 
-        return issues_sheet;
+        var ws_data_rows = this.issues_sheet_rows(xlsx_props);
+
+        ws_data.push.apply(ws_data, ws_data_rows);
+
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        workbook.Sheets["Issues"] = ws;
+
+
+
+        // return issues_sheet;
     }
 
-    public static create_definition_sheet(definition_sheet: any) {
-        definition_sheet.columns = [
-            { header: 'Field', key: 'field', width: 15 },
-            { header: 'Definition', key: 'definition', width: 50 }
+    public static create_definition_sheet(workbook: any) {
+
+        workbook.SheetNames.push("Definition of fields");
+
+        var ws_data: any = [
+            ['Field', 'Definition'],
+            ['Page', 'Identifies the page or html file that was scanned.'],
+            ['Scan Label', 'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.'],
+            ['IssueID', 'Identifier for this issue within this page.'],
+            ['Issue Type', 'Violation, needs review, or recommendation'],
+            ['Toolkit Level', '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details'],
+            ['Checkpoint', 'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.'],
+            ['WCAG Level', 'A, AA or AAA. WCAG level for this issue.'],
+            ['Rule', 'Name of the accessibility test rule that detected this issue.'],
+            ['Issue', 'Message describing the issue.'],
+            ['Element', 'Type of HTML element where the issue is found.'],
+            ['Code', 'Actual HTML element where the issue is found.',],
+            ['Xpath', 'Xpath of the HTML element where the issue is found.'],
+            ['Help', 'Link to a more detailed description of the issue and suggested solutions.']
         ];
 
-        var field_col = definition_sheet.getColumn('field');
-        var def_col = definition_sheet.getColumn('definition');
+        var ws = XLSX.utils.aoa_to_sheet(ws_data);
+        workbook.Sheets["Definition of fields"] = ws;
 
-        field_col.values = ['Field',
-            'Page',
-            'Scan Label',
-            'IssueID',
-            'Issue Type',
-            'Toolkit Level',
-            'Checkpoint',
-            'WCAG Level',
-            'Rule',
-            'Issue',
-            'Element',
-            'Code',
-            'Xpath',
-            'Help'];
-
-        var field_cell = definition_sheet.getCell('A1');
-        field_cell.font = {
-            bold: true
-        };
-
-        var definition_cell = definition_sheet.getCell('B1');
-        definition_cell.font = {
-            bold: true
-        };
-
-        def_col.values = ['Definition',
-            'Identifies the page or html file that was scanned.',
-            'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.',
-            'Identifier for this issue within this page.',
-            'Violation, needs review, or recommendation',
-            '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details',
-            'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.',
-            'A, AA or AAA. WCAG level for this issue.',
-            'Name of the accessibility test rule that detected this issue.',
-            'Message describing the issue.',
-            'Type of HTML element where the issue is found.',
-            'Actual HTML element where the issue is found.',
-            'Xpath of the HTML element where the issue is found.',
-            'Link to a more detailed description of the issue and suggested solutions.'];
-
-        return definition_sheet;
+        console.log('-----definition sheet ws data---', ws);
     }
 
+    public static issues_sheet_rows(xlsx_props: any) {
 
-    public static issues_sheet_rows(xlsx_props: any, issues_sheet: any) {
+        var ret: any = [];
 
         var report = xlsx_props.report;
         //var rulesets = xlsx_props.rulesets;
@@ -301,35 +342,34 @@ export default class SinglePageReport {
         };
 
         if (report == null) {
-            return;
+            return [];
         }
-
-        let itemIdx = 0;
 
         for (const item of report.results) {
             if (item.value[1] === "PASS") {
                 continue;
             }
 
-            item.itemIdx = itemIdx++;
+            var row = [
+                tab_url,
+                this.format_date(report.timestamp),
+                stringHash(item.ruleId + item.path.aria),
+                valueMap[item.value[0]][item.value[1]],
+                rule_map.get(item.ruleId).toolkitLevel,
+                this.checkpoints_string(rule_checkpoints_map, item.ruleId),
+                this.wcag_string(rule_checkpoints_map, item.ruleId),
+                item.ruleId,
+                item.message,
+                this.get_element(item.snippet),
+                item.snippet,
+                item.path.aria,
+                engine_end_point + '/tools/help/' + item.ruleId
+            ]
 
-            issues_sheet.addRow({
-                page: tab_url,
-                scan_label: this.format_date(report.timestamp),
-                issue_id: stringHash(item.ruleId + item.path.aria),
-                issue_type: valueMap[item.value[0]][item.value[1]],
-                toolkit_level: rule_map.get(item.ruleId).toolkitLevel,
-                checkpoint: this.checkpoints_string(rule_checkpoints_map, item.ruleId),
-                wcag_level: this.wcag_string(rule_checkpoints_map, item.ruleId),
-                rule: item.ruleId,
-                issue: item.message,
-                element: this.get_element(item.snippet),
-                code: item.snippet,
-                xpath: item.path.aria,
-                help: engine_end_point + '/tools/help/' + item.ruleId
-            });
+            ret.push(row);
         }
 
+        return ret;
     }
 
     public static checkpoints_string(rule_checkpoints_map: any, rule_id: string) {
