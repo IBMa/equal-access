@@ -25,7 +25,7 @@ let a11yRulesText: Rule[] = [
          * Origin: RPT 5.6 G502
          */
         id: "RPT_Text_SensoryReference",
-        context: "dom:*",
+        context: "dom:body, dom:body dom:*",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const validateParams = {
                 sensoryText: {
@@ -37,6 +37,9 @@ let a11yRulesText: Rule[] = [
                 }
             }
             const ruleContext = context["dom"].node as Element;
+            if (RPTUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
+                return null;
+            } 
 
             // Extract the nodeName of the context node
             let nodeName = ruleContext.nodeName.toLowerCase();
