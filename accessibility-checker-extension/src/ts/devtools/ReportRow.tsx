@@ -144,32 +144,27 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         // focused view 
-        let focusedView:boolean = true;
-        let count = 0;
+        let focusedView:boolean = false; // assume false, i.e., no items in group selected
         if (this.props.focusedViewFilter == true) { // focus switch on Focus
             group.items.map((item) => { // check if any selected in the group
                 if (item.selected == true || item.selectedChild == true) {
-                    count++;
                     focusedView = true;
-                } else {
-                    focusedView = false;
-                }
+                } 
             });
         } else { // focus switch on All
             focusedView = true; // true for every issue
         }
-        console.log("selected count = ", count);
-        console.log("focusedView = ", focusedView, "   group.title = ", group.title);
-        if (this.props.atLeastOnSelected == false) {
-            group.items.map(() => { // check if any selected in the group
-                    focusedView = true;
-            });
-        }
+        // console.log("focusedView = ", focusedView, "   group.title = ", group.title);
+        // if (this.props.atLeastOnSelected == false) {
+        //     group.items.map(() => { // check if any selected in the group
+        //             focusedView = true;
+        //     });
+        // }
 
+         
         let rowindex = this.props.idx;
-        //console.log("In ReportRow render: dataFromParent = ",this.props.dataFromParent);
         return <React.Fragment>
-            { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView  ? 
+            { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView ? 
             <div className="itemRow">
             <div tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
                 <div role="cell" className="bx--col-sm-1">
@@ -187,9 +182,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    
                         return <React.Fragment>
-                        {focusedView ?
+                        {!this.props.focusedViewFilter || (focusedView && (item.selected || item.selectedChild)) ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
                                 (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                                     <div role="cell" className="bx--col-sm-1"> </div>

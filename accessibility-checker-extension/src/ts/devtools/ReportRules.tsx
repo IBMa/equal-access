@@ -85,16 +85,21 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
         })
 
         // are any selected items in any of the groups
+        let rulesCount = 0;
+        let rulesSelectedCount = 0;
         let atLeastOneSelected:boolean = false;
         groups.map(group => {
             group.items.map(item => {
+                rulesCount++;
                 if (item.selected == true || item.selectedChild == true) {
+                    rulesSelectedCount++;
                     atLeastOneSelected = true;
                 }
             })
         });
-
-        // console.log("atLeastOneSelected = ",atLeastOneSelected);
+        console.log("rulesSelectedCount = ", rulesSelectedCount);
+        console.log("rulesCount = ", rulesCount);
+        console.log("atLeastOneSelected = ",atLeastOneSelected);
 
         let idx=0;
         let scrollFirst = true;
