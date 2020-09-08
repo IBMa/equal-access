@@ -42,7 +42,6 @@ interface IHeaderProps {
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
-    multiScanReportHandler: () => void,
     xlsxReportHandler: () => void,
     // showIssueTypeCallback: (type:string) => void,
     // showIssueTypeMenuCallback: (type:string[]) => void,
