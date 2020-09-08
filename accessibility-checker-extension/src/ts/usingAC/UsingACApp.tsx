@@ -119,6 +119,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         6.4 Scanning local files
                       </a>
                     </li>
+                    <li>
+                      <a href="#a11y_considerations" title="Accessibility Considerations">
+                        6.5 Accessibility Considerations
+                      </a>
+                    </li>
                   </ul>
                 </li>
                 <li>
@@ -341,10 +346,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                   Select <strong>'Options'</strong> in the overlay. The options
                   will open in a new browser tab.
-                  <strong>Note</strong> In the Firefox browser when the Enhanced
+                  <strong> Note:</strong> In the Firefox browser when the Enhanced
                   Tracking Protection option is set to Strict, this causes some
                   sites or content to break and may prevent the Options page
-                  from opening.
+                  from opening. Change the browser privacy settings to Standard, to avoid the situation.
                 </p>
               </li>
             </ol>
@@ -954,6 +959,99 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   Scroll down to <strong>'Allow access to file URLs'</strong>{" "}
                   and turn this option on.
                 </li>
+              </ol>
+            </div>
+
+            <h3 id="a11y_considerations">6.5 Accessibility Considerations</h3>
+            <div className="pa">
+               Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
+              <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>The Accessibility Checker tool is responsive to the user's preferred font size and colors.
+                </li>
+                <li>Both the Accessibility Assessment view and the Accessibility Checker view are fully keyboard accessible, navigate as follows:
+                </li>
+                  <ul
+                    style={{
+                      listStyleType: "circle",
+                      marginInlineStart: "2rem",
+                    }}
+                  >
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        Use the <strong>'tab'</strong> key to navigate to any focusable element in the checker, starting
+                        with the <strong>'Scan'</strong> button once the checker launches.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        After running the scan, press the <strong>'tab'</strong> key again, to navigate to the <strong>'Reset Selections'</strong> icon and the <strong>'Report'</strong> icon.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        Press the <strong>'tab'</strong> key to navigate to the checkbox by each issue type and press the <strong>'enter'</strong> key to filter the list of issue by <strong>Violations</strong>, <strong>Needs review</strong> and/or by <strong>Recommendations</strong>.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right arrow'</strong> or the <strong>'left arrow'</strong> keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Checkpoints'</strong> view and the <strong>'Rules'</strong> view.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        Press the <strong>'tab'</strong> key to navigate through the <strong>issue groupings</strong> associated with each checkpoint, element role or rule. Use the <strong>'enter'</strong> key to open or close an issue grouping. Within an open grouping, press the <strong>'tab'</strong> key to navigate to each issue, and press the <strong>'enter'</strong> key to select the current issue.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        Press the <strong>'tab'</strong> key to move to the <strong>'Learn more'</strong> link or to move to the next issue.
+                      </p>
+                    </li>
+                  </ul>  
+                <li>
+                  Use the <strong>headings</strong> hierarchy or the implemented <strong>landmarks</strong> to quickly navigate from one section to another. The list of implemented landmarks are as follows:
+                </li>
+                  <ul
+                    style={{
+                      listStyleType: "circle",
+                      marginInlineStart: "2rem",
+                    }}
+                  >
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        The <strong>IBM Accessibility Assessment</strong> or the <strong>IBM Accessibility Checker</strong> main landmark: contains the main functionality of the tool in each view and includes,
+                      </p>
+                      <ul
+                          style={{
+                            listStyleType: "disc",
+                            marginInlineStart: "2rem",
+                          }}
+                        >
+                          <li>
+                            <p style={{ marginTop: "0rem" }}>
+                              The <strong>Issue Count</strong> region: contains the issue count by issue type as well as the total number of issues found.
+                            </p>
+                          </li>
+                          <li>
+                            <p style={{ marginTop: "0rem" }}>
+                              The <strong>Issue List</strong> region: contains the list of issues grouped by Element Roles, by Checkpoints or by Rules.
+                            </p>
+                          </li>
+                        </ul>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        The Accessibility Assessment view <strong>Scan Summary</strong> aside or the complementary landmark: contains the scan summary, after the scan completes or shows the issue help when any issue is selected.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        The Accessibility Assessment view <strong>Issue Help</strong> aside or the complementary landmark: contains the issue help when any issue is selected.
+                      </p>
+                    </li>
+                  </ul>
               </ol>
             </div>
 

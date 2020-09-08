@@ -23,11 +23,13 @@
 		"carbon-components-react": "^7.10.1",
 		"carbon-icons": "^7.0.7",
 		"dotenv-webpack": "^1.7.0",
+		"exceljs": "^4.1.1",
 		"markdown-to-jsx": "^6.11.1",
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
 		"react-redux": "^7.1.3",
 		"redux": "^4.0.5",
+		"string-hash": "^1.1.3",
 		"webext-redux": "^2.1.6"
 	},
 	"devDependencies": {
