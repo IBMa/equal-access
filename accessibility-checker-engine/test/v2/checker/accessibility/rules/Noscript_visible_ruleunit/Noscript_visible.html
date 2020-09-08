@@ -1,0 +1,77 @@
+<html lang="en-US">
+    <head>
+        <title>noscript should eb hidden</title>
+    </head>
+    <body>
+        <main>
+            Page with some noscript style content. No errors should flag since the content should be hidden
+<noscript>
+    <style type="text/css"><!--
+      #navbar #nav-shop .nav-a:hover {
+        color: #ff9900;
+        text-decoration: underline;
+      }
+      #navbar #nav-search .nav-search-facade,
+      #navbar #nav-tools .nav-icon,
+      #navbar #nav-shop .nav-icon,
+      #navbar #nav-subnav .nav-hasArrow .nav-arrow {
+        display: none;
+      }
+      #navbar #nav-search .nav-search-submit,
+      #navbar #nav-search .nav-search-scope {
+        display: block;
+      }
+      #nav-search .nav-search-scope {
+        padding: 0 5px;
+      }
+      #navbar #nav-search .nav-search-dropdown {
+        position: relative;
+        top: 5px;
+        height: 23px;
+        font-size: 14px;
+        opacity: 1;
+        filter: alpha(opacity = 100);
+      }
+    --></style>
+ </noscript>
+
+<script>
+    UnitTest = {
+        ruleIds: ["RPT_Text_SensoryReference"],
+        results: [{
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+            "INFORMATION",
+            "PASS"
+            ],
+            "path": {
+            "dom": "/html[1]/body[1]",
+            "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+        },
+        {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+        }]
+    }
+</script>
+</main>
+</body>
+</html>

@@ -188,32 +188,6 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Text_SensoryReference",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 143,
-                "width": 800
-            },
-            "snippet": "<html lang=\"en\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
             "ruleId": "WCAG20_Text_Emoticons",
             "value": [
                 "VIOLATION",
@@ -397,32 +371,6 @@
         },
         {
             "ruleId": "RPT_List_UseMarkup",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<head>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "RPT_Text_SensoryReference",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -658,32 +606,6 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Text_SensoryReference",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/title[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<title>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
             "ruleId": "WCAG20_Text_Emoticons",
             "value": [
                 "VIOLATION",
@@ -866,32 +788,6 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Text_SensoryReference",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta charset=\"utf-8\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
             "ruleId": "WCAG20_Text_Emoticons",
             "value": [
                 "VIOLATION",
@@ -1074,32 +970,6 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Text_SensoryReference",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[2]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta content=\"text\" name=\"Description\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
             "ruleId": "WCAG20_Text_Emoticons",
             "value": [
                 "VIOLATION",
@@ -1204,6 +1074,32 @@
             "level": "pass"
         },
         {
+            "ruleId": "RPT_Text_SensoryReference",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 8,
+                "top": 8,
+                "height": 114,
+                "width": 784
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "pass"
+        },
+        {
             "ruleId": "WCAG20_Body_FirstASkips_Native_Host_Sematics",
             "value": [
                 "VIOLATION",
@@ -1257,32 +1153,6 @@
         },
         {
             "ruleId": "RPT_List_UseMarkup",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 114,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "RPT_Text_SensoryReference",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3542,7 +3412,7 @@
             "level": "pass"
         }
     ],
-    "numExecuted": 135,
+    "numExecuted": 130,
     "nls": {
         "WCAG20_Html_HasLang": {
             "0": "Page must identify the default language of the document with a 'lang' attribute",
@@ -3566,10 +3436,6 @@
         },
         "RPT_List_UseMarkup": {
             "0": "Use proper HTML list elements to create lists",
-            "Pass_0": "Rule Passed"
-        },
-        "RPT_Text_SensoryReference": {
-            "0": "Instructions must be meaningful without shape or location words",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Text_Emoticons": {
@@ -3598,6 +3464,10 @@
         },
         "RPT_Title_Valid": {
             "0": "Page <title> should be a descriptive title, rather than a filename",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Text_SensoryReference": {
+            "0": "Instructions must be meaningful without shape or location words",
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
@@ -3657,7 +3527,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 134,
+            "pass": 129,
             "ignored": 0
         },
         "scanTime": 26,
