@@ -147,18 +147,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
+
+            {this.props.layout === "sub" ?
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-md-1">
-                
                     <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
                 <div className="bx--col-md-3" style={{height: "28px"}}>
 
                 </div>
-
-                {/* <div className="bx--col-md-1" style={{height: "28px"}}>
-
-                </div> */}
 
                 <div className="bx--col-md-1">
                     <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
@@ -176,19 +173,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         >
                             <ReportData16 className="my-custom-class" />
                         </Button>
-                        {/* <Button
-                            disabled={!this.props.counts}
-                            onClick={this.props.xlsxReportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in XLSX" type="button"
-                        >
-                            <Xls16 className="my-custom-class" />
-                        </Button> */}
                     </div>
                 </div>
                 
                 <div className="bx--col-md-3">
-                          
-                    {this.props.layout === "sub" ?
                         <ContentSwitcher
                             style={{height: "28px"}}
                             selectionMode="manual"
@@ -215,13 +203,36 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onKeyDown={this.onKeyDown.bind(this)} 
                             />
                         </ContentSwitcher> 
-                    : "" }
+                    
                 </div>  
-                
-                
-                
-                   
             </div>
+            :
+            <div className="bx--row" style={{ marginTop: '10px' }}>
+                <div className="bx--col-sm-2">
+                <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                </div>
+                <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                    <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
+                        <div style={{width:210, paddingRight:"16px"}}>
+                        </div>
+                        <Button
+                            disabled={!this.props.counts}
+                            onClick={this.props.collapseAll}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                        >
+                            <Reset16 className="my-custom-class" />
+                        </Button>
+                        <Button
+                            disabled={!this.props.counts}
+                            onClick={this.props.reportHandler}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                        >
+                            <ReportData16 className="my-custom-class" />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+            }
 
             <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
                 <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
