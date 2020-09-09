@@ -163,7 +163,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            this.selectElementInElements();
+            // this.selectElementInElements(); // can not do this here
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                 tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
         }
