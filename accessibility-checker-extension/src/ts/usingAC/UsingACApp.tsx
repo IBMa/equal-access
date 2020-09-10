@@ -1145,7 +1145,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     Report a problem with the checker tool.
                   </li>
                   <li>
-                    Report a problem with any accuracy of the errors reported by the checker.
+                    Report a problem with the checker rules or accuracy of the errors reported by the checker.
                   </li>
                   <li>
                     Find information on any existing issues.
