@@ -84,23 +84,6 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             return aIndex - bIndex;
         })
 
-        // are any selected items in any of the groups
-        let rulesCount = 0;
-        let rulesSelectedCount = 0;
-        let atLeastOneSelected:boolean = false;
-        groups.map(group => {
-            group.items.map(item => {
-                rulesCount++;
-                if (item.selected == true || item.selectedChild == true) {
-                    rulesSelectedCount++;
-                    atLeastOneSelected = true;
-                }
-            })
-        });
-        console.log("rulesSelectedCount = ", rulesSelectedCount);
-        console.log("rulesCount = ", rulesCount);
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
-
         let idx=0;
         let scrollFirst = true;
         return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by rule">
@@ -132,7 +115,6 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         layout={this.props.layout}
                         dataFromParent={this.props.dataFromParent}
                         focusedViewFilter={this.props.focusedViewFilter}
-                        atLeastOnSelected={atLeastOneSelected}
                     />                
                 })}
             </div>

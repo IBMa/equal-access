@@ -86,23 +86,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 return aIndex - bIndex;
             })
         })
-
-        // are any selected items in any of the groups
-        let elementsCount = 0;
-        let elementsSelectedCount = 0;
-        let atLeastOneSelected:boolean = false;
-        groups.map(group => {
-            group.items.map(item => {
-                elementsCount++;
-                if (item.selected == true || item.selectedChild == true) {
-                    elementsSelectedCount++;
-                    atLeastOneSelected = true;
-                }
-            })
-        });
-        console.log("elementsSelectedCount = ", elementsSelectedCount);
-        console.log("elementsSelectedCount = ", elementsCount);
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
         
         let idx=0;
         let scrollFirst = true;
@@ -135,7 +118,6 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         layout={this.props.layout}
                         dataFromParent={this.props.dataFromParent}
                         focusedViewFilter={this.props.focusedViewFilter}
-                        atLeastOnSelected={atLeastOneSelected}
                     />
                 })}
             </div>

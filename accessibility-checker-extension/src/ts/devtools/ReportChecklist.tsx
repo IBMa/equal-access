@@ -97,23 +97,6 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             })
         })
 
-        // are any selected items in any of the groups
-        let checklistCount = 0;
-        let checklistSelectedCount = 0;
-        let atLeastOneSelected:boolean = false;
-        groups.map(group => {
-            group.items.map(item => {
-                checklistCount++;
-                if (item.selected == true || item.selectedChild == true) {
-                    checklistSelectedCount++;
-                    atLeastOneSelected = true;
-                }
-            })
-        });
-        console.log("checklistSelectedCount = ", checklistSelectedCount);
-        console.log("checklistSelectedCount = ", checklistCount);
-        console.log("atLeastOneSelected = ",atLeastOneSelected);
-
         let idx=0;
         groups = groups.filter(group => group.items.length > 0);
         let scrollFirst = true;
@@ -147,7 +130,6 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         layout={this.props.layout} 
                         dataFromParent={this.props.dataFromParent} 
                         focusedViewFilter={this.props.focusedViewFilter}
-                        atLeastOnSelected={atLeastOneSelected}
                     />;
                 })}
             </div>
