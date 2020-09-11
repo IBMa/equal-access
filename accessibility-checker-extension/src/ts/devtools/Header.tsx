@@ -90,7 +90,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
     flipSwitch (index:number) {
         let focusValue = false;
-        if (index == 0) {
+        if (index === 0) {
             focusValue = true;
         } else {
             focusValue = false;
@@ -133,9 +133,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
-        //this.props.getCurrentSelectedElement();
         let focusText = this.props.focusedViewText;
-        console.log("focusText = ", focusText);
 
         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
