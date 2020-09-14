@@ -19,8 +19,10 @@ import React from "react";
 import {
     // MultiSelect, 
     Button, 
-    Checkbox
+    Checkbox,
+    Tooltip
 } from 'carbon-components-react';
+import { settings } from 'carbon-components';
 
 import { Reset16 } from '@carbon/icons-react';
 // import { SettingsAdjust16 } from '@carbon/icons-react';
@@ -35,6 +37,7 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 // import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
 // import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
 
+const { prefix } = settings;
 interface IHeaderState {}
 
 interface IHeaderProps {
@@ -157,8 +160,22 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
             <div className="bx--row" style={{ marginTop: '10px' }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-sm-2" style={{display: 'flex',  alignContent: 'center'}}>
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+
+                        <Tooltip tooltipBodyId="tooltip-body">
+                        <p id="tooltip-body">
+                            You are usig a rule set from March 2020. The latest rule set is July 2020
+                        </p>
+                        <div className={`${prefix}--tooltip__footer`}>
+                            <a href="/" className={`${prefix}--link`}>
+                            Change rule set
+                            </a>
+                           
+                        </div>
+                        </Tooltip>
+
+
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative" }}>
                     <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
