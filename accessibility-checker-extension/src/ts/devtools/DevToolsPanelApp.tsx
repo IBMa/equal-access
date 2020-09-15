@@ -52,7 +52,9 @@ interface IPanelState {
     learnItem: IReportItem | null,
     showIssueTypeFilter: boolean[],
     scanning: boolean,   // true when scan taking place
-    error: string | null
+    error: string | null,
+    focusedViewFilter: boolean,
+    focusedViewText: string
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -69,7 +71,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
-        error: null
+        error: null,
+        focusedViewFilter: false,
+        focusedViewText: ""
     }
 
     ignoreNext = false;
@@ -80,6 +84,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
+        this.getCurrentSelectedElement();
         // Only listen to element events on the subpanel
         if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -158,7 +163,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-
+            if (this.props.layout === "sub") {
+                this.selectElementInElements();
+            }
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                 tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
         }
@@ -264,6 +271,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
+            this.getCurrentSelectedElement();
         }
     }
 
@@ -421,6 +429,42 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    getCurrentSelectedElement() {
+        let mythis = this;
+        chrome.devtools.inspectedWindow.eval("$0.tagName", 
+            { useContentScriptContext: true },
+            (result:string, isException) => {
+                if (isException) {
+                    console.error(isException);
+                }
+                if (!result) {
+                    console.log('Could not get selected element');
+                }
+                // get current element after inspected Window script
+                setTimeout(() => {
+                    // console.log("result = ",result);
+                    mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
+                }, 0);
+            });
+    }
+
+    selectElementInElements () {
+        chrome.devtools.inspectedWindow.eval("inspect(document.body)", 
+            { useContentScriptContext: true },
+            (result:string, isException) => {
+                if (isException) {
+                    console.error(isException);
+                }
+                if (!result) {
+                    console.log('Could not select element');
+                }
+                // select element after inspected Window script
+                setTimeout(() => {
+                    // console.log("selected element");
+                }, 0);
+            });
+    }
+
     getItem(item: IReportItem) {
         this.setState({ learnMore: true, learnItem: item });
     }
@@ -429,51 +473,24 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ learnMore: false });
     }
 
-
-    // showIssueTypeMenuCallback (type:string[]) {
-    //     if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
-    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
-    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
-    //     } else if (type[0] !== "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
-    //     } else if (type[0] === "Violations" && type[1] === "NeedsReview" && type[2] !== "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, true, false] });
-    //     } else if (type[0] === "Violations" && type[1] !== "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, true] });
-    //     } else if (type[0] !== "Violations" && type[1] === "NeedsReview" && type[2] === "Recommendations") {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, true] });
-    //     }
-    // }
-
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
-        console.log("In showIssueTypeCheckBoxCallback",checked);
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
-            console.log("All true");
+            // console.log("All true");
             this.setState({ showIssueTypeFilter: [true, checked[1], checked[2], checked[3]] });
         } else if (checked[1] == false && checked[2] == false && checked[3] == false) {
-            console.log("All false");
+            // console.log("All false");
             this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         } else {
-            console.log("Mixed");
+            // console.log("Mixed");
             this.setState({ showIssueTypeFilter: [false, checked[1], checked[2], checked[3]] });
         }
-        console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
+        // console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
     }
 
-    // showIssueTypeCallback (type:string) {
-    //     if (type === "Violations" && this.state.showIssueTypeFilter[1] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, true, false, false] });
-    //     } else if (type === "NeedsReview" && this.state.showIssueTypeFilter[2] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, false, true, false] });
-    //     } else if (type === "Recommendations" && this.state.showIssueTypeFilter[3] === false) {
-    //         this.setState({ showIssueTypeFilter: [false, false, false, true] });
-    //     } else { 
-    //         this.setState({ showIssueTypeFilter: [true, false, false, false] });
-    //     }    
-    // }
+    focusedViewCallback (focus:boolean) {
+        this.setState({ focusedViewFilter: focus});
+        // console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
+    }
     
     render() {
         let error = this.state.error;
@@ -503,6 +520,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
+                            focusedViewCallback={this.focusedViewCallback.bind(this)}
+                            focusedViewFilter={this.state.focusedViewFilter}
+                            focusedViewText={this.state.focusedViewText}
+                            getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         />
                         <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -517,6 +538,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
                                     dataFromParent={this.state.showIssueTypeFilter}
+                                    focusedViewFilter={this.state.focusedViewFilter}
                                 />}
                             </div>
                         </div>
@@ -552,6 +574,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
+                        focusedViewCallback={this.focusedViewCallback.bind(this)}
+                        focusedViewFilter={this.state.focusedViewFilter}
+                        focusedViewText={this.state.focusedViewText}
+                        getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
@@ -567,6 +593,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     selectedTab="element"
                                     tabs={[ "element", "checklist", "rule"]}
                                     dataFromParent={this.state.showIssueTypeFilter}
+                                    focusedViewFilter={this.state.focusedViewFilter}
                                 />}
                             </div>
                         </div>

@@ -30,7 +30,8 @@ interface IReportElementsProps {
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    focusedViewFilter: boolean
 }
 
 interface IGroup {
@@ -116,6 +117,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         selectItem={this.props.selectItem} 
                         layout={this.props.layout}
                         dataFromParent={this.props.dataFromParent}
+                        focusedViewFilter={this.props.focusedViewFilter}
                     />
                 })}
             </div>
