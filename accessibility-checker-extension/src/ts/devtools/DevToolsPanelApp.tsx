@@ -460,7 +460,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 // select element after inspected Window script
                 setTimeout(() => {
-                    console.log("selected element");
+                    //console.log("selected element");
                 }, 0);
             });
     }
