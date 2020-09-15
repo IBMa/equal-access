@@ -442,7 +442,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 // get current element after inspected Window script
                 setTimeout(() => {
-                    console.log("result = ",result);
+                    // console.log("result = ",result);
                     mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
                 }, 0);
             });
