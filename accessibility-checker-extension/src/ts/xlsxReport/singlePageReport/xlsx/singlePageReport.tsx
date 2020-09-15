@@ -213,7 +213,7 @@ export default class SinglePageReport {
                 this.checkpoints_string(rule_checkpoints_map, item.ruleId),
                 this.wcag_string(rule_checkpoints_map, item.ruleId),
                 item.ruleId,
-                item.message,
+                item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                 this.get_element(item.snippet),
                 item.snippet,
                 item.path.aria,
