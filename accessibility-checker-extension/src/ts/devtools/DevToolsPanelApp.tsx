@@ -21,7 +21,7 @@ import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
-import SinglePageReport from "../multiScanReports/singlePageReport/xlsx/singlePageReport";
+import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReport";
 import OptionMessaging from "../util/optionMessaging";
 
 import {
@@ -310,10 +310,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    multiScanReportHandler = () => {
-        chrome.tabs.create({url:  chrome.runtime.getURL("multiScanReports.html")});
-    }
-
     xlsxReportHandler = () => {
         var xlsx_props = {
             report: this.state.report,
@@ -323,7 +319,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
 
         SinglePageReport.single_page_xlsx_download(xlsx_props);
-        
     }
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
@@ -501,7 +496,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             counts={this.state.report && this.state.report.counts}
                             startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
-                            multiScanReportHandler={this.multiScanReportHandler}
                             xlsxReportHandler = {this.xlsxReportHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
@@ -551,7 +545,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         counts={this.state.report && this.state.report.counts}
                         startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
-                        multiScanReportHandler={this.multiScanReportHandler}
                         xlsxReportHandler = {this.xlsxReportHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
