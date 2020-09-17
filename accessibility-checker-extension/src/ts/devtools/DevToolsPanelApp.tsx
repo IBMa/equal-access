@@ -432,7 +432,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     getCurrentSelectedElement() {
         let mythis = this;
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
-            { useContentScriptContext: true },
             (result:string, isException) => {
                 if (isException) {
                     console.error(isException);
@@ -450,7 +449,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     selectElementInElements () {
         chrome.devtools.inspectedWindow.eval("inspect(document.body)", 
-            { useContentScriptContext: true },
             (result:string, isException) => {
                 if (isException) {
                     console.error(isException);
