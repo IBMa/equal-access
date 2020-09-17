@@ -20,7 +20,7 @@ import { IArchiveDefinition } from '../background/helper/engineCache';
 export default class OptionUtil {
 
     public static getRuleSetDate = (selected_archive_id: string | null, archives: IArchiveDefinition[] | null) => {
-        console.log('---OptionUtil--', selected_archive_id);
+
         if (selected_archive_id == null) {
             return null;
         }
