@@ -542,6 +542,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
+                            archives = {this.state.archives}
+                            selectedArchive = {this.state.selectedArchive}
+                            selectedPolicy = {this.state.selectedPolicy}
                         />
                         <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -591,6 +594,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
+                        archives = {this.state.archives}
+                        selectedArchive = {this.state.selectedArchive}
+                        selectedPolicy = {this.state.selectedPolicy}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>

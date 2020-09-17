@@ -24,7 +24,7 @@ import {
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
 import { Reset16, ReportData16} from '@carbon/icons-react';
-
+import { IArchiveDefinition } from '../background/helper/engineCache';
 const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
@@ -51,7 +51,10 @@ interface IHeaderProps {
         "filtered": { [key: string]: number }
     } | null,
     dataFromParent: boolean[],
-    scanning: boolean
+    scanning: boolean,
+    archives: IArchiveDefinition[] | null,
+    selectedArchive: string | null,
+    selectedPolicy: string | null
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -103,6 +106,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         this.props.showIssueTypeCheckBoxCallback(newItems);
     }
         
+    isLatestArchive(selectedArchive: string | null, archives: IArchiveDefinition[] | null){
+
+        let archive = archives?.filter((archive:any) => archive.id === selectedArchive)[0];
+
+        if(selectedArchive == 'latest' || archive?.latest == true){
+            return true
+        } else {
+            return false;
+        }
+    }
 
     render() {
         let counts = this.props.counts;
@@ -110,6 +123,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (this.props.scanning == true) {
             noScan = true;
         }
+
+        let latestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         // const items = [
         //     {
@@ -159,22 +174,22 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2" style={{display: 'flex',  alignContent: 'center'}}>
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        <Tooltip>                        
-                            <p id="tooltip-body">
-                                You are usig a rule set from March 2020. The latest rule set is July 2020
-                            </p>
-                            <div className={`${prefix}--tooltip__footer`}>
-                                <a 
-                                    href={chrome.runtime.getURL("usingAC.html")} 
-                                    target="_blank" 
-                                    className={`${prefix}--link`}
-                                >
-                                Change rule set
-                                </a>
-                            
-                            </div>
-                        </Tooltip>
-
+                        {latestArchive? "" : (
+                            <Tooltip>                        
+                                <p id="tooltip-body">
+                                    You are usig a rule set from March 2020. The latest rule set is July 2020
+                                </p>
+                                <div className={`${prefix}--tooltip__footer`}>
+                                    <a 
+                                        href={chrome.runtime.getURL("usingAC.html")} 
+                                        target="_blank" 
+                                        className={`${prefix}--link`}
+                                    >
+                                    Change rule set
+                                    </a>
+                                </div>
+                            </Tooltip>
+                        )}
 
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative" }}>
