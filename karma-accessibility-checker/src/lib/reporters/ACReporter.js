@@ -169,9 +169,19 @@ var ACReporter = function (baseReporterDecorator, config, logger, emitter) {
             if (!scanResults) {
                 console.error("ERROR in browser_info. scanResults:", results);
             }
-            // Save the results of a single scan to a JSON file based on the label provided
-            ACReporterJSON.savePageResults(config, scanResults);
-            ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
+            if (config && config.client && config.client.ACConfig && config.client.ACConfig.outputFormat) {
+                let formats = config.client.ACConfig.outputFormat;
+                if (formats.includes("html")) {
+                    ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
+                }
+                if (formats.includes("json")) {
+                    ACReporterJSON.savePageResults(config, scanResults);
+                }
+            } else {
+                // Save the results of a single scan to a JSON file based on the label provided
+                ACReporterJSON.savePageResults(config, scanResults);
+                ACReporterHTML.savePageResults(config, results.unFilteredResults, results.rulesets);
+            }
 
             // Update the overall summary object count object to include the new scan that was performed
             ACReporterCommon.addToSummaryCount(scanResults.summary.counts);
