@@ -18,15 +18,15 @@ import React from "react";
 
 import {
     // MultiSelect, 
-    Button, 
-    Checkbox
+    Button, Checkbox, ContentSwitcher, Switch
 } from 'carbon-components-react';
 
 import { Reset16 } from '@carbon/icons-react';
+import { Renew16 } from '@carbon/icons-react';
 // import { SettingsAdjust16 } from '@carbon/icons-react';
 import { ReportData16 } from '@carbon/icons-react';
 
-const BeeLogo = "/assets/Bee_logo.svg";
+const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -51,30 +51,15 @@ interface IHeaderProps {
         "filtered": { [key: string]: number }
     } | null,
     dataFromParent: boolean[],
-    scanning: boolean
+    scanning: boolean,
+    focusedViewCallback: (focus:boolean) => void,
+    focusedViewFilter: boolean,
+    focusedViewText: string,
+    getCurrentSelectedElement: () => void
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     state: IHeaderState = {};
-
-    // processSelectedIssueTypes (items:any) {
-    //     let newItems = ["", "", ""];
-    //     items.map((item:any) => {
-    //         if (item.id === "Violations") {
-    //             newItems[0] = "Violations";
-    //         } else if (item.id === "NeedsReview") {
-    //             newItems[1] = "NeedsReview";
-    //         } else if (item.id === "Recommendations") {
-    //             newItems[2] = "Recommendations";
-    //         }
-    //     })
-    //     if (items.length == 0) {
-    //         this.props.showIssueTypeMenuCallback(["Violations", "NeedsReview", "Recommendations"]);
-    //     }
-    //     if (items.length > 0) {
-    //         this.props.showIssueTypeMenuCallback([newItems[0], newItems[1], newItems[2]]);
-    //     }
-    // }
 
     processFilterCheckBoxes (value:boolean, id:string) {
         console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
@@ -102,6 +87,23 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         console.log("After process: ", newItems);
         this.props.showIssueTypeCheckBoxCallback(newItems);
     }
+
+    flipSwitch (index:number) {
+        let focusValue = false;
+        if (index === 0) {
+            focusValue = true;
+        } else {
+            focusValue = false;
+        }
+        this.props.focusedViewCallback(focusValue);
+    }
+
+    onKeyDown(e: any) {
+        if (e.keyCode === 13) {
+            e.target.click();
+        }
+    }
+
         
 
     render() {
@@ -110,22 +112,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (this.props.scanning == true) {
             noScan = true;
         }
-
-        // const items = [
-        //     {
-        //         id: 'Violations',
-        //         label: 'Violations'
-        //     },
-        //     {
-        //         id: 'NeedsReview',
-        //         label: 'Needs Review'
-        //     },
-        //     {
-        //         id: 'Recommendations',
-        //         label: 'Recommendations'
-        //     }
-        // ]
-
 
         if (!counts) {
             counts = {
@@ -147,6 +133,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
+        let focusText = this.props.focusedViewText;
+
         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
@@ -156,29 +144,73 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
+
+            {this.props.layout === "sub" ?
+            <div className="bx--row" style={{ marginTop: '10px' }}>
+                <div className="bx--col-md-1">
+                    <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                </div>
+                <div className="bx--col-md-3" style={{height: "28px"}}>
+
+                </div>
+
+                <div className="bx--col-md-1">
+                    <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
+                        <Button
+                            disabled={!this.props.counts}
+                            onClick={this.props.collapseAll}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                        >
+                            <Reset16 className="my-custom-class" />
+                        </Button>
+                        <Button
+                            disabled={!this.props.counts}
+                            onClick={this.props.reportHandler}
+                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                        >
+                            <ReportData16 className="my-custom-class" />
+                        </Button>
+                    </div>
+                </div>
+                
+                <div className="bx--col-md-3">
+                        <ContentSwitcher
+                            style={{height: "28px"}}
+                            selectionMode="manual"
+                            selectedIndex = {1}
+                            onChange={((obj:any) => {
+                                // console.log("the index: ",obj.index);
+                                this.flipSwitch(obj.index);
+                            })}
+                        >
+                            <Switch 
+                                disabled={!this.props.counts}
+                                text={focusText}
+                                onClick ={() => {
+                                    //this.props.getCurrentSelectedElement();
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)} 
+                            />
+                            <Switch
+                                disabled={!this.props.counts}
+                                text="All"
+                                onClick ={() => {
+                                    // console.log('All click');
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)} 
+                            />
+                        </ContentSwitcher> 
+                    
+                </div>  
+            </div>
+            :
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2">
-                    <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative" }}>
                     <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
                         <div style={{width:210, paddingRight:"16px"}}>
-                        {/* <MultiSelect
-                            items={items}
-                            onChange={(value) => this.processSelectedIssueTypes(value.selectedItems)}
-                            direction="bottom"
-                            disabled={!this.props.counts}
-                            id="Filter issues"
-                            initialSelectedItems={[items[0], items[1], items[2]]}
-                            invalidText="Invalid Selection"
-                            label="Filter issues"
-                            light={false}
-                            locale="en"
-                            open={false}
-                            selectionFeedback="top-after-reopen"
-                            size="sm"
-                            type="default"
-                        /> */}
                         </div>
                         <Button
                             disabled={!this.props.counts}
@@ -194,16 +226,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         >
                             <ReportData16 className="my-custom-class" />
                         </Button>
-                        {/* <Button
-                            disabled={!this.props.counts}
-                            onClick={this.props.xlsxReportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report in XLSX" type="button"
-                        >
-                            <Xls16 className="my-custom-class" />
-                        </Button> */}
                     </div>
                 </div>
             </div>
+            }
 
             <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
                 <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
