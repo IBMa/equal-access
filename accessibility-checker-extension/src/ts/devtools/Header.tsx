@@ -23,10 +23,7 @@ import {
     Tooltip
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-
-import { Reset16 } from '@carbon/icons-react';
-// import { SettingsAdjust16 } from '@carbon/icons-react';
-import { ReportData16 } from '@carbon/icons-react';
+import { Reset16, ReportData16} from '@carbon/icons-react';
 
 const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
@@ -162,17 +159,20 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2" style={{display: 'flex',  alignContent: 'center'}}>
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-
-                        <Tooltip tooltipBodyId="tooltip-body">
-                        <p id="tooltip-body">
-                            You are usig a rule set from March 2020. The latest rule set is July 2020
-                        </p>
-                        <div className={`${prefix}--tooltip__footer`}>
-                            <a href="/" className={`${prefix}--link`}>
-                            Change rule set
-                            </a>
-                           
-                        </div>
+                        <Tooltip>                        
+                            <p id="tooltip-body">
+                                You are usig a rule set from March 2020. The latest rule set is July 2020
+                            </p>
+                            <div className={`${prefix}--tooltip__footer`}>
+                                <a 
+                                    href={chrome.runtime.getURL("usingAC.html")} 
+                                    target="_blank" 
+                                    className={`${prefix}--link`}
+                                >
+                                Change rule set
+                                </a>
+                            
+                            </div>
                         </Tooltip>
 
 
