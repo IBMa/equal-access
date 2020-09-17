@@ -25,6 +25,8 @@ import {
 import { settings } from 'carbon-components';
 import { Reset16, ReportData16} from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
+import OptionUtil  from '../util/optionUtil';
+
 const BeeLogo = "/assets/Bee_logo.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
@@ -124,7 +126,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        let latestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         // const items = [
         //     {
@@ -174,10 +176,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className="bx--row" style={{ marginTop: '10px' }}>
                 <div className="bx--col-sm-2" style={{display: 'flex',  alignContent: 'center'}}>
                     <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        {latestArchive? "" : (
+                        {isLatestArchive? "" : (
                             <Tooltip>                        
                                 <p id="tooltip-body">
-                                    You are usig a rule set from March 2020. The latest rule set is July 2020
+                                    You are usig a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
                                 <div className={`${prefix}--tooltip__footer`}>
                                     <a 

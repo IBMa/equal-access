@@ -27,7 +27,7 @@ import {
 
 import { Restart16, Save16 } from "@carbon/icons-react";
 import OptionMessaging from "../util/optionMessaging";
-
+import OptionUtil  from '../util/optionUtil';
 import beeLogoUrl from "../../assets/Bee_Logo.svg";
 
 interface OptionsAppState {
@@ -153,33 +153,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     });
   };
 
-  getRuleSetDate = (selected_archive: any, archives: any) => {
-    if (selected_archive == null) {
-      return null;
-    }
-
-    var archiveId = selected_archive.id;
-    if (archiveId == "latest") {
-      var latestArchive = archives.find((archive: any) => {
-        return archive.latest == true;
-      });
-
-      return (
-        latestArchive.name.substring(
-          0,
-          latestArchive.name.indexOf("Deployment")
-        ) + " - Latest Deployment"
-      );
-    } else if (archiveId == "preview") {
-      return "Preview (TBD)";
-    } else {
-      return selected_archive.name.substring(
-        0,
-        selected_archive.name.indexOf("Deployment")
-      );
-    }
-  };
-
   render() {
     let {
       archives,
@@ -192,7 +165,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       ...this.state,
     };
 
-    var rulesetDate = this.getRuleSetDate(selected_archive, archives);
+    var rulesetDate = OptionUtil.getRuleSetDate(selected_archive?.id, archives);
 
     const manifest = chrome.runtime.getManifest();
     if (archives && rulesets) {
@@ -235,7 +208,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                     <AccordionItem
                       title="Select a different date"
                       open={false}
-                      iconDescription="expendo icon"
                       className="accordion_item"
                     >
                       <p>
