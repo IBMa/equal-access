@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Media embedded with a `<video>` element does not have a `<track>`element to provide text alternatives for audio or visual content
+### Check if media embedded with a `<video>` element requires a `<track>` element to provide text alternatives for audio or visual content
 
 <div id="locLevel"></div>
 
-Media embedded with a `<video>` element must have a `<track>` element to provide text alternatives for audio or visual content
+Media embedded with a `<video>` element must provide text alternatives for audio or visual content using a `<track>` element or have open captions
 
 </Column>
 </Row>
@@ -21,13 +21,15 @@ Media embedded with a `<video>` element must have a `<track>` element to provide
 
 ### Why is this important?
 
-Text tracks contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
+Text tracks or open captions contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-Use the `<track>` element with the `kind` attribute to provide text tracks for the audio (`kind="captions"`) and visual (`kind="descriptions"`) aspects of the video
+* Use the `<track>` element with the `kind` attribute to provide text tracks for the audio (`kind="captions"`) and visual (`kind="descriptions"`) aspects of the video;
+* OR make sure the video has no audio;
+* OR has open captions, usually done by professional real-time captioners (also called Communication Access Realtime Translation (CART) providers).
 
 For example:
 
