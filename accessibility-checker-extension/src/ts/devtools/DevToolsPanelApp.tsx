@@ -85,6 +85,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
         this.getCurrentSelectedElement();
+
         // Only listen to element events on the subpanel
         if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -127,8 +128,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                     return retVal;
                 })($0)`, (result: string) => {
+                    // This filter occurred because we selected an element in the elements tab
                     this.onFilter(result);
-                    // This filter occurred because we selected something on the right
                     if (this.ignoreNext) {
                         this.ignoreNext = false;
                     }
@@ -138,6 +139,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
+        console.log("componentDidMount");
         var self = this;
         // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
         // and get url using chrome.tabs.get via message "TAB_INFO"
@@ -163,11 +165,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
             }
-            if (this.props.layout === "sub") {
-                this.selectElementInElements();
-            }
             self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                 tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], error: null });
+            if (this.props.layout === "sub") {
+                this.selectElementInElements(); // so selected shows up before first scan
+            }
         }
     }
 
@@ -200,6 +202,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
+        console.log("startScan");
         let tabId = this.state.tabId;
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -218,6 +221,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
+        // console.log("onReport: mainPanelShowing = ", mainPanelShowing);
         let report = message.report;
         let archives = await this.getArchives();
 
@@ -244,7 +248,23 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 selectedItem: undefined
             });
         }
-        this.setState({ scanning: false });
+        this.setState({ scanning: false }); // scan done
+        console.log("SCAN DONE");
+
+
+
+        // after scan focus view on body
+        if (this.props.layout === "sub") {
+            console.log("onReport: Do sub focus view on scan");
+            this.selectElementInElements();
+            this.ignoreNext = true;
+            this.onFilter("/html[1]/body[1]"); 
+            if (this.ignoreNext) {
+                this.ignoreNext = false;
+            }
+        }
+        
+
         return true;
     }
 
@@ -422,7 +442,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             }
                         }, 0);
                     });
-
+                    // This filter occurred because we selected an issue Accessibility Checker tab
                     this.onFilter(item.path.dom)
                 }
             }
@@ -487,7 +507,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     focusedViewCallback (focus:boolean) {
         this.setState({ focusedViewFilter: focus});
-        // console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
     }
     
     render() {
