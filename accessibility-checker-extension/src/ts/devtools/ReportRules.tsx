@@ -30,7 +30,8 @@ interface IReportRulesProps {
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    focusedViewFilter: boolean
 }
 interface IGroup {
     title: string,
@@ -113,6 +114,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         selectItem={this.props.selectItem}
                         layout={this.props.layout}
                         dataFromParent={this.props.dataFromParent}
+                        focusedViewFilter={this.props.focusedViewFilter}
                     />                
                 })}
             </div>

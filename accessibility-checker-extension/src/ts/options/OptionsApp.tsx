@@ -28,7 +28,7 @@ import {
 import { Restart16, Save16 } from "@carbon/icons-react";
 import OptionMessaging from "../util/optionMessaging";
 import OptionUtil  from '../util/optionUtil';
-import beeLogoUrl from "../../assets/Bee_Logo.svg";
+import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 
 interface OptionsAppState {
   archives: any;
