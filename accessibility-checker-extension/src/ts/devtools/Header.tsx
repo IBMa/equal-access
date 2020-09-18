@@ -177,8 +177,24 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
             {this.props.layout === "sub" ?
             <div className="bx--row" style={{ marginTop: '10px' }}>
-                <div className="bx--col-md-1">
+                <div className="bx--col-md-1" style={{display: 'flex',  alignContent: 'center'}}>
                     <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                    {isLatestArchive? "" : (
+                            <Tooltip>                        
+                                <p id="tooltip-body">
+                                    You are usig a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                </p>
+                                <div className={`${prefix}--tooltip__footer`}>
+                                    <a 
+                                        href={chrome.runtime.getURL("options.html")}
+                                        target="_blank" 
+                                        className={`${prefix}--link`}
+                                    >
+                                    Change rule set
+                                    </a>
+                                </div>
+                            </Tooltip>
+                        )}
                 </div>
                 <div className="bx--col-md-3" style={{height: "28px"}}>
 
@@ -245,7 +261,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 </p>
                                 <div className={`${prefix}--tooltip__footer`}>
                                     <a 
-                                        href={chrome.runtime.getURL("usingAC.html")} 
+                                        href={chrome.runtime.getURL("options.html")}
                                         target="_blank" 
                                         className={`${prefix}--link`}
                                     >
