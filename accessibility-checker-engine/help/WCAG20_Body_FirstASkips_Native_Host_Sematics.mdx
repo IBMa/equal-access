@@ -28,19 +28,16 @@ The skip to main link or an element with the `"main"` role allows people who use
 ### What to do
 
  * Enclose the main content in a `<main>` element;
- * OR, enclose the main content in an element with the `"main"` landmark role (e.g. `<div role="main">...main content... </div>`);
+ * OR, enclose the main content in an element with the `"main"` landmark role;
  * OR, have a first link on each page that skips to the main content.
 
-For example:
+Main landmark example:
 
 <CodeSnippet type="multi" light={true}>&lt;body&gt;
-	&lt;!-- ... --&gt;
-	&lt;div role="banner"&gt;&lt;!-- Banner Content --&gt;&lt;/div&gt;
-	&lt;!-- ... --&gt;
-	&lt;div role="navigation"&gt;&lt;!-- Navigation Menu --&gt;&lt;/div&gt;
-	&lt;!-- ... --&gt;
-	&lt;div role="main"&gt;&lt;!-- Main Content --&gt;&lt;/div&gt;
-	&lt;!-- Remainder of page --&gt;
+	&lt;header&gt;&lt;-- Header Content --&gt;&lt;/header&gt;
+	&lt;nav&gt;&lt;-- Navigation Menu --&gt;&lt;/nav&gt;
+	&lt;main&gt;&lt;-- Main Content --&gt;&lt;/main&gt;
+	&lt;footer&gt;&lt;-- Footer content --&gt;&lt;/footer&gt;
 &lt;/body&gt;</CodeSnippet>
 
 </Column>
