@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker",
     function(sidebar) {
         //sidebar initialization code here

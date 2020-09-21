@@ -209,7 +209,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             setTimeout(this.startScan.bind(this), 100);
         } else {
             this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
-            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, origin: this.props.layout })
         }
     }
 
@@ -254,7 +254,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
 
         // after scan focus view on body
-        if (this.props.layout === "sub") {
+        // need to know which panel is showing
+        console.log("message.origin = ",message.origin);
+        if (message.origin === "sub") {
             console.log("onReport: Do sub focus view on scan");
             this.selectElementInElements();
             this.ignoreNext = true;
