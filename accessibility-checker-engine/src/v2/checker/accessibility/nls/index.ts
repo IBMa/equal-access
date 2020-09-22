@@ -632,7 +632,7 @@ let a11yNls = {
     "HAAC_Video_HasNoTrack": {
         0: "A <video> element must have a text alternative for any meaningful audio content",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that captions are available for any meaningful audio or provide a captioned track for the <video> element"
+        "Potential_1": "Verify that captions are available for any meaningful audio or provide a caption track for the <video> element"
     },
     // JCH - DONE
     "HAAC_Audio_Video_Trigger": {
