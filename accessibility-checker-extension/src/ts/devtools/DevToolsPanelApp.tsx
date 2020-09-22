@@ -356,7 +356,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         var guideline = policy.find( (element: any) => element.id === policyId);
 
         var ret = {deployment: {id: archiveId, name: option.name}, guideline: {id: policyId, name: guideline.name}}; 
-        
+
         return ret;
     }
 
@@ -536,7 +536,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 setTimeout(() => {
                     // console.log("result = ",result);
                     mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
-                    console.log("this.state.focusedViewText", this.state.focusedViewText);
+                    // console.log("this.state.focusedViewText", this.state.focusedViewText);
                 }, 0);
             }
         );
