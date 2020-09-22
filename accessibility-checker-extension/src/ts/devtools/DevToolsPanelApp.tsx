@@ -218,6 +218,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
+        let blob_url = message.blob_url;
+        let blob = await fetch(blob_url).then(r => r.blob());
+        message = JSON.parse(await blob.text());
+
+
+
         let report = message.report;
         let archives = await this.getArchives();
 

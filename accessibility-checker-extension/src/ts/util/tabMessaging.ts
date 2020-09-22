@@ -25,6 +25,19 @@ export default class TabMessaging {
     public static sendToBackground(type: string, message: any): Promise<any> {
         let myMessage = JSON.parse(JSON.stringify(message));
         myMessage.type = type;
+
+        //chrome.tabs.get(myMessage.tabId, function( tab) { })
+
+        if(type == "DAP_SCAN_TAB_COMPLETE" && myMessage.report){
+            
+            var json_string = JSON.stringify(myMessage);
+            var blob = new Blob([json_string], {type: "application/json"});
+
+            var url  = URL.createObjectURL(blob);
+            delete myMessage.report;
+            myMessage.blob_url = url;
+        }
+
         return new Promise((resolve, reject) => {
 			chrome.runtime.sendMessage(myMessage, async function (res) {
                 if (chrome.runtime.lastError) {
