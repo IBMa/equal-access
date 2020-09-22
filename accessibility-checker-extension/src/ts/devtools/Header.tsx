@@ -176,7 +176,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-md-3">
                         <ContentSwitcher
                             title="Focused View"
-                            style={{height: "28px"}}
+                            style={{height: "30px"}}
                             selectionMode="manual"
                             selectedIndex = {1}
                             onChange={((obj:any) => {
