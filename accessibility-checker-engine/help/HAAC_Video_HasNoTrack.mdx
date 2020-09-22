@@ -12,7 +12,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div id="locLevel"></div>
 
+<<<<<<< HEAD
 A `<video>` element must have a text alternative for any meaningful audio content
+=======
+Media embedded with a `<video>` element must provide text alternatives for audio or visual content using a `<track>` element or open captions
+>>>>>>> 6193a1aef21bd3d7885d638daf83c0d20dad9548
 
 </Column>
 </Row>
@@ -27,8 +31,14 @@ Text tracks or open captions contain a textual transcription of audio (captions)
 
 ### What to do
 
+<<<<<<< HEAD
 * If the video has any meaningful audio and no captions, then provide closed captions using the '<tracks>' element;
 * OR make sure the video has live captions, usually done by professional real-time captioners (also called Communication Access Realtime Translation (CART) providers).
+=======
+* Use the `<track>` element with the `kind` attribute to provide text tracks for the audio (`kind="captions"`) and visual (`kind="descriptions"`) aspects of the video;
+* OR make sure the video has open captions, usually done by professional real-time captioners (also called Communication Access Realtime Translation (CART) providers);
+* OR, if the video has no audio then visual description is needed but captions are not.
+>>>>>>> 6193a1aef21bd3d7885d638daf83c0d20dad9548
 
 For example:
 
