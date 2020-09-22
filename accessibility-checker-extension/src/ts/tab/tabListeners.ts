@@ -31,8 +31,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         tabId: message.tabId, 
         report: (window as any).report,
         archiveId: message.archiveId,
-        policyId: message.policyId,
-        origin: message.origin
+        policyId: message.policyId
     });
     return true;
 });
