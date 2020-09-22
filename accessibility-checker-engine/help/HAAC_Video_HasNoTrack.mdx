@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Verify if media embedded with a `<video>` element provides text alternatives for audio or visual content using a `<track>` element or open captions
+### Verify that captions are available for any meaningful audio or provide a captioned track for the `<video>` element
 
 <div id="locLevel"></div>
 
-Media embedded with a `<video>` element must provide text alternatives for audio or visual content using a `<track>` element or have open captions
+A `<video>` element must have a text alternative for any meaningful audio content
 
 </Column>
 </Row>
@@ -21,15 +21,14 @@ Media embedded with a `<video>` element must provide text alternatives for audio
 
 ### Why is this important?
 
-Text tracks or open captions contain a textual transcription of either audio (captions) or visual (visual/video description) aspects of video or audio content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues, or information about characters, location, actions and scene changes. Providing text alternatives makes information available that some people would not have access to otherwise.
+Text tracks or open captions contain a textual transcription of audio (captions) aspects of video  content in a synchronized media. This may include the dialog, sound effects, and relevant musical cues. Providing text alternatives makes information available that some people would not have access to otherwise.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Use the `<track>` element with the `kind` attribute to provide text tracks for the audio (`kind="captions"`) and visual (`kind="descriptions"`) aspects of the video;
-* OR make sure the video has no audio;
-* OR make sure the video has open captions, usually done by professional real-time captioners (also called Communication Access Realtime Translation (CART) providers).
+* If the video has any meaningful audio and no captions, then provide closed captions using the '<tracks>' element;
+* OR make sure the video has live captions, usually done by professional real-time captioners (also called Communication Access Realtime Translation (CART) providers).
 
 For example:
 
@@ -42,8 +41,8 @@ For example:
 
 ### About this requirement
 
-[IBM 1.2.1 Audio-only and Video-only (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_and_video.html)
-[WCAG 2.1 technique H96](https://www.w3.org/WAI/WCAG21/Techniques/html/H96)
+[IBM 1.2.2 Captions (Prerecorded)](https://www.ibm.com/able/guidelines/ci162/captions.html)
+[WCAG 2.1 technique H95](https://www.w3.org/WAI/WCAG21/Techniques/html/H95)
 
 ### Who does this affect?
 

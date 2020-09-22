@@ -630,9 +630,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Video_HasNoTrack": {
-        0: "Media embedded with a <video> element must have a <track> element to provide text alternatives for audio or visual content or have open captions",
+        0: "A <video> element must have a text alternative for any meaningful audio content",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Verify if media embedded with a <video> element provides text alternatives for audio or visual content using a <track> element or open captions"
+        "Potential_1": "Verify that captions are available for any meaningful audio or provide a captioned track for the <video> element"
     },
     // JCH - DONE
     "HAAC_Audio_Video_Trigger": {
