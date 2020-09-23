@@ -29,6 +29,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
     (window as any).report = await checker.check(window.document, [message.policyId]);
     TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 
         tabId: message.tabId, 
+        tabURL: message.tabURL,
         report: (window as any).report,
         archiveId: message.archiveId,
         policyId: message.policyId

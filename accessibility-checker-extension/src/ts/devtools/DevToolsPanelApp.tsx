@@ -23,7 +23,7 @@ import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset }
 import PanelMessaging from '../util/panelMessaging';
 import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReport";
 import OptionMessaging from "../util/optionMessaging";
-
+import BrowserDetection from "../util/browserDetection";
 import {
     Loading
 } from 'carbon-components-react';
@@ -242,12 +242,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async startScan() {
         let tabId = this.state.tabId;
+        let tabURL = this.state.tabURL;
+
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
             setTimeout(this.startScan.bind(this), 100);
         } else {
             this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
-            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId })
+            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, tabURL:  tabURL})
         }
     }
 
@@ -259,10 +261,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
-        let blob_url = message.blob_url;
-        let blob = await fetch(blob_url).then(r => r.blob());
-        message = JSON.parse(await blob.text());
-
+        if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
+            let blob_url = message.blob_url;
+            let blob = await fetch(blob_url).then(r => r.blob());
+            message = JSON.parse(await blob.text());
+        }
 
 
         let report = message.report;

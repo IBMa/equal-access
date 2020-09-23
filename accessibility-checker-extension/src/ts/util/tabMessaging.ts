@@ -15,6 +15,7 @@
   *****************************************************************************/
  
 import CommonMessaging from "./commonMessaging";
+import BrowserDetection from "../util/browserDetection";
 
 export default class TabMessaging {
 
@@ -26,9 +27,7 @@ export default class TabMessaging {
         let myMessage = JSON.parse(JSON.stringify(message));
         myMessage.type = type;
 
-        //chrome.tabs.get(myMessage.tabId, function( tab) { })
-
-        if(type == "DAP_SCAN_TAB_COMPLETE" && myMessage.report){
+        if(type == "DAP_SCAN_TAB_COMPLETE" && myMessage.report && BrowserDetection.isChrome() && !myMessage.tabURL.startsWith("file:")){
             
             var json_string = JSON.stringify(myMessage);
             var blob = new Blob([json_string], {type: "application/json"});
