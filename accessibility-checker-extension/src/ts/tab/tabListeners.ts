@@ -27,8 +27,8 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
 
     console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
     (window as any).report = await checker.check(window.document, [message.policyId]);
-    TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 
-        tabId: message.tabId, 
+    TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", {
+        tabId: message.tabId,
         tabURL: message.tabURL,
         report: (window as any).report,
         archiveId: message.archiveId,

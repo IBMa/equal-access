@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 import CommonMessaging from "./commonMessaging";
 import BrowserDetection from "../util/browserDetection";
 
@@ -27,18 +27,18 @@ export default class TabMessaging {
         let myMessage = JSON.parse(JSON.stringify(message));
         myMessage.type = type;
 
-        if(type == "DAP_SCAN_TAB_COMPLETE" && myMessage.report && BrowserDetection.isChrome() && !myMessage.tabURL.startsWith("file:")){
-            
-            var json_string = JSON.stringify(myMessage);
-            var blob = new Blob([json_string], {type: "application/json"});
+        if (type == "DAP_SCAN_TAB_COMPLETE" && myMessage.report && BrowserDetection.isChrome() && !myMessage.tabURL.startsWith("file:")) {
 
-            var url  = URL.createObjectURL(blob);
+            var json_string = JSON.stringify(myMessage);
+            var blob = new Blob([json_string], { type: "application/json" });
+
+            var url = URL.createObjectURL(blob);
             delete myMessage.report;
             myMessage.blob_url = url;
         }
 
         return new Promise((resolve, reject) => {
-			chrome.runtime.sendMessage(myMessage, async function (res) {
+            chrome.runtime.sendMessage(myMessage, async function (res) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
                 } else {
@@ -46,14 +46,14 @@ export default class TabMessaging {
                         if (typeof res === "string") {
                             try {
                                 res = JSON.parse(res);
-                            } catch (e) {}
+                            } catch (e) { }
                         }
                         resolve(res);
                     } else {
                         resolve();
                     }
                 }
-			});
+            });
         })
     }
 
