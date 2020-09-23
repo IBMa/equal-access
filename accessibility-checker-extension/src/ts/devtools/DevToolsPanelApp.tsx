@@ -91,7 +91,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
-        this.getCurrentSelectedElement();
+        if (this.props.layout === "sub") {
+            this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
+        }
+        
         // Only listen to element events on the subpanel
         if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -134,8 +137,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
                     return retVal;
                 })($0)`, (result: string) => {
+                    // This filter occurred because we selected an element in the elements tab
                     this.onFilter(result);
-                    // This filter occurred because we selected something on the right
                     if (this.ignoreNext) {
                         this.ignoreNext = false;
                     }
@@ -170,6 +173,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             if (!validPolicy(policyId)){ 
                 policyId = "IBM_Accessibility";
             }
+
             //use policy id if it is in storage
             if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
                 policyId = result.OPTIONS.selected_ruleset.id;
@@ -199,10 +203,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
-                }
-
-                if (self.props.layout === "sub") {
-                    self.selectElementInElements();
                 }
 
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
@@ -241,6 +241,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
+        // console.log("startScan");
         let tabId = this.state.tabId;
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -259,6 +260,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
+        // console.log("onReport: layout = ", this.props.layout);
         let report = message.report;
         let archives = await this.getArchives();
 
@@ -285,7 +287,57 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 selectedItem: undefined
             });
         }
-        this.setState({ scanning: false });
+        this.setState({ scanning: false }); // scan done
+        // console.log("SCAN DONE");
+        
+        if (this.props.layout === "sub") {
+            chrome.devtools.inspectedWindow.eval(`((node) => {
+                let countNode = (node) => { 
+                    let count = 0;
+                    let findName = node.nodeName;
+                    while (node) { 
+                        if (node.nodeName === findName) {
+                            ++count;
+                        }
+                        node = node.previousElementSibling; 
+                    }
+                    return "/"+findName.toLowerCase()+"["+count+"]";
+                }
+                let retVal = "";
+                while (node && node.nodeType === 1) {
+                    if (node) {
+                        retVal = countNode(node)+retVal;
+                        if (node.parentElement) {
+                            node = node.parentElement;
+                        } else {
+                            let parentElement = null;
+                            try {
+                                // Check if we're in an iframe
+                                let parentWin = node.ownerDocument.defaultView.parent;
+                                let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                for (const iframe of iframes) {
+                                    try {
+                                        if (iframe.contentDocument === node.ownerDocument) {
+                                            parentElement = iframe;
+                                            break;
+                                        }
+                                    } catch (e) {}
+                                }
+                            } catch (e) {}
+                            node = parentElement;
+                        }
+                    }
+                }
+                return retVal;
+            })($0)`, (result: string) => {
+                // This filter occurred because we selected an element in the elements tab
+                this.onFilter(result);
+                if (this.ignoreNext) {
+                    this.ignoreNext = false;
+                }
+            });
+        }
+        
         return true;
     }
 
@@ -304,7 +356,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         var guideline = policy.find( (element: any) => element.id === policyId);
 
         var ret = {deployment: {id: archiveId, name: option.name}, guideline: {id: policyId, name: guideline.name}}; 
-        
+
         return ret;
     }
 
@@ -312,8 +364,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
-            this.getCurrentSelectedElement();
         }
+        this.getCurrentSelectedElement();
     }
 
     reportHandler = async () => {
@@ -463,7 +515,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             }
                         }, 0);
                     });
-
+                    // This filter occurred because we selected an issue in the Accessibility Checker tab
                     this.onFilter(item.path.dom)
                 }
             }
@@ -484,8 +536,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 setTimeout(() => {
                     // console.log("result = ",result);
                     mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
+                    // console.log("this.state.focusedViewText", this.state.focusedViewText);
                 }, 0);
-            });
+            }
+        );
     }
 
     selectElementInElements () {
@@ -528,7 +582,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     focusedViewCallback (focus:boolean) {
         this.setState({ focusedViewFilter: focus});
-        // console.log("DevToolsPanelApp: focusedViewFilter = ", this.state.focusedViewFilter);
     }
     
     render() {
@@ -554,8 +607,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             reportHandler={this.reportHandler.bind(this)}
                             xlsxReportHandler = {this.xlsxReportHandler}
                             collapseAll={this.collapseAll.bind(this)}
-                            // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                            // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
@@ -611,8 +662,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         reportHandler={this.reportHandler.bind(this)}
                         xlsxReportHandler = {this.xlsxReportHandler}
                         collapseAll={this.collapseAll.bind(this)}
-                        // showIssueTypeCallback={this.showIssueTypeCallback.bind(this)}
-                        // showIssueTypeMenuCallback={this.showIssueTypeMenuCallback.bind(this)}
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
