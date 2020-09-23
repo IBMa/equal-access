@@ -173,7 +173,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-1" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {isLatestArchive ? "" : (
                             <Tooltip>
@@ -192,7 +192,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-3" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2" style={{ height: "28px" }}>
 
                     </div>
 
