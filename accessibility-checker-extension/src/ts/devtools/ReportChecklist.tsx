@@ -113,25 +113,28 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                 </div>
             </div>
             <div role="rowgroup">
-                {groups.map(group => {
-                    let thisIdx = idx;
-                    idx += group.items.length+1;
-                    group.items.map(item => {
-                        item.scrollTo = item.scrollTo && scrollFirst;
-                        scrollFirst = scrollFirst && !item.scrollTo;
+                {this.props.focusedViewFilter === true && this.props.report.counts.filtered.All === 0 ?
+                <div><br/>No accessibility issues for this HTML element or its children</div> : 
+                    groups.map(group => {
+                        let thisIdx = idx;
+                        idx += group.items.length+1;
+                        group.items.map(item => {
+                            item.scrollTo = item.scrollTo && scrollFirst;
+                            scrollFirst = scrollFirst && !item.scrollTo;
+                        })
+                        return <ReportRow 
+                            idx={thisIdx} 
+                            report={this.props.report} 
+                            group={group}
+                            getItem={this.props.getItem}
+                            learnItem={this.props.learnItem}
+                            selectItem={this.props.selectItem}
+                            layout={this.props.layout} 
+                            dataFromParent={this.props.dataFromParent} 
+                            focusedViewFilter={this.props.focusedViewFilter}
+                        />;
                     })
-                    return <ReportRow 
-                        idx={thisIdx} 
-                        report={this.props.report} 
-                        group={group}
-                        getItem={this.props.getItem}
-                        learnItem={this.props.learnItem}
-                        selectItem={this.props.selectItem}
-                        layout={this.props.layout} 
-                        dataFromParent={this.props.dataFromParent} 
-                        focusedViewFilter={this.props.focusedViewFilter}
-                    />;
-                })}
+                }
             </div>
         </div>
     }

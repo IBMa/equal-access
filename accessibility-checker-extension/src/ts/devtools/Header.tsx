@@ -196,7 +196,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
 
-                    <div className="bx--col-md-1">
+                    <div className="bx--col-md-1" style={{paddingRight:0}}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <Button
                                 disabled={!this.props.counts}
