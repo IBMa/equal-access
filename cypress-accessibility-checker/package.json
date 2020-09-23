@@ -8,7 +8,6 @@
     "test:open": "cd test && cypress open",
     "test:start-http": "http-server -c-1 --silent",
     "package:common": "rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
-
     "package:zip": "npm run package:common && cd package && npm pack",
     "package:npm": "npm run package:common"
   },
