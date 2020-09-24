@@ -128,7 +128,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         let nrCount = group.counts["Needs review"] || 0;
         let fvNRCount = group.fvCounts["Needs review"] || 0;
         let rCount = group.counts["Recommendation"] || 0;
-        let fvRCount = group.counts["Recommendation"] || 0;
+        let fvRCount = group.fvCounts["Recommendation"] || 0;
         let open = this.state.expanded;
         if (this.state.scrollTo) {
             setTimeout(() => {
@@ -159,15 +159,12 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
 
         // calculate the focus view counts
-        if (focusedView === true) {
+        if (this.props.focusedViewFilter === true) {
             vCount = fvVCount;
             nrCount = fvNRCount;
             rCount = fvRCount;
         }
-
-    
-
-         
+        
         let rowindex = this.props.idx;
         return <React.Fragment>
             { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView ? 
