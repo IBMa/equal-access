@@ -97,6 +97,7 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         await initTab(message.tabId, archiveId);
         await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
             tabId: message.tabId,
+            tabURL: message.tabURL,
             archiveId: archiveId,
             policyId: policyId
         });
