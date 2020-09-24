@@ -173,12 +173,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-1" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {isLatestArchive ? "" : (
                             <Tooltip>
                                 <p id="tooltip-body">
-                                    You are usig a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
                                 <div className={`${prefix}--tooltip__footer`}>
                                     <a
@@ -192,7 +192,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-3" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2" style={{ height: "28px" }}>
 
                     </div>
 
@@ -254,7 +254,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         {isLatestArchive ? "" : (
                             <Tooltip>
                                 <p id="tooltip-body">
-                                    You are usig a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
                                 <div className={`${prefix}--tooltip__footer`}>
                                     <a
