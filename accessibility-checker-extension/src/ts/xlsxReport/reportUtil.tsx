@@ -28,12 +28,12 @@ export default class ReportUtil {
 
         const clickHandler = () => {
             setTimeout(() => {
-              URL.revokeObjectURL(url);
-              removeEventListener('click', clickHandler);
+                URL.revokeObjectURL(url);
+                removeEventListener('click', clickHandler);
             }, 150);
-          };
+        };
 
-        
+
         temp_element.addEventListener('click', clickHandler, false);
 
         var mouse_event = document.createEvent('MouseEvents');
@@ -41,7 +41,7 @@ export default class ReportUtil {
         temp_element.dispatchEvent(mouse_event);
     };
 
-    public static single_page_report_file_name(tab_title: string){
+    public static single_page_report_file_name(tab_title: string) {
 
         var tab_title_substring = tab_title ? tab_title.substring(0, 50) : "";
         var file_name = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tab_title_substring + ".xlsx";
