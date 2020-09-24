@@ -37,7 +37,8 @@ interface IReportChecklistProps {
 
 interface IGroup {
     title: string,
-    counts: { [key: string]: number }
+    counts: { [key: string]: number },
+    fvCounts: { [key: string]: number },
     items: IReportItem[]
 }
 
@@ -58,6 +59,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                 title: `${checkpoint.num} ${checkpoint.name}`,
                 checkpoint: checkpoint,
                 counts: {},
+                fvCounts: {},
                 items: []
             }
             groups.push(cpGroup);
@@ -78,6 +80,9 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                 for (const group of ruleToGroups[item.ruleId]) {
                     group.items.push(item);
                     group.counts[val] = (group.counts[val] || 0) + 1;
+                    if (item.selected || item.selectedChild) {
+                        group.fvCounts[val] = (group.fvCounts[val] || 0) + 1;
+                    }
                 }
             }
         }

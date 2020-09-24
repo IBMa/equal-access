@@ -28,6 +28,7 @@ export interface IReportRowGroup {
     checkpoint?: ICheckpoint,
     title: string,
     counts: { [key: string]: number },
+    fvCounts: { [key: string]: number },
     items: IReportItem[]
 }
 
@@ -123,8 +124,11 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     render() {
         const group = this.props.group;
         let vCount = group.counts["Violation"] || 0;
+        let fvVCount = group.fvCounts["Violation"] || 0;
         let nrCount = group.counts["Needs review"] || 0;
+        let fvNRCount = group.fvCounts["Needs review"] || 0;
         let rCount = group.counts["Recommendation"] || 0;
+        let fvRCount = group.counts["Recommendation"] || 0;
         let open = this.state.expanded;
         if (this.state.scrollTo) {
             setTimeout(() => {
@@ -153,6 +157,16 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         } else { // focus switch on All
             focusedView = true; // true for every issue
         }
+
+        // calculate the focus view counts
+        if (focusedView === true) {
+            vCount = fvVCount;
+            nrCount = fvNRCount;
+            rCount = fvRCount;
+        }
+
+    
+
          
         let rowindex = this.props.idx;
         return <React.Fragment>

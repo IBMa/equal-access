@@ -36,8 +36,9 @@ interface IReportElementsProps {
 
 interface IGroup {
     title: string,  // aria path for the element role row
-    counts: { [key: string]: number }   // number of Violations, Needs Review, Recommendations 
+    counts: { [key: string]: number },   // number of Violations, Needs Review, Recommendations 
                                         // associated with the element role
+    fvCounts: { [key: string]: number },
     items: IReportItem[]    // issue rows associated with the element role
 };
 
@@ -62,6 +63,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 thisGroup = {
                     title: item.path.aria,
                     counts: {},
+                    fvCounts: {},
                     items: []
                 }
                 groupMap[item.path.aria] = thisGroup;
@@ -70,6 +72,9 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.items.push(item);
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
+            if (item.selected || item.selectedChild) {
+                thisGroup.fvCounts[val] = (thisGroup.fvCounts[val] || 0) + 1;
+            }
         }
 
         // to sort issue according to type in order Violations, Needs Review, Recommendations
