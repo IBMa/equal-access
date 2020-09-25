@@ -16,8 +16,17 @@
 
 /// <reference types="Cypress" />
 
-const AChecker = require("./lib/ACHelper");
+const ACCommands = require("./lib/ACCommands");
 
+// Note: Command run within the browser. Tasks execute outside of the browser
+
+/**
+ * Get compliance of a cypress object
+ * 
+ * This can be called with a single parameter - getCompliance("SCAN_LABEL"),
+ * which will scan the current document. Otherwise, pass a cypress object
+ * (document) and a label
+ */
 Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
     let p;
     if (typeof cyObj === "string") {
@@ -30,18 +39,20 @@ Cypress.Commands.add("getCompliance", (cyObj, scanLabel) => {
         // We already have a cypress object to scan
         p = cy.wrap({});
     }
-    return p.then(() => AChecker.getConfig()
-        .then({timeout:20000},() => {
-            return AChecker.getCompliance(cyObj, scanLabel);
+    return p
+        // Allow the scan to run for 20 seconds
+        .then({ timeout: 20000 }, () => {
+            return ACCommands.getCompliance(cyObj, scanLabel);
         })
         .then((result) => {
+            // To write to disk, we have to be outside of the browser, so that's a task
             return cy.task('accessibilityChecker', {
                 task: 'sendResultsToReporter',
                 data: result
             }).then(() => {
-                return cy.wrap(result, { log: false });
+                return result.report;
             });
-        }))
+        })
 });
 
 /**
@@ -52,91 +63,85 @@ Cypress.Commands.add(
   'assertCompliance',
   { prevSubject: true },
   (priorResults, failOnError = true) => {
-    const taskResult = cy
-      .task('accessibilityChecker', {
-        task: 'assertCompliance',
-        data: { report: priorResults.report }
-      })
+    const taskResult = ACCommands.assertCompliance(priorResults)
       .then((result) => {
-        const name = 'A11y';
-        if (result === 0) {
-          // 0  - results match baseline or no violations based on failLevels
-          Cypress.log({
-            name,
-            message: 'No violations based on baseline/failLevels'
-          });
           return result;
-        } else if (result === 1) {
-          // 1  - results don't match baseline
-          // Get the diff between the results/baseline and put in console
-          cy.getDiffResults(priorResults.report.label).then((diff) => {
-            const message =
-              'Does not match baseline.  See console for scan diff.';
-            Cypress.log({
-              name,
-              message,
-              consoleProps: () => {
-                return {
-                  message,
-                  diff
-                };
-              }
-            });
+        // const name = 'A11y';
+        // if (result === 0) {
+        //   // 0  - results match baseline or no violations based on failLevels
+        //   Cypress.log({
+        //     name,
+        //     message: 'No violations based on baseline/failLevels'
+        //   });
+        //   return result;
+        // } else if (result === 1) {
+        //   // 1  - results don't match baseline
+        //   // Get the diff between the results/baseline and put in console
+        //   cy.getDiffResults(priorResults.report.label).then((diff) => {
+        //     const message =
+        //       'Does not match baseline.  See console for scan diff.';
+        //     Cypress.log({
+        //       name,
+        //       message,
+        //       consoleProps: () => {
+        //         return {
+        //           message,
+        //           diff
+        //         };
+        //       }
+        //     });
 
-            return result;
-          });
-        } else if (result === 2) {
-          // 2  - failure based on failLevels
-          // Print report and then individual violations
-          const message =
-            'Violations according to failLevels.  See console for scan results.';
-          Cypress.log({
-            name,
-            message,
-            consoleProps: () => {
-              return {
-                message,
-                priorResults
-              };
-            }
-          });
+        //     return result;
+        //   });
+        // } else if (result === 2) {
+        //   // 2  - failure based on failLevels
+        //   // Print report and then individual violations
+        //   const message =
+        //     'Violations according to failLevels.  See console for scan results.';
+        //   Cypress.log({
+        //     name,
+        //     message,
+        //     consoleProps: () => {
+        //       return {
+        //         message,
+        //         priorResults
+        //       };
+        //     }
+        //   });
 
-          // Individual violations
-          return cy.getACheckerConfig().then(({ failLevels }) => {
-            priorResults.report.results
-              .filter((curErr) => failLevels.indexOf(curErr.level) !== -1)
-              .forEach((curErr) => {
-                Cypress.log({
-                  name,
-                  message: curErr.message,
-                  consoleProps: () => {
-                    return {
-                      curErr
-                    };
-                  }
-                });
-              });
-            return result;
-          });
-        } else if (result === -1) {
-          // -1 - Exception
-          Cypress.log({
-            name,
-            message: 'Exception asserting compliance.  See Cypress logs.'
-          });
-          return result;
-        }
+        //   // Individual violations
+        //   return cy.getACheckerConfig().then(({ failLevels }) => {
+        //     priorResults.report.results
+        //       .filter((curErr) => failLevels.indexOf(curErr.level) !== -1)
+        //       .forEach((curErr) => {
+        //         Cypress.log({
+        //           name,
+        //           message: curErr.message,
+        //           consoleProps: () => {
+        //             return {
+        //               curErr
+        //             };
+        //           }
+        //         });
+        //       });
+        //     return result;
+        //   });
+        // } else if (result === -1) {
+        //   // -1 - Exception
+        //   Cypress.log({
+        //     name,
+        //     message: 'Exception asserting compliance.  See Cypress logs.'
+        //   });
+        //   return result;
+        // }
       })
-      .then((result) => {
-        return cy.wrap(result, { log: false });
-      });
 
-    if (!!failOnError) {
-      const message =
-        'accessibility-checker: See previous logs for accessibility violation data';
+    // if (!!failOnError) {
+    //   const message =
+    //     'accessibility-checker: See previous logs for accessibility violation data';
 
-      taskResult.should('eq', 0, message);
-    }
+    //   taskResult.should('eq', 0, message);
+    // }
 
     return taskResult;
   }
@@ -206,18 +211,6 @@ Cypress.Commands.add(
 Cypress.Commands.add('getACheckerConfig', () => {
   cy.task('accessibilityChecker', {
     task: 'getConfig',
-    data: {}
-  }).then((result) => {
-    return cy.wrap(result, { log: false });
-  });
-});
-
-/**
- * Close puppeteer pages and other resources that may be used by accessibility-checker.
- */
-Cypress.Commands.add('closeAChecker', () => {
-  cy.task('accessibilityChecker', {
-    task: 'close',
     data: {}
   }).then((result) => {
     return cy.wrap(result, { log: false });

@@ -99,7 +99,7 @@ var ACMetricsLogger = function (toolName, logger, policies) {
          *
          * @memberOf this
          */
-        this.sendLogsV2 = function (done, rulePack) {
+        this.sendLogsV2 = function (done) {
             this.log.debug("START 'sendLogsV2' function");
 
             // Copy this.log into loggerInScope so that it can be used in callback function

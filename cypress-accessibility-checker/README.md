@@ -71,7 +71,6 @@ Examples on how to use each of the APIs below can be found in the `achecker.js` 
 - `cy.diffResultsWithExpected(actual, expected, clean)`
 - `cy.stringifyResults(report)`
 - `cy.getACheckerConfig()`
-- `cy.closeAChecker()`
 
 You can chain the commands similar to other Cypress commands. For example, `cy.getCompliance('my-label').assertCompliance()` will get the compliance report of the document and then assert there are no violations or that it matches up with a baseline of the same label.
 

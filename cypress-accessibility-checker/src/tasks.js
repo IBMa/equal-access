@@ -14,12 +14,7 @@
     limitations under the License.
   *****************************************************************************/
 
-const aChecker = require("./lib/ACHelper");
-
-function sendResultsToReporter( {report, origReport}) {
-    aChecker.sendResultsToReporter(origReport, report, "default");
-    return null;
-}
+const ACTasks = require("./lib/ACTasks");
 
 /**
  * Object format:
@@ -29,7 +24,7 @@ function sendResultsToReporter( {report, origReport}) {
  */
 function getCompliance({ html, label }) {
   return new Promise((resolve, reject) => {
-    aChecker.getCompliance(html, label).then(
+    ACTasks.getCompliance(html, label).then(
       /* Only send back the report.  If we send back Puppeteer object is creates circular JSON and breaks. */
       (result) => resolve({ report: result.report }),
       () => reject('accessibility-checker: Failed to get compliance')
@@ -43,10 +38,7 @@ function getCompliance({ html, label }) {
  * report: Report data from `getCompliance()` call
  */
 function assertCompliance({ report }) {
-    return aChecker.getConfig()
-        .then(() => {
-            return aChecker.assertCompliance(report);
-        });
+    return ACTasks.assertCompliance(report);
 }
 
 /**
@@ -55,7 +47,7 @@ function assertCompliance({ report }) {
  * label: Label of the report to diff against.
  */
 function getDiffResults({ label }) {
-  return aChecker.getDiffResults(label);
+  return ACTasks.getDiffResults(label);
 }
 
 /**
@@ -64,7 +56,7 @@ function getDiffResults({ label }) {
  * label: Label of the baseline results to return.
  */
 function getBaseline({ label }) {
-  return aChecker.getBaseline(label);
+  return ACTasks.getBaseline(label);
 }
 
 /**
@@ -75,7 +67,7 @@ function getBaseline({ label }) {
  * clean: Whether or not to clean the results by converting the objects to match basic compliance of only xpath and ruleid.
  */
 function diffResultsWithExpected({ actual, expected, clean }) {
-  return aChecker.diffResultsWithExpected(actual, expected, clean);
+  return ACTasks.diffResultsWithExpected(actual, expected, clean);
 }
 
 /**
@@ -84,7 +76,7 @@ function diffResultsWithExpected({ actual, expected, clean }) {
  * report: Report to be stringified.
  */
 function stringifyResults({ report }) {
-  return aChecker.stringifyResults(report);
+    return ACTasks.stringifyResults(report);
 }
 
 /**
@@ -94,23 +86,9 @@ function stringifyResults({ report }) {
  */
 function getConfig() {
   return new Promise((resolve, reject) => {
-    aChecker.getConfig().then(
+    ACTasks.getConfig().then(
       (config) => resolve(config),
       () => reject('accessibility-checker: Failed to get config')
-    );
-  });
-}
-
-/**
- * Object format:
- *
- * N/A
- */
-function close() {
-  return new Promise((resolve, reject) => {
-    aChecker.close().then(
-      () => resolve(true),
-      () => reject('accessibility-checker: Failed to close resources')
     );
   });
 }
@@ -124,11 +102,9 @@ function close() {
 module.exports = ({ task, data }) => {
   switch (task) {
     case 'sendResultsToReporter':
-        return sendResultsToReporter(data);
-    case 'getCompliance':
-      return getCompliance(data);
+        return ACTasks.sendResultsToReporter(data.origReport, data.report);
     case 'assertCompliance':
-      return assertCompliance(data);
+        return assertCompliance(data);
     case 'getDiffResults':
       return getDiffResults(data);
     case 'getBaseline':
@@ -139,8 +115,6 @@ module.exports = ({ task, data }) => {
       return stringifyResults(data);
     case 'getConfig':
       return getConfig(data);
-    case 'close':
-      return close(data);
     default:
       throw new Error(
         'accessibility-checker: Invalid task ID sent.  Accessibility checker tasks should only be called by the accessibility-checker commands.'

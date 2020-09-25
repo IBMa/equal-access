@@ -1,201 +1,145 @@
 {
-  "results": [
-    {
-      "ruleId": "WCAG20_Html_HasLang",
-      "value": ["VIOLATION", "FAIL"],
-      "path": {
-        "dom": "/html[1]",
-        "aria": ""
-      },
-      "ruleTime": 0,
-      "reasonId": "Fail_3",
-      "message": "Page detected as HTML, but does not have a lang attribute.",
-      "messageArgs": [],
-      "apiArgs": [],
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "height": 0,
-        "width": 0
-      },
-      "snippet": "<html>",
-      "category": "Accessibility",
-      "ignored": false,
-      "level": "violation"
+    "results": [],
+    "numExecuted": 85,
+    "nls": {
+        "WCAG20_Html_HasLang": {
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Pass_0": "Page language detected as \"{0}\""
+        },
+        "RPT_Html_SkipNav": {
+            "0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Doc_HasTitle": {
+            "0": "The page should have a title that correctly identifies the subject of the page",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Elem_Lang_Valid": {
+            "0": "The language of content must be specified in accordance with BCP 47",
+            "Pass_0": "Rule Passed"
+        },
+        "HAAC_BackgroundImg_HasTextOrTitle": {
+            "0": "Background images that convey important information must have a text alternative that describes the image",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_List_UseMarkup": {
+            "0": "Use proper HTML list elements to create lists",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Text_SensoryReference": {
+            "0": "Instructions must be meaningful without shape or location words",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_Emoticons": {
+            "0": "Emoticons must have a short text alternative that describes their purpose",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_LetterSpacing": {
+            "0": "Use CSS 'letter-spacing' to control spacing within a word",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Blockquote_WrapsTextQuote": {
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
+            "Pass_0": "Rule Passed"
+        },
+        "IBMA_Color_Contrast_WCAG2AA_PV": {
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "HAAC_Aria_Native_Host_Sematics": {
+            "0": "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
+            "0": "All content must reside within an element with a landmark role",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Title_Valid": {
+            "0": "Page <title> should be a descriptive title, rather than a filename",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
+            "0": "Pages must provide a way to skip directly to the main content",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
+            "0": "The description of a hyperlink used to skip content must communicate where it links to",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Block_ShouldBeHeading": {
+            "0": "Heading text must use a heading element",
+            "Pass_0": "Rule Passed"
+        },
+        "HAAC_Application_Role_Text": {
+            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_ValidRole": {
+            "0": "Elements must have a valid 'role' per WAI-ARIA specification",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
+            "0": "An element with a WAI-ARIA role must contain required children",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_MissingKeyboardHandler": {
+            "0": "Interactive WAI_ARIA UI components must provide keyboard access",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Header_HasContent": {
+            "0": "Heading elements must provide descriptive text",
+            "Pass_0": "Rule Passed"
+        },
+        "IBMA_Color_Contrast_WCAG2AA": {
+            "0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Headers_FewWords": {
+            "0": "Heading elements must not be used for presentation",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_HasAlt": {
+            "0": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_PresentationImgHasNonNullAlt": {
+            "0": "Image designated as decorative must have 'alt=\"\"",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Img_AltCommonMisuse": {
+            "0": "'alt' attribute value must be a good inline replacement for the image",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Media_AltBrief": {
+            "0": "Alternative text in 'alt' attribute should be brief (<150 characters)",
+            "Pass_0": "Rule Passed"
+        }
     },
-    {
-      "ruleId": "WCAG20_Body_FirstASkips_Native_Host_Sematics",
-      "value": ["VIOLATION", "FAIL"],
-      "path": {
-        "dom": "/html[1]/body[1]",
-        "aria": "/document[1]"
-      },
-      "ruleTime": 1,
-      "reasonId": "Fail_1",
-      "message": "The page is missing a the WAI-ARIA MAIN landmark or a link to skip directly to the main page content as the first link on each page.",
-      "messageArgs": [],
-      "apiArgs": [],
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "height": 0,
-        "width": 0
-      },
-      "snippet": "<body>",
-      "category": "Accessibility",
-      "ignored": false,
-      "level": "violation"
+    "summary": {
+        "counts": {
+            "violation": 0,
+            "potentialviolation": 0,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 0,
+            "ignored": 0
+        },
+        "scanTime": 12,
+        "ruleArchive": "Latest Deployment (latest)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation",
+            "recommendation",
+            "potentialrecommendation",
+            "manual"
+        ],
+        "startScan": 1601043783114,
+        "URL": "data:text/html;charset=utf-8,%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%20%3Cscript%20type%3D%22text%2Fjavascript%22%3E%20document.domain%20%3D%20'localhost'%3B%20var%20Cypress%20%3D%20window.Cypress%20%3D%20parent.Cypress%3B%20if%20(!Cypress)%20%7B%20throw%20new%20Error('Something%20went%20terribly%20wrong%20and%20we%20cannot%20proceed.%20We%20expected%20to%20find%20the%20global%20Cypress%20in%20the%20parent%20window%20but%20it%20is%20missing!.%20This%20should%20never%20happen%20and%20likely%20is%20a%20bug.%20Please%20open%20an%20issue!')%3B%20%7D%3B%20Cypress.action('app%3Awindow%3Abefore%3Aload'%2C%20window)%3B%20%3C%2Fscript%3E%0A%20%20%20%20%3Ctitle%3ECypress%20accessibility-checker%20test%20page%3C%2Ftitle%3E%0A%20%20%3C%2Fhead%3E%0A%0A%20%20%3Cbody%3E%0A%20%20%20%20%3Cdiv%20role%3D%22main%22%3E%0A%20%20%20%20%20%20%3Ch1%3ETest%3C%2Fh1%3E%0A%20%20%20%20%20%20%3Cimg%20src%3D%22no-missing-alt.jpg%22%20alt%3D%22Some%20kind%20of%20image%22%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%0A%0A%3C%2Fbody%3E%3C%2Fhtml%3E"
     },
-    {
-      "ruleId": "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
-      "value": ["VIOLATION", "FAIL"],
-      "path": {
-        "dom": "/html[1]/body[1]/h1[1]",
-        "aria": "/document[1]/heading[1]"
-      },
-      "ruleTime": 3,
-      "reasonId": "Fail_1",
-      "message": "Orphan content found that does not reside within a WAI-ARIA landmark or labelled region role.",
-      "messageArgs": [],
-      "apiArgs": [],
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "height": 0,
-        "width": 0
-      },
-      "snippet": "<h1>",
-      "category": "Accessibility",
-      "ignored": false,
-      "level": "violation"
-    },
-    {
-      "ruleId": "WCAG20_Img_HasAlt",
-      "value": ["VIOLATION", "FAIL"],
-      "path": {
-        "dom": "/html[1]/body[1]/img[1]",
-        "aria": "/document[1]/img[1]"
-      },
-      "ruleTime": 0,
-      "reasonId": "Fail_2",
-      "message": "Image is missing alt attribute.",
-      "messageArgs": [],
-      "apiArgs": [],
-      "bounds": {
-        "left": 0,
-        "top": 0,
-        "height": 0,
-        "width": 0
-      },
-      "snippet": "<img src=\"blah.jpg\">",
-      "category": "Accessibility",
-      "ignored": false,
-      "level": "violation"
-    }
-  ],
-  "numExecuted": 68,
-  "nls": {
-    "WCAG20_Html_HasLang": {
-      "0": "Page must identify the default language of the document with a lang attribute",
-      "Fail_3": "Page detected as HTML, but does not have a lang attribute."
-    },
-    "RPT_Html_SkipNav": {
-      "0": "Provide a mechanism to bypass blocks of content that are repeated on multiple Web pages.",
-      "Pass_0": "Rule Passed"
-    },
-    "WCAG20_Doc_HasTitle": {
-      "0": "The page should have a title that correctly identifies the subject of the page.",
-      "Pass_0": "Rule Passed"
-    },
-    "HAAC_BackgroundImg_HasTextOrTitle": {
-      "0": "Verify that important background image information is conveyed when the system is in high contrast mode.",
-      "Pass_0": "Rule Passed"
-    },
-    "RPT_List_UseMarkup": {
-      "0": "Use proper HTML LIST elements to create lists.",
-      "Pass_0": "Rule Passed"
-    },
-    "RPT_Text_SensoryReference": {
-      "0": "Usage of sensory words must be meaningful to users who may not have sensory perception of size, sound, shape, or location.",
-      "Pass_0": "Rule Passed"
-    },
-    "WCAG20_Text_Emoticons": {
-      "0": "Provide text alternatives for emoticons.",
-      "Pass_0": "Rule Passed"
-    },
-    "WCAG20_Text_LetterSpacing": {
-      "0": "Use CSS 'letter-spacing' to control spacing within a word.",
-      "Pass_0": "Rule Passed"
-    },
-    "RPT_Blockquote_WrapsTextQuote": {
-      "0": "Quotations should be marked with Q or BLOCKQUOTE elements.",
-      "Pass_0": "Rule Passed"
-    },
-    "IBMA_Color_Contrast_WCAG2AA_PV": {
-      "0": "Contrast of foreground and background must be sufficient to meet WCAG AA requirements.",
-      "Pass_0": "Rule Passed"
-    },
-    "HAAC_Aria_Native_Host_Sematics": {
-      "0": "The WAI-ARIA role(s) and/or attribute(s) must be valid for the relevant element.",
-      "Pass_0": "Rule Passed"
-    },
-    "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
-      "0": "All content must reside within a HTML5 Sectioning element, WAI-ARIA landmark or labelled region role.",
-      "Pass_0": "Rule Passed",
-      "Fail_1": "Orphan content found that does not reside within a WAI-ARIA landmark or labelled region role."
-    },
-    "RPT_Title_Valid": {
-      "0": "Provide a descriptive TITLE for Web pages.",
-      "Pass_0": "Rule Passed"
-    },
-    "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
-      "0": "The page must provide a link to skip directly to the main page content as the first link on each page or use WAI-ARIA landmarks.",
-      "Fail_1": "The page is missing a the WAI-ARIA MAIN landmark or a link to skip directly to the main page content as the first link on each page."
-    },
-    "RPT_Header_HasContent": {
-      "0": "Provide descriptive headings for Web page sections.",
-      "Pass_0": "Rule Passed"
-    },
-    "IBMA_Color_Contrast_WCAG2AA": {
-      "0": "Contrast of foreground and background must be sufficient to meet WCAG AA requirements.",
-      "Pass_0": "Rule Passed"
-    },
-    "RPT_Headers_FewWords": {
-      "0": "Make sure HEADER elements are used as a heading for a section and not used to format text for presentation.",
-      "Pass_0": "Rule Passed"
-    },
-    "WCAG20_Img_HasAlt": {
-      "0": "Images must have an alt attribute, and must be the empty string if decorative.",
-      "Fail_2": "Image is missing alt attribute."
-    },
-    "RPT_Img_AltCommonMisuse": {
-      "0": "Ensure that image alt text serves as an inline replacement of the image.",
-      "Pass_0": "Rule Passed"
-    }
-  },
-  "summary": {
-    "counts": {
-      "violation": 4,
-      "potentialviolation": 0,
-      "recommendation": 0,
-      "potentialrecommendation": 0,
-      "manual": 0,
-      "ignored": 0
-    },
-    "scanTime": 120,
-    "ruleArchive": "Latest Archive (latest)",
-    "policies": ["IBM_Accessibility"],
-    "reportLevels": [
-      "violation",
-      "potentialviolation",
-      "recommendation",
-      "potentialrecommendation",
-      "manual"
-    ],
-    "startScan": 1588966929821,
-    "URL": "about:blank"
-  },
-  "scanID": "30f701d0-5283-46ed-a653-7a3787a8d27d",
-  "toolID": "accessibility-checker-v3.0.0-beta.2",
-  "label": "assert compliance rc 0 no baseline"
+    "scanID": "63edf007-a565-4bc6-bb82-09623a387b67",
+    "toolID": "accessibility-checker-v3.0.8",
+    "label": "violations"
 }

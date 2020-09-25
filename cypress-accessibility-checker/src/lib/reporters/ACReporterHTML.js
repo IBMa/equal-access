@@ -405,15 +405,15 @@ var ACReporterHTML = function (aChecker) {
     scanSummary = initializeSummary();
 
     var myThis = this;
-    if (typeof(after) !== "undefined") {
+    if (typeof(after) !== "undefined" && typeof cy === "undefined") {
         after(function(done) {
             myThis.onRunComplete();
             done && done();
         });
     } else {
-        process.on('beforeExit', function() {
-            myThis.onRunComplete();
-        });
+        // process.on('beforeExit', function() {
+        //     myThis.onRunComplete();
+        // });
     }
     Config.DEBUG && console.log("END ACReporter Constructor");
 };

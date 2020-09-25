@@ -4,12 +4,11 @@
   "description": "Accessibility Checker for Cypress",
   "scripts": {
     "lint": "eslint .",
-    "test": "start-server-and-test 'npm run test:start-http' 8080 'cd test && cypress run'",
-    "test:open": "cd test && cypress open",
+    "test": "npm run build:report && start-server-and-test 'npm run test:start-http' 8080 'cd test && cypress run'",
+    "test:open": "npm run build:report && cd test && cypress open",
     "test:start-http": "http-server -c-1 --silent",
     "build:report": "(cd ../report-react && npm run build && cd ../cypress-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
-    "package:common": "rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
-
+    "package:common": "npm run build:report && rm -rf package && mkdir package && cp -R *.js src package/ && cp package.json package/ && cp README.md package/",
     "package:zip": "npm run package:common && cd package && npm pack",
     "package:npm": "npm run package:common"
   },
@@ -34,7 +33,7 @@
     "cypress": "^3 || ^4"
   },
   "devDependencies": {
-    "cypress": "^4.5.0",
+    "cypress": "^5.2.0",
     "eslint": "^7.0.0",
     "eslint-plugin-cypress": "^2.10.3",
     "http-server": "^0.12.3",
