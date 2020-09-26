@@ -238,13 +238,13 @@ let ACTasks = module.exports = {
         return ACTasks.initialize().then(() => {
             ACTasks.DEBUG && console.log("sendResultsToReporter:", ACTasks.Config.outputFormat);
             if (ACTasks.Config.outputFormat.indexOf("json") != -1) {
-                // reporterJSON.report(results);
+                ACTasks.reporterJSON.report(results);
             }
             if (ACTasks.Config.outputFormat.includes("csv")) {
-                // reporterCSV.report(results);
+                ACTasks.reporterCSV.report(results);
             }
             if (ACTasks.Config.outputFormat.indexOf("html") != -1) {
-                // reporterHTML.report(unFilteredResults);
+                ACTasks.reporterHTML.report(unFilteredResults);
             }
             // Only perform the profiling if profiling was not disabled on purpose
             if (!ACTasks.Config.label || ACTasks.Config.label.indexOf("IBMa-Node-TeSt") === -1) {

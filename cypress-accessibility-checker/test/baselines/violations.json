@@ -119,27 +119,21 @@
         "counts": {
             "violation": 0,
             "potentialviolation": 0,
-            "recommendation": 0,
-            "potentialrecommendation": 0,
-            "manual": 0,
             "ignored": 0
         },
-        "scanTime": 12,
+        "scanTime": 11,
         "ruleArchive": "Latest Deployment (latest)",
         "policies": [
             "IBM_Accessibility"
         ],
         "reportLevels": [
             "violation",
-            "potentialviolation",
-            "recommendation",
-            "potentialrecommendation",
-            "manual"
+            "potentialviolation"
         ],
-        "startScan": 1601043783114,
-        "URL": "data:text/html;charset=utf-8,%3Chtml%20lang%3D%22en%22%3E%3Chead%3E%20%3Cscript%20type%3D%22text%2Fjavascript%22%3E%20document.domain%20%3D%20'localhost'%3B%20var%20Cypress%20%3D%20window.Cypress%20%3D%20parent.Cypress%3B%20if%20(!Cypress)%20%7B%20throw%20new%20Error('Something%20went%20terribly%20wrong%20and%20we%20cannot%20proceed.%20We%20expected%20to%20find%20the%20global%20Cypress%20in%20the%20parent%20window%20but%20it%20is%20missing!.%20This%20should%20never%20happen%20and%20likely%20is%20a%20bug.%20Please%20open%20an%20issue!')%3B%20%7D%3B%20Cypress.action('app%3Awindow%3Abefore%3Aload'%2C%20window)%3B%20%3C%2Fscript%3E%0A%20%20%20%20%3Ctitle%3ECypress%20accessibility-checker%20test%20page%3C%2Ftitle%3E%0A%20%20%3C%2Fhead%3E%0A%0A%20%20%3Cbody%3E%0A%20%20%20%20%3Cdiv%20role%3D%22main%22%3E%0A%20%20%20%20%20%20%3Ch1%3ETest%3C%2Fh1%3E%0A%20%20%20%20%20%20%3Cimg%20src%3D%22no-missing-alt.jpg%22%20alt%3D%22Some%20kind%20of%20image%22%3E%0A%20%20%20%20%3C%2Fdiv%3E%0A%20%20%0A%0A%3C%2Fbody%3E%3C%2Fhtml%3E"
+        "startScan": 1601078995806,
+        "URL": "http://localhost:8080/test/sample-html/no-violations.html"
     },
-    "scanID": "63edf007-a565-4bc6-bb82-09623a387b67",
-    "toolID": "accessibility-checker-v3.0.8",
+    "scanID": "aead45e1-0140-4c6e-850d-2b248211a1ac",
+    "toolID": "cypress-accessibility-checker-v3.0.0",
     "label": "violations"
 }
