@@ -69,59 +69,59 @@ context('Accessibility checker tests', () => {
         });
     });
 
-    // it('getBaseline() should return data from baseline scan', () => {
-    //     cy.visit('violations.html').getCompliance('getBaseline test');
+    it('getBaseline() should return data from baseline scan', () => {
+        cy.visit('violations.html').getCompliance('getBaseline test');
 
-    //     cy.getBaseline('violations').then(
-    //         (result) => expect(result).not.to.be.null
-    //     );
-    //     cy.getBaseline('no-violations').then(
-    //         (result) => expect(result).not.to.be.null
-    //     );
-    // });
+        cy.getBaseline('violations').then(
+            (result) => expect(result).not.to.be.null
+        );
+        cy.getBaseline('no-violations').then(
+            (result) => expect(result).not.to.be.null
+        );
+    });
 
-    // it('getDiffResults() should return diff between scan and baseline', () => {
-    //     // Compare violations to a no-violations baseline
-    //     cy.visit('violations.html')
-    //         .getCompliance('no-violations')
-    //         .assertCompliance(false)
-    //         .then((rc) => expect(rc).to.be.equal(1));
+    it('getDiffResults() should return diff between scan and baseline', () => {
+        // Compare violations to a no-violations baseline
+        cy.visit('violations.html')
+            .getCompliance('no-violations')
+            .assertCompliance(false)
+            .then((rc) => expect(rc).to.be.equal(1));
 
-    //     cy.getDiffResults('no-violations').then((result) => {
-    //         expect(result).not.to.be.null;
-    //         result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
-    //         result.forEach((obj) => expect(obj.kind).not.to.be.undefined);
-    //     });
-    // });
+        cy.getDiffResults('no-violations').then((result) => {
+            expect(result).not.to.be.null;
+            result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
+            result.forEach((obj) => expect(obj.kind).not.to.be.undefined);
+        });
+    });
 
-    // it('diffResultsWithExpected() should return a diff between actual and expected', () => {
-    //     cy.visit('violations.html')
-    //         .getCompliance('diff accessibility results with expected 1')
-    //         .then((actual) => {
-    //             cy.getBaseline('violations')
-    //                 .then((expected) => {
-    //                     return cy.diffResultsWithExpected(
-    //                         actual,
-    //                         expected,
-    //                         true
-    //                     );
-    //                 })
-    //                 .then((result) => {
-    //                     // Check to see if the object has some expected properties
-    //                     result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
-    //                     result.forEach((obj) => expect(obj.kind).not.to.be.undefined);
-    //                 });
-    //         });
-    // });
+    it('diffResultsWithExpected() should return a diff between actual and expected', () => {
+        cy.visit('violations.html')
+            .getCompliance('diff accessibility results with expected 1')
+            .then((actual) => {
+                cy.getBaseline('violations')
+                    .then((expected) => {
+                        return cy.diffResultsWithExpected(
+                            actual,
+                            expected,
+                            true
+                        );
+                    })
+                    .then((result) => {
+                        // Check to see if the object has some expected properties
+                        result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
+                        result.forEach((obj) => expect(obj.kind).not.to.be.undefined);
+                    });
+            });
+    });
 
-    // it('stringifyResults() should return stringified version of report', () => {
-    //     cy.visit('violations.html')
-    //         .getCompliance('stringify results 1')
-    //         .stringifyResults()
-    //         .then((stringResult) => expect(stringResult).to.contain('Scan:'));
-    // });
+    it('stringifyResults() should return stringified version of report', () => {
+        cy.visit('violations.html')
+            .getCompliance('stringify results 1')
+            .stringifyResults()
+            .then((stringResult) => expect(stringResult).to.contain('Scan:'));
+    });
 
-    // it('getACheckerConfig() should return config block from config file', () => {
-    //     cy.getACheckerConfig().then((config) => expect(config.toolID).not.to.be.null);
-    // });
+    it('getACheckerConfig() should return config block from config file', () => {
+        cy.getACheckerConfig().then((config) => expect(config.toolID).not.to.be.null);
+    });
 });

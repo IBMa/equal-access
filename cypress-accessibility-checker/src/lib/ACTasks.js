@@ -3,6 +3,8 @@ const ACMetricsLogger = require('./log/ACMetricsLogger');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
+const DeepDiff = require("deep-diff");
+
 const request = require("request");
 const fs = require("fs");
 const path = require("path");
@@ -162,7 +164,7 @@ let ACTasks = module.exports = {
 
         return scanSummary;
     },
-        /**
+    /**
      * This function loads the compliance engine.
      * @param {Function} callback - Provide callback function which will be executed once the engine is loaded
      *
@@ -251,5 +253,219 @@ let ACTasks = module.exports = {
             }
             return 0;
         });
+    },
+    /**
+     * This function is responsible for getting the baseline object for a label that was provided.
+     *
+     * @param {String} label - Provide a lable for which to get the baseline for.
+     *
+     * @return {Object} - return the baseline object from global space based on label provided, the object will be
+     *                    in the same format as outlined in the return of aChecker.buildReport function.
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
+    getBaseline: function (label) {
+        try {
+            return require(path.join(path.join(process.cwd(), ACTasks.Config.baselineFolder), label));
+        } catch (e) {
+            return null;
+        }
+    },
+    /**
+     * This function is responsible for printing the scan results to console.
+     *
+     * @param {Object} results - Provide the results from the scan.
+     *
+     * @return {String} resultsString - String representation of the results/violations.
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
+    stringifyResults: function (report) {
+        return ACTasks.initialize()
+        .then(() => {
+            // console.log(report);
+            // Variable Decleration
+            let resultsString = `Scan: ${report.label}\n`;
+
+            // Loop over the reports and build the string version of the the issues within each report
+            report.results && report.results.forEach(function (issue) {
+                if (ACTasks.Config.reportLevels.includes(issue.level)) {
+                    // Build string of the issues with only level, messageCode, xpath and snippet.
+                    resultsString += "- Message: " + issue.message +
+                        "\n  Level: " + issue.level +
+                        "\n  XPath: " + issue.path.dom +
+                        "\n  Snippet: " + issue.snippet +
+                        "\n";
+                }
+            });
+
+            return resultsString;
+        });
+    },
+
+    getHelpURL: function (ruleId) {
+        return new ACTasks.ace.Checker().engine.getHelp(ruleId);
+    },
+
+    /**
+     * This function is responsible for comparing actual with expected and returning all the differences as an array.
+     *
+     * @param {Object} actual - Provide the actual object to be used for compare
+     * @param {Object} expected - Provide the expected object to be used for compare
+     * @param {boolean} clean - Provide a boolean if both the actual and expected objects need to be cleaned
+     *                          cleaning refers to converting the objects to match with a basic compliance
+     *                          compare of xpath and ruleId.
+     *
+     * @return {Object} differences - return an array of diff objects that were found, following is the format of the object:
+     * [
+     *     {
+     *         "kind": "E",
+     *         "path": [
+     *             "reports",
+     *             0,
+     *             "issues",
+     *             10,
+     *             "xpath"
+     *         ],
+     *         "lhs": "/html[1]/body[1]/div[2]/table[5]",
+     *         "rhs": "/html[1]/body[1]/div[2]/table[5]d",
+     *     },
+     *     {
+     *         "kind": "E",
+     *         "path": [
+     *             "label"
+     *         ],
+     *         "lhs": "Table-layoutMultiple",
+     *         "rhs": "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html",
+     *     }
+     * ]
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
+    diffResultsWithExpected: function (actual, expected, clean) {
+        return ACTasks.initialize().then(() => {
+            // In the case clean is set to true then run the cleanComplianceObjectBeforeCompare function on
+            // both the actual and expected objects passed in. This is to make sure that the objcet follow a
+            // simalar structure before compareing the objects.
+            if (clean) {
+                // Clean actual and expected objects
+                actual = ACTasks.cleanComplianceObjectBeforeCompare(actual);
+                expected = ACTasks.cleanComplianceObjectBeforeCompare(expected);
+            }
+
+            // Run Deep diff function to compare the actual and expected values.
+            let differences = DeepDiff.diff(actual, expected);
+
+            // Return the results of the diff, which will include the differences between the objects
+            if (!differences) return null;
+
+            return differences;
+        })
+    },
+
+    /**
+     * This function is responsible for cleaning up the compliance baseline or actual results, based on
+     * a pre-defined set of criterias, such as the following:
+     *      1. No need to compare summary object
+     *      2. Only need to compare the ruleId and xpath in for each of the issues
+     *
+     * @param {Object} objectToClean - Provide either an baseline or actual results object which would be in the
+     *                                 the same format as outlined in the return of aChecker.buildReport function.
+     *
+     * @return {Object} objectToClean - return an object that was cleaned to only contain the information that is
+     *                                  needed for compare. Following is a sample of how the cleaned object will look like:
+     * {
+     *     "label": "unitTestContent",
+     *     "reports": [
+     *         {
+     *             "frameIdx": "0",
+     *             "frameTitle": "Frame 0",
+     *             "issues": [
+     *                 {
+     *                     "ruleId": "1",
+     *                     "xpath": "/html[1]/head[1]/style[1]"
+     *                 }
+     *                 ....
+     *             ]
+     *         },
+     *         {
+     *             "frameIdx": "1",
+     *             "frameTitle": "Frame 1",
+     *             "issues": [
+     *                 {
+     *                     "ruleId": "471",
+     *                     "xpath": "/html[1]/body[1]/div[2]/table[3]"
+     *                 }
+     *                 ....
+     *             ]
+     *         }
+     *     ]
+     * }
+     *
+     * PRIVATE METHOD
+     *
+     * @memberOf this
+     */
+    cleanComplianceObjectBeforeCompare: function (objectToClean) {
+        // Clone the object so that we do not reference the original or else it causes the original
+        // results object or baseline object to get updated, which we do not want as users are allowed
+        // access to the raw results object and baseline object.
+        // Convert the object into string and then parse it as a JSON object which will lose its reference
+        objectToClean = JSON.parse(JSON.stringify(objectToClean));
+
+        // Remove the summary object, scanID, toolID, issueMessage
+        delete objectToClean.summary;
+        delete objectToClean.nls;
+        delete objectToClean.scanID;
+        delete objectToClean.toolID;
+        delete objectToClean.issueMessages;
+        delete objectToClean.numExecuted;
+
+
+        // Loop over all the issues and remove the keys that are not needed for the compare
+        // Only leave the ruleId and xpath keys for compare.
+        for (let idx = 0; idx < objectToClean.results.length; ++idx) {
+            const issue = objectToClean.results[idx];
+            if (issue.level === "pass") {
+                objectToClean.results.splice(idx--, 1);
+            } else {
+                issue.xpath = issue.path.dom;
+                // Loop over all the keys in a single issue object and remove all the
+                // keys that are not needed for compare
+                Object.keys(issue).forEach(function (key) {
+                    // Remove all the keys which are not in the baselineIssueList
+                    if (ACTasks.baselineIssueList.indexOf(key) === -1) {
+                        delete issue[key];
+                    }
+                });
+                // Make sure that the xpath in the case there is a [1] we replace it with ""
+                // to support some browser which return it differently
+                issue.xpath = issue.xpath.replace(/\[1\]/g, "");
+            }
+        };
+
+        return objectToClean;
+    },
+    /**
+     * This function is responsible for getting the diff results based on label for a scan that was already performed.
+     *
+     * @param {String} label - Provide a lable for which to get the diff results for.
+     *
+     * @return {Object} - return the diff results object from global space based on label provided, the object will be
+     *                    in the same format as outlined in the return of aChecker.diffResultsWithExpected function.
+     *
+     * PUBLIC API
+     *
+     * @memberOf this
+     */
+    getDiffResults: function (label) {
+        if (!ACTasks.diffResults || !ACTasks.diffResults[label]) return null;
+        return ACTasks.diffResults[label];
     }
 }
