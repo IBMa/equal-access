@@ -203,11 +203,24 @@ let ACTasks = module.exports = {
                         if (!fs.existsSync(cacheDir)) {
                             fs.mkdirSync(cacheDir);
                         }
+                        let engineFilename = path.join(engineDir, "ace-node.js");
+                        // Only write the engine if it's different - can cause Cypress to trigger a file changed watch
+                        if (fs.existsSync(engineFilename)) {
+                            if (fs.readFileSync(engineFilename).toString() === data) {
+                                try {
+                                    err && console.log(err);
+                                    ACTasks.ace = require("./engine/ace-node");
+                                    return resolve(ACTasks.ace);
+                                } catch (e) {
+                                    console.log(e);
+                                    return reject(e);
+                                }
+                            }
+                        }
                         fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
-                            let ace;
                             try {
                                 err && console.log(err);
-                                ACTasks.ace = ace = require("./engine/ace-node");
+                                ACTasks.ace = require("./engine/ace-node");
                             } catch (e) {
                                 console.log(e);
                                 return reject(e);
