@@ -38,6 +38,7 @@ reportLevels:
 # Default: json
 outputFormat:
     - json
+    - html
 
 # Optional - Specify labels that you would like associated to your scan
 #

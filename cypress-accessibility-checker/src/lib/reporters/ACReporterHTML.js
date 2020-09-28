@@ -42,7 +42,7 @@ var scanSummary = {};
  */
 var ACReporterHTML = function (aChecker) {
     let Config = aChecker.Config;
-    Config.DEBUG && console.log("START ACReporter Constructor");
+    Config.DEBUG && console.log("START ACReporterHTML Constructor");
     // Override adapters
     this.adapters = [];
 
@@ -95,7 +95,7 @@ var ACReporterHTML = function (aChecker) {
      * @memberOf this
      */
     var savePageResults = function (results) {
-        Config.DEBUG && console.log("START 'savePageResults' function");
+        Config.DEBUG && console.log("START 'ACReporterHTML:savePageResults' function");
 
         // Extract the outputFolder from the ACConfig (this is the user config that they provid)
         var resultDir = Config.outputFolder;
@@ -117,7 +117,7 @@ var ACReporterHTML = function (aChecker) {
         // Write the results object as HTML to a file.
         writeObjectToFileAsHTML(resultsFileName, results);
 
-        Config.DEBUG && console.log("END 'savePageResults' function");
+        Config.DEBUG && console.log("END 'ACReporterHTML:savePageResults' function");
     }
 
     /**
@@ -145,7 +145,7 @@ var ACReporterHTML = function (aChecker) {
             }
         };
         
-        Config.DEBUG && console.log("START 'writeObjectToFileAsHTML' function");
+        Config.DEBUG && console.log("START 'ACReporterHTML:writeObjectToFileAsHTML' function");
 
         // Extract the parent directory of the file name that is provided
         var parentDir = pathLib.dirname(fileName);
@@ -186,7 +186,7 @@ var ACReporterHTML = function (aChecker) {
         // writing it to the file.
         fs.writeFileSync(fileName, genReport(outReport), { encoding: 'utf-8' });
 
-        Config.DEBUG && console.log("END 'writeObjectToFileAsHTML' function");
+        Config.DEBUG && console.log("END 'ACReporterHTML:writeObjectToFileAsHTML' function");
     }
 
     /**

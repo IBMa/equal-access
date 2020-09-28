@@ -176,10 +176,10 @@ let ACTasks = module.exports = {
         if (typeof cy === "undefined") {
             // We aren't loading the engine in tasks outside of the cypress browser engine
             if (ace) {
-                return Promise.resolve();
+                return Promise.resolve(ace);
             } else {
                 return ACTasks.loadLocalEngine((engine) => {
-                    return ace = engine;
+                    return ACTasks.ace = ace = engine;
                 });
             }
         }
@@ -207,7 +207,7 @@ let ACTasks = module.exports = {
                             let ace;
                             try {
                                 err && console.log(err);
-                                ace = require("./engine/ace-node");
+                                ACTasks.ace = ace = require("./engine/ace-node");
                             } catch (e) {
                                 console.log(e);
                                 return reject(e);
@@ -273,6 +273,9 @@ let ACTasks = module.exports = {
             return null;
         }
     },
+    
+    getRulesets: () => new ACTasks.ace.Checker().rulesets,
+
     /**
      * This function is responsible for printing the scan results to console.
      *
