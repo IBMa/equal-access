@@ -36,8 +36,9 @@ interface IReportElementsProps {
 
 interface IGroup {
     title: string,  // aria path for the element role row
-    counts: { [key: string]: number }   // number of Violations, Needs Review, Recommendations 
+    counts: { [key: string]: number },   // number of Violations, Needs Review, Recommendations 
                                         // associated with the element role
+    fvCounts: { [key: string]: number },
     items: IReportItem[]    // issue rows associated with the element role
 };
 
@@ -62,6 +63,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 thisGroup = {
                     title: item.path.aria,
                     counts: {},
+                    fvCounts: {},
                     items: []
                 }
                 groupMap[item.path.aria] = thisGroup;
@@ -70,6 +72,9 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.items.push(item);
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
+            if (item.selected || item.selectedChild) {
+                thisGroup.fvCounts[val] = (thisGroup.fvCounts[val] || 0) + 1;
+            }
         }
 
         // to sort issue according to type in order Violations, Needs Review, Recommendations
@@ -100,26 +105,29 @@ export default class ReportElements extends React.Component<IReportElementsProps
                     </div>
                 </div>
             </div>
-            <div role="rowgroup">  
-                {groups.map(group => {
-                    let thisIdx = idx;
-                    idx += group.items.length+1;
-                    group.items.map(item => {
-                        item.scrollTo = item.scrollTo && scrollFirst;
-                        scrollFirst = scrollFirst && !item.scrollTo;
+            <div role="rowgroup">
+                {this.props.focusedViewFilter === true && this.props.report.counts.filtered.All === 0 ?
+                <div><br/>No accessibility issues for this HTML element or its children</div> :   
+                    groups.map(group => {
+                        let thisIdx = idx;
+                        idx += group.items.length+1;
+                        group.items.map(item => {
+                            item.scrollTo = item.scrollTo && scrollFirst;
+                            scrollFirst = scrollFirst && !item.scrollTo;
+                        })
+                        return <ReportRow 
+                            idx={thisIdx} 
+                            report={this.props.report} 
+                            group={group}
+                            getItem={this.props.getItem}
+                            learnItem={this.props.learnItem}
+                            selectItem={this.props.selectItem} 
+                            layout={this.props.layout}
+                            dataFromParent={this.props.dataFromParent}
+                            focusedViewFilter={this.props.focusedViewFilter}
+                        />
                     })
-                    return <ReportRow 
-                        idx={thisIdx} 
-                        report={this.props.report} 
-                        group={group}
-                        getItem={this.props.getItem}
-                        learnItem={this.props.learnItem}
-                        selectItem={this.props.selectItem} 
-                        layout={this.props.layout}
-                        dataFromParent={this.props.dataFromParent}
-                        focusedViewFilter={this.props.focusedViewFilter}
-                    />
-                })}
+                }
             </div>
         </div>
     }

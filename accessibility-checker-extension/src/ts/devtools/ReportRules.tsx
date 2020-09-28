@@ -35,7 +35,8 @@ interface IReportRulesProps {
 }
 interface IGroup {
     title: string,
-    counts: { [key: string]: number }
+    counts: { [key: string]: number },
+    fvCounts: { [key: string]: number },
     items: IReportItem[]
 }
 
@@ -59,6 +60,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                     // TODO: Change out for passive rule message
                     title: this.props.report.nls[item.ruleId][0] || item.ruleId,
                     counts: {},
+                    fvCounts: {},
                     items: []
                 }
             }
@@ -66,6 +68,9 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             curGroup.items.push(item);
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             curGroup.counts[val] = (curGroup.counts[val] || 0) + 1;
+            if (item.selected || item.selectedChild) {
+                curGroup.fvCounts[val] = (curGroup.fvCounts[val] || 0) + 1;
+            }
         }
 
         let groups : IGroup[] = [];
@@ -98,25 +103,28 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                 </div>
             </div>
             <div role="rowgroup">
-                {groups.map(group => {
-                    let thisIdx = idx;
-                    idx += group.items.length+1; 
-                    group.items.map(item => {
-                        item.scrollTo = item.scrollTo && scrollFirst;
-                        scrollFirst = scrollFirst && !item.scrollTo;
-                    })       
-                    return <ReportRow
-                        idx={thisIdx} 
-                        report={this.props.report} 
-                        group={group}
-                        getItem={this.props.getItem}
-                        learnItem={this.props.learnItem}
-                        selectItem={this.props.selectItem}
-                        layout={this.props.layout}
-                        dataFromParent={this.props.dataFromParent}
-                        focusedViewFilter={this.props.focusedViewFilter}
-                    />                
-                })}
+                {this.props.focusedViewFilter === true && this.props.report.counts.filtered.All === 0 ?
+                <div><br/>No accessibility issues for this HTML element or its children</div> : 
+                    groups.map(group => {
+                        let thisIdx = idx;
+                        idx += group.items.length+1; 
+                        group.items.map(item => {
+                            item.scrollTo = item.scrollTo && scrollFirst;
+                            scrollFirst = scrollFirst && !item.scrollTo;
+                        })       
+                        return <ReportRow
+                            idx={thisIdx} 
+                            report={this.props.report} 
+                            group={group}
+                            getItem={this.props.getItem}
+                            learnItem={this.props.learnItem}
+                            selectItem={this.props.selectItem}
+                            layout={this.props.layout}
+                            dataFromParent={this.props.dataFromParent}
+                            focusedViewFilter={this.props.focusedViewFilter}
+                        />                
+                    })
+                }
             </div>
         </div>
     }
