@@ -56,7 +56,7 @@ var constants = {
     outputFolder: "results",
 
     // Specify default location where the baselines should be saved
-    baselinefolder: "baselines",
+    baselineFolder: "baselines",
 
     // Specify default value if Hidden content be scanned or not.
     checkHiddenContent: false,

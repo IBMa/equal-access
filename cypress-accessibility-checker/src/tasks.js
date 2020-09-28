@@ -16,20 +16,24 @@
 
 const ACTasks = require("./lib/ACTasks");
 
-/**
- * Object format:
- *
- * html: HTML string to scan
- * label: Label of report
- */
-function getCompliance({ html, label }) {
-  return new Promise((resolve, reject) => {
-    ACTasks.getCompliance(html, label).then(
-      /* Only send back the report.  If we send back Puppeteer object is creates circular JSON and breaks. */
-      (result) => resolve({ report: result.report }),
-      () => reject('accessibility-checker: Failed to get compliance')
-    );
-  });
+// /**
+//  * Object format:
+//  *
+//  * html: HTML string to scan
+//  * label: Label of report
+//  */
+// function getCompliance({ html, label }) {
+//     return new Promise((resolve, reject) => {
+//         ACTasks.getCompliance(html, label).then(
+//             /* Only send back the report.  If we send back Puppeteer object is creates circular JSON and breaks. */
+//             (result) => resolve({ report: result.report }),
+//             () => reject('accessibility-checker: Failed to get compliance')
+//         );
+//     });
+// }
+
+function loadBaselines() {
+    return ACTasks.loadBaselines();
 }
 
 /**
@@ -47,7 +51,7 @@ function assertCompliance({ report }) {
  * label: Label of the report to diff against.
  */
 function getDiffResults({ label }) {
-  return ACTasks.getDiffResults(label);
+    return ACTasks.getDiffResults(label);
 }
 
 /**
@@ -56,7 +60,7 @@ function getDiffResults({ label }) {
  * label: Label of the baseline results to return.
  */
 function getBaseline({ label }) {
-  return ACTasks.getBaseline(label);
+    return ACTasks.getBaseline(label);
 }
 
 /**
@@ -67,7 +71,7 @@ function getBaseline({ label }) {
  * clean: Whether or not to clean the results by converting the objects to match basic compliance of only xpath and ruleid.
  */
 function diffResultsWithExpected({ actual, expected, clean }) {
-  return ACTasks.diffResultsWithExpected(actual, expected, clean);
+    return ACTasks.diffResultsWithExpected(actual, expected, clean);
 }
 
 /**
@@ -85,12 +89,12 @@ function stringifyResults({ report }) {
  * N/A
  */
 function getConfig() {
-  return new Promise((resolve, reject) => {
-    ACTasks.getConfig().then(
-      (config) => resolve(config),
-      () => reject('accessibility-checker: Failed to get config')
-    );
-  });
+    return new Promise((resolve, reject) => {
+        ACTasks.getConfig().then(
+            (config) => resolve(config),
+            () => reject('accessibility-checker: Failed to get config')
+        );
+    });
 }
 
 /**
@@ -100,24 +104,24 @@ function getConfig() {
  * data: Object - Data to pass to the task.
  */
 module.exports = ({ task, data }) => {
-  switch (task) {
-    case 'sendResultsToReporter':
-        return ACTasks.sendResultsToReporter(data.origReport, data.report);
-    case 'assertCompliance':
-        return assertCompliance(data);
-    case 'getDiffResults':
-      return getDiffResults(data);
-    case 'getBaseline':
-      return getBaseline(data);
-    case 'diffResultsWithExpected':
-      return diffResultsWithExpected(data);
-    case 'stringifyResults':
-      return stringifyResults(data);
-    case 'getConfig':
-      return getConfig(data);
-    default:
-      throw new Error(
-        'accessibility-checker: Invalid task ID sent.  Accessibility checker tasks should only be called by the accessibility-checker commands.'
-      );
-  }
+    switch (task) {
+        case 'sendResultsToReporter':
+            return ACTasks.sendResultsToReporter(data.origReport, data.report);
+        case 'assertCompliance':
+            return assertCompliance(data);
+        case 'getBaseline':
+            return getBaseline(data);
+        case 'diffResultsWithExpected':
+            return diffResultsWithExpected(data);
+        case 'stringifyResults':
+            return stringifyResults(data);
+        case 'getConfig':
+            return getConfig(data);
+        case 'loadBaselines':
+            return loadBaselines();
+        default:
+            throw new Error(
+                'accessibility-checker: Invalid task ID sent.  Accessibility checker tasks should only be called by the accessibility-checker commands.'
+            );
+    }
 };

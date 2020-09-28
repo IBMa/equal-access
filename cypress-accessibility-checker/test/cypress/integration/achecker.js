@@ -19,29 +19,26 @@
 context('Accessibility checker tests', () => {
 
     it('getCompliance() returns a report of the document', () => {
-        return cy.visit('no-violations.html')
+        cy.visit('no-violations.html')
             .getCompliance('getComplianceOfDocument no violations')
             .then((report) => {
                 console.warn(report);
                 expect(report.results).to.have.lengthOf(0);
-            })
-            .then(() => {
-                cy.visit('violations.html')
-                    .getCompliance('getComplianceOfDocument with violations')
-                    .then((report) => {
-                        console.warn(report);
-                        expect(report.results).to.have.length.greaterThan(0);
-                    });
-                });
+            });
+            
+        cy.visit('violations.html')
+            .getCompliance('getComplianceOfDocument with violations')
+            .then((report) => {
+                console.warn(report);
+                expect(report.results).to.have.length.greaterThan(0);
+            });
     });
-
     context('assertCompliance()', () => {
         it('Is successful when there are no violations', () => {
             cy.visit('no-violations.html')
                 .getCompliance('assert compliance rc 0 no baseline')
                 .assertCompliance()
                 .then((rc) => {
-                    console.log("assertCompliance:", rc);
                     return expect(rc).to.equal(0)
                 });
         });
@@ -55,10 +52,12 @@ context('Accessibility checker tests', () => {
 
         it('Fails when the baselines dont match', () => {
             // Compare no-violations to a violations baseline
-            cy.visit('no-violations.html')
-                .getCompliance('violations')
+            cy.visit('violations.html')
+                .getCompliance('violations-no-match')
                 .assertCompliance(false)
-                .then((rc) => expect(rc).to.equal(1));
+                .then((rc) => {
+                    expect(rc).to.equal(1);
+                })
         });
 
         it('Fails when there are violations due to fail levels', () => {
@@ -72,10 +71,7 @@ context('Accessibility checker tests', () => {
     it('getBaseline() should return data from baseline scan', () => {
         cy.visit('violations.html').getCompliance('getBaseline test');
 
-        cy.getBaseline('violations').then(
-            (result) => expect(result).not.to.be.null
-        );
-        cy.getBaseline('no-violations').then(
+        cy.getBaseline('getBaseline test').then(
             (result) => expect(result).not.to.be.null
         );
     });
@@ -83,11 +79,13 @@ context('Accessibility checker tests', () => {
     it('getDiffResults() should return diff between scan and baseline', () => {
         // Compare violations to a no-violations baseline
         cy.visit('violations.html')
-            .getCompliance('no-violations')
+            .getCompliance('violations-no-match')
             .assertCompliance(false)
-            .then((rc) => expect(rc).to.be.equal(1));
+            .then((rc) => {
+                expect(rc).to.equal(1);
+            })
 
-        cy.getDiffResults('no-violations').then((result) => {
+        cy.getDiffResults('violations-no-match').then((result) => {
             expect(result).not.to.be.null;
             result.forEach((obj) => expect(obj.kind).not.to.be.null); // Check object is what we expect
             result.forEach((obj) => expect(obj.kind).not.to.be.undefined);

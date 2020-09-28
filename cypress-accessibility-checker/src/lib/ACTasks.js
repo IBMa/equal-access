@@ -267,6 +267,35 @@ let ACTasks = module.exports = {
             return 0;
         });
     },
+
+    loadBaselines: (parentDir, parResult) => ACTasks.initializeConfig().then(() => new Promise((resolve, reject) => {
+        let result = parResult || {}
+        let readDirPath = path.join(process.cwd(), ACTasks.Config.baselineFolder);
+        if (parentDir) {
+            readDirPath += parentDir;
+        }
+        fs.readdir(readDirPath, function (err, files) {
+            //handling error
+            if (err) {
+                return console.log('Unable to scan directory: ' + err);
+            } 
+            for (let file of files) {
+                let filePath = path.join(readDirPath,file);
+                file = file.split('.').slice(0, -1).join('.')
+
+                if (fs.lstatSync(filePath).isFile()) {
+                    if (parentDir) {
+                        result[parentDir.substring(1)+"/"+file] = require(filePath);
+                    } else {
+                        result[file] = require(filePath);
+                    }
+                } else if (fs.lstatSync(filePath).isDirectory()) {
+                    ACTasks.loadBaselines((parentDir || "")+"/"+file, result);
+                }
+            };
+            return resolve(result);
+        });
+    })),
     /**
      * This function is responsible for getting the baseline object for a label that was provided.
      *
@@ -467,21 +496,5 @@ let ACTasks = module.exports = {
         };
 
         return objectToClean;
-    },
-    /**
-     * This function is responsible for getting the diff results based on label for a scan that was already performed.
-     *
-     * @param {String} label - Provide a lable for which to get the diff results for.
-     *
-     * @return {Object} - return the diff results object from global space based on label provided, the object will be
-     *                    in the same format as outlined in the return of aChecker.diffResultsWithExpected function.
-     *
-     * PUBLIC API
-     *
-     * @memberOf this
-     */
-    getDiffResults: function (label) {
-        if (!ACTasks.diffResults || !ACTasks.diffResults[label]) return null;
-        return ACTasks.diffResults[label];
     }
 }

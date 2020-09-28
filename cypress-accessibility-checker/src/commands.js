@@ -17,6 +17,14 @@
 /// <reference types="Cypress" />
 
 const ACCommands = require("./lib/ACCommands");
+before(() => {
+    // To write to disk, we have to be outside of the browser, so that's a task
+    cy.task('accessibilityChecker', {
+        task: 'loadBaselines'
+    }).then((baselines) => {
+        return ACCommands.setBaselines(baselines);
+    });
+})
 
 // Note: Command run within the browser. Tasks execute outside of the browser
 
@@ -151,12 +159,7 @@ Cypress.Commands.add(
  * Retrieves the diff of the results for the given label against the baseline.
  */
 Cypress.Commands.add('getDiffResults', (label) => {
-  cy.task('accessibilityChecker', {
-    task: 'getDiffResults',
-    data: { label }
-  }).then((diff) => {
-    return cy.wrap(diff, { log: false });
-  });
+    return cy.wrap(ACCommands.getDiffResults(label), { log: false });
 });
 
 /**
