@@ -27,7 +27,8 @@ Setting the `tabindex` value to 0 or -1 on a child element not focusable by defa
 
 ### What to do
 
-Set the value of the `tabindex` attribute equal to 0 or -1 on at least one of the required child elements to include the UI component in the tab sequence. 
+* Set the value of the `tabindex` attribute equal to 0 or -1 on at least one of the required child elements to include the UI component in the tab sequence. 
+
 The following example shows a component with `role="tree"` with its required child with `role="treeitem"`. The child contains `tabindex="0"` which makes the `treeitem` keyboard operable:
 
 <CodeSnippet type="multi" light={true}>&lt;div role="tree" aria-label="Tree Widget" id="tree1" onkeypress="keyEvent();"&gt;

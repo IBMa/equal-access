@@ -38,8 +38,6 @@ interface IHeaderProps {
     collapseAll: () => void,
     reportHandler: () => void,
     xlsxReportHandler: () => void,
-    // showIssueTypeCallback: (type:string) => void,
-    // showIssueTypeMenuCallback: (type:string[]) => void,
     showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
     counts?: {
         "total": { [key: string]: number },
@@ -60,7 +58,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     state: IHeaderState = {};
 
     processFilterCheckBoxes(value: boolean, id: string) {
-        console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
+        // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
         let newItems = this.props.dataFromParent;
         if (id === "Violations") {
             newItems[1] = value;
@@ -70,19 +68,19 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             newItems[3] = value;
         }
         if (newItems[1] == true && newItems[2] == true && newItems[3] == true) {
-            console.log("All true");
+            // console.log("All true");
             newItems[0] = true;
             this.setState({ showIssueTypeFilter: newItems });
         } else if (newItems[1] == false && newItems[2] == false && newItems[3] == false) {
-            console.log("All false");
+            // console.log("All false");
             newItems[0] = true;
             this.setState({ showIssueTypeFilter: newItems });
         } else {
-            console.log("Mixed");
+            // console.log("Mixed");
             newItems[0] = false;
             this.setState({ showIssueTypeFilter: newItems });
         }
-        console.log("After process: ", newItems);
+        // console.log("After process: ", newItems);
         this.props.showIssueTypeCheckBoxCallback(newItems);
     }
 
@@ -122,22 +120,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         }
 
         let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
-
-        // const items = [
-        //     {
-        //         id: 'Violations',
-        //         label: 'Violations'
-        //     },
-        //     {
-        //         id: 'NeedsReview',
-        //         label: 'Needs Review'
-        //     },
-        //     {
-        //         id: 'Recommendations',
-        //         label: 'Recommendations'
-        //     }
-        // ]
-
 
         if (!counts) {
             counts = {
@@ -196,7 +178,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
 
-                    <div className="bx--col-md-1">
+                    <div className="bx--col-md-1" style={{paddingRight:0}}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <Button
                                 disabled={!this.props.counts}
@@ -217,7 +199,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     <div className="bx--col-md-3">
                         <ContentSwitcher
-                            title="Focused View"
+                            title="Focus View"
                             style={{height: "30px"}}
                             selectionMode="manual"
                             selectedIndex={1}

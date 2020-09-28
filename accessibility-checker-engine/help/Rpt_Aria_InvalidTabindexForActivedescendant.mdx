@@ -29,12 +29,13 @@ Using values greater than 0 should be avoided as it can break the logical tab or
 
 ### What to do
 
- * Set the value of the `tabindex` attribute equal to 0 or -1 on the element using `aria-activedescendant` property to include the element in the tab sequence.
-The following example shows a toolbar element using the `aria-activedescendant` property with a tabindex attribute set to zero:
+ * Set the value of the `tabindex` attribute equal to 0 or -1 on the element using `aria-activedescendant` property to include the element in the tab sequence. 
 
-<CodeSnippet type="multi" light={true}>&lt;div role="toolbar" aria-label="toolbar" tabindex="0" aria-activedescendant="button2" id="tb3" onkeypress="keyEvent();"&gt;
-         &lt;div class="toolbar-item" id="button1" role="button"&gt;tool 1 &lt;/div&gt;
-         &lt;div class="toolbar-item" id="button2" role="button"&gt;tool 2 &lt;/div&gt;  
+ The following example shows a toolbar element using the `aria-activedescendant` property with a tabindex attribute set to zero:
+
+<CodeSnippet type="multi" light={true}>&lt;div role="toolbar" aria-label="Toolbar Widget" tabindex="0" aria-activedescendant="button2" id="tb3" onkeypress="keyEvent();"&gt;
+    &lt;div id="button1" role="button1"&gt;tool 1&lt;/div&gt;
+    &lt;div id="button2" role="button2"&gt;tool 2&lt;/div&gt;
 &lt;/div&gt;  </CodeSnippet>
 
 </Column>
