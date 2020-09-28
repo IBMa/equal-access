@@ -65,6 +65,13 @@ let ACTasks = module.exports = {
         return ACTasks.initializeConfig();
     },
 
+    onRunComplete: () => {
+        ACTasks.reporterHTML.onRunComplete();
+        ACTasks.reporterJSON.onRunComplete();
+        ACTasks.reporterCSV.onRunComplete();
+        return true;
+    },
+
     initialize: () => {
         if (ACTasks.initOnce) {
             return ACTasks.initOnce.then(() => {

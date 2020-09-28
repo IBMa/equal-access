@@ -42,6 +42,7 @@ var scanSummary = {};
  * @memberOf this
  */
 var ACReporter = function (aChecker) {
+    let resultStr = "";
     let Config = aChecker.Config;
     Config.DEBUG && console.log("START ACReporter Constructor");
     // Override adapters
@@ -109,7 +110,7 @@ var ACReporter = function (aChecker) {
         Config.DEBUG && console.log("START 'savePageResults' function");
 
         for (const result of report.results) {
-            this.resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(aChecker.getHelpURL(result.ruleId))}\n`
+            resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(aChecker.getHelpURL(result.ruleId))}\n`
         }
 
         Config.DEBUG && console.log("END 'savePageResults' function");
@@ -190,7 +191,7 @@ var ACReporter = function (aChecker) {
      * @memberOf this
      */
     var initializeSummary = function (config) {
-        this.resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`
+        resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`
         return scanSummary;
     }
 
@@ -206,7 +207,7 @@ var ACReporter = function (aChecker) {
             return;
         }
         Config.DEBUG && console.log("START 'saveSummary' function");
-        writeObjectToFile("results.csv", this.resultStr);
+        writeObjectToFile("results.csv", resultStr);
         Config.DEBUG && console.log("END 'saveSummary' function");
     }
 
@@ -242,7 +243,7 @@ var ACReporter = function (aChecker) {
 
     }
 
-    scanSummary = initializeSummary.bind(this)();
+    scanSummary = initializeSummary();
 
     var myThis = this;
     if (typeof(after) !== "undefined" && typeof cy === "undefined") {

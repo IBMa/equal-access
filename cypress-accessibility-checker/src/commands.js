@@ -26,6 +26,12 @@ before(() => {
     });
 })
 
+after(() => {
+    // To write to disk, we have to be outside of the browser, so that's a task
+    cy.task('accessibilityChecker', {
+        task: 'onRunComplete'
+    });
+})
 // Note: Command run within the browser. Tasks execute outside of the browser
 
 /**

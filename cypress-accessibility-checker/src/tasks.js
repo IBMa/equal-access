@@ -36,6 +36,10 @@ function loadBaselines() {
     return ACTasks.loadBaselines();
 }
 
+function onRunComplete() {
+    return ACTasks.onRunComplete();
+}
+
 /**
  * Object format:
  *
@@ -119,6 +123,8 @@ module.exports = ({ task, data }) => {
             return getConfig(data);
         case 'loadBaselines':
             return loadBaselines();
+        case 'onRunComplete':
+            return onRunComplete();
         default:
             throw new Error(
                 'accessibility-checker: Invalid task ID sent.  Accessibility checker tasks should only be called by the accessibility-checker commands.'
