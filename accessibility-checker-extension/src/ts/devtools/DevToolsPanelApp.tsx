@@ -44,6 +44,7 @@ interface IPanelState {
     report: IReport | null,
     filter: string | null,
     tabURL: string,
+    prevTabURL: string | null,
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
@@ -52,7 +53,8 @@ interface IPanelState {
     learnMore: boolean,
     learnItem: IReportItem | null,
     showIssueTypeFilter: boolean[],
-    scanning: boolean,   // true when scan taking place
+    scanning: boolean,  // true when scan taking place
+    firstScan: boolean, // true when first scan of a url
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -68,6 +70,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         report: null,
         filter: null,
         tabURL: "",
+        prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
         rulesets: null,
@@ -75,6 +78,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
+        firstScan: true,
         error: null,
         archives: null,
         selectedArchive: null,
@@ -92,6 +96,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
         if (this.props.layout === "sub") {
+            console.log("constructor: getCurrentSelectedElement");
             this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
         }
         
@@ -149,9 +154,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-        
+        console.log("componentDidMount");
         chrome.storage.local.get("OPTIONS", async function (result: any) {
-
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
             const archives = await self.getArchives();
@@ -204,7 +208,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
                 }
-
+                if (self.props.layout === "sub") {
+                    self.selectElementInElements();
+                }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                     tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
                     error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
@@ -241,9 +247,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        // console.log("startScan");
+        console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
+        if (tabURL !== this.state.prevTabURL) {
+            this.setState({firstScan: true});
+        }
+        this.state.prevTabURL = tabURL;
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -295,9 +305,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             });
         }
         this.setState({ scanning: false }); // scan done
-        // console.log("SCAN DONE");
+        console.log("SCAN DONE");
         
         if (this.props.layout === "sub") {
+            if (this.state.firstScan === true) {
+                this.selectElementInElements();
+                this.setState({firstScan: false});
+            }
+            
             chrome.devtools.inspectedWindow.eval(`((node) => {
                 let countNode = (node) => { 
                     let count = 0;
@@ -530,6 +545,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getCurrentSelectedElement() {
+        console.log("")
         let mythis = this;
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
@@ -550,7 +566,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     selectElementInElements () {
-        chrome.devtools.inspectedWindow.eval("inspect(document.body)", 
+        chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
             (result:string, isException) => {
                 if (isException) {
                     console.error(isException);
