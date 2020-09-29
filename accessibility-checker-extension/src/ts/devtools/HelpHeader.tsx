@@ -21,7 +21,7 @@
  } from 'carbon-components-react';
  
  
- const BeeLogo = "/assets/Bee_logo.svg";
+ const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
  import { ArrowLeft16 } from '@carbon/icons-react';
  
  interface IHeaderState {

@@ -17,66 +17,48 @@
 import React from "react";
 
 import {
-    // MultiSelect, 
-    Button, 
-    Checkbox
+    Button, Checkbox, ContentSwitcher, Switch, Tooltip
 } from 'carbon-components-react';
+import { settings } from 'carbon-components';
+import { Reset16, ReportData16, Renew16 } from '@carbon/icons-react';
+import { IArchiveDefinition } from '../background/helper/engineCache';
+import OptionUtil from '../util/optionUtil';
 
-import { Reset16 } from '@carbon/icons-react';
-// import { SettingsAdjust16 } from '@carbon/icons-react';
-import { ReportData16 } from '@carbon/icons-react';
-
-const BeeLogo = "/assets/Bee_logo.svg";
+const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
-// import { Filter16 } from '@carbon/icons-react';
-// import ViolationsFiltered from "../../assets/ViolationsFiltered.svg";
-// import NeedsReviewFiltered from "../../assets/NeedsReviewFiltered.svg";
-// import RecommendationsFiltered from "../../assets/RecommendationsFiltered.svg";
 
-interface IHeaderState {}
+const { prefix } = settings;
+interface IHeaderState { }
 
 interface IHeaderProps {
     layout: "main" | "sub",
     startScan: () => void,
     collapseAll: () => void,
     reportHandler: () => void,
-    // showIssueTypeCallback: (type:string) => void,
-    // showIssueTypeMenuCallback: (type:string[]) => void,
-    showIssueTypeCheckBoxCallback: (checked:boolean[]) => void,
+    xlsxReportHandler: () => void,
+    showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
     } | null,
     dataFromParent: boolean[],
-    scanning: boolean
+    scanning: boolean,
+    archives: IArchiveDefinition[] | null,
+    selectedArchive: string | null,
+    selectedPolicy: string | null
+    focusedViewCallback: (focus: boolean) => void,
+    focusedViewFilter: boolean,
+    focusedViewText: string,
+    getCurrentSelectedElement: () => void
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     state: IHeaderState = {};
 
-    // processSelectedIssueTypes (items:any) {
-    //     let newItems = ["", "", ""];
-    //     items.map((item:any) => {
-    //         if (item.id === "Violations") {
-    //             newItems[0] = "Violations";
-    //         } else if (item.id === "NeedsReview") {
-    //             newItems[1] = "NeedsReview";
-    //         } else if (item.id === "Recommendations") {
-    //             newItems[2] = "Recommendations";
-    //         }
-    //     })
-    //     if (items.length == 0) {
-    //         this.props.showIssueTypeMenuCallback(["Violations", "NeedsReview", "Recommendations"]);
-    //     }
-    //     if (items.length > 0) {
-    //         this.props.showIssueTypeMenuCallback([newItems[0], newItems[1], newItems[2]]);
-    //     }
-    // }
-
-    processFilterCheckBoxes (value:boolean, id:string) {
-        console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
+    processFilterCheckBoxes(value: boolean, id: string) {
+        // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
         let newItems = this.props.dataFromParent;
         if (id === "Violations") {
             newItems[1] = value;
@@ -86,22 +68,49 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             newItems[3] = value;
         }
         if (newItems[1] == true && newItems[2] == true && newItems[3] == true) {
-            console.log("All true");
+            // console.log("All true");
             newItems[0] = true;
             this.setState({ showIssueTypeFilter: newItems });
         } else if (newItems[1] == false && newItems[2] == false && newItems[3] == false) {
-            console.log("All false");
+            // console.log("All false");
             newItems[0] = true;
             this.setState({ showIssueTypeFilter: newItems });
         } else {
-            console.log("Mixed");
+            // console.log("Mixed");
             newItems[0] = false;
             this.setState({ showIssueTypeFilter: newItems });
         }
-        console.log("After process: ", newItems);
+        // console.log("After process: ", newItems);
         this.props.showIssueTypeCheckBoxCallback(newItems);
     }
-        
+
+    flipSwitch(index: number) {
+        let focusValue = false;
+        if (index === 0) {
+            focusValue = true;
+        } else {
+            focusValue = false;
+        }
+        this.props.focusedViewCallback(focusValue);
+    }
+
+    onKeyDown(e: any) {
+        if (e.keyCode === 13) {
+            e.target.click();
+        }
+    }
+
+
+    isLatestArchive(selectedArchive: string | null, archives: IArchiveDefinition[] | null) {
+
+        let archive = archives?.filter((archive: any) => archive.id === selectedArchive)[0];
+
+        if (selectedArchive == 'latest' || archive?.latest == true) {
+            return true
+        } else {
+            return false;
+        }
+    }
 
     render() {
         let counts = this.props.counts;
@@ -110,21 +119,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        // const items = [
-        //     {
-        //         id: 'Violations',
-        //         label: 'Violations'
-        //     },
-        //     {
-        //         id: 'NeedsReview',
-        //         label: 'Needs Review'
-        //     },
-        //     {
-        //         id: 'Recommendations',
-        //         label: 'Recommendations'
-        //     }
-        // ]
-
+        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         if (!counts) {
             counts = {
@@ -146,7 +141,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             || counts.total["Needs review"] !== counts.filtered["Needs review"]
             || counts.total["Recommendation"] !== counts.filtered["Recommendation"];
 
-        let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", paddingRight:"1rem"}}>
+        let focusText = this.props.focusedViewText;
+
+        let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-3">
                     <h1>IBM Equal Access Accessibility Checker</h1>
@@ -155,51 +152,130 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
-            <div className="bx--row" style={{ marginTop: '10px' }}>
-                <div className="bx--col-sm-2">
-                    <Button disabled={this.props.scanning} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                </div>
-                <div className="bx--col-sm-2" style={{ position: "relative" }}>
-                    <div className="headerTools" style={{display:"flex", justifyContent:"flex-end"}}>
-                        <div style={{width:210, paddingRight:"16px"}}>
-                        {/* <MultiSelect
-                            items={items}
-                            onChange={(value) => this.processSelectedIssueTypes(value.selectedItems)}
-                            direction="bottom"
-                            disabled={!this.props.counts}
-                            id="Filter issues"
-                            initialSelectedItems={[items[0], items[1], items[2]]}
-                            invalidText="Invalid Selection"
-                            label="Filter issues"
-                            light={false}
-                            locale="en"
-                            open={false}
-                            selectionFeedback="top-after-reopen"
-                            size="sm"
-                            type="default"
-                        /> */}
+
+            {this.props.layout === "sub" ?
+                <div className="bx--row" style={{ marginTop: '10px' }}>
+                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
+                        <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                        {isLatestArchive ? "" : (
+                            <Tooltip>
+                                <p id="tooltip-body">
+                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                </p>
+                                <div className={`${prefix}--tooltip__footer`}>
+                                    <a
+                                        href={chrome.runtime.getURL("options.html")}
+                                        target="_blank"
+                                        className={`${prefix}--link`}
+                                    >
+                                        Change rule set
+                                    </a>
+                                </div>
+                            </Tooltip>
+                        )}
+                    </div>
+                    <div className="bx--col-md-2" style={{ height: "28px" }}>
+
+                    </div>
+
+                    <div className="bx--col-md-1" style={{paddingRight:0}}>
+                        <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <Button
+                                disabled={!this.props.counts}
+                                onClick={this.props.collapseAll}
+                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                            >
+                                <Reset16 className="my-custom-class" />
+                            </Button>
+                            <Button
+                                disabled={!this.props.counts}
+                                onClick={this.props.reportHandler}
+                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                            >
+                                <ReportData16 className="my-custom-class" />
+                            </Button>
                         </div>
-                        <Button
-                            disabled={!this.props.counts}
-                            onClick={this.props.collapseAll}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                    </div>
+
+                    <div className="bx--col-md-3">
+                        <ContentSwitcher
+                            title="Focus View"
+                            style={{height: "30px"}}
+                            selectionMode="manual"
+                            selectedIndex={1}
+                            onChange={((obj: any) => {
+                                // console.log("the index: ",obj.index);
+                                this.flipSwitch(obj.index);
+                            })}
                         >
-                            <Reset16 className="my-custom-class" />
-                        </Button>
-                        <Button
-                            disabled={!this.props.counts}
-                            onClick={this.props.reportHandler}
-                            className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Report" type="button"
-                        >
-                            <ReportData16 className="my-custom-class" />
-                        </Button>
+                            <Switch
+                                disabled={!this.props.counts}
+                                text={focusText}
+                                onClick={() => {
+                                    //this.props.getCurrentSelectedElement();
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)}
+                            />
+                            <Switch
+                                disabled={!this.props.counts}
+                                text="All"
+                                onClick={() => {
+                                    // console.log('All click');
+                                }}
+                                onKeyDown={this.onKeyDown.bind(this)}
+                            />
+                        </ContentSwitcher>
+
                     </div>
                 </div>
-            </div>
+                :
+                <div className="bx--row" style={{ marginTop: '10px' }}>
 
-            <div className="countRow summary" role="region" arial-label='Issue count' style={{marginTop:"14px"}}>
-                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                    <div className="bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
+                        <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                        {isLatestArchive ? "" : (
+                            <Tooltip>
+                                <p id="tooltip-body">
+                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                </p>
+                                <div className={`${prefix}--tooltip__footer`}>
+                                    <a
+                                        href={chrome.runtime.getURL("options.html")}
+                                        target="_blank"
+                                        className={`${prefix}--link`}
+                                    >
+                                        Change rule set
+                                    </a>
+                                </div>
+                            </Tooltip>
+                        )}
+                    </div>
+                    <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                        <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
+                            <div style={{ width: 210, paddingRight: "16px" }}>
+                            </div>
+                            <Button
+                                disabled={!this.props.counts}
+                                onClick={this.props.collapseAll}
+                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                            >
+                                <Reset16 className="my-custom-class" />
+                            </Button>
+                            <Button
+                                disabled={!this.props.counts}
+                                onClick={this.props.reportHandler}
+                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                            >
+                                <ReportData16 className="my-custom-class" />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div className="countRow summary" role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+                <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
+                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
@@ -208,15 +284,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="Violations"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={Violation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Violations</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={Violation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Violations</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                     </span>
                 </div>
-                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
+                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
@@ -225,15 +301,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="NeedsReview"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={NeedsReview16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Needs review</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={NeedsReview16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Needs review</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                     </span>
                 </div>
-                <div className="countItem" style={{paddingTop:"0", paddingLeft:"0", paddingBottom:"0", height: "34px", textAlign:"left", overflow:"visible"}}>
-                    <span style={{display: "inline-block", verticalAlign:"middle", paddingTop:"4px", paddingRight:"8px"}}>
+                <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
+                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
@@ -242,16 +318,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="Recommendations"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={Recommendation16} style={{verticalAlign:"middle",paddingTop:"0px", marginRight:"4px"}} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{marginLeft:"4px"}}>Recommendations</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={Recommendation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Recommendations</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                     </span>
                 </div>
-                <div className="countItem" role="status" style={{paddingTop:"0", paddingBottom:"0", height: "34px", textAlign:"right", overflow:"visible"}}>
+                <div className="countItem" role="status" style={{ paddingTop: "0", paddingBottom: "0", height: "34px", textAlign: "right", overflow: "visible" }}>
                     {/* <span className="summaryBarCounts" style={{ fontWeight: 400 }}>{noScan ? ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"]) : " "}&nbsp;Issues&nbsp;{(bDiff ? "selected" : "found")}</span> */}
-                    <span className="summaryBarCounts" style={{fontWeight: 400,lineHeight:"32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning...": ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
+                    <span className="summaryBarCounts" style={{ fontWeight: 400, lineHeight: "32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning..." : ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
         </div>);
@@ -262,7 +338,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 {headerContent}
             </div>
         } else {
-            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)",width:"100%" }}>
+            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
                 {headerContent}
             </div>
         }

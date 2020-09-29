@@ -18,7 +18,7 @@ import React from "react";
 
 import { IReport } from './Report';
 import { Tile } from 'carbon-components-react';
-
+import ReportSummaryUtil from '../util/reportSummaryUtil';
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -31,53 +31,9 @@ interface IReportSummaryProps {
     tabURL: string
 }
 
-function calcSummary(report: IReport) {
-
-    let summaryResults: any = [];
-    let results = report.results.filter((result: any) => {
-        return result.value[1] !== "PASS";
-    })
-
-    let violations = results.filter((result: any) => {
-        return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-    })
-    summaryResults.push(violations.length);
-
-    let potentials = results.filter((result: any) => {
-        return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
-    })
-    summaryResults.push(potentials.length);
-
-    let recommendations = results.filter((result: any) => {
-        return result.value[0] === "RECOMMENDATION";
-    })
-    summaryResults.push(recommendations.length);
-
-    let failXpaths: string[] = [];
-    results.map((result: any) => {
-        failXpaths.push(result.path.dom);
-    })
-    let failUniqueElements = Array.from(new Set(failXpaths));
-    summaryResults.push(failUniqueElements.length);
-
-    let passXpaths: any = [];
-    let passResults = report.results.filter((result: any) => {
-        return result.value[1] === "PASS";
-    })
-
-    passResults.map((result: any) => {
-        passXpaths.push(result.path.dom);
-    })
-
-    let passUniqueElements = Array.from(new Set(passXpaths));
-    summaryResults[4] = passUniqueElements.length;
-
-    return summaryResults;
-}
-
 export default class ReportSummary extends React.Component<IReportSummaryProps, IReportSummaryState> {
     render() {
-        let summaryNumbers = calcSummary(this.props.report);
+        let summaryNumbers = ReportSummaryUtil.calcSummary(this.props.report);
 
         let d = new Date();
         let options = {
