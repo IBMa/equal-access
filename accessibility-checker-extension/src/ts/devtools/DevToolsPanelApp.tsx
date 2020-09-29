@@ -383,9 +383,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     onFilter(filter: string) {
+        console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
+        }
+        if (this.state.tabURL !== this.state.prevTabURL) {
+            this.selectElementInElements();
+            this.setState({firstScan: true});
         }
         this.getCurrentSelectedElement();
     }
@@ -545,7 +550,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getCurrentSelectedElement() {
-        console.log("")
+        console.log("getCurrentSelectedElement");
         let mythis = this;
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
