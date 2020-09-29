@@ -104,13 +104,26 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: |
         if [ -n "$RELEASE_VERSION" ]; then 
-          sed -i 's/"version": "3.0.0"/"version": "'"$RELEASE_VERSION"'"/g' ./manifest.json
+          sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"$RELEASE_VERSION"'"/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
+    - run: rm manifest.json.old
+      working-directory: accessibility-checker-extension/src
+    - run: cp -f ./manifest_Chrome.json ./src/manifest.json
+      working-directory: accessibility-checker-extension
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
       uses: actions/upload-artifact@v1
       with:
-        name: accessibility-checker-extension
+        name: accessibility-checker-extension for Chrome
+        path: accessibility-checker-extension/package/accessibility-checker-extension.zip
+    - run: cp -f ./manifest_Firefox.json ./src/manifest.json
+      working-directory: accessibility-checker-extension
+    - run: npm run package:browser
+      working-directory: accessibility-checker-extension
+    - name: Upload packed extension
+      uses: actions/upload-artifact@v1
+      with:
+        name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
