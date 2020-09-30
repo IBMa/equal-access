@@ -126,13 +126,15 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
                 filtVal = "=";
                 item.selected = true;
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             } else if (xpath.startsWith(filter)) {
                 item.selectedChild = true;
                 filtVal = "^";
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             }
         }
