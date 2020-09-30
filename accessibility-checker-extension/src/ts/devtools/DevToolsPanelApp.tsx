@@ -265,10 +265,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     collapseAll() {
-        if (this.state.report) {
-            this.state.report.filterstamp = new Date().getTime();
-            this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
-        }
+        // if (this.state.report) {
+        //     this.state.report.filterstamp = new Date().getTime();
+        //     this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
+        // }
+        this.setState({firstScan: true});
+        this.startScan();
     }
 
     async onReport(message: any): Promise<any> {
