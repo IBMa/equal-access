@@ -158,6 +158,13 @@ let a11yRulesStyle: Rule[] = [
                     }
                 }
             }
+            // Trigger only once
+            if (!passed) {
+                let triggered = RPTUtil.getCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", false);
+                passed = triggered;
+                RPTUtil.setCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", true);
+            }
+
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
 
