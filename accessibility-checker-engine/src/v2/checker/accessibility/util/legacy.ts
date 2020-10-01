@@ -282,7 +282,7 @@ export class RPTUtil {
         // If the attribute is defined, it takes precedence
         let retVal = ele.getAttribute(attributeName);
 
-        if (ele.hasAttribute(attributeName) && retVal.trim() == "") { //"" is treated as false, so we need return it before the below check
+        if (ele.hasAttribute(attributeName) && retVal.trim() === "") { //"" is treated as false, so we need return it before the below check
             return retVal;
         }
         // Then determine implicit values from other attributes
@@ -348,7 +348,7 @@ export class RPTUtil {
 
     public static wordCount(str) : number {
         str = str.trim();
-        if (str.length == 0) return 0;
+        if (str.length === 0) return 0;
         return str.split(/\s+/g).length;
     }
 
@@ -381,7 +381,7 @@ export class RPTUtil {
         if (RPTUtil.hasAttribute(elem, "tabindex")) {
             if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {
                 let tabindexValue = parseInt(elem.getAttribute("tabindex"));
-                return tabindexValue == 0 || tabindexValue == -1;
+                return tabindexValue === 0 || tabindexValue === -1;
             }
         }
         return false;
@@ -392,13 +392,13 @@ export class RPTUtil {
         let retVal = false;
         if (node) {
             let nodeName = node.nodeName.toLowerCase();
-            if (nodeName == "input") {
+            if (nodeName === "input") {
                 let type = node.getAttribute("type").toLowerCase();
                 if (type) {
                     if (htmlEquiv.indexOf("checkbox") != -1) {
-                        retVal = type == "checkbox";
+                        retVal = type === "checkbox";
                     } else if (htmlEquiv.indexOf("radio") != -1) {
-                        retVal = type == "radio";
+                        retVal = type === "radio";
                     }
                 }
             }
@@ -408,7 +408,7 @@ export class RPTUtil {
 
     public static isDefinedAriaAttribute(ele, attrName) {
         let isDefinedAriaAttribute = false;
-        if (attrName.substring(0, 5) == 'aria-') {
+        if (attrName.substring(0, 5) === 'aria-') {
             isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName);
         }
         return isDefinedAriaAttribute;
@@ -490,7 +490,7 @@ export class RPTUtil {
         while (child != null) {
 
             // Only include the children into the return array if they match with tagname.
-            if (child.nodeName.toLowerCase() == tagName) {
+            if (child.nodeName.toLowerCase() === tagName) {
 
                 // In the case that ignorehidden was set to true, then perform a isNodeVisible check
                 // and in the case the node is not visilble we more to theses then move to the next node.
@@ -563,7 +563,7 @@ export class RPTUtil {
 
         // Build the new role to element, this is where we loop through all the elements and extract all the
         // elements bsaed on roles.
-        if (roleToElems == null) {
+        if (roleToElems === null) {
             // Re-initialize the roleToElems hash
             roleToElems = {};
 
@@ -609,7 +609,7 @@ export class RPTUtil {
                         }
                     }
 
-                    if (wRoles.length == 0) {
+                    if (wRoles.length === 0) {
                         continue;
                     }
 
@@ -655,7 +655,7 @@ export class RPTUtil {
 
         // Handle the cases where the provided role is a string and not an array,
         // for this case we take the string and put it into an array
-        if (typeof (roles) == "string") {
+        if (typeof (roles) === "string") {
             let role = roles;
             roles = [];
             roles.push(role);
@@ -744,7 +744,7 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getRoleRequiredProperties(role, ele) {
-        if (role == null) {
+        if (role === null) {
             return null;
         }
 
@@ -767,7 +767,7 @@ export class RPTUtil {
      * Test if the ele node is focusable
      */
     public static isFocusable(ele) {
-        if (ele === "undefined" || ele == null) {
+        if (ele === "undefined" || ele === null) {
             return false;
         }
         return RPTUtil.isTabbable(ele);
@@ -797,7 +797,7 @@ export class RPTUtil {
             } else {
                 let roles = ele.getAttribute("role").trim().split(" ");
                 for (let i = 0; !retVal && i < roles.length; ++i) {
-                    retVal = roles[i] == role;
+                    retVal = roles[i] === role;
                 }
             }
         }
@@ -818,7 +818,7 @@ export class RPTUtil {
                     }
                 } else {
                     for (let i = 0; !retVal && i < wRoles.length; ++i) {
-                        retVal = wRoles[i] == role;
+                        retVal = wRoles[i] === role;
                     }
                 }
             }
@@ -852,7 +852,7 @@ export class RPTUtil {
                 let roles = ele.getAttribute("role").trim().toLowerCase().split(/\s+/);
                 for (let i = 0; !retVal && i < roles.length; ++i) {
                     roleSpecified = true;
-                    retVal = roles[i] == role;
+                    retVal = roles[i] === role;
                 }
             }
         }
@@ -874,7 +874,7 @@ export class RPTUtil {
                 }
             } else {
                 for (let i = 0; !retVal && i < impRoles.length; ++i) {
-                    retVal = impRoles[i] == role;
+                    retVal = impRoles[i] === role;
                 }
             }
         }
@@ -959,7 +959,7 @@ export class RPTUtil {
                     for (let j = 0; !isComplexTable && j < thNodeCount; ++j) {
                         isComplexTable = ((thNodes[j].hasAttribute("rowspan") ||
                             thNodes[j].hasAttribute("colspan")) &&
-                            RPTUtil.getAncestor(thNodes[j], "table") == table);
+                            RPTUtil.getAncestor(thNodes[j], "table") === table);
                     }
 
                     // a td element with a rowspan or colspan attribute
@@ -968,7 +968,7 @@ export class RPTUtil {
                         isComplexTable = ((tdNodes[k].hasAttribute("rowspan") ||
                             tdNodes[k].hasAttribute("colspan") ||
                             (tdNodes[k].hasAttribute("headers") && RPTUtil.normalizeSpacing(tdNodes[k].getAttribute("headers")).split(" ").length > 2)) &&
-                            RPTUtil.getAncestor(tdNodes[k], "table") == table);
+                            RPTUtil.getAncestor(tdNodes[k], "table") === table);
                     }
 
                 } else {
@@ -977,7 +977,7 @@ export class RPTUtil {
                     if (thNodeCount > 0) {
                         ++trNodesHavingOnlyThNodes;
                     }
-                    isComplexTable = trNodesHavingOnlyThNodes == 2;
+                    isComplexTable = trNodesHavingOnlyThNodes === 2;
                 }
             }
 
@@ -1015,7 +1015,7 @@ export class RPTUtil {
         // Check if the first row is all TH's
         if (rows != null && rows.length > 0) {
             let firstRow = rows[0];
-            passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length == 0;
+            passed = firstRow.cells.length > 0 && RPTUtil.getChildByTagHidden(firstRow, "td", false, true).length === 0;
             // If the first row isn't a header row, try the first column
             if (!passed) {
                 // Assume that the first column has all TH's unless we find a TD in the first column.
@@ -1023,7 +1023,7 @@ export class RPTUtil {
                 for (let i = 0; passed && i < rows.length; ++i) {
                     // If no cells in this row, that's okay too.
                     passed = !rows[i].cells ||
-                        rows[i].cells.length == 0 ||
+                        rows[i].cells.length === 0 ||
                         rows[i].cells[0].nodeName.toLowerCase() != "td";
                 }
             }
@@ -1037,7 +1037,7 @@ export class RPTUtil {
                 for (let i = 1; passed && i < rows.length; ++i) {
                     // If no cells in this row, that's okay too.
                     passed = !rows[i].cells ||
-                        rows[i].cells.length == 0 ||
+                        rows[i].cells.length === 0 ||
                         rows[i].cells[0].nodeName.toLowerCase() != "td";
                 }
             }
@@ -1084,20 +1084,20 @@ export class RPTUtil {
         // Check the filename
         if (!retVal) {
             let filename = "";
-            if (nodeName == "embed") {
+            if (nodeName === "embed") {
                 filename = node.getAttribute("src");
-            } else if (nodeName == "a" || nodeName == "area") {
+            } else if (nodeName === "a" || nodeName === "area") {
                 filename = node.getAttribute("href");
             } else if (node.hasAttribute("data")) {
                 filename = node.getAttribute("data");
             }
-            if (filename == null) filename = "";
+            if (filename === null) filename = "";
             let ext = RPTUtil.getFileExt(filename);
             retVal = extTest(ext);
         }
 
         // Check for filenames in the params
-        if (!retVal && nodeName == "object") {
+        if (!retVal && nodeName === "object") {
             // In the case that Check Hidden Option is set then comply with that setting
             let params = RPTUtil.getChildByTagHidden(node, "param", false, true);
             for (let i = 0; !retVal && params != null && i < params.length; ++i) {
@@ -1175,7 +1175,7 @@ export class RPTUtil {
     /* determine if the given value exists in the given array */
     public static valInArray(value, arr) {
         for (let idx in arr) {
-            if (arr[idx] == value) return true;
+            if (arr[idx] === value) return true;
         }
         return false;
     }
@@ -1188,14 +1188,14 @@ export class RPTUtil {
         let walkNode = element;
         while (walkNode != null) {
             let thisTag = walkNode.nodeName.toLowerCase();
-            if (typeof (tagNames) == "string") {
-                if (thisTag == tagNames.toLowerCase()) {
+            if (typeof (tagNames) === "string") {
+                if (thisTag === tagNames.toLowerCase()) {
                     break;
                 }
             } else if (tagNames.length) {
                 for (let idx in tagNames) {
-                    //                        Packages.java.lang.System.err.println(thisTag + ":" + tagNames[idx] + ":" + (tagNames[idx] == thisTag));
-                    if (tagNames[idx] == thisTag)
+                    //                        Packages.java.lang.System.err.println(thisTag + ":" + tagNames[idx] + ":" + (tagNames[idx] === thisTag));
+                    if (tagNames[idx] === thisTag)
                         return walkNode;
                 }
             } else if (thisTag in tagNames) {
@@ -1368,7 +1368,7 @@ export class RPTUtil {
     public static isDescendant(parent, child) {
         let node = child.parentNode;
         while (node != null) {
-            if (node == parent) {
+            if (node === parent) {
                 return true;
             }
             node = node.parentNode;
@@ -1700,7 +1700,7 @@ export class RPTUtil {
         if (isGlobal) {
             uniqueAriaLabels = RPTUtil.getCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", null);
         }
-        if (uniqueAriaLabels == null) {
+        if (uniqueAriaLabels === null) {
             uniqueAriaLabels = {};
         }
 
@@ -1784,7 +1784,7 @@ export class RPTUtil {
         if (isGlobal) {
             uniqueAriaLabels = RPTUtil.getCache(doc, "RPTUtil_HAS_UNIQUE_ARIA_LABELS", null);
         }
-        if (uniqueAriaLabels == null) {
+        if (uniqueAriaLabels === null) {
             uniqueAriaLabels = {};
         }
 
@@ -1872,29 +1872,29 @@ export class RPTUtil {
      *   null if either node is null or their parent nodes are not equal
      */
     public static compareNodeOrder(nodeA, nodeB) {
-        if (nodeA == nodeB) return 0;
+        if (nodeA === nodeB) return 0;
 
         let aDepth = RPTUtil.nodeDepth(nodeA);
         let bDepth = RPTUtil.nodeDepth(nodeB);
         if (bDepth > aDepth) {
             for (let i = 0; i < bDepth - aDepth; ++i)
                 nodeB = nodeB.parentNode;
-            if (nodeA == nodeB) // Node B nested in Node A
+            if (nodeA === nodeB) // Node B nested in Node A
                 return -2;
         } else if (aDepth > bDepth) {
             for (let i = 0; i < aDepth - bDepth; ++i)
                 nodeA = nodeA.parentNode;
-            if (nodeA == nodeB) // Node A nested in Node B
+            if (nodeA === nodeB) // Node A nested in Node B
                 return 2;
         }
         while (nodeA != null && nodeB != null && nodeA.parentNode != nodeB.parentNode) {
             nodeA = nodeA.parentNode;
             nodeB = nodeB.parentNode;
         }
-        if (nodeA == null || nodeB == null || nodeA.parentNode != nodeB.parentNode) return null;
+        if (nodeA === null || nodeB === null || nodeA.parentNode != nodeB.parentNode) return null;
         while (nodeB != null && nodeB != nodeA)
             nodeB = nodeB.previousSibling;
-        if (nodeB == null) // nodeB before nodeA
+        if (nodeB === null) // nodeB before nodeA
             return 1;
         else return -1;
     }
@@ -1917,10 +1917,10 @@ export class RPTUtil {
     public static getCache(cacheSpot: Document | Element, keyName, initValue) {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
 
-        if (cacheObj.aceCache == undefined) {
+        if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
         }
-        if (cacheObj.aceCache[keyName] == undefined) {
+        if (cacheObj.aceCache[keyName] === undefined) {
             cacheObj.aceCache[keyName] = initValue;
         }
         return cacheObj.aceCache[keyName]
@@ -1928,7 +1928,7 @@ export class RPTUtil {
 
     public static setCache(cacheSpot: Document | Element, globalName, value) : any {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
-        if (cacheObj.aceCache == undefined) {
+        if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
         }
         cacheObj.aceCache[globalName] = value;
@@ -1942,7 +1942,7 @@ export class RPTUtil {
         let idx = 0;
         while (idx < frameList.length) {
             try {
-                if (frameList[idx].name == frameName) return frameList[idx];
+                if (frameList[idx].name === frameName) return frameList[idx];
                 for (let i = 0; i < frameList[idx].frames.length; ++i) {
                     try {
                         // Ensure it's a real frame and avoid recursion
@@ -1992,7 +1992,7 @@ export class RPTUtil {
     /* Return the inner text of the given element */
     public static getInnerText(element) {
         let retVal = element.innerText;
-        if (retVal == undefined || retVal.trim() == "")
+        if (retVal === undefined || retVal.trim() === "")
             retVal = element.textContent;
         return retVal;
     }
@@ -2020,7 +2020,7 @@ export class RPTUtil {
         if (element.firstChild != null) {
             let nw = new NodeWalker(element);
             while (!hasContent && nw.nextNode()) {
-                hasContent = (nw.node.nodeName.toLowerCase() == "img" &&
+                hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
                     RPTUtil.attributeNonEmpty(nw.node, "alt"));
             }
         }
@@ -2061,13 +2061,13 @@ export class RPTUtil {
 
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
-                hasContent = (node.nodeName.toLowerCase() == "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node));
+                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node));
 
                 // Now we check if this node is of type element, visible
-                if (!hasContent && node.nodeType == 1 && RPTUtil.isNodeVisible(node)) {
+                if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
                     // Check if the innerText of the element is empty or not
                     hasContent = !RPTUtil.isInnerTextOnlyEmpty(node);
-                    if (!hasContent && hyperlink_flag == true) {
+                    if (!hasContent && hyperlink_flag === true) {
                         hasContent = RPTUtil.attributeNonEmpty(node, "aria-label") || RPTUtil.attributeNonEmpty(node, "aria-labelledby");
                         let doc = node.ownerDocument;
                         if (doc) {
@@ -2089,7 +2089,7 @@ export class RPTUtil {
                 // In the case we detect nodetype as text node and the patent of the text node is
                 // the same element we are checking has Inner content for then get the inner content of this
                 // text node.
-                if (node.nodeType == 3 && node.parentElement == element) {
+                if (node.nodeType === 3 && node.parentElement === element) {
                     // Check if the innerText of the element is empty or not
                     hasContent = !RPTUtil.isInnerTextEmpty(node);
                 }
@@ -2112,8 +2112,15 @@ export class RPTUtil {
         if (element.firstChild != null) {
             let nw = new NodeWalker(element);
             while (!hasContent && nw.nextNode() && nw.node != element) {
-                hasContent = (nw.node.nodeName.toLowerCase() == "img" &&
+                hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
                     RPTUtil.attributeNonEmpty(nw.node, "alt"));
+                if (!hasContent 
+                    && (RPTUtil.hasRole(nw.node, "button", true) || RPTUtil.hasRole(nw.node, "textbox"))
+                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.node, true))) 
+                {
+                    hasContent = true;
+                }
+
             }
         }
         return hasContent;
@@ -2353,7 +2360,7 @@ export class RPTUtil {
         if (tagProperty !== null && tagProperty !== undefined) {
             // add the implicit role allowed attributes to the allowed role list if there is no specified role
             if (tagProperty.implicitRole !== null &&
-                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length == 0) &&
+                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0) &&
                 !skipImplicitRoleCheck) {
                 for (let i = 0; i < tagProperty.implicitRole.length; i++) {
                     let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
@@ -2402,15 +2409,15 @@ export class RPTUtil {
 
     public static CSS(element) {
         let styleText = "";
-        if (element == null) return [];
+        if (element === null) return [];
         if (element.IBM_CSS_THB) return element.IBM_CSS_THB;
         let nodeName = element.nodeName.toLowerCase();
-        if (nodeName == "style") {
+        if (nodeName === "style") {
             styleText = RPTUtil.getInnerText(element);
         } else if (element.hasAttribute("style")) {
             styleText = element.getAttribute("style");
         } else return [];
-        if (styleText == null || styleText.trim().length == 0) return [];
+        if (styleText === null || styleText.trim().length === 0) return [];
         //remove comment blocks
         let re = /(\/\*+(?:(?:(?:[^\*])+)|(?:[\*]+(?!\/)))[*]+\/)|\/\/.*/g;
         let subst = ' ';
@@ -2419,7 +2426,7 @@ export class RPTUtil {
         let rKeyVals = /\s*([^:\s]+)\s*:\s*([^;$}]+)\s*(;|$)/g;
         // Find all "selector { csskeyvals } with various whitespace inbetween
         let rSelectors = /\s*([^{]*){([^}]*)}/g;
-        if (styleText.indexOf("{") == -1) {
+        if (styleText.indexOf("{") === -1) {
 
             let keyVals = {};
             let m;
@@ -2482,7 +2489,7 @@ export class RPTUtil {
         // Check the nodeType if this node, if this node is a text node then
         // we get the parentnode and set that as the node as a text nodes,
         // visibility is directly related to the parent node.
-        if (node.nodeType == 3) {
+        if (node.nodeType === 3) {
             node = node.parentNode;
         }
 
@@ -2535,7 +2542,7 @@ export class RPTUtil {
         //  audio --> If this element is hidden it will still play the music, so we should still trigger
         //            violations for this element.
         // In the case that unhideableElements array is not defined then we just scan all elements and do no filtering at all.
-        if (RPTUtil.unhideableElements == null || RPTUtil.unhideableElements == undefined || RPTUtil.unhideableElements.indexOf(nodeName) == -1) {
+        if (RPTUtil.unhideableElements === null || RPTUtil.unhideableElements === undefined || RPTUtil.unhideableElements.indexOf(nodeName) === -1) {
             // Check if defaultView exists for this node, if it does then use this to run the getComputedStyle
             // function to get the CSS style for the node.
             if (node.ownerDocument.defaultView) {
@@ -2558,13 +2565,13 @@ export class RPTUtil {
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
             // which is under the form element then, node.hidden gives the element/list of elements which have id="hidden". Refer to
             // mozilla bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1267356
-            let hiddenProperty = typeof node.hidden == "boolean" ? node.hidden : false;
+            let hiddenProperty = typeof node.hidden === "boolean" ? node.hidden : false;
 
             // If compStyle object is empty, node does't have hidden property, node does't have hidden attribute and does't have custom PT
             // hidden property then we can just return true (node visible) at this point.
             if (!compStyle &&
                 !hiddenProperty && // this covers false, null, or undefined
-                (hiddenAttribute == null || hiddenAttribute == undefined) &&
+                (hiddenAttribute === null || hiddenAttribute === undefined) &&
                 !hiddenPropertyCustom // This covers false, null or undefined
             ) {
                 return true;
@@ -2580,8 +2587,8 @@ export class RPTUtil {
             //  node attribute hidden set (to any value)
             //  node custom hidden property ser (node.PT_NODE_HIDDEN)
             // If any of the above conditions are true then we return false as this element is not visible
-            if ((compStyle !== null && (compStyle.getPropertyValue('display') == 'none' ||
-                (!node.Visibility_Check_Parent && compStyle.getPropertyValue('visibility') == 'hidden'))) ||
+            if ((compStyle !== null && (compStyle.getPropertyValue('display') === 'none' ||
+                (!node.Visibility_Check_Parent && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
                 hiddenProperty ||
                 hiddenAttribute != null ||
                 hiddenPropertyCustom) {
@@ -2604,7 +2611,7 @@ export class RPTUtil {
         // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
         // have to duplicate the logic for checking if the node is visible or not for all the parents starting with
         // child node.
-        if (parentElement != null && parentElement.nodeType == 1) {
+        if (parentElement != null && parentElement.nodeType === 1) {
             // When we have a parent element going through the isNodeVisible function we have to mark it as such
             // so that in the function we can skip checking visibility: hidden for parent elements since visibility: hidden
             // is inherited, which allows a child to have a different setting then the child. This property only needs to be checked
@@ -2698,7 +2705,7 @@ export class RPTUtil {
         // Check the nodeType of this node, if this node is a text node then
         // we get the parentnode and set that as the node as a text nodes,
         // disabled is directly related to the parent node.
-        if (node.nodeType == 3) {
+        if (node.nodeType === 3) {
             node = node.parentNode;
         }
 
@@ -2728,7 +2735,7 @@ export class RPTUtil {
         // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
         // have to duplicate the logic for checking if the node is disabled or not for all the parents starting with
         // child node.
-        if (parentElement != null && parentElement.nodeType == 1) {
+        if (parentElement != null && parentElement.nodeType === 1) {
             // Check upwards recursively, and save the results in an variable
             let nodeDisabled = RPTUtil.isNodeDisabled(parentElement);
 
@@ -2791,8 +2798,8 @@ export class RPTUtil {
 
     public static isfocusableByDefault(node) {
         var focusableElements = ['input', 'select', 'button', 'textarea', 'option', 'area'];
-        if (node.nodeName.toLowerCase() == "a" && RPTUtil.hasAttribute(node, 'href')) return true;
-        if (node.nodeName.toLowerCase() == "area" && RPTUtil.hasAttribute(node, 'href')) return true;
+        if (node.nodeName.toLowerCase() === "a" && RPTUtil.hasAttribute(node, 'href')) return true;
+        if (node.nodeName.toLowerCase() === "area" && RPTUtil.hasAttribute(node, 'href')) return true;
         if (focusableElements.indexOf(node.nodeName.toLowerCase()) != -1) return true;
         return false;
     }
@@ -2973,27 +2980,27 @@ export class RPTUtil {
     // Rewrite the color object to account for alpha
     public static Color(cssStyleColor) {
         cssStyleColor = cssStyleColor.toLowerCase();
-        if (cssStyleColor == "transparent") return new ColorObj(255, 255, 255, 0);
+        if (cssStyleColor === "transparent") return new ColorObj(255, 255, 255, 0);
         if (cssStyleColor in RPTUtil.CSSColorLookup)
             cssStyleColor = RPTUtil.CSSColorLookup[cssStyleColor];
         if (cssStyleColor.startsWith("rgb(")) {
             let rgbRegex = /\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
             let m = cssStyleColor.match(rgbRegex);
-            if (m == null) return null;
+            if (m === null) return null;
             else {
                 return new ColorObj(m[1], m[2], m[3]);
             }
         } else if (cssStyleColor.startsWith("rgba(")) {
             let rgbRegex = /\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(.+)\s*\)/;
             let m = cssStyleColor.match(rgbRegex);
-            if (m == null) return null;
+            if (m === null) return null;
             else {
                 return new ColorObj(m[1], m[2], m[3], m[4]);
             }
         } else if (cssStyleColor.charAt(0) != "#") {
             return null;
         } else {
-            if (cssStyleColor.length == 4) {
+            if (cssStyleColor.length === 4) {
                 // The three-digit RGB (#rgb) is converted to six-digit form (#rrggbb) by replicating digits
                 // (https://www.w3.org/TR/css-color-3/#rgb-color)
                 cssStyleColor = "#" + cssStyleColor.charAt(1).repeat(2) +
@@ -3021,7 +3028,7 @@ export class RPTUtil {
         var ancestors = [];
         var walkNode = ruleContext;
         while (walkNode) {
-            if (walkNode.nodeType == 1)
+            if (walkNode.nodeType === 1)
                 ancestors.push(walkNode);
             walkNode = walkNode.parentElement;
         }
@@ -3041,7 +3048,7 @@ export class RPTUtil {
         var guessGradColor = function (gradList, bgColor, fgColor) {
             try {
                 // If there's only one color, return that
-                if (typeof gradList.length == "undefined")
+                if (typeof gradList.length === "undefined")
                     return gradList;
 
                 var overallWorst = null;
@@ -3064,7 +3071,7 @@ export class RPTUtil {
                         }
                         step = step / 10;
                     }
-                    if (overallWorstRatio == null || overallWorstRatio > worstRatio) {
+                    if (overallWorstRatio === null || overallWorstRatio > worstRatio) {
                         overallWorstRatio = worstRatio;
                         overallWorst = worstColor;
                     }
@@ -3085,7 +3092,7 @@ export class RPTUtil {
             var procNext = ancestors.pop();
             // cStyle is the computed style of this layer
             var cStyle = win.getComputedStyle(procNext);
-            if (cStyle == null) continue;
+            if (cStyle === null) continue;
 
             // thisBgColor is the color of this layer or null if the layer is transparent
             var thisBgColor = null;
@@ -3110,7 +3117,7 @@ export class RPTUtil {
             }
 
             // Handle non-solid opacity
-            if (thisStackOpacity == null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
+            if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
                 // New stack, reset
                 if (thisStackBG != null) {
                     // Overlay
@@ -3127,7 +3134,7 @@ export class RPTUtil {
                     thisStackBG = thisBgColor;
                     thisStackAlpha = thisStackBG.alpha || 1.0;
                     delete thisStackBG.alpha;
-                    if (thisStackOpacity == 1.0 && thisStackAlpha == 1.0) {
+                    if (thisStackOpacity === 1.0 && thisStackAlpha === 1.0) {
                         retVal.hasBGImage = false;
                         retVal.hasGradient = false;
                     }
@@ -3136,7 +3143,7 @@ export class RPTUtil {
             // Handle solid color backgrounds and gradient color backgrounds
             else if (thisBgColor != null) {
                 // If this stack already has a background color, blend it
-                if (thisStackBG == null) {
+                if (thisStackBG === null) {
                     thisStackBG = thisBgColor;
                     thisStackAlpha = thisStackBG.alpha || 1.0;
                     delete thisStackBG.alpha;
@@ -3145,7 +3152,7 @@ export class RPTUtil {
                 }
                 // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
                 // We can't wipe out the gradient info if this layer was transparent
-                if (thisStackOpacity == 1.0 && thisStackAlpha == 1.0 && (thisStackBG.alpha || 1.0) == 1.0 && (thisBgColor.alpha || 1.0) == 0) {
+                if (thisStackOpacity === 1.0 && thisStackAlpha === 1.0 && (thisStackBG.alpha || 1.0) === 1.0 && (thisBgColor.alpha || 1.0) === 0) {
                     retVal.hasBGImage = false;
                     retVal.hasGradient = false;
                 }
@@ -3213,10 +3220,10 @@ export class RPTUtilStyle {
             return map[styleVal];
         }
         let units = styleVal.substring(("" + value).length);
-        if (units == "" || units == "px") return value;
-        if (units == "em") return value * 16;
-        if (units == "%") return value / 100 * 16;
-        if (units == "pt") return value * 4 / 3;
+        if (units === "" || units === "px") return value;
+        if (units === "em") return value * 16;
+        if (units === "%") return value / 100 * 16;
+        if (units === "pt") return value * 4 / 3;
         return Math.round(value);
     }
 }
@@ -3239,13 +3246,13 @@ export class ColorObj {
         this.green = fixComponent(green);
         this.blue = fixComponent(blue);
         if (typeof (alpha) != "undefined") {
-            this.alpha = (typeof (alpha) == typeof ("")) ? parseFloat(alpha as string) : alpha as number;
+            this.alpha = (typeof (alpha) === typeof ("")) ? parseFloat(alpha as string) : alpha as number;
         }
     }
 
     toHexHelp(value : number) : string {
         let retVal = Math.round(value).toString(16);
-        if (retVal.length == 1)
+        if (retVal.length === 1)
             return "0" + retVal;
         return retVal;
     };
@@ -3285,7 +3292,7 @@ export class ColorObj {
     };
 
     mix(color2 : ColorObj, percThis : number) {
-        if (typeof (this.alpha) == "undefined" && typeof (color2.alpha) == "undefined") {
+        if (typeof (this.alpha) === "undefined" && typeof (color2.alpha) === "undefined") {
             return new ColorObj(
                 percThis * this.red + (1 - percThis) * color2.red,
                 percThis * this.green + (1 - percThis) * color2.green,
@@ -3304,7 +3311,7 @@ export class ColorObj {
     };
 
     getOverlayColor(bgColor : ColorObj) {
-        if (typeof (this.alpha) == "undefined" || this.alpha >= 1) {
+        if (typeof (this.alpha) === "undefined" || this.alpha >= 1) {
             // No mixing required - it's opaque
             return this;
         }
@@ -3330,7 +3337,7 @@ export class ColorObj {
         if (cssStyleColor.startsWith("rgb(")) {
             let rgbRegex = /\s*rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/;
             let m = cssStyleColor.match(rgbRegex);
-            if (m == null) return null;
+            if (m === null) return null;
             else {
                 thisRed = m[1];
                 thisGreen = m[2];
@@ -3339,7 +3346,7 @@ export class ColorObj {
         } else if (cssStyleColor.startsWith("rgba(")) {
             let rgbRegex = /\s*rgba\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(.+)\s*\)/;
             let m = cssStyleColor.match(rgbRegex);
-            if (m == null) return null;
+            if (m === null) return null;
             else {
                 thisRed = m[1];
                 thisGreen = m[2];
@@ -3367,7 +3374,7 @@ export class ColorObj {
                 }
                 return retVal;
             }
-            if (cssStyleColor.length == 4) {
+            if (cssStyleColor.length === 4) {
                 // The three-digit RGB (#rgb) is converted to six-digit form (#rrggbb) by replicating digits
                 // (https://www.w3.org/TR/css-color-3/#rgb-color)
                 cssStyleColor = "#" + cssStyleColor.charAt(1).repeat(2) +
@@ -3390,7 +3397,7 @@ export class NodeWalker {
     bEndTag;
     constructor(element, bEnd?) {
         this.node = element;
-        this.bEndTag = (bEnd == undefined ? false : bEnd == true);
+        this.bEndTag = (bEnd === undefined ? false : bEnd === true);
     }
 
     nextNode() {
@@ -3420,7 +3427,7 @@ export class NodeWalker {
         } else {
             return false;
         }
-        if (this.bEndTag && (this.node.firstChild == null || typeof (this.node.firstChild) == 'undefined'))
+        if (this.bEndTag && (this.node.firstChild === null || typeof (this.node.firstChild) === 'undefined'))
             this.bEndTag = false;
         return true;
     }
