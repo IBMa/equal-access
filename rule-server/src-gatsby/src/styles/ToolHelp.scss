@@ -1,4 +1,4 @@
-html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth-child(1) {
+html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp .bx--row:nth-child(1) {
     height: 100%;
 }
 @media (min-width: 99rem) {
@@ -23,7 +23,7 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
 }
 
 #___gatsby .toolHelp {
-    background-color: white;
+    background-color: #be95ff;
 
     > .bx--grid {
         max-width: 100%;
@@ -32,6 +32,23 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
 
     .bx--row {
         margin: 0px;
+    }
+
+    .toolHead {
+        margin-left: 0.5rem;
+        margin-bottom: 1rem;
+        padding-top: 1rem;
+
+        h3 {
+            font-size: 24px;
+            line-height: 20px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        p {
+            font-size: 16px;
+        }
     }
 
     .toolTop {
@@ -69,9 +86,16 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
             margin-bottom: 8px;
         }
 
+        h3 {
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: 600;
+            margin-top: 1.5rem;
+        }
+
         p {
             margin-top: 0px;
-            font-size:12px;
+            font-size: 14px;
             line-height: 18px;
         }
     }
@@ -92,9 +116,16 @@ html, body, #___gatsby, #gatsby-focus-wrapper, .toolHelp, .toolHelp .bx--row:nth
             margin-bottom: 8px;
         }
 
+        h3 {
+            font-size: 20px;
+            line-height: 20px;
+            font-weight: 600;
+            margin-top: 1.5rem;
+        }
+
         p {
             margin-top: 0px;
-            font-size:12px;
+            font-size:16px;
         }
     }
 }
