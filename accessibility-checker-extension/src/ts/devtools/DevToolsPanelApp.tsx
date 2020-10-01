@@ -96,7 +96,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
         if (this.props.layout === "sub") {
-            console.log("constructor: getCurrentSelectedElement");
             this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
         }
         
@@ -154,7 +153,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-        console.log("componentDidMount");
+        // console.log("componentDidMount");
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
@@ -247,7 +246,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        console.log("startScan");
+        // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
@@ -307,7 +306,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             });
         }
         this.setState({ scanning: false }); // scan done
-        console.log("SCAN DONE");
+        // console.log("SCAN DONE");
         
         if (this.props.layout === "sub") {
             if (this.state.firstScan === true) {
@@ -385,7 +384,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     onFilter(filter: string) {
-        console.log("onFilter");
+        // console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
@@ -552,7 +551,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getCurrentSelectedElement() {
-        console.log("getCurrentSelectedElement");
+        // console.log("getCurrentSelectedElement");
         let mythis = this;
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
