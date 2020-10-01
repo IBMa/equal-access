@@ -110,7 +110,8 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
  */
 export function preprocessReport(report: IReport, filter: string | null, scroll: boolean) {
     if (scroll === true) {
-        // do nothing
+        // this is just to keep the scroll variable without TS no use error
+        // in case want to turn scrolling back on (see below: item.scrollTo = false)
     }
     report.counts = {
         "total": {},
