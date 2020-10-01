@@ -708,7 +708,7 @@ let a11yNls = {
         0: "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
         "Pass_0": "Rule Passed",
         "Fail_1": "Text contrast of {0} with its background is less than the WCAG AA minimum requirements for text of size {1}px and weight of {2}",
-        "Potential_1": "The foreground and background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for text"
+        "Potential_1": "The foreground text and its background color are both detected as {3}. Verify the text meets the WCAG 2.1 AA requirements for minimum contrast"
     },
     // JCH - DONE
     "IBMA_Color_Contrast_WCAG2AA_PV": {
