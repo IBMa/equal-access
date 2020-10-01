@@ -109,6 +109,9 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
  * @param scroll If true, will set a scroll position on the report. If false, will not scroll.
  */
 export function preprocessReport(report: IReport, filter: string | null, scroll: boolean) {
+    if (scroll === true) {
+        // do nothing
+    }
     report.counts = {
         "total": {},
         "filtered": {}
