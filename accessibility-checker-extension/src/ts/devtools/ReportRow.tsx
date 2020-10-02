@@ -16,6 +16,8 @@
  
 import React, { RefObject } from "react";
 
+import ReactTooltip from "react-tooltip";
+
 import { IReportItem, valueMap, ICheckpoint, IReport} from "./Report";
 
 import { ChevronUp16, ChevronDown16 } from '@carbon/icons-react';
@@ -188,7 +190,15 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                         return <React.Fragment>
                         {!this.props.focusedViewFilter || (focusedView && (item.selected || item.selectedChild)) ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
-                                (<div tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
+                                (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
+                                    {focusedView && item.selected ?
+                                    <ReactTooltip id="selectedTip" place="top" effect="solid">
+                                        Parent element issue
+                                    </ReactTooltip> : ""}
+                                    {focusedView && item.selectedChild ?
+                                    <ReactTooltip id="selectedChildTip" place="top" effect="solid">
+                                        Child element issue
+                                    </ReactTooltip> : ""}
                                     <div role="cell" className="bx--col-sm-1"> </div>
                                     <div role="cell" className="bx--col-sm-3">
                                         <div className="itemMessage">
@@ -215,9 +225,13 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                                             }
                                         </div>
                                     </div>
-                                </div>)
+                                </div>
+                                
+                                
+                                )
                             : ""
                         : "" }
+                        
                 </React.Fragment>
                 })}
             </React.Fragment> }

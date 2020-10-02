@@ -287,12 +287,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Scope_Valid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Input_RadioChkInFieldSet",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "Valerie_Caption_HasContent",
@@ -307,7 +307,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Table_DataCellRelationships",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_DataHeadingsAria",
@@ -337,12 +337,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Script_OnclickHTML2",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
                 {
                     id: "WCAG20_Input_InFieldSet",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_LayoutTrigger",
@@ -352,7 +352,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -371,7 +371,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Elem_DirValid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Text_LetterSpacing",
@@ -389,7 +389,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Text_SensoryReference",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -937,7 +937,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -1442,12 +1442,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Scope_Valid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Input_RadioChkInFieldSet",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "Valerie_Caption_HasContent",
@@ -1462,7 +1462,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Table_DataCellRelationships",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_DataHeadingsAria",
@@ -1492,12 +1492,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Script_OnclickHTML2",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
                 {
                     id: "WCAG20_Input_InFieldSet",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_LayoutTrigger",
@@ -1507,7 +1507,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -1526,7 +1526,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Elem_DirValid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Text_LetterSpacing",
@@ -1544,7 +1544,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Text_SensoryReference",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -2092,7 +2092,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -2597,12 +2597,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Scope_Valid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Input_RadioChkInFieldSet",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "Valerie_Caption_HasContent",
@@ -2617,7 +2617,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Table_DataCellRelationships",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_DataHeadingsAria",
@@ -2647,12 +2647,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Script_OnclickHTML2",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
                 {
                     id: "WCAG20_Input_InFieldSet",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_LayoutTrigger",
@@ -2662,7 +2662,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -2681,7 +2681,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Elem_DirValid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Text_LetterSpacing",
@@ -2699,7 +2699,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Text_SensoryReference",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -3158,7 +3158,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -3663,12 +3663,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Scope_Valid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Input_RadioChkInFieldSet",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "Valerie_Caption_HasContent",
@@ -3683,7 +3683,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Table_DataCellRelationships",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_DataHeadingsAria",
@@ -3713,12 +3713,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Script_OnclickHTML2",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
                 {
                     id: "WCAG20_Input_InFieldSet",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "RPT_Table_LayoutTrigger",
@@ -3728,7 +3728,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
                     id: "WCAG20_Table_SummaryAria3",
@@ -3747,7 +3747,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Elem_DirValid",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Text_LetterSpacing",
@@ -3765,7 +3765,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Text_SensoryReference",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -4324,7 +4324,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },

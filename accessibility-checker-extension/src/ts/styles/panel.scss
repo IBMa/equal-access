@@ -46,16 +46,8 @@ $feature-flags: (
     }
 
     .headerTools {
-        // position: absolute;
-        // right: .5rem;
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
-        }
-        button .bx--assistive-text {
-            top: -1.5rem;
-        }
-        button::before {
-            top: 0rem;
         }
         button.bx--btn {
             color: black;

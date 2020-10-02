@@ -16,6 +16,8 @@
 
 import React from "react";
 
+import ReactTooltip from "react-tooltip";
+
 import {
     Button, Checkbox, ContentSwitcher, Switch, Tooltip
 } from 'carbon-components-react';
@@ -183,14 +185,28 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.collapseAll}
-                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                                className="settingsButtons" 
+                                size="small" 
+                                hasIconOnly 
+                                kind="ghost" 
+                                tooltipAlignment="center" 
+                                tooltipPosition="top"
+                                iconDescription="Reset" 
+                                type="button"
                             >
                                 <Reset16 className="my-custom-class" />
                             </Button>
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.reportHandler}
-                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                                className="settingsButtons" 
+                                size="small" 
+                                hasIconOnly 
+                                kind="ghost" 
+                                tooltipAlignment="center" 
+                                tooltipPosition="top"
+                                iconDescription="Reports" 
+                                type="button"
                             >
                                 <ReportData16 className="my-custom-class" />
                             </Button>
@@ -198,8 +214,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
 
                     <div className="bx--col-md-3">
-                        <ContentSwitcher
-                            title="Focus View"
+                        <ContentSwitcher data-tip data-for="focusViewTip"
+                            // title="Focus View"
                             style={{height: "30px"}}
                             selectionMode="manual"
                             selectedIndex={1}
@@ -225,6 +241,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onKeyDown={this.onKeyDown.bind(this)}
                             />
                         </ContentSwitcher>
+
+                        <ReactTooltip id="focusViewTip" place="top" effect="solid">
+                            Focus view
+                        </ReactTooltip>
 
                     </div>
                 </div>
@@ -257,16 +277,30 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.collapseAll}
-                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reset selections" type="button"
+                                className="settingsButtons" 
+                                size="small" 
+                                hasIconOnly 
+                                kind="ghost"
+                                tooltipAlignment="center" 
+                                tooltipPosition="top"
+                                iconDescription="Reset" 
+                                type="button"
                             >
-                                <Reset16 className="my-custom-class" />
+                                <Reset16/>
                             </Button>
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.reportHandler}
-                                className="settingsButtons" size="small" hasIconOnly kind="ghost" iconDescription="Reports" type="button"
+                                className="settingsButtons" 
+                                size="small" 
+                                hasIconOnly 
+                                kind="ghost" 
+                                tooltipAlignment="center" 
+                                tooltipPosition="top"
+                                iconDescription="Reports" 
+                                type="button"
                             >
-                                <ReportData16 className="my-custom-class" />
+                                <ReportData16/>
                             </Button>
                         </div>
                     </div>
@@ -275,12 +309,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
             <div className="countRow summary" role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
-                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
-                        <Checkbox
+                    <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
+                        <Checkbox 
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter violations"
-                            aria-label="Filter violations"
+                            // title="Filter violations" // used react tooltip so all tooltips the same
+                            aria-label="Filter by violations"
                             defaultChecked
                             id="Violations"
                             indeterminate={false}
@@ -289,15 +323,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
+                        <ReactTooltip id="filterViolationsTip" place="top" effect="solid">
+                            Filter by Violations
+                        </ReactTooltip>
                     </span>
                 </div>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
-                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
+                    <span data-tip data-for="filterNeedsReviewTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter needs review"
-                            aria-label="Filter needs review"
+                            // title="Filter needs review"
+                            aria-label="Filter by needs review"
                             defaultChecked
                             id="NeedsReview"
                             indeterminate={false}
@@ -306,15 +343,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
+                        <ReactTooltip id="filterNeedsReviewTip" place="top" effect="solid">
+                            Filter by Needs Review
+                        </ReactTooltip>
                     </span>
                 </div>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
-                    <span style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
+                    <span data-tip data-for="filterRecommendationTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
                             className="checkboxLabel"
                             disabled={!this.props.counts}
-                            title="Filter recommendations"
-                            aria-label="Filter recommendations"
+                            // title="Filter recommendations"
+                            aria-label="Filter by recommendations"
                             defaultChecked
                             id="Recommendations"
                             indeterminate={false}
@@ -323,6 +363,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
+                        <ReactTooltip id="filterRecommendationTip" place="top" effect="solid">
+                            Filter by Recommendations
+                        </ReactTooltip>
                     </span>
                 </div>
                 <div className="countItem" role="status" style={{ paddingTop: "0", paddingBottom: "0", height: "34px", textAlign: "right", overflow: "visible" }}>

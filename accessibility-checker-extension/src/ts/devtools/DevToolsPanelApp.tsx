@@ -44,6 +44,7 @@ interface IPanelState {
     report: IReport | null,
     filter: string | null,
     tabURL: string,
+    prevTabURL: string | null,
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
@@ -52,7 +53,8 @@ interface IPanelState {
     learnMore: boolean,
     learnItem: IReportItem | null,
     showIssueTypeFilter: boolean[],
-    scanning: boolean,   // true when scan taking place
+    scanning: boolean,  // true when scan taking place
+    firstScan: boolean, // true when first scan of a url
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -68,6 +70,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         report: null,
         filter: null,
         tabURL: "",
+        prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
         rulesets: null,
@@ -75,6 +78,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
+        firstScan: true,
         error: null,
         archives: null,
         selectedArchive: null,
@@ -138,7 +142,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     return retVal;
                 })($0)`, (result: string) => {
                     // This filter occurred because we selected an element in the elements tab
-                    this.onFilter(result);
+                    this.onFilter(result, "sub");
                     if (this.ignoreNext) {
                         this.ignoreNext = false;
                     }
@@ -149,9 +153,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-        
+        // console.log("componentDidMount");
         chrome.storage.local.get("OPTIONS", async function (result: any) {
-
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
             const archives = await self.getArchives();
@@ -202,9 +205,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     });
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
-                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
+                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
                 }
-
+                if (self.props.layout === "sub") {
+                    self.selectElementInElements();
+                }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                     tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
                     error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
@@ -244,107 +249,125 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
+        if (tabURL !== this.state.prevTabURL) {
+            this.setState({firstScan: true});
+        }
+        this.state.prevTabURL = tabURL;
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
             setTimeout(this.startScan.bind(this), 100);
         } else {
             this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
-            await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, tabURL:  tabURL})
+            try {
+                await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, tabURL:  tabURL, origin: this.props.layout})
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 
     collapseAll() {
-        if (this.state.report) {
-            this.state.report.filterstamp = new Date().getTime();
-            this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
-        }
+        // if (this.state.report) {
+        //     this.state.report.filterstamp = new Date().getTime();
+        //     this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
+        // }
+        this.setState({firstScan: true});
+        this.startScan();
     }
 
     async onReport(message: any): Promise<any> {
-        if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
-            let blob_url = message.blob_url;
-            let blob = await fetch(blob_url).then(r => r.blob());
-            message = JSON.parse(await blob.text());
-        }
+        try {
+            if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
+                let blob_url = message.blob_url;
+                let blob = await fetch(blob_url).then(r => r.blob());
+                message = JSON.parse(await blob.text());
+            }
 
-        let report = message.report;
-        let archives = await this.getArchives();
+            let report = message.report;
+            let archives = await this.getArchives();
 
-        // JCH add itemIdx to report (used to be in message.report)
-        if (!report) return;
+            // JCH add itemIdx to report (used to be in message.report)
+            if (!report) return;
 
-       let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
+        let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
-        report.results.map((result: any, index: any) => {
-            result["itemIdx"] = index;
-        })
-        let tabId = message.tabId;
+            report.results.map((result: any, index: any) => {
+                result["itemIdx"] = index;
+            })
+            let tabId = message.tabId;
 
 
-        if (this.state.tabId === tabId) {
-            report.timestamp = new Date().getTime();
-            report.filterstamp = new Date().getTime();
-            report.option = check_option;
+            if (this.state.tabId === tabId) {
+                report.timestamp = new Date().getTime();
+                report.filterstamp = new Date().getTime();
+                report.option = check_option;
 
-            this.setState({
-                filter: null,
-                numScanning: Math.max(0, this.state.numScanning - 1),
-                report: preprocessReport(report, null, false),
-                selectedItem: undefined
-            });
-        }
-        this.setState({ scanning: false }); // scan done
-        // console.log("SCAN DONE");
-        
-        if (this.props.layout === "sub") {
-            chrome.devtools.inspectedWindow.eval(`((node) => {
-                let countNode = (node) => { 
-                    let count = 0;
-                    let findName = node.nodeName;
-                    while (node) { 
-                        if (node.nodeName === findName) {
-                            ++count;
+                this.setState({
+                    filter: null,
+                    numScanning: Math.max(0, this.state.numScanning - 1),
+                    report: preprocessReport(report, null, false),
+                    selectedItem: undefined
+                });
+            }
+            this.setState({ scanning: false }); // scan done
+            // console.log("SCAN DONE");
+            
+            if (this.props.layout === "sub") {
+                if (this.state.firstScan === true && message.origin === this.props.layout) {
+                    this.selectElementInElements();
+                    this.setState({firstScan: false});
+                }
+                
+                chrome.devtools.inspectedWindow.eval(`((node) => {
+                    let countNode = (node) => { 
+                        let count = 0;
+                        let findName = node.nodeName;
+                        while (node) { 
+                            if (node.nodeName === findName) {
+                                ++count;
+                            }
+                            node = node.previousElementSibling; 
                         }
-                        node = node.previousElementSibling; 
+                        return "/"+findName.toLowerCase()+"["+count+"]";
                     }
-                    return "/"+findName.toLowerCase()+"["+count+"]";
-                }
-                let retVal = "";
-                while (node && node.nodeType === 1) {
-                    if (node) {
-                        retVal = countNode(node)+retVal;
-                        if (node.parentElement) {
-                            node = node.parentElement;
-                        } else {
-                            let parentElement = null;
-                            try {
-                                // Check if we're in an iframe
-                                let parentWin = node.ownerDocument.defaultView.parent;
-                                let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
-                                for (const iframe of iframes) {
-                                    try {
-                                        if (iframe.contentDocument === node.ownerDocument) {
-                                            parentElement = iframe;
-                                            break;
-                                        }
-                                    } catch (e) {}
-                                }
-                            } catch (e) {}
-                            node = parentElement;
+                    let retVal = "";
+                    while (node && node.nodeType === 1) {
+                        if (node) {
+                            retVal = countNode(node)+retVal;
+                            if (node.parentElement) {
+                                node = node.parentElement;
+                            } else {
+                                let parentElement = null;
+                                try {
+                                    // Check if we're in an iframe
+                                    let parentWin = node.ownerDocument.defaultView.parent;
+                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                    for (const iframe of iframes) {
+                                        try {
+                                            if (iframe.contentDocument === node.ownerDocument) {
+                                                parentElement = iframe;
+                                                break;
+                                            }
+                                        } catch (e) {}
+                                    }
+                                } catch (e) {}
+                                node = parentElement;
+                            }
                         }
                     }
-                }
-                return retVal;
-            })($0)`, (result: string) => {
-                // This filter occurred because we selected an element in the elements tab
-                this.onFilter(result);
-                if (this.ignoreNext) {
-                    this.ignoreNext = false;
-                }
-            });
+                    return retVal;
+                })($0)`, (result: string) => {
+                    // This filter occurred because we selected an element in the elements tab
+                    this.onFilter(result, message.origin);
+                    if (this.ignoreNext) {
+                        this.ignoreNext = false;
+                    }
+                });
+            }
+        } catch (err) {
+            console.error(err);
         }
-        
         return true;
     }
 
@@ -367,10 +390,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         return ret;
     }
 
-    onFilter(filter: string) {
+    onFilter(filter: string, origin: string) {
+        // console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
+        }
+        if (this.props.layout === "sub" && origin === "sub") {
+            this.selectElementInElements();
+            this.setState({firstScan: true});
         }
         this.getCurrentSelectedElement();
     }
@@ -523,13 +551,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }, 0);
                     });
                     // This filter occurred because we selected an issue in the Accessibility Checker tab
-                    this.onFilter(item.path.dom)
+                    this.onFilter(item.path.dom, "sub")
                 }
             }
         }
     }
 
     getCurrentSelectedElement() {
+        // console.log("getCurrentSelectedElement");
         let mythis = this;
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
@@ -550,7 +579,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     selectElementInElements () {
-        chrome.devtools.inspectedWindow.eval("inspect(document.body)", 
+        chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
             (result:string, isException) => {
                 if (isException) {
                     console.error(isException);
