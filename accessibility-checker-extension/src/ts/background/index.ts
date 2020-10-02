@@ -69,7 +69,7 @@ async function initTab(tabId: number, archiveId: string) {
 }
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
-    await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId });
+    await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL });
     return true;
 });
 

@@ -205,7 +205,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     });
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
-                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id })
+                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url })
                 }
                 if (self.props.layout === "sub") {
                     self.selectElementInElements();
