@@ -109,6 +109,10 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
  * @param scroll If true, will set a scroll position on the report. If false, will not scroll.
  */
 export function preprocessReport(report: IReport, filter: string | null, scroll: boolean) {
+    if (scroll === true) {
+        // this is just to keep the scroll variable without TS no use error
+        // in case want to turn scrolling back on (see below: item.scrollTo = false)
+    }
     report.counts = {
         "total": {},
         "filtered": {}
@@ -126,13 +130,15 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
                 filtVal = "=";
                 item.selected = true;
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             } else if (xpath.startsWith(filter)) {
                 item.selectedChild = true;
                 filtVal = "^";
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             }
         }

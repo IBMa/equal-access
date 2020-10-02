@@ -27,6 +27,7 @@
 		"react": "^16.12.0",
 		"react-dom": "^16.12.0",
 		"react-redux": "^7.1.3",
+		"react-tooltip": "^4.2.10",
 		"redux": "^4.0.5",
 		"string-hash": "^1.1.3",
 		"webext-redux": "^2.1.6",
