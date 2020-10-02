@@ -26,7 +26,7 @@ var pathLib = require('path');
 var constants = {
     DEBUG: process.env.DEBUG === "true",
 
-    maxTabs: 20,
+    maxTabs: 1,
 
     policies: ["IBM_Accessibility"],
 
