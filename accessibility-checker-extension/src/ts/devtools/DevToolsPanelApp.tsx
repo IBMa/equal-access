@@ -389,7 +389,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
         }
-        if (this.state.tabURL !== this.state.prevTabURL) {
+        if (this.props.layout === "sub") {
             this.selectElementInElements();
             this.setState({firstScan: true});
         }
