@@ -34,6 +34,7 @@ let ace;
     let reporterHTML;
     // Init the Metrics logger
     let metricsLogger;
+
     let initialize = async () => {
         if (aChecker.Config) return;
         aChecker.Config = await require("./ACConfigLoader");
@@ -41,9 +42,10 @@ let ace;
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
 
-        reporterHTML = new ACReporterHTML(aChecker);
-        reporterJSON = new ACReporterJSON(aChecker);
-        reporterCSV = new ACReporterCSV(aChecker);
+        // Only need to create a reporter once
+        reporterHTML = reporterHTML || new ACReporterHTML(aChecker);
+        reporterJSON = reporterJSON || new ACReporterJSON(aChecker);
+        reporterCSV = reporterCSV || new ACReporterCSV(aChecker);
 
         // Specify if debug information should be printed or not
         aChecker.DEBUG = aChecker.Config.DEBUG;
@@ -200,9 +202,8 @@ let ace;
         if (isPuppeteer(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer");
             let page = content;
-            const winHandle = await page.evaluateHandle('window');
             const docHandle = await page.evaluateHandle('document');
-            await page.evaluate((window, document, scriptUrl) => {
+            await page.evaluate((document, scriptUrl) => {
                 try {
                     if ('undefined' === typeof(ace)) {
                         return new Promise((resolve, reject) => {
@@ -222,7 +223,7 @@ let ace;
                 } catch (e) {
                     return Promise.reject(e);
                 }
-            }, winHandle, docHandle, aChecker.Config.rulePack + "/ace.js");
+            }, docHandle, aChecker.Config.rulePack + "/ace.js");
             return aChecker.loadLocalEngine();
         } else if (isSelenium(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
@@ -639,6 +640,8 @@ try {
                     aChecker.sendScreenShotToReporter(screenshotResult);
                 }
             }
+            page.aceBusy = false;
+
             return {
                 "report": report,
                 "puppeteer": parsed
@@ -1055,27 +1058,22 @@ try {
         aChecker.scanResults[results.label] = results;
     };
 
+    let browserP;
 
-    let driver;
-    aChecker.getBrowserChrome = async function(force) {
-        if (force || !driver) {
-            return driver = await puppeteer.launch({headless: aChecker.Config.headless, ignoreHTTPSErrors: aChecker.Config.ignoreHTTPSErrors || false});
-
-            // return driver = new webdriver.Builder()
-            //     .forBrowser('chrome')
-            //     .setChromeOptions(new chrome.Options().headless().windowSize(screen))
-            //     // .setChromeOptions(new chrome.Options().windowSize(screen))
-            //     .build();
+    aChecker.getBrowserChrome = async (force) => {
+        if  (force || !browserP) {
+            return browserP = puppeteer.launch({headless: aChecker.Config.headless, ignoreHTTPSErrors: aChecker.Config.ignoreHTTPSErrors || false});
         } else {
-            return driver;
+            return browserP;
         }
     }
 
     aChecker.close = async () => {
-        if (driver) {
-            await driver.close();
-            driver = null;
-            page = null;
+        if (browserP) {
+            let browser = await browserP;
+            await browser.close();
+            browserP = null;
+            pages = [];
         }
     }
 
@@ -1091,51 +1089,86 @@ try {
      *
      * @memberOf this
      */
-    let page = null;
+    let numInits = 0;
+    let pages = [];
     aChecker.buildIframeAndGetDoc = async function (URLorLocalFileorContent) {
-        let browser = await aChecker.getBrowserChrome();
-        if (!page || page.isClosed()) {
-            page = await browser.newPage();
-            page.on('console', msg => {
-                for (let i = 0; i < msg.args.length; ++i)
-                  console.log(`${i}: ${msg.args[i]}`);
-              });
+        const MAX_TABS = aChecker.Config.maxTabs;
+        const browser = await aChecker.getBrowserChrome();
+
+        // Clear out any pages that are already closed
+        pages = pages.map((page) => !page.isClosed() ? page : null);
+
+        // If there's an existing, ready page, use it
+        let availPage;
+        for (const page of pages) {
+            if (!availPage) {
+                if (!page.aceBusy) {
+                    availPage = page;
+                    page.aceBusy = true;
+                }
+            }
         }
+
+        if (!availPage) {
+            // All pages are busy. Should we create a new one?
+            if (pages.length+numInits >= MAX_TABS) {
+                // Too many pages, restart
+                return new Promise((resolve, reject) => {
+                    setTimeout(async () => {
+                        resolve(await aChecker.buildIframeAndGetDoc(URLorLocalFileorContent));
+                    }, 500);
+                });
+            } else {
+                // Let's create a new page
+                ++numInits;
+
+                let newPage = await browser.newPage();
+                newPage.on('console', msg => {
+                    for (let i = 0; i < msg.args.length; ++i)
+                    console.log(`${i}: ${msg.args[i]}`);
+                });
+                newPage.aceBusy = true;
+                availPage = newPage;
+                pages.push(newPage);
+                --numInits;
+            }
+        }
+
         let err = null,
             retVal = null;
         async function nav() {
-            // await page.goto('https://example.com');
             try {
                 if (URLorLocalFileorContent.toLowerCase().includes("<html")) {
                     // await page.goto(`data:text/html,encodeURIComponent(${URLorLocalFileorContent})`, { waitUntil: 'networkidle0' });
                     let urlStr = "data:text/html;charset=utf-8," + encodeURIComponent(URLorLocalFileorContent);
-                    await page.goto(urlStr);
+                    await availPage.goto(urlStr);
                 } else {
-                    await page.goto(URLorLocalFileorContent);
+                    await availPage.goto(URLorLocalFileorContent);
                 }
             } catch (e) {
                 err = `${e.message} ${URLorLocalFileorContent}`;
+                console.error(err);
                 return null;
             }
-            return page;
+            return availPage;
         }
         try {
             retVal = await nav();
         } catch (e) {
         }
         if (!retVal) {
-            // Try to restart if page fails
-            browser = await aChecker.getBrowserChrome(true);
-            page = await browser.newPage();
-            page.on('console', msg => {
-                for (let i = 0; i < msg.args.length; ++i)
-                  console.log(`${i}: ${msg.args[i]}`);
-              });
-            retVal = await nav();
+            // Page bad or unable to navigate, start over
+            page.close();
+            return new Promise((resolve, reject) => {
+                setTimeout(async () => {
+                    resolve(await aChecker.buildIframeAndGetDoc(URLorLocalFileorContent));
+                }, 0);
+            });
         }
         if (retVal === null) {
             console.log("[Internal Error:load content]", err);
         }
+
         return retVal;
     };
 

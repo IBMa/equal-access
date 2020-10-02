@@ -190,9 +190,9 @@ getInputFileList().then(async (rptInputFiles) => {
             f = path.resolve(f);
         } catch (e) {}
         if (isFile) {
-            result = await aChecker.getCompliance("file://"+f, f);
+            result = await aChecker.getCompliance("file://"+f, f.replace(/^file:\/\//,"").replace(/:/g,"_"));
         } else {
-            result = await aChecker.getCompliance(f, f);
+            result = await aChecker.getCompliance(f, f.replace(/^(https?:|file:)\/\//,"").replace(/:/g,"_"));
         }
         if (result) {
             if (aChecker.assertCompliance(result.report) === 0) {

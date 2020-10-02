@@ -1,0 +1,15 @@
+{
+  "name": "@ibma/aat-boilerplate",
+  "version": "3.0.0",
+  "description": "Example usage of accessibility checker in code batch scans",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "engines": {
+    "node": "10 || 12"
+  },
+  "devDependencies": {
+    "accessibility-checker": "file:../../src"
+  }
+}
