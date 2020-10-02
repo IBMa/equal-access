@@ -17,8 +17,12 @@
 import TabMessaging from "../util/tabMessaging";
 
 TabMessaging.addListener("DAP_CACHED_TAB", async (message: any) => {
-    let c = (window as any).aceReportCache;
-    TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, report: c.report, archiveId: c.archiveId, policyId: c.policyId });
+    try {
+        let c = (window as any).aceReportCache;
+        TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, tabURL: message.tabURL, report: c.report, archiveId: c.archiveId, policyId: c.policyId });
+    } catch (e) {
+        console.error(e);
+    }
     return true;
 });
 
