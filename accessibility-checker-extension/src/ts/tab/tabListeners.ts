@@ -17,21 +17,38 @@
 import TabMessaging from "../util/tabMessaging";
 
 TabMessaging.addListener("DAP_CACHED_TAB", async (message: any) => {
-    TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, report: (window as any).report });
+    try {
+        let c = (window as any).aceReportCache;
+        TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, tabURL: message.tabURL, report: c.report, archiveId: c.archiveId, policyId: c.policyId, origin: message.origin });
+    } catch (e) {
+        console.error(e);
+    }
     return true;
 });
 
 
 TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
-    let checker = new (<any>window).ace.Checker();
+    try {
+        let checker = new (<any>window).ace.Checker();
 
-    console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
-    (window as any).report = await checker.check(window.document, [message.policyId]);
-    TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 
-        tabId: message.tabId, 
-        report: (window as any).report,
-        archiveId: message.archiveId,
-        policyId: message.policyId
-    });
+        console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
+
+        (window as any).aceReportCache = {
+            archiveId: message.archiveId,
+            policyId: message.policyId,
+            report: await checker.check(window.document, [message.policyId])
+        };
+
+        TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 
+            tabId: message.tabId,
+            tabURL: message.tabURL,
+            report: (window as any).aceReportCache.report,
+            archiveId: message.archiveId,
+            policyId: message.policyId,
+            origin: message.origin
+        });
+    } catch (err) {
+        console.error(err);
+    }
     return true;
 });

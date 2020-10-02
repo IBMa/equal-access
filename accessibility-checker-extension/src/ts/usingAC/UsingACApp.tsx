@@ -18,7 +18,7 @@ limitations under the License.
 
 import React from "react";
 
-import beeLogoUrl from "../../assets/Bee_Logo.svg";
+import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
@@ -137,6 +137,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       </a>
                     </li>
                   </ul>
+                </li>
+                <li>
+                  <a href="#feedback" title="feedback">
+                    8. Feedback
+                  </a>
                 </li>
               </ul>
             </div>
@@ -444,6 +449,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               looking to find and fix errors quickly as they are building a
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
+              {" "}
               <strong>Note</strong>: On rare occasions the Accessibility Checker
               extension does not appear in the developer tools for some sites
               due to a bug in the developer tools. The workaround is to go to a
@@ -1126,6 +1132,26 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 height="100%"
               />
             </p>
+            
+            <h2 id="feedback">8. Feedback</h2>
+              <div className="pa">
+                Visit the{" "}
+                  <a href="https://github.com/IBMa/equal-access/issues">
+                  Equal Access git repository</a> to:
+                <ol
+                style={{ listStyleType: "circle", marginInlineStart: "2rem" }}
+                >
+                  <li>
+                    Report a problem with the checker tool.
+                  </li>
+                  <li>
+                    Report a problem with the checker rules or accuracy of the errors reported by the checker.
+                  </li>
+                  <li>
+                    Find information on any existing issues.
+                  </li>
+                </ol>
+              </div>
           </div>
           <div className="bx--col-md-0 bx--col-lg-3 buffer"></div>
         </div>

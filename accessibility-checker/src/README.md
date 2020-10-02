@@ -17,9 +17,13 @@ $ npm install --save-dev accessibility-checker
 ```
 
 Use the command-line version:
-
+* Install globally
 ```bash
-$ npx achecker
+$ npm install -g accessibility-checker
+```
+* Run command-line tool after globally installed
+```bash
+$ achecker
 ```
 
 ## Getting Started

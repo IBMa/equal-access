@@ -83,7 +83,8 @@ interface IReportProps {
     getItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
-    dataFromParent: boolean[]
+    dataFromParent: boolean[],
+    focusedViewFilter: boolean
 }
 
 export const valueMap: { [key: string]: { [key2: string]: string } } = {
@@ -108,6 +109,10 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
  * @param scroll If true, will set a scroll position on the report. If false, will not scroll.
  */
 export function preprocessReport(report: IReport, filter: string | null, scroll: boolean) {
+    if (scroll === true) {
+        // this is just to keep the scroll variable without TS no use error
+        // in case want to turn scrolling back on (see below: item.scrollTo = false)
+    }
     report.counts = {
         "total": {},
         "filtered": {}
@@ -125,13 +130,15 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
                 filtVal = "=";
                 item.selected = true;
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             } else if (xpath.startsWith(filter)) {
                 item.selectedChild = true;
                 filtVal = "^";
                 if (item.value[1] !== "PASS") {
-                    item.scrollTo = scroll;
+                    // item.scrollTo = scroll;
+                    item.scrollTo = false;  // no scrolling to selected.
                 }
             }
         }
@@ -190,13 +197,13 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent}/>
+                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent}/>
+                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                     {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
-                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent}/>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                 </div>
                             </Tab>
