@@ -723,7 +723,8 @@ let a11yHelp = {
     "IBMA_Color_Contrast_WCAG2AA": {
         0: `${Config.helpRoot}/IBMA_Color_Contrast_WCAG2AA`,
         "Pass_0": `${Config.helpRoot}/IBMA_Color_Contrast_WCAG2AA`,
-        "Fail_1": `${Config.helpRoot}/IBMA_Color_Contrast_WCAG2AA`
+        "Fail_1": `${Config.helpRoot}/IBMA_Color_Contrast_WCAG2AA`,
+        "Potential_1": `${Config.helpRoot}/IBMA_Color_Contrast_WCAG2AA_PV`
     },
     // JCH - DONE
     "IBMA_Color_Contrast_WCAG2AA_PV": {
