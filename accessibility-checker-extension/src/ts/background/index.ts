@@ -69,48 +69,57 @@ async function initTab(tabId: number, archiveId: string) {
 }
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
-    await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId });
+    await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
     return true;
 });
 
 BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
     chrome.storage.local.get("OPTIONS", async function (result: any) {
-        // Determine which archive we're scanning with
-        let archiveId = Config.defaultArchiveId + "";
-        const archives = await EngineCache.getArchives();
-        const validArchive = ((id: string) => id && archives.some(archive => archive.id === id));
+        try {
+            // Determine which archive we're scanning with
+            let archiveId = Config.defaultArchiveId + "";
+            const archives = await EngineCache.getArchives();
+            const validArchive = ((id: string) => id && archives.some(archive => archive.id === id));
 
-        if (!validArchive(archiveId)) archiveId = "latest";
-        if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
-            archiveId = result.OPTIONS.selected_archive.id;
+            if (!validArchive(archiveId)) archiveId = "latest";
+            if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
+                archiveId = result.OPTIONS.selected_archive.id;
+            }
+            let selectedArchive = archives.filter(archive => archive.id === archiveId)[0];
+
+            // Determine which policy we're scanning with
+            let policyId: string = selectedArchive.policies[0].id;
+            const validPolicy = ((id: string) => id && selectedArchive.policies.some(policy => policy.id === id));
+            if (!validPolicy(policyId)) policyId = "IBM_Accessibility";
+            if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
+                policyId = result.OPTIONS.selected_ruleset.id;
+            }
+
+            await initTab(message.tabId, archiveId);
+            await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
+                tabId: message.tabId,
+                tabURL: message.tabURL,
+                archiveId: archiveId,
+                policyId: policyId,
+                origin: message.origin
+            });
+        } catch (err) {
+            console.error(err);
         }
-        let selectedArchive = archives.filter(archive => archive.id === archiveId)[0];
-
-        // Determine which policy we're scanning with
-        let policyId: string = selectedArchive.policies[0].id;
-        const validPolicy = ((id: string) => id && selectedArchive.policies.some(policy => policy.id === id));
-        if (!validPolicy(policyId)) policyId = "IBM_Accessibility";
-        if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
-            policyId = result.OPTIONS.selected_ruleset.id;
-        }
-
-        await initTab(message.tabId, archiveId);
-        await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
-            tabId: message.tabId,
-            tabURL: message.tabURL,
-            archiveId: archiveId,
-            policyId: policyId
-        });
         return true;
     });
 });
 
 BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) => {
-    BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
-    if (message.archiveId && message.policyId) {
-        let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
-        metrics.profileV2(message.report.totalTime, browser, message.policyId);
-        metrics.sendLogsV2();
+    try {
+        BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
+        if (message.archiveId && message.policyId) {
+            let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
+            metrics.profileV2(message.report.totalTime, browser, message.policyId);
+            metrics.sendLogsV2();
+        }
+    } catch (err) {
+        console.error(err);
     }
     return true;
 });
