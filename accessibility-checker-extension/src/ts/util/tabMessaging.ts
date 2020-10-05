@@ -16,6 +16,7 @@
 
 import CommonMessaging from "./commonMessaging";
 import BrowserDetection from "../util/browserDetection";
+//import { report } from 'process';
 
 export default class TabMessaging {
 
@@ -33,8 +34,11 @@ export default class TabMessaging {
             var blob = new Blob([json_string], { type: "application/json" });
 
             var url = URL.createObjectURL(blob);
-            delete myMessage.report;
+            
             myMessage.blob_url = url;
+            myMessage.totalTime = myMessage.report.totalTime;
+
+            delete myMessage.report;
         }
 
         return new Promise((resolve, reject) => {
