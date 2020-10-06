@@ -728,10 +728,40 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               By default, after the first scan of a page, all issues are shown, and the <strong>'html'</strong> element is selected, as shown in this screenshot:
               
               Insert screenshot1 here
-              
-              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the <strong>‘Focus View’</strong> switch has has been set to show only the issues for that <strong>‘search input’</strong>:
-              
-              Insert screenshot2 here
+
+              <p>
+                    <img
+                      src="assets/img/htmlFocusViewAll.png"
+                      alt="Accessibility Checker screenshot - Focus view will all issues"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+              <br/>
+              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show all the issues including the selected <strong>‘search input’</strong>:
+              <br/>
+              <p>
+                    <img
+                      src="assets/img/searchFocusViewAll.png"
+                      alt="Accessibility Checker screenshot - Focus view of 'search input' will all issues"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+              <br/>
+              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show only the issues for that <strong>‘search input’</strong>:
+              <br/>
+              <p>
+                    <img
+                      src="assets/img/searchFocusView.png"
+                      alt="Accessibility Checker screenshot - Focus view of 'search input' only issues"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+
               </ol>
             </div>
 
