@@ -102,8 +102,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       </a>
                     </li>
                     <li>
+                      <a href="#focus_view" title="Focus view">
+                        6.2 Focus view
+                      </a>
+                    </li>
+                    <li>
                       <a href="#a11y_assess" title="Accessibility Assessment">
-                        6.2 Accessibility Assessment
+                        6.3 Accessibility Assessment
                       </a>
                     </li>
                     <li>
@@ -111,17 +116,17 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         href="#t_select_hidden_settings"
                         title="Select hidden content Settings"
                       >
-                        6.3 Hidden content scanning
+                        6.4 Hidden content scanning
                       </a>
                     </li>
                     <li>
                       <a href="#scan_local_files" title="Scan local files">
-                        6.4 Scanning local files
+                        6.5 Scanning local files
                       </a>
                     </li>
                     <li>
                       <a href="#a11y_considerations" title="Accessibility Considerations">
-                        6.5 Accessibility Considerations
+                        6.6 Accessibility Considerations
                       </a>
                     </li>
                   </ul>
@@ -704,7 +709,33 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="a11y_assess">6.2 Accessibility Assessment</h3>
+            <h3 id="focus_view">6.2 Focus View</h3>
+            <div className="pa">
+              The <strong>'Focus view'</strong> switch allows you to to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
+              <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>Select the element or the component in the <strong>'DOM view'</strong>, or</li>
+                <li>
+                  <strong>'Right-click'</strong> on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                </li>
+                <li>
+                  Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
+                </li>
+              To see all issues for the page again:
+                <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch.</li>
+              
+              By default, after the first scan of a page, all issues are shown, and the <strong>'html'</strong> element is selected, as shown in this screenshot:
+              
+              Insert screenshot1 here
+              
+              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the <strong>‘Focus View’</strong> switch has has been set to show only the issues for that <strong>‘search input’</strong>:
+              
+              Insert screenshot2 here
+              </ol>
+            </div>
+
+            <h3 id="a11y_assess">6.3 Accessibility Assessment</h3>
             <div className="pa">
               <ol
                 style={{
@@ -929,7 +960,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="t_select_hidden_settings">6.3 Hidden content scanning</h3>
+            <h3 id="t_select_hidden_settings">6.4 Hidden content scanning</h3>
             <p>
               By default, the tool skips hidden content (Web pages that use the{" "}
               <var>visibility:hidden</var> or <var>display:none</var> elements),
@@ -940,7 +971,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               Accessibility Checker can validate the content that is displayed.
             </p>
 
-            <h3 id="scan_local_files">6.4 Scan local files</h3>
+            <h3 id="scan_local_files">6.5 Scan local files</h3>
             <div className="pa">
               The Accessibility Checker is able to scan local .html or .htm
               files launched in the Firefox browser by default. Follow the steps
@@ -968,7 +999,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="a11y_considerations">6.5 Accessibility Considerations</h3>
+            <h3 id="a11y_considerations">6.6 Accessibility Considerations</h3>
             <div className="pa">
                Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
               <ol
