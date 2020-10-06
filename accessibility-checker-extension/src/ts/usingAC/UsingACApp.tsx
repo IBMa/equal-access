@@ -722,12 +722,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
                 </li>
-              To see all issues for the page again:
-                <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch.</li>
+                <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch to see all issues for the page again.</li>
               
               By default, after the first scan of a page, all issues are shown, and the <strong>'html'</strong> element is selected, as shown in this screenshot:
               
-              Insert screenshot1 here
+  
 
               <p>
                     <img
