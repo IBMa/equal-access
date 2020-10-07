@@ -755,7 +755,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <p>
                     <img
                       src="assets/img/searchFocusView.png"
-                      alt="Accessibility Checker screenshot - Focus view of 'search input' only issues"
+                      alt="Accessibility Checker screenshot. Focus view switch options are 'input' (selected) and 'All' only the two issues within the search input element are shown"
                       width="100%"
                       height="100%"
                     />
