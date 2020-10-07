@@ -548,8 +548,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     To <strong>filter</strong> issues and focus only on
                     violations, items that need review or recommendations,
-                    select the issue type in the issue count region below the
-                    'Scan' button. Select the same issue type again to see all
+                    deselect the checkbox by the issue type in the issue count region below the
+                    'Scan' button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
                     issue types.
                   </p>
                 </li>
@@ -688,15 +688,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Use the <strong>‘Reset’</strong> button to return the view
-                    to the way it was just after scanning, with no issues
-                    highlighted or opened.
+                    to the initial scan, with the results showing all the issues for the page,
+                    highlighted and opened.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Use the <strong>‘Report’</strong> button to download a
                     standalone HTML report that includes the same three views
-                    and all the help information provided in the checker.
+                    and all the help information provided in the checker and a MS excel spreadsheet report for easy data manipulation.
                   </p>
                 </li>
                 <li>
@@ -1121,10 +1121,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h2 id="the_report">7. Accessibility Checker report</h2>
+            <h2 id="the_report">7. Accessibility Checker reports</h2>
             <p>
-              The Accessibility Checker provides a full report that you can
-              download as HTML. To open the Accessibility Checker report:
+              The Accessibility Checker provides two kinds of reports to download, one that as HTML and one as MS excel spreadsheet. To open the Accessibility Checker reports:
             </p>
             <ol
               style={{
@@ -1148,8 +1147,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
               <li>
                 <p style={{ marginTop: "0rem" }}>
-                  Select the <strong>'Report'</strong> icon to download the
-                  report:
+                  Select the <strong>'Reports'</strong> icon to download the
+                  reports:
                 </p>
                 <p>
                   <img
@@ -1162,9 +1161,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ol>
 
-            <h3 id="t_view_report">7.1 Review the report</h3>
+            <h3 id="t_view_report">7.1 Review the reports</h3>
             <p>
-              The Accessibility Checker Report is an interactive report that you
+              <strong>HTML Accessibility Checker report:</strong> This is an interactive report that you
               can save as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
               the issue details organized by checklist checkpoints, by element
@@ -1191,6 +1190,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 width="100%"
                 height="100%"
               />
+            </p>
+            <p><strong>MS Excel Spreadsheet report:</strong> This is a 3 sheet report. The header sheet includes the name of the tool with its version, the scan date, the ruleset and the guidelines used for the scan, and a summary of the results. The issue sheet has the issue details which now includes scan label, issue id and toolkit levels. The third sheet has definition of the fields used as columns in the issue details sheet.
             </p>
             
             <h2 id="feedback">8. Feedback</h2>
