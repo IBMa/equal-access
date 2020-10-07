@@ -711,7 +711,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h3 id="focus_view">6.2 Focus View</h3>
             <div className="pa">
-              The <strong>'Focus view'</strong> switch allows you to to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
+              The <strong>'Focus view'</strong> switch allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
