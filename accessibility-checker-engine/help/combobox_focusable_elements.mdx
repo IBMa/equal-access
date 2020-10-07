@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: combobox_focusable_elements"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Tabbable focus is not set correctly within the combobox or related popup
+
+<div id="locLevel"></div>
+
+Tabbable focus for the combobox must be allowable only on the text input, except when using a dialog popup
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox is a UI interactive component that combines an input and another element, such as a listbox
+or grid, that can dynamically pop up to help the user set the value of the input. When a combobox 
+receives focus, the focus should be set on the text `<input>` element that can either display the 
+current value or supports editing, so people who use assistive technologies are able accurately 
+navigate and interact with the content.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Unless the `has-popup` atttribute value is `dialog`, set the initial DOM focus only on the combobox’s `<input>` element.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.2/#combobox)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

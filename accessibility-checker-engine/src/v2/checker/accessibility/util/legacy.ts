@@ -694,7 +694,7 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getRoles(ele, considerImplicitRoles) {
+    public static getRoles(ele: Element, considerImplicitRoles: boolean) {
         let roles = [];
         if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
             let attrRoles = RPTUtil.normalizeSpacing(ele.getAttribute("role").trim()).split(" ");

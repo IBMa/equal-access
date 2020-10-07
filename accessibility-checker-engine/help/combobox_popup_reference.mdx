@@ -1,0 +1,72 @@
+---
+title: "Accessibility Checker Rule Help: combobox_popup_reference"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`
+
+<div id="locLevel"></div>
+
+The `aria-owns` or the `aria-controls` attribute of the expanded combobox must reference a valid popup `id`
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox combines a text input element and a popup element that helps the user set the value of the 
+input. The popup becomes visible when the combobox is in an expanded state and is controlled by using 
+an attribute `aria-owns` or `aria-controls` referencing its `id`. When the value of the `aria-owns` or 
+the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`, assistive 
+technologies may not be able to present and control the content correctly.
+
+Additionally, when the element with `role="combobox"` has an `aria-expanded` attribute with value `true`,
+the related popup element must be visible so that the assistive technology is able to present the
+popup to the user.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+
+ * Code the combobox as in the WAI-ARIA 1.2 example below;
+ * AND, set the value of the combobox `aria-controls` attribute to the `id` value of an element with `role="listbox"`;
+ * OR, if using the WAI-ARIA 1.0 style of combobox, update the value of the `aria-owns` attribute of the combobox to reference the `id` value of the combobox popup element;
+
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+  &lt;ul role="listbox" id="popup_listbox"&gt;
+   &lt;li role="option"&gt;Zebra&lt;/li&gt;
+   &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+  &lt;/ul&gt;</CodeSnippet>
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
+
+### Who does this affect?
+
+* Blind people using a screen reader
+* People with low vision using a screen reader
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

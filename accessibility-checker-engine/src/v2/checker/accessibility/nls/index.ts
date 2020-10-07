@@ -930,47 +930,48 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Fail_1": "Multiple toolbar components do not have unique labels"
     },
-    // JCH - DONE
-    "HAAC_Combobox_ARIA_11_Guideline": {
-        0: "Combobox component must be coded to WAI-ARIA 1.2 Authoring Practices",
-        "Pass_0": "Rule Passed",
-        "Manual_1": "Confirm combobox component is coded to WAI-ARIA 1.2 Authoring Practices"
+    "combobox_version": {
+        0: "The combobox design pattern must be valid for WAI-ARIA 1.2",
+        "Pass_1.0": "The combobox design pattern is detected as WAI-ARIA 1.0, which is allowed by WAI-ARIA 1.2",
+        "Fail_1.1": "The combobox design pattern is detected as WAI-ARIA 1.1, which is not allowed by WAI-ARIA 1.2",
+        "Pass_1.2": "The combobox design pattern is detected as WAI-ARIA 1.2"
     },
-    // JCH - DONE
-    "HAAC_Combobox_Must_Have_Text_Input": {
-        0: "A combobox must have a single line text input element with a valid role",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The text input element or number of lines is not valid for the combobox"
+    "combobox_popup_reference": {
+        0: "The 'aria-controls' (for WAI-ARIA 1.2) or the 'aria-owns' (for WAI-ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value",
+        "Pass_expanded": "The combobox popup referenced by 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) exists and is visible",
+        "Pass_collapsed": "The combobox popup is not referenced by 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) or is hidden",
+        "Fail_1.0_missing_owns": "The 'aria-owns' attribute of the expanded combobox is missing",
+        "Fail_1.2_missing_controls": "The 'aria-controls' attribute of the expanded combobox is missing",
+        "Fail_1.0_popup_reference_missing": "The 'aria-owns' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value",
+        "Fail_1.2_popup_reference_missing": "The 'aria-controls' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value",
+        "Fail_combobox_expanded_hidden": "The combobox 'aria-expanded' attribute is true, but the combobox popup is not visible",
+        "Fail_combobox_collapsed_visible": "The combobox 'aria-expanded' attribute is false, but the combobox popup is visible"
     },
-    // JCH - DONE
-    "HAAC_Combobox_DOM_Focus": {
-        0: "Initial DOM focus on the combobox must be set on the text input",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Initial DOM focus on the combobox is not set on the text input when the combobox receives focus"
+    "combobox_haspopup": {
+        0: "The combobox attribute 'aria-haspopup' value must be appropriate for the role of the element referenced by `aria-controls` (WAI-ARIA 1.2) or `aria-owns` (WAI-ARIA 1.0)",
+        "Pass": "The 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) appropriately references a valid popup 'id' value",
+        "Fail_popup_role_invalid": "The value of the combobox 'aria-haspopup' attribute \"{0}\" is not valid for a WAI-ARIA combobox",
+        "Fail_combobox_popup_role_mismatch": "The value of the combobox 'aria-haspopup' attribute \"{0}\" does not match the 'role' value of the popup element \"{1}\""
+    },    
+    "combobox_focusable_elements": {
+        0: "Tabbable focus for the combobox must be allowable only on the text input, except when using a dialog popup",
+        "Pass": "DOM focus is allowed on the combobox element and is not allowed on the popup",
+        "Fail_not_tabbable": "DOM focus is not allowed on the combobox",
+        "Fail_tabbable_child": "The popup of the combobox allows DOM focus or has 'aria-activedescendant' defined"
     },
-    // JCH - DONE
-    "HAAC_Combobox_Autocomplete": {
-        0: "A combobox that supports autocompletion behavior must have the 'aria-autocomplete' attribute only on its text input element",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The combobox has the 'aria-autocomplete' attribute set on an element that isn't a text input"
+    "combobox_active_descendant": {
+        0: "'aria-activedescendant' must be used to define focus within the combobox popup, except when using a dialog popup",
+        "Pass": "",
+        "Fail_missing": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist",
+        "Fail_not_in_popup": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist within the popup referenced by 'id' \"{1}\"",
+        "Fail_active_role_invalid": "The 'aria-activedescendant' \"{0}\" references an element with the roles \"{1}\", which does not have a WAI-ARIA role of 'option', 'gridcell', 'row', or 'treeitem'",
+        "Fail_active_not_selected": "The 'aria-activedescendant' \"{0}\" references an element that does not have 'aria-selected' set to true",
     },
-    // JCH - DONE
-    "HAAC_Combobox_Autocomplete_Invalid": {
-        0: "The 'aria-autocomplete' attribute value for a combobox text input element must not be \"inline\"",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The 'aria-autocomplete' attribute value of \"inline\" is not valid for the combobox"
-    },
-    // JCH - DONE
-    "HAAC_Combobox_Expanded": {
-        0: "The 'aria-owns' or the 'aria-controls' attribute of the expanded combobox must reference a valid popup 'id' value",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The 'aria-owns' or the 'aria-controls' attribute of the expanded combobox does not reference a valid popup 'id' value"
-    },
-    // JCH - DONE
-    "HAAC_Combobox_Popup": {
-        0: "The value of the combobox 'aria-haspopup' attribute must match the 'role' value of the popup element",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The value of the combobox 'aria-haspopup' attribute does not match the 'role' value of the popup element"
+    "combobox_autocomplete": {
+        0: "A combobox that supports autocompletion behavior must not have an 'aria-autcomplete' attribute value of '\"inline\"' and must have the 'aria-autocomplete' attribute only on its text input element",
+        "Pass": "The combobox does not use 'aria-autocomplete' value 'inline' and does not have 'aria-autocomplete' defined within the popup",
+        "Fail_1": "The combobox has the 'aria-autocomplete' attribute set on an element within the popup referenced by \"{0}\"",
+        "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute set to 'inline'"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {

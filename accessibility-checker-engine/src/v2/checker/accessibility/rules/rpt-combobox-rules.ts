@@ -17,435 +17,349 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
-let a11yRulesCombobox: Rule[] = [
+function patternDetect(elem: Element) : String {
+    // check 'explicit' role combobox and that it is not <select>. 
+    if (elem.tagName.toLowerCase() === "select" && elem.getAttribute("role") !== "combobox") {
+        return "implicit";
+    } else if (elem.nodeName.toLowerCase() === "input" 
+        && (!elem.hasAttribute("type") || elem.getAttribute("type") === "text")
+        && elem.hasAttribute("aria-owns") && !elem.hasAttribute("aria-controls")) 
     {
-        /**
-         * Description: Element with role='combobox' must contain single-line text input
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
-         */
-        id: "HAAC_Combobox_Must_Have_Text_Input",
+        // Looks like this is an ARIA 1.0 pattern, which the ARIA 1.2 spec says to continue to allow
+        return "1.0";
+    } else if (elem.nodeName.toLowerCase() !== "input" 
+        && elem.hasAttribute("aria-owns") && !elem.hasAttribute("aria-controls")) 
+    {
+        // Looks like this is an ARIA 1.1 pattern, which the ARIA 1.2 spec says is now invalid
+        return "1.1";
+    }
+    // Assume they're trying to do the latest, 1.2 pattern
+    return "1.2";
+}
+
+let a11yRulesCombobox: Rule[] = [
+    /**
+     * Description: This rule fails if a 1.1 pattern is detected,
+     * but more importantly identifies elements important for 1.0
+     * and 1.2 specific checking
+     * 
+     * ARIA 1.2 introdues a non-editable combobox, but also allows a 1.0 combobox
+     * Origin:  WAI-ARIA 1.2
+     *          https://www.w3.org/TR/wai-aria-1.2/#combobox
+     */
+    {
+        id: "combobox_version",
         context: "aria:combobox",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             if (!RPTUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
                 return null;
             }
-            let tagName = ruleContext.tagName.toLowerCase();
+            let pattern = patternDetect(ruleContext);
 
-            let pattern = ruleContext.nodeName.toLowerCase() === "input" ? "1.0" : "1.1";
-            let expanded = RPTUtil.getAriaAttribute(ruleContext, "aria-expanded").trim().toLowerCase() === "true";
-            let passed = true;
-            let textEle = null;
-            if (pattern === "1.0") {
-                passed = RPTUtil.getAriaAttribute(ruleContext, "aria-multiline").trim().toLowerCase() === "false";
-                textEle = ruleContext;
-            } else {
-                passed = false;
-                // examine the children
-                let nw = new NodeWalker(ruleContext);
-                while (!passed && nw.nextNode() && nw.node != ruleContext && nw.node != ruleContext.nextSibling) {
-                    if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node) && !RPTUtil.isNodeDisabled(nw.node)) {
-                        passed = (RPTUtil.hasRoleInSemantics(nw.node, "textbox") ||
-                            RPTUtil.hasRoleInSemantics(nw.node, "searchbox")) &&
-                            RPTUtil.getAriaAttribute(nw.node, "aria-multiline").trim().toLowerCase() === "false";
-                        textEle = nw.node;
-                    }
-                }
-                // look for the "owns"
-                if (!passed) {
-                    let aria_owns = RPTUtil.getElementAttribute(ruleContext, "aria-owns");
-                    if (aria_owns) {
-                        let owns = RPTUtil.normalizeSpacing(aria_owns.trim()).split(" ");
-                        for (let i = 0; !passed && i < owns.length; i++) {
-                            let owned = ruleContext.ownerDocument.getElementById(owns[i]);
-                            if (owned && RPTUtil.isNodeVisible(owned) && !RPTUtil.isNodeDisabled(owned)) {
-                                passed = (RPTUtil.hasRoleInSemantics(owned, "textbox") ||
-                                    RPTUtil.hasRoleInSemantics(owned, "searchbox")) &&
-                                    RPTUtil.getAriaAttribute(owned, "aria-multiline").trim().toLowerCase() === "false";
-                                textEle = owned;
-                            }
-                        }
-                    }
-                }
-            }
-            if (passed) {
-                let key = context["dom"].rolePath;
-                if (key) {
-                    let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
-                    cache[key] = {
-                        "inputText": textEle,
-                        "pattern": pattern,
-                        "expanded": expanded
-                    };
-                    RPTUtil.setCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", cache);
-                }
-            }
-
-            // check 'explicit' role combobox and that it is not <select>. 
-            // Run this check after the cache was saved since other rules may need it(g1196,1197)
-            if (!RPTUtil.hasRole(ruleContext, "combobox", false) || tagName === "select") {
+            // We don't assess native select elements here
+            if (pattern === "implicit") {
                 return null;
             }
 
-            if (!passed) {
-                return RuleFail("Fail_1");
+            let tagName = ruleContext.tagName.toLowerCase();
+            let expanded = RPTUtil.getAriaAttribute(ruleContext, "aria-expanded").trim().toLowerCase() === "true";
+            let editable = tagName === "input" && (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() === "text");
+
+            let key = context["dom"].rolePath;
+            if (key) {
+                let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+                cache[key] = {
+                    "inputElement": editable ? ruleContext : null,
+                    "pattern": pattern,
+                    "expanded": expanded
+                };
+                RPTUtil.setCache(ruleContext.ownerDocument, "combobox", cache);
             } else {
-                return RulePass("Pass_0");
+                // No xpath?
+                return null;
+            }
+            
+            if (pattern === "1.0") {
+                return RulePass("Pass_1.0");
+            } else if (pattern === "1.1") {
+                return RuleFail("Fail_1.1");
+            } else if (pattern === "1.2") {
+                return RulePass("Pass_1.2");
             }
         }
     },
+    /**
+     * Description: This rule fails if the popup of the combobox cannot be detected
+     *
+     * Note: combobox requires the id, and it must reference an appropriate element
+     * The popup might be empty, but it has to exist in the DOM
+     * 
+     * Origin:  WAI-ARIA 1.2
+     *          https://www.w3.org/TR/wai-aria-practices-1.2/#wai-aria-roles-states-and-properties-6
+     */
+    {
+        id: "combobox_popup_reference",
+        context: "aria:combobox",
+        dependencies: ["combobox_version"],
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            const cacheKey = context["dom"].rolePath;
+            const cachedElem = cache[cacheKey];
+            if (!cachedElem) return null;
+            const { pattern, expanded } = cachedElem;
 
+            let popupId;
+            let popupElement;
+            if (pattern === "1.0") {
+                if (!ruleContext.hasAttribute("aria-owns")) {
+                    // If the combobox isn't expanded, this attribute isn't required
+                    return !expanded ? null : RuleFail("Fail_1.0_missing_owns");
+                }
+                popupId = ruleContext.getAttribute("aria-owns");
+                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                if (!popupElement) {
+                    // If the combobox isn't expanded, this attribute isn't required
+                    return !expanded ? null : RuleFail("Fail_1.0_popup_reference_missing", [popupId]);
+                }
+            } else if (pattern === "1.2") {
+                if (!ruleContext.hasAttribute("aria-controls")) {
+                    // If the combobox isn't expanded, this attribute isn't required
+                    return !expanded ? null: RuleFail("Fail_1.2_missing_controls");
+                }
+                popupId = ruleContext.getAttribute("aria-controls");
+                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                if (!popupElement) {
+                    // If the combobox isn't expanded, this attribute isn't required
+                    return !expanded ? null : RuleFail("Fail_1.2_popup_reference_missing", [popupId]);
+                }
+            } else {
+                return null;
+            }
+
+            // We have an element, stick it in the cache and then check its role
+            cachedElem.popupId = popupId;
+            cachedElem.popupElement = popupElement;
+
+
+            if (expanded && !RPTUtil.isNodeVisible(popupElement)) {
+                return RuleFail("Fail_combobox_expanded_hidden");
+            } else if (!expanded && RPTUtil.isNodeVisible(popupElement)) {
+                return RuleFail("Fail_combobox_collapsed_visible");
+            }
+
+            return RulePass(expanded ? "Pass_expanded" : "Pass_collapsed");
+        }
+    },
+    {
+        /**
+         * Origin:  WAI-ARIA 1.2
+         *          https://www.w3.org/TR/wai-aria-practices-1.2/#wai-aria-roles-states-and-properties-6
+         */
+        id: "combobox_haspopup",
+        context: "aria:combobox",
+        dependencies: ["combobox_popup_reference"],
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            const cacheKey = context["dom"].rolePath;
+            const cachedElem = cache[cacheKey];
+            if (!cachedElem) return null;
+            const { popupElement } = cachedElem;
+            // If this isn't defined, the combobox is probably collapsed. A reference error is
+            // detected in combobox_popup_reference
+            if (!popupElement) return null;
+            // Check that popup role is listbox, grid, tree, or dialog and that it matches the combobox
+            let popupRoles = RPTUtil.getRoles(popupElement, true);
+            let validRoles = ["listbox", "grid", "tree", "dialog"].filter((validRole) => popupRoles.includes(validRole));
+            if (validRoles.length === 0) {
+                return RuleFail("Fail_popup_role_invalid", [popupRoles.join(",")]);
+            } else {
+                let popupRole = validRoles[0];
+                let haspopupVal = ruleContext.getAttribute("aria-haspopup") || "listbox";
+                // Popup role must match aria-haspopup unless popupRole is listbox, then aria-haspopup should not be defined                
+                if (haspopupVal !== popupRole) {
+                    if (popupRole !== "listbox" || ruleContext.hasAttribute("aria-haspopup")) {
+                        return RuleFail("Fail_combobox_popup_role_mismatch", [haspopupVal, popupRole]);
+                    }
+                }
+            }
+            return RulePass("Pass");
+        }
+    },
     {
         /**
          * Description: For a 'combobox', only the textbox should receive DOM focus. 
          * Focus of the listbox should be managed via aria-activedescendant on the textbox.
          * If any element other than the textbox within the combobox or aria-owned element has a tabindex >= 0 or aria-activedescendant, FAIL
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
+         * Origin:  WAI-ARIA 1.2
+         *          https://www.w3.org/TR/wai-aria-practices-1.2/#wai-aria-roles-states-and-properties-6
          */
-        id: "HAAC_Combobox_DOM_Focus",
+        id: "combobox_focusable_elements",
         context: "aria:combobox",
-        dependencies: ["HAAC_Combobox_Must_Have_Text_Input"],
+        dependencies: ["combobox_popup_reference"],
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            let tagName = ruleContext.tagName.toLowerCase();
-            // check 'explicit' role combobox and that it is not <select>
-            if (!RPTUtil.hasRole(ruleContext, "combobox", false) || tagName === "select") {
+            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            let cachedElem = cache[context["dom"].rolePath];
+            if (!cachedElem) return null;
+            const { popupElement, expanded } = cachedElem;
+            // If this isn't defined, the combobox is probably collapsed. A reference error is
+            // detected in combobox_popup_reference
+            if (!popupElement) return null;
+
+            const popupRole = RPTUtil.getRoles(popupElement, true)[0];
+
+            let retVal = []
+            if (!RPTUtil.isTabbable(ruleContext)) {
+                retVal.push(RuleFail("Fail_not_tabbable"));
+            }
+
+            // Only makes sense to check the popup when expanded
+            // this does not apply to dialogs
+            if (expanded === false || popupRole === "dialog") {
                 return null;
             }
 
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
-            let cachedElem = cache[context["dom"].rolePath];
-            if (!cachedElem) return null;
-            let textInput = cachedElem.inputText;
-            let pattern = cachedElem.pattern;
             let passed = true;
 
-            if (pattern === "1.1") {
-                //examine the container
-                passed = !(RPTUtil.isTabbable(ruleContext) || RPTUtil.getAriaAttribute(ruleContext, "aria-activedescendant"));
-            }
-
             // examine the children
-            if (ruleContext.firstChild) {
-                let nw = new NodeWalker(ruleContext);
-                while (passed && nw.nextNode() && nw.node != ruleContext && nw.node != ruleContext.nextSibling) {
+            if (popupElement) {
+                let nw = new NodeWalker(popupElement);
+                while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        if (nw.node !== textInput) {
-                            passed = !RPTUtil.isTabbable(nw.node) &&
-                                !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
-                        }
-                    }
-                }
-            }
-
-            if (passed) {
-                // examine the owned elements
-                let ariaOwnsAttr = RPTUtil.getAriaAttribute(ruleContext, "aria-owns");
-                if (ariaOwnsAttr) {
-                    let ownedIds = RPTUtil.normalizeSpacing(ariaOwnsAttr.trim()).split(" ");
-
-                    for (let j = 0; passed && j < ownedIds.length; j++) {
-                        let child_list = ruleContext.ownerDocument.getElementById(ownedIds[j]);
-                        if (child_list && RPTUtil.isNodeVisible(child_list) && child_list !== textInput) {
-                            passed = !RPTUtil.isTabbable(child_list) &&
-                                !RPTUtil.getAriaAttribute(child_list, "aria-activedescendant");
-                        }
-                        if (passed && child_list && child_list.firstChild) {
-                            let nwl = new NodeWalker(child_list);
-                            while (passed && nwl.nextNode() && nwl.node != child_list.nextSibling) {
-                                if (nwl.node.nodeType === 1 && RPTUtil.isNodeVisible(nwl.node)) {
-                                    if (nwl.node !== textInput) {
-                                        passed = !RPTUtil.isTabbable(nwl.node) &&
-                                            !RPTUtil.getAriaAttribute(nwl.node, "aria-activedescendant");
-                                    }
-                                }
-                            }
-                        }
+                        passed = !RPTUtil.isTabbable(nw.node) &&
+                            !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
                     }
                 }
             }
 
             if (!passed) {
-                return RuleFail("Fail_1");
+                retVal.push(RuleFail("Fail_tabbable_child"));
+            }
+            
+            if (retVal.length === 0) {
+                return RulePass("Pass");
             } else {
-                return RulePass("Pass_0");
+                return retVal;
             }
         }
     },
+    {
+        /**
+         * Description: For a 'combobox', only the textbox should receive DOM focus. 
+         * Focus of the listbox should be managed via aria-activedescendant on the textbox.
+         * If any element other than the textbox within the combobox or aria-owned element has a tabindex >= 0 or aria-activedescendant, FAIL
+         * Origin:  WAI-ARIA 1.2
+         *          https://www.w3.org/TR/wai-aria-practices-1.2/#wai-aria-roles-states-and-properties-6
+         */
+        id: "combobox_active_descendant",
+        context: "aria:combobox",
+        dependencies: ["combobox_popup_reference"],
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            let cachedElem = cache[context["dom"].rolePath];
+            if (!cachedElem) return null;
+            const { popupElement, popupId } = cachedElem;
+            // If this isn't defined, the combobox is probably collapsed. A reference error is
+            // detected in combobox_popup_reference
+            if (!popupElement) return null;
 
+            // This rule only applies if the activedescendant is specified
+            let activeId = ruleContext.getAttribute("aria-activedescendant");
+            if (!activeId || activeId.trim().length === 0) {
+                return null;
+            }
+
+            let activeElem = ruleContext.ownerDocument.getElementById(activeId);
+            if (!activeElem) {
+                return RuleFail("Fail_missing", [activeId]);
+            }
+
+            let found = false;
+
+            // examine the children
+            if (popupElement) {
+                let nw = new NodeWalker(popupElement);
+                while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
+                    if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
+                        found = nw.node.getAttribute("id") === activeId;
+                    }
+                }
+            }
+
+            let retVal = [];
+
+            if (!found) {
+                retVal.push(RulePass("Fail_not_in_popup", [activeId, popupId]));
+            }
+
+            let activeRoles = RPTUtil.getRoles(activeElem, true);
+            let validRoles = ["option", "gridcell", "row", "treeitem"].filter((validRole) => activeRoles.includes(validRole));
+            if (validRoles.length === 0) {
+                retVal.push(RuleFail("Fail_active_role_invalid", [activeId, activeRoles.join(",")]));
+            }
+
+            if (activeElem.getAttribute("aria-selected") !== "true") {
+                retVal.push(RuleFail("Fail_active_not_selected", [activeId]));
+            }
+
+            if (validRoles.length === 0) {
+                return RulePass("Pass");
+            } else {
+                return retVal;
+            }
+        }
+    },
     {
         /**
          * Description: In a 'combobox', the 'aria-autocomplete' property should only be set on the text input. 
          * Look a the listbox and other elements (other than the textbox) and FAIL if autocomplete found.
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
+         * Origin:  WAI-ARIA 1.2
+         * 			https://www.w3.org/TR/wai-aria-1.2/#combobox
          */
-        id: "HAAC_Combobox_Autocomplete",
+        id: "combobox_autocomplete",
         context: "aria:combobox",
-        dependencies: ["HAAC_Combobox_Must_Have_Text_Input"],
+        dependencies: ["combobox_popup_reference"],
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            let tagName = ruleContext.tagName.toLowerCase();
-            // check 'explicit' role combobox and that it is not <select>
-            if (!RPTUtil.hasRole(ruleContext, "combobox", false) || tagName === "select") {
-                return null;
-            }
-
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
+            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
             let cachedElem = cache[context["dom"].rolePath];
             if (!cachedElem) return null;
-            let textInput = cachedElem.inputText;
-            let pattern = cachedElem.pattern;
-            let passed = true;
+            const { popupId, popupElement } = cachedElem;
+            // If this isn't defined, the combobox is probably collapsed. A reference error is
+            // detected in combobox_popup_reference
+            if (!popupElement) return null;
 
-            if (pattern === "1.1") {
-                //examine the container
-                passed = !ruleContext.hasAttribute("aria-autocomplete");
+            let retVal = [];
+            if (ruleContext.getAttribute("aria-autocomplete") === "inline") {
+                retVal.push(RuleFail("Fail_inline"));
             }
+            let passed = true;
 
             // examine the children
-            if (ruleContext.firstChild) {
-                let nw = new NodeWalker(ruleContext);
-                while (passed && nw.nextNode() && nw.node != ruleContext && nw.node != ruleContext.nextSibling) {
+            if (popupElement) {
+                let nw = new NodeWalker(popupElement);
+                while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        if (nw.node !== textInput) {
-                            passed = !nw.node.hasAttribute("aria-autocomplete");
-                        }
-                    }
-                }
-            }
-
-            if (passed) {
-                //examine the owned elements
-                let ariaOwnsAttr = RPTUtil.getAriaAttribute(ruleContext, "aria-owns");
-                if (ariaOwnsAttr) {
-                    let ownedIds = RPTUtil.normalizeSpacing(ariaOwnsAttr.trim()).split(" ");
-                    for (let j = 0; passed && j < ownedIds.length; j++) {
-                        let child_list = ruleContext.ownerDocument.getElementById(ownedIds[j]);
-                        if (child_list && RPTUtil.isNodeVisible(child_list) && child_list !== textInput) {
-                            passed = !child_list.hasAttribute("aria-autocomplete");
-                        }
-                        if (passed && child_list && child_list.firstChild) {
-                            let nwl = new NodeWalker(child_list);
-                            while (passed && nwl.nextNode() && nwl.node != child_list.nextSibling) {
-                                if (nwl.node.nodeType === 1 && RPTUtil.isNodeVisible(nwl.node)) {
-                                    if (nwl.node !== textInput) {
-                                        passed = !nwl.node.hasAttribute("aria-autocomplete");
-                                    }
-                                }
-                            }
-                        }
+                        passed = !nw.node.hasAttribute("aria-autocomplete");
                     }
                 }
             }
 
             if (!passed) {
-                return RuleFail("Fail_1");
+                retVal.push(RuleFail("Fail_1", [popupId]));
+            }
+
+            if (retVal.length > 0) {
+                return retVal;
             } else {
-                return RulePass("Pass_0");
-            }
-        }
-    },
-
-    {
-        /**
-         * Description: "aria-autocomplete value 'inline' is not supported on combobox"
-         * If aria-autocomplete is used, it should be an attribute of the text input and should not be 'inline'"
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
-         */
-        id: "HAAC_Combobox_Autocomplete_Invalid",
-        context: "aria:combobox",
-        dependencies: ["HAAC_Combobox_Must_Have_Text_Input"],
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let tagName = ruleContext.tagName.toLowerCase();
-            // check 'explicit' role combobox and that it is not <select>
-            if (tagName === "select") {
-                return null;
-            }
-
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
-            let cachedElem = cache[context["dom"].rolePath];
-            if (!cachedElem) return null;
-            let textInput = cachedElem.inputText;
-            let autocompleteAttr = RPTUtil.getAriaAttribute(textInput, "aria-autocomplete");
-            let passed = true;
-            if (autocompleteAttr && autocompleteAttr.trim().toLowerCase() === "inline") {
-                passed = false;
-            }
-
-            if (!passed) {
-                return RuleFail("Fail_1");
-            } else {
-                return RulePass("Pass_0");
-            }
-        }
-    },
-
-    {
-        /**
-         * Description: when the combobox popup is visible, check that aria-owns/controls in the input text refers to a popup element.
-         *  When the combobox popup is visible then:
-         *      if old combobox pattern then the textbox element has 'aria-owns' set to a value that refers to a 'listbox'.
-         *      if new combobox pattern then the textbox element has 'aria-controls' set to a value that refers to a combobox popup element.
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
-         */
-        id: "HAAC_Combobox_Expanded",
-        context: "aria:combobox",
-        dependencies: ["HAAC_Combobox_Must_Have_Text_Input"],
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let tagName = ruleContext.tagName.toLowerCase();
-            // check 'explicit' role combobox and that it is not <select>
-            if (!RPTUtil.hasRole(ruleContext, "combobox", false) || tagName === "select") {
-                return null;
-            }
-
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
-            let cachedElem = cache[context["dom"].rolePath];
-            if (!cachedElem) return null;
-            let textInput = cachedElem.inputText;
-            let pattern = cachedElem.pattern;
-            let isExpanded = cachedElem.expanded;
-            if (isExpanded) {
-                let passed = false;
-                if (pattern === "1.0") {
-                    // old 1.0 combobox pattern
-                    let aria_owns = RPTUtil.getElementAttribute(textInput, "aria-owns");
-                    if (aria_owns) {
-                        let owns = RPTUtil.normalizeSpacing(aria_owns.trim()).split(" ");
-                        for (let i = 0; !passed && i < owns.length; i++) {
-                            let owned = ruleContext.ownerDocument.getElementById(owns[i]);
-                            if (owned) {
-                                passed = RPTUtil.hasRoleInSemantics(owned, "listbox") && RPTUtil.isNodeVisible(owned);
-                                if (passed) {
-                                    cachedElem["popupRole"] = "listbox";
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    // new 1.1 combobox pattern
-                    let aria_controls = RPTUtil.getElementAttribute(textInput, "aria-controls");
-                    if (aria_controls) {
-                        let controls = RPTUtil.normalizeSpacing(aria_controls.trim()).split(" ");
-                        for (let i = 0; !passed && i < controls.length; i++) {
-                            let controlled = ruleContext.ownerDocument.getElementById(controls[i]);
-                            if (controlled) {
-                                let roles = ["listbox", "tree", "grid", "dialog"];
-                                for (let j = 0; !passed && j < roles.length; j++) {
-                                    if (RPTUtil.hasRoleInSemantics(controlled, roles[j]) && RPTUtil.isNodeVisible(controlled)) {
-                                        // check that the list is a descendant of the combobox or is owned by the combobox
-                                        if (RPTUtil.isDescendant(ruleContext, controlled)) {
-                                            passed = true;
-                                        } else {
-                                            // check that the list is owned by the combobox
-                                            var aria_owns = RPTUtil.getElementAttribute(ruleContext, "aria-owns");
-                                            if (aria_owns) {
-                                                var owns = RPTUtil.normalizeSpacing(aria_owns.trim()).split(" ");
-                                                for (var k = 0; !passed && k < owns.length; k++) {
-                                                    var owned = ruleContext.ownerDocument.getElementById(owns[k]);
-                                                    if (owned === controlled) {
-                                                        passed = true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        if (passed) {
-                                            cachedElem["popupRole"] = roles[j];
-                                        }
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if (!passed) {
-                    return RuleFail("Fail_1");
-                } else {
-                    return RulePass("Pass_0");
-                }
-            } else {
-                return null;
-            }
-        }
-    },
-
-    {
-        /**
-         * Description: For a 'combobox', 'aria-haspopup' must match the role of the combobox pop-up.
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
-         */
-        id: "HAAC_Combobox_Popup",
-        context: "aria:combobox",
-        dependencies: ["HAAC_Combobox_Expanded"],
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let tagName = ruleContext.tagName.toLowerCase();
-            // check 'explicit' role combobox and that it is not <select>
-            if (!RPTUtil.hasRole(ruleContext, "combobox", false) || tagName === "select") {
-                return null;
-            }
-
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "HAAC_Combobox_Must_Have_Text_Input", {});
-            let cachedElem = cache[context["dom"].rolePath];
-            if (!cachedElem) return null;
-            // let textInput = cachedElem.inputText;
-            let pattern = cachedElem.pattern;
-            let isExpanded = cachedElem.expanded;
-            let popupRole = cachedElem.popupRole;
-
-            let haspopupAttr = RPTUtil.getAriaAttribute(ruleContext, "aria-haspopup").trim().toLowerCase();
-
-            if (isExpanded) {
-                let passed = false;
-                if (pattern === "1.0") {
-                    // old 1.0 combobox pattern
-                    passed = (haspopupAttr === "true" || haspopupAttr === popupRole);
-                } else {
-                    // new 1.1 combobox pattern
-                    passed = haspopupAttr === popupRole;
-                }
-                if (!passed) {
-                    return RuleFail("Fail_1");
-                } else {
-                    return RulePass("Pass_0");
-                }
-            } else {
-                return null;
-            }
-
-        }
-    },
-
-    {
-        /**
-         * Description: Triggers if the element is a combobox
-         * Origin:  WAI-ARIA 1.1
-         * 			https://www.w3.org/TR/wai-aria-1.1/#combobox
-         */
-        id: "HAAC_Combobox_ARIA_11_Guideline",
-        context: "dom:*[role], dom:input",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let passed = true;
-            if (RPTUtil.hasRoleInSemantics(ruleContext, "combobox") && RPTUtil.isNodeVisible(ruleContext)) {
-                passed = false;
-            }
-            if (!passed) {
-                return RuleManual("Manual_1");
-            } else {
-                return null;
+                return RulePass("Pass");
             }
         }
     }
-
     // end of rules
 ]
 
