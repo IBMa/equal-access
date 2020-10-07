@@ -749,7 +749,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
               </p>
               <br/>
-              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the 
+              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
               <strong>‘Focus View’</strong> switch has has been set to show only the issues for that <strong>‘search input’</strong>:
               <br/>
               <p>
