@@ -217,9 +217,9 @@ let a11yRulesCombobox: Rule[] = [
             }
 
             // Only makes sense to check the popup when expanded
-            // this does not apply to dialogs
+            // this does not apply to dialogs, return pass since the main element was focusable above
             if (expanded === false || popupRole === "dialog") {
-                return null;
+                return RulePass("Pass");
             }
 
             let passed = true;
@@ -329,14 +329,12 @@ let a11yRulesCombobox: Rule[] = [
             let cachedElem = cache[context["dom"].rolePath];
             if (!cachedElem) return null;
             const { popupId, popupElement } = cachedElem;
-            // If this isn't defined, the combobox is probably collapsed. A reference error is
-            // detected in combobox_popup_reference
-            if (!popupElement) return null;
 
             let retVal = [];
             if (ruleContext.getAttribute("aria-autocomplete") === "inline") {
                 retVal.push(RuleFail("Fail_inline"));
             }
+
             let passed = true;
 
             // examine the children
