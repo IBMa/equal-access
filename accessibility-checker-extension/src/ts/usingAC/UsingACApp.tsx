@@ -715,7 +715,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>Select the element or the component in the <strong>'DOM view'</strong>, or</li>
+                <li>Select the element or the component in the DOM, or</li>
                 <li>
                   <strong>'Right-click'</strong> on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
                 </li>
