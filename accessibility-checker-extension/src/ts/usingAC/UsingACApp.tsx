@@ -1123,7 +1123,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="the_report">7. Accessibility Checker reports</h2>
             <p>
-              The Accessibility Checker provides two kinds of reports to download, one as HTML and one as MS excel spreadsheet. To open the Accessibility Checker reports:
+              The Accessibility Checker provides two kinds of reports to download, one as HTML and one as MS Excel spreadsheet. To open the Accessibility Checker reports:
             </p>
             <ol
               style={{
