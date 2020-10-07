@@ -102,8 +102,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       </a>
                     </li>
                     <li>
+                      <a href="#focus_view" title="Focus view">
+                        6.2 Focus view
+                      </a>
+                    </li>
+                    <li>
                       <a href="#a11y_assess" title="Accessibility Assessment">
-                        6.2 Accessibility Assessment
+                        6.3 Accessibility Assessment
                       </a>
                     </li>
                     <li>
@@ -111,17 +116,17 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         href="#t_select_hidden_settings"
                         title="Select hidden content Settings"
                       >
-                        6.3 Hidden content scanning
+                        6.4 Hidden content scanning
                       </a>
                     </li>
                     <li>
                       <a href="#scan_local_files" title="Scan local files">
-                        6.4 Scanning local files
+                        6.5 Scanning local files
                       </a>
                     </li>
                     <li>
                       <a href="#a11y_considerations" title="Accessibility Considerations">
-                        6.5 Accessibility Considerations
+                        6.6 Accessibility Considerations
                       </a>
                     </li>
                   </ul>
@@ -543,9 +548,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     To <strong>filter</strong> issues and focus only on
                     violations, items that need review or recommendations,
-                    select the issue type in the issue count region below the
-                    'Scan' button. Select the same issue type again to see all
-                    issue types.
+                    deselect the checkbox by the issue type in the issue count region below the
+                    'Scan' button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
                   </p>
                 </li>
                 <li>
@@ -566,14 +570,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   Element roles tab:
+                  <br/>
                   <p>
                     <img
-                      src="assets/img/checkResults.png"
-                      alt="Accessibility Checker screenshot - a sample report of Accessibility Checker"
+                      src="assets/img/Filters.png"
+                      alt="Accessibility Checker screenshot - results of Accessibility Checker filtered by Violations"
                       width="100%"
                       height="100%"
                     />
                   </p>
+                  <br/>
                   <ul
                     style={{
                       listStyleType: "circle",
@@ -683,15 +689,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Use the <strong>‘Reset’</strong> button to return the view
-                    to the way it was just after scanning, with no issues
-                    highlighted or opened.
+                    to the initial scan, with the results showing all the issues for the page,
+                    highlighted and opened.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Use the <strong>‘Report’</strong> button to download a
+                    Use the <strong>‘Reports’</strong> button to download a
                     standalone HTML report that includes the same three views
-                    and all the help information provided in the checker.
+                    and all the help information provided in the checker and a MS Excel spreadsheet report for easy data manipulation.
                   </p>
                 </li>
                 <li>
@@ -704,7 +710,62 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="a11y_assess">6.2 Accessibility Assessment</h3>
+            <h3 id="focus_view">6.2 Focus View</h3>
+            <div className="pa">
+              The <strong>'Focus view'</strong> switch allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
+              <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>Select the element or the component in the DOM, or</li>
+                <li>
+                  Right-click on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                </li>
+                <li>
+                  Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
+                </li>
+                <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch to see all issues for the page again.</li>
+              
+              By default, after the first scan of a page, all issues are shown, and the &lt;html&gt; element is selected, as shown in this screenshot:
+              
+  
+
+              <p>
+                    <img
+                      src="assets/img/htmlFocusViewAll.png"
+                      alt="Accessibility Checker screenshot - Focus view will all issues"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+              <br/>
+              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show all the issues on the whole page:
+              <br/>
+              <p>
+                    <img
+                      src="assets/img/searchFocusViewAll.png"
+                      alt="Accessibility Checker screenshot. Focus view switch options are 'input' and 'All' (selected) and all issues on the page are shown"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+              <br/>
+              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show only the issues for that search &lt;input&gt; element:
+              <br/>
+              <p>
+                    <img
+                      src="assets/img/searchFocusView.png"
+                      alt="Accessibility Checker screenshot. Focus view switch options are 'input' (selected) and 'All' only the two issues within the search input element are shown"
+                      width="100%"
+                      height="100%"
+                    />
+              </p>
+
+              </ol>
+            </div>
+
+            <h3 id="a11y_assess">6.3 Accessibility Assessment</h3>
             <div className="pa">
               <ol
                 style={{
@@ -929,7 +990,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="t_select_hidden_settings">6.3 Hidden content scanning</h3>
+            <h3 id="t_select_hidden_settings">6.4 Hidden content scanning</h3>
             <p>
               By default, the tool skips hidden content (Web pages that use the{" "}
               <var>visibility:hidden</var> or <var>display:none</var> elements),
@@ -940,7 +1001,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               Accessibility Checker can validate the content that is displayed.
             </p>
 
-            <h3 id="scan_local_files">6.4 Scan local files</h3>
+            <h3 id="scan_local_files">6.5 Scan local files</h3>
             <div className="pa">
               The Accessibility Checker is able to scan local .html or .htm
               files launched in the Firefox browser by default. Follow the steps
@@ -968,7 +1029,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="a11y_considerations">6.5 Accessibility Considerations</h3>
+            <h3 id="a11y_considerations">6.6 Accessibility Considerations</h3>
             <div className="pa">
                Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
               <ol
@@ -1061,10 +1122,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h2 id="the_report">7. Accessibility Checker report</h2>
+            <h2 id="the_report">7. Accessibility Checker reports</h2>
             <p>
-              The Accessibility Checker provides a full report that you can
-              download as HTML. To open the Accessibility Checker report:
+              The Accessibility Checker provides two kinds of reports to download, one as HTML and one as MS Excel spreadsheet. To open the Accessibility Checker reports:
             </p>
             <ol
               style={{
@@ -1088,8 +1148,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
               <li>
                 <p style={{ marginTop: "0rem" }}>
-                  Select the <strong>'Report'</strong> icon to download the
-                  report:
+                  Select the <strong>'Reports'</strong> icon to download the
+                  reports:
                 </p>
                 <p>
                   <img
@@ -1102,9 +1162,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ol>
 
-            <h3 id="t_view_report">7.1 Review the report</h3>
+            <h3 id="t_view_report">7.1 Review the reports</h3>
             <p>
-              The Accessibility Checker Report is an interactive report that you
+              <strong>HTML Accessibility Checker report:</strong> This is an interactive report that you
               can save as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
               the issue details organized by checklist checkpoints, by element
@@ -1131,6 +1191,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 width="100%"
                 height="100%"
               />
+            </p>
+            <p><strong>MS Excel Spreadsheet report:</strong> This is a 3 sheet report. The header sheet includes the name of the tool with its version, the scan date, the ruleset and the guidelines used for the scan, and a summary of the results. The issue sheet has the issue details which now includes scan label, issue id and toolkit levels. The third sheet has definition of the fields used as columns in the issue details sheet.
             </p>
             
             <h2 id="feedback">8. Feedback</h2>
