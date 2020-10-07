@@ -115,7 +115,8 @@ BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) =>
         BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
         if (message.archiveId && message.policyId) {
             let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
-            metrics.profileV2(message.report.totalTime, browser, message.policyId);
+            let totalTime = (message.report != undefined)? message.report.totalTime: message.totalTime;
+            metrics.profileV2(totalTime, browser, message.policyId);
             metrics.sendLogsV2();
         }
     } catch (err) {

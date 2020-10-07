@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Script_OnclickHTML2"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Possible onclick events used in script to emulate a link
+
+<div id="locLevel"></div>
+
+Scripts should not be used to emulate links
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Sometimes JavaScript event handlers are attached to page elements to emulate links, for example by placing an `"onclick"` on a &lt;`span`&gt; or &lt;`div`&gt;. When this is done, the element doesn’t provide link semantic information to assistive technologies and does not automatically provide the keyboard accessibility. User agents might not be able to identify this content as a link. Individuals will not be able to tab to the link using their keyboard. They might find it hard to determine that interactive controls are available or to understand what type of behavior to expect.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Wherever possible, do not use scripts to emulate an HTML link. Use `<a href>` or `<area>` to implement links;
+ * OR, if scripting must be used, add the attribute `role="link"` to the element and [implement keyboard accessibility](https://www.ibm.com/able/guidelines/ci162/keyboard.html).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](http://www.ibm.com/able/guidelines/ci162/info_and_relationships.html)
+[IBM 2.1.1 Keyboard](https://www.ibm.com/able/guidelines/ci162/keyboard.html)
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using a screen reader
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

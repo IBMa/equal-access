@@ -142,7 +142,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     return retVal;
                 })($0)`, (result: string) => {
                     // This filter occurred because we selected an element in the elements tab
-                    this.onFilter(result, "sub");
+                    this.onFilter(result);
                     if (this.ignoreNext) {
                         this.ignoreNext = false;
                     }
@@ -359,7 +359,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     return retVal;
                 })($0)`, (result: string) => {
                     // This filter occurred because we selected an element in the elements tab
-                    this.onFilter(result, message.origin);
+                    this.onFilter(result);
                     if (this.ignoreNext) {
                         this.ignoreNext = false;
                     }
@@ -390,15 +390,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         return ret;
     }
 
-    onFilter(filter: string, origin: string) {
+    onFilter(filter: string) {
         // console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
-        }
-        if (this.props.layout === "sub" && origin === "sub") {
-            this.selectElementInElements();
-            this.setState({firstScan: true});
         }
         this.getCurrentSelectedElement();
     }
@@ -551,7 +547,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }, 0);
                     });
                     // This filter occurred because we selected an issue in the Accessibility Checker tab
-                    this.onFilter(item.path.dom, "sub")
+                    this.onFilter(item.path.dom)
                 }
             }
         }

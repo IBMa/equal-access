@@ -30,6 +30,7 @@
 
 const accessibilityCheckerTasks = require('../../../plugin');
 module.exports = (on /*, config*/) => {
+    console.log("LOADING PLUGINS");
   on('task', {
     accessibilityChecker: accessibilityCheckerTasks
   });

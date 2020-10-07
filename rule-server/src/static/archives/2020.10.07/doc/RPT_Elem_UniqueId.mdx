@@ -1,0 +1,58 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Elem_UniqueId"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The `<{0}>` element has the `id` \"{1}\" that is not unique
+
+<div id="locLevel"></div>
+
+Element `id` attribute values must be unique within a document
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The `id` attribute provides a machine-readable identifier for the elements of the page. A unique value for `id` allows browsers and assistive technologies to interpret and parse the content accurately.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * For each element with an `id` attribute, provide a unique, non-empty value.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;h1 id="news"&gt;Breaking news&lt;/h1&gt;
+&lt;p id="newsintro"&gt;The latest stories from our correspondents around the world.&lt;/p&gt;
+...
+&lt;div role="article" aria-labelledby="news" aria-describedby="newsintro"&gt;
+    ...
+&lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.1 Parsing ](http://www.ibm.com/able/guidelines/ci162/parsing.html)
+[WCAG 2.1 technique H93](https://www.w3.org/WAI/WCAG21/Techniques/html/H93)
+[WCAG 2.1 failure technique F77](https://www.w3.org/WAI/WCAG21/Techniques/failures/F77)
+
+### Who does this affect?
+
+ * Blind people using a screen reader
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

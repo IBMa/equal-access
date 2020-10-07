@@ -1,0 +1,61 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Body_FirstASkips_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The web page does not provide a way to quickly navigate to the main content
+
+<div id="locLevel"></div>
+
+Web pages must provide a way to skip directly to the main content
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The 'skip to main' link or an element with the `"main"` role allow users to skip over content that is repeated on several pages. Bypassing repeated content such as banners and navigation menus allows people who use only a keyboard to quickly navigate to the main content.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Enclose the main content in a `<main>` element;
+ * OR, enclose the main content in an element with the `"main"` landmark role;
+ * OR, have a first link on each page that skips to the main content.
+
+Main landmark example:
+
+<CodeSnippet type="multi" light={true}>&lt;body&gt;
+	&lt;header&gt;&lt;-- Header Content --&gt;&lt;/header&gt;
+	&lt;nav&gt;&lt;-- Navigation Menu --&gt;&lt;/nav&gt;
+	&lt;main&gt;&lt;-- Main Content --&gt;&lt;/main&gt;
+	&lt;footer&gt;&lt;-- Footer content --&gt;&lt;/footer&gt;
+&lt;/body&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](http://www.ibm.com/able/guidelines/ci162/bypass_blocks.html)
+[ARIA Practices 1.1 Main Landmark ](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/main.html)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using a screen reader
+* People who rely on keyboard control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

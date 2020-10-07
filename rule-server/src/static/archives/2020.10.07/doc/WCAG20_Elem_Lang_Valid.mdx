@@ -1,0 +1,60 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Elem_Lang_Valid"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Specified language is not valid [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt)
+
+<div id="locLevel"></div>
+
+The language of content must be specified in accordance with BCP 47
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When language attributes are used to identify the language of a page or specific content within a page, the attribute values must conform to [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt). This ensures that user agents can correctly present the content using the correct presentation and pronunciation rules for that language.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;blockquote lang="fr"&gt;
+  &lt;p&gt;
+    Prouver que j’ai raison serait accorder que je puis avoir tort.
+  &lt;/p&gt;
+&lt;/blockquote&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 3.1.1 Language of page](https://www.ibm.com/able/guidelines/ci162/language_of_page.html)
+[IBM 3.1.2 Language of parts](https://www.ibm.com/able/guidelines/ci162/language_of_parts.html)
+[WCAG 2.1 HTML technique H57](https://www.w3.org/WAI/WCAG21/Techniques/html/H5700)
+[WCAG 2.1 HTML technique H58](https://www.w3.org/WAI/WCAG21/Techniques/html/H58)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

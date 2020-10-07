@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Media_AudioTrigger"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Provide transcripts for audio files
+
+<div id="locLevel"></div>
+
+Audio information should also be available in text form
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Providing a transcript makes information presented through speech, sound effects, music, and so on available to any user.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify that the audio content is also available in text form;
+ * OR, provide a transcript of the audio.
+
+For example, a link to an audio file containing a speech would be followed by a link to a page with a transcript:
+
+<CodeSnippet type="multi" light={true}>    Jeremy Flint's &lt;a href="bc30.wav"&gt;podcast on disability rights&lt;/a&gt;
+    &lt;a href="bc30.txt"&gt;transcript&lt;/a&gt;)</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.2.1 Audio-only and Video-only (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_and_video.html)
+
+### Who does this affect?
+
+ * People who are deaf or hard of hearing
+ * People in a situation where they cannot use audio on their devices
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
