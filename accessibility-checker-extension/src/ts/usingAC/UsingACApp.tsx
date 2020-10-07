@@ -717,7 +717,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               >
                 <li>Select the element or the component in the DOM, or</li>
                 <li>
-                  <strong>'Right-click'</strong> on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                  Right-click on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
                 </li>
                 <li>
                   Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
