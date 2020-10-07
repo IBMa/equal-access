@@ -550,7 +550,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     violations, items that need review or recommendations,
                     deselect the checkbox by the issue type in the issue count region below the
                     'Scan' button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
-                    issue types.
                   </p>
                 </li>
                 <li>
