@@ -26,8 +26,6 @@ var pathLib = require('path');
 var constants = {
     DEBUG: process.env.DEBUG === "true",
 
-    maxTabs: 1,
-
     policies: ["IBM_Accessibility"],
 
     // Specify the default rule pack server to use. (Where to pull the rules and engine from).
@@ -58,7 +56,7 @@ var constants = {
     outputFolder: "results",
 
     // Specify default location where the baselines should be saved
-    baselinefolder: "baselines",
+    baselineFolder: "baselines",
 
     // Specify default value if Hidden content be scanned or not.
     checkHiddenContent: false,
