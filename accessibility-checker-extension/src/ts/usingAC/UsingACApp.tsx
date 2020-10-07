@@ -724,7 +724,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch to see all issues for the page again.</li>
               
-              By default, after the first scan of a page, all issues are shown, and the <strong>'html'</strong> element is selected, as shown in this screenshot:
+              By default, after the first scan of a page, all issues are shown, and the &lt;html&gt; element is selected, as shown in this screenshot:
               
   
 
@@ -1123,7 +1123,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="the_report">7. Accessibility Checker reports</h2>
             <p>
-              The Accessibility Checker provides two kinds of reports to download, one that as HTML and one as MS excel spreadsheet. To open the Accessibility Checker reports:
+              The Accessibility Checker provides two kinds of reports to download, one as HTML and one as MS excel spreadsheet. To open the Accessibility Checker reports:
             </p>
             <ol
               style={{
