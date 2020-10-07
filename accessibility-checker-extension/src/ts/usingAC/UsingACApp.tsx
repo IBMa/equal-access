@@ -570,14 +570,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   Element roles tab:
+                  <br/>
                   <p>
                     <img
-                      src="assets/img/checkResults.png"
-                      alt="Accessibility Checker screenshot - a sample report of Accessibility Checker"
+                      src="assets/img/Filters.png"
+                      alt="Accessibility Checker screenshot - results of Accessibility Checker filtered by Violations"
                       width="100%"
                       height="100%"
                     />
                   </p>
+                  <br/>
                   <ul
                     style={{
                       listStyleType: "circle",
