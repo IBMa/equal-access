@@ -715,9 +715,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>Select the element or the component in the <strong>'DOM view'</strong>, or</li>
+                <li>Select the element or the component in the DOM, or</li>
                 <li>
-                  <strong>'Right-click'</strong> on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                  Right-click on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
                 </li>
                 <li>
                   Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
@@ -737,25 +737,25 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     />
               </p>
               <br/>
-              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the 
-              <strong>‘Focus View’</strong> switch has has been set to show all the issues including the selected <strong>‘search input’</strong>:
+              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show all the issues on the whole page:
               <br/>
               <p>
                     <img
                       src="assets/img/searchFocusViewAll.png"
-                      alt="Accessibility Checker screenshot - Focus view of 'search input' will all issues"
+                      alt="Accessibility Checker screenshot. Focus view switch options are 'input' and 'All' (selected) and all issues on the page are shown"
                       width="100%"
                       height="100%"
                     />
               </p>
               <br/>
-              In this screen shot, the <strong>'search input'</strong> element in the DOM has been selected, and the 
-              <strong>‘Focus View’</strong> switch has has been set to show only the issues for that <strong>‘search input’</strong>:
+              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
+              <strong>‘Focus View’</strong> switch has has been set to show only the issues for that search &lt;input&gt; element:
               <br/>
               <p>
                     <img
                       src="assets/img/searchFocusView.png"
-                      alt="Accessibility Checker screenshot - Focus view of 'search input' only issues"
+                      alt="Accessibility Checker screenshot. Focus view switch options are 'input' (selected) and 'All' only the two issues within the search input element are shown"
                       width="100%"
                       height="100%"
                     />
