@@ -694,7 +694,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Use the <strong>‘Report’</strong> button to download a
+                    Use the <strong>‘Reports’</strong> button to download a
                     standalone HTML report that includes the same three views
                     and all the help information provided in the checker and a MS excel spreadsheet report for easy data manipulation.
                   </p>
