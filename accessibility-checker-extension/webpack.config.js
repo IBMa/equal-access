@@ -45,6 +45,11 @@ module.exports = {
         path: distRootPath,
         filename: '[name].js',
     },
+    optimization: {
+        splitChunks: {
+            maxSize: 3500000
+        }
+    },
     resolve: {
         extensions: ['.js', '.ts', '.tsx', '.json'],
     },
