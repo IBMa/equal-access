@@ -1,0 +1,58 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_InvalidTabindexForActivedescendant"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The {0} element using `aria-activedescendant` set to {1} does not have its `tabindex` attribute value set to 0 or -1  
+
+<div id="locLevel"></div>
+
+Element using `aria-activedescendant` property must have its `tabindex` attribute value set to 0 or -1 to be keyboard accessible
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Elements use `aria-activedescendant` property to manage the focus of their active descendants. 
+Setting the tabindex value to 0 or -1  ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access. 
+Using values greater than 0 should be avoided as it can break the logical tab order.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Set the value of the `tabindex` attribute equal to 0 or -1 on the element using `aria-activedescendant` property to include the element in the tab sequence. 
+
+ The following example shows a toolbar element using the `aria-activedescendant` property with a tabindex attribute set to zero:
+
+<CodeSnippet type="multi" light={true}>&lt;div role="toolbar" aria-label="Toolbar Widget" tabindex="0" aria-activedescendant="button2" id="tb3" onkeypress="keyEvent();"&gt;
+    &lt;div id="button1" role="button1"&gt;tool 1&lt;/div&gt;
+    &lt;div id="button2" role="button2"&gt;tool 2&lt;/div&gt;
+&lt;/div&gt;  </CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.1.1 Keyboard](http://www.ibm.com/able/guidelines/ci162/keyboard.html)
+[WAI-ARIA Authoring Practices 1.1: ARIA Managing focus with aria-activedescendant](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_activedescendant)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

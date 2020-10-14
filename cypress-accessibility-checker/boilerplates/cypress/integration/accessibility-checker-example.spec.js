@@ -17,10 +17,10 @@
 /// <reference types="cypress" />
 
 context('Accessibility checker example', () => {
-  it('Scan website that contains failures', () => {
-    // Replace URL with application URL
-    cy.visit('http://localhost:8080/example-html-file.html')
-      .getA11yComplianceOfDocument('example') // Label should be unique per call to the function
-      .assertA11yCompliance();
-  });
+    it('Scan website that contains failures', () => {
+        // Replace URL with application URL
+        cy.visit('http://localhost:8080/example-html-file.html')
+            .getCompliance('example') // Label should be unique per call to the function
+            .assertCompliance();
+    });
 });

@@ -1,0 +1,55 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Style_Trigger2"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Ensure Windows high contrast mode is supported for CSS background images
+
+<div id="locLevel"></div>
+
+Confirm Windows high contrast mode is supported for CSS background images
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Windows High Contrast mode alters the way Web content is displayed by disabling certain CSS features. Applications that use CSS background images for any component may have issues including the disappearance of images or UI elements when Windows High Contrast mode is enabled. Another example is the disappearance of visual focus indicators and visual alterations of UI elements with Windows High Contrast mode enabled.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * On a Windows machine, activate high contrast mode;
+ * AND, confirm all UI elements are visible and inherit the selected high contrast theme;
+ * AND, confirm that checkboxes, radio buttons and text entry field boundaries are visible with good contrast;
+ * AND, confirm the visual focus indicator is highly visible;
+ * AND, confirm that all images that convey information are visible, or a text alternative is displayed;
+ * AND, confirm that all decorative images are no longer visible.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[IBM 2.4.7 Focus Visible](https://www.ibm.com/able/guidelines/ci162/focus_visible.html)
+[IBM 1.4.1 Use of Color](https://www.ibm.com/able/guidelines/ci162/color.html)
+[WCAG 2.1 failure technique F3](https://www.w3.org/WAI/WCAG21/Techniques/failures/F3)
+
+### Who does this affect?
+
+ * People with visual impairment using color contrast enhancement
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

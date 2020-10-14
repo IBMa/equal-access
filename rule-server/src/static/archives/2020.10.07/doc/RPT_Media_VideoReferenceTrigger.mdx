@@ -1,0 +1,48 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Media_VideoReferenceTrigger"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Verify availability of a user-selectable audio track with description of visual content
+
+<div id="locLevel"></div>
+
+Pre-recorded media should have an audio track that describes visual information
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+By providing an additional audio track, users can choose to replace the original video sound track with one that includes information that focuses on actions, characters, or scene changes that are important to understanding the content. This is sometimes referred to as an 'audio description', as in 'a description in audio format', and should not be confused with captions.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify that the media has an audio description track;
+ * OR, add an audio description track to the media.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.2.5 Audio Description (Prerecorded)](http://www.ibm.com/able/guidelines/ci162/audio_descriptions.html)
+
+### Who does this affect?
+
+ * People with visual impairment
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
