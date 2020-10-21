@@ -89,7 +89,7 @@ let a11yRulesInput: Rule[] = [
                     // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
                     passed = true;
                 } else {
-                    passed = RPTUtil.attributeNonEmpty(ruleContext, "value") || RPTUtil.hasAriaLabel(ruleContext);
+                    passed = RPTUtil.attributeNonEmpty(ruleContext, "value") || RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "title");
                     if (!passed) POF = 2 + textTypes.length + buttonTypes.indexOf(type);
                 }
             } else if (type == "buttonelem") {
@@ -103,7 +103,7 @@ let a11yRulesInput: Rule[] = [
                         bAlt = true;
                     }
                 };
-                passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext) || bAlt;
+                passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext) || bAlt || RPTUtil.attributeNonEmpty(ruleContext, "title");
     
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
             }

@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_VisibleLabel"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The `<input>` element does not have an associated visible label
+
+<div id="locLevel"></div>
+
+The `<input>` element must have an associated visible label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Visible labels are essential so that people using voice control know what to say. This allows them to easily navigate to interactive elements on the screen.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If there is already a visible label for the `<input>` element, use the `for` attribute on the label to reference the `<input>` element's `id` value.
+ * OR, add a visible label, with the `for` attribute linking it to the `<input>`.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;label for="test1"&gt;License Number:&lt;/label&gt;
+&lt;input type="text" id="test1" aria-label="Enter driver license number"/&gt;
+&lt;label for="test2"&gt;First name:&lt;/label&gt;
+&lt;input type="text" id="test2"/&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 3.3.2 Label or Instruction](https://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html)
+[IBM 2.5.3 Label in Name](https://www.ibm.com/able/guidelines/ci162/label_in_name_71.html)
+[WCAG 2.1 technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
+
+### Who does this affect?
+
+ * People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

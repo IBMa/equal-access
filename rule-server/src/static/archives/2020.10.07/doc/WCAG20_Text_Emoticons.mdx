@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Text_Emoticons"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check that emoticons have a text alternative
+
+<div id="locLevel"></div>
+
+Emoticons must have a short text alternative that describes their purpose
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Emoticons include ASCII characters that form facial expressions and other ways to communicate an emotion to the user. Though they are very popular, they can be confusing for people who use assistive technology. Providing a text alternative makes the information accessible through audio or other channels.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* When possible, use a word like "smile" instead of an emoticon;
+* OR, if this element is an emoticon, verify there is a text alternative immediately before or after it.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](https://www.ibm.com/able/guidelines/ci162/non_text_content.html)
+[WCAG 2.1 technique H86](https://www.w3.org/WAI/WCAG21/Techniques/html/H86)
+
+### Who does this affect?
+
+* Blind people using a screen reader
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

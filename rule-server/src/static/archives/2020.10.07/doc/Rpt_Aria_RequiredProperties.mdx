@@ -1,0 +1,62 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredProperties"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### An element with WAI-ARIA role `"{0}"` does not have the required WAI-ARIA attribute(s): `{1}`
+
+<div id="locLevel"></div>
+
+When using a WAI-ARIA role on an element, the required attributes for that role must be defined
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When elements are assigned a WAI-ARIA `role`, there are required attributes for that role. These attributes represent states and properties of the element. If these are not defined, assistive technologies may not be able to describe the element or its status to users.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Define the missing state or property attributes for the element according to its role.
+
+The following example shows all the required properties defined for the `scrollbar` role:
+
+<CodeSnippet type="multi" light={true}> &lt;div id="content1"&gt;Lorem ipsum ...&lt;/div&gt;
+   &lt;div
+      role="scrollbar"
+      aria-controls="content1"
+      aria-orientation="vertical"
+      aria-valuemax="100"
+      aria-valuemin="0"
+      aria-valuenow="25"&gt;
+       &lt;div class="scrollhandle"&gt;&lt;/div&gt;
+   &lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](http://www.ibm.com/able/guidelines/ci162/name_role_value.html)
+[WC3 WAI-ARIA 1.1 required states](https://www.w3.org/TR/wai-aria-1.2/#requiredState)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
