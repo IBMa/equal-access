@@ -207,7 +207,7 @@ export default class SinglePageReport {
             var row = [
                 tab_url,
                 this.format_date(report.timestamp),
-                stringHash(item.ruleId + item.path.aria),
+                stringHash(item.ruleId + item.path.dom),
                 valueMap[item.value[0]][item.value[1]],
                 rule_map.get(item.ruleId).toolkitLevel,
                 this.checkpoints_string(rule_checkpoints_map, item.ruleId),
