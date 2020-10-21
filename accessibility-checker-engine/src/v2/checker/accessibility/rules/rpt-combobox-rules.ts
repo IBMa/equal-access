@@ -306,7 +306,7 @@ let a11yRulesCombobox: Rule[] = [
                 retVal.push(RuleFail("Fail_active_not_selected", [activeId]));
             }
 
-            if (validRoles.length === 0) {
+            if (retVal.length === 0) {
                 return RulePass("Pass");
             } else {
                 return retVal;

@@ -962,7 +962,7 @@ let a11yNls = {
     },
     "combobox_active_descendant": {
         0: "'aria-activedescendant' must be used to define focus within the combobox popup, except when using a dialog popup",
-        "Pass": "",
+        "Pass": "'aria-activedescendant' is used appropriately for this combobox",
         "Fail_missing": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist",
         "Fail_not_in_popup": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist within the popup referenced by 'id' \"{1}\"",
         "Fail_active_role_invalid": "The 'aria-activedescendant' \"{0}\" references an element with the roles \"{1}\", which does not have a WAI-ARIA role of 'option', 'gridcell', 'row', or 'treeitem'",
