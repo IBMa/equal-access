@@ -12,7 +12,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div id="locLevel"></div>
 
-The `aria-owns` or the `aria-controls` attribute of the expanded combobox must reference a valid popup `id`
+The 'aria-controls' (for WAI-ARIA 1.2) or the 'aria-owns' (for WAI-ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value
 
 </Column>
 </Row>
@@ -23,8 +23,8 @@ The `aria-owns` or the `aria-controls` attribute of the expanded combobox must r
 
 A combobox combines a text input element and a popup element that helps the user set the value of the 
 input. The popup becomes visible when the combobox is in an expanded state and is controlled by using 
-an attribute `aria-owns` or `aria-controls` referencing its `id`. When the value of the `aria-owns` or 
-the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`, assistive 
+an attribute `aria-controls` referencing its `id`. When the value of the `aria-controls` attribute of
+the expanded combobox does not reference a valid popup `id`, assistive 
 technologies may not be able to present and control the content correctly.
 
 Additionally, when the element with `role="combobox"` has an `aria-expanded` attribute with value `true`,

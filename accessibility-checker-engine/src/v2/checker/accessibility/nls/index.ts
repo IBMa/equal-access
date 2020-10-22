@@ -969,7 +969,7 @@ let a11yNls = {
         "Fail_active_not_selected": "The 'aria-activedescendant' \"{0}\" references an element that does not have 'aria-selected' set to true",
     },
     "combobox_autocomplete": {
-        0: "A combobox that supports autocompletion behavior must not have an 'aria-autcomplete' attribute value of '\"inline\"' and must have the 'aria-autocomplete' attribute only on its text input element",
+        0: "A combobox that supports autocompletion behavior must not have an 'aria-autocomplete' attribute value of '\"inline\"' and must have the 'aria-autocomplete' attribute only on its text input element",
         "Pass": "The combobox does not use 'aria-autocomplete' value 'inline' and does not have 'aria-autocomplete' defined within the popup",
         "Fail_1": "The combobox has the 'aria-autocomplete' attribute set on an element within the popup referenced by \"{0}\"",
         "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute set to 'inline'"

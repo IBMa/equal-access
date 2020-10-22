@@ -12,7 +12,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div id="locLevel"></div>
 
-Active descendant focus for the combobox must be defined only on the text input, except when using a dialog popup
+'aria-activedescendant' must be used to define focus within the combobox popup, except when using a dialog popup
 
 </Column>
 </Row>
@@ -32,6 +32,20 @@ popup, so people who use assistive technologies are able accurately navigate and
 ### What to do
 
 * Unless the `has-popup` atttribute value is `dialog`, set the active descendant focus using the `aria-activedescendant` only on the combobox’s `<input>` element.
+
+Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
+
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+   &lt;ul role="listbox" id="popup_listbox"&gt;
+      &lt;li role="option"&gt;Zebra&lt;/li&gt;
+      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+   &lt;/ul&gt;</CodeSnippet>
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
