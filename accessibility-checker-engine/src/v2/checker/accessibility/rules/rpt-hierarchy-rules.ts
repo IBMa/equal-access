@@ -54,6 +54,11 @@ let a11yRulesHier: Rule[] = [{
     context: "dom:*[aria-activedescendant]",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        // combobox active descendants handled by 'combobox_active_descendant'
+        if (RPTUtil.hasRoleInSemantics(ruleContext, "combobox")) {
+            return null;
+        }
+
         let descendant_id = RPTUtil.getAriaAttribute(ruleContext, "aria-activedescendant");
         // POF1: The attribute is empty
         if (!descendant_id || descendant_id.trim() === "") {
@@ -120,9 +125,7 @@ let a11yRulesHier: Rule[] = [{
         if (pofId == 3) {
             return RuleFail("Fail_3");
         }
-        // POF4: I'm a combobox, and the referenced active-descendant is not controlled by this widget
-        return RuleFail("Fail_4");
-        
+        return null;        
     }
 }
 ]

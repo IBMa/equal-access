@@ -922,6 +922,14 @@ let a11yRulesInput: Rule[] = [
                 }
             }
 
+            // Determine if this is referenced by a combobox. If so, the label belongs to the combobox
+            let id = ruleContext.getAttribute("id");
+            if (id && id.trim().length > 0) {
+                if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+                    return null;
+                }
+            }        
+
             if (passed) {
                 return RulePass("Pass_0");
             } else {

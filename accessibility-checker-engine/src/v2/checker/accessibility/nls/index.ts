@@ -951,7 +951,7 @@ let a11yNls = {
     "combobox_haspopup": {
         0: "The combobox attribute 'aria-haspopup' value must be appropriate for the role of the element referenced by `aria-controls` (WAI-ARIA 1.2) or `aria-owns` (WAI-ARIA 1.0)",
         "Pass": "The 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) appropriately references a valid popup 'id' value",
-        "Fail_popup_role_invalid": "The value of the combobox 'aria-haspopup' attribute \"{0}\" is not valid for a WAI-ARIA combobox",
+        "Fail_popup_role_invalid": "The 'role' value \"{0}\" of the popup element \"{1}\" should be one of \"listbox\", \"grid\", \"tree\" or \"dialog\"",
         "Fail_combobox_popup_role_mismatch": "The value of the combobox 'aria-haspopup' attribute \"{0}\" does not match the 'role' value of the popup element \"{1}\""
     },    
     "combobox_focusable_elements": {

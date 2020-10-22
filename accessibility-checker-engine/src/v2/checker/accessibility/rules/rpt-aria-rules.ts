@@ -866,6 +866,14 @@ let a11yRulesAria: Rule[] = [{
             return null;
         }
 
+        // Determine if this is referenced by a combobox. If so, focus is controlled by the combobox
+        let id = ruleContext.getAttribute("id");
+        if (id && id.trim().length > 0) {
+            if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+                return null;
+            }
+        }        
+
         let passed = true;
         let doc = ruleContext.ownerDocument;
         let hasAttribute = RPTUtil.hasAttribute;
@@ -1122,6 +1130,14 @@ let a11yRulesAria: Rule[] = [{
         retToken1.push(ruleContext.nodeName.toLowerCase());
         let retToken2 = new Array();
         retToken2.push(roleNameArr.join(", "));
+
+        // Determine if this is referenced by a combobox. If so, leave it to the combobox rules to check
+        let id = ruleContext.getAttribute("id");
+        if (id && id.trim().length > 0) {
+            if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
+                return null;
+            }
+        }
         return savedPassed ? RulePass("Pass_0") : RulePotential("Potential_1", [retToken1.toString(), retToken2.toString()]);
     }
 },

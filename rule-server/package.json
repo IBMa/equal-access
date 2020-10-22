@@ -8,7 +8,9 @@
         "build:ace:debug": "cd ../accessibility-checker-engine && npm install && npm run build-debug && npm run build-node && cd ../rule-server",
         "build:help": "shx rm -rf ./src-gatsby/src/pages/tools && shx mkdir ./src-gatsby/src/pages/tools && shx cp -r ../accessibility-checker-engine/help ./src-gatsby/src/pages/tools/help && cd src-gatsby && npm run build && cd ..",
         "build": "shx rm -rf dist && npm run build:ace && npm run build:help && shx mkdir -p src/routes && shx mkdir -p api && shx mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
+        "build:nohelp": "shx rm -rf dist && npm run build:ace && shx mkdir -p src/routes && shx mkdir -p api && shx mkdir -p api/dist && tsoa routes && tsoa swagger && tsc -p ./src && gulp --gulpfile gulp/gulpfile.js build",
         "start": "npm run build && cd dist && node main.js",
+        "start:nohelp": "npm run build:nohelp && cd dist && node main.js",
         "debug": "npm run build && TS_NODE_PROJECT=./src/tsconfig.json node --nolazy --inspect-brk=9229 -r ts-node/register ./src/main.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "integration": "echo 'no integration test'"

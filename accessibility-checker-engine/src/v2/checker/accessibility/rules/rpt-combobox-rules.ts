@@ -166,7 +166,7 @@ let a11yRulesCombobox: Rule[] = [
             const cacheKey = context["dom"].rolePath;
             const cachedElem = cache[cacheKey];
             if (!cachedElem) return null;
-            const { popupElement } = cachedElem;
+            const { popupElement, popupId } = cachedElem;
             // If this isn't defined, the combobox is probably collapsed. A reference error is
             // detected in combobox_popup_reference
             if (!popupElement) return null;
@@ -174,7 +174,7 @@ let a11yRulesCombobox: Rule[] = [
             let popupRoles = RPTUtil.getRoles(popupElement, true);
             let validRoles = ["listbox", "grid", "tree", "dialog"].filter((validRole) => popupRoles.includes(validRole));
             if (validRoles.length === 0) {
-                return RuleFail("Fail_popup_role_invalid", [popupRoles.join(",")]);
+                return RuleFail("Fail_popup_role_invalid", [popupRoles.join(","), popupId]);
             } else {
                 let popupRole = validRoles[0];
                 let haspopupVal = ruleContext.getAttribute("aria-haspopup") || "listbox";
