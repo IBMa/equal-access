@@ -409,7 +409,8 @@ export class RPTUtil {
     public static isDefinedAriaAttribute(ele, attrName) {
         let isDefinedAriaAttribute = false;
         if (attrName.substring(0, 5) === 'aria-') {
-            isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName);
+            // User agents SHOULD treat state and property attributes with a value of "" the same as they treat an absent attribute.  
+            isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName) && ele.getAttribute(attrName).length > 0;
         }
         return isDefinedAriaAttribute;
     }

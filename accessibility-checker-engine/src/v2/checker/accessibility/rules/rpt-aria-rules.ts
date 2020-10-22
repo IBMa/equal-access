@@ -763,7 +763,7 @@ let a11yRulesAria: Rule[] = [{
         }
 
         // If the tabindex attribute is provided then verify that it is 0 or -1
-        passed = RPTUtil.tabIndexLEZero(ruleContext);
+        passed = RPTUtil.isTabbable(ruleContext) || RPTUtil.tabIndexLEZero(ruleContext);
 
         // Build array for node token
         let retToken1 = new Array();
