@@ -25,13 +25,13 @@ A combobox is a UI interactive component that combines an input and another elem
 or grid, that can dynamically pop up to help the user set the value of the input. When a combobox 
 receives focus, the focus should be set on the text `<input>` element. Unless using a `dialog`
 popup, the `aria-activedescendant` must be used to identify the currently focused selection in the
-popup, so people who use assistive technologies are able accurately navigate and interact with the content.
+popup, so people who use assistive technologies are able to accurately navigate and interact with the content.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Unless the `has-popup` atttribute value is `dialog`, set the active descendant focus using the `aria-activedescendant` only on the combobox’s `<input>` element.
+* Unless the `has-popup` atttribute value is `dialog`, set the active descendant focus using the `aria-activedescendant` attribute only on the combobox’s `<input>` element.
 
 Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
 
