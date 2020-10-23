@@ -957,7 +957,7 @@ let a11yNls = {
     "combobox_focusable_elements": {
         0: "Tabbable focus for the combobox must be allowed only on the text input, except when using a dialog popup",
         "Pass": "DOM focus is allowed only on the combobox element as required",
-        "Fail_not_tabbable": "DOM focus is not allowed on the combobox",
+        "Fail_not_tabbable": "The combobox element does not allow DOM focus as required",
         "Fail_tabbable_child": "The popup of the combobox has DOM focus or has 'aria-activedescendant' defined, which is not allowed"
     },
     "combobox_active_descendant": {
