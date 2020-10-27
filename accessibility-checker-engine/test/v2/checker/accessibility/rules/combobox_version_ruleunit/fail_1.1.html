@@ -1,0 +1,49 @@
+<html lang="en-US">
+
+<head>
+    <title>ARIA 1.1 Example</title>
+</head>
+
+<body>
+    <main>
+        <div>
+            Sample from <a
+                href="https://www.w3.org/TR/wai-aria-practices/examples/combobox/aria1.1pattern/listbox-combo.html">ARIA
+                1.2 Practices</a>
+        </div>
+        <label for="ex1-input" id="ex1-label" class="combobox-label">
+            Choice 1 Fruit or Vegetable
+        </label>
+        <div class="combobox-wrapper">
+            <div role="combobox" aria-expanded="false" aria-owns="ex1-listbox" aria-haspopup="listbox"
+                id="ex1-combobox">
+                <input type="text" aria-autocomplete="list" aria-controls="ex1-listbox" id="ex1-input">
+            </div>
+            <ul aria-labelledby="ex1-label" role="listbox" id="ex1-listbox" class="listbox hidden">
+            </ul>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["combobox_version"],
+            results: [{
+                "ruleId": "combobox_version",
+                "value": [
+                    "INFORMATION",
+                    "FAIL"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/main[1]/div[2]/div[1]",
+                    "aria": "/document[1]/main[1]/combobox[1]"
+                },
+                "reasonId": "Fail_1.1",
+                "message": "The combobox design pattern is detected as WAI-ARIA 1.1, which is not allowed by WAI-ARIA 1.2",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }]
+        }
+    </script>
+</body>
+
+</html>

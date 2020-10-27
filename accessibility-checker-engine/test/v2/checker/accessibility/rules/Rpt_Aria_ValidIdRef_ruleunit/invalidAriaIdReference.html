@@ -42,7 +42,7 @@
 Initial live region content.
 </p>
 
-<!-- Empty idref -->
+<!-- Empty idref (allowed since empty is considered as not defined) -->
 <p role="application" aria-describedby="">
 Initial live region content.
 </p>
@@ -74,7 +74,6 @@ Initial live region content.
       failedXpaths: [
        "/html/body/p[1]",
        "/html/body/p[2]",
-       "/html/body/p[3]",
        "/html/body/p[4]",
        "/html/body/p[5]"
       ]

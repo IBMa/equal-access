@@ -1,0 +1,33 @@
+<html lang="en-US">
+
+<head>
+    <title>ARIA 1.2 Example</title>
+</head>
+
+<body>
+    <main>
+        <div>
+            Sample from <a href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/combobox/grid-combo.html">ARIA
+                1.2 Practices</a>
+        </div>
+        <label for="ex1-input" id="ex1-label" class="combobox-label">
+            Fruits and vegetables
+        </label>
+        <div class="combobox-wrapper">
+            <div id="ex1-combobox">
+                <input type="text" role="combobox" aria-haspopup="grid" aria-expanded="true" aria-autocomplete="list"
+                    aria-controls="ex1-grid" id="ex1-input">
+            </div>
+            <div aria-labelledby="ex1-label" role="grid" id="ex1-grid" class="grid hidden">
+            </div>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["combobox_active_descendant"],
+            results: []
+        }
+    </script>
+</body>
+
+</html>
