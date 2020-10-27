@@ -138,7 +138,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "RPT_Style_Trigger2",
-                    level: eRulePolicy.RECOMMENDATION,
+                    level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {

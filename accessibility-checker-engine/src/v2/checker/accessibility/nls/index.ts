@@ -881,9 +881,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "RPT_Style_Trigger2": {
-        0: "Windows high contrast mode must be supported for CSS background images",
+        0: "Windows high contrast mode must be supported when using CSS to include, position or alter non-decorative content",
         "Pass_0": "Rule Passed",
-        "Manual_1": "Confirm Windows high contrast mode is supported for CSS background images"
+        "Manual_1": "Confirm Windows high contrast mode is supported when using CSS to include, position or alter non-decorative content"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": {
