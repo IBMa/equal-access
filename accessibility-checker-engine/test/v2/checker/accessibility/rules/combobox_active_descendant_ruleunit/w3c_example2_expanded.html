@@ -1,0 +1,220 @@
+<html lang="en-US">
+
+<head>
+    <title>ARIA 1.2 Example</title>
+</head>
+
+<body>
+    <main>
+        <div>
+            Sample from <a
+                href="https://www.w3.org/TR/wai-aria-practices-1.2/examples/combobox/combobox-autocomplete-both.html">ARIA
+                1.2 Practices</a>
+        </div>
+        <label for="cb1-input">
+            State
+        </label>
+        <div class="combobox combobox-list">
+            <div class="group">
+                <input id="cb1-input" class="cb_edit" type="text" role="combobox" aria-autocomplete="both"
+                    aria-expanded="true" aria-controls="lbz1" aria-activedescendant="lbz1-al">
+                <button type="button" id="cb1-button" aria-label="Open" tabindex="-1">
+                    ▼
+                </button>
+            </div>
+            <ul id="lbz1" role="listbox" aria-label="States">
+                <li id="lbz1-al" role="option" aria-selected="true">
+                    Alabama
+                </li>
+                <li id="lbz1-ak" role="option">
+                    Alaska
+                </li>
+                <li id="lbz1-as" role="option">
+                    American Samoa
+                </li>
+                <li id="lbz1-az" role="option">
+                    Arizona
+                </li>
+                <li id="lbz1-ar" role="option">
+                    Arkansas
+                </li>
+                <li id="lbz1-ca" role="option">
+                    California
+                </li>
+                <li id="lbz1-co" role="option">
+                    Colorado
+                </li>
+                <li id="lbz1-ct" role="option">
+                    Connecticut
+                </li>
+                <li id="lbz1-de" role="option">
+                    Delaware
+                </li>
+                <li id="lbz1-dc" role="option">
+                    District of Columbia
+                </li>
+                <li id="lbz1-fl" role="option">
+                    Florida
+                </li>
+                <li id="lbz1-ga" role="option">
+                    Georgia
+                </li>
+                <li id="lbz1-gm" role="option">
+                    Guam
+                </li>
+                <li id="lbz1-hi" role="option">
+                    Hawaii
+                </li>
+                <li id="lbz1-id" role="option">
+                    Idaho
+                </li>
+                <li id="lbz1-il" role="option">
+                    Illinois
+                </li>
+                <li id="lbz1-in" role="option">
+                    Indiana
+                </li>
+                <li id="lbz1-ia" role="option">
+                    Iowa
+                </li>
+                <li id="lbz1-ks" role="option">
+                    Kansas
+                </li>
+                <li id="lbz1-ky" role="option">
+                    Kentucky
+                </li>
+                <li id="lbz1-la" role="option">
+                    Louisiana
+                </li>
+                <li id="lbz1-me" role="option">
+                    Maine
+                </li>
+                <li id="lbz1-md" role="option">
+                    Maryland
+                </li>
+                <li id="lbz1-ma" role="option">
+                    Massachusetts
+                </li>
+                <li id="lbz1-mi" role="option">
+                    Michigan
+                </li>
+                <li id="lbz1-mn" role="option">
+                    Minnesota
+                </li>
+                <li id="lbz1-ms" role="option">
+                    Mississippi
+                </li>
+                <li id="lbz1-mo" role="option">
+                    Missouri
+                </li>
+                <li id="lbz1-mt" role="option">
+                    Montana
+                </li>
+                <li id="lbz1-ne" role="option">
+                    Nebraska
+                </li>
+                <li id="lbz1-nv" role="option">
+                    Nevada
+                </li>
+                <li id="lbz1-nh" role="option">
+                    New Hampshire
+                </li>
+                <li id="lbz1-nj" role="option">
+                    New Jersey
+                </li>
+                <li id="lbz1-nm" role="option">
+                    New Mexico
+                </li>
+                <li id="lbz1-ny" role="option">
+                    New York
+                </li>
+                <li id="lbz1-nc" role="option">
+                    North Carolina
+                </li>
+                <li id="lbz1-nd" role="option">
+                    North Dakota
+                </li>
+                <li id="lbz1-mp" role="option">
+                    Northern Marianas Islands
+                </li>
+                <li id="lbz1-oh" role="option">
+                    Ohio
+                </li>
+                <li id="lbz1-ok" role="option">
+                    Oklahoma
+                </li>
+                <li id="lbz1-or" role="option">
+                    Oregon
+                </li>
+                <li id="lbz1-pa" role="option">
+                    Pennsylvania
+                </li>
+                <li id="lbz1-pr" role="option">
+                    Puerto Rico
+                </li>
+                <li id="lbz1-ri" role="option">
+                    Rhode Island
+                </li>
+                <li id="lbz1-sc" role="option">
+                    South Carolina
+                </li>
+                <li id="lbz1-sd" role="option">
+                    South Dakota
+                </li>
+                <li id="lbz1-tn" role="option">
+                    Tennessee
+                </li>
+                <li id="lbz1-tx" role="option">
+                    Texas
+                </li>
+                <li id="lbz1-ut" role="option">
+                    Utah
+                </li>
+                <li id="lbz1-ve" role="option">
+                    Vermont
+                </li>
+                <li id="lbz1-va" role="option">
+                    Virginia
+                </li>
+                <li id="lbz1-vi" role="option">
+                    Virgin Islands
+                </li>
+                <li id="lbz1-wa" role="option">
+                    Washington
+                </li>
+                <li id="lbz1-wv" role="option">
+                    West Virginia
+                </li>
+                <li id="lbz1-wi" role="option">
+                    Wisconsin
+                </li>
+                <li id="lbz1-wy" role="option">
+                    Wyoming
+                </li>
+            </ul>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["combobox_active_descendant"],
+            results: [{
+                "ruleId": "combobox_active_descendant",
+                "value": [
+                "INFORMATION",
+                "PASS"
+                ],
+                "path": {
+                    "dom": "/html[1]/body[1]/main[1]/div[2]/div[1]/input[1]",
+                    "aria": "/document[1]/main[1]/combobox[1]"
+                },
+                "reasonId": "Pass",
+                "message": "'aria-activedescendant' is used appropriately for this combobox",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }]
+        }
+    </script>
+</body>
+
+</html>
