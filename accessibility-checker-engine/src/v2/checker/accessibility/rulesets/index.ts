@@ -1120,11 +1120,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_ARIA_11_Guideline",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "HAAC_List_Group_ListItem",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1140,32 +1135,32 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Must_Have_Text_Input",
+                    id: "combobox_version",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_DOM_Focus",
+                    id: "combobox_popup_reference",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete",
+                    id: "combobox_haspopup",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete_Invalid",
+                    id: "combobox_focusable_elements",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Expanded",
+                    id: "combobox_active_descendant",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Popup",
+                    id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -2275,11 +2270,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_ARIA_11_Guideline",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "HAAC_List_Group_ListItem",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -2295,32 +2285,32 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Must_Have_Text_Input",
+                    id: "combobox_version",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_DOM_Focus",
+                    id: "combobox_popup_reference",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete",
+                    id: "combobox_haspopup",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete_Invalid",
+                    id: "combobox_focusable_elements",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Expanded",
+                    id: "combobox_active_descendant",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Popup",
+                    id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -3361,32 +3351,32 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Must_Have_Text_Input",
+                    id: "combobox_version",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_DOM_Focus",
+                    id: "combobox_popup_reference",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete",
+                    id: "combobox_haspopup",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete_Invalid",
+                    id: "combobox_focusable_elements",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Expanded",
+                    id: "combobox_active_descendant",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Popup",
+                    id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -4527,32 +4517,32 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Must_Have_Text_Input",
+                    id: "combobox_version",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_DOM_Focus",
+                    id: "combobox_popup_reference",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete",
+                    id: "combobox_haspopup",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Autocomplete_Invalid",
+                    id: "combobox_focusable_elements",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Expanded",
+                    id: "combobox_active_descendant",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "HAAC_Combobox_Popup",
+                    id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }

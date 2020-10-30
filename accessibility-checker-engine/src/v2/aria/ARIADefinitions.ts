@@ -337,9 +337,9 @@ export class ARIADefinitions {
 
         "combobox": {
             container: null,
-            props: ["aria-expanded", "aria-activedescendant", "aria-autocomplete", "aria-orientation", "aria-readonly", "aria-required"],
-            reqProps: ["aria-controls"],  // "aria-expanded" has a default
-            reqChildren: ["listbox", "textbox", "tree", "grid", "dialog"], // This is bypassed in g1152
+            props: ["aria-expanded", "aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-readonly", "aria-required", "aria-errormessage", "aria-haspopup", "arive-invalid"],
+            reqProps: [],  // "aria-expanded" has a default, aria-controls isn't actually required when aria-expanded="false"
+            reqChildren: [],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
