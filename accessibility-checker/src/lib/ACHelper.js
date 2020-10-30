@@ -25,7 +25,8 @@ const ACReporterHTML = require("./reporters/ACReporterHTML");
 const ACReporterCSV = require("./reporters/ACReporterCSV");
 
 let aChecker = {
-    Config: null
+    Config: null,
+    customRulesets: []
 };
 let ace;
 !(function () {
@@ -490,6 +491,8 @@ try {
     let policies = ${JSON.stringify(aChecker.Config.policies)};
 
     let checker = new window.ace.Checker();
+    let customRulesets = ${JSON.stringify(aChecker.customRulesets)};
+    customRulesets.map((rs) => checker.addRuleset(rs));
     setTimeout(function() {
         checker.check(document, policies).then(function(report) {
             for (const result of report.results) {
@@ -514,7 +517,7 @@ try {
             const getPolicies = "return new window.ace.Checker().rulesetIds;";
             if (curPol != null && !aChecker.Config.checkPolicy) {
                 aChecker.Config.checkPolicy = true;
-                const valPolicies = await browser.executeScript(getPolicies);
+                const valPolicies = aChecker.customRulesets.concat(await browser.executeScript(getPolicies));
                 areValidPolicy(valPolicies, curPol);
             }
 
@@ -576,8 +579,9 @@ try {
             // NOTE: Engine should already be loaded
             const page = parsed;
             const winHandle = await page.evaluateHandle("window");
-            let report = await page.evaluate((window, policies) => {
+            let report = await page.evaluate((window, policies, customRulesets) => {
                 let checker = new window.ace.Checker();
+                customRulesets.map((rs) => checker.addRuleset(rs));
                 return new Promise((resolve, reject) => {
                     setTimeout(function () {
                         checker.check(document, policies).then(function (report) {
@@ -588,9 +592,9 @@ try {
                         })
                     }, 0)
                 })
-            }, winHandle, aChecker.Config.policies);
+            }, winHandle, aChecker.Config.policies, aChecker.customRulesets);
             if (curPol != null && !aChecker.Config.checkPolicy) {
-                const valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
+                const valPolicies = aChecker.customRulesets.concat(await page.evaluate("new window.ace.Checker().rulesetIds"));
                 aChecker.Config.checkPolicy = true;
                 areValidPolicy(valPolicies, curPol);
             }
@@ -656,6 +660,7 @@ try {
         try {
             let startScan = Date.now();
             let checker = new ace.Checker();
+            aChecker.customRulesets.map((rs) => checker.addRuleset(rs));
             let report = await checker.check(parsed, aChecker.Config.policies)
                 .then(function (report) {
                     for (const result of report.results) {
@@ -665,7 +670,7 @@ try {
                 })
 
             if (curPol != null && !aChecker.Config.checkPolicy) {
-                let valPolicies = new ace.Checker().rulesetIds;
+                let valPolicies = checker.rulesetIds;
                 aChecker.Config.checkPolicy = true;
                 areValidPolicy(valPolicies, curPol);
             }
@@ -1884,8 +1889,17 @@ try {
         return new ace.Checker().engine.getHelp(ruleId);
     };
 
+    aChecker.addRuleset = (ruleset) => {
+        aChecker.customRulesets.push(ruleset);
+    }
+
+    aChecker.getRuleset = async (rsId) => {
+        await initialize();
+        return aChecker.customRulesets.concat(new ace.Checker().rulesets).filter((function (rs) { return rs.id === rsId }))[0];
+    };
+
     aChecker.getRulesets = function () {
-        return new ace.Checker().rulesets;
+        return aChecker.customRulesets.concat(new ace.Checker().rulesets);
     };
 
     aChecker.ruleIdToLegacyId = {
@@ -2117,5 +2131,7 @@ module.exports = {
     getConfig: aChecker.getConfig,
     close: aChecker.close,
     ruleIdToLegacyId: aChecker.ruleIdToLegacyId,
-    cleanComplianceObjectBeforeCompare: aChecker.cleanComplianceObjectBeforeCompare
+    cleanComplianceObjectBeforeCompare: aChecker.cleanComplianceObjectBeforeCompare,
+    getRuleset: aChecker.getRuleset,
+    addRuleset: aChecker.addRuleset
 }
