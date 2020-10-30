@@ -123,7 +123,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Media_AltBrief",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
                 {
                     id: "WCAG20_Embed_HasNoEmbed",
@@ -143,7 +143,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.RECOMMENDATION,
+                    level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
@@ -471,7 +471,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -625,7 +625,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Frame_HasTitle",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Html_SkipNav",
@@ -635,37 +635,37 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Frame_SrcHtml",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleSearchLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryLandmarkLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleApplicationLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ApplicationLandmarkLabel",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleDocumentRoles",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -675,82 +675,82 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsVisibleLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleBannerLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleComplementaryLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleFormLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_OneBannerInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryRequiredLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -788,7 +788,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_A_HasText",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -899,7 +899,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Select_NoChangeAction",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Script_FocusBlurs",
@@ -932,12 +932,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Input_HasOnchange",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -1029,12 +1029,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Elem_UniqueId",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Elem_UniqueAccessKey",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -1621,7 +1621,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -1775,7 +1775,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Frame_HasTitle",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Html_SkipNav",
@@ -1785,37 +1785,37 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Frame_SrcHtml",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleSearchLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryLandmarkLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleApplicationLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ApplicationLandmarkLabel",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleDocumentRoles",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -1825,82 +1825,82 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsVisibleLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleBannerLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleComplementaryLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleFormLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_OneBannerInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryRequiredLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -1938,7 +1938,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_A_HasText",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -2049,7 +2049,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Select_NoChangeAction",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Script_FocusBlurs",
@@ -2082,12 +2082,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Input_HasOnchange",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -2179,12 +2179,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Elem_UniqueId",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Elem_UniqueAccessKey",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -2751,7 +2751,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -2870,7 +2870,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Frame_HasTitle",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Html_SkipNav",
@@ -2880,37 +2880,37 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Frame_SrcHtml",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleSearchLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryLandmarkLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleApplicationLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ApplicationLandmarkLabel",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleDocumentRoles",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -2920,82 +2920,82 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsVisibleLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleBannerLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleComplementaryLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleFormLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_OneBannerInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryRequiredLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -3033,7 +3033,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_A_HasText",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -3110,7 +3110,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Select_NoChangeAction",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Script_FocusBlurs",
@@ -3143,12 +3143,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Input_HasOnchange",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -3240,12 +3240,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Elem_UniqueId",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Elem_UniqueAccessKey",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -3837,7 +3837,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -3991,7 +3991,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Frame_HasTitle",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Html_SkipNav",
@@ -4001,37 +4001,37 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Valerie_Frame_SrcHtml",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleSearchLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryLandmarkLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleApplicationLandmarks",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ApplicationLandmarkLabel",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleDocumentRoles",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -4041,82 +4041,82 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_RegionLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsVisibleLabel_Implicit",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleBannerLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleComplementaryLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleFormLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_OneBannerInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_ComplementaryRequiredLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -4165,7 +4165,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_A_HasText",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -4276,7 +4276,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Select_NoChangeAction",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Script_FocusBlurs",
@@ -4309,12 +4309,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "WCAG20_Input_HasOnchange",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "RPT_Form_ChangeEmpty",
                     level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -4406,12 +4406,12 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Elem_UniqueId",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "WCAG20_Elem_UniqueAccessKey",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
