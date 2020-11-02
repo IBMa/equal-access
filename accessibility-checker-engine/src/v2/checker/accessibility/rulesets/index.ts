@@ -143,7 +143,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "HAAC_BackgroundImg_HasTextOrTitle",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
