@@ -257,7 +257,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Block_ShouldBeHeading",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
                     id: "RPT_Label_UniqueFor",
@@ -1407,7 +1407,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Block_ShouldBeHeading",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
                     id: "RPT_Label_UniqueFor",
@@ -2557,7 +2557,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Block_ShouldBeHeading",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
                     id: "RPT_Label_UniqueFor",
@@ -3623,7 +3623,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "RPT_Block_ShouldBeHeading",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
                     id: "RPT_Label_UniqueFor",
