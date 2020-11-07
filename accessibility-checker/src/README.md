@@ -2,7 +2,7 @@
 
 ## Overview
 
-`accessibility-checker` is a NodeJS Module that allows you to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI. It works with parsing engines such as Selenium, Puppeteer, and Zombie. Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
+`accessibility-checker` is a NodeJS Module that allows you to perform integrated accessibility testing within a continuous integration pipeline such as Travis CI. It works with parsing engines such as Selenium, Puppeteer, Playwright, and Zombie. Note that we have seen some non-standard CSS parsing with Zombie, so be aware of inconsistencies as a result.
 
 `accessibility-checker` works with a variety of test frameworks such as Cucumber, Mocha, or Jasmine. `accessibility-checker` allows users to scan HTML nodes/widgets, URLs, local files, HTML documents, and HTML content in the form of a string. Aside from just performing accessibility scanning, `accessibility-checker` provides a framework to validate accessibility scan results against baseline files and/or simply failing the testcases based on the levels of violations found during the scan.
 
@@ -37,7 +37,7 @@ $ achecker
 
 1. Install [NodeJS and NPM](https://nodejs.org/en/download/)
 2. Some testing framework (e.g., mocha, jasmine)
-3. Browser automation / parser (e.g., Selenium, Puppeteer, Zombie)
+3. Browser automation / parser (e.g., Selenium, Puppeteer, Playwright, Zombie)
 
 #### Install
 
@@ -183,6 +183,7 @@ Execute accessibility scan on provided content. `content` can be in the followin
 -   Document node (HTMLDocument)
 -   Selenium WebDriver (WebDriver)
 -   Puppeteer page
+-   Playwright page
 
 Note: When using Selenium WebDriver the aChecker.getCompliance API will only take Selenium WebDriver (WebDriver) instance. When using puppeteer, aChecker.getCompliance expects the Page object.
 
