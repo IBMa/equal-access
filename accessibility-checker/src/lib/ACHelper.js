@@ -209,8 +209,7 @@ let ace;
         if (isPuppeteer(content) || isPlaywright(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
-            const docHandle = await page.evaluateHandle('document');
-            await page.evaluate(({ document, scriptUrl }) => {
+            await page.evaluate((scriptUrl) => {
                 try {
                     if ('undefined' === typeof(ace)) {
                         return new Promise((resolve, reject) => {
@@ -230,7 +229,7 @@ let ace;
                 } catch (e) {
                     return Promise.reject(e);
                 }
-            }, { document: docHandle, scriptUrl: aChecker.Config.rulePack + "/ace.js" });
+            }, aChecker.Config.rulePack + "/ace.js");
             return aChecker.loadLocalEngine();
         } else if (isSelenium(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
@@ -585,8 +584,7 @@ try {
             const startScan = Date.now();
             // NOTE: Engine should already be loaded
             const page = parsed;
-            const winHandle = await page.evaluateHandle("window");
-            let report = await page.evaluate(({ window, policies }) => {
+            let report = await page.evaluate((policies) => {
                 let checker = new window.ace.Checker();
                 return new Promise((resolve, reject) => {
                     setTimeout(function () {
@@ -598,7 +596,7 @@ try {
                         })
                     }, 0)
                 })
-            }, { window: winHandle, policies: aChecker.Config.policies });
+            }, aChecker.Config.policies);
             if (curPol != null && !aChecker.Config.checkPolicy) {
                 const valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
                 aChecker.Config.checkPolicy = true;
