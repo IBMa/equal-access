@@ -139,7 +139,7 @@ async function processACConfig(ACConfig) {
             process.exit(-1);
         }
 
-        // Build the new rulePack based of the baseA11yServerURL 
+        // Build the new rulePack based of the baseA11yServerURL
         ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
 
         constants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
@@ -355,4 +355,4 @@ async function processConfiguration(config) {
     return ACConfig;
 }
 
-module.exports = processConfiguration();
+module.exports = (config) => processConfiguration(config);
