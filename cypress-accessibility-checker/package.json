@@ -42,6 +42,7 @@
     "start-server-and-test": "^1.11.0"
   },
   "dependencies": {
+    "deep-diff": "^1.0.2",
     "request": "^2.88.2"
   }
 }
