@@ -1300,7 +1300,7 @@ let ACCommands = module.exports = {
            }
 
            // Run Deep diff function to compare the actual and expected values.
-           let differences = DeepDiff.default.diff(actual, expected);
+           let differences = DeepDiff.diff(actual, expected);
 
            // Return the results of the diff, which will include the differences between the objects
            if (!differences) return null;
