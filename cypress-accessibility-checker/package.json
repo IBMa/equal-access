@@ -40,5 +40,8 @@
     "prettier": "^2.0.5",
     "shx": "^0.3.2",
     "start-server-and-test": "^1.11.0"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
   }
 }
