@@ -91,6 +91,11 @@ let ace;
     }
 
     aChecker.setConfig = async (config) => {
+        if (aChecker.Config){
+          // NOTE: This should be allowed in the future
+          // https://github.com/IBMa/equal-access/pull/280#issuecomment-724294667
+          throw new Error("ACHelper configuration can only be set once.");
+        }
         await initialize(config);
     }
 
