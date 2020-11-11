@@ -13,7 +13,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
- 
+
 const request = require("request");
 const fs = require("fs");
 const path = require("path");
@@ -161,6 +161,13 @@ let ace;
         return false;
     }
 
+    function isPlaywright(content) {
+        if (content && content.constructor) {
+            return content.constructor.toString().includes("Page");
+        }
+        return false;
+    }
+
     function isSelenium(content) {
         if (content && content.constructor) {
             return content.constructor.toString().indexOf("Driver") !== -1 ||
@@ -199,11 +206,10 @@ let ace;
      * @return N/A - This function will not return any thing, as it is full async
      */
     aChecker.loadEngine = async function (content) {
-        if (isPuppeteer(content)) {
-            aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer");
+        if (isPuppeteer(content) || isPlaywright(content)) {
+            aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Puppeteer/Playwright");
             let page = content;
-            const docHandle = await page.evaluateHandle('document');
-            await page.evaluate((document, scriptUrl) => {
+            await page.evaluate((scriptUrl) => {
                 try {
                     if ('undefined' === typeof(ace)) {
                         return new Promise((resolve, reject) => {
@@ -223,7 +229,7 @@ let ace;
                 } catch (e) {
                     return Promise.reject(e);
                 }
-            }, docHandle, aChecker.Config.rulePack + "/ace.js");
+            }, aChecker.Config.rulePack + "/ace.js");
             return aChecker.loadLocalEngine();
         } else if (isSelenium(content)) {
             aChecker.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
@@ -378,7 +384,7 @@ try {
                 // Since this is a string, we consider this as either URL or local file
                 // so build an iframe based on this and get the frame doc and then scan this.
                 return aChecker.buildIframeAndGetDoc(content);
-            } else if (isSelenium(content) || isPuppeteer(content)) {
+            } else if (isSelenium(content) || isPuppeteer(content) || isPlaywright(content)) {
 
             }
             // Handle Array of nodes
@@ -471,6 +477,9 @@ try {
             return await aChecker.getComplianceHelperSelenium(label, parsed, curPol);
         } else if (isPuppeteer(parsed)) {
             aChecker.DEBUG && console.log("getComplianceHelper:Puppeteer");
+            return await aChecker.getComplianceHelperPuppeteer(label, parsed, curPol);
+        } else if (isPlaywright(parsed)) {
+            aChecker.DEBUG && console.log("getComplianceHelper:Playwright");
             return await aChecker.getComplianceHelperPuppeteer(label, parsed, curPol);
         } else {
             aChecker.DEBUG && console.log("getComplianceHelper:Local");
@@ -575,8 +584,7 @@ try {
             const startScan = Date.now();
             // NOTE: Engine should already be loaded
             const page = parsed;
-            const winHandle = await page.evaluateHandle("window");
-            let report = await page.evaluate((window, policies) => {
+            let report = await page.evaluate((policies) => {
                 let checker = new window.ace.Checker();
                 return new Promise((resolve, reject) => {
                     setTimeout(function () {
@@ -588,7 +596,7 @@ try {
                         })
                     }, 0)
                 })
-            }, winHandle, aChecker.Config.policies);
+            }, aChecker.Config.policies);
             if (curPol != null && !aChecker.Config.checkPolicy) {
                 const valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
                 aChecker.Config.checkPolicy = true;
@@ -1588,10 +1596,10 @@ try {
                     if (pc !== 0) return pc;
                     return b.ruleId.localeCompare(a.ruleId);
                 })
-                let differences2 = aChecker.diffResultsWithExpected({ 
+                let differences2 = aChecker.diffResultsWithExpected({
                     results: modActual,
                     summary: actualResults.summary
-                }, { 
+                }, {
                     results: modExpected ,
                     summary: expected.summary
                 }, true);
