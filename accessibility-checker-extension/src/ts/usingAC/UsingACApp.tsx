@@ -1063,7 +1063,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right arrow'</strong> or the <strong>'left arrow'</strong> keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Checkpoints'</strong> view and the <strong>'Rules'</strong> view.
+                        Press the <strong>'tab'</strong> key to navigate to the <strong>Issue List</strong> tabs and use the <strong>'right arrow'</strong> or the <strong>'left arrow'</strong> keys to navigate between the <strong>'Element Roles'</strong> view, the <strong>'Requirements'</strong> view and the <strong>'Rules'</strong> view.
                       </p>
                     </li>
                     <li>
@@ -1103,7 +1103,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                           </li>
                           <li>
                             <p style={{ marginTop: "0rem" }}>
-                              The <strong>Issue List</strong> region: contains the list of issues grouped by Element Roles, by Checkpoints or by Rules.
+                              The <strong>Issue List</strong> region: contains the list of issues grouped by Element Roles, by Requirements or by Rules.
                             </p>
                           </li>
                         </ul>
