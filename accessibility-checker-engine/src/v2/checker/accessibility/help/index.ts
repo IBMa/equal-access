@@ -947,47 +947,48 @@ let a11yHelp = {
         "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleToolbarUniqueLabel`,
         "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleToolbarUniqueLabel`
     },
-    // JCH - DONE
-    "HAAC_Combobox_ARIA_11_Guideline": {
-        0: `${Config.helpRoot}/HAAC_Combobox_ARIA_11_Guideline`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_ARIA_11_Guideline`,
-        "Manual_1": `${Config.helpRoot}/HAAC_Combobox_ARIA_11_Guideline`
+    "combobox_version": {
+        0: `${Config.helpRoot}/combobox_version`,
+        "Pass_1.0": `${Config.helpRoot}/combobox_version`,
+        "Fail_1.1": `${Config.helpRoot}/combobox_version`,
+        "Fail_1.2": `${Config.helpRoot}/combobox_version`
     },
-    // JCH - DONE
-    "HAAC_Combobox_Must_Have_Text_Input": {
-        0: `${Config.helpRoot}/HAAC_Combobox_Must_Have_Text_Input`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_Must_Have_Text_Input`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_Must_Have_Text_Input`
+    "combobox_popup_reference": {
+        0: `${Config.helpRoot}/combobox_popup_reference`,
+        "Pass_expanded": `${Config.helpRoot}/combobox_popup_reference`,
+        "Pass_collapsed": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_1.0_missing_owns": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_1.2_missing_controls": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_1.0_popup_reference_missing": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_1.2_popup_reference_missing": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_combobox_expanded_hidden": `${Config.helpRoot}/combobox_popup_reference`,
+        "Fail_combobox_collapsed_visible": `${Config.helpRoot}/combobox_popup_reference`
     },
-    // JCH - DONE
-    "HAAC_Combobox_DOM_Focus": {
-        0: `${Config.helpRoot}/HAAC_Combobox_DOM_Focus`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_DOM_Focus`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_DOM_Focus`
+    "combobox_haspopup": {
+        0: `${Config.helpRoot}/combobox_haspopup`,
+        "Pass": `${Config.helpRoot}/combobox_haspopup`,
+        "Fail_popup_role_invalid": `${Config.helpRoot}/combobox_haspopup`,
+        "Fail_combobox_popup_role_mismatch": `${Config.helpRoot}/combobox_haspopup`
+    },    
+    "combobox_focusable_elements": {
+        0: `${Config.helpRoot}/combobox_focusable_elements`,
+        "Pass": `${Config.helpRoot}/combobox_focusable_elements`,
+        "Fail_not_tabbable": `${Config.helpRoot}/combobox_focusable_elements`,
+        "Fail_tabbable_child": `${Config.helpRoot}/combobox_focusable_elements`
     },
-    // JCH - DONE
-    "HAAC_Combobox_Autocomplete": {
-        0: `${Config.helpRoot}/HAAC_Combobox_Autocomplete`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_Autocomplete`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_Autocomplete`
+    "combobox_active_descendant": {
+        0: `${Config.helpRoot}/combobox_active_descendant`,
+        "Pass": `${Config.helpRoot}/combobox_active_descendant`,
+        "Fail_missing": `${Config.helpRoot}/combobox_active_descendant`,
+        "Fail_not_in_popup": `${Config.helpRoot}/combobox_active_descendant`,
+        "Fail_active_role_invalid": `${Config.helpRoot}/combobox_active_descendant`,
+        "Fail_active_not_selected": `${Config.helpRoot}/combobox_active_descendant`
     },
-    // JCH - DONE
-    "HAAC_Combobox_Autocomplete_Invalid": {
-        0: `${Config.helpRoot}/HAAC_Combobox_Autocomplete_Invalid`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_Autocomplete_Invalid`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_Autocomplete_Invalid`
-    },
-    // JCH - DONE
-    "HAAC_Combobox_Expanded": {
-        0: `${Config.helpRoot}/HAAC_Combobox_Expanded`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_Expanded`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_Expanded`
-    },
-    // JCH - DONE
-    "HAAC_Combobox_Popup": {
-        0: `${Config.helpRoot}/HAAC_Combobox_Popup`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Combobox_Popup`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Combobox_Popup`
+    "combobox_autocomplete": {
+        0: `${Config.helpRoot}/combobox_autocomplete`,
+        "Pass": `${Config.helpRoot}/combobox_autocomplete`,
+        "Fail_1": `${Config.helpRoot}/combobox_autocomplete`,
+        "Fail_inline": `${Config.helpRoot}/combobox_autocomplete`
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {

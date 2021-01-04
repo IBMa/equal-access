@@ -194,8 +194,10 @@ function fileSwitcher() {
     let usage = "";
     for (const fileName of files) {
         let component = fileName.replace(".mdx", "");
-        imports += `import ${component} from "./${component}";\n`;
-        usage += `{this.props.item.ruleId === '${component}' && <${component} report={this.props.report} item={this.props.item} />}\n`;
+        let reactName = component.substring(0,1).toUpperCase()+component.substring(1);
+        
+        imports += `import ${reactName} from "./${component}";\n`;
+        usage += `{this.props.item.ruleId === '${component}' && <${reactName} report={this.props.report} item={this.props.item} />}\n`;
     }
     return gulp.src("./helpSwitcher.template")
     .pipe(ext_replace('.tsx'))

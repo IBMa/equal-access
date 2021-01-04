@@ -45,7 +45,7 @@ module.exports = {
         path: distRootPath,
         filename: '[name].js',
     },
-    optimization: {
+    optimization: nodeEnv.includes("watch") ? undefined : {
         splitChunks: {
             maxSize: 3500000
         }
