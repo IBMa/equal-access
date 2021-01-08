@@ -294,10 +294,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>Checklist</strong> - issues are organized by the
-                  relevant checkpoints of the IBM Checklist, which corresponds
-                  to the WCAG 2.1 standards. Each issue is mapped to exactly one
-                  checkpoint. This view makes it easy to see how to classify and
+                  <strong>Requirements</strong> - issues are organized by the
+                  IBM requirements, which corresponds to the WCAG 2.1 standards. Each issue is mapped to the most relevant requirement. This view makes it easy to see how to classify and
                   report issues found by the tool.
                 </p>
               </li>
@@ -327,7 +325,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               supported standard or a date of rule set deployment. By default,
               the IBM Equal Access Accessibility Checker uses the latest
               deployment with a set of rules that correspond to the most recent
-              WCAG standards, plus some additional IBM requirements. Rule sets
+              WCAG standards, plus some additional IBM supplemental requirements. Rule sets
               with rules that map to specific WCAG versions are also available
               to choose from as needed. These rule sets are updated regularly
               and each update has a date of deployment. If you need to replicate
@@ -417,7 +415,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <p>
                   <strong>IBM Accessibility</strong> - Rules for Web Content
                   Accessibility Guidelines WCAG 2.1 level A and level AA, plus
-                  additional IBM checklist supplemental requirements. This is
+                  additional IBM supplemental requirements. This is
                   the default option.
                 </p>
               </li>
@@ -425,8 +423,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>IBM Accessibility Experimental</strong> - Rules for
-                  WCAG 2.1 level A and level AA plus additional IBM checklist
-                  supplemental requirements and experimental rules.
+                  WCAG 2.1 level A and level AA plus additional IBM supplemental requirements and experimental rules.
                 </p>
               </li>
 
@@ -539,8 +536,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     with individual counts for violations, items that need
                     review, and recommendations in the issue count region. By
                     default, the issue list is shown in the ‘Element roles’ view
-                    (see the previous definition), while ‘Checklist’ and ‘Rules’
-                    tabs are also available. All views show the same set of
+                    (see the previous definition), while ‘Requirements’ and ‘Rules’
+                    tab are also available. All views show the same set of
                     issues.
                   </p>
                 </li>
@@ -554,7 +551,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Select the expand icon next to an element role, checkpoint,
+                    Select the expand icon next to an element role, requirement,
                     or rule in the table to display the corresponding issues
                     found.
                   </p>
@@ -630,7 +627,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   </ul>
                 </li>
                 <li>
-                  Checklist tab:
+                  Requirements tab:
                   <ul
                     style={{
                       listStyleType: "circle",
@@ -639,9 +636,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   >
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Select the <strong>'Checklist'</strong> tab to view the
-                        scan results by the IBM accessibility checklist
-                        checkpoints.
+                        Select the <strong>'Requirements'</strong> tab to view the
+                        scan results by the IBM accessibility requirements.
                       </p>
                     </li>
                     <li>
@@ -649,7 +645,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         Select an element or an instance of an issue to
                         highlight the same set of issues and child issues as in
                         the 'Element roles’ tab. In this view, the issues will
-                        be shown within the relevant checkpoints.
+                        be shown within the relevant requirements.
                       </p>
                     </li>
                   </ul>
@@ -832,7 +828,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     By default, the results display by the{" "}
-                    <strong>'Checklist'</strong> checkpoints with a breakdown of
+                    <strong>'Requirements'</strong> with a breakdown of
                     the total number of issues found by category.
                   </p>
                 </li>
@@ -854,13 +850,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    By default, issues are shown in the 'Checklist' view, while
+                    By default, issues are shown in the 'Requirements' view, while
                     'Element roles' and 'Rules' tabs are also available. All
                     views show the same set of issues.
                   </p>
                 </li>
                 <li>
-                  Checklist tab:
+                  Requirements tab:
                   <ul
                     style={{
                       listStyleType: "circle",
@@ -869,9 +865,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   >
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Select the expand icon next to a checkpoint in the table
+                        Select the expand icon next to a requirement in the table
                         to display a list of issues found within that
-                        checkpoint.
+                        requirement.
                       </p>
                     </li>
                     <li>
@@ -1068,7 +1064,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        Press the <strong>'tab'</strong> key to navigate through the <strong>issue groupings</strong> associated with each checkpoint, element role or rule. Use the <strong>'enter'</strong> key to open or close an issue grouping. Within an open grouping, press the <strong>'tab'</strong> key to navigate to each issue, and press the <strong>'enter'</strong> key to select the current issue.
+                        Press the <strong>'tab'</strong> key to navigate through the <strong>issue groupings</strong> associated with each requirement, element role or rule. Use the <strong>'enter'</strong> key to open or close an issue grouping. Within an open grouping, press the <strong>'tab'</strong> key to navigate to each issue, and press the <strong>'enter'</strong> key to select the current issue.
                       </p>
                     </li>
                     <li>
@@ -1167,7 +1163,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <strong>HTML Accessibility Checker report:</strong> This is an interactive report that you
               can save as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
-              the issue details organized by checklist checkpoints, by element
+              the issue details organized by requirements, by element
               roles, and by rules. Each instance of an issue also includes a{" "}
               <strong>'Learn more'</strong> link that opens an overlay
               containing a more detailed description of the issue.
