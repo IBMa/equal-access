@@ -175,17 +175,34 @@ $feature-flags: (
         }
 
 
-        .summaryBarLabels {
-            display:none;
+        // .summaryBarLabels {
+        //     display:none;
             
-            @media only screen and (min-width: 32rem) {
-                display:inline;
-            }
-        }
+        //     @media only screen and (min-width: 675px) {
+        //         display:inline;
+        //     }
+        // }
 
         img, svg {
             margin-right: 6px;
             vertical-align: middle;
+        }
+    }
+}
+
+.mainPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 64rem) {
+            display:inline;
+        }
+    }
+}
+.subPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 43rem) {
+            display:inline;
         }
     }
 }

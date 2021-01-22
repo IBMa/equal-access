@@ -101,7 +101,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Element Roles
+                        Element Role
                     </div>
                 </div>
             </div>
