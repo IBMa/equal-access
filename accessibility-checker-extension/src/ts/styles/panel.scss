@@ -175,10 +175,18 @@ $feature-flags: (
         }
 
 
-        .summaryBarLabels {
+        .summaryBarLabelsSub {
             display:none;
             
-            @media only screen and (min-width: 32rem) {
+            @media only screen and (min-width: 42rem) {
+                display:inline;
+            }
+        }
+
+        .summaryBarLabelsMain {
+            display:none;
+            
+            @media only screen and (min-width: 71rem) {
                 display:inline;
             }
         }
@@ -261,10 +269,6 @@ $feature-flags: (
         }
     }
 
-
-    .toolHelp, .toolHelp .bx--row:nth-child(1) {
-        //height: 100px;
-    }
     @media (min-width: 99rem) {
         .toolHelp .bx--grid {
             padding-left: 0rem;

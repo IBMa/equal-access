@@ -307,7 +307,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             }
 
-            <div className="countRow summary" role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+            {console.log("layout = ", this.props.layout)}
+            <div className="countRow summary" role="region" arial-label='Issue count'>
+                
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox 
@@ -318,7 +320,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="Violations"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={Violation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Violations</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={Violation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className={(this.props.layout==="sub" ? "summaryBarLabelsSub" : "summaryBarLabelsMain")} style={{ marginLeft: "4px" }}>Violations</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
@@ -328,6 +330,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </ReactTooltip>
                     </span>
                 </div>
+                
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterNeedsReviewTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox
@@ -338,7 +341,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="NeedsReview"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={NeedsReview16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Needs review</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={NeedsReview16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className={(this.props.layout==="sub" ? "summaryBarLabelsSub" : "summaryBarLabelsMain")} style={{ marginLeft: "4px" }}>Needs review</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
@@ -358,7 +361,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             defaultChecked
                             id="Recommendations"
                             indeterminate={false}
-                            labelText={<React.Fragment><img src={Recommendation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Recommendations</span></span></React.Fragment>}
+                            labelText={<React.Fragment><img src={Recommendation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className={(this.props.layout==="sub" ? "summaryBarLabelsSub" : "summaryBarLabelsMain")} style={{ marginLeft: "4px" }}>Recommendations</span></span></React.Fragment>}
                             // hideLabel
                             onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
@@ -373,6 +376,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts" style={{ fontWeight: 400, lineHeight: "32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning..." : ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
+            
         </div>);
 
         if (this.props.layout === "main") {
