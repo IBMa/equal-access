@@ -26,7 +26,7 @@ export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
 
     render() {
         return <div className="scoreCard">
-            <div><h2 className="title">{this.props.title}</h2><span style={{verticalAlign:"top",float:"right"}}>{this.props.icon}</span></div>
+            <div><span className="title">{this.props.title}</span><span style={{verticalAlign:"top",float:"right"}}>{this.props.icon}</span></div>
             <div className="score">{this.props.count}</div>
             <div className="description">{this.props.children}</div>
         </div>
