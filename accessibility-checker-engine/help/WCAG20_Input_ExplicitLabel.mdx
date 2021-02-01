@@ -27,17 +27,18 @@ Associating a meaningful label with every UI control allows the browser and assi
 
 ### What to do
 
-* Add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
-* OR put the UI element inside a visible `<label>` element;
+* If the control is a [labelable](https://html.spec.whatwg.org/multipage/forms.html#category-label) element, add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
+* OR if the  control is a labelable element, put the control inside a visible `<label>` element;
 * OR add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
-* OR only if the design cannot have a visible label, use the `title` attribute to provide a label.
+* OR if the design cannot have a visible label, provide a label using the `aria-label` attribute (e.g. `aria-label="Activities"`);
+* OR if the design cannot have a visible label, use the `title` attribute to provide a label.
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
 
-[IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/guidelines/ci162/labels_or_instructions.html)
+[IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
 [WCAG 2.1 technique H44](https://www.w3.org/TR/WCAG20-TECHS/H44)
 [WCAG 2.1 technique ARIA16](https://www.w3.org/TR/WCAG20-TECHS/ARIA16.html)
 

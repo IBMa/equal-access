@@ -19,7 +19,6 @@ var fs = require('fs');
 var YAML = require('js-yaml');
 var constants = require("./ACConstants");
 var uuid = require('uuid');
-var request = require("request");
 
 const myrequest = (url) => {
     if (typeof cy !== "undefined") {
@@ -29,6 +28,7 @@ const myrequest = (url) => {
             })
     } else {
         return new Promise((resolve, reject) => {
+            var request = require("request");
             request.get(url, function (error, response, body) {
                 if (error) {
                     reject(error);
