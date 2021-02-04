@@ -15,13 +15,14 @@
   *****************************************************************************/
 
 // Load all the modules that are needed
-var pathLib = require('path');
-var fs = require('fs');
-require("../ACConfigLoader");
-const { genReport } = require("./genReport");
+import * as pathLib from "path";
+import * as fs from "fs";
+import { ACEngineManager } from "../ACEngineManager";
+import { IConfigUnsupported } from "../api/IChecker";
+import { IScanSummary } from "./ReportUtil";
+import { genReport } from "./genReport";
 
-// Global aChecker Summary Holder
-var scanSummary = {};
+declare var after;
 
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
@@ -40,11 +41,8 @@ var scanSummary = {};
  *
  * @memberOf this
  */
-var ACReporterHTML = function (aChecker) {
-    let Config = aChecker.Config;
+export function ACReporterHTML(Config: IConfigUnsupported, scanSummary: IScanSummary) {
     Config.DEBUG && console.log("START ACReporter Constructor");
-    // Override adapters
-    this.adapters = [];
 
     // This emitter function is responsible for calling this function when the info event is detected
     this.report = function(info) {
@@ -94,24 +92,24 @@ var ACReporterHTML = function (aChecker) {
      *
      * @memberOf this
      */
-    var savePageResults = function (results) {
+    let savePageResults = function (results) {
         Config.DEBUG && console.log("START 'savePageResults' function");
 
         // Extract the outputFolder from the ACConfig (this is the user config that they provid)
-        var resultDir = Config.outputFolder;
+        let resultDir = Config.outputFolder;
 
         Config.DEBUG && console.log("Results are going to be stored under results directory: \"" + resultDir + "\"");
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // configuration.
-        var resultsFileName = pathLib.join(resultDir, results.label + '.html');
+        let resultsFileName = pathLib.join(resultDir, results.label + '.html');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
         // Debug example which has label which has unix "/" in them.
-        var resultsFileName = pathLib.join(resultDir, "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html.json");
+        let resultsFileName = pathLib.join(resultDir, "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html.json");
 
         // Debug example which has a label which has Windows "\" in them.
-        var resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
+        let resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
         ***************************************************************************************************************************************/
 
         // Write the results object as HTML to a file.
@@ -129,7 +127,7 @@ var ACReporterHTML = function (aChecker) {
      *
      * @memberOf this
      */
-    var writeObjectToFileAsHTML = function (fileName, content) {
+    let writeObjectToFileAsHTML = function (fileName, content) {
         const valueMap = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",
@@ -148,7 +146,7 @@ var ACReporterHTML = function (aChecker) {
         Config.DEBUG && console.log("START 'writeObjectToFileAsHTML' function");
 
         // Extract the parent directory of the file name that is provided
-        var parentDir = pathLib.dirname(fileName);
+        let parentDir = pathLib.dirname(fileName);
 
         Config.DEBUG && console.log("Parent Directoy: \"" + parentDir + "\"");
 
@@ -167,13 +165,14 @@ var ACReporterHTML = function (aChecker) {
                 nls: content.nls,
                 results: content.results,
                 counts: {
-                    total: { }
+                    total: { 
+                        All: 0
+                    }
                 }
             },
-            rulesets: aChecker.getRulesets(),
+            rulesets: ACEngineManager.getRulesets(),
             tabURL: content.summary.URL
         }
-        outReport.report.counts.total.All = 0;
         for (const item of content.results) {
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             outReport.report.counts.total[val] = (outReport.report.counts.total[val] || 0) + 1;    
@@ -190,114 +189,13 @@ var ACReporterHTML = function (aChecker) {
     }
 
     /**
-     * This function is responsible for initializing the summary object which will store all informations about the
-     * scans that will occurs while karma is still running and running compliance scans.
-     *
-     * @return {Object} scanSummary - return the built scan summary object, which will follow the following format:
-     * {
-     *     "scanID": "ef3aec68-f073-4f9c-b372-421ae00bd55d",
-     *     "counts": {
-     *         "violation": 0,
-     *         "potentialviolation": 0,
-     *         "recommendation": 0,
-     *         "potentialrecommendation": 0,
-     *         "manual": 0
-     *     },
-     *     "startReport": "2016-06-06T00:52:41.603Z",
-     *     "endReport": "",
-     *     "toolID": "karma-ibma-v1.0.0",
-     *     "policies": [
-     *         "CI162_5_2_DCP070116",
-     *         "CI162_5_2_DCP080115"
-     *     ],
-     *     "reportLevels": [
-     *         "violation",
-     *         "potentialviolation",
-     *         "recommendation",
-     *         "potentialrecommendation",
-     *         "manual"
-     *     ],
-     *     "labels": [
-     *         "Firefox",
-     *         "master",
-     *         "V12",
-     *         "Linux"
-     *     ],
-     *     "pageScanSummary": {}
-     * }
-     *
-     * @memberOf this
-     */
-    var initializeSummary = function (config) {
-        // Variable Decleration
-        var scanSummary = {};
-        var reportLevels =  Config.reportLevels;
-
-        // Initialize counts
-        scanSummary.counts = {}
-
-        // In the case that report levels are provided then populate the count object in
-        // scanSummary.counts object with the levels which were provided in reportLevels
-        // array.
-        if (reportLevels) {
-
-            // Iterate over the report levels and populate the pageResultsWithCount counts
-            // object
-            reportLevels.forEach(function (levels) {
-                scanSummary.counts[levels] = 0;
-            });
-        }
-        // Populate the scanSummary.counts object with all the levels
-        else {
-            scanSummary.counts = {
-                "violation": 0,
-                "potentialviolation": 0,
-                "recommendation": 0,
-                "potentialrecommendation": 0,
-                "manual": 0,
-                "pass": 0
-            };
-        }
-
-        // Add ignored count disableIgnore field in config file is not true
-        if(Config.disableIgnore == undefined || Config.disableIgnore == false || Config.disableIgnore == null){
-            scanSummary.counts.ignored = 0;
-        }
-
-        // Add Start time when this script is loaded into browser
-        // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        scanSummary.startReport = Date.now();
-
-        // Leave end report as empty for now
-        scanSummary.endReport = '';
-
-        // Add the toolID,  ruleArchive, policies, reportLevels, failLevels and labels from the config to the summary
-        scanSummary.toolID = Config.toolID;
-        // Append the id and the name of the archive to the report.
-        scanSummary.policies = Config.policies;
-        scanSummary.ruleArchive = Config.ruleArchive;
-        scanSummary.reportLevels = Config.reportLevels;
-        scanSummary.labels = Config.label;
-        scanSummary.failLevels = Config.failLevels;
-
-        // Add scanID (UUID) to the scan summary object
-        scanSummary.scanID = Config.scanID;
-
-        // Build the paceScanSummary object which will contains all the items that were scanned and a count
-        // summary for each of the scanned items.
-        scanSummary.pageScanSummary = [];
-
-        return scanSummary;
-    }
-
-    /**
      * This function is responsible for saving the summary object of the while scan to a summary file.
      *
      * @param {Object} summary - The summary object that needs to be written to the summary file.
      *
      * @memberOf this
      */
-    var saveSummary = function (summary) {
+    let saveSummary = function (summary) {
 
     }
 
@@ -311,7 +209,7 @@ var ACReporterHTML = function (aChecker) {
      *
      * @memberOf this
      */
-    var datePadding = function(number) {
+    let datePadding = function(number) {
         Config.DEBUG && console.log("START 'datePadding' function");
 
         // In the case that the number is less then 10 we need to add the leading '0' to the number.
@@ -333,7 +231,7 @@ var ACReporterHTML = function (aChecker) {
      *
      * @memberOf this
      */
-    var addResultsToGlobal = function (results) {
+    let addResultsToGlobal = function (results) {
         Config.DEBUG && console.log("START 'addResultsToGlobal' function");
 
         // Build the single page summary object to follow the following format:
@@ -345,7 +243,7 @@ var ACReporterHTML = function (aChecker) {
         //       "potentialrecommendation": 0,
         //       "manual": 0
         //   }
-        var pageSummaryObject = {
+        let pageSummaryObject = {
             label: results.label,
             counts: results.summary.counts
         }
@@ -372,11 +270,11 @@ var ACReporterHTML = function (aChecker) {
      *
      * @memberOf this
      */
-    var addToSummaryCount = function (pageCount) {
+    let addToSummaryCount = function (pageCount) {
 
         // Variable Decleration
-        var ACScanSummary = scanSummary.counts || {};
-        var addedToSummary = false;
+        let ACScanSummary = scanSummary.counts || {};
+        let addedToSummary = false;
 
         // In the case ACScanSummary is empty, simply assign pageCount to ACScanSummary
         if (Object.keys(ACScanSummary).length === 0) {
@@ -393,7 +291,7 @@ var ACReporterHTML = function (aChecker) {
             // and add it to the aChecker violation summary object.
             // This will keep track of an overall summary of the violations for all testscases, that
             // were run for a single karma run.
-            for (var level in pageCount) {
+            for (let level in pageCount) {
                 ACScanSummary[level] += pageCount[level];
             }
         }
@@ -402,9 +300,7 @@ var ACReporterHTML = function (aChecker) {
         scanSummary.counts = ACScanSummary;
     }
 
-    scanSummary = initializeSummary();
-
-    var myThis = this;
+    let myThis = this;
     if (typeof(after) !== "undefined") {
         after(function(done) {
             myThis.onRunComplete();

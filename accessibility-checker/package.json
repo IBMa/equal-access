@@ -7,9 +7,9 @@
   "scripts": {
     "lint": "eslint src",
     "test": "mocha -R dot test/mocha/**/*.test.js",
-    "build": "npm run build:ts && npm run build:report && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
+    "build": "npm run build:report && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
     "build:ts": "npx tsc",
-    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
+    "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/reporters/genReport.ts)",
     "package:zip": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js && cd package && npm pack",
     "package:npm": "shx rm -rf package && gulp --gulpfile gulp/gulpfile.js && shx chmod u+x package/bin/*.js"
   },
@@ -28,6 +28,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
+    "@types/node": "^14.14.22",
     "adm-zip": "^0.4.13",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",

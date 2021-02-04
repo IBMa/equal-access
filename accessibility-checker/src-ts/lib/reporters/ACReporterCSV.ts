@@ -15,14 +15,13 @@
   *****************************************************************************/
  
 // Load all the modules that are needed
-var pathLib = require('path');
-var fs = require('fs');
-const path = require("path");
-// Variable Declearation
-var log;
+import * as pathLib from "path";
+import * as fs from "fs";
+import { ACEngineManager } from "../ACEngineManager";
+import { IConfigUnsupported } from "../api/IChecker";
+import { IScanSummary } from "./ReportUtil";
 
-// Global aChecker Summary Holder
-var scanSummary = {};
+declare var after;
 
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
@@ -41,11 +40,13 @@ var scanSummary = {};
  *
  * @memberOf this
  */
-var ACReporter = function (aChecker) {
-    let Config = aChecker.Config;
+export function ACReporterCSV(config: IConfigUnsupported, scanSummary: IScanSummary) {
+    let Config = config;
     Config.DEBUG && console.log("START ACReporter Constructor");
     // Override adapters
     this.adapters = [];
+
+    this.resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`
 
     // This emitter function is responsible for calling this function when the info event is detected
     this.report = function(info) {
@@ -75,17 +76,13 @@ var ACReporter = function (aChecker) {
     this.onRunComplete = function () {
         Config.DEBUG && console.log("START 'ACReporterCSV::onRunComplete' function");
 
-        // Add End time when the whole karma run is done
-        // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        scanSummary.endReport = Date.now();
-
         // Save summary object to a JSON file.
-        saveSummary(scanSummary);
+        saveSummary();
 
         Config.DEBUG && console.log("END 'ACReporterCSV::onRunComplete' function");
     };
 
-    var toCSV = function(str) {
+    let toCSV = function(str) {
 		if (str === null) {
 			return '"null"';
 		} else if (str.length == 0) {
@@ -105,11 +102,11 @@ var ACReporter = function (aChecker) {
      *
      * @memberOf this
      */
-    var savePageResults = function (report) {
+    let savePageResults = function (report) {
         Config.DEBUG && console.log("START 'savePageResults' function");
 
         for (const result of report.results) {
-            this.resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(aChecker.getHelpURL(result.ruleId))}\n`
+            this.resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(ACEngineManager.getHelpURL(result.ruleId))}\n`
         }
 
         Config.DEBUG && console.log("END 'savePageResults' function");
@@ -124,11 +121,11 @@ var ACReporter = function (aChecker) {
      *
      * @memberOf this
      */
-    var writeObjectToFile = function (fileName, content) {
+    let writeObjectToFile = function (fileName, content) {
         Config.DEBUG && console.log("START 'writeObjectToFileAsCSV' function");
-        fileName = path.join(aChecker.Config.outputFolder, fileName);
+        fileName = pathLib.join(config.outputFolder, fileName);
         // Extract the parent directory of the file name that is provided
-        var parentDir = pathLib.dirname(fileName);
+        let parentDir = pathLib.dirname(fileName);
 
         Config.DEBUG && console.log("Parent Directoy: \"" + parentDir + "\"");
 
@@ -151,57 +148,13 @@ var ACReporter = function (aChecker) {
     }
 
     /**
-     * This function is responsible for initializing the summary object which will store all informations about the
-     * scans that will occurs while karma is still running and running compliance scans.
-     *
-     * @return {Object} scanSummary - return the built scan summary object, which will follow the following format:
-     * {
-     *     "scanID": "ef3aec68-f073-4f9c-b372-421ae00bd55d",
-     *     "counts": {
-     *         "violation": 0,
-     *         "potentialviolation": 0,
-     *         "recommendation": 0,
-     *         "potentialrecommendation": 0,
-     *         "manual": 0
-     *     },
-     *     "startReport": "2016-06-06T00:52:41.603Z",
-     *     "endReport": "",
-     *     "toolID": "karma-ibma-v1.0.0",
-     *     "policies": [
-     *         "CI162_5_2_DCP070116",
-     *         "CI162_5_2_DCP080115"
-     *     ],
-     *     "reportLevels": [
-     *         "violation",
-     *         "potentialviolation",
-     *         "recommendation",
-     *         "potentialrecommendation",
-     *         "manual"
-     *     ],
-     *     "labels": [
-     *         "Firefox",
-     *         "master",
-     *         "V12",
-     *         "Linux"
-     *     ],
-     *     "pageScanSummary": {}
-     * }
-     *
-     * @memberOf this
-     */
-    var initializeSummary = function (config) {
-        this.resultStr = `Label,Level,RuleId,Message,Xpath,Help\n`
-        return scanSummary;
-    }
-
-    /**
      * This function is responsible for saving the summary object of the while scan to a summary file.
      *
      * @param {Object} summary - The summary object that needs to be written to the summary file.
      *
      * @memberOf this
      */
-    var saveSummary = function (summary, done) {
+    let saveSummary = function () {
         if (Config.outputFormat.indexOf("csv") === -1) {
             return;
         }
@@ -221,7 +174,7 @@ var ACReporter = function (aChecker) {
      *
      * @memberOf this
      */
-    var addResultsToGlobal = function (results) {
+    let addResultsToGlobal = function (results) {
         Config.DEBUG && console.log("START 'addResultsToGlobal' function");
         Config.DEBUG && console.log("END 'addResultsToGlobal' function");
     }
@@ -238,13 +191,11 @@ var ACReporter = function (aChecker) {
      *
      * @memberOf this
      */
-    var addToSummaryCount = function (pageCount) {
+    let addToSummaryCount = function (pageCount) {
 
     }
 
-    scanSummary = initializeSummary();
-
-    var myThis = this;
+    let myThis = this;
     if (typeof(after) !== "undefined") {
         after(function(done) {
             myThis.onRunComplete();
@@ -257,6 +208,3 @@ var ACReporter = function (aChecker) {
     }
     Config.DEBUG && console.log("END ACReporter Constructor");
 };
-
-// Export this function, which will be called when Karma loads the reporter
-module.exports = ACReporter;

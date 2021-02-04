@@ -21,7 +21,8 @@
  *******************************************************************************/
 
 // Load required modules
-var request = require('request');
+import * as request from "request";
+import { ILogger } from "../api/IChecker";
 
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
@@ -35,29 +36,24 @@ var request = require('request');
  *
  * @memberOf this
  */
-var ACMetricsLogger = function (toolName, logger, policies) {
+export class ACMetricsLogger {
+    policies: string;
+    metricsURLV2: string = "https://able.ibm.com/tools";
+    log: ILogger;
+    toolName: string;
+    scanTimesV1 = [];
+    scanTimesV2 : {
+        [profile: string]: number[]
+    } = {};
 
-    // Variable Decleration
-    this.metricsURLV2 = "https://able.ibm.com/tools";
+    constructor(toolName: string, logger: ILogger, policies: string[]) {
+        this.policies = policies.join(",");
 
-    // accessibility-checker Metrics Logger
-    this.log = logger;
+        // accessibility-checker Metrics Logger
+        this.log = logger;
 
-    // Init all the local object variables
-    this.toolName = toolName;
-
-    // Contains the time it took for a scan for the V1 metric server
-    this.scanTimesV1 = [];
-
-    // Contains the scan times indexed by profile for V2 metric server
-    this.scanTimesV2 = {};
-
-    // Additional details to upload to the metrics server
-    this.policies = policies;
-
-    // In the case that policies provided is an array convert it to a comma seperated list
-    if (this.policies instanceof Array) {
-        this.policies = this.policies.join(",");
+        // Init all the local object variables
+        this.toolName = toolName;
     }
 
     /**
@@ -76,7 +72,7 @@ var ACMetricsLogger = function (toolName, logger, policies) {
      *
      * @memberOf this
      */
-    this.profileV2 = function (scanTime, profile) {
+    profileV2(scanTime: number, profile: string) {
         this.log.debug("START 'profileV2' function");
 
         // URI encode the profile text provided
@@ -99,35 +95,30 @@ var ACMetricsLogger = function (toolName, logger, policies) {
      *
      * @memberOf this
      */
-    this.sendLogsV2 = function (done, rulePack) {
+    sendLogsV2(done, rulePack) {
         this.log.debug("START 'sendLogsV2' function");
 
         // Copy this.log into loggerInScope so that it can be used in callback function
-        var loggerInScope = this.log;
+        let loggerInScope = this.log;
 
         try {
             // Variable Decleration
-            var numProfiles = 0;
-            var accountId = "";
-
-            // Reset the timeout to 0
-            if (this.timeout) {
-                this.timeout(0);
-            }
+            let numProfiles = 0;
+            let accountId = "";
 
             // Loop over all the profiles with in the scanTime Object
-            for (var profile in this.scanTimesV2) {
+            for (let profile in this.scanTimesV2) {
 
                 // Loop over all the V2 Scan Times until it reaches 0
                 while (this.scanTimesV2[profile].length > 0) {
                     // Build a truncatedScanTime Array to upload to the metrics server chunck by chunck
-                    var subScanTimes = this.scanTimesV2[profile].splice(0, 150);
+                    let subScanTimes = this.scanTimesV2[profile].splice(0, 150);
 
                     // Increment the num Profile
                     ++numProfiles;
 
                     // Start building the Query string to be sent to the metrics server
-                    var qs = "?t=" + this.toolName + "&tag=" + profile + "&a=" + accountId + "&pol=" + this.policies + "&st=";
+                    let qs = "?t=" + this.toolName + "&tag=" + profile + "&a=" + accountId + "&pol=" + this.policies + "&st=";
 
                     subScanTimes.forEach(function (t) {
                         qs += t;
@@ -168,6 +159,3 @@ var ACMetricsLogger = function (toolName, logger, policies) {
         }
     };
 };
-
-// Export this function, which can be used to create a new metrics logger object
-module.exports = ACMetricsLogger;
