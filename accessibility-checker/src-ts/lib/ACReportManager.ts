@@ -1,4 +1,4 @@
-import { ICheckerReport, ICheckerReportCounts, IConfigUnsupported, ILogger } from "./api/IChecker";
+import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger } from "./api/IChecker";
 import { ACConfigManager } from "./ACConfigManager";
 import { ACMetricsLogger } from "./log/ACMetricsLogger";
 import * as path from "path";
@@ -34,7 +34,7 @@ export class ACReportManager {
     static async initialize(logger: ILogger) {
         if (ACReportManager.config) return;
         ACReportManager.config = await ACConfigManager.getConfigUnsupported();
-        if (this.config.ruleServer.includes("localhost")) {
+        if (ACReportManager.config.ruleServer.includes("localhost")) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
         // Initialize the scanSummary object with summary information for accessibility-checker
@@ -280,7 +280,7 @@ export class ACReportManager {
         report.summary = {
             counts: counts,
             scanTime: inReport.totalTime,
-            ruleArchive: ACReportManager.config.ruleArchive,
+            ruleArchive: ACReportManager.config.ruleArchiveLabel,
             policies: ACReportManager.config.policies,
             reportLevels: ACReportManager.config.reportLevels,
             startScan: startScan,
@@ -767,13 +767,15 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static assertCompliance(actualResults) {
+    static assertCompliance(actualResults: ICheckerReport | ICheckerError) : eAssertResult {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
-        if (actualResults.details instanceof Error) {
-            return -1;
+        if ((actualResults as ICheckerError).details instanceof Error) {
+            return eAssertResult.ERROR;
         }
+
+        actualResults = actualResults as ICheckerReport;
 
         // Get the label directly from the results object, the same label has to match
         // the baseline object which is available in the global space.
@@ -793,13 +795,13 @@ export class ACReportManager {
 
             // In the case that there are no differences then that means it passed
             if (differences === null || typeof (differences) === "undefined") {
-                return 0;
+                return eAssertResult.PASS;
             } else {
                 // Re-sort results and check again
                 let modActual = JSON.parse(JSON.stringify(actualResults.results));
                 modActual.sort((a, b) => {
                     let cc = b.category.localeCompare(a.category);
-                    if (cc != 0) return cc;
+                    if (cc !== 0) return cc;
                     let pc = b.path.dom.localeCompare(a.path.dom);
                     if (pc !== 0) return pc;
                     return b.ruleId.localeCompare(a.ruleId);
@@ -820,13 +822,13 @@ export class ACReportManager {
                     summary: expected.summary
                 }, true);
                 if (differences2 === null || typeof (differences2) === "undefined") {
-                    return 0;
+                    return eAssertResult.PASS;
                 } else {
                     // In the case that there are failures add the whole diff array to
                     // global space indexed by the label so that user can access it.
                     ACReportManager.diffResults[label] = differences;
 
-                    return 1;
+                    return eAssertResult.BASELINE_MISMATCH;
                 }
             }
         } else {
@@ -836,11 +838,11 @@ export class ACReportManager {
 
             // In the case there are no violations that match the fail on then return as success
             if (returnCode === 0) {
-                return returnCode;
+                return eAssertResult.PASS;
             } else {
                 // In the case there are some violation that match in the fail on then return 2
                 // to identify that there was a failure, and we used a 2nd method for compare.
-                return 2;
+                return eAssertResult.FAIL;
             }
         }
     };
@@ -1057,7 +1059,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static getDiffResults(label) {
+    static getDiffResults(label: string) {
         return ACReportManager.diffResults && ACReportManager.diffResults[label];
     };
 
@@ -1072,7 +1074,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static stringifyResults(report) {
+    static stringifyResults(report: ICheckerReport) : string {
         // console.log(report);
         // Variable Decleration
         let resultsString = `Scan: ${report.label}\n`;

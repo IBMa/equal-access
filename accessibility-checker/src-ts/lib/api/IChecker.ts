@@ -1,5 +1,11 @@
 import { eRuleLevel, RuleDetails } from "./IEngine";
 
+export enum eAssertResult {
+    ERROR = -1,
+    PASS = 0,
+    BASELINE_MISMATCH = 1,
+    FAIL = 2
+}
 export interface IConfig {
     /**
      * (optional) Specify the rule archive
@@ -9,6 +15,8 @@ export interface IConfig {
      */
     ruleArchive?: "latest" | "preview" | string
 
+    ruleArchiveLabel?: string
+    
     /**
      * (optional) Specify one or many policies to scan.
      * 
@@ -111,13 +119,17 @@ export interface ILogger {
     create: (...args: any[]) => void
 }
 
+export interface ICheckerError {
+    details: any
+}
+
 export interface ICheckerResult {
     // reference to a webdriver object if Selenium WebDriver was used for the scan
     webdriver?: any,
     // reference to a puppeteer object if Puppeteer was used for the scan
     // Puppeteer is used for string, URL, and file scans
     puppeteer?: any,
-    report: ICheckerReport
+    report: ICheckerReport | ICheckerError
 }
 
 export type ICheckerReportCounts = {

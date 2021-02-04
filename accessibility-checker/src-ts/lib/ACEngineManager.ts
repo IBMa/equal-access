@@ -3,7 +3,7 @@ import * as request from "request";
 import * as path from "path";
 import * as fs from "fs";
 
-declare var ace;
+let ace;
 
 let checker;
 

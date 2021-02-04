@@ -95,6 +95,7 @@ async function processACConfig(ACConfig) {
 
         // Set the ruleArchive to empty for custom rule server
         ACConfig.ruleArchive = "";
+        ACConfig.ruleArchiveLabel = "";
         // Set the rulePack with what is provided in the configuration
         ACConfig.rulePack = ACConfig.rulePack;
     } else {
@@ -116,32 +117,36 @@ async function processACConfig(ACConfig) {
             });
         } catch (err) {
             console.log(err);
-            process.exit(-1);
+            throw new Error(err);
         }
         let ruleArchivePath = null;
         if (ruleArchiveParse && ruleArchiveParse.length > 0) {
             ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
             ACConfig.ruleArchiveSet = ruleArchiveParse;
             let ruleArchive = ACConfig.ruleArchive;
+            ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
             for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
                 if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                     ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                    ACConfig.ruleArchive = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
+                    ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                     break;
                 }
             }
             if (!ruleArchivePath) {
-                console.log("[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md");
-                process.exit(-1);
+                const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
+                console.error(errStr);
+                throw new Error(errStr);
             }
             //}
         } else {
-            console.log("[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.");
-            process.exit(-1);
+            const errStr = "[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.";
+            console.error(errStr);
+            throw new Error(errStr);
         }
 
         // Build the new rulePack based of the baseA11yServerURL 
         ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+        ACConfig.ruleServer = ruleServer;
 
         ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
     }
@@ -168,7 +173,6 @@ function initializeDefaults(config) {
 
     ACConstants.DEBUG && console.log("Config before initialization: ");
     ACConstants.DEBUG && console.log(config);
-
     // Make sure all the following options are defined, otherwise reset them to default values.
     config.policies = config.policies || ACConstants.policies;
     config.failLevels = config.failLevels || ACConstants.failLevels;
@@ -178,6 +182,7 @@ function initializeDefaults(config) {
     config.outputFormat = config.outputFormat || ACConstants.outputFormat;
     config.extensions = config.extensions || ACConstants.extensions;
     config.ruleArchive = config.ruleArchive || ACConstants.ruleArchive;
+    config.ruleArchiveLabel = config.ruleArchiveLabel || ACConstants.ruleArchiveLabel || config.ruleArchive;
     // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
     // boolean which causes it to always comply with the default value and not user provided option
     if (config.captureScreenshots === null || config.captureScreenshots === undefined || typeof config.captureScreenshots === "undefined") {
@@ -307,7 +312,7 @@ function loadConfigFromYAMLorJSONFile() {
  *
  * @memberOf this
  */
-async function processConfiguration(config?) : Promise<IConfig> {
+async function processConfiguration(config?) : Promise<IConfigUnsupported> {
     ACConstants.DEBUG && console.log("START 'processConfiguration' function");
 
     // Variable Decleration
@@ -353,8 +358,8 @@ async function processConfiguration(config?) : Promise<IConfig> {
 
 let config : IConfigUnsupported = null;
 export class ACConfigManager {
-    static async setConfig(config?: IConfig | IConfigUnsupported) : Promise<void> {
-        config = await processConfiguration(config);
+    static async setConfig(inConfig?: IConfig | IConfigUnsupported) : Promise<void> {
+        config = await processConfiguration(inConfig);
     }
 
     static async getConfig() : Promise<IConfig> {

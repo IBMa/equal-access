@@ -68,8 +68,9 @@ function areValidPolicy(valPolicies, curPol) {
         console.log(`[WARN] InvalidPolicies: Invalid policies "${errorPolicy}". Valid policy ids are: ${valPolicies}`);
     }
     if (!isValPol) {
-        console.error(`[ERROR] ValidPoliciesMissing: No valid policy has been provided. Valid policy ids for the specified archive are: ${valPolicies}`);
-        process.exit(-1);
+        const errStr = `[ERROR] ValidPoliciesMissing: No valid policy has been provided. Valid policy ids for the specified archive are: ${valPolicies}`;
+        console.error(errStr);
+        throw new Error(errStr);
     }
 }
 
