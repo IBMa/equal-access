@@ -39,14 +39,20 @@ try {
 } catch (e) {
     if (typeof (after) !== "undefined") {
         after(function (done) {
-            const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
-            initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+            if (Config) {
+                const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
+                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
+            } else {
+                done();
+            }
         });
     } else {
         process.on('beforeExit', async function () {
-            const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
-            initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
-            ACBrowserManager.close();
+            if (Config) {
+                const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
+                initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
+                ACBrowserManager.close();
+            }
         });
     }
 }
