@@ -90,66 +90,56 @@ async function processACConfig(ACConfig) {
     // Convert the policies into a comma seperated string
     ACConfig.policies = convertPolicies(ACConfig.policies);
 
-    if (ACConfig.customRuleServer) {
-        ACConstants.DEBUG && console.log("Specified Usage of custom Rule Server, switching to custom rule server");
+    // In the case that baseA11yServerURL is provided in the config use that as the base otherwise switch to the default one from the ACConstants object
+    let ruleServer = ACConfig.ruleServer ? ACConfig.ruleServer : ACConstants.ruleServer;
 
-        // Set the ruleArchive to empty for custom rule server
-        ACConfig.ruleArchive = "";
-        ACConfig.ruleArchiveLabel = "";
-        // Set the rulePack with what is provided in the configuration
-        ACConfig.rulePack = ACConfig.rulePack;
-    } else {
-        // In the case that baseA11yServerURL is provided in the config use that as the base otherwise switch to the default one from the ACConstants object
-        let ruleServer = ACConfig.ruleServer ? ACConfig.ruleServer : ACConstants.ruleServer;
-
-        // Get and parse the rule archive.
-        let ruleArchiveFile = `${ruleServer}/archives.json`;
-        let ruleArchiveParse;
-        try {
-            ruleArchiveParse = await new Promise((resolve, reject) => {
-                request.get(ruleArchiveFile, function (error, response, body) {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(JSON.parse(body));
-                    }
-                });
-            });
-        } catch (err) {
-            console.log(err);
-            throw new Error(err);
-        }
-        let ruleArchivePath = null;
-        if (ruleArchiveParse && ruleArchiveParse.length > 0) {
-            ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
-            ACConfig.ruleArchiveSet = ruleArchiveParse;
-            let ruleArchive = ACConfig.ruleArchive;
-            ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
-            for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-                if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
-                    ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                    ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
-                    break;
+    // Get and parse the rule archive.
+    let ruleArchiveFile = `${ruleServer}/archives.json`;
+    let ruleArchiveParse;
+    try {
+        ruleArchiveParse = await new Promise((resolve, reject) => {
+            request.get(ruleArchiveFile, function (error, response, body) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(JSON.parse(body));
                 }
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
+    }
+    let ruleArchivePath = null;
+    if (ruleArchiveParse && ruleArchiveParse.length > 0) {
+        ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
+        ACConfig.ruleArchiveSet = ruleArchiveParse;
+        let ruleArchive = ACConfig.ruleArchive;
+        ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
+        for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+            if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
+                ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
+                break;
             }
-            if (!ruleArchivePath) {
-                const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
-                console.error(errStr);
-                throw new Error(errStr);
-            }
-            //}
-        } else {
-            const errStr = "[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.";
+        }
+        if (!ruleArchivePath) {
+            const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
             console.error(errStr);
             throw new Error(errStr);
         }
-
-        // Build the new rulePack based of the baseA11yServerURL 
-        ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
-        ACConfig.ruleServer = ruleServer;
-
-        ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
+        //}
+    } else {
+        const errStr = "[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.";
+        console.error(errStr);
+        throw new Error(errStr);
     }
+
+    // Build the new rulePack based of the baseA11yServerURL 
+    ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    ACConfig.ruleServer = ruleServer;
+
+    ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
 
     ACConstants.DEBUG && console.log("END 'processACConfig' function");
 
@@ -168,20 +158,12 @@ async function processACConfig(ACConfig) {
  *
  * @memberOf this
  */
-function initializeDefaults(config) {
+function initializeDefaults(config: IConfigUnsupported) {
     ACConstants.DEBUG && console.log("START 'initializeDefaults' function");
 
     ACConstants.DEBUG && console.log("Config before initialization: ");
     ACConstants.DEBUG && console.log(config);
     // Make sure all the following options are defined, otherwise reset them to default values.
-    config.policies = config.policies || ACConstants.policies;
-    config.failLevels = config.failLevels || ACConstants.failLevels;
-    config.reportLevels = config.reportLevels || ACConstants.reportLevels;
-    config.outputFolder = config.outputFolder || ACConstants.outputFolder;
-    config.baselineFolder = config.baselineFolder || ACConstants.baselineFolder;
-    config.outputFormat = config.outputFormat || ACConstants.outputFormat;
-    config.extensions = config.extensions || ACConstants.extensions;
-    config.ruleArchive = config.ruleArchive || ACConstants.ruleArchive;
     config.ruleArchiveLabel = config.ruleArchiveLabel || ACConstants.ruleArchiveLabel || config.ruleArchive;
     // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
     // boolean which causes it to always comply with the default value and not user provided option
@@ -200,6 +182,10 @@ function initializeDefaults(config) {
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
     config.scanID = uuid.v4();
+
+    for (const key in ACConstants) {
+        config[key] = config[key] || ACConstants[key];
+    }
 
     ACConstants.DEBUG && console.log("Config after initialization: ");
     ACConstants.DEBUG && console.log(config);

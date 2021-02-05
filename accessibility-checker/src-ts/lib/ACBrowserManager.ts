@@ -7,7 +7,7 @@ export class ACBrowserManager {
     static browserP;
     static config: IConfigUnsupported;
     static numInits: 0;
-    static pages: any[];
+    static pages: any[] = [];
 
     static async getBrowserChrome(force: boolean) {
         if (!ACBrowserManager.config) {
