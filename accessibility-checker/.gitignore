@@ -8,3 +8,4 @@ results
 package-lock.json
 src/**/*.js
 src/**/*.map
+src/**/*.d.ts
