@@ -17,7 +17,7 @@
 // Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
-require("../ACConfigLoader");
+require("../ACConfigLoader")();
 
 // Global aChecker Summary Holder
 var scanSummary = {};

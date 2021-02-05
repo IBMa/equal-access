@@ -17,7 +17,7 @@
 // Load all the modules that are needed
 var pathLib = require('path');
 var fs = require('fs');
-require("../ACConfigLoader");
+require("../ACConfigLoader")();
 const { genReport } = require("./genReport");
 
 // Global aChecker Summary Holder
@@ -144,7 +144,7 @@ var ACReporterHTML = function (aChecker) {
                 "MANUAL": "Recommendation"
             }
         };
-        
+
         Config.DEBUG && console.log("START 'writeObjectToFileAsHTML' function");
 
         // Extract the parent directory of the file name that is provided
@@ -176,7 +176,7 @@ var ACReporterHTML = function (aChecker) {
         outReport.report.counts.total.All = 0;
         for (const item of content.results) {
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
-            outReport.report.counts.total[val] = (outReport.report.counts.total[val] || 0) + 1;    
+            outReport.report.counts.total[val] = (outReport.report.counts.total[val] || 0) + 1;
             ++outReport.report.counts.total.All;
         }
 

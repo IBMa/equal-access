@@ -35,9 +35,9 @@ let ace;
     // Init the Metrics logger
     let metricsLogger;
 
-    let initialize = async () => {
+    let initialize = async (config) => {
         if (aChecker.Config) return;
-        aChecker.Config = await require("./ACConfigLoader");
+        aChecker.Config = await require("./ACConfigLoader")(config);
         if (aChecker.Config.rulePack.includes("localhost")) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
         }
@@ -88,6 +88,15 @@ let ace;
     aChecker.getConfig = async () => {
         await initialize();
         return aChecker.Config;
+    }
+
+    aChecker.setConfig = async (config) => {
+        if (aChecker.Config){
+          // NOTE: This should be allowed in the future
+          // https://github.com/IBMa/equal-access/pull/280#issuecomment-724294667
+          throw new Error("ACHelper configuration can only be set once.");
+        }
+        await initialize(config);
     }
 
     /**
@@ -2123,6 +2132,7 @@ module.exports = {
     diffResultsWithExpected: aChecker.diffResultsWithExpected,
     stringifyResults: aChecker.stringifyResults,
     getConfig: aChecker.getConfig,
+    setConfig: aChecker.setConfig,
     close: aChecker.close,
     ruleIdToLegacyId: aChecker.ruleIdToLegacyId,
     cleanComplianceObjectBeforeCompare: aChecker.cleanComplianceObjectBeforeCompare

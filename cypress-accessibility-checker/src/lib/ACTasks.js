@@ -1,4 +1,4 @@
-const ACConfigLoader = require("./ACConfigLoader");
+const ACConfigLoader = require("./ACConfigLoader")();
 const ACMetricsLogger = require('./log/ACMetricsLogger');
 const ACReporterJSON = require("./reporters/ACReporterJSON");
 const ACReporterHTML = require("./reporters/ACReporterHTML");
@@ -101,7 +101,7 @@ let ACTasks = module.exports = {
 
             // Initialize the scanSummary object with summary information for accessibility-checker
             ACTasks.scanSummary = ACTasks.initializeSummary();
-    
+
             // Initialize the global object which will store all the diff results for a scan that is run, using
             // actual and expected.
             ACTasks.diffResults = {};
@@ -285,7 +285,7 @@ let ACTasks = module.exports = {
             //handling error
             if (err) {
                 return console.log('Unable to scan directory: ' + err);
-            } 
+            }
             for (let file of files) {
                 let filePath = path.join(readDirPath,file);
                 file = file.split('.').slice(0, -1).join('.')
@@ -322,7 +322,7 @@ let ACTasks = module.exports = {
             return null;
         }
     },
-    
+
     getRulesets: () => new ACTasks.ace.Checker().rulesets,
 
     /**
