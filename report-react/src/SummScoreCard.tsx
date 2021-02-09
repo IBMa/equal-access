@@ -72,7 +72,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
         /** Calculate the score */
         elementNoFailures = (((summaryNumbers[4]-summaryNumbers[3])/summaryNumbers[4])*100).toFixed(0);
 
-        return <div className="scoreCard">
+        return <div className="scoreCard" style={{border: "1px solid #9E63FB", backgroundColor:'#E8DAFF'}}>
             
             <div className="bx--row">
                 <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4 scLeft">
@@ -86,7 +86,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
                         tests to complete accessibility assessments. Use 
                         the <a href="https://ibm.com/able/toolkit" target="_blank" rel="noopener noreferrer" style={{color:'#002D9C'}}>IBM Equal Access Toolkit</a> to guide you.
                     </div>
-                    <div>More resources:</div>
+                    <div style={{paddingTop:"32px"}}>More resources:</div>
                     <div><a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank" style={{color:'#002D9C'}}>Quick unit test for accessibility</a></div>
                     <div><a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank" style={{color:'#002D9C'}}>Full accessibility test process</a></div>
                 </div>
