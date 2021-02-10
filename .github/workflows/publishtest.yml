@@ -52,14 +52,14 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
-    - run: rm manifest.json.old
-      working-directory: accessibility-checker-extension/src
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: |
         if [[ -n "${GITHUB_REF:10}" ]]; then 
           RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
         fi;
+      working-directory: accessibility-checker-extension/src
+    - run: rm manifest.json.old
       working-directory: accessibility-checker-extension/src
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
@@ -74,6 +74,8 @@ jobs:
         if [[ -n "${GITHUB_REF:10}" ]]; then 
           RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
         fi;
+      working-directory: accessibility-checker-extension/src
+    - run: rm manifest.json.old
       working-directory: accessibility-checker-extension/src
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
