@@ -14,12 +14,13 @@
     limitations under the License.
   *****************************************************************************/
  // Load all the modules that are needed
-var pathLib = require('path');
-var fs = require('fs');
-var YAML = require('js-yaml');
-var constants = require("./ACConstants");
-var uuid = require('uuid');
-var request = require("request");
+import * as pathLib from "path";
+import * as fs from "fs";
+import * as YAML from "js-yaml";
+import { ACConstants } from "./ACConstants";
+import * as uuid from "uuid";
+import * as request from "request";
+import { IConfig, IConfigUnsupported } from "./api/IChecker";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -40,13 +41,13 @@ var request = require("request");
  *
  * @memberOf this
  */
-function convertPolicies(policies) {
-    constants.DEBUG && console.log("START 'convertPolicies' function");
+function convertPolicies(policies: string | string[]) : string[] {
+    ACConstants.DEBUG && console.log("START 'convertPolicies' function");
 
-    constants.DEBUG && console.log("Converting policy provided to Array: ");
-    constants.DEBUG && console.log(policies);
+    ACConstants.DEBUG && console.log("Converting policy provided to Array: ");
+    ACConstants.DEBUG && console.log(policies);
 
-    constants.DEBUG && console.log("END 'convertPolicies' function");
+    ACConstants.DEBUG && console.log("END 'convertPolicies' function");
 
     // In the case policies is an Array return it as engine expects list
     if (policies instanceof Array) {
@@ -77,7 +78,7 @@ function convertPolicies(policies) {
  * @memberOf this
  */
 async function processACConfig(ACConfig) {
-    constants.DEBUG && console.log("START 'processACConfig' function");
+    ACConstants.DEBUG && console.log("START 'processACConfig' function");
 
     // Convert the reportLevels and failLevels to match with what the engine provides
     // Don't need to convert the levels from the input as we are going to compare with out the level.
@@ -89,63 +90,58 @@ async function processACConfig(ACConfig) {
     // Convert the policies into a comma seperated string
     ACConfig.policies = convertPolicies(ACConfig.policies);
 
-    if (ACConfig.customRuleServer) {
-        constants.DEBUG && console.log("Specified Usage of custom Rule Server, switching to custom rule server");
+    // In the case that baseA11yServerURL is provided in the config use that as the base otherwise switch to the default one from the ACConstants object
+    let ruleServer = ACConfig.ruleServer ? ACConfig.ruleServer : ACConstants.ruleServer;
 
-        // Set the ruleArchive to empty for custom rule server
-        ACConfig.ruleArchive = "";
-        // Set the rulePack with what is provided in the configuration
-        ACConfig.rulePack = ACConfig.rulePack;
-    } else {
-        // In the case that baseA11yServerURL is provided in the config use that as the base otherwise switch to the default one from the constants object
-        var baseA11yServerURL = ACConfig.baseA11yServerURL ? ACConfig.baseA11yServerURL : constants.baseA11yServerURL;
-
-        // Get and parse the rule archive.
-        var ruleArchiveFile = `${baseA11yServerURL}/archives.json`;
-        let ruleArchiveParse;
-        try {
-            ruleArchiveParse = await new Promise((resolve, reject) => {
-                request.get(ruleArchiveFile, function (error, response, body) {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(JSON.parse(body));
-                    }
-                });
-            });
-        } catch (err) {
-            console.log(err);
-            process.exit(-1);
-        }
-        if (ruleArchiveParse && ruleArchiveParse.length > 0) {
-            constants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
-            ACConfig.ruleArchiveSet = ruleArchiveParse;
-            var ruleArchive = ACConfig.ruleArchive;
-            var ruleArchivePath = null;
-            for (var i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-                if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
-                    ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
-                    ACConfig.ruleArchive = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
-                    break;
+    // Get and parse the rule archive.
+    let ruleArchiveFile = `${ruleServer}/archives.json`;
+    let ruleArchiveParse;
+    try {
+        ruleArchiveParse = await new Promise((resolve, reject) => {
+            request.get(ruleArchiveFile, function (error, response, body) {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(JSON.parse(body));
                 }
+            });
+        });
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
+    }
+    let ruleArchivePath = null;
+    if (ruleArchiveParse && ruleArchiveParse.length > 0) {
+        ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
+        ACConfig.ruleArchiveSet = ruleArchiveParse;
+        let ruleArchive = ACConfig.ruleArchive;
+        ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
+        for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+            if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
+                ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
+                break;
             }
-            if (!ruleArchivePath) {
-                console.log("[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md");
-                process.exit(-1);
-            }
-            //}
-        } else {
-            console.log("[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.");
-            process.exit(-1);
         }
-
-        // Build the new rulePack based of the baseA11yServerURL 
-        ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
-
-        constants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
+        if (!ruleArchivePath) {
+            const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
+            console.error(errStr);
+            throw new Error(errStr);
+        }
+        //}
+    } else {
+        const errStr = "[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.";
+        console.error(errStr);
+        throw new Error(errStr);
     }
 
-    constants.DEBUG && console.log("END 'processACConfig' function");
+    // Build the new rulePack based of the baseA11yServerURL 
+    ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    ACConfig.ruleServer = ruleServer;
+
+    ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
+
+    ACConstants.DEBUG && console.log("END 'processACConfig' function");
 
     // Return the updated ACConfig object
     return ACConfig;
@@ -162,36 +158,23 @@ async function processACConfig(ACConfig) {
  *
  * @memberOf this
  */
-function initializeDefaults(config) {
-    constants.DEBUG && console.log("START 'initializeDefaults' function");
+function initializeDefaults(config: IConfigUnsupported) {
+    ACConstants.DEBUG && console.log("START 'initializeDefaults' function");
 
-    constants.DEBUG && console.log("Config before initialization: ");
-    constants.DEBUG && console.log(config);
-
-    // Check to make sure the rule pack server is defined, if not then set the default vaule
-    config.rulePack = config.rulePack || constants.rulePack;
-
+    ACConstants.DEBUG && console.log("Config before initialization: ");
+    ACConstants.DEBUG && console.log(config);
     // Make sure all the following options are defined, otherwise reset them to default values.
-    config.policies = config.policies || constants.policies;
-    config.failLevels = config.failLevels || constants.failLevels;
-    config.reportLevels = config.reportLevels || constants.reportLevels;
-    config.outputFolder = config.outputFolder || constants.outputFolder;
-    config.baselineFolder = config.baselineFolder || constants.baselineFolder;
-    config.outputFormat = config.outputFormat || constants.outputFormat;
-    config.checkHiddenContent = config.checkHiddenContent || constants.checkHiddenContent;
-    config.extensions = config.extensions || constants.extensions;
-    config.engineFileName = config.engineFileName || constants.engineFileName;
-    config.ruleArchive = config.ruleArchive || constants.ruleArchive;
+    config.ruleArchiveLabel = config.ruleArchiveLabel || ACConstants.ruleArchiveLabel || config.ruleArchive;
     // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
     // boolean which causes it to always comply with the default value and not user provided option
     if (config.captureScreenshots === null || config.captureScreenshots === undefined || typeof config.captureScreenshots === "undefined") {
-        config.captureScreenshots = constants.captureScreenshots;
+        config.captureScreenshots = ACConstants.captureScreenshots;
     }
 
     // Load in the package.json file so that we can extract the module name and the version to build
     // a toolID which needs to be used when results are build for the purpose of keeping track of
     // which tool is uploading the results.
-    var packageObject = require('../package.json');
+    let packageObject = require('../package.json');
 
     // Build the toolID based on name and version
     config.toolID = packageObject.name + "-v" + packageObject.version;
@@ -200,10 +183,14 @@ function initializeDefaults(config) {
     // are done for a single run of karma.
     config.scanID = uuid.v4();
 
-    constants.DEBUG && console.log("Config after initialization: ");
-    constants.DEBUG && console.log(config);
+    for (const key in ACConstants) {
+        config[key] = config[key] || ACConstants[key];
+    }
 
-    constants.DEBUG && console.log("END 'initializeDefaults' function");
+    ACConstants.DEBUG && console.log("Config after initialization: ");
+    ACConstants.DEBUG && console.log(config);
+
+    ACConstants.DEBUG && console.log("END 'initializeDefaults' function");
 }
 
 /**
@@ -215,15 +202,15 @@ function initializeDefaults(config) {
  * @memberOf this
  */
 function loadConfigFromYAMLorJSONFile() {
-    constants.DEBUG && console.log("START 'loadConfigFromYAMLorJSONFile' function");
+    ACConstants.DEBUG && console.log("START 'loadConfigFromYAMLorJSONFile' function");
 
     // Variable Decleration
-    var config = {};
+    let config = {};
 
     // Get the current working directory, where we will look for the yaml, yml or json file
-    var workingDir = process.cwd();
+    let workingDir = process.cwd();
 
-    constants.DEBUG && console.log("Working directory set to: " + workingDir);
+    ACConstants.DEBUG && console.log("Working directory set to: " + workingDir);
 
     // List of files to look for in that order, in the case even one is found we stop and load that as the config.
     // Theses files will be checked for in the working directory:
@@ -237,19 +224,19 @@ function loadConfigFromYAMLorJSONFile() {
     //  ./.config/achecker.json
     // The node module, require will load js or json depending on which one is present, in the case
     // both json and js are present it loads js first.
-    // Refer to constants.js for more details
-    var configFiles = constants.configFiles;
+    // Refer to ACConstants.js for more details
+    let configFiles = ACConstants.configFiles;
 
     // Loop over all the possible location where the config file can reside, if one is found load it and break out.
-    for (var i = 0; i < configFiles.length; i++) {
+    for (let i = 0; i < configFiles.length; i++) {
 
         // Get the full path to the config file we are going to check
-        var fileToCheck = pathLib.join(workingDir, configFiles[i]);
+        let fileToCheck = pathLib.join(workingDir, configFiles[i]);
 
-        constants.DEBUG && console.log("Checking file: " + fileToCheck);
+        ACConstants.DEBUG && console.log("Checking file: " + fileToCheck);
 
         // Get the extension of the file we are about to scan
-        var fileExtension = fileToCheck.substr(fileToCheck.lastIndexOf('.') + 1);
+        let fileExtension = fileToCheck.substr(fileToCheck.lastIndexOf('.') + 1);
 
         // If this is a yml or yaml file verify that the file exists and then load as such.
         if (fileExtension === "yml" || fileExtension === "yaml") {
@@ -258,15 +245,15 @@ function loadConfigFromYAMLorJSONFile() {
             // i.e. So in the case that it finds yml, it will load and not check the rest, etc...
             if (fs.existsSync(fileToCheck)) {
 
-                constants.DEBUG && console.log("File: " + fileToCheck + " exists loading it.");
+                ACConstants.DEBUG && console.log("File: " + fileToCheck + " exists loading it.");
 
-                constants.DEBUG && console.log("Loading as YAML file.");
+                ACConstants.DEBUG && console.log("Loading as YAML file.");
 
                 // Load in as yml or yaml file and return this object
                 return YAML.safeLoad(fs.readFileSync(fileToCheck), 'utf8');
             }
         } else {
-            constants.DEBUG && console.log("Trying to load as json or js.");
+            ACConstants.DEBUG && console.log("Trying to load as json or js.");
 
             // Need to use try/catch mech so that in the case the require throws an exception, we can
             // catch this and discatd the error, as in the case there is no config file provided then
@@ -274,23 +261,23 @@ function loadConfigFromYAMLorJSONFile() {
             try {
 
                 // call the resolve to check if the file exists or not, and get the actualy path if it was js or json
-                var jsOrJSONFile = require.resolve(fileToCheck);
+                let jsOrJSONFile = require.resolve(fileToCheck);
 
                 // Only try to load the achecker js or json file if it exists.
                 if (jsOrJSONFile) {
 
-                    constants.DEBUG && console.log("Loading: " + jsOrJSONFile)
+                    ACConstants.DEBUG && console.log("Loading: " + jsOrJSONFile)
 
                     // Load in as json or js and return this object
                     return require(fileToCheck);
                 }
             } catch (e) {
-                constants.DEBUG && console.log("JSON or JS file does not exists, will load default config.")
+                ACConstants.DEBUG && console.log("JSON or JS file does not exists, will load default config.")
             }
         }
     }
 
-    constants.DEBUG && console.log("END 'loadConfigFromYAMLorJSONFile' function");
+    ACConstants.DEBUG && console.log("END 'loadConfigFromYAMLorJSONFile' function");
 
     return config;
 }
@@ -311,23 +298,23 @@ function loadConfigFromYAMLorJSONFile() {
  *
  * @memberOf this
  */
-async function processConfiguration(config) {
-    constants.DEBUG && console.log("START 'processConfiguration' function");
+async function processConfiguration(config?) : Promise<IConfigUnsupported> {
+    ACConstants.DEBUG && console.log("START 'processConfiguration' function");
 
     // Variable Decleration
-    var ACConfig = null;
-    var configFromFile = null;
+    let ACConfig : IConfigUnsupported | null = null;
+    let configFromFile = null;
 
     // Read in the .yaml (.yml) or .json file to load in the configuration
     configFromFile = loadConfigFromYAMLorJSONFile();
 
-    constants.DEBUG && console.log("Loaded config from file: ");
-    constants.DEBUG && console.log(configFromFile);
+    ACConstants.DEBUG && console.log("Loaded config from file: ");
+    ACConstants.DEBUG && console.log(configFromFile);
 
     // In the case configuration was provided in a yaml, yml or json file, then set this as the configuration
     // otherwise load them from the Karma configuration.
     if (configFromFile !== null && typeof (configFromFile) !== "undefined" && Object.keys(configFromFile).length !== 0) {
-        constants.DEBUG && console.log("Using config which was loaded from config file.");
+        ACConstants.DEBUG && console.log("Using config which was loaded from config file.");
 
         ACConfig = configFromFile;
     } else if (config !== null && typeof (config) !== "undefined" && Object.keys(config).length !== 0) {
@@ -335,7 +322,7 @@ async function processConfiguration(config) {
         // was not provided.
         ACConfig = config;
     } else {
-        ACConfig = {};
+        ACConfig = JSON.parse(JSON.stringify(ACConstants));
     }
 
     // In the case the ACConfig object is not defined, then define it with default config options so
@@ -349,10 +336,26 @@ async function processConfiguration(config) {
     await processACConfig(ACConfig);
 
     // In the case the Karma config is set to config.LOG_DEBUG then also enable the accessibility-checker debuging
-    ACConfig.DEBUG = constants.DEBUG;
+    ACConfig.DEBUG = ACConstants.DEBUG;
 
-    constants.DEBUG && console.log("END 'processConfiguration' function");
+    ACConstants.DEBUG && console.log("END 'processConfiguration' function");
     return ACConfig;
 }
 
-module.exports = processConfiguration();
+let config : IConfigUnsupported = null;
+export class ACConfigManager {
+    static async setConfig(inConfig?: IConfig | IConfigUnsupported) : Promise<void> {
+        config = await processConfiguration(inConfig);
+    }
+
+    static async getConfig() : Promise<IConfig> {
+        return this.getConfigUnsupported();
+    }
+
+    static async getConfigUnsupported() : Promise<IConfigUnsupported> {
+        if (!config) {
+            await ACConfigManager.setConfig();
+        }
+        return config;
+    }
+}

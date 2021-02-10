@@ -42,10 +42,6 @@ describe("aChecker.Config property", function () {
         expect(typeof aChecker.Config.checkHiddenContent).to.not.equal("undefined");
     });
 
-    it("engineFileName Should be defined in global space", function () {
-        expect(typeof aChecker.Config.engineFileName).to.not.equal("undefined");
-    });
-
     it("extensions Should be defined in global space", function () {
         expect(typeof aChecker.Config.extensions).to.not.equal("undefined");
     });
@@ -70,8 +66,8 @@ describe("aChecker.Config property", function () {
         expect(typeof aChecker.Config.reportLevels).to.not.equal("undefined");
     });
 
-    it("rulePack Should be defined in global space", function () {
-        expect(typeof aChecker.Config.rulePack).to.not.equal("undefined");
+    it("ruleServer Should be defined in global space", function () {
+        expect(typeof aChecker.Config.ruleServer).to.not.equal("undefined");
     });
 
     it("scanID Should be defined in global space", function () {
@@ -79,6 +75,6 @@ describe("aChecker.Config property", function () {
     });
 
     it("toolID Should be defined in global space", function () {
-        expect(typeof aChecker.Config.rulePack).to.not.equal("undefined");
+        expect(typeof aChecker.Config.toolID).to.not.equal("undefined");
     });
 });

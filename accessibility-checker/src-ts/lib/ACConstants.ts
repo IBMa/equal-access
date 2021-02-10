@@ -20,18 +20,17 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
-var pathLib = require('path');
+import * as pathLib from "path";
+import { IConfigUnsupported } from "./api/IChecker";
+import { eRuleLevel } from "./api/IEngine";
 
 // Used to specify all the constant
-var constants = {
+export const ACConstants : IConfigUnsupported = {
     DEBUG: process.env.DEBUG === "true",
-
     maxTabs: 1,
-
     policies: ["IBM_Accessibility"],
-
     // Specify the default rule pack server to use. (Where to pull the rules and engine from).
-    rulePack: "https://able.ibm.com/rules/archives/latest/js",
+    ruleServer: "https://able.ibm.com/rules",
 
     //Specify the rule set to be use.
     ruleArchive: "latest",
@@ -39,14 +38,12 @@ var constants = {
     // Specify default violation levels on which to fail the test.
     // i.e. If specified violation then the testcase will only fail if
     //      a violation is found uring the scan.
-    failLevels: ["violation", "potentialviolation"],
+    failLevels: [eRuleLevel.violation, eRuleLevel.potentialviolation],
 
     // Specify default violation levels which should be reported.
     // i.e. If specified violation then in the report it would only contain
     //      results which are level of violation.
-    reportLevels: ["violation",
-                   "potentialviolation"
-                  ],
+    reportLevels: [eRuleLevel.violation, eRuleLevel.potentialviolation],
 
     // Specify default value if screenshoot should be captured of the current page that is being scanned.
     captureScreenshots: false,
@@ -58,16 +55,10 @@ var constants = {
     outputFolder: "results",
 
     // Specify default location where the baselines should be saved
-    baselinefolder: "baselines",
-
-    // Specify default value if Hidden content be scanned or not.
-    checkHiddenContent: false,
+    baselineFolder: "baselines",
 
     // Specify default value for Which file extensions should be checked
     extensions: ["html", "htm", "svg"],
-
-    // Specify default value for the engine file name. This the
-    engineFileName: "ace.js",
 
     // List of files to look for in that order, in the case even one is found we stop and load that as the config.
     // Theses files will be checked for in the working directory:
@@ -83,12 +74,5 @@ var constants = {
     // both json and js are present it loads js first.
     configFiles: [".achecker.yml", ".achecker.yaml", "achecker", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker")],
 
-    // Specify the Base Accessibility Server URL
-    baseA11yServerURL: "https://able.ibm.com/rules",
-
-    // Specify true or false to allow setting rulePack with a custom server
-    customRuleServer: false
+    ignoreHTTPSErrors: false
 };
-
-// Export this the constants
-module.exports = constants;

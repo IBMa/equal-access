@@ -15,12 +15,12 @@
   *****************************************************************************/
 
 // Load all the modules that are needed
-var pathLib = require('path');
-var fs = require('fs');
-require("../ACConfigLoader");
+import * as pathLib from "path";
+import * as fs from "fs";
+import { IConfigUnsupported } from "../api/IChecker";
+import { IScanSummary, IScanSummaryCounts } from "./ReportUtil";
 
-// Global aChecker Summary Holder
-var scanSummary = {};
+declare var after;
 
 /**
  * This function is responsible for constructing the aChecker Reporter which will be used to, report
@@ -39,27 +39,43 @@ var scanSummary = {};
  *
  * @memberOf this
  */
-var ACReporterJSON = function (aChecker) {
-    let Config = aChecker.Config;
-    Config.DEBUG && console.log("START ACReporter Constructor");
-    // Override adapters
-    this.adapters = [];
+export class ACReporterJSON {
+    Config: IConfigUnsupported;
+    scanSummary: IScanSummary;
+    constructor(Config: IConfigUnsupported, scanSummary: IScanSummary) {
+        this.Config = Config;
+        this.scanSummary = scanSummary;
+        this.Config.DEBUG && console.log("START ACReporter Constructor");
+
+        let myThis = this;
+        if (typeof(after) !== "undefined") {
+            after(function(done) {
+                myThis.onRunComplete();
+                done && done();
+            });
+        } else {
+            process.on('beforeExit', function() {
+                myThis.onRunComplete();
+            });
+        }
+        this.Config.DEBUG && console.log("END ACReporter Constructor");
+    }
 
     // This emitter function is responsible for calling this function when the info event is detected
-    this.report = function(info) {
-        Config.DEBUG && console.log("START 'info' emitter function");
+    report(info) {
+        this.Config.DEBUG && console.log("START 'info' emitter function");
 
         // Save the results of a single scan to a JSON file based on the label provided
-        savePageResults(info);
+        this.savePageResults(info);
 
         // Update the overall summary object count object to include the new scan that was performed
-        addToSummaryCount(info.summary.counts);
+        this.addToSummaryCount(info.summary.counts);
 
         // Save the summary of this scan into global space of this reporter, to be logged
         // once the whole scan is done.
-        addResultsToGlobal(info);
+        this.addResultsToGlobal(info);
 
-        Config.DEBUG && console.log("END 'info' emitter function");
+        this.Config.DEBUG && console.log("END 'info' emitter function");
     };
 
     /**
@@ -70,17 +86,17 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    this.onRunComplete = function () {
-        Config.DEBUG && console.log("START 'ACReporterJSON:onRunComplete' function");
+    onRunComplete() {
+        this.Config.DEBUG && console.log("START 'ACReporterJSON:onRunComplete' function");
 
         // Add End time when the whole karma run is done
         // End time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        scanSummary.endReport = Date.now();
+        this.scanSummary.endReport = Date.now();
 
         // Save summary object to a JSON file.
-        saveSummary(scanSummary);
+        this.saveSummary(this.scanSummary);
 
-        Config.DEBUG && console.log("END 'ACReporterJSON:onRunComplete' function");
+        this.Config.DEBUG && console.log("END 'ACReporterJSON:onRunComplete' function");
     };
 
     /**
@@ -93,30 +109,30 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var savePageResults = function (results) {
-        Config.DEBUG && console.log("START 'savePageResults' function");
+    savePageResults(results) {
+        this.Config.DEBUG && console.log("START 'savePageResults' function");
 
         // Extract the outputFolder from the ACConfig (this is the user config that they provid)
-        var resultDir = Config.outputFolder;
+        let resultDir = this.Config.outputFolder;
 
-        Config.DEBUG && console.log("Results are going to be stored under results directory: \"" + resultDir + "\"");
+        this.Config.DEBUG && console.log("Results are going to be stored under results directory: \"" + resultDir + "\"");
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // configuration.
-        var resultsFileName = pathLib.join(resultDir, results.label + '.json');
+        let resultsFileName = pathLib.join(resultDir, results.label + '.json');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
         // Debug example which has label which has unix "/" in them.
-        var resultsFileName = pathLib.join(resultDir, "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html.json");
+        let resultsFileName = pathLib.join(resultDir, "dependencies/tools-rules-html/v2/a11y/test/g471/Table-layoutMultiple.html.json");
 
         // Debug example which has a label which has Windows "\" in them.
-        var resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
+        let resultsFileName = pathLib.join(resultDir, "dependencies\\tools-rules-html\\v2\\a11y\\test\\g471\\Table-layoutMultiple.html.json");
         ***************************************************************************************************************************************/
 
         // Write the results object as JSON to a file.
-        writeObjectToFileAsJSON(resultsFileName, results);
+        this.writeObjectToFileAsJSON(resultsFileName, results);
 
-        Config.DEBUG && console.log("END 'savePageResults' function");
+        this.Config.DEBUG && console.log("END 'savePageResults' function");
     }
 
     /**
@@ -128,13 +144,13 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var writeObjectToFileAsJSON = function (fileName, content) {
-        Config.DEBUG && console.log("START 'writeObjectToFileAsJSON' function");
+    writeObjectToFileAsJSON(fileName, content) {
+        this.Config.DEBUG && console.log("START 'writeObjectToFileAsJSON' function");
 
         // Extract the parent directory of the file name that is provided
-        var parentDir = pathLib.dirname(fileName);
+        let parentDir = pathLib.dirname(fileName);
 
-        Config.DEBUG && console.log("Parent Directoy: \"" + parentDir + "\"");
+        this.Config.DEBUG && console.log("Parent Directoy: \"" + parentDir + "\"");
 
         // In the case that the parent directoy does not exist, create the directories
         if (!fs.existsSync(parentDir)) {
@@ -143,7 +159,7 @@ var ACReporterJSON = function (aChecker) {
             fs.mkdirSync(parentDir, { recursive: true});
         }
 
-        Config.DEBUG && console.log("Object will be written to file: \"" + fileName + "\"");
+        this.Config.DEBUG && console.log("Object will be written to file: \"" + fileName + "\"");
 
         // Convert the Object into JSON string and write that to the file
         // Make sure to use utf-8 encoding to avoid an issues specify to OS.
@@ -151,108 +167,7 @@ var ACReporterJSON = function (aChecker) {
         // writing it to the file.
         fs.writeFileSync(fileName, JSON.stringify(content, null, '    '), { encoding: 'utf-8' });
 
-        Config.DEBUG && console.log("END 'writeObjectToFileAsJSON' function");
-    }
-
-    /**
-     * This function is responsible for initializing the summary object which will store all informations about the
-     * scans that will occurs while karma is still running and running compliance scans.
-     *
-     * @return {Object} scanSummary - return the built scan summary object, which will follow the following format:
-     * {
-     *     "scanID": "ef3aec68-f073-4f9c-b372-421ae00bd55d",
-     *     "counts": {
-     *         "violation": 0,
-     *         "potentialviolation": 0,
-     *         "recommendation": 0,
-     *         "potentialrecommendation": 0,
-     *         "manual": 0
-     *     },
-     *     "startReport": "2016-06-06T00:52:41.603Z",
-     *     "endReport": "",
-     *     "toolID": "karma-ibma-v1.0.0",
-     *     "policies": [
-     *         "CI162_5_2_DCP070116",
-     *         "CI162_5_2_DCP080115"
-     *     ],
-     *     "reportLevels": [
-     *         "violation",
-     *         "potentialviolation",
-     *         "recommendation",
-     *         "potentialrecommendation",
-     *         "manual"
-     *     ],
-     *     "labels": [
-     *         "Firefox",
-     *         "master",
-     *         "V12",
-     *         "Linux"
-     *     ],
-     *     "pageScanSummary": {}
-     * }
-     *
-     * @memberOf this
-     */
-    var initializeSummary = function (config) {
-        // Variable Decleration
-        var scanSummary = {};
-        var reportLevels =  Config.reportLevels;
-
-        // Initialize counts
-        scanSummary.counts = {}
-
-        // In the case that report levels are provided then populate the count object in
-        // scanSummary.counts object with the levels which were provided in reportLevels
-        // array.
-        if (reportLevels) {
-
-            // Iterate over the report levels and populate the pageResultsWithCount counts
-            // object
-            reportLevels.forEach(function (levels) {
-                scanSummary.counts[levels] = 0;
-            });
-        }
-        // Populate the scanSummary.counts object with all the levels
-        else {
-            scanSummary.counts = {
-                "violation": 0,
-                "potentialviolation": 0,
-                "recommendation": 0,
-                "potentialrecommendation": 0,
-                "manual": 0,
-                "pass": 0
-            };
-        }
-
-        // Add ignored count disableIgnore field in config file is not true
-        if(Config.disableIgnore == undefined || Config.disableIgnore == false || Config.disableIgnore == null){
-            scanSummary.counts.ignored = 0;
-        }
-
-        // Add Start time when this script is loaded into browser
-        // Start time will be in milliseconds elapsed since 1 January 1970 00:00:00 UTC up until now.
-        scanSummary.startReport = Date.now();
-
-        // Leave end report as empty for now
-        scanSummary.endReport = '';
-
-        // Add the toolID,  ruleArchive, policies, reportLevels, failLevels and labels from the config to the summary
-        scanSummary.toolID = Config.toolID;
-        // Append the id and the name of the archive to the report.
-        scanSummary.policies = Config.policies;
-        scanSummary.ruleArchive = Config.ruleArchive;
-        scanSummary.reportLevels = Config.reportLevels;
-        scanSummary.labels = Config.label;
-        scanSummary.failLevels = Config.failLevels;
-
-        // Add scanID (UUID) to the scan summary object
-        scanSummary.scanID = Config.scanID;
-
-        // Build the paceScanSummary object which will contains all the items that were scanned and a count
-        // summary for each of the scanned items.
-        scanSummary.pageScanSummary = [];
-
-        return scanSummary;
+        this.Config.DEBUG && console.log("END 'writeObjectToFileAsJSON' function");
     }
 
     /**
@@ -262,52 +177,52 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var saveSummary = function (summary) {
-        if (Config.outputFormat.indexOf("json") === -1) {
+    saveSummary(summary) {
+        if (this.Config.outputFormat.indexOf("json") === -1) {
             return;
         }
-        Config.DEBUG && console.log("START 'saveSummary' function");
+        this.Config.DEBUG && console.log("START 'saveSummary' function");
 
         // Fetch the start time of the report from the summary object
-        var startReportTime = summary.startReport;
+        let startReportTime = summary.startReport;
 
         // Extract the outputFolder from the ACConfig (this is the user config that they provid)
-        var resultDir = Config.outputFolder;
+        let resultDir = this.Config.outputFolder;
 
-        Config.DEBUG && console.log("Converting: " + startReportTime);
+        this.Config.DEBUG && console.log("Converting: " + startReportTime);
 
         // Now we need to take the from epoch format date and convert it to readable data
         // Construct a new Data object with the start report time
-        var formattedData = new Date(startReportTime);
+        let formattedData = new Date(startReportTime);
 
         // Extract all the date fields which are needed to construct the filename
-        var year = datePadding(formattedData.getUTCFullYear());
-        var month = datePadding(formattedData.getUTCMonth()+1); // UTC Month is provid in a range of A Number, from 0-11, representing the month
-        var date = datePadding(formattedData.getUTCDate());
-        var hour = datePadding(formattedData.getHours());
-        var minute = datePadding(formattedData.getMinutes());
-        var seconds = datePadding(formattedData.getUTCSeconds());
+        let year = this.datePadding(formattedData.getUTCFullYear());
+        let month = this.datePadding(formattedData.getUTCMonth()+1); // UTC Month is provid in a range of A Number, from 0-11, representing the month
+        let date = this.datePadding(formattedData.getUTCDate());
+        let hour = this.datePadding(formattedData.getHours());
+        let minute = this.datePadding(formattedData.getMinutes());
+        let seconds = this.datePadding(formattedData.getUTCSeconds());
 
-        Config.DEBUG && console.log("Year: " + year);
-        Config.DEBUG && console.log("Month: " + month);
-        Config.DEBUG && console.log("Date: " + date);
-        Config.DEBUG && console.log("Hour: " + hour);
-        Config.DEBUG && console.log("Minute: " + minute);
-        Config.DEBUG && console.log("Seconds: " + seconds);
+        this.Config.DEBUG && console.log("Year: " + year);
+        this.Config.DEBUG && console.log("Month: " + month);
+        this.Config.DEBUG && console.log("Date: " + date);
+        this.Config.DEBUG && console.log("Hour: " + hour);
+        this.Config.DEBUG && console.log("Minute: " + minute);
+        this.Config.DEBUG && console.log("Seconds: " + seconds);
 
         // Build the summary file name based on the following format: summary_2016-06-20-13-26-45GMT.json
         //  summary_<year>-<month>-<date>-<hour>-<minute>-<seconds>GMT.json
-        var filename = "summary_" + year + "-" + month + "-" + date + "-" + hour + "-" + minute + "-" + seconds + "GMT.json";
+        let filename = "summary_" + year + "-" + month + "-" + date + "-" + hour + "-" + minute + "-" + seconds + "GMT.json";
 
         // Add the results dir to the filename so that all the summary files can be saved under the output folder
         filename = pathLib.join(resultDir, filename);
 
-        Config.DEBUG && console.log("Filename Constructed: " + filename);
+        this.Config.DEBUG && console.log("Filename Constructed: " + filename);
 
         // Write the summary object as json to the summary file.
-        writeObjectToFileAsJSON(filename, summary);
+        this.writeObjectToFileAsJSON(filename, summary);
 
-        Config.DEBUG && console.log("END 'saveSummary' function");
+        this.Config.DEBUG && console.log("END 'saveSummary' function");
     }
 
     /**
@@ -320,13 +235,13 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var datePadding = function(number) {
-        Config.DEBUG && console.log("START 'datePadding' function");
+    datePadding(number) {
+        this.Config.DEBUG && console.log("START 'datePadding' function");
 
         // In the case that the number is less then 10 we need to add the leading '0' to the number.
         number = number < 10 ? '0' + number : number;
 
-        Config.DEBUG && console.log("END 'datePadding' function");
+        this.Config.DEBUG && console.log("END 'datePadding' function");
 
         return number;
     }
@@ -342,8 +257,8 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var addResultsToGlobal = function (results) {
-        Config.DEBUG && console.log("START 'addResultsToGlobal' function");
+    addResultsToGlobal(results) {
+        this.Config.DEBUG && console.log("START 'addResultsToGlobal' function");
 
         // Build the single page summary object to follow the following format:
         //   "label": "dependencies/tools-rules-html/v2/a11y/test/g471/Table-DataNoSummaryARIA.html",
@@ -354,19 +269,19 @@ var ACReporterJSON = function (aChecker) {
         //       "potentialrecommendation": 0,
         //       "manual": 0
         //   }
-        var pageSummaryObject = {
+        let pageSummaryObject = {
             label: results.label,
             counts: results.summary.counts
         }
 
-        Config.DEBUG && console.log("Adding following object to scanSummary.pageScanSummary: ");
-        Config.DEBUG && console.log(pageSummaryObject);
+        this.Config.DEBUG && console.log("Adding following object to scanSummary.pageScanSummary: ");
+        this.Config.DEBUG && console.log(pageSummaryObject);
 
         // Add the summary count for this scan to the pageScanSummary object which is in the global space
         // Index this by the label.
-        scanSummary.pageScanSummary.push(pageSummaryObject);
+        this.scanSummary.pageScanSummary.push(pageSummaryObject);
 
-        Config.DEBUG && console.log("END 'addResultsToGlobal' function");
+        this.Config.DEBUG && console.log("END 'addResultsToGlobal' function");
     }
 
     /**
@@ -381,11 +296,11 @@ var ACReporterJSON = function (aChecker) {
      *
      * @memberOf this
      */
-    var addToSummaryCount = function (pageCount) {
+    addToSummaryCount(pageCount) {
 
         // Variable Decleration
-        var ACScanSummary = scanSummary.counts || {};
-        var addedToSummary = false;
+        let ACScanSummary : IScanSummaryCounts = this.scanSummary.counts || {};
+        let addedToSummary = false;
 
         // In the case ACScanSummary is empty, simply assign pageCount to ACScanSummary
         if (Object.keys(ACScanSummary).length === 0) {
@@ -402,30 +317,13 @@ var ACReporterJSON = function (aChecker) {
             // and add it to the aChecker violation summary object.
             // This will keep track of an overall summary of the violations for all testscases, that
             // were run for a single karma run.
-            for (var level in pageCount) {
+            for (let level in pageCount) {
                 ACScanSummary[level] += pageCount[level];
             }
         }
 
         // Assign the new violation summary back to the global object
-        scanSummary.counts = ACScanSummary;
+        this.scanSummary.counts = ACScanSummary;
     }
 
-    scanSummary = initializeSummary();
-
-    var myThis = this;
-    if (typeof(after) !== "undefined") {
-        after(function(done) {
-            myThis.onRunComplete();
-            done && done();
-        });
-    } else {
-        process.on('beforeExit', function() {
-            myThis.onRunComplete();
-        });
-    }
-    Config.DEBUG && console.log("END ACReporter Constructor");
 };
-
-// Export this function, which will be called when accessibility-checker loads
-module.exports = ACReporterJSON;
