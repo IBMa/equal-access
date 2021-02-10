@@ -53,7 +53,7 @@ jobs:
     - run: npm install
       working-directory: accessibility-checker-extension
     - run: |
-        if [ -n "${GITHUB_REF:10}" ]; then 
+        if [[ -n "${GITHUB_REF:10}" ]]; then 
           sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${GITHUB_REF:10}"'"/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
