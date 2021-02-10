@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: IBMA_Focus_MultiTab"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The component has more than one tabbable element
+
+<div id="locLevel"></div>
+
+The component must have no more than one tabbable element
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The primary keyboard navigation convention uses Tab and `Shift+Tab` key commands to move focus from one UI component to another. Other keys (primarily the arrow keys) move focus within components comprised of multiple focusable elements. Authors must follow this convention and provide no more than one tab stop per component (providing keyboard focus).
+
+<div id="locSnippet"></div>
+
+### What to do
+* Modify the widget’s keyboard navigation model to contain only one tab stop to set focus in or on the widget. (Refer to the [WAI-ARIA Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard) for more information on how to manage keyboard focus.)
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+
+[The Tab Sequence](https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_general_between)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People who physically cannot use a pointing device
+* People with tremor or other movement disorders
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

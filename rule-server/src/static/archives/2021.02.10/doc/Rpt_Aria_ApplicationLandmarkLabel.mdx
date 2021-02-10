@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ApplicationLandmarkLabel"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Elements with an WAI-ARIA `"application"` role does not have a label
+
+<div id="locLevel"></div>
+
+An element with an WAI-ARIA `"application"` role must have a label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Elements with an `"application"` role structure must have a label specified with an accessible name. This information helps people using assistive technologies to find and navigate the content.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If there is visible text that appropriately describes the purpose of the content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"application"` role.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>   &lt;h1 id="weather"&gt;Weather portlet&lt;/h1&gt;
+   ...
+   &lt;div role="application" aria-labelledby="weather"&gt;
+   ...
+   &lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+[WAI-ARIA 1.1 Application Role](https://www.w3.org/TR/wai-aria-1.1/#application)
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

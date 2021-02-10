@@ -1,0 +1,67 @@
+---
+title: "Accessibility Checker Rule Help: combobox_active_descendant"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Active descendant focus is not set correctly within the combobox or related popup
+
+<div id="locLevel"></div>
+
+'aria-activedescendant' must be used to define focus within the combobox popup, except when using a dialog popup
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox is a UI interactive component that combines an input and another element, such as a listbox
+or grid, that can dynamically pop up to help the user set the value of the input. When a combobox 
+receives focus, the focus should be set on the text `<input>` element. Unless using a `dialog`
+popup, the `aria-activedescendant` must be used to identify the currently focused selection in the
+popup, so people who use assistive technologies are able to accurately navigate and interact with the content.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Unless the `has-popup` attribute value is `dialog`, set the active descendant focus using the `aria-activedescendant` attribute only on the combobox’s `<input>` element.
+
+Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
+
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+   &lt;ul role="listbox" id="popup_listbox"&gt;
+      &lt;li role="option"&gt;Zebra&lt;/li&gt;
+      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+   &lt;/ul&gt;</CodeSnippet>
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+[WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.2/#combobox)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
