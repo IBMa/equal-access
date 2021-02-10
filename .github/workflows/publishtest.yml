@@ -54,7 +54,7 @@ jobs:
       working-directory: accessibility-checker-extension
     - run: |
         if [[ -n "${GITHUB_REF:10}" ]]; then 
-          sed -i'.old' -e 's/"version": "3.0.0"/"version": "${GITHUB_REF:10}"/g' ./manifest.json
+          RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old
