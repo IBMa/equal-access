@@ -80,7 +80,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </div>
                 <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
-                    <div className="label">Checkpoint</div>
+                    <div className="label">Requirements</div>
                 </div>
             </div>
             {groups.map(group => {

@@ -25,8 +25,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
       - run: npm install
         working-directory: accessibility-checker
       - run: npm run build
@@ -48,8 +46,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
       - run: npm install
         working-directory: karma-accessibility-checker
       - run: npm run build
@@ -71,8 +67,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
       - run: npm install
         working-directory: cypress-accessibility-checker
       - run: npm run build:report
@@ -96,21 +90,19 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Set env
-      run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:10}
     - run: npm install
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
+    - run: cp -f ./manifest_Chrome.json ./src/manifest.json
+      working-directory: accessibility-checker-extension
     - run: |
-        if [ -n "$RELEASE_VERSION" ]; then 
-          sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"$RELEASE_VERSION"'"/g' ./manifest.json
+        if [[ -n "${GITHUB_REF:10}" ]]; then 
+          RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old
       working-directory: accessibility-checker-extension/src
-    - run: cp -f ./manifest_Chrome.json ./src/manifest.json
-      working-directory: accessibility-checker-extension
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension
@@ -120,6 +112,13 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
     - run: cp -f ./manifest_Firefox.json ./src/manifest.json
       working-directory: accessibility-checker-extension
+    - run: |
+        if [[ -n "${GITHUB_REF:10}" ]]; then 
+          RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
+        fi;
+      working-directory: accessibility-checker-extension/src
+    - run: rm manifest.json.old
+      working-directory: accessibility-checker-extension/src
     - run: npm run package:browser
       working-directory: accessibility-checker-extension
     - name: Upload packed extension

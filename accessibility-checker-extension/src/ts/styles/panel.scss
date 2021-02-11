@@ -174,18 +174,26 @@ $feature-flags: (
             font-weight: 600;
         }
 
-
-        .summaryBarLabels {
-            display:none;
-            
-            @media only screen and (min-width: 32rem) {
-                display:inline;
-            }
-        }
-
         img, svg {
             margin-right: 6px;
             vertical-align: middle;
+        }
+    }
+}
+
+.mainPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 78rem) {
+            display:inline;
+        }
+    }
+}
+.subPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 43rem) {
+            display:inline;
         }
     }
 }
@@ -262,9 +270,9 @@ $feature-flags: (
     }
 
 
-    .toolHelp, .toolHelp .bx--row:nth-child(1) {
-        //height: 100px;
-    }
+    // .toolHelp, .toolHelp .bx--row:nth-child(1) {
+    //      height: 100px;
+    // }
     @media (min-width: 99rem) {
         .toolHelp .bx--grid {
             padding-left: 0rem;

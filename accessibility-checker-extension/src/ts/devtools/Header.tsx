@@ -154,7 +154,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                 </div>
             </div>
-
+            {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
@@ -194,7 +194,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 iconDescription="Reset" 
                                 type="button"
                             >
-                                <Reset16 className="my-custom-class" />
+                                <Reset16/>
                             </Button>
                             <Button
                                 disabled={!this.props.counts}
@@ -208,7 +208,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 iconDescription="Reports" 
                                 type="button"
                             >
-                                <ReportData16 className="my-custom-class" />
+                                <ReportData16/>
                             </Button>
                         </div>
                     </div>
@@ -248,9 +248,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
                 </div>
+                // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-
                     <div className="bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {isLatestArchive ? "" : (
@@ -306,8 +306,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
                 </div>
             }
-
-            <div className="countRow summary" role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+            {/* Counts row uses same code for both Assessment and Checker Tabs */}
+            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox 
@@ -373,15 +373,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts" style={{ fontWeight: 400, lineHeight: "32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning..." : ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
-        </div>);
+        </div>); // end of headerContent
 
-        if (this.props.layout === "main") {
+        if (this.props.layout === "main") { // Checker Tab
             return <div className="fixed-header"
                 style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "50%" }}>
                 {headerContent}
             </div>
-        } else {
-            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
+        } else { // Assessment Tab
+            return <div className="fixed-header" 
+                style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
                 {headerContent}
             </div>
         }
