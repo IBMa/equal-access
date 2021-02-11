@@ -1,0 +1,69 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_List_Group_ListItem"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### List component using `"group"` role has children that are not `"listitem"` elements
+
+<div id="locLevel"></div>
+
+List component using `"group"` role must limit children to `"listitem"` elements
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+ When `role="group"` is used on a list component, authors must limit the group element's children to elements with an implied or explicit role of `"listitem"`. This facilitates proper handling of the group’s context by user agents and assistive technology.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Use the `<li>` element for all children of the element with `role="group"`, which has an implied role of `"listitem"`;
+ * OR, use the attribute `role="listitem"` on all children of the element with `role="group"`.
+
+ For example:
+ 
+<CodeSnippet type="multi" light={true}>&lt;h2 id="fruit"&gt;Fruits&lt;/h2&gt;
+&lt;p&gt; The following is a grouping of fruits by type&lt;/p&gt;
+&lt;ul&gt;
+    &lt;li&gt; &lt;h3 id="tropical"&gt;Tropical Fruits&lt;/h3&gt;
+        &lt;ul role="group" aria-labelledby="tropical"&gt;
+            &lt;li&gt;Mango&lt;/li&gt;
+            &lt;li&gt;Papaya&lt;/li&gt;
+            &lt;li&gt;Pineapple&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt; &lt;h3 id="berries"&gt;Berries&lt;/h3&gt;
+        &lt;ul role="group" aria-labelledby="berries"&gt;
+            &lt;li&gt;Blueberry&lt;/li&gt;
+            &lt;li&gt;Strawberry&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/li&gt;
+&lt;/ul&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * Blind people using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

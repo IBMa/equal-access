@@ -100,8 +100,7 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                                 Equal Access Toolkit:<br />
                                 Accessibility Checker Report<br />
                             </h1>
-                            <div className="time">{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
-                            <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
+                            
                         </div>
                     </div>
                     <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-12" role="region" aria-label="Report overview: current status">
@@ -110,7 +109,11 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                 </div>
                 <section aria-label="Report overview: score cards">
                     <div className="bx--row">
-                        <div className="bx--col-sm-2 bx--col-md-4 bx--offset-lg-4 bx--col-lg-4">
+                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
+                            <div className="time" style={{paddingTop:"12px"}}>{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
+                            <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
+                        </div>
+                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
                             <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violations" icon={Violation16}>
                                 Accessibility failures that need to be corrected
                         </ScoreCard>

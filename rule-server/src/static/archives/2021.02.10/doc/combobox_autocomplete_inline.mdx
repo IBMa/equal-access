@@ -1,0 +1,82 @@
+---
+title: "Accessibility Checker Rule Help: combobox_autocomplete"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### A combobox that supports autocompletion behavior must not have an `aria-autocomplete` attribute
+value of `"inline"` and must have the `aria-autocomplete` attribute only on its text input element
+
+<div id="locLevel"></div>
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Assistive technologies can present different types of combobox to their users according to their 
+intended behavior. The `"inline"` value for the `aria-autocomplete` attribute is not valid for a 
+combobox text entry element, so assistive technologies may be unable to operate it. A combobox that 
+supports inline forms of autocomplete would do this in combination with having a popup element, and 
+should use `aria-autocomplete="both"`.
+
+Additionally, a combobox is a UI interactive component that combines an input and another element, 
+such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. 
+Only the text entry element can have the `aria-autocomplete` attribute, otherwise assistive technologies
+may be unable to understand and present the component's autocomplete functionality effectively.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the combobox has autocomplete behavior that includes both inline text appearing after the user's cursor and a popup element, use `aria-autocomplete="both"`;
+* OR, if the combobox has autocomplete behavior provided only through a popup element, use `aria-autocomplete="list"`;
+* OR, if the combobox does not have autocomplete behavior, remove the `aria-autocomplete` attribute (the default value is `"none"`).
+
+Also,
+* Remove the `aria-autocomplete` attribute from popup elements of the combobox
+* AND, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;label for="comboInput"&gt;State&lt;/label&gt;
+&lt;div class="combobox"&gt;
+  &lt;div class="cbPrimary"&gt;
+    &lt;input type="text" id="comboInput" class="cbEdit"
+        role="combobox" aria-autocomplete="list"
+        aria-haspopup="listbox" aria-expanded="true"
+        aria-controls="popup_listbox" aria-activedescendant="cb-ak" /&gt;
+    &lt;button id="cbButton" tabindex="-1" aria-label="Open"&gt;▼&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;ul id="popup_listbox" role="listbox" aria-label="States"&gt;
+    &lt;li id="cb-al" role="option"&gt;Alabama&lt;/li&gt;
+    &lt;li id="cb-ak" role="option" aria-selected="true"&gt;Alaska&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</CodeSnippet>
+
+Note, example code includes material copied from or derived from [W3C, ARIA 1.2 Authoring practices](https://www.w3.org/TR/wai-aria-practices-1.2/examples/combobox/combobox-autocomplete-list.html). Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+[WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-practices-1.2/#combobox)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
