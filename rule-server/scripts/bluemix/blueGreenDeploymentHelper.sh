@@ -30,7 +30,7 @@ elif [ ${TRAVIS_BRANCH} == "prod" ]
 then
     export CF_SPACE=AAT_prod
     export APP_MANIFEST_PATH=${PWD}/manifest-prod.yml
-    export APP_POSTFIX=-prod
+    export APP_POSTFIX=
 fi
 
 echo "Configuring BlueMix deployment..."
