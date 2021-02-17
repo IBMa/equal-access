@@ -19,7 +19,7 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, Tooltip
+    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
 import { Reset16, ReportData16, Renew16 } from '@carbon/icons-react';
@@ -40,6 +40,7 @@ interface IHeaderProps {
     collapseAll: () => void,
     reportHandler: () => void,
     xlsxReportHandler: () => void,
+    startStopScanStoring: () => void,
     showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
     counts?: {
         "total": { [key: string]: number },
@@ -47,6 +48,7 @@ interface IHeaderProps {
     } | null,
     dataFromParent: boolean[],
     scanning: boolean,
+    scanStorage: boolean,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
     selectedPolicy: string | null
@@ -155,10 +157,39 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
             {/* Content for Checker Tab */}
+            {console.log("this.props.scanStorage = ",this.props.scanStorage)}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                        <OverflowMenu 
+                            style={{height:"32px"}} 
+                            renderIcon={ReportData16}
+                            ariaLabel="Report menu"
+                            // disabled={false} // disabled before first scan?
+                            id="reportMenu"
+                            
+                        >
+                            <OverflowMenuItem 
+                                itemText="Current scan report" 
+                                onClick={this.props.reportHandler}
+                            />
+                            <OverflowMenuItem itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
+                                onClick={this.props.startStopScanStoring}
+                            />
+                            <OverflowMenuItem itemText="Clear stored scans" 
+                                onClick={ () => {
+                                        console.log("Do Clear stored scans");
+                                    }
+                                }
+                            />
+                            <OverflowMenuItem itemText="Multi-scan report" 
+                                onClick={ () => {
+                                        console.log("Do Multi-scan report");
+                                    }
+                                }
+                            />
+                        </OverflowMenu>
                         {isLatestArchive ? "" : (
                             <Tooltip>
                                 <p id="tooltip-body">

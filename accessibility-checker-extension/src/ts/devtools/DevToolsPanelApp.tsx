@@ -55,6 +55,7 @@ interface IPanelState {
     showIssueTypeFilter: boolean[],
     scanning: boolean,  // true when scan taking place
     firstScan: boolean, // true when first scan of a url
+    scanStorage: boolean, // true when scan storing on
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -79,6 +80,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
         firstScan: true,
+        scanStorage: false,
         error: null,
         archives: null,
         selectedArchive: null,
@@ -286,12 +288,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             let report = message.report;
             let archives = await this.getArchives();
-
-            // JCH add itemIdx to report (used to be in message.report)
+            
             if (!report) return;
 
         let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
+            // JCH add itemIdx to report (used to be in message.report)
             report.results.map((result: any, index: any) => {
                 result["itemIdx"] = index;
             })
@@ -312,6 +314,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             this.setState({ scanning: false }); // scan done
             // console.log("SCAN DONE");
+            // Scan is done so store scan to local storage
+            console.log("Scan done so store scan");
+            this.storeScan();
             
             if (this.props.layout === "sub") {
                 if (this.state.firstScan === true && message.origin === this.props.layout) {
@@ -371,6 +376,30 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         return true;
     }
 
+    // store scans using local storage
+    storeScan() {
+        // Data to store for Report
+
+        // var xlsx_props = {
+        //     report: this.state.report,
+        //     rulesets: this.state.rulesets,
+        //     tabTitle: this.state.tabTitle,
+        //     tabURL: this.state.tabURL
+        // }
+
+        console.log("storeScan");
+
+        const scanData = {tabTitle : this.state.tabTitle, tabURL : this.state.tabURL, report : this.state.report, rulesets : this.state.rulesets};
+
+        console.log(scanData);
+
+        localStorage.setItem('storedData', JSON.stringify(scanData)); 
+
+        const myStoredData = JSON.parse(localStorage.getItem('storedData')!); // are we confident stored data will never be null?
+
+        console.log(myStoredData);
+    }
+
     getArchives = async () => {
         return await OptionMessaging.sendToBackground("OPTIONS", {
           command: "getArchives",
@@ -398,6 +427,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
         this.getCurrentSelectedElement();
     }
+
+    
 
     reportHandler = async () => {
         if (this.state.report && this.state.rulesets) {
@@ -442,6 +473,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    
+
     xlsxReportHandler = () => {
         var xlsx_props = {
             report: this.state.report,
@@ -452,6 +485,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
         SinglePageReport.single_page_xlsx_download(xlsx_props);
     }
+
+    // START - New multi-scan report functions
+    
+    startStopScanStoring = () => {
+        console.log("startStopScanStoring");
+        // flip scanStorage state each time function runs
+        console.log("this.state.scanStorage = ", this.state.scanStorage);
+        if (this.state.scanStorage === true) {
+            this.setState({ scanStorage: false });
+        } else {
+            this.setState({ scanStorage: true });
+        }
+    }
+
+    // END - New multi-scan report functions
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
@@ -635,9 +683,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         <Header
                             layout={this.props.layout}
                             counts={this.state.report && this.state.report.counts}
+                            scanStorage={this.state.scanStorage}
                             startScan={this.startScan.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             xlsxReportHandler = {this.xlsxReportHandler}
+                            startStopScanStoring = {this.startStopScanStoring}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
@@ -690,9 +740,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
+                        scanStorage={this.state.scanStorage}
                         startScan={this.startScan.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         xlsxReportHandler = {this.xlsxReportHandler}
+                        startStopScanStoring = {this.startStopScanStoring}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
