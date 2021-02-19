@@ -38,6 +38,8 @@ interface IPanelProps {
     layout: "main" | "sub"
 }
 
+
+
 interface IPanelState {
     listenerRegistered: boolean,
     numScanning: number,
@@ -56,6 +58,13 @@ interface IPanelState {
     scanning: boolean,  // true when scan taking place
     firstScan: boolean, // true when first scan of a url
     scanStorage: boolean, // true when scan storing on
+    storedScans: {
+        url: string;
+        pageTitle: string;
+        dateTime: number | undefined;
+        scanLabel: string;
+    }[],
+    storedScanCount: number,
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -79,6 +88,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
+        storedScans: [],
+        storedScanCount: 0,
         firstScan: true,
         scanStorage: false,
         error: null,
@@ -380,24 +391,39 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     storeScan() {
         // Data to store for Report
 
-        // var xlsx_props = {
-        //     report: this.state.report,
-        //     rulesets: this.state.rulesets,
-        //     tabTitle: this.state.tabTitle,
-        //     tabURL: this.state.tabURL
-        // }
-
         console.log("storeScan");
+
+        this.setState(prevState => {
+            return {storedScanCount: prevState.storedScanCount + 1}
+        });
+
+        let currentScan = {
+            url: this.state.tabURL,
+            pageTitle: this.state.tabTitle,
+            dateTime: this.state.report?.timestamp,
+            scanLabel: "scan" + this.state.storedScanCount // is this safe since setState above is async
+        };
+
+        this.setState(({
+            storedScans: [...this.state.storedScans, currentScan]
+        }));
 
         const scanData = {tabTitle : this.state.tabTitle, tabURL : this.state.tabURL, report : this.state.report, rulesets : this.state.rulesets};
 
-        console.log(scanData);
+        // const scanData2 = {tabTitle : this.state.tabTitle, tabURL : this.state.tabURL, report : this.state.report};
 
-        localStorage.setItem('storedData', JSON.stringify(scanData)); 
+        let currentScanData = JSON.stringify(scanData);
 
-        const myStoredData = JSON.parse(localStorage.getItem('storedData')!); // are we confident stored data will never be null?
+        console.log("storage space for currentScanData = ", currentScanData.length);
 
-        console.log(myStoredData);
+        // localStorage.setItem("scan1", JSON.stringify(scanData)); 
+
+        // const myStoredData = JSON.parse(localStorage.getItem("scan1")!); // are we confident stored data will never be null?
+
+        // console.log("storedScans = ", this.state.storedScans);
+        // // console.log(this.state.storedScans[0].scanLabel)
+        // console.log("current scanData = ", scanData);
+        // console.log("stored current scanData = ", myStoredData);
     }
 
     getArchives = async () => {
@@ -498,6 +524,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({ scanStorage: true });
         }
     }
+
+
 
     // END - New multi-scan report functions
 
