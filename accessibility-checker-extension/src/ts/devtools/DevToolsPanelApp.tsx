@@ -22,6 +22,7 @@ import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
 import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReport";
+import MultiScanData from "./MultiScanData";
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
 import {
@@ -64,7 +65,8 @@ interface IPanelState {
         dateTime: number | undefined;
         scanLabel: string;
     }[],
-    storedScanCount: number,
+    storedScanCount: number, // number of scans stored
+    storedScanData: number, // total amount of scan data stored in MB
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -90,6 +92,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         scanning: false,
         storedScans: [],
         storedScanCount: 0,
+        storedScanData: 0,
         firstScan: true,
         scanStorage: false,
         error: null,
@@ -325,9 +328,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             this.setState({ scanning: false }); // scan done
             // console.log("SCAN DONE");
-            // Scan is done so store scan to local storage
-            console.log("Scan done so store scan");
-            this.storeScan();
+            // Scan is done so we can store scan to local storage if scanStorage === true
+            if (this.state.scanStorage === true) {
+                console.log("Scan done and this.state.scanStorage is true so store scan");
+                this.storeScan();
+            }
             
             if (this.props.layout === "sub") {
                 if (this.state.firstScan === true && message.origin === this.props.layout) {
@@ -389,10 +394,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     // store scans using local storage
     storeScan() {
-        // Data to store for Report
-
         console.log("storeScan");
 
+        // Data to store for Report
+        var xlsx_props = {
+            report: this.state.report,
+            rulesets: this.state.rulesets,
+            tabTitle: this.state.tabTitle,
+            tabURL: this.state.tabURL
+        }
+        // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
             return {storedScanCount: prevState.storedScanCount + 1}
         });
@@ -408,22 +419,39 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
-        const scanData = {tabTitle : this.state.tabTitle, tabURL : this.state.tabURL, report : this.state.report, rulesets : this.state.rulesets};
-
-        // const scanData2 = {tabTitle : this.state.tabTitle, tabURL : this.state.tabURL, report : this.state.report};
-
+        // get only data needed for multi-scan report
+        const scanData = MultiScanData.issues_sheet_rows(xlsx_props); 
+        // local storage can only store strings so stringify
         let currentScanData = JSON.stringify(scanData);
 
         console.log("storage space for currentScanData = ", currentScanData.length);
 
-        // localStorage.setItem("scan1", JSON.stringify(scanData)); 
+        // Note: here is where the scan is stored so check to see if can be stored
+        //       if not turn off state scanStorage, present message that must clear scans
+        //       also if they try to turn state scanStorage, again provide message that
+        //       must clear scans before can store scans
+        try {
+            localStorage.setItem(currentScan.scanLabel, currentScanData); 
+        } catch (e) {
+            if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
+                || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
+                alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
+            }
+        }
 
-        // const myStoredData = JSON.parse(localStorage.getItem("scan1")!); // are we confident stored data will never be null?
+        // This is just a test during dev to show that we can read the data back from storage
+        const myStoredData = JSON.parse(localStorage.getItem(currentScan.scanLabel)!); // are we confident stored data will never be null?
 
-        // console.log("storedScans = ", this.state.storedScans);
+        console.log("storedScans = ", this.state.storedScans);
         // // console.log(this.state.storedScans[0].scanLabel)
-        // console.log("current scanData = ", scanData);
-        // console.log("stored current scanData = ", myStoredData);
+        
+        console.log("stored current scanData = ", myStoredData);
+
+        this.setState(prevState => {
+            return {storedScanData: prevState.storedScanData + currentScanData.length}
+        });
+
+        console.log("Total storedScanData = ", this.state.storedScanData);
     }
 
     getArchives = async () => {
