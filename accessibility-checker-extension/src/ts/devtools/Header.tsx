@@ -163,7 +163,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         <OverflowMenu 
-                            style={{height:"32px"}} 
+                            style={{height:"32px",marginLeft:"8px"}} 
                             renderIcon={ReportData16}
                             ariaLabel="Report menu"
                             // disabled={false} // disabled before first scan?
@@ -179,7 +179,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             />
                             <OverflowMenuItem itemText="Clear stored scans" 
                                 onClick={ () => {
-                                        console.log("Do Clear stored scans");
+                                        console.log("Clear stored scans");
+                                        localStorage.clear();
                                     }
                                 }
                             />
@@ -212,7 +213,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
 
                     <div className="bx--col-md-1" style={{paddingRight:0}}>
-                        <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
+                        {/* <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.collapseAll}
@@ -241,7 +242,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             >
                                 <ReportData16/>
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="bx--col-md-3">
