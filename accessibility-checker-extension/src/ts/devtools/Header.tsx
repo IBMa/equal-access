@@ -157,7 +157,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-md-2 bx--col-sm-1" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {isLatestArchive ? "" : (
                             <Tooltip>
@@ -176,13 +176,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-2" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}>
 
                     </div>
 
-                    <div className="bx--col-md-1" style={{paddingRight:0}}>
+                    <div className="bx--col-md-1 bx--col-sm-1" style={{paddingRight:0}}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
-                            <Button
+                            {/* <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.collapseAll}
                                 className="settingsButtons" 
@@ -195,7 +195,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 type="button"
                             >
                                 <Reset16/>
-                            </Button>
+                            </Button> */}
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={this.props.reportHandler}
@@ -213,7 +213,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div>
                     </div>
 
-                    <div className="bx--col-md-3">
+                    <div className="bx--col-md-3 bx--col-sm-2">
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px"}}
