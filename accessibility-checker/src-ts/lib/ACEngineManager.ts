@@ -33,7 +33,7 @@ export class ACEngineManager {
                 } catch (e) {
                     return Promise.reject(e);
                 }
-            }, `${config.ruleServer}/archives/${config.ruleArchive}/js/ace.js`);
+            }, `${config.ruleServer}/${config.rulePack}/ace.js`);
             return ACEngineManager.loadEngineLocal();
         } else if (ACEngineManager.isSelenium(content)) {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected Selenium");
@@ -47,7 +47,7 @@ try {
         let script = document.createElement('script');
         script.setAttribute('type', 'text/javascript');
         script.setAttribute('aChecker', 'ACE');
-        script.setAttribute('src', '${config.ruleServer}/archives/${config.ruleArchive}/js/ace.js');
+        script.setAttribute('src', '${config.ruleServer}/${config.rulePack}/ace.js');
         script.addEventListener('load', function() {
             cb();
         });
@@ -95,9 +95,9 @@ try {
         let config = await ACConfigManager.getConfigUnsupported();
 
         return new Promise<void>((resolve, reject) => {
-            request.get(`${config.ruleServer}/archives/${config.ruleArchive}/js/ace-node.js`, function (err, data) {
+            request.get(`${config.ruleServer}/${config.rulePack}/ace-node.js`, function (err, data) {
                 if (!data) {
-                    console.log("Cannot read: " + `${config.ruleServer}/archives/${config.ruleArchive}/js/ace.js`);
+                    console.log("Cannot read: " + `${config.ruleServer}/${config.rulePack}/ace-node.js`);
                 }
                 data = data.body;
                 let engineDir = path.join(__dirname, "engine");

@@ -33,14 +33,14 @@ try {
     // If cucumber is the platform...
     let {AfterAll} = require('cucumber');
     AfterAll(function (done) {
-        const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
+        const rulePack = `${Config.ruleServer}/${Config.rulePack}`;
         initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
     });
 } catch (e) {
     if (typeof (after) !== "undefined") {
         after(function (done) {
             if (Config) {
-                const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
+                const rulePack = `${Config.ruleServer}/${Config.rulePack}/ace`;
                 initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(() => ACBrowserManager.close().then(done), rulePack));
             } else {
                 done();
@@ -49,7 +49,7 @@ try {
     } else {
         process.on('beforeExit', async function () {
             if (Config) {
-                const rulePack = `${Config.ruleServer}/archives/${Config.ruleArchive}/js`;
+                const rulePack = `${Config.ruleServer}/${Config.rulePack}/ace`;
                 initialize().then(() => ACReportManager.metricsLogger.sendLogsV2(null, rulePack));
                 ACBrowserManager.close();
             }
