@@ -28,18 +28,33 @@ export default class SinglePageReport {
         //create workbook
         var report_workbook = SinglePageReport.create_report_workbook(xlsx_props);
 
+        // write workbook back out
+        console.log("write workbook back out");
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+        const fileExtension = '.xlsx';
+        // const blob1 = new Blob([arrayBuffer], {type: fileType});
+        // console.log("blob = ", blob1);
+        // saveAs(blob1, 'export1' + fileExtension);
+
+        const buffer = await report_workbook.xlsx.writeBuffer();
+        console.log("buffer = ", buffer);
+        const blob2 = new Blob([buffer], {type: 'application/octet-stream'} );
+        console.log("blob2.arrayBuffer() = ", await blob2.arrayBuffer()); 
+        console.log("blob2 = ", blob2);
+        // saveAs(blob2, 'export2' + fileExtension);
+
         //write workbook into binary
-        var wbout = XLSX.write(report_workbook, { bookType: 'xlsx', type: 'binary' });
+        // var wbout = XLSX.write(report_workbook, { bookType: 'xlsx', type: 'binary' });
 
         //sheet to ArrayBuffer
-        var buf = this.s2ab(wbout);
+        // var buf = this.s2ab(wbout);
 
         //create xlsx blob
-        const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        // const blob = new Blob([buf], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
 
         const file_name = ReportUti.single_page_report_file_name(xlsx_props.tab_title);
 
-        ReportUti.download_file(blob, file_name);
+        // ReportUti.download_file(blob, file_name);
     }
 
     public static s2ab(s: any) {
@@ -51,18 +66,19 @@ export default class SinglePageReport {
 
     public static create_report_workbook(xlsx_props: any) {
 
-        var workbook = XLSX.utils.book_new();
+        // var workbook = XLSX.utils.book_new();
+        var workbook = new EXCELJS.Workbook();
 
-        workbook.Props = {
-            Title: "Accessibility Checker Report",
-            Subject: "xlsx report",
-            Author: "IBM Equal Access",
-            CreatedDate: new Date()
-        }
+        // workbook.Props = {
+        //     Title: "Accessibility Checker Report",
+        //     Subject: "xlsx report",
+        //     Author: "IBM Equal Access",
+        //     CreatedDate: new Date()
+        // }
 
-        this.create_header_sheet(xlsx_props, workbook);
-        this.create_issues_sheet(xlsx_props, workbook);
-        this.create_definition_sheet(workbook);
+        // this.create_header_sheet(xlsx_props, workbook);
+        // this.create_issues_sheet(xlsx_props, workbook);
+        // this.create_definition_sheet(workbook);
 
         return workbook;
     }
