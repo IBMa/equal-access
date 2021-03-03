@@ -2,7 +2,7 @@ module.exports = {
   // optional - Specify the rule archive
   // Default: latest
   // Run `npx aat archives` for a list of valid ruleArchive ids and policy ids
-  ruleArchive: '10Feb2021',
+  ruleArchive: 'latest',
 
   // optional - Specify one or many policies to scan.
   // Run `npx aat archives` for a list of valid ruleArchive ids and policy ids
