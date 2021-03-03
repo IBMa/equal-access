@@ -18,6 +18,7 @@ import ReportUti from "../../reportUtil";
 import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 import XLSX from 'xlsx';
+import EXCELJS from 'exceljs'
 const stringHash = require("string-hash");
 
 export default class SinglePageReport {
