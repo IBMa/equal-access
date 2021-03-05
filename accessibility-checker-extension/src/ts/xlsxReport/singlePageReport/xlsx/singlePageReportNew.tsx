@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 import ReportUti from "../../reportUtil";
-import ReportSummaryUtil from '../../../util/reportSummaryUtil';
+// import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 
 import ExcelJS from 'exceljs'
@@ -49,6 +49,7 @@ export default class SinglePageReport {
             
         // create worksheets
         this.createOverviewSheet(xlsx_props, workbook);
+        this.createScanSummarySheet(xlsx_props, workbook);
 
         return workbook;
     }
@@ -64,12 +65,10 @@ export default class SinglePageReport {
         const recommendation = report?.counts.total.Recommendation;
         const totalIssues = violation + needsReview + recommendation;
 
-
-
         const worksheet = workbook.addWorksheet("Overview");
 
         // Report Title
-        worksheet.mergeCells('A1', "I1");
+        worksheet.mergeCells('A1', "D1");
 
         const titleRow = worksheet.getRow(1);
         titleRow.height = "27";
@@ -80,18 +79,19 @@ export default class SinglePageReport {
         cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
         cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
 
-        // what are column widths can't get it till you set it
+        // what are column widths - can't get it till you set it
+
+        const colWidthData = [
+            {col: 'A', width: '15.1'},
+            {col: 'B', width: '15.9'},
+            {col: 'C', width: '16.23'},
+            {col: 'D', width: '19.4'},
+        ]
+
+        for (let i=0; i<4; i++) {
+            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
+        }
         
-        // set column widths - note value is x + .9 to get width you want
-        worksheet.getColumn("A").width = "15.1";
-        worksheet.getColumn("B").width = "15.9";
-        worksheet.getColumn("C").width = "16.23";
-        worksheet.getColumn("D").width = "19.4";
-        worksheet.getColumn("E").width = "18.07";
-        worksheet.getColumn("F").width = "18.07";
-        worksheet.getColumn("G").width = "18.07";
-        worksheet.getColumn("H").width = "18.07";
-        worksheet.getColumn("I").width = "18.07";
 
         // set row height for rows 2-10
         for (let i=2; i<11; i++) {
@@ -109,15 +109,15 @@ export default class SinglePageReport {
             {key1: 'Pages:', key2: 1}
         ];
         
-        worksheet.mergeCells('B2', "I2");
-        worksheet.mergeCells('B3', "I3");
-        worksheet.mergeCells('B4', "I4");
-        worksheet.mergeCells('B5', "I5");
-        worksheet.mergeCells('B6', "I6");
-        worksheet.mergeCells('B7', "I7");
-        worksheet.mergeCells('B8', "I8");
-        worksheet.mergeCells('B9', "I9");
-        worksheet.mergeCells('A10', "I10");
+        worksheet.mergeCells('B2', "D2");
+        worksheet.mergeCells('B3', "D3");
+        worksheet.mergeCells('B4', "D4");
+        worksheet.mergeCells('B5', "D5");
+        worksheet.mergeCells('B6', "D6");
+        worksheet.mergeCells('B7', "D7");
+        worksheet.mergeCells('B8', "D8");
+        worksheet.mergeCells('B9', "D9");
+        worksheet.mergeCells('A10', "D10");
 
 
         for (let i=2; i<10; i++) {
@@ -131,7 +131,7 @@ export default class SinglePageReport {
         }
         
         // Summary Title
-        worksheet.mergeCells('A11', "I11");
+        worksheet.mergeCells('A11', "D11");
 
         const summaryRow = worksheet.getRow(11);
         summaryRow.height = "27";
@@ -145,103 +145,58 @@ export default class SinglePageReport {
         // Scans info Headers
         worksheet.getRow(12).height = 16; // actual height is
 
-        const cellA12 = worksheet.getCell('A12');
-        cellA12.value = "Total issues";
-        cellA12.alignment = { vertical: "middle", horizontal: "center"};
-        cellA12.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
-        cellA12.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-        cellA12.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
+        const cellA12 = worksheet.getCell('A12'); cellA12.value = "Total issues";
+        const cellB12 = worksheet.getCell('B12'); cellB12.value = "Violations";
+        const cellC12 = worksheet.getCell('C12'); cellC12.value = "Needs review";
+        const cellD12 = worksheet.getCell('D12'); cellD12.value = "Recommendations";
 
-        const cellB12 = worksheet.getCell('B12');
-        cellB12.value = "Violations";
-        cellB12.alignment = { vertical: "middle", horizontal: "center"};
-        cellB12.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
-        cellB12.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-        cellB12.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
+        const cellObjects1 = [cellA12, cellB12, cellC12, cellD12];
 
-        const cellC12 = worksheet.getCell('C12');
-        cellC12.value = "Needs review";
-        cellC12.alignment = { vertical: "middle", horizontal: "center"};
-        cellC12.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
-        cellC12.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-        cellC12.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
-
-        const cellD12 = worksheet.getCell('D12');
-        cellD12.value = "Recommendations";
-        cellD12.alignment = { vertical: "middle", horizontal: "center"};
-        cellD12.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
-        cellD12.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
-        cellD12.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        for (let i=0; i<4; i++) {
+            cellObjects1[i].alignment = { vertical: "middle", horizontal: "center"};
+            cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+            cellObjects1[i].border = {
+                top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            }
         }
 
         // Scans info Values
         worksheet.getRow(13).height = 27; // actual height is
 
-        const cellA13 = worksheet.getCell('A13');
-        cellA13.value = totalIssues;
-        cellA13.alignment = { vertical: "middle", horizontal: "center"};
-        cellA13.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
-        cellA13.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-        cellA13.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
+        const cellA13 = worksheet.getCell('A13'); cellA13.value = totalIssues;
+        const cellB13 = worksheet.getCell('B13'); cellB13.value = violation;
+        const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReview;
+        const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendation;
 
-        const cellB13 = worksheet.getCell('B13');
-        cellB13.value = violation;
-        cellB13.alignment = { vertical: "middle", horizontal: "center"};
-        cellB13.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
-        cellB13.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-        cellB13.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
+        const cellObjects2 = [cellA13, cellB13, cellC13, cellD13];
 
-        const cellC13 = worksheet.getCell('C13');
-        cellC13.value = needsReview;
-        cellC13.alignment = { vertical: "middle", horizontal: "center"};
-        cellC13.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
-        cellC13.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-        cellC13.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        for (let i=0; i<4; i++) {
+            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center"};
+            cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            cellObjects2[i].border = {
+                top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            }
         }
+    }
 
-        const cellD13 = worksheet.getCell('D13');
-        cellD13.value = recommendation;
-        cellD13.alignment = { vertical: "middle", horizontal: "center"};
-        cellD13.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
-        cellD13.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-        cellD13.border = {
-            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
-        }
+    public static createScanSummarySheet(xlsx_props: any, workbook: any) {
+        console.log("createOverviewSheet");
+
+        const report = xlsx_props.report;
+
+        const violation = report?.counts.total.Violation;
+        const needsReview = report?.counts.total["Needs review"];
+        const recommendation = report?.counts.total.Recommendation;
+        const totalIssues = violation + needsReview + recommendation;
+
+        const worksheet = workbook.addWorksheet("Scan summary");
     }
 }
