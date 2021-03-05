@@ -21,7 +21,7 @@ import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
-import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReport";
+import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReportNew";
 import MultiScanData from "./MultiScanData";
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
