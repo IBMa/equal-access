@@ -21,8 +21,9 @@ import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
-import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReportNew";
+import MultiScanReport from "../xlsxReport/multiScanReport/xlsx/multiScanReport";
 import MultiScanData from "./MultiScanData";
+import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
 import {
@@ -59,6 +60,7 @@ interface IPanelState {
     scanning: boolean,  // true when scan taking place
     firstScan: boolean, // true when first scan of a url
     scanStorage: boolean, // true when scan storing on
+    currentStoredScan: string,
     storedScans: {
         url: string;
         pageTitle: string;
@@ -95,6 +97,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         storedScanData: 0,
         firstScan: true,
         scanStorage: false,
+        currentStoredScan: "", // current stored scan (clear on next scan if scanStorage false)
         error: null,
         archives: null,
         selectedArchive: null,
@@ -403,21 +406,44 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             tabTitle: this.state.tabTitle,
             tabURL: this.state.tabURL
         }
+
+        var report: any = this.state.report;
+        var summaryNumbers = ReportSummaryUtil.calcSummary(report);
+        var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
+        var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
+
+        var violation = report?.counts.total.Violation;
+        var needsReview = report?.counts.total["Needs review"];
+        var recommendation = report?.counts.total.Recommendation;
+
         // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
             return {storedScanCount: prevState.storedScanCount + 1}
         });
 
+        // Data to store for the Scan other than the issues
         let currentScan = {
             url: this.state.tabURL,
             pageTitle: this.state.tabTitle,
             dateTime: this.state.report?.timestamp,
-            scanLabel: "scan" + this.state.storedScanCount // is this safe since setState above is async
+            scanLabel: "scan" + this.state.storedScanCount, // is this safe since setState above is async
+            userScanLabel: "scan" + this.state.storedScanCount, // this is the visible scan label which may be edited by user
+            violations: violation,
+            needsReviews: needsReview,
+            recommendations: recommendation,
+            elementsNoViolations: element_no_violations,
+            elementsNoFailures: element_no_failures,
+            scanData: ""
         };
 
+        // Array of stored scans
         this.setState(({
             storedScans: [...this.state.storedScans, currentScan]
         }));
+
+        // scan label of the current stored scan 
+        // the current scan is always stored for the current scan report
+        this.setState({ currentStoredScan:  "scan" + this.state.storedScanCount });
 
         // get only data needed for multi-scan report
         const scanData = MultiScanData.issues_sheet_rows(xlsx_props); 
@@ -431,7 +457,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         //       also if they try to turn state scanStorage, again provide message that
         //       must clear scans before can store scans
         try {
-            localStorage.setItem(currentScan.scanLabel, currentScanData); 
+            localStorage.setItem(currentScan.scanData, currentScanData); 
         } catch (e) {
             if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
                 || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
@@ -440,7 +466,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
 
         // This is just a test during dev to show that we can read the data back from storage
-        const myStoredData = JSON.parse(localStorage.getItem(currentScan.scanLabel)!); // are we confident stored data will never be null?
+        const myStoredData = JSON.parse(localStorage.getItem(currentScan.scanData)!); // are we confident stored data will never be null?
 
         console.log("storedScans = ", this.state.storedScans);
         // // console.log(this.state.storedScans[0].scanLabel)
@@ -537,7 +563,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             tabURL: this.state.tabURL
         }
 
-        SinglePageReport.single_page_xlsx_download(xlsx_props);
+        MultiScanReport.multiScanXlsxDownload(xlsx_props);
     }
 
     // START - New multi-scan report functions

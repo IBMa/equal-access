@@ -14,18 +14,18 @@
     limitations under the License.
  *****************************************************************************/
 
-import ReportUti from "../../reportUtil";
+import ReportUtil from "../../reportUtil";
 // import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 
 import ExcelJS from 'exceljs'
 
-export default class SinglePageReport {
+export default class MultiScanReport {
 
-    public static async single_page_xlsx_download(xlsx_props: any) {
+    public static async multiScanXlsxDownload(xlsx_props: any) {
 
         // create workbook
-        var reportWorkbook = SinglePageReport.createReportWorkbook(xlsx_props);
+        var reportWorkbook = MultiScanReport.createReportWorkbook(xlsx_props);
         
         // create binary buffer
         const buffer = await reportWorkbook.xlsx.writeBuffer();
@@ -35,10 +35,10 @@ export default class SinglePageReport {
         const blob = new Blob([buffer], {type: fileType});
         console.log("blob = ", blob);
 
-        const fileName = ReportUti.single_page_report_file_name(xlsx_props.tab_title);
+        const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
 
         // download file
-        ReportUti.download_file(blob, fileName);
+        ReportUtil.download_file(blob, fileName);
     }
 
     public static createReportWorkbook(xlsx_props: any) {
@@ -189,13 +189,6 @@ export default class SinglePageReport {
 
     public static createScanSummarySheet(xlsx_props: any, workbook: any) {
         console.log("createOverviewSheet");
-
-        const report = xlsx_props.report;
-
-        const violation = report?.counts.total.Violation;
-        const needsReview = report?.counts.total["Needs review"];
-        const recommendation = report?.counts.total.Recommendation;
-        const totalIssues = violation + needsReview + recommendation;
 
         const worksheet = workbook.addWorksheet("Scan summary");
     }
