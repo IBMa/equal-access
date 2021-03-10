@@ -38,8 +38,9 @@ interface IHeaderProps {
     layout: "main" | "sub",
     startScan: () => void,
     collapseAll: () => void,
-    reportHandler: () => void,
-    xlsxReportHandler: () => void,
+    clearStoredScans: () => void,
+    reportHandler: (currentScan: boolean) => void,
+    xlsxReportHandler: (currentScan: boolean) => void,
     startStopScanStoring: () => void,
     showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
     counts?: {
@@ -172,17 +173,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         >
                             <OverflowMenuItem 
                                 itemText="Current scan report" 
-                                onClick={this.props.reportHandler}
+                                onClick={() => this.props.reportHandler(true)}
                             />
                             <OverflowMenuItem itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
                                 onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem itemText="Clear stored scans" 
-                                onClick={ () => {
-                                        console.log("Clear stored scans");
-                                        localStorage.clear();
-                                    }
-                                }
+                                onClick={() => this.props.clearStoredScans() }
                             />
                             <OverflowMenuItem itemText="Multi-scan report" 
                                 onClick={ () => {

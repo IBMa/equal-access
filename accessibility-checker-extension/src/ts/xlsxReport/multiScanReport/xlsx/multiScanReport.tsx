@@ -22,10 +22,10 @@ import ExcelJS from 'exceljs'
 
 export default class MultiScanReport {
 
-    public static async multiScanXlsxDownload(xlsx_props: any) {
+    public static async multiScanXlsxDownload(storedScans: any, currentScan:boolean) {
 
         // create workbook
-        var reportWorkbook = MultiScanReport.createReportWorkbook(xlsx_props);
+        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, currentScan);
         
         // create binary buffer
         const buffer = await reportWorkbook.xlsx.writeBuffer();
@@ -35,37 +35,57 @@ export default class MultiScanReport {
         const blob = new Blob([buffer], {type: fileType});
         console.log("blob = ", blob);
 
-        const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
+        // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
+        const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
 
         // download file
         ReportUtil.download_file(blob, fileName);
     }
 
-    public static createReportWorkbook(xlsx_props: any) {
+    public static createReportWorkbook(storedScans: any, currentScan: boolean) {
         console.log("createReportWorkbook");
         // create workbook
         // @ts-ignore
         const workbook = new ExcelJS.Workbook({useStyles: true });
             
         // create worksheets
-        this.createOverviewSheet(xlsx_props, workbook);
-        this.createScanSummarySheet(xlsx_props, workbook);
+        this.createOverviewSheet(storedScans, currentScan, workbook);
+        this.createScanSummarySheet(storedScans, currentScan, workbook);
+        this.createIssueSummarySheet(storedScans, workbook);
+        this.createIssuesSheet(storedScans, workbook);
+        this.createDefinitionsSheet(storedScans, workbook);
 
         return workbook;
     }
 
     
-    public static createOverviewSheet(xlsx_props: any, workbook: any) {
+    public static createOverviewSheet(storedScans: any, currentScan: boolean, workbook: any) {
         console.log("createOverviewSheet");
 
-        const report = xlsx_props.report;
+        let violations = 0;
+        let needsReviews = 0;
+        let recommendations = 0;
+        let totalIssues = 0;
 
-        const violation = report?.counts.total.Violation;
-        const needsReview = report?.counts.total["Needs review"];
-        const recommendation = report?.counts.total.Recommendation;
-        const totalIssues = violation + needsReview + recommendation;
+        // question 1: is report for current scans or all available scans?
+        const theCurrentScan = storedScans[storedScans.length - 1];
+
+        if (currentScan === true) {
+            violations = theCurrentScan.violations;
+            needsReviews = theCurrentScan.needsReviews;
+            recommendations = theCurrentScan.recommendations;
+            totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
+        } else {
+            for (let i=0; i < storedScans.length; i++) {
+                violations += storedScans[i].violations;
+                needsReviews += storedScans[i].needsReviews;
+                recommendations += storedScans[i].recommendations;
+            }
+            totalIssues = violations+needsReviews+recommendations;
+        }
 
         const worksheet = workbook.addWorksheet("Overview");
+
 
         // Report Title
         worksheet.mergeCells('A1', "D1");
@@ -98,12 +118,13 @@ export default class MultiScanReport {
             worksheet.getRow(i).height = 12; // results in a row height of 16
         }
 
+        // note except for Report Date this is the same for all scans
         const rowData = [
             {key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker'},
             {key1: 'Version:', key2: chrome.runtime.getManifest().version},
-            {key1: 'Rule set:', key2: report.option.deployment.name},
-            {key1: 'Guidelines:', key2: report.option.guideline.name},
-            {key1: 'Report date:', key2: new Date(report.timestamp)},
+            {key1: 'Rule set:', key2: theCurrentScan.ruleSet},
+            {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
+            {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
             {key1: 'Platform:', key2: ""},
             {key1: 'Scans:', key2: 1},
             {key1: 'Pages:', key2: 1}
@@ -168,9 +189,9 @@ export default class MultiScanReport {
         worksheet.getRow(13).height = 27; // actual height is
 
         const cellA13 = worksheet.getCell('A13'); cellA13.value = totalIssues;
-        const cellB13 = worksheet.getCell('B13'); cellB13.value = violation;
-        const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReview;
-        const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendation;
+        const cellB13 = worksheet.getCell('B13'); cellB13.value = violations;
+        const cellC13 = worksheet.getCell('C13'); cellC13.value = needsReviews;
+        const cellD13 = worksheet.getCell('D13'); cellD13.value = recommendations;
 
         const cellObjects2 = [cellA13, cellB13, cellC13, cellD13];
 
@@ -187,9 +208,123 @@ export default class MultiScanReport {
         }
     }
 
-    public static createScanSummarySheet(xlsx_props: any, workbook: any) {
+    public static createScanSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
         console.log("createOverviewSheet");
 
         const worksheet = workbook.addWorksheet("Scan summary");
+
+        // Scans info Headers
+        worksheet.getRow(1).height = 39; // actual height is 52
+
+        const colWidthData = [
+            {col: 'A', width: '17.0'},
+            {col: 'B', width: '46.0'},
+            {col: 'C', width: '20.17'},
+            {col: 'D', width: '18.5'},
+            {col: 'E', width: '17.17'},
+            {col: 'F', width: '17.17'},
+            {col: 'G', width: '17.17'},
+            {col: 'H', width: '17.17'},
+            {col: 'I', width: '17.17'},
+        ]
+
+        for (let i=0; i<9; i++) {
+            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
+        }
+
+        const cellA1 = worksheet.getCell('A1'); cellA1.value = "Page title";
+        const cellB1 = worksheet.getCell('B1'); cellB1.value = "Page url";
+        const cellC1 = worksheet.getCell('C1'); cellC1.value = "Scan label";
+        const cellD1 = worksheet.getCell('D1'); cellD1.value = "Base scan";
+
+        const cellObjects1 = [cellA1, cellB1, cellC1, cellD1];
+
+        for (let i=0; i<4; i++) {
+            cellObjects1[i].alignment = { vertical: "middle", horizontal: "left"};
+            cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+            cellObjects1[i].border = {
+                top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            }
+        }
+
+        const cellE1 = worksheet.getCell('E1'); cellE1.value = "Violations";
+        const cellF1 = worksheet.getCell('F1'); cellF1.value = "Needs review";
+        const cellG1 = worksheet.getCell('G1'); cellG1.value = "Recommendations";
+        const cellH1 = worksheet.getCell('H1'); cellH1.value = "% elements without violations";
+        const cellI1 = worksheet.getCell('I1'); cellI1.value = "% elements without violations or items to review";
+
+        const cellObjects2 = [cellE1, cellF1, cellG1, cellH1, cellI1];
+
+        for (let i=0; i<5; i++) {
+            cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+            cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+            cellObjects2[i].border = {
+                top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            }
+        }
+
+        // if current scan use only the last scan otherwise loop through each scan an create row
+        console.log("storedScans = ", storedScans.length);
+        
+        for (let i = 0; i < storedScans.length; i++) {
+            let row = worksheet.addRow(
+                [storedScans[i].pageTitle, 
+                 storedScans[i].url, 
+                 storedScans[i].userScanLabel, 
+                 "none", 
+                 storedScans[i].violations,
+                 storedScans[i].needsReviews,
+                 storedScans[i].recommendations,
+                 storedScans[i].elementsNoViolations,
+                 storedScans[i].elementsNoFailures
+            ]);
+            row.height = 37; // actual height is
+            for (let i = 1; i < 5; i++) {
+                console.log("i = ", i);
+                row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
+                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+            }
+            for (let i = 5; i < 10; i++) {
+                console.log("i = ", i);
+                row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+                row.getCell(i).border = {
+                    top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                }
+            }
+        }
+
+
+
+    }
+
+    public static createIssueSummarySheet(storedScans: any, workbook: any) {
+        console.log("createIssueSummarySheet");
+
+        const worksheet = workbook.addWorksheet("Issue summary");
+    }
+
+    public static createIssuesSheet(storedScans: any, workbook: any) {
+        console.log("createIssueSheet");
+
+        const worksheet = workbook.addWorksheet("Issues");
+    }
+
+    public static createDefinitionsSheet(storedScans: any, workbook: any) {
+        console.log("createDefinitionsSheet");
+
+        const worksheet = workbook.addWorksheet("Definition of fields");
     }
 }
