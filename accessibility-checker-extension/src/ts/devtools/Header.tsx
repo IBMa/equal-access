@@ -175,17 +175,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 itemText="Current scan report" 
                                 onClick={() => this.props.reportHandler(true)}
                             />
-                            <OverflowMenuItem itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
+                            <OverflowMenuItem 
+                                itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
                                 onClick={this.props.startStopScanStoring}
                             />
-                            <OverflowMenuItem itemText="Clear stored scans" 
+                            <OverflowMenuItem 
+                                itemText="Clear stored scans" 
                                 onClick={() => this.props.clearStoredScans() }
                             />
-                            <OverflowMenuItem itemText="Multi-scan report" 
-                                onClick={ () => {
-                                        console.log("Do Multi-scan report");
-                                    }
-                                }
+                            <OverflowMenuItem 
+                                itemText="Multi-scan report" 
+                                onClick={() => this.props.reportHandler(false)}
                             />
                         </OverflowMenu>
                         {isLatestArchive ? "" : (

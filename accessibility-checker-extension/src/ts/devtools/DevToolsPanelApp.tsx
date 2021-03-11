@@ -75,7 +75,8 @@ interface IPanelState {
         recommendations: any;
         elementsNoViolations: number;
         elementsNoFailures: number;
-        currentStoredScan: string;
+        storedScan: string;
+        storedScanData: string
     }[],
     storedScanCount: number, // number of scans stored
     storedScanData: number, // total amount of scan data stored in MB
@@ -107,7 +108,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         storedScanData: 0,
         firstScan: true,
         scanStorage: false,
-        currentStoredScan: "", // current stored scan (clear on next scan if scanStorage false)
+        currentStoredScan: "", // true if making report for current stored scan (clear on next scan if scanStorage false)
         error: null,
         archives: null,
         selectedArchive: null,
@@ -446,7 +447,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         //       also if they try to turn state scanStorage, again provide message that
         //       must clear scans before can store scans
         try {
-            localStorage.setItem("scanData" + this.state.storedScanCount, currentScanData); 
+            localStorage.setItem("scan" + this.state.storedScanCount +"Data", currentScanData); 
         } catch (e) {
             if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
                 || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
@@ -454,7 +455,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
         }
 
-        // Data to store for the Scan other than the issues
+        this.setState(prevState => {
+            return {storedScanData: prevState.storedScanData + currentScanData.length}
+        });
+
+        
+
+        // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             url: this.state.tabURL,
             pageTitle: this.state.tabTitle,
@@ -469,27 +476,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             recommendations: recommendation,
             elementsNoViolations: element_no_violations,
             elementsNoFailures: element_no_failures,
-            currentStoredScan: this.state.currentStoredScan,
+            storedScan: "scan" + this.state.storedScanCount,
+            storedScanData: "scan" + this.state.storedScanCount + "Data",
         };
 
-        // Array of stored scans
+        // Array of stored scans these scans are stored in state memory
         this.setState(({
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
-        console.log(this.state.storedScans);
-
-        // This is just a test during dev to show that we can read the data back from storage
-        const myStoredData = JSON.parse(localStorage.getItem(currentScan.currentStoredScan)!); // are we confident stored data will never be null?
-
         console.log("storedScans = ", this.state.storedScans);
-        // // console.log(this.state.storedScans[0].scanLabel)
-        
-        console.log("stored current scanData = ", myStoredData);
-
-        this.setState(prevState => {
-            return {storedScanData: prevState.storedScanData + currentScanData.length}
-        });
 
         console.log("Total storedScanData = ", this.state.storedScanData);
     }
@@ -497,7 +493,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     clearStoredScans = () => {
         this.setState({ storedScanCount: 0 }); // reset scan counter
         console.log("Clear stored scans");
-        localStorage.clear();
+        window.localStorage.clear();
     };
 
     getArchives = async () => {
@@ -576,7 +572,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
 
     xlsxReportHandler = (currentScan:boolean) => {
-        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, currentScan);
+        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, currentScan, this.state.storedScanCount);
     }
 
     // START - New multi-scan report functions

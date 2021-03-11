@@ -36,6 +36,7 @@ export default class MultiScanData {
 
         var report = xlsx_props.report;
         var tab_url = xlsx_props.tabURL;
+        var tab_title = xlsx_props.tabTitle;
         const engine_end_point = process.env.engineEndpoint;
         const rule_map = this.id_rule_map(xlsx_props);
         const rule_checkpoints_map = this.ruleId_checkpoints_map(xlsx_props);
@@ -65,11 +66,12 @@ export default class MultiScanData {
             }
 
             var row = [
+                tab_title,
                 tab_url,
                 this.format_date(report.timestamp),
                 stringHash(item.ruleId + item.path.dom),
                 valueMap[item.value[0]][item.value[1]],
-                rule_map.get(item.ruleId).toolkitLevel,
+                parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
                 this.checkpoints_string(rule_checkpoints_map, item.ruleId),
                 this.wcag_string(rule_checkpoints_map, item.ruleId),
                 item.ruleId,

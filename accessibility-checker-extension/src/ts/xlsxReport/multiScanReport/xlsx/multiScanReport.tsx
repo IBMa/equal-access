@@ -22,10 +22,10 @@ import ExcelJS from 'exceljs'
 
 export default class MultiScanReport {
 
-    public static async multiScanXlsxDownload(storedScans: any, currentScan:boolean) {
+    public static async multiScanXlsxDownload(storedScans: any, currentScan:boolean, storedScanCount: number) {
 
         // create workbook
-        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, currentScan);
+        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, currentScan, storedScanCount);
         
         // create binary buffer
         const buffer = await reportWorkbook.xlsx.writeBuffer();
@@ -38,28 +38,31 @@ export default class MultiScanReport {
         // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
 
+        // if scanStorage false clear/delete current scan
+
+
         // download file
         ReportUtil.download_file(blob, fileName);
     }
 
-    public static createReportWorkbook(storedScans: any, currentScan: boolean) {
+    public static createReportWorkbook(storedScans: any, currentScan: boolean, storedScanCount: number) {
         console.log("createReportWorkbook");
         // create workbook
         // @ts-ignore
         const workbook = new ExcelJS.Workbook({useStyles: true });
             
         // create worksheets
-        this.createOverviewSheet(storedScans, currentScan, workbook);
+        this.createOverviewSheet(storedScans, currentScan, storedScanCount, workbook);
         this.createScanSummarySheet(storedScans, currentScan, workbook);
-        this.createIssueSummarySheet(storedScans, workbook);
-        this.createIssuesSheet(storedScans, workbook);
+        this.createIssueSummarySheet(storedScans, currentScan, workbook);
+        this.createIssuesSheet(storedScans, currentScan, workbook);
         this.createDefinitionsSheet(storedScans, workbook);
 
         return workbook;
     }
 
     
-    public static createOverviewSheet(storedScans: any, currentScan: boolean, workbook: any) {
+    public static createOverviewSheet(storedScans: any, currentScan: boolean, storedScanCount: number, workbook: any) {
         console.log("createOverviewSheet");
 
         let violations = 0;
@@ -126,8 +129,8 @@ export default class MultiScanReport {
             {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
             {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
             {key1: 'Platform:', key2: ""},
-            {key1: 'Scans:', key2: 1},
-            {key1: 'Pages:', key2: 1}
+            {key1: 'Scans:', key2: storedScanCount},
+            {key1: 'Pages:', key2: ""}
         ];
         
         worksheet.mergeCells('B2', "D2");
@@ -217,7 +220,7 @@ export default class MultiScanReport {
         worksheet.getRow(1).height = 39; // actual height is 52
 
         const colWidthData = [
-            {col: 'A', width: '17.0'},
+            {col: 'A', width: '27.0'},
             {col: 'B', width: '46.0'},
             {col: 'C', width: '20.17'},
             {col: 'D', width: '18.5'},
@@ -305,21 +308,127 @@ export default class MultiScanReport {
                 }
             }
         }
-
-
-
     }
 
-    public static createIssueSummarySheet(storedScans: any, workbook: any) {
+    public static createIssueSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
         console.log("createIssueSummarySheet");
 
         const worksheet = workbook.addWorksheet("Issue summary");
     }
 
-    public static createIssuesSheet(storedScans: any, workbook: any) {
+    public static createIssuesSheet(storedScans: any, currentScan: boolean, workbook: any) {
         console.log("createIssueSheet");
 
         const worksheet = workbook.addWorksheet("Issues");
+
+        // build rows
+
+        for (let i = 0; i < storedScans.length; i++) {
+
+        }
+            
+
+        const myStoredData = JSON.parse(localStorage.getItem("scan1Data")!);
+        console.log(myStoredData.length);
+        console.log(myStoredData);
+        let rowArray = [];
+        for (let i=0; i<myStoredData.length;i++) {
+            let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
+                       myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
+                       myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                       myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
+                       myStoredData[i][12], myStoredData[i][13] 
+                    ];
+            rowArray.push(row);
+        }
+
+        
+        
+
+        // column widths
+        const colWidthData = [
+            {col: 'A', width: '18.0', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'B', width: '20.5', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'C', width: '21.0', alignment: { vertical: "middle", horizontal: "center"}},
+            {col: 'D', width: '18.5', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'E', width: '17.0', alignment: { vertical: "middle", horizontal: "center"}},
+            {col: 'F', width: '17.17', alignment: { vertical: "middle", horizontal: "center"}},
+            {col: 'G', width: '17.17', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'H', width: '17.17', alignment: { vertical: "middle", horizontal: "center"}},
+            {col: 'I', width: '17.17', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'J', width: '17.17', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'K', width: '14.00', alignment: { vertical: "middle", horizontal: "center"}},
+            {col: 'L', width: '17.17', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'M', width: '43.00', alignment: { vertical: "middle", horizontal: "left"}},
+            {col: 'N', width: '17.17', alignment: { vertical: "middle", horizontal: "fill"}},
+        ]
+
+        for (let i=0; i<14; i++) {
+            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
+            worksheet.getColumn(colWidthData[i].col).alignment = colWidthData[i].alignment;
+        }
+
+        // set font and alignment for the header cells
+        for (let i=1; i<15; i++) {
+            worksheet.getRow(1).getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+            worksheet.getRow(1).getCell(i).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            worksheet.getRow(1).getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+            worksheet.getRow(1).getCell(i).border = {
+                top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            }
+        }
+
+        // height for header row
+        worksheet.getRow(1).height = 24;
+
+        // add table to a sheet
+        worksheet.addTable({
+            name: 'MyTable',
+            ref: 'A1',
+            headerRow: true,
+            // totalsRow: true,
+            style: {
+                theme: 'TableStyleMedium2',
+                showRowStripes: true,
+            },
+            columns: [
+                {name: 'Page title', filterButton: true},
+                {name: 'Page URL', filterButton: true},
+                {name: 'Scan label', filterButton: true},
+                {name: 'Issue ID', filterButton: true},
+                {name: 'Issue type', filterButton: true},
+                {name: 'Toolkit level', filterButton: true},
+                {name: 'Checkpoint', filterButton: true},
+                {name: 'WCAG level', filterButton: true},
+                {name: 'Rule', filterButton: true},
+                {name: 'Issue', filterButton: true},
+                {name: 'Element', filterButton: true},
+                {name: 'Code', filterButton: true},
+                {name: 'Xpath', filterButton: true},
+                {name: 'Help', filterButton: true},
+                
+            ],
+            rows: rowArray
+        });
+
+        console.log(worksheet.getRow(2).getCell(1).value);
+
+        for (let i=2; i<=rowArray.length+1; i++) {
+            console.log("i = ", i);
+            worksheet.getRow(i).height = 14;
+            for (let j=1; j<=14; j++) {
+                console.log("j = ", j);
+                worksheet.getRow(i).getCell(j).border = {
+                    top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                    right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                }
+            }
+        }
     }
 
     public static createDefinitionsSheet(storedScans: any, workbook: any) {
