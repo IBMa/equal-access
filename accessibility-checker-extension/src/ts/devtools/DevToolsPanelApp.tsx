@@ -437,27 +437,31 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
         // get only data needed for multi-scan report
         const scanData = MultiScanData.issues_sheet_rows(xlsx_props); 
-        // local storage can only store strings so stringify
-        let currentScanData = JSON.stringify(scanData);
 
-        console.log("storage space for currentScanData = ", currentScanData.length);
+        // ***** NOT USING LOCAL STORAGE *****
+        // console.log("scanData = ",scanData);
+        // local storage can only store strings so stringify
+        // let currentScanData = JSON.stringify(scanData);
+        // console.log("currentScanData = ",currentScanData);
+
+        // console.log("storage space for currentScanData = ", currentScanData.length);
 
         // Note: here is where the scan is stored so check to see if can be stored
         //       if not turn off state scanStorage, present message that must clear scans
         //       also if they try to turn state scanStorage, again provide message that
         //       must clear scans before can store scans
-        try {
-            localStorage.setItem("scan" + this.state.storedScanCount +"Data", currentScanData); 
-        } catch (e) {
-            if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
-                || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
-                alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
-            }
-        }
+        // try {
+        //     localStorage.setItem("scan" + this.state.storedScanCount +"Data", currentScanData); 
+        // } catch (e) {
+        //     if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
+        //         || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
+        //         alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
+        //     }
+        // }
 
-        this.setState(prevState => {
-            return {storedScanData: prevState.storedScanData + currentScanData.length}
-        });
+        // this.setState(prevState => {
+        //     return {storedScanData: prevState.storedScanData + currentScanData.length}
+        // });
 
         
 
@@ -477,7 +481,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             elementsNoViolations: element_no_violations,
             elementsNoFailures: element_no_failures,
             storedScan: "scan" + this.state.storedScanCount,
-            storedScanData: "scan" + this.state.storedScanCount + "Data",
+            storedScanData: scanData,
         };
 
         // Array of stored scans these scans are stored in state memory
@@ -485,15 +489,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
-        console.log("storedScans = ", this.state.storedScans);
-
-        console.log("Total storedScanData = ", this.state.storedScanData);
+        // console.log("storedScans = ", this.state.storedScans);
     }
 
     clearStoredScans = () => {
         this.setState({ storedScanCount: 0 }); // reset scan counter
+        this.setState({storedScans: []})
         console.log("Clear stored scans");
-        window.localStorage.clear();
+        // window.localStorage.clear(); // not using local storage
+        this.startScan();
     };
 
     getArchives = async () => {
@@ -775,6 +779,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             layout={this.props.layout}
                             counts={this.state.report && this.state.report.counts}
                             scanStorage={this.state.scanStorage}
+                            storedScans={this.state.storedScans}
                             startScan={this.startScan.bind(this)}
                             clearStoredScans={this.clearStoredScans.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
@@ -833,6 +838,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
                         scanStorage={this.state.scanStorage}
+                        storedScans={this.state.storedScans}
                         startScan={this.startScan.bind(this)}
                         clearStoredScans={this.clearStoredScans.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}

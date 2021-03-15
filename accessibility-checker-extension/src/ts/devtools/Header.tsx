@@ -22,7 +22,7 @@ import {
     Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { Reset16, ReportData16, Renew16 } from '@carbon/icons-react';
+import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
@@ -48,6 +48,23 @@ interface IHeaderProps {
         "filtered": { [key: string]: number }
     } | null,
     dataFromParent: boolean[],
+    storedScans: {
+        url: string;
+        pageTitle: string;
+        dateTime: number | undefined;
+        scanLabel: string;
+        userScanLabel: string;
+        ruleSet: any;
+        guidelines: any;
+        reportDate: Date;
+        violations: any;
+        needsReviews: any;
+        recommendations: any;
+        elementsNoViolations: number;
+        elementsNoFailures: number;
+        storedScan: string;
+        storedScanData: string
+    }[],
     scanning: boolean,
     scanStorage: boolean,
     archives: IArchiveDefinition[] | null,
@@ -158,33 +175,42 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
             {/* Content for Checker Tab */}
-            {console.log("this.props.scanStorage = ",this.props.scanStorage)}
+            {console.log("this.props.storedScans === undefined: ", this.props.storedScans === undefined)}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         <OverflowMenu 
-                            style={{height:"32px",marginLeft:"8px"}} 
-                            renderIcon={ReportData16}
-                            ariaLabel="Report menu"
-                            // disabled={false} // disabled before first scan?
+                            className="rendered-icon svg"
+                            style={{backgroundColor: "black", height:"32px", width:"32px"}} 
+                            renderIcon={ChevronDown16}
+                            ariaLabel="Report menu" 
+                            // size="xl"
                             id="reportMenu"
                             
                         >
-                            <OverflowMenuItem 
-                                itemText="Current scan report" 
+                            <OverflowMenuItem
+                                style={{width:"300px"}} 
+                                
+                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                itemText="Export current scan" 
                                 onClick={() => this.props.reportHandler(true)}
                             />
                             <OverflowMenuItem 
+                                style={{width:"300px"}}
                                 itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
                                 onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem 
+                                style={{width:"300px"}}
+                                disabled={this.props.storedScans.length == 0 ? true : false}
                                 itemText="Clear stored scans" 
                                 onClick={() => this.props.clearStoredScans() }
                             />
                             <OverflowMenuItem 
-                                itemText="Multi-scan report" 
+                                style={{width:"300px"}}
+                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                itemText="Export stored scans" 
                                 onClick={() => this.props.reportHandler(false)}
                             />
                         </OverflowMenu>
@@ -205,11 +231,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-2" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}>
 
                     </div>
 
-                    <div className="bx--col-md-1" style={{paddingRight:0}}>
+                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}>
                         {/* <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <Button
                                 disabled={!this.props.counts}
@@ -242,7 +268,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div> */}
                     </div>
 
-                    <div className="bx--col-md-3">
+                    <div className="bx--col-md-3 bx--col-sm-2">
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px"}}

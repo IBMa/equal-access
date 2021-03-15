@@ -33,7 +33,6 @@ export default class MultiScanReport {
         // create xlsx blob
         const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         const blob = new Blob([buffer], {type: fileType});
-        console.log("blob = ", blob);
 
         // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
@@ -129,7 +128,7 @@ export default class MultiScanReport {
             {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
             {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
             {key1: 'Platform:', key2: ""},
-            {key1: 'Scans:', key2: storedScanCount},
+            {key1: 'Scans:', key2: currentScan ? 1 : storedScanCount},
             {key1: 'Pages:', key2: ""}
         ];
         
@@ -212,7 +211,7 @@ export default class MultiScanReport {
     }
 
     public static createScanSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
-        console.log("createOverviewSheet");
+        console.log("createScanSummarySheet");
 
         const worksheet = workbook.addWorksheet("Scan summary");
 
@@ -275,28 +274,26 @@ export default class MultiScanReport {
         }
 
         // if current scan use only the last scan otherwise loop through each scan an create row
-        console.log("storedScans = ", storedScans.length);
-        
-        for (let i = 0; i < storedScans.length; i++) {
+        console.log("storedScans.length = ", storedScans.length);
+        let j = currentScan ? storedScans.length - 1 : 0;
+        for (j; j < storedScans.length; j++) {
             let row = worksheet.addRow(
-                [storedScans[i].pageTitle, 
-                 storedScans[i].url, 
-                 storedScans[i].userScanLabel, 
+                [storedScans[j].pageTitle, 
+                 storedScans[j].url, 
+                 storedScans[j].userScanLabel, 
                  "none", 
-                 storedScans[i].violations,
-                 storedScans[i].needsReviews,
-                 storedScans[i].recommendations,
-                 storedScans[i].elementsNoViolations,
-                 storedScans[i].elementsNoFailures
+                 storedScans[j].violations,
+                 storedScans[j].needsReviews,
+                 storedScans[j].recommendations,
+                 storedScans[j].elementsNoViolations,
+                 storedScans[j].elementsNoFailures
             ]);
             row.height = 37; // actual height is
             for (let i = 1; i < 5; i++) {
-                console.log("i = ", i);
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
             }
             for (let i = 5; i < 10; i++) {
-                console.log("i = ", i);
                 row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
                 row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
                 row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
@@ -317,33 +314,26 @@ export default class MultiScanReport {
     }
 
     public static createIssuesSheet(storedScans: any, currentScan: boolean, workbook: any) {
-        console.log("createIssueSheet");
+        console.log("createIssuesSheet");
 
         const worksheet = workbook.addWorksheet("Issues");
 
         // build rows
-
-        for (let i = 0; i < storedScans.length; i++) {
-
-        }
-            
-
-        const myStoredData = JSON.parse(localStorage.getItem("scan1Data")!);
-        console.log(myStoredData.length);
-        console.log(myStoredData);
         let rowArray = [];
-        for (let i=0; i<myStoredData.length;i++) {
-            let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
-                       myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
-                       myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
-                       myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
-                       myStoredData[i][12], myStoredData[i][13] 
-                    ];
-            rowArray.push(row);
+        let j = currentScan ? storedScans.length - 1 : 0;
+        for (j; j < storedScans.length; j++) {
+            const myStoredData = storedScans[j].storedScanData;
+            
+            for (let i=0; i<myStoredData.length;i++) {
+                let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
+                           myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
+                           myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                           myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
+                           myStoredData[i][12], myStoredData[i][13] 
+                        ];
+                rowArray.push(row);
+            }
         }
-
-        
-        
 
         // column widths
         const colWidthData = [
@@ -414,13 +404,9 @@ export default class MultiScanReport {
             rows: rowArray
         });
 
-        console.log(worksheet.getRow(2).getCell(1).value);
-
         for (let i=2; i<=rowArray.length+1; i++) {
-            console.log("i = ", i);
             worksheet.getRow(i).height = 14;
             for (let j=1; j<=14; j++) {
-                console.log("j = ", j);
                 worksheet.getRow(i).getCell(j).border = {
                     top: {style:'thin', color: {argb: 'FFA6A6A6'}},
                     left: {style:'thin', color: {argb: 'FFA6A6A6'}},

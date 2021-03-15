@@ -45,6 +45,10 @@ $feature-flags: (
         }
     }
 
+    .rendered-icon svg {
+        fill: white;
+    }
+
     .headerTools {
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
