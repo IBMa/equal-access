@@ -310,7 +310,262 @@ export default class MultiScanReport {
     public static createIssueSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
         console.log("createIssueSummarySheet");
 
+        let violations = 0;
+        let needsReviews = 0;
+        let recommendations = 0;
+        let totalIssues = 0;
+
+        // question 1: is report for current scans or all available scans?
+        const theCurrentScan = storedScans[storedScans.length - 1];
+
+        if (currentScan === true) {
+            violations = theCurrentScan.violations;
+            needsReviews = theCurrentScan.needsReviews;
+            recommendations = theCurrentScan.recommendations;
+            totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
+        } else {
+            for (let i=0; i < storedScans.length; i++) {
+                violations += storedScans[i].violations;
+                needsReviews += storedScans[i].needsReviews;
+                recommendations += storedScans[i].recommendations;
+            }
+            totalIssues = violations+needsReviews+recommendations;
+        }
+
+        // counts
+        let level1Counts = [0,0,0,0]; // level 1 total issues, violations, needs reviews, recommendations
+        let level2Counts = [0,0,0,0];
+        let level3Counts = [0,0,0,0];
+        let level4Counts = [0,0,0,0];
+        let level1V = []; let level2V = []; let level3V = []; let level4V = [];
+        let level1NR = []; let level2NR = []; let level3NR = []; let level4NR = [];
+        let level1R = []; let level2R = []; let level3R = []; let level4R = [];
+        let j = currentScan ? storedScans.length - 1 : 0;
+        for (j; j < storedScans.length; j++) { // for each scan
+            const myStoredData = storedScans[j].storedScanData;
+            
+            for (let i=0; i<myStoredData.length;i++) { // for each issue row
+                if (myStoredData[i][5] == 1) { // if level 1
+                    level1Counts[0]++;
+                    if (myStoredData[i][4] === "Violation") {
+                        level1Counts[1]++;
+                        level1V.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Needs review") {
+                        level1Counts[2]++;
+                        level1NR.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Recommendation") {
+                        level1Counts[3]++;
+                        level1R.push(myStoredData[i][9]);
+                    }
+                }
+                if (myStoredData[i][5] == 2) { // if level 1
+                    level2Counts[0]++;
+                    if (myStoredData[i][4] === "Violation") {
+                        level2Counts[1]++;
+                        level2V.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Needs review") {
+                        level2Counts[2]++;
+                        level2NR.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Recommendation") {
+                        level2Counts[3]++;
+                        level2R.push(myStoredData[i][9]);
+                    }
+                }
+                if (myStoredData[i][5] == 3) { // if level 1
+                    level3Counts[0]++;
+                    if (myStoredData[i][4] === "Violation") {
+                        level3Counts[1]++;
+                        level3V.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Needs review") {
+                        level3Counts[2]++;
+                        level3NR.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Recommendation") {
+                        level3Counts[3]++;
+                        level3R.push(myStoredData[i][9]);
+                    }
+                }
+                if (myStoredData[i][5] == 1) { // if level 1
+                    level4Counts[0]++;
+                    if (myStoredData[i][4] === "Violation") {
+                        level4Counts[1]++;
+                        level4V.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Needs review") {
+                        level4Counts[2]++;
+                        level4NR.push(myStoredData[i][9]);
+                    }
+                    if (myStoredData[i][4] === "Recommendation") {
+                        level4Counts[3]++;
+                        level4R.push(myStoredData[i][9]);
+                    }
+                }
+                
+            }
+        }
+        // @ts-ignore
+        let level1VrowValues: { [index: string]:any } = this.countDuplicatesInArray(level1V); // note this returns an object
+        console.log("level1VrowValues = ",level1VrowValues);
+        
+         // @ts-ignore
+        let level1NRrowValues = this.countDuplicatesInArray(level1NR);
+        console.log("level1NRrowValues = ",level1NRrowValues);
+
+        // Unique issue arrays
+        // let level1Vunique = Array.from(new Set(level1V)); let level1NRunique = Array.from(new Set(level1NR)); let level1Runique = Array.from(new Set(level1R));
+        // let level2Vunique = Array.from(new Set(level1V)); let level2NRunique = Array.from(new Set(level1NR)); let level2Runique = Array.from(new Set(level1R));
+        // let level3Vunique = Array.from(new Set(level1V)); let level3NRunique = Array.from(new Set(level1NR)); let level3Runique = Array.from(new Set(level1R));
+        // let level4Vunique = Array.from(new Set(level1V)); let level4NRunique = Array.from(new Set(level1NR)); let level4Runique = Array.from(new Set(level1R));
+
+        // issue counts
+
+
+
+
         const worksheet = workbook.addWorksheet("Issue summary");
+
+        // Approach:
+        // 1. sort by levels
+        // 2. for each level sort by V, NR and R
+        // 3. for each V, NR, and R in a level get issue dup counts
+        // 4. build the rows
+
+        // build Issue summary title
+        worksheet.mergeCells('A1', "B1");
+
+        const titleRow = worksheet.getRow(1);
+        titleRow.height = "27"; // actual is 36
+
+        const cellA1 = worksheet.getCell('A1');
+        cellA1.value = "Issue summary";
+        cellA1.alignment = { vertical: "middle", horizontal: "left"};
+        cellA1.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        cellA1.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        const colWidthData = [
+            {col: 'A', width: '155.51'}, // note .84 added to actual width
+            {col: 'B', width: '21.16'},
+        ]
+
+        for (let i=0; i<2; i++) {
+            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
+        }
+
+        // build Description title
+        worksheet.mergeCells('A2', "B2");
+
+        const descriptionRow = worksheet.getRow(2);
+        descriptionRow.height = "20.25"; // actual is 27
+
+        const cellA2 = worksheet.getCell("A2");
+        cellA2.value = "     In the IBM Equal Access Toolkit, issues are divided into three levels (1-3). Tackle the levels in order to address some of the most impactful issues first.";
+        cellA2.alignment = { vertical: "middle", horizontal: "left"};
+        cellA2.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+        cellA2.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
+
+        
+
+
+        // build Total issues found: title
+        // worksheet.mergeCells('A3', "B3");
+
+        const totalIssuesRow = worksheet.getRow(3);
+        totalIssuesRow.height = "27"; // actual is 36
+
+        const cellA3 = worksheet.getCell("A3");
+        cellA3.value = "Total issues found:";
+        cellA3.alignment = { vertical: "middle", horizontal: "left"};
+        cellA3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        cellA3.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+
+        const cellB3 = worksheet.getCell("B3");
+        cellB3.value = totalIssues;
+        cellB3.alignment = { vertical: "middle", horizontal: "right"};
+        cellB3.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        cellB3.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+
+        // build Number of issues title
+        const numberOfIssuesRow = worksheet.getRow(4);
+        numberOfIssuesRow.height = "20.25"; // actual is 27
+
+        const cellA4 = worksheet.getCell("A4");
+        // no value
+        cellA4.alignment = { vertical: "middle", horizontal: "left"};
+        
+        const cellB4 = worksheet.getCell("B4");
+        cellB4.value = "Number of issues";
+        cellB4.alignment = { vertical: "middle", horizontal: "right"};
+        cellB4.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+
+        // build Level 1 title
+        const level1Row = worksheet.getRow(5);
+        level1Row.height = "27"; // actual is 36
+
+        const cellA5 = worksheet.getCell("A5");
+        cellA5.value = "Level 1 - the most essential issues to address";
+        cellA5.alignment = { vertical: "middle", horizontal: "left"};
+        cellA5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        cellA5.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        const cellB5 = worksheet.getCell("B5");
+        cellB5.value = level1Counts[0]; // total Level 1 issues
+        cellB5.alignment = { vertical: "middle", horizontal: "right"};
+        cellB5.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        cellB5.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+        
+        //       Level 1 Violation title
+        const level1ViolationRow = worksheet.getRow(6);
+        level1ViolationRow.height = "18"; // target is 21
+
+        const cellA6 = worksheet.getCell("A6");
+        cellA6.value = "     Violation";
+        cellA6.alignment = { vertical: "middle", horizontal: "left"};
+        cellA6.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        cellA6.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+
+        const cellB6 = worksheet.getCell("B6");
+        cellB6.value = level1Counts[1]; // total level 1 violations
+        cellB6.alignment = { vertical: "middle", horizontal: "right"};
+        cellB6.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        cellB6.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+
+        // Level 1 Violation Rows
+
+        // build rows
+        let rowArray = [];
+            
+        for (const property in level1VrowValues) {
+            let row = [`${property}`,`${level1VrowValues[property]}` 
+                    ];
+            rowArray.push(row);
+        }
+       
+        console.log("Violation Rows rowArray = ",rowArray);
+
+
+
+        //       Level 1 Needs review title
+        //       Level 1 Recommendation title
+
+        // build Level 2 title
+        //       Level 2 Violation title
+        //       Level 2 Needs review title
+        //       Level 2 Recommendation title
+
+        // build Level 3 title
+        //       Level 3 Violation title
+        //       Level 3 Needs review title
+        //       Level 3 Recommendation title
+
+        // build Level 4 title
+        //       Level 4 Violation title
+        //       Level 4 Needs review title
+        //       Level 4 Recommendation title
     }
 
     public static createIssuesSheet(storedScans: any, currentScan: boolean, workbook: any) {
@@ -422,4 +677,24 @@ export default class MultiScanReport {
 
         const worksheet = workbook.addWorksheet("Definition of fields");
     }
+
+    public static countDuplicatesInArray(array: []) {
+        let count = {};
+        // let result = [];
+        
+        array.forEach(item => {
+            
+            if (count[item]) {
+                //@ts-ignore
+                count[item] +=1
+                console.log("count[item] = ",count[item]);
+                return
+            }
+            //@ts-ignore
+            count[item] = 1;
+            console.log("count[item] = ",count[item]);
+        })
+        
+        return count;
+    }   
 }
