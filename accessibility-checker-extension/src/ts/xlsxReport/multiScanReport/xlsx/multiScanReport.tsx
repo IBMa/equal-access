@@ -360,7 +360,7 @@ export default class MultiScanReport {
                         level1R.push(myStoredData[i][9]);
                     }
                 }
-                if (myStoredData[i][5] == 2) { // if level 1
+                if (myStoredData[i][5] == 2) { // if level 2
                     level2Counts[0]++;
                     if (myStoredData[i][4] === "Violation") {
                         level2Counts[1]++;
@@ -375,7 +375,7 @@ export default class MultiScanReport {
                         level2R.push(myStoredData[i][9]);
                     }
                 }
-                if (myStoredData[i][5] == 3) { // if level 1
+                if (myStoredData[i][5] == 3) { // if level 3
                     level3Counts[0]++;
                     if (myStoredData[i][4] === "Violation") {
                         level3Counts[1]++;
@@ -390,7 +390,7 @@ export default class MultiScanReport {
                         level3R.push(myStoredData[i][9]);
                     }
                 }
-                if (myStoredData[i][5] == 1) { // if level 1
+                if (myStoredData[i][5] == 4) { // if level 4
                     level4Counts[0]++;
                     if (myStoredData[i][4] === "Violation") {
                         level4Counts[1]++;
@@ -421,6 +421,21 @@ export default class MultiScanReport {
         let level2NRrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level2NR);
         // @ts-ignore
         let level2RrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level2R);
+
+        // @ts-ignore
+        let level3VrowValues: { [index: string]:any } = this.countDuplicatesInArray(level3V); // note this returns an object
+        // @ts-ignore
+        let level3NRrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level3NR);
+        // @ts-ignore
+        let level3RrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level3R);
+
+        // @ts-ignore
+        let level4VrowValues: { [index: string]:any } = this.countDuplicatesInArray(level4V); // note this returns an object
+        // @ts-ignore
+        let level4NRrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level4NR);
+        // @ts-ignore
+        let level4RrowValues: { [index: string]:any }  = this.countDuplicatesInArray(level4R);
+
 
         
         const worksheet = workbook.addWorksheet("Issue summary");
@@ -539,12 +554,24 @@ export default class MultiScanReport {
         cellA6.alignment = { vertical: "middle", horizontal: "left"};
         cellA6.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         cellA6.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1ViolationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         const cellB6 = worksheet.getCell("B6");
         cellB6.value = level1Counts[1]; // total level 1 violations
         cellB6.alignment = { vertical: "middle", horizontal: "right"};
         cellB6.font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         cellB6.fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1ViolationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         // Level 1 Violation Rows
 
@@ -596,11 +623,23 @@ export default class MultiScanReport {
         level1NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level1NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level1NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1NeedsReviewRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         level1NeedsReviewRow.getCell(2).value = level1Counts[2]; // total level 1 needs review
         level1NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
         level1NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level1NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1NeedsReviewRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         // Level 1 Needs review Rows
 
@@ -653,11 +692,23 @@ export default class MultiScanReport {
         level1RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level1RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level1RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1RecommendationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         level1RecommendationRow.getCell(2).value = level1Counts[3]; // total level 1 recommendations
         level1RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
         level1RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level1RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level1RecommendationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         
         // Level 1 Recommendation Rows
@@ -729,11 +780,23 @@ export default class MultiScanReport {
         level2ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level2ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2ViolationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         level2ViolationRow.getCell(2).value = level2Counts[1]; // total level 2 violations
         level2ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
         level2ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2ViolationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         // Level 2 Violation Rows
 
@@ -785,11 +848,23 @@ export default class MultiScanReport {
         level2NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level2NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2NeedsReviewRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         level2NeedsReviewRow.getCell(2).value = level2Counts[2]; // total level 2 needs review
         level2NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
         level2NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2NeedsReviewRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         // Level 2 Needs review Rows
 
@@ -842,11 +917,23 @@ export default class MultiScanReport {
         level2RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level2RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2RecommendationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         level2RecommendationRow.getCell(2).value = level2Counts[3]; // total level 2 recommendations
         level2RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
         level2RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
         level2RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level2RecommendationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
 
         // Level 2 Recommendation Rows
 
@@ -890,16 +977,454 @@ export default class MultiScanReport {
                                         right: {style:'thin', color: {argb: 'FFA6A6A6'}}
                                     };
         });
-
+        
+        /////////////////////////////
         // build Level 3 title
-        //       Level 3 Violation title
-        //       Level 3 Needs review title
-        //       Level 3 Recommendation title
+        /////////////////////////////
 
+        const level3Row = worksheet.addRow(["",0]);
+        level3Row.height = "27"; // actual is 36
+
+        level3Row.getCell(1).value = "Level 3 - necessary to complete IBM requirements";
+        level3Row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level3Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        level3Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        level3Row.getCell(2).value = level3Counts[0]; // total Level 3 issues
+        level3Row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level3Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        level3Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+        
+        //       Level 3 Violation title
+        const level3ViolationRow = worksheet.addRow(["",0]);
+        level3ViolationRow.height = "18"; // target is 21
+
+        level3ViolationRow.getCell(1).value = "     Violation";
+        level3ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level3ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3ViolationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level3ViolationRow.getCell(2).value = level3Counts[1]; // total level 3 violations
+        level3ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level3ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3ViolationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 3 Violation Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level3VrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level3VrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+       
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+
+
+        // Level 3 Needs review title
+        const level3NeedsReviewRow = worksheet.addRow(["", 0]);
+        level3NeedsReviewRow.height = "18"; // target is 21
+
+        level3NeedsReviewRow.getCell(1).value = "     Needs review";
+        level3NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level3NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3NeedsReviewRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level3NeedsReviewRow.getCell(2).value = level3Counts[2]; // total level 3 needs review
+        level3NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level3NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3NeedsReviewRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 3 Needs review Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level3NRrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level3NRrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = [];
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+
+        // Level 3 Recommendation title
+        const level3RecommendationRow = worksheet.addRow(["", 0]);
+        level3RecommendationRow.height = "18"; // target is 21
+
+        level3RecommendationRow.getCell(1).value = "     Recommendation";
+        level3RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level3RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3RecommendationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level3RecommendationRow.getCell(2).value = level3Counts[3]; // total level 3 recommendations
+        level3RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level3RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level3RecommendationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 3 Recommendation Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level3RrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level3RrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = [];
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+
+        
+        /////////////////////////////
         // build Level 4 title
+        /////////////////////////////
+
+        const level4Row = worksheet.addRow(["",0]);
+        level4Row.height = "27"; // actual is 36
+
+        level4Row.getCell(1).value = "Level 4 - further recommended improvements to accessibility";
+        level4Row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level4Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        level4Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        level4Row.getCell(2).value = level4Counts[0]; // total Level 4 issues
+        level4Row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level4Row.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        level4Row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+        
         //       Level 4 Violation title
-        //       Level 4 Needs review title
-        //       Level 4 Recommendation title
+        const level4ViolationRow = worksheet.addRow(["",0]);
+        level4ViolationRow.height = "18"; // target is 21
+
+        level4ViolationRow.getCell(1).value = "     Violation";
+        level4ViolationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level4ViolationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4ViolationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4ViolationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level4ViolationRow.getCell(2).value = level4Counts[1]; // total level 4 violations
+        level4ViolationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level4ViolationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4ViolationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4ViolationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 4 Violation Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level4VrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level4VrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+       
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+
+
+        // Level 4 Needs review title
+        const level4NeedsReviewRow = worksheet.addRow(["", 0]);
+        level4NeedsReviewRow.height = "18"; // target is 21
+
+        level4NeedsReviewRow.getCell(1).value = "     Needs review";
+        level4NeedsReviewRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level4NeedsReviewRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4NeedsReviewRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4NeedsReviewRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level4NeedsReviewRow.getCell(2).value = level4Counts[2]; // total level 4 needs review
+        level4NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level4NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4NeedsReviewRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 4 Needs review Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level4NRrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level4NRrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = [];
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+
+        // Level 4 Recommendation title
+        const level4RecommendationRow = worksheet.addRow(["", 0]);
+        level4RecommendationRow.height = "18"; // target is 21
+
+        level4RecommendationRow.getCell(1).value = "     Recommendation";
+        level4RecommendationRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        level4RecommendationRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4RecommendationRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4RecommendationRow.getCell(1).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        level4RecommendationRow.getCell(2).value = level4Counts[3]; // total level 4 recommendations
+        level4RecommendationRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+        level4RecommendationRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4RecommendationRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
+        level4RecommendationRow.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // Level 4 Recommendation Rows
+
+        // build rows
+        rowArray = [];
+            
+        for (const property in level4RrowValues) {
+            let row = ["     "+`${property}`, parseInt(`${level4RrowValues[property]}`) 
+                    ];
+            rowArray.push(row);
+        }
+
+        // sort array according to count
+        rowArray.sort((a,b) => (a[1] < b[1]) ? 1 : -1);
+
+        // add array of rows
+
+        rows = [];
+
+        rows = worksheet.addRows(rowArray);
+
+        console.log("rows = ",rows);
+
+        rows.forEach((row:any) => {
+            row.height = 14;
+            row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+            row.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
+            row.font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+            row.getCell(1).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+            row.getCell(2).border = {
+                                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        // left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                                    };
+        });
+        
     }
 
     public static createIssuesSheet(storedScans: any, currentScan: boolean, workbook: any) {
