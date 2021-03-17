@@ -1535,6 +1535,148 @@ export default class MultiScanReport {
         console.log("createDefinitionsSheet");
 
         const worksheet = workbook.addWorksheet("Definition of fields");
+
+        // "Definition of fields" title
+        worksheet.mergeCells('A1', "B1");
+
+        const titleRow = worksheet.getRow(1);
+        titleRow.height = "36"; // actual is 48
+
+        titleRow.getCell(1).value = "Definition of fields";
+        titleRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        titleRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "20" };
+        titleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        const colWidthData = [
+            {col: 'A', width: '41.51'}, // note .84 added to actual width
+            {col: 'B', width: '119.51'},
+        ]
+
+        for (let i=0; i<2; i++) {
+            worksheet.getColumn(colWidthData[i].col).width = colWidthData[i].width;
+        }
+
+        // blank row
+        worksheet.mergeCells('A2', "B2");
+        const blankRow = worksheet.getRow(2);
+        blankRow.height = "12"; // actual is 16
+
+        // "Scan summary and Issue summary" title
+        worksheet.mergeCells('A3', "B3");
+
+        const summaryRow = worksheet.getRow(3);
+        summaryRow.height = "20"; // actual is 26.75
+
+        summaryRow.getCell(1).value = "Scan summary and Issue summary";
+        summaryRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        summaryRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        summaryRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        // row 4 Field / Definition
+        const row4 = worksheet.getRow(4);
+        row4.height = "16"; // actual is 
+
+        row4.getCell(1).value = "Field";
+        row4.getCell(2).value = "Definition";
+        row4.getCell(1).alignment = row4.getCell(2).alignment = { vertical: "middle", horizontal: "left"};
+        row4.getCell(1).font = row4.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "16" };
+        row4.getCell(1).fill = row4.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
+        row4.getCell(1).border = row4.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // rows 5-13
+        
+        // set row height for rows 5-13
+        for (let i=5; i<14; i++) {
+            worksheet.getRow(i).height = 12; // results in a row height of 16
+        }
+
+        let rowData = [
+            {key1: 'Page', key2: 'Identifies the page or html file that was scanned.'},
+            {key1: 'Scan label', key2: 'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.'},
+            {key1: 'Base scan', key2: 'Scan label for a previous scan against which this scan was compared. Only new issues are reported when a base scan is used.'},
+            {key1: 'Violations', key2: 'Accessibility failures that need to be corrected.'},
+            {key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.'}, 
+            {key1: 'Recommendations', key2: 'Opportunities to apply best practices to further improve accessibility.'},
+            {key1: '% elements without violations', key2: 'Percentage of elements on the page that had no violations found.'},
+            {key1: '% elements without violations or items to review', key2: 'Percentage of elements on the page that had no violations found and no items to review.'},
+            {key1: 'Level 1,2,3', key2: 'Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details.'}
+        ];
+
+        for (let i=5; i<14; i++) {
+            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left"};
+            
+        }
+        for (let i=5; i<14; i++) {
+            worksheet.getRow(i).getCell(1).value = rowData[i-5].key1; worksheet.getRow(i).getCell(2).value = rowData[i-5].key2;
+        }
+
+        // "Scan summary and Issue summary" title
+        worksheet.mergeCells('A14', "B14");
+
+        const issuesRow = worksheet.getRow(14);
+        issuesRow.height = "20"; // actual is 26.75
+
+        issuesRow.getCell(1).value = "Issues";
+        issuesRow.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
+        issuesRow.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
+        issuesRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
+
+        // row 15 Field / Definition
+        const row15 = worksheet.getRow(15);
+        row15.height = "16"; // actual is 
+
+        row15.getCell(1).value = "Field";
+        row15.getCell(2).value = "Definition";
+        row15.getCell(1).alignment = row15.getCell(2).alignment = { vertical: "middle", horizontal: "left"};
+        row15.getCell(1).font = row15.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "16" };
+        row15.getCell(1).fill = row15.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFCCC0DA'} };
+        row15.getCell(1).border = row15.getCell(2).border = {
+            top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+            right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+        };
+
+        // rows 16-28
+        
+        // set row height for rows 16-28
+        for (let i=16; i<29; i++) {
+            worksheet.getRow(i).height = 12; // results in a row height of 16
+        }
+
+        rowData = [];
+
+        rowData = [
+            {key1: 'Page', key2: 'Identifies the page or html file that was scanned.'},
+            {key1: 'Scan label', key2: 'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.'},
+            {key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. '},
+            {key1: 'Issue type', key2: 'Violation, needs review, or recommendation'},
+            {key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details'}, 
+            {key1: 'Checkpoint', key2: 'Web Content Accessibility Guidelines (WCAG) checkpoints this issue falls into.'},
+            {key1: 'WCAG level', key2: 'A, AA or AAA. WCAG level for this issue.'},
+            {key1: 'Rule', key2: 'Name of the accessibility test rule that detected this issue.'},
+            {key1: 'Issue', key2: 'Message describing the issue.'},
+            {key1: 'Element', key2: 'Type of HTML element where the issue is found.'},
+            {key1: 'Code', key2: 'Actual HTML element where the issue is found.'},
+            {key1: 'Xpath', key2: 'Xpath of the HTML element where the issue is found.'},
+            {key1: 'Help', key2: 'Link to a more detailed description of the issue and suggested solutions.'},
+        ];
+
+        for (let i=16; i<29; i++) {
+            worksheet.getRow(i).getCell(1).font = worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            worksheet.getRow(i).getCell(1).alignment = worksheet.getRow(i).getCell(2).alignment = { horizontal: "left"};
+            
+        }
+        for (let i=16; i<29; i++) {
+            worksheet.getRow(i).getCell(1).value = rowData[i-16].key1; worksheet.getRow(i).getCell(2).value = rowData[i-16].key2;
+        }
+
     }
 
     public static countDuplicatesInArray(array: []) {
@@ -1546,14 +1688,11 @@ export default class MultiScanReport {
             if (count[item]) {
                 //@ts-ignore
                 count[item] +=1
-                console.log("count[item] = ",count[item]);
                 return
             }
             //@ts-ignore
             count[item] = 1;
-            console.log("count[item] = ",count[item]);
         })
-        
         return count;
     }   
 }
