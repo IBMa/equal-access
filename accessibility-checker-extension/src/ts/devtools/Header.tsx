@@ -38,7 +38,7 @@ interface IHeaderProps {
     layout: "main" | "sub",
     startScan: () => void,
     collapseAll: () => void,
-    clearStoredScans: () => void,
+    clearStoredScans: (fromMenu: boolean) => void,
     reportHandler: (currentScan: boolean) => void,
     xlsxReportHandler: (currentScan: boolean) => void,
     startStopScanStoring: () => void,
@@ -175,7 +175,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             </div>
             {/* Content for Checker Tab */}
-            {console.log("this.props.storedScans === undefined: ", this.props.storedScans === undefined)}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
@@ -187,29 +186,28 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             ariaLabel="Report menu" 
                             // size="xl"
                             id="reportMenu"
-                            
                         >
                             <OverflowMenuItem
                                 style={{width:"300px"}} 
-                                
                                 disabled={this.props.storedScans.length == 0 ? true : false}
                                 itemText="Export current scan" 
                                 onClick={() => this.props.reportHandler(true)}
                             />
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
-                                itemText= {!this.props.scanStorage ? "Start storing scans" : "Stop storing scans"}
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
                                 onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
-                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                disabled={this.props.storedScans.length == 0 || (this.props.storedScans.length == 1 && this.props.scanStorage === false) ? true : false}
                                 itemText="Clear stored scans" 
-                                onClick={() => this.props.clearStoredScans() }
+                                onClick={() => this.props.clearStoredScans(true) }
                             />
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
-                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                disabled={this.props.storedScans.length <= 1 ? true : false} // disabled when no stored scans or 1 stored scan
                                 itemText="Export stored scans" 
                                 onClick={() => this.props.reportHandler(false)}
                             />

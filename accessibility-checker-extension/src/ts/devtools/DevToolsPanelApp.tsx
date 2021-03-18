@@ -62,6 +62,8 @@ interface IPanelState {
     scanStorage: boolean, // true when scan storing on
     currentStoredScan: string,
     storedScans: {
+        actualStoredScan: boolean;  // this denotes an actual stored scan 
+                                    // vs a current scan that is kept when scans are not being stored
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -341,10 +343,38 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             this.setState({ scanning: false }); // scan done
-            // console.log("SCAN DONE");
+            console.log("SCAN DONE");
             
-            // Always store current scan
-            this.storeScan();
+            // Cases for storage
+            // Note: if scanStorage false not storing scans, if true storing scans
+            console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
+
+            if (this.state.storedScans.length == 0 && this.state.scanStorage === true) { // NO stored scans and storing scans
+                console.log("choice 1");
+                this.storeScan(); // stores first scan - which is both a current and stored scan
+            } else if (this.state.storedScans.length == 0 && this.state.scanStorage === false) { // NO stored scans and NOT storing scans
+                console.log("choice 2");
+                this.storeScan(); // stores first scan which is a current scan
+            } else if (this.state.storedScans.length == 1 && this.state.scanStorage === true) { // one stored scan and storing scans
+                console.log("choice 3");
+                if (this.state.storedScans[0].actualStoredScan === false) {
+                    this.clearStoredScans(false); // clears the current scan (not an actualStoredScan)
+                }
+                this.storeScan();
+            } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
+                console.log("choice 4");
+                this.clearStoredScans(false); // clears the current scan 
+                this.storeScan(); // add current scan
+            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
+                console.log("choice 5");
+                this.storeScan(); // add new current and stored scan
+            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === false) { // MULTIPLE stored scans and NOT storing scans
+                console.log("choice 6");
+                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                    this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
+                }
+                this.storeScan(); // add new current and stored scan
+            } 
            
             if (this.props.layout === "sub") {
                 if (this.state.firstScan === true && message.origin === this.props.layout) {
@@ -404,8 +434,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         return true;
     }
 
-    // store scans using local storage
-    // Current scan is always stored and on next scan
+    // START - New multi-scan report functions
+
     storeScan() {
         console.log("storeScan");
 
@@ -467,6 +497,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
+            actualStoredScan: this.state.scanStorage ? true : false,
             url: this.state.tabURL,
             pageTitle: this.state.tabTitle,
             dateTime: this.state.report?.timestamp,
@@ -489,16 +520,30 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
-        // console.log("storedScans = ", this.state.storedScans);
+        console.log("storedScans = ", this.state.storedScans);
     }
 
-    clearStoredScans = () => {
+    clearStoredScans = (fromMenu: boolean) => {
         this.setState({ storedScanCount: 0 }); // reset scan counter
-        this.setState({storedScans: []})
-        console.log("Clear stored scans");
+        this.setState({storedScans: []});
+        if (fromMenu === true) {
+            this.setState({scanStorage: false});
+        }
+        console.log("Clear stored scans with scanStorage = ", this.state.scanStorage);
         // window.localStorage.clear(); // not using local storage
-        this.startScan();
+        // await this.startScan();
     };
+    
+    startStopScanStoring = () => {
+        // flip scanStorage state each time function runs
+        if (this.state.scanStorage === true) {
+            this.setState({ scanStorage: false });
+        } else {
+            this.setState({ scanStorage: true });
+        }
+    }
+
+    // END - New multi-scan report functions
 
     getArchives = async () => {
         return await OptionMessaging.sendToBackground("OPTIONS", {
@@ -579,22 +624,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         MultiScanReport.multiScanXlsxDownload(this.state.storedScans, currentScan, this.state.storedScanCount);
     }
 
-    // START - New multi-scan report functions
     
-    startStopScanStoring = () => {
-        console.log("startStopScanStoring");
-        // flip scanStorage state each time function runs
-        console.log("this.state.scanStorage = ", this.state.scanStorage);
-        if (this.state.scanStorage === true) {
-            this.setState({ scanStorage: false });
-        } else {
-            this.setState({ scanStorage: true });
-        }
-    }
-
-
-
-    // END - New multi-scan report functions
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
