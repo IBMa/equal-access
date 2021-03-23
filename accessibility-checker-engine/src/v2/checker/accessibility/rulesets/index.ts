@@ -734,7 +734,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -1884,7 +1884,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -2979,7 +2979,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -4100,7 +4100,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
