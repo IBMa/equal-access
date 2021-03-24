@@ -97,6 +97,9 @@ async function processACConfig(ACConfig) {
     let ruleArchiveFile = `${ruleServer}/archives.json`;
     let ruleArchiveParse;
     try {
+        if (ACConfig.ignoreHTTPSErrors) {
+            process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
+        }
         ruleArchiveParse = await new Promise((resolve, reject) => {
             request.get(ruleArchiveFile, function (error, response, body) {
                 if (error) {

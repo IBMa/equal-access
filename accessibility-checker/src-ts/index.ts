@@ -31,14 +31,14 @@ import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, 
  *  Future Items
  *    Multiple node (Array of HTMLElements) ---> FUTURE
  *
- * @param {(String|HTMLElement|DocumentNode)} content - Provide the context to scan, which includes the items from above.
+ * @param {(String|HTMLElement|DocumentNode|Puppeteer Page |)} content - Provide the context to scan, which includes the items from above.
  * @param {String} label - Provide a label for the scan that is being performed
  * @param {Function} callback - (optional) Provide callback function which will be executed once the results are extracted.
  * @return Promise with the ICheckerResult
  */
-export function getCompliance(content: string | HTMLElement | HTMLDocument, 
+export function getCompliance(content: any, 
     label: string, 
-    callback: (report: ICheckerReport | ICheckerError, webdriver) => void) : void | Promise<ICheckerResult>
+    callback?: (report: ICheckerReport | ICheckerError, webdriver) => void) : Promise<ICheckerResult>
 {
     if (callback) {
         getComplianceHelper(content, label)

@@ -849,7 +849,7 @@ let a11yRulesAria: Rule[] = [{
         const ruleContext = context["dom"].node as Element;
 
         // An ARIA list is not interactive
-        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true })) {
+        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true })) {
             return null;
         }
 
