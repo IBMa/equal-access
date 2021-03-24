@@ -2041,6 +2041,13 @@ export class RPTUtil {
     public static hasInnerContentHidden(element) {
         return RPTUtil.hasInnerContentHiddenHyperLink(element, false);
     }
+
+    public static svgHasName(element: SVGElement) {
+        return RPTUtil.attributeNonEmpty(element, "aria-label") 
+            || RPTUtil.attributeNonEmpty(element, "aria-labelledby")
+            || !!element.querySelector(":scope > title");
+    }
+
     public static hasInnerContentHiddenHyperLink(element, hyperlink_flag) {
         if (!element) return false;
         // Variable Decleration
@@ -2062,7 +2069,8 @@ export class RPTUtil {
 
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
-                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node));
+                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node))
+                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node));
 
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
