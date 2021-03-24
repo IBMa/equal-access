@@ -1164,7 +1164,6 @@ let a11yHelpOld = {
     "HAAC_ActiveDescendantCheck": ["idhi_accessibility_check_g1186.html"],
     "HAAC_Application_Role_Text": ["idhi_accessibility_check_g1187.html"],
     "Rpt_Aria_MultipleToolbarUniqueLabel": ["idhi_accessibility_check_g1188.html"],
-    "HAAC_Combobox_ARIA_11_Guideline": ["idhi_accessibility_check_g1193.html"],
     "HAAC_Combobox_Must_Have_Text_Input": ["idhi_accessibility_check_g1194.html"],
     "HAAC_Combobox_DOM_Focus": ["idhi_accessibility_check_g1195.html"],
     "HAAC_Combobox_Autocomplete": ["idhi_accessibility_check_g1196.html"],
