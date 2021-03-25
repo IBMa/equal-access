@@ -1,3 +1,5 @@
+import Config from "../background/helper/config";
+
 /******************************************************************************
      Copyright:: 2020- IBM, Inc
 
@@ -13,15 +15,16 @@
     See the License for the specific language governing permissions and
     limitations under the License.
   *****************************************************************************/
+let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
 
-chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker",
+chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+localStr,
     function(sidebar) {
         //sidebar initialization code here
         sidebar.setPage("devtoolsSubpanel.html");
     }
 );
 
-chrome.devtools.panels.create("Accessibility Assessment", "", "devtoolsPanel.html", 
+chrome.devtools.panels.create("Accessibility Assessment"+localStr, "", "devtoolsPanel.html", 
     function(_sidebar) {
     }
 );
