@@ -16,6 +16,8 @@
 
 import React from "react";
 import Header from "./Header";
+import ReportManagerHeader from "./ReportManagerHeader";
+import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
 import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
@@ -62,8 +64,8 @@ interface IPanelState {
     scanStorage: boolean, // true when scan storing on
     currentStoredScan: string,
     storedScans: {
-        actualStoredScan: boolean;  // this denotes an actual stored scan 
-                                    // vs a current scan that is kept when scans are not being stored
+        actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
+        selectedInReportManager: boolean;
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -82,6 +84,7 @@ interface IPanelState {
     }[],
     storedScanCount: number, // number of scans stored
     storedScanData: number, // total amount of scan data stored in MB
+    reportManager: boolean, // true show report manager, false do not show
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -108,6 +111,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         storedScans: [],
         storedScanCount: 0,
         storedScanData: 0,
+        reportManager: false, // start with Report Manager not showing
         firstScan: true,
         scanStorage: false,
         currentStoredScan: "", // true if making report for current stored scan (clear on next scan if scanStorage false)
@@ -498,6 +502,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             actualStoredScan: this.state.scanStorage ? true : false,
+            selectedInReportManager: false,
             url: this.state.tabURL,
             pageTitle: this.state.tabTitle,
             dateTime: this.state.report?.timestamp,
@@ -533,6 +538,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // window.localStorage.clear(); // not using local storage
         // await this.startScan();
     };
+
+    actualStoredScansCount = () => {
+        let count = 0;
+        for (let scan in this.state.storedScans) {
+            if (this.state.storedScans[scan].actualStoredScan) {
+                count++;
+            }
+        }
+        return count;
+    }
     
     startStopScanStoring = () => {
         // flip scanStorage state each time function runs
@@ -573,6 +588,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.getCurrentSelectedElement();
     }
 
+    reportManagerHandler = () => {
+        this.setState({ reportManager: true});
+        this.reportHandler(false);
+    }
     
 
     reportHandler = async (currentScan:boolean) => {
@@ -771,6 +790,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ learnMore: false });
     }
 
+    reportManagerHelp() {
+        // clear all selections
+        this.setState({ reportManager: false });
+    }
+
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
@@ -788,6 +812,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     focusedViewCallback (focus:boolean) {
         this.setState({ focusedViewFilter: focus});
     }
+
     
     render() {
         let error = this.state.error;
@@ -814,7 +839,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             clearStoredScans={this.clearStoredScans.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             xlsxReportHandler = {this.xlsxReportHandler}
+                            actualStoredScansCount = {this.actualStoredScansCount}
                             startStopScanStoring = {this.startStopScanStoring}
+                            reportManagerHandler = {this.reportManagerHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
@@ -850,7 +877,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         } else if (this.props.layout === "sub") {
 
             return <React.Fragment>
-                <div style={{ display: this.state.learnMore ? "" : "none", height:"100%" }}>
+                {/* ok now need three way display for Report Manager so need reportManager state */}
+                <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
+                    <ReportManagerHeader reportManagerHelp={this.reportManagerHelp.bind(this)} layout={this.props.layout}></ReportManagerHeader>
+                    {/* Report List and Details */}
+                    <ReportManagerTable layout={this.props.layout} storedScans={this.state.storedScans}></ReportManagerTable>
+                </div>
+                <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
@@ -863,7 +896,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}>
+                {/* <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}> */}
+                <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
@@ -873,7 +907,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         clearStoredScans={this.clearStoredScans.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         xlsxReportHandler = {this.xlsxReportHandler}
+                        actualStoredScansCount = {this.actualStoredScansCount}
                         startStopScanStoring = {this.startStopScanStoring}
+                        reportManagerHandler = {this.reportManagerHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
