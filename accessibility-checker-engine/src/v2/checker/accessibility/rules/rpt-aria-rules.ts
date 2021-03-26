@@ -885,7 +885,7 @@ let a11yRulesAria: Rule[] = [{
         for (let j = 0; j < roles.length; ++j) {
             if (ARIADefinitions.containers.includes(roles[j])) {
                 let disabled = hasAttribute(ruleContext, 'aria-disabled') ? ruleContext.getAttribute("aria-disabled") : '';
-                if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant')) {
+                if (disabled != 'true' && !hasAttribute(ruleContext, 'aria-activedescendant') && !RPTUtil.isTabbable(ruleContext)) {
                     let reqChildren = ARIADefinitions.designPatterns[roles[j]].reqChildren;
                     if (reqChildren) {
                         inScope = true;
