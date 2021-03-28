@@ -65,7 +65,7 @@ interface IPanelState {
     currentStoredScan: string,
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        selectedInReportManager: boolean;
+        isSelected: boolean;
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -351,29 +351,29 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
-            console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
+            // console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
 
             if (this.state.storedScans.length == 0 && this.state.scanStorage === true) { // NO stored scans and storing scans
-                console.log("choice 1");
+                // console.log("choice 1");
                 this.storeScan(); // stores first scan - which is both a current and stored scan
             } else if (this.state.storedScans.length == 0 && this.state.scanStorage === false) { // NO stored scans and NOT storing scans
-                console.log("choice 2");
+                // console.log("choice 2");
                 this.storeScan(); // stores first scan which is a current scan
             } else if (this.state.storedScans.length == 1 && this.state.scanStorage === true) { // one stored scan and storing scans
-                console.log("choice 3");
+                // console.log("choice 3");
                 if (this.state.storedScans[0].actualStoredScan === false) {
                     this.clearStoredScans(false); // clears the current scan (not an actualStoredScan)
                 }
                 this.storeScan();
             } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
-                console.log("choice 4");
+                // console.log("choice 4");
                 this.clearStoredScans(false); // clears the current scan 
                 this.storeScan(); // add current scan
             } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
-                console.log("choice 5");
+                // console.log("choice 5");
                 this.storeScan(); // add new current and stored scan
             } else if (this.state.storedScans.length >  1 && this.state.scanStorage === false) { // MULTIPLE stored scans and NOT storing scans
-                console.log("choice 6");
+                // console.log("choice 6");
                 if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
                     this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
                 }
@@ -502,7 +502,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             actualStoredScan: this.state.scanStorage ? true : false,
-            selectedInReportManager: false,
+            isSelected: false,
             url: this.state.tabURL,
             pageTitle: this.state.tabTitle,
             dateTime: this.state.report?.timestamp,
@@ -526,6 +526,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }));
 
         console.log("storedScans = ", this.state.storedScans);
+    }
+
+    setStoredScanCount = () => {
+        this.setState({ storedScanCount:  this.clearStoredScans.length });
     }
 
     clearStoredScans = (fromMenu: boolean) => {
@@ -589,12 +593,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHandler = () => {
+        console.log("reportManagerHandler");
         this.setState({ reportManager: true});
-        this.reportHandler(false);
     }
     
 
-    reportHandler = async (currentScan:boolean) => {
+    reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
+        console.log("reportHandler");
         if (this.state.report && this.state.rulesets) {
             var reportObj: any = {
                 tabURL: this.state.tabURL,
@@ -633,14 +638,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             a.dispatchEvent(e);
 
-            this.xlsxReportHandler(currentScan);
+            this.xlsxReportHandler(scanType);
         }
     }
 
     
 
-    xlsxReportHandler = (currentScan:boolean) => {
-        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, currentScan, this.state.storedScanCount);
+    xlsxReportHandler = (scanType:string) => {
+        console.log("xlsxReportHandler");
+        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount);
     }
 
     
@@ -791,7 +797,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHelp() {
-        // clear all selections
+        // clear all selections ?
         this.setState({ reportManager: false });
     }
 
@@ -879,9 +885,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             return <React.Fragment>
                 {/* ok now need three way display for Report Manager so need reportManager state */}
                 <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
-                    <ReportManagerHeader reportManagerHelp={this.reportManagerHelp.bind(this)} layout={this.props.layout}></ReportManagerHeader>
+                    <ReportManagerHeader reportManagerHelp={this.reportManagerHelp.bind(this)}  layout={this.props.layout}></ReportManagerHeader>
                     {/* Report List and Details */}
-                    <ReportManagerTable layout={this.props.layout} storedScans={this.state.storedScans}></ReportManagerTable>
+                    <ReportManagerTable layout={this.props.layout} storedScans={this.state.storedScans} setStoredScanCount={this.setStoredScanCount.bind(this)} reportHandler={this.reportHandler.bind(this)}></ReportManagerTable>
                 </div>
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>

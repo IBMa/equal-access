@@ -13,13 +13,14 @@ import { Delete16, Download16 } from '@carbon/icons-react';
 import "../styles/multiScanReports.scss"
 
 interface IReportManagerTableState {
+    redisplayTable: boolean, // note this is just a simulated state to force table to rerender after a delete, etc.
 }
 
 interface IReportManagerTableProps {
     layout: "main" | "sub",
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        selectedInReportManager: boolean;
+        isSelected: boolean;
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -36,10 +37,15 @@ interface IReportManagerTableProps {
         storedScan: string;
         storedScanData: string
     }[],
+    reportHandler: (typeScan: string) => void,
+    setStoredScanCount: () => void,
+    
 }
 
 export default class ReportManagerTable extends React.Component<IReportManagerTableProps, IReportManagerTableState> {
-    state: IReportManagerTableState = {};
+    state: IReportManagerTableState = {
+        redisplayTable: true
+    };
 
     format_date(timestamp: string) {
         var date = new Date(timestamp);
@@ -52,8 +58,51 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     }
 
     downloadScanReports(selectedRows:any) {
-        // set selected rows - How do selected rows get unselected after leaving Report Manager
+        // set selected rows / scans in storedScans
+        console.log("downloadScanReports");
+        for (let i=0; i<selectedRows.length; i++) {
+            if (selectedRows[i].isSelected === true) {
+                this.props.storedScans[selectedRows[i].id].isSelected = true;
+            }
+        }
 
+        console.log(selectedRows);
+        console.log(this.props.storedScans);
+
+        this.props.reportHandler("selected");
+    }
+
+    deleteSelected(selectedRows:any) { 
+        console.log("deleteSelected");
+        // get index(s) of selected row(s) to delete that match up with storedScans
+        console.log("storedScans.length = ", this.props.storedScans.length)
+        let indexes:number[] = [];
+        for (let i=0; i<selectedRows.length; i++) {
+            if (selectedRows[i].isSelected === true) {
+                // this.props.storedScans[selectedRows[i].id].isSelected = true;
+                indexes.push(selectedRows[i].id);
+            }
+        }
+        console.log(indexes);
+
+        console.log("storedScans.length = ", this.props.storedScans.length)
+        console.log("Before delete = ",this.props.storedScans);
+
+        for (var i = indexes.length -1; i >= 0; i--)
+                this.props.storedScans.splice(indexes[i], 1);
+
+        console.log("storedScans.length = ", this.props.storedScans.length)
+        console.log("After delete = ",this.props.storedScans);
+
+        // update state storedScanCount
+        this.props.setStoredScanCount();
+
+        // need to rerender scan manager
+        if (this.state.redisplayTable === true) {
+            this.setState({ redisplayTable:  false });
+        } else if (this.state.redisplayTable === false) {
+            this.setState({ redisplayTable:  true });
+        }
     }
 
     render() {
@@ -86,7 +135,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         let rows:any[] = [];
         for (let i=0; i<this.props.storedScans.length; i++) {
             rows[i] = {};
-            rows[i].id = i+1;
+            rows[i].id = i;
             rows[i].url = this.props.storedScans[i].url;
             rows[i].title = this.props.storedScans[i].pageTitle;
             //@ts-ignore
@@ -120,14 +169,14 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                     <TableBatchAction
                                         tabIndex={getBatchActionProps().shouldShowBatchActions ? 0 : -1}
                                         renderIcon={Download16}
-                                        onClick={() => console.log(selectedRows)}
+                                        onClick={() => this.downloadScanReports(selectedRows)}
                                     >
                                         Download
                                     </TableBatchAction>
                                     <TableBatchAction
                                         tabIndex={getBatchActionProps().shouldShowBatchActions ? 0 : -1}
                                         renderIcon={Delete16}
-                                        onClick={() => this.downloadScanReports(selectedRows)}
+                                        onClick={() => this.deleteSelected(selectedRows)}
                                     >
                                         Delete
                                     </TableBatchAction>

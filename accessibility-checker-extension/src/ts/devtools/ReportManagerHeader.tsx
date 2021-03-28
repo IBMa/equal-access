@@ -29,7 +29,7 @@
     
     interface IReportManagerHeaderProps {
         layout: "main" | "sub",
-        reportManagerHelp: () => void
+        reportManagerHelp: () => void,
     }
     
     export default class ReportManagerHeader extends React.Component<IReportManagerHeaderProps, IReportManagerHeaderState> {
@@ -43,7 +43,7 @@
         }
    
         render() {
-            console.log("Render Report Manager Header");
+            // console.log("Render Report Manager Header");
             let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
                 <div className="bx--row" style={{height: "2rem"}}>
                     <div className="bx--col-sm-3">

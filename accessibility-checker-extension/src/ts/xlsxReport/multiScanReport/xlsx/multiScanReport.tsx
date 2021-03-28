@@ -22,10 +22,11 @@ import ExcelJS from 'exceljs'
 
 export default class MultiScanReport {
 
-    public static async multiScanXlsxDownload(storedScans: any, currentScan:boolean, storedScanCount: number) {
+    public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number) {
+        console.log("multiScanXlsxDownload");
 
         // create workbook
-        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, currentScan, storedScanCount);
+        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount);
         
         // create binary buffer
         const buffer = await reportWorkbook.xlsx.writeBuffer();
@@ -44,24 +45,24 @@ export default class MultiScanReport {
         ReportUtil.download_file(blob, fileName);
     }
 
-    public static createReportWorkbook(storedScans: any, currentScan: boolean, storedScanCount: number) {
+    public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number) {
         console.log("createReportWorkbook");
         // create workbook
         // @ts-ignore
         const workbook = new ExcelJS.Workbook({useStyles: true });
             
         // create worksheets
-        this.createOverviewSheet(storedScans, currentScan, storedScanCount, workbook);
-        this.createScanSummarySheet(storedScans, currentScan, workbook);
-        this.createIssueSummarySheet(storedScans, currentScan, workbook);
-        this.createIssuesSheet(storedScans, currentScan, workbook);
+        this.createOverviewSheet(storedScans, scanType, storedScanCount, workbook);
+        this.createScanSummarySheet(storedScans, scanType, workbook);
+        this.createIssueSummarySheet(storedScans, scanType, workbook);
+        this.createIssuesSheet(storedScans, scanType, workbook);
         this.createDefinitionsSheet(workbook);
 
         return workbook;
     }
 
     
-    public static createOverviewSheet(storedScans: any, currentScan: boolean, storedScanCount: number, workbook: any) {
+    public static createOverviewSheet(storedScans: any, scanType: string, storedScanCount: number, workbook: any) {
         console.log("createOverviewSheet");
 
         let violations = 0;
@@ -69,19 +70,35 @@ export default class MultiScanReport {
         let recommendations = 0;
         let totalIssues = 0;
 
-        // question 1: is report for current scans or all available scans?
+        // if scanType is "selected" need to recalculate storedScanCount
+        let selectedStoredScanCount = 0;
+
+        // BIG QUESTION: is report 
+        //               1. for current scan (from menu)
+        //               2. all stored scans (from menu)
+        //               3. selected stored scans (from scan manager)
         const theCurrentScan = storedScans[storedScans.length - 1];
 
-        if (currentScan === true) {
+        if (scanType === "current") {
             violations = theCurrentScan.violations;
             needsReviews = theCurrentScan.needsReviews;
             recommendations = theCurrentScan.recommendations;
             totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
-        } else {
+        } else if (scanType === "all") {
             for (let i=0; i < storedScans.length; i++) {
                 violations += storedScans[i].violations;
                 needsReviews += storedScans[i].needsReviews;
                 recommendations += storedScans[i].recommendations;
+            }
+            totalIssues = violations+needsReviews+recommendations;
+        } else if (scanType === "selected") {
+            for (let i=0; i < storedScans.length; i++) {
+                if (storedScans[i].isSelected === true) {
+                    selectedStoredScanCount++;
+                    violations += storedScans[i].violations;
+                    needsReviews += storedScans[i].needsReviews;
+                    recommendations += storedScans[i].recommendations;
+                }
             }
             totalIssues = violations+needsReviews+recommendations;
         }
@@ -128,7 +145,7 @@ export default class MultiScanReport {
             {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
             {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
             {key1: 'Platform:', key2: ""},
-            {key1: 'Scans:', key2: currentScan ? 1 : storedScanCount},
+            {key1: 'Scans:', key2: scanType === "current" ? 1 : scanType === "all" ? storedScanCount : selectedStoredScanCount}, // *** NEED TO FIX FOR selected
             {key1: 'Pages:', key2: ""}
         ];
         
@@ -210,7 +227,7 @@ export default class MultiScanReport {
         }
     }
 
-    public static createScanSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
+    public static createScanSummarySheet(storedScans: any, scanType: string, workbook: any) {
         console.log("createScanSummarySheet");
 
         const worksheet = workbook.addWorksheet("Scan summary");
@@ -273,41 +290,75 @@ export default class MultiScanReport {
             }
         }
 
+        // if current scan use last scan, if 
         // if current scan use only the last scan otherwise loop through each scan an create row
-        console.log("storedScans.length = ", storedScans.length);
-        let j = currentScan ? storedScans.length - 1 : 0;
+        let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX FOR selected
         for (j; j < storedScans.length; j++) {
-            let row = worksheet.addRow(
-                [storedScans[j].pageTitle, 
-                 storedScans[j].url, 
-                 storedScans[j].userScanLabel, 
-                 "none", 
-                 storedScans[j].violations,
-                 storedScans[j].needsReviews,
-                 storedScans[j].recommendations,
-                 storedScans[j].elementsNoViolations,
-                 storedScans[j].elementsNoFailures
-            ]);
-            row.height = 37; // actual height is
-            for (let i = 1; i < 5; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
-            }
-            for (let i = 5; i < 10; i++) {
-                row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-                row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
-                row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
-                row.getCell(i).border = {
-                    top: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                    left: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                    bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
-                    right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+            console.log("scanType = ", scanType,"   storedScans[",j,"].isSelected = ",storedScans[j].isSelected);
+            if (scanType === "selected" && storedScans[j].isSelected === true) {
+                console.log("add Selected Row ",j);
+                let row = worksheet.addRow(
+                    [storedScans[j].pageTitle, 
+                     storedScans[j].url, 
+                     storedScans[j].userScanLabel, 
+                     "none", 
+                     storedScans[j].violations,
+                     storedScans[j].needsReviews,
+                     storedScans[j].recommendations,
+                     storedScans[j].elementsNoViolations,
+                     storedScans[j].elementsNoFailures
+                ]);
+                row.height = 37; // actual height is
+                for (let i = 1; i < 5; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                }
+                for (let i = 5; i < 10; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                    row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+                    row.getCell(i).border = {
+                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                    }
+                }
+            } else if (scanType === "all") {
+                console.log("add all Row ",j);
+                let row = worksheet.addRow(
+                    [storedScans[j].pageTitle, 
+                     storedScans[j].url, 
+                     storedScans[j].userScanLabel, 
+                     "none", 
+                     storedScans[j].violations,
+                     storedScans[j].needsReviews,
+                     storedScans[j].recommendations,
+                     storedScans[j].elementsNoViolations,
+                     storedScans[j].elementsNoFailures
+                ]);
+                row.height = 37; // actual height is
+                for (let i = 1; i < 5; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                }
+                for (let i = 5; i < 10; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                    row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+                    row.getCell(i).border = {
+                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                    }
                 }
             }
+            
         }
     }
 
-    public static createIssueSummarySheet(storedScans: any, currentScan: boolean, workbook: any) {
+    public static createIssueSummarySheet(storedScans: any, scanType: string, workbook: any) {
         console.log("createIssueSummarySheet");
 
         let violations = 0;
@@ -318,16 +369,25 @@ export default class MultiScanReport {
         // question 1: is report for current scans or all available scans?
         const theCurrentScan = storedScans[storedScans.length - 1];
 
-        if (currentScan === true) {
+        if (scanType === "current") {
             violations = theCurrentScan.violations;
             needsReviews = theCurrentScan.needsReviews;
             recommendations = theCurrentScan.recommendations;
             totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
-        } else {
+        } else if (scanType === "all") {
             for (let i=0; i < storedScans.length; i++) {
                 violations += storedScans[i].violations;
                 needsReviews += storedScans[i].needsReviews;
                 recommendations += storedScans[i].recommendations;
+            }
+            totalIssues = violations+needsReviews+recommendations;
+        } else if (scanType === "selected") {
+            for (let i=0; i < storedScans.length; i++) {
+                if (storedScans[i].isSelected === true) {
+                    violations += storedScans[i].violations;
+                    needsReviews += storedScans[i].needsReviews;
+                    recommendations += storedScans[i].recommendations;
+                }
             }
             totalIssues = violations+needsReviews+recommendations;
         }
@@ -340,72 +400,135 @@ export default class MultiScanReport {
         let level1V = []; let level2V = []; let level3V = []; let level4V = [];
         let level1NR = []; let level2NR = []; let level3NR = []; let level4NR = [];
         let level1R = []; let level2R = []; let level3R = []; let level4R = [];
-        let j = currentScan ? storedScans.length - 1 : 0;
+        let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
         for (j; j < storedScans.length; j++) { // for each scan
             const myStoredData = storedScans[j].storedScanData;
-            
-            for (let i=0; i<myStoredData.length;i++) { // for each issue row
-                if (myStoredData[i][5] == 1) { // if level 1
-                    level1Counts[0]++;
-                    if (myStoredData[i][4] === "Violation") {
-                        level1Counts[1]++;
-                        level1V.push(myStoredData[i][9]);
+            if (scanType === "selected" && storedScans[j].isSelected === true) {
+                for (let i=0; i<myStoredData.length;i++) { // for each issue row
+                    if (myStoredData[i][5] == 1) { // if level 1
+                        level1Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level1Counts[1]++;
+                            level1V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level1Counts[2]++;
+                            level1NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level1Counts[3]++;
+                            level1R.push(myStoredData[i][9]);
+                        }
                     }
-                    if (myStoredData[i][4] === "Needs review") {
-                        level1Counts[2]++;
-                        level1NR.push(myStoredData[i][9]);
+                    if (myStoredData[i][5] == 2) { // if level 2
+                        level2Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level2Counts[1]++;
+                            level2V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level2Counts[2]++;
+                            level2NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level2Counts[3]++;
+                            level2R.push(myStoredData[i][9]);
+                        }
                     }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        level1Counts[3]++;
-                        level1R.push(myStoredData[i][9]);
+                    if (myStoredData[i][5] == 3) { // if level 3
+                        level3Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level3Counts[1]++;
+                            level3V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level3Counts[2]++;
+                            level3NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level3Counts[3]++;
+                            level3R.push(myStoredData[i][9]);
+                        }
+                    }
+                    if (myStoredData[i][5] == 4) { // if level 4
+                        level4Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level4Counts[1]++;
+                            level4V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level4Counts[2]++;
+                            level4NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level4Counts[3]++;
+                            level4R.push(myStoredData[i][9]);
+                        }
                     }
                 }
-                if (myStoredData[i][5] == 2) { // if level 2
-                    level2Counts[0]++;
-                    if (myStoredData[i][4] === "Violation") {
-                        level2Counts[1]++;
-                        level2V.push(myStoredData[i][9]);
+            } else if (scanType === "all") {
+                for (let i=0; i<myStoredData.length;i++) { // for each issue row
+                    if (myStoredData[i][5] == 1) { // if level 1
+                        level1Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level1Counts[1]++;
+                            level1V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level1Counts[2]++;
+                            level1NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level1Counts[3]++;
+                            level1R.push(myStoredData[i][9]);
+                        }
                     }
-                    if (myStoredData[i][4] === "Needs review") {
-                        level2Counts[2]++;
-                        level2NR.push(myStoredData[i][9]);
+                    if (myStoredData[i][5] == 2) { // if level 2
+                        level2Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level2Counts[1]++;
+                            level2V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level2Counts[2]++;
+                            level2NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level2Counts[3]++;
+                            level2R.push(myStoredData[i][9]);
+                        }
                     }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        level2Counts[3]++;
-                        level2R.push(myStoredData[i][9]);
+                    if (myStoredData[i][5] == 3) { // if level 3
+                        level3Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level3Counts[1]++;
+                            level3V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level3Counts[2]++;
+                            level3NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level3Counts[3]++;
+                            level3R.push(myStoredData[i][9]);
+                        }
+                    }
+                    if (myStoredData[i][5] == 4) { // if level 4
+                        level4Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level4Counts[1]++;
+                            level4V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level4Counts[2]++;
+                            level4NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level4Counts[3]++;
+                            level4R.push(myStoredData[i][9]);
+                        }
                     }
                 }
-                if (myStoredData[i][5] == 3) { // if level 3
-                    level3Counts[0]++;
-                    if (myStoredData[i][4] === "Violation") {
-                        level3Counts[1]++;
-                        level3V.push(myStoredData[i][9]);
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        level3Counts[2]++;
-                        level3NR.push(myStoredData[i][9]);
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        level3Counts[3]++;
-                        level3R.push(myStoredData[i][9]);
-                    }
-                }
-                if (myStoredData[i][5] == 4) { // if level 4
-                    level4Counts[0]++;
-                    if (myStoredData[i][4] === "Violation") {
-                        level4Counts[1]++;
-                        level4V.push(myStoredData[i][9]);
-                    }
-                    if (myStoredData[i][4] === "Needs review") {
-                        level4Counts[2]++;
-                        level4NR.push(myStoredData[i][9]);
-                    }
-                    if (myStoredData[i][4] === "Recommendation") {
-                        level4Counts[3]++;
-                        level4R.push(myStoredData[i][9]);
-                    }
-                }
-                
             }
         }
         // @ts-ignore
@@ -591,8 +714,6 @@ export default class MultiScanReport {
 
         let rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -661,8 +782,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -730,8 +849,6 @@ export default class MultiScanReport {
         rows = [];
 
         rows = worksheet.addRows(rowArray);
-
-        console.log("rows = ",rows);
 
         rows.forEach((row:any) => {
             row.height = 14;
@@ -816,8 +933,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -886,8 +1001,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -954,8 +1067,6 @@ export default class MultiScanReport {
         rows = [];
 
         rows = worksheet.addRows(rowArray);
-
-        console.log("rows = ",rows);
 
         rows.forEach((row:any) => {
             row.height = 14;
@@ -1039,8 +1150,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -1109,8 +1218,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -1177,8 +1284,6 @@ export default class MultiScanReport {
         rows = [];
 
         rows = worksheet.addRows(rowArray);
-
-        console.log("rows = ",rows);
 
         rows.forEach((row:any) => {
             row.height = 14;
@@ -1263,8 +1368,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -1333,8 +1436,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -1402,8 +1503,6 @@ export default class MultiScanReport {
 
         rows = worksheet.addRows(rowArray);
 
-        console.log("rows = ",rows);
-
         rows.forEach((row:any) => {
             row.height = 14;
             row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
@@ -1427,25 +1526,36 @@ export default class MultiScanReport {
         
     }
 
-    public static createIssuesSheet(storedScans: any, currentScan: boolean, workbook: any) {
+    public static createIssuesSheet(storedScans: any, scanType: string, workbook: any) {
         console.log("createIssuesSheet");
 
         const worksheet = workbook.addWorksheet("Issues");
 
         // build rows
         let rowArray = [];
-        let j = currentScan ? storedScans.length - 1 : 0;
+        let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
         for (j; j < storedScans.length; j++) {
             const myStoredData = storedScans[j].storedScanData;
-            
-            for (let i=0; i<myStoredData.length;i++) {
-                let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
-                           myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
-                           myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
-                           myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
-                           myStoredData[i][12], myStoredData[i][13] 
-                        ];
-                rowArray.push(row);
+            if (scanType === "selected" && storedScans[j].isSelected === true) {
+                for (let i=0; i<myStoredData.length;i++) {
+                    let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
+                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
+                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
+                            myStoredData[i][12], myStoredData[i][13] 
+                            ];
+                    rowArray.push(row);
+                }
+            } else if (scanType === "all") {
+                for (let i=0; i<myStoredData.length;i++) {
+                    let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
+                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
+                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
+                            myStoredData[i][12], myStoredData[i][13] 
+                            ];
+                    rowArray.push(row);
+                }
             }
         }
 

@@ -40,8 +40,8 @@ interface IHeaderProps {
     collapseAll: () => void,
     actualStoredScansCount: () => number,
     clearStoredScans: (fromMenu: boolean) => void,
-    reportHandler: (currentScan: boolean) => void,
-    xlsxReportHandler: (currentScan: boolean) => void,
+    reportHandler: (scanType: string) => void,
+    xlsxReportHandler: (scanType: string) => void,
     startStopScanStoring: () => void,
     reportManagerHandler: () => void,
     showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
@@ -52,7 +52,7 @@ interface IHeaderProps {
     dataFromParent: boolean[],
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        selectedInReportManager: boolean;
+        isSelected: boolean;
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -197,7 +197,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 style={{width:"300px"}} 
                                 disabled={this.props.storedScans.length == 0 ? true : false}
                                 itemText="Export current scan" 
-                                onClick={() => this.props.reportHandler(true)}
+                                onClick={() => this.props.reportHandler("current")}
                             />
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
@@ -215,13 +215,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 style={{width:"300px"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
                                 itemText="Download stored scans" 
-                                onClick={() => this.props.reportHandler(false)}
+                                onClick={() => this.props.reportHandler("all")}
                             />
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
                                 itemText="Open report manager" 
-                                onClick={this.props.reportManagerHandler}
+                                onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>
                         {isLatestArchive ? "" : (
@@ -241,42 +241,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
-                    </div>
-
-                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}>
-                        {/* <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.collapseAll}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost" 
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reset" 
-                                type="button"
-                            >
-                                <Reset16/>
-                            </Button>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.reportHandler}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost" 
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reports" 
-                                type="button"
-                            >
-                                <ReportData16/>
-                            </Button>
-                        </div> */}
-                    </div>
+                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}></div>
 
                     <div className="bx--col-md-3 bx--col-sm-2">
                         <ContentSwitcher data-tip data-for="focusViewTip"
@@ -355,7 +322,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Button>
                             <Button
                                 disabled={!this.props.counts}
-                                onClick={this.props.reportHandler}
+                                onClick={() => this.props.reportHandler("current")}
                                 className="settingsButtons" 
                                 size="small" 
                                 hasIconOnly 
