@@ -176,9 +176,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--col-sm-2">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
-                    {console.log(this.props.actualStoredScansCount().toString)}
                     <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
@@ -202,7 +201,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <OverflowMenuItem
                                 style={{width:"300px"}} 
                                 disabled={this.props.storedScans.length == 0 ? true : false}
-                                itemText="Export current scan" 
+                                itemText="Download current scan" 
                                 onClick={() => this.props.reportHandler("current")}
                             />
                             <OverflowMenuItem 
@@ -226,7 +225,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <OverflowMenuItem 
                                 style={{width:"300px"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
-                                itemText="Open report manager" 
+                                itemText="View stored scans" 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>

@@ -885,7 +885,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             return <React.Fragment>
                 {/* ok now need three way display for Report Manager so need reportManager state */}
                 <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
-                    <ReportManagerHeader reportManagerHelp={this.reportManagerHelp.bind(this)}  layout={this.props.layout}></ReportManagerHeader>
+                    <ReportManagerHeader 
+                        reportManagerHelp={this.reportManagerHelp.bind(this)} 
+                        actualStoredScansCount={this.actualStoredScansCount.bind(this)} 
+                        layout={this.props.layout}
+                        scanStorage={this.state.scanStorage}>
+                    </ReportManagerHeader>
                     {/* Report List and Details */}
                     <ReportManagerTable layout={this.props.layout} storedScans={this.state.storedScans} setStoredScanCount={this.setStoredScanCount.bind(this)} reportHandler={this.reportHandler.bind(this)}></ReportManagerTable>
                 </div>
