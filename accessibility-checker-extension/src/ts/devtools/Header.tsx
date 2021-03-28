@@ -26,7 +26,7 @@ import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-rea
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
-const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
+// const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -173,11 +173,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-3">
+                <div className="bx--col-sm-2">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right" }}>
-                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right" }}>
+                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
+                    {console.log(this.props.actualStoredScansCount().toString)}
+                    <div>
+                        <span>Status: </span>
+                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                    </div>
                 </div>
             </div>
             {/* Content for Checker Tab */}
