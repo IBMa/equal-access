@@ -199,31 +199,31 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             id="reportMenu"
                         >
                             <OverflowMenuItem
-                                style={{width:"300px"}} 
+                                style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.storedScans.length == 0 ? true : false}
                                 itemText="Download current scan" 
                                 onClick={() => this.props.reportHandler("current")}
                             />
                             <OverflowMenuItem 
-                                style={{width:"300px"}}
+                                style={{maxWidth:"13rem", width:"13rem"}}
                                 // if scanStorage false not storing scans, if true storing scans
                                 itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
                                 onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem 
-                                style={{width:"300px"}}
+                                style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false}
                                 itemText="Clear stored scans" 
                                 onClick={() => this.props.clearStoredScans(true) }
                             />
                             <OverflowMenuItem 
-                                style={{width:"300px"}}
+                                style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
                                 itemText="Download stored scans" 
                                 onClick={() => this.props.reportHandler("all")}
                             />
                             <OverflowMenuItem 
-                                style={{width:"300px"}}
+                                style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
                                 itemText="View stored scans" 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
