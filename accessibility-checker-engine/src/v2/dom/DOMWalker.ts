@@ -45,6 +45,7 @@ export class DOMWalker {
         do {
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
+                let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
                     && DOMUtil.isNodeVisible(iframeNode)
@@ -53,6 +54,14 @@ export class DOMWalker {
                 {
                     let ownerElement = this.node;
                     this.node = iframeNode.contentDocument.documentElement;
+                    (this.node as any).ownerElement = ownerElement;
+                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                    && DOMUtil.isNodeVisible(elementNode)
+                    && elementNode.shadowRoot
+                    && elementNode.shadowRoot.firstChild)
+                {
+                    let ownerElement = this.node;
+                    this.node = elementNode.shadowRoot.firstChild;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.firstChild) {
                     this.node = this.node.firstChild;
@@ -83,6 +92,7 @@ export class DOMWalker {
         do {
             if (this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
+                let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
                     && DOMUtil.isNodeVisible(iframeNode)
@@ -91,6 +101,14 @@ export class DOMWalker {
                 {
                     let ownerElement = this.node;
                     this.node = iframeNode.contentDocument.documentElement;
+                    (this.node as any).ownerElement = ownerElement;
+                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                    && DOMUtil.isNodeVisible(elementNode)
+                    && elementNode.shadowRoot
+                    && elementNode.shadowRoot.lastChild) 
+                {
+                    let ownerElement = this.node;
+                    this.node = elementNode.shadowRoot.lastChild;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.lastChild) {
                     this.node = this.node.lastChild;
