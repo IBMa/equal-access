@@ -513,11 +513,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     srcPath = null;
                                 }
                             } else if (srcPath.includes("#document-fragment")) {
-                                let parts = srcPath.match(/(.*?#document-fragment\\[\\d+\\])(.*)/);
+                                let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
                                 let fragment = lookup(doc, parts[1]);
                                 element = fragment || element;
                                 if (fragment && fragment.shadowRoot) {
-                                    doc = fragment.shadowRoot;
                                     srcPath = parts[2];
                                 } else {
                                     srcPath = null;
