@@ -194,11 +194,13 @@ export class Engine implements IEngine {
                 }
             }
 
-            if (DOMUtil.isNodeVisible(walker.node)
-                || walker.node.nodeName.toLowerCase() === "style"
-                || walker.node.nodeName.toLowerCase() === "datalist"
-                || walker.node.nodeName.toLowerCase() === "param"
-                || !DOMUtil.getAncestor(walker.node, ["body"])
+            if (walker.node.nodeType !== 11 
+                && (DOMUtil.isNodeVisible(walker.node)
+                    || walker.node.nodeName.toLowerCase() === "style"
+                    || walker.node.nodeName.toLowerCase() === "datalist"
+                    || walker.node.nodeName.toLowerCase() === "param"
+                    || !DOMUtil.getAncestor(walker.node, ["body"])
+                )
             ) {
                 const context : RuleContext = {};
                 for (const ns in contextHierarchies) {

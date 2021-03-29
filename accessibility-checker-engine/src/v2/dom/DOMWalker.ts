@@ -61,9 +61,9 @@ export class DOMWalker {
                     && elementNode.shadowRoot.firstChild)
                 {
                     let ownerElement = this.node;
-                    this.node = elementNode.shadowRoot.firstChild;
+                    this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
-                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.firstChild) {
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.ELEMENT_NODE */ && this.node.firstChild) {
                     this.node = this.node.firstChild;
                 } else {
                     this.bEndTag = true;
@@ -84,7 +84,10 @@ export class DOMWalker {
                     return false;
                 }
             }
-        } while ((this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ || (this.node as Element).getAttribute("aChecker") === "ACE") && this.node.nodeType !== 3 /* Node.TEXT_NODE */);
+        } while (
+            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11)
+            || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
+        );
         return true;
     }
 
@@ -108,9 +111,9 @@ export class DOMWalker {
                     && elementNode.shadowRoot.lastChild) 
                 {
                     let ownerElement = this.node;
-                    this.node = elementNode.shadowRoot.lastChild;
+                    this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
-                } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ && this.node.lastChild) {
+                } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) && this.node.lastChild) {
                     this.node = this.node.lastChild;
                 } else {
                     this.bEndTag = false;
@@ -131,7 +134,10 @@ export class DOMWalker {
                     return false;
                 }
             }
-        } while ((this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ || (this.node as Element).getAttribute("aChecker") === "ACE") && this.node.nodeType !== 3 /* Node.TEXT_NODE */);
+        } while (
+            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11)
+            || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
+        );
         return true;
     }
 }
