@@ -525,7 +525,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
+        console.log(this.state.storedScans[0].scanLabel)
         console.log("storedScans = ", this.state.storedScans);
+    }
+
+    onKeyUp(event:any,i:number) {
+        let value = event.target.value;
+        if (event.charCode === 13) {
+            this.setState(prevState => ({
+                storedScans: {
+                    ...prevState.storedScans,
+                    [prevState.storedScans[i].scanLabel]: value,
+                },
+            }));
+        }
     }
 
     setStoredScanCount = () => {
@@ -892,7 +905,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         scanStorage={this.state.scanStorage}>
                     </ReportManagerHeader>
                     {/* Report List and Details */}
-                    <ReportManagerTable layout={this.props.layout} storedScans={this.state.storedScans} setStoredScanCount={this.setStoredScanCount.bind(this)} reportHandler={this.reportHandler.bind(this)}></ReportManagerTable>
+                    <ReportManagerTable 
+                        layout={this.props.layout} 
+                        storedScans={this.state.storedScans} 
+                        setStoredScanCount={this.setStoredScanCount.bind(this)} 
+                        onKeyUp={this.onKeyUp.bind(this)} 
+                        reportHandler={this.reportHandler.bind(this)}>
+                    </ReportManagerTable>
                 </div>
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>

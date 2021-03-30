@@ -39,7 +39,7 @@ interface IReportManagerTableProps {
     }[],
     reportHandler: (typeScan: string) => void,
     setStoredScanCount: () => void,
-    
+    onKeyUp: (e:any, i:number) => void,
 }
 
 export default class ReportManagerTable extends React.Component<IReportManagerTableProps, IReportManagerTableState> {
@@ -105,6 +105,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         }
     }
 
+    
+
     render() {
 
         const headers = [
@@ -143,6 +145,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             rows[i].label = this.props.storedScans[i].scanLabel;
             rows[i].details = "view"
         }
+
+        
         
 
         return (
@@ -155,7 +159,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                     </div>
                     <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>
                     <div style={{overflowX:"auto"}}>
-                    <DataTable size="compact" rows={rows} headers={headers}>
+                    <DataTable size="compact" rows={rows} headers={headers} >
                         {({
                             //@ts-ignore
                             getTableProps, rows, getRowProps, selectedRows, headers, getHeaderProps, getSelectionProps,
@@ -203,8 +207,15 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 {rows.map((row:any, i:any) => (
                                     <TableRow key={i} {...getRowProps({ row })}>
                                     <TableSelectRow {...getSelectionProps({ row })} />
-                                    {row.cells.map((cell:any) => (
-                                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                                    {row.cells.map((cell:any,index:any) => (
+                                        // <TableCell key={cell.id}>{cell.value}</TableCell>
+                                        <TableCell key={cell.id}>
+                                            {index == 0 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
+                                            {index == 1 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
+                                            {index == 2 ? cell.value : ""}
+                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onChange={(e) => {this.props.onKeyUp(e,i)}}/> : ""}
+                                            {index == 4 ? cell.value : ""}
+                                        </TableCell>
                                     ))}
                                     </TableRow>
                                 ))}
