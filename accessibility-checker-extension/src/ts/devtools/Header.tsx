@@ -147,7 +147,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+        // let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         if (!counts) {
             counts = {
@@ -288,9 +288,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        {isLatestArchive ? "" : (
+                        {/* {isLatestArchive ? "" : ( */}
                             <Tooltip>
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
@@ -305,9 +305,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     </a>
                                 </div>
                             </Tooltip>
-                        )}
+                        {/* )} */}
                     </div>
-                    <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                    <div className="bx--col-sm-1" style={{ position: "relative" }}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>

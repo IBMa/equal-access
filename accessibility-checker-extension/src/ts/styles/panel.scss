@@ -82,6 +82,26 @@ $feature-flags: (
         }
     }
 
+    .reportButton {
+        button.bx--btn {
+            color: black;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled {
+            color: #c6c6c6;
+            border-width: 0px;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled:hover {
+            color: #c6c6c6;
+            svg {
+                fill: #c6c6c6;
+            }
+        }
+    }
+
     .filterButtons {
         button .bx--assistive-text {
             top: -1.5rem;

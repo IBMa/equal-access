@@ -37,9 +37,12 @@ let a11yRulesForm: Rule[] = [
                         let nodeName = nw.node.nodeName.toLowerCase();
                         if (nodeName == "input") {
                             let type = nw.node.getAttribute("type");
+                            if (type) {
+                                type = type.toLowerCase();
+                            }
                             passed = type == "submit" || type == "image";
                         } else if (nodeName == "button") {
-                            passed = nw.node.getAttribute("type") == "submit";
+                            passed = nw.node.hasAttribute("type") && nw.node.getAttribute("type").toLowerCase() === "submit";
                         } else if (nw.node.nodeType == 1) {
                             passed = RPTUtil.hasRole(nw.node, "button");
                         }

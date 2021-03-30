@@ -289,7 +289,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                       kind="success"
                       lowContrast={true}
                       title="Success"
-                      subtitle=" Your changes have been saved"
+                      subtitle=" Your change has been saved and will take effect after you close and reopen the developer tools."
                       className=""
                       iconDescription="close notification"
                       onCloseButtonClick={() => {

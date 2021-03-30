@@ -169,7 +169,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         return <React.Fragment>
-            <div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
+            <div className="bx--grid" style={{paddingLeft:"1rem"}}>
                 <div className="bx--row">
                     <div className="bx--col-sm-4">
                         <Tabs

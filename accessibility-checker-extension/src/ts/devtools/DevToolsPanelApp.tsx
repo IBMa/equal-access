@@ -881,7 +881,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         />
-                        <div style={{ marginTop: "7rem", height: "calc(100% - 7rem)" }}>
+                        <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report

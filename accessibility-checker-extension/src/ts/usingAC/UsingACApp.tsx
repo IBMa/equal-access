@@ -332,6 +332,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               an earlier test, choose the deployment date of the original test.
             </p>
             <p>
+              After changing options, close and reopen the developer tools for the change to take effect.
+            </p>
+            <p>
               Follow the steps below to open the Accessibility Checker options
               page:
             </p>
@@ -402,7 +405,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </ul>
             <p>
               Select the <strong>'Save'</strong> button to keep the changes or
-              the <strong>'Reset'</strong> button to discard changes.
+              the <strong>'Reset'</strong> button to discard changes. 
+              Close and reopen the developer tools for the change to take effect.
             </p>
 
             <h3 id="ruleset">5.2 Rule set</h3>
@@ -443,6 +447,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </p>
               </li>
             </ul>
+            <p>
+              After making a change, select the <strong>'Save'</strong> button, then
+              close and reopen the developer tools for the change to take effect.
+            </p>
 
             <h2 id="usage">6. Usage</h2>
             <p>
