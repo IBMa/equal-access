@@ -147,7 +147,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        // let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         if (!counts) {
             counts = {
