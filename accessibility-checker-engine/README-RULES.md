@@ -39,7 +39,7 @@ An example rule might look like:
 
 ### Ruleset mapping
 
-Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]. Rules are added to an appropriate checkpoint section with a mapping such as:
+Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
 ```
 {
     id: "TRIGGER_ALL_BODY",
@@ -49,7 +49,7 @@ Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]
 
 ### Messages
 
-Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts]. Mappings are defined as:
+Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/v2/checker/accessibility/nls/index.ts). Mappings are defined as:
 ```
 "TRIGGER_ALL_BODY": {
     0: "Passive message used for rule groupings",
@@ -60,7 +60,7 @@ Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts]. Map
 
 ### Help file
 
-Help mappings are defined in [src/v2/checker/accessibility/help/index.ts]. Mappings are defined as:
+Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts). Mappings are defined as:
 
 ```
 "TRIGGER_ALL_BODY": {
