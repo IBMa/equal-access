@@ -16,12 +16,16 @@
 
 import React from "react";
 import Header from "./Header";
+import ReportManagerHeader from "./ReportManagerHeader";
+import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
 import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
-import SinglePageReport from "../xlsxReport/singlePageReport/xlsx/singlePageReport";
+import MultiScanReport from "../xlsxReport/multiScanReport/xlsx/multiScanReport";
+import MultiScanData from "./MultiScanData";
+import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
 import {
@@ -37,6 +41,8 @@ import { IArchiveDefinition } from '../background/helper/engineCache';
 interface IPanelProps {
     layout: "main" | "sub"
 }
+
+
 
 interface IPanelState {
     listenerRegistered: boolean,
@@ -55,6 +61,30 @@ interface IPanelState {
     showIssueTypeFilter: boolean[],
     scanning: boolean,  // true when scan taking place
     firstScan: boolean, // true when first scan of a url
+    scanStorage: boolean, // true when scan storing on
+    currentStoredScan: string,
+    storedScans: {
+        actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
+        isSelected: boolean;
+        url: string;
+        pageTitle: string;
+        dateTime: number | undefined;
+        scanLabel: string;
+        userScanLabel: string;
+        ruleSet: any;
+        guidelines: any;
+        reportDate: Date;
+        violations: any;
+        needsReviews: any;
+        recommendations: any;
+        elementsNoViolations: number;
+        elementsNoFailures: number;
+        storedScan: string;
+        storedScanData: string
+    }[],
+    storedScanCount: number, // number of scans stored
+    storedScanData: number, // total amount of scan data stored in MB
+    reportManager: boolean, // true show report manager, false do not show
     error: string | null,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
@@ -78,7 +108,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         learnItem: null,
         showIssueTypeFilter: [true, false, false, false],
         scanning: false,
+        storedScans: [],
+        storedScanCount: 0,
+        storedScanData: 0,
+        reportManager: false, // start with Report Manager not showing
         firstScan: true,
+        scanStorage: false,
+        currentStoredScan: "", // true if making report for current stored scan (clear on next scan if scanStorage false)
         error: null,
         archives: null,
         selectedArchive: null,
@@ -286,12 +322,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             let report = message.report;
             let archives = await this.getArchives();
-
-            // JCH add itemIdx to report (used to be in message.report)
+            
             if (!report) return;
 
         let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
+            // JCH add itemIdx to report (used to be in message.report)
             report.results.map((result: any, index: any) => {
                 result["itemIdx"] = index;
             })
@@ -311,8 +347,39 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             this.setState({ scanning: false }); // scan done
-            // console.log("SCAN DONE");
+            console.log("SCAN DONE");
             
+            // Cases for storage
+            // Note: if scanStorage false not storing scans, if true storing scans
+            // console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
+
+            if (this.state.storedScans.length == 0 && this.state.scanStorage === true) { // NO stored scans and storing scans
+                // console.log("choice 1");
+                this.storeScan(); // stores first scan - which is both a current and stored scan
+            } else if (this.state.storedScans.length == 0 && this.state.scanStorage === false) { // NO stored scans and NOT storing scans
+                // console.log("choice 2");
+                this.storeScan(); // stores first scan which is a current scan
+            } else if (this.state.storedScans.length == 1 && this.state.scanStorage === true) { // one stored scan and storing scans
+                // console.log("choice 3");
+                if (this.state.storedScans[0].actualStoredScan === false) {
+                    this.clearStoredScans(false); // clears the current scan (not an actualStoredScan)
+                }
+                this.storeScan();
+            } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
+                // console.log("choice 4");
+                this.clearStoredScans(false); // clears the current scan 
+                this.storeScan(); // add current scan
+            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
+                // console.log("choice 5");
+                this.storeScan(); // add new current and stored scan
+            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === false) { // MULTIPLE stored scans and NOT storing scans
+                // console.log("choice 6");
+                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                    this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
+                }
+                this.storeScan(); // add new current and stored scan
+            } 
+           
             if (this.props.layout === "sub") {
                 if (this.state.firstScan === true && message.origin === this.props.layout) {
                     this.selectElementInElements();
@@ -371,6 +438,153 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         return true;
     }
 
+    // START - New multi-scan report functions
+
+    storeScan() {
+        console.log("storeScan");
+
+        // Data to store for Report
+        var xlsx_props = {
+            report: this.state.report,
+            rulesets: this.state.rulesets,
+            tabTitle: this.state.tabTitle,
+            tabURL: this.state.tabURL
+        }
+
+        var report: any = this.state.report;
+        var summaryNumbers = ReportSummaryUtil.calcSummary(report);
+        var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
+        var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
+
+        var violation = report?.counts.total.Violation;
+        var needsReview = report?.counts.total["Needs review"];
+        var recommendation = report?.counts.total.Recommendation;
+
+        // Keep track of number of stored scans (be sure to adjust when clear scans)
+        this.setState(prevState => {
+            return {storedScanCount: prevState.storedScanCount + 1}
+        });
+
+        // scan label of the current stored scan 
+        // the current scan is always stored for the current scan report
+        this.setState({ currentStoredScan:  "scan" + this.state.storedScanCount });
+
+        // get only data needed for multi-scan report
+        const scanData = MultiScanData.issues_sheet_rows(xlsx_props); 
+
+        // ***** NOT USING LOCAL STORAGE *****
+        // console.log("scanData = ",scanData);
+        // local storage can only store strings so stringify
+        // let currentScanData = JSON.stringify(scanData);
+        // console.log("currentScanData = ",currentScanData);
+
+        // console.log("storage space for currentScanData = ", currentScanData.length);
+
+        // Note: here is where the scan is stored so check to see if can be stored
+        //       if not turn off state scanStorage, present message that must clear scans
+        //       also if they try to turn state scanStorage, again provide message that
+        //       must clear scans before can store scans
+        // try {
+        //     localStorage.setItem("scan" + this.state.storedScanCount +"Data", currentScanData); 
+        // } catch (e) {
+        //     if (e.name === "QUATA_EXCEEDED_ERR" // Chrome
+        //         || e.name === "NS_ERROR_DOM_QUATA_REACHED") { //Firefox/Safari
+        //         alert('Quota exceeded!'); //data wasn't successfully saved due to quota exceed so throw an error
+        //     }
+        // }
+
+        // this.setState(prevState => {
+        //     return {storedScanData: prevState.storedScanData + currentScanData.length}
+        // });
+
+        
+
+        // Data to store for the Scan other than the issues not much data so saved in state memory
+        let currentScan = {
+            actualStoredScan: this.state.scanStorage ? true : false,
+            isSelected: false,
+            url: this.state.tabURL,
+            pageTitle: this.state.tabTitle,
+            dateTime: this.state.report?.timestamp,
+            scanLabel: "scan" + this.state.storedScanCount, // is this safe since setState above is async
+            userScanLabel: "scan" + this.state.storedScanCount, // this is the visible scan label which may be edited by user
+            ruleSet: report.option.deployment.name,
+            guidelines: report.option.guideline.name,
+            reportDate: new Date(report.timestamp),
+            violations: violation,
+            needsReviews: needsReview,
+            recommendations: recommendation,
+            elementsNoViolations: element_no_violations,
+            elementsNoFailures: element_no_failures,
+            storedScan: "scan" + this.state.storedScanCount,
+            storedScanData: scanData,
+        };
+
+        // Array of stored scans these scans are stored in state memory
+        this.setState(({
+            storedScans: [...this.state.storedScans, currentScan]
+        }));
+
+        console.log(this.state.storedScans[0].scanLabel)
+        console.log("storedScans = ", this.state.storedScans);
+    }
+
+    onKeyUp(event:any,i:number) {
+        console.log("onKeyUp Start");
+        const value = event.target.value;
+        console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
+        if (event.nativeEvent.keyCode === 13) {
+            console.log("got Enter key");
+            // this.setState(prevState => ({
+            //     storedScans: {
+            //         ...prevState.storedScans,
+            //         [prevState.storedScans[i].scanLabel]: value,
+            //     },
+            // }));
+            let storedScansCopy = this.state.storedScans;
+            storedScansCopy[i].userScanLabel = value;
+            this.setState({storedScans: storedScansCopy});
+            console.log("onKeyUp End");
+        }
+        console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
+    }
+
+    setStoredScanCount = () => {
+        this.setState({ storedScanCount:  this.clearStoredScans.length });
+    }
+
+    clearStoredScans = (fromMenu: boolean) => {
+        this.setState({ storedScanCount: 0 }); // reset scan counter
+        this.setState({storedScans: []});
+        if (fromMenu === true) {
+            this.setState({scanStorage: false});
+        }
+        console.log("Clear stored scans with scanStorage = ", this.state.scanStorage);
+        // window.localStorage.clear(); // not using local storage
+        // await this.startScan();
+    };
+
+    actualStoredScansCount = () => {
+        let count = 0;
+        for (let scan in this.state.storedScans) {
+            if (this.state.storedScans[scan].actualStoredScan) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    startStopScanStoring = () => {
+        // flip scanStorage state each time function runs
+        if (this.state.scanStorage === true) {
+            this.setState({ scanStorage: false });
+        } else {
+            this.setState({ scanStorage: true });
+        }
+    }
+
+    // END - New multi-scan report functions
+
     getArchives = async () => {
         return await OptionMessaging.sendToBackground("OPTIONS", {
           command: "getArchives",
@@ -399,7 +613,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.getCurrentSelectedElement();
     }
 
-    reportHandler = async () => {
+    reportManagerHandler = () => {
+        console.log("reportManagerHandler");
+        this.setState({ reportManager: true});
+    }
+    
+
+    reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
+        console.log("reportHandler");
         if (this.state.report && this.state.rulesets) {
             var reportObj: any = {
                 tabURL: this.state.tabURL,
@@ -438,20 +659,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
             a.dispatchEvent(e);
 
-            this.xlsxReportHandler();
+            this.xlsxReportHandler(scanType);
         }
     }
 
-    xlsxReportHandler = () => {
-        var xlsx_props = {
-            report: this.state.report,
-            rulesets: this.state.rulesets,
-            tabTitle: this.state.tabTitle,
-            tabURL: this.state.tabURL
-        }
+    
 
-        SinglePageReport.single_page_xlsx_download(xlsx_props);
+    xlsxReportHandler = (scanType:string) => {
+        console.log("xlsxReportHandler");
+        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount);
     }
+
+    
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
@@ -598,6 +817,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ learnMore: false });
     }
 
+    reportManagerHelp() {
+        // clear all selections ?
+        this.setState({ reportManager: false });
+    }
+
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
@@ -615,6 +839,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     focusedViewCallback (focus:boolean) {
         this.setState({ focusedViewFilter: focus});
     }
+
     
     render() {
         let error = this.state.error;
@@ -635,9 +860,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         <Header
                             layout={this.props.layout}
                             counts={this.state.report && this.state.report.counts}
+                            scanStorage={this.state.scanStorage}
+                            storedScans={this.state.storedScans}
                             startScan={this.startScan.bind(this)}
+                            clearStoredScans={this.clearStoredScans.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
                             xlsxReportHandler = {this.xlsxReportHandler}
+                            actualStoredScansCount = {this.actualStoredScansCount}
+                            startStopScanStoring = {this.startStopScanStoring}
+                            reportManagerHandler = {this.reportManagerHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                             dataFromParent = {this.state.showIssueTypeFilter}
@@ -673,7 +904,24 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         } else if (this.props.layout === "sub") {
 
             return <React.Fragment>
-                <div style={{ display: this.state.learnMore ? "" : "none", height:"100%" }}>
+                {/* ok now need three way display for Report Manager so need reportManager state */}
+                <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
+                    <ReportManagerHeader 
+                        reportManagerHelp={this.reportManagerHelp.bind(this)} 
+                        actualStoredScansCount={this.actualStoredScansCount.bind(this)} 
+                        layout={this.props.layout}
+                        scanStorage={this.state.scanStorage}>
+                    </ReportManagerHeader>
+                    {/* Report List and Details */}
+                    <ReportManagerTable
+                        layout={this.props.layout} 
+                        storedScans={this.state.storedScans} 
+                        setStoredScanCount={this.setStoredScanCount.bind(this)} 
+                        onKeyUp={this.onKeyUp.bind(this)} 
+                        reportHandler={this.reportHandler.bind(this)}>
+                    </ReportManagerTable>
+                </div>
+                <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
@@ -686,13 +934,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}>
+                {/* <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}> */}
+                <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
+                        scanStorage={this.state.scanStorage}
+                        storedScans={this.state.storedScans}
                         startScan={this.startScan.bind(this)}
+                        clearStoredScans={this.clearStoredScans.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
                         xlsxReportHandler = {this.xlsxReportHandler}
+                        actualStoredScansCount = {this.actualStoredScansCount}
+                        startStopScanStoring = {this.startStopScanStoring}
+                        reportManagerHandler = {this.reportManagerHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
                         dataFromParent = {this.state.showIssueTypeFilter}
