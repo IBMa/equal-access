@@ -325,7 +325,9 @@ let a11yRulesInput: Rule[] = [
             const getGroup = (e : Element) => {
                 let retVal = RPTUtil.getAncestor(e, "fieldset")
                     || RPTUtil.getAncestorWithRole(e, "radiogroup")
-                    || RPTUtil.getAncestorWithRole(e, "group");
+                    || RPTUtil.getAncestorWithRole(e, "group")
+                    || RPTUtil.getAncestorWithRole(e, "grid")
+                    || RPTUtil.getAncestorWithRole(e, "table");
                 if (!retVal) {
                     retVal = RPTUtil.getAncestor(e, "table");
                     if (retVal && !RPTUtil.isDataTable(retVal)) {

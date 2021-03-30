@@ -39,7 +39,7 @@ An example rule might look like:
 
 ### Ruleset mapping
 
-Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]. Rules are added to an appropriate checkpoint section with a mapping such as:
+Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
 ```
 {
     id: "TRIGGER_ALL_BODY",
@@ -49,7 +49,7 @@ Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]
 
 ### Messages
 
-Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts]. Mappings are defined as:
+Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/v2/checker/accessibility/nls/index.ts). Mappings are defined as:
 ```
 "TRIGGER_ALL_BODY": {
     0: "Passive message used for rule groupings",
@@ -60,7 +60,7 @@ Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts]. Map
 
 ### Help file
 
-Help mappings are defined in [src/v2/checker/accessibility/help/index.ts]. Mappings are defined as:
+Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts). Mappings are defined as:
 
 ```
 "TRIGGER_ALL_BODY": {
@@ -120,3 +120,12 @@ To run all testcases, `npm test`. To test a single testcase or a smaller set of 
 Then, run `npm test` again.
 
 `npm test` will watch files and automatically re-run when the test case or rules are changed.
+
+## Run local server with local browser extension
+
+* Build rule server. In `rule-server` run `npm run build`.
+* Start rule server. In `rule-server/dist` run `node main`.
+* Build extension. In `accessibility-checker-extension` run `npm run build:watch:local`.
+* Add the extension in the `accessibility-checker-extension/dist` directory to Chrome. It will have the `(local)` label on the DevTools tab.
+
+Note: Rule changes are not automatically rebuilt. You will have to kill the rule server (Ctrl+C) and then rebuild, rerun. The extension may need to be refreshed to reload the rules.

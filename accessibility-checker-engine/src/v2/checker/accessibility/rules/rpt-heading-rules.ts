@@ -97,6 +97,7 @@ let a11yRulesHeading: Rule[] = [
             const ruleContext = context["dom"].node as Element;
             let numWords = validateParams.numWords.value;
             let wordsSeen = 0;
+            let wordStr : string[] = [];
             let emphasizedText = false;
             let nw = new NodeWalker(ruleContext);
             let passed = false;
@@ -109,9 +110,13 @@ let a11yRulesHeading: Rule[] = [
                 let nwName = nw.node.nodeName.toLowerCase();
                 if ((nwName == "b" || nwName == "em" || nwName == "i" ||
                     nwName == "strong" || nwName == "u" || nwName == "font") && !RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
-                    let wc = RPTUtil.wordCount(RPTUtil.getInnerText(nw.node));
-                    emphasizedText = wc > 0;
-                    wordsSeen += wc;
+                    let nextStr = RPTUtil.getInnerText(nw.node);
+                    let wc = RPTUtil.wordCount(nextStr);
+                    if (wc > 0) {
+                        wordStr.push(nextStr);
+                        emphasizedText = true;
+                        wordsSeen += wc;
+                    }
                     passed = wordsSeen > numWords;
                     // Skip this node because it's emphasized
                     nw.bEndTag = true;
@@ -129,9 +134,11 @@ let a11yRulesHeading: Rule[] = [
             }
             if (wordsSeen == 0) passed = true;
 
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RulePotential("Potential_1");
-
+            if (passed) {
+                return RulePass("Pass_0");
+            } else {
+                return RulePotential("Potential_1", [wordStr.join(" ")]);
+            }
         }
     }
 

@@ -136,7 +136,7 @@ let a11yNls = {
     "RPT_Block_ShouldBeHeading": {
         0: "Heading text must use a heading element", 
         "Pass_0": "Rule Passed",
-        "Potential_1": "Check text that looks like a heading but is not within a heading element"
+        "Potential_1": `Check if this text should be marked up as a heading: {0}`
     },
     // JCH - DONE
     "WCAG20_Form_HasSubmit": {
