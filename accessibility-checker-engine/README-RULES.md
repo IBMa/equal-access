@@ -43,7 +43,8 @@ Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]
 ```
 {
     id: "TRIGGER_ALL_BODY",
-    level: eRulePolicy.VIOLATION
+    level: eRulePolicy.VIOLATION,
+    toolkitLevel: eToolkitLevel.LEVEL_ONE
 }
 ```
 
@@ -123,8 +124,8 @@ Then, run `npm test` again.
 
 ## Run local server with local browser extension
 
-* Build rule server. In `rule-server` run `npm run build`.
-* Start rule server. In `rule-server/dist` run `node main`.
+* Build and start rule server. In `rule-server` run `npm run start` or without help `npm run start:nohelp`.
+* Load `https://localhost:9445/` in the browser and type `thisisunsafe` to bypass cert warnings.
 * Build extension. In `accessibility-checker-extension` run `npm run build:watch:local`.
 * Add the extension in the `accessibility-checker-extension/dist` directory to Chrome. It will have the `(local)` label on the DevTools tab.
 
