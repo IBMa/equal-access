@@ -120,3 +120,12 @@ To run all testcases, `npm test`. To test a single testcase or a smaller set of 
 Then, run `npm test` again.
 
 `npm test` will watch files and automatically re-run when the test case or rules are changed.
+
+## Run local server with local browser extension
+
+* Build rule server. In `rule-server` run `npm run build`.
+* Start rule server. In `rule-server/dist` run `node main`.
+* Build extension. In `accessibility-checker-extension` run `npm run build:watch:local`.
+* Add the extension in the `accessibility-checker-extension/dist` directory to Chrome. It will have the `(local)` label on the DevTools tab.
+
+Note: Rule changes are not automatically rebuilt. You will have to kill the rule server (Ctrl+C) and then rebuild, rerun. The extension may need to be refreshed to reload the rules.
