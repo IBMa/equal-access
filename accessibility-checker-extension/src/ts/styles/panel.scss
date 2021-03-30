@@ -9,14 +9,6 @@ $feature-flags: (
     overflow: hidden;
 }
 
-.bx--overflow-menu-options {
-    width: 12rem;
-}
-
-.bx--overflow-menu-options__btn {
-    width: 12rem;
-}
-
 .fixed-header {
     position: fixed;
     top: 0;
@@ -52,12 +44,6 @@ $feature-flags: (
             right: 0px;
         }
     }
-
-    .rendered-icon svg {
-        fill: white;
-    }
-
-    
 
     .headerTools {
         @media only screen and (min-width: 42rem) {
