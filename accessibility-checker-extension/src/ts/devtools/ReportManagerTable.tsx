@@ -40,6 +40,7 @@ interface IReportManagerTableProps {
     reportHandler: (typeScan: string) => void,
     setStoredScanCount: () => void,
     onKeyUp: (e:any, i:number) => void,
+    clearSelectedStoredScans: () => void,
 }
 
 export default class ReportManagerTable extends React.Component<IReportManagerTableProps, IReportManagerTableState> {
@@ -63,6 +64,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     downloadScanReports(selectedRows:any) {
         // set selected rows / scans in storedScans
         console.log("downloadScanReports");
+        // clear old selected rows
+        this.props.clearSelectedStoredScans();
         for (let i=0; i<selectedRows.length; i++) {
             if (selectedRows[i].isSelected === true) {
                 this.props.storedScans[selectedRows[i].id].isSelected = true;
@@ -80,6 +83,9 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         // get index(s) of selected row(s) to delete that match up with storedScans
         console.log("storedScans.length = ", this.props.storedScans.length)
         let indexes:number[] = [];
+
+        // clear old selected rows
+        this.props.clearSelectedStoredScans();
         for (let i=0; i<selectedRows.length; i++) {
             if (selectedRows[i].isSelected === true) {
                 // this.props.storedScans[selectedRows[i].id].isSelected = true;

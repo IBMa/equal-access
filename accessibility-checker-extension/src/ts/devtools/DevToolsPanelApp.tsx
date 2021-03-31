@@ -564,6 +564,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // await this.startScan();
     };
 
+    clearSelectedStoredScans() {
+        let storedScansCopy = this.state.storedScans;
+        for (let i=0; i<this.state.storedScans.length;i++) {
+            storedScansCopy[i].isSelected = false;
+        }
+        this.setState({storedScans: storedScansCopy});
+    }
+
     actualStoredScansCount = () => {
         let count = 0;
         for (let scan in this.state.storedScans) {
@@ -917,6 +925,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         layout={this.props.layout} 
                         storedScans={this.state.storedScans} 
                         setStoredScanCount={this.setStoredScanCount.bind(this)} 
+                        clearSelectedStoredScans={this.clearSelectedStoredScans.bind(this)} 
                         onKeyUp={this.onKeyUp.bind(this)} 
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
