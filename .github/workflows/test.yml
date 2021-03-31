@@ -67,6 +67,7 @@ jobs:
         working-directory: rule-server/dist
 
       - run: npm install
+        postinstall: sed -i " "s/[\"|']use strict[\"|']/;/g" exceljs.js
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: accessibility-checker
