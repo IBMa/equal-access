@@ -335,17 +335,22 @@ let a11yRulesInput: Rule[] = [
                         retVal = null;
                     }
                 }
+                if (!retVal) {
+                    retVal = RPTUtil.getAncestor(ruleContext, "#document-fragment");
+                }
                 return retVal;
             }
 
             // Only radio buttons and checkboxes are in scope
             let ctxType = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").toLowerCase() : "text";
-            if (ctxType != "checkbox" && ctxType != "radio") {
+            if (ctxType !== "checkbox" && ctxType !== "radio") {
                 return null;
             }
 
             // Determine which form we're in (if any) to determine our scope
-            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") || ruleContext.ownerDocument.documentElement;
+            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") 
+                || RPTUtil.getAncestor(ruleContext, "#document-fragment")
+                || ruleContext.ownerDocument.documentElement;
 
             // Get data about all of the visible checkboxes and radios in the scope of this form 
             // and cache it for all of the other inputs in this scope
@@ -365,7 +370,9 @@ let a11yRulesInput: Rule[] = [
                 let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
                 for (let idx=0; idx<checkboxQ.length; ++idx) {
                     const cb = checkboxQ[idx];
-                    if ((RPTUtil.getAncestorWithRole(cb, "form") || ruleContext.ownerDocument.documentElement) === ctxForm 
+                    if ((RPTUtil.getAncestorWithRole(cb, "form") 
+                        || RPTUtil.getAncestor(cb, "#document-fragment")
+                        || ruleContext.ownerDocument.documentElement) === ctxForm 
                         && !RPTUtil.shouldNodeBeSkippedHidden(cb)) 
                     {
                         const name = cb.getAttribute("name") || "";
@@ -378,7 +385,10 @@ let a11yRulesInput: Rule[] = [
                 let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
                 for (let idx=0; idx<radiosQ.length; ++idx) {
                     const r = radiosQ[idx];
-                    if ((RPTUtil.getAncestorWithRole(r, "form") || ruleContext.ownerDocument.documentElement) === ctxForm
+                    const radCtx = (RPTUtil.getAncestorWithRole(r, "form") 
+                        || RPTUtil.getAncestor(r, "#document-fragment")
+                        || ruleContext.ownerDocument.documentElement);
+                    if (radCtx === ctxForm
                         && !RPTUtil.shouldNodeBeSkippedHidden(r)) 
                     {
                         const name = r.getAttribute("name") || "";
