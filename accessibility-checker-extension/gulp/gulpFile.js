@@ -96,7 +96,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         
         var snippet = '';
 
-        if(children.length > 1){
+        if (children.length > 1){
             children.forEach((element:any) => {
                 if(element.props){
                     snippet = snippet + element.props.children[0] + '\\n'
@@ -104,7 +104,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
                     snippet = snippet + element + '\\n'
                 }
             });
-        } else  if(children.length = 1){
+        } else if (children.length === 1) {
             snippet = children[0];
         }
 
