@@ -230,8 +230,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: report-react
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']/;/g" ./exceljs.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist/exceljs.js
     - run: npm install
       working-directory: accessibility-checker-extension
     - run: sed -i'.old' -e "s/[\"|']use strict[\"|']/;/g" ./exceljs.js
