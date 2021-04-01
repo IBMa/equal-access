@@ -67,7 +67,6 @@ jobs:
         working-directory: rule-server/dist
 
       - run: npm install
-        postinstall: sed -i " "s/[\"|']use strict[\"|']/;/g" exceljs.js
         working-directory: accessibility-checker-engine
       - run: npm install
         working-directory: accessibility-checker
@@ -231,6 +230,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: report-react
+    - run: sed -i " "s/[\"|']use strict[\"|']/;/g" exceljs.js
+      working-directory: accessibility-checker-extension/node_modules/exceljs/dist/exceljs.js
     - run: npm install
       working-directory: accessibility-checker-extension
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
