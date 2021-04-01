@@ -125,7 +125,8 @@ var skipList = [
     // Zombie does not support shadow dom
     path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "shadowdom.html"),
     path.join(testRoot, "Rpt_Aria_OrphanedContent_Native_Host_Sematics_ruleunit", "shadowdom.html"),
-
+    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "Button-template-shadow.html"),
+    path.join(testRoot, "WCAG20_Input_RadioChkInFieldSet_ruleunit", "shadow.html")
 ]
 
 var skipMap = {}
