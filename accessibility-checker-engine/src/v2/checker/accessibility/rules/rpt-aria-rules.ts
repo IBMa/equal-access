@@ -599,7 +599,7 @@ let a11yRulesAria: Rule[] = [{
      */
     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
     context: "dom:*",
-    run: (context: RuleContext, options?: {}, hierachies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+    run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         let params = RPTUtil.getCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", null);
         if (!params) {
             params = {
@@ -685,7 +685,7 @@ let a11yRulesAria: Rule[] = [{
         let isPossibleOrphanedElement = nodeName in params.mapPossibleOrphanedElements;
         if (isPossibleOrphanedWidget || isPossibleOrphanedElement) {
             // See if ancestor has landmark roles or implicit land mark roles
-            let parentRoles = hierachies["aria"].map(info => info.role);
+            let parentRoles = hierarchies["aria"].map(info => info.role);
             passed = parentRoles.filter(role => role in params.mapLandmarks).length > 0
             if (!passed) {
                 // Don't fail elements when a parent or sibling has failed - causes too many messages.

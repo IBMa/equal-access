@@ -285,7 +285,7 @@ let a11yRulesCombobox: Rule[] = [
                 let nw = new NodeWalker(popupElement);
                 while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        found = nw.node.getAttribute("id") === activeId;
+                        found = nw.elem().getAttribute("id") === activeId;
                     }
                 }
             }
@@ -342,7 +342,7 @@ let a11yRulesCombobox: Rule[] = [
                 let nw = new NodeWalker(popupElement);
                 while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        passed = !nw.node.hasAttribute("aria-autocomplete");
+                        passed = !nw.elem().hasAttribute("aria-autocomplete");
                     }
                 }
             }

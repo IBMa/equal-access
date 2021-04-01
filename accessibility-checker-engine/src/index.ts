@@ -19,6 +19,7 @@ import { Context } from "./v2/common/Context"
 import { Checker } from "./v2/checker"
 import { ARIAMapper } from "./v2/aria/ARIAMapper";
 import { Config } from "./v2/config/Config";
+import { DOMWalker } from "./v2/dom/DOMWalker";
 
 String.prototype.startsWith = String.prototype.startsWith || function (str) {
     return this.indexOf(str) === 0;
@@ -103,4 +104,4 @@ function checkDemo(timeout?: number) {
     }, timeout);
 }
 
-export { Checker, Context, ARIAMapper, checkDemo, Config/*, simDemo*/ };
+export { Checker, Context, ARIAMapper, checkDemo, Config/*, simDemo*/, DOMWalker };

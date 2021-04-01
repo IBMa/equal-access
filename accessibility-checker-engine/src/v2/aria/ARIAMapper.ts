@@ -204,7 +204,10 @@ export class ARIAMapper extends CommonMapper {
     public static computeNameHelp(walkId: number, cur: Node, labelledbyTraverse: boolean, walkTraverse: boolean) : string {
         // 2g. None of the other content applies to text nodes, so just do this first
         if (cur.nodeType === 3 /* Node.TEXT_NODE */) return cur.nodeValue;
-        if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) throw new Error ("Can only compute name on Element and Text");
+        if (cur.nodeType === 11) return "";
+        if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) {
+            throw new Error ("Can only compute name on Element and Text");
+        }
 
         const elem = cur as Element;
         // We've been here before - prevent recursion

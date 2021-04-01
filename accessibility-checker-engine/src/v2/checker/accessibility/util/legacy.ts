@@ -596,10 +596,10 @@ export class RPTUtil {
 
                     let wRoles = [];
                     //check if the node has role attributes
-                    if (nw.node.hasAttribute && nw.node.hasAttribute("role")) {
+                    if (nw.elem() && nw.elem().hasAttribute("role")) {
                         // Extract all the roles that are assigned to this element, can have multiple roles on one
                         // element split by space, so we need to extract all of them into an array.
-                        wRoles = nw.node.getAttribute("role").split(" ");
+                        wRoles = nw.elem().getAttribute("role").split(" ");
                     }
 
                     if (wRoles.length === 0 && considerImplicitRoles) {
@@ -1986,8 +1986,15 @@ export class RPTUtil {
             text = element.textContent
         }
 
+        let retVal = !(text !== null && text.trim().length > 0);
+        if (element.nodeType === 1 && element.nodeName.toLowerCase() === "slot") {
+            for (const slotElem of element.assignedNodes()) {
+                retVal = retVal && RPTUtil.isInnerTextEmpty(slotElem);
+            }
+        }
+
         // Trim the inner text and verify that it is not empty.
-        return !(text != null && text.trim().length > 0);
+        return retVal;
     }
 
     /* Return the inner text of the given element */
@@ -2070,7 +2077,7 @@ export class RPTUtil {
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
                 hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node))
-                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node));
+                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node as any));
 
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
@@ -2082,7 +2089,7 @@ export class RPTUtil {
                         if (doc) {
                             let win = doc.defaultView;
                             if (win) {
-                                let cStyle = win.getComputedStyle(node);
+                                let cStyle = win.getComputedStyle(node as any);
                                 if (!hasContent && cStyle != null) {
                                     //                                       console.log(cStyle.backgroundImage);
                                     //                                       console.log(cStyle.content)
@@ -2125,7 +2132,7 @@ export class RPTUtil {
                     RPTUtil.attributeNonEmpty(nw.node, "alt"));
                 if (!hasContent 
                     && (RPTUtil.hasRole(nw.node, "button", true) || RPTUtil.hasRole(nw.node, "textbox"))
-                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.node, true))) 
+                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.elem(), true))) 
                 {
                     hasContent = true;
                 }
@@ -2826,8 +2833,8 @@ export class RPTUtil {
         }
         let nw = new NodeWalker(element);
         while (nw.nextNode()) {
-            let child = nw.node;
-            if (child.nodeType !== 1 /* Node.ELEMENT_NODE */) { // Text node. usually is a cartridge return.
+            let child = nw.elem();
+            if (child === null) { // Text node. usually is a cartridge return.
                 continue;
             }
             if (child.hasAttribute("tabindex") &&
@@ -3402,27 +3409,88 @@ export class ColorObj {
  * bEnd is optional and defaults to false
  * but if true, indicates the node is the end node*/
 export class NodeWalker {
-    node;
-    bEndTag;
-    constructor(element, bEnd?) {
-        this.node = element;
+    node : Node;
+    bEndTag : boolean;
+    constructor(node: Node, bEnd?: boolean) {
+        this.node = node;
         this.bEndTag = (bEnd === undefined ? false : bEnd === true);
     }
 
+    elem() : HTMLElement | null {
+        return this.node.nodeType === 1 && this.node as HTMLElement || null;
+    }
+
     nextNode() {
-        if (!this.bEndTag && this.node.firstChild) {
-            this.node = this.node.firstChild;
-        } else if (this.node.nextSibling) {
-            this.node = this.node.nextSibling;
-            this.bEndTag = false;
-        } else if (this.node.parentNode) {
-            this.node = this.node.parentNode;
-            this.bEndTag = true;
+        if (!this.bEndTag) {
+            let iframeNode = (this.node as HTMLIFrameElement);
+            let elementNode = (this.node as HTMLElement);
+            let slotElement = (this.node as HTMLSlotElement)
+            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                && this.node.nodeName.toUpperCase() === "IFRAME"
+                && iframeNode.contentDocument
+                && iframeNode.contentDocument.documentElement)
+            {
+                let ownerElement = this.node;
+                this.node = iframeNode.contentDocument.documentElement;
+                (this.node as any).ownerElement = ownerElement;
+            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+                && elementNode.shadowRoot
+                && elementNode.shadowRoot.firstChild)
+            {
+                let ownerElement = this.node;
+                this.node = elementNode.shadowRoot;
+                (this.node as any).ownerElement = ownerElement;
+            } else if (this.node.nodeType === 1 
+                && elementNode.nodeName.toLowerCase() === "slot"
+                && slotElement.assignedNodes().length > 0) 
+            {
+                let slotOwner = this.node;
+                this.node = slotElement.assignedNodes()[0];
+                (this.node as any).slotOwner = slotOwner;
+            } else if (this.node.firstChild) {
+                this.node = this.node.firstChild;
+            } else {
+                this.bEndTag = true;
+                return this.nextNode();
+            }
         } else {
-            return false;
+            if (this.node.nextSibling) {
+                this.node = this.node.nextSibling;
+                this.bEndTag = false;
+            } else if ((this.node as any).ownerElement) {
+                this.node = (this.node as any).ownerElement;
+                this.bEndTag = true;
+            } else if ((this.node as any).slotOwner) {
+                if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("slot")) {
+                    // If this wasn't a named slot, look for the next unnamed node to put in the slot
+                    let n = this.node.nextSibling;
+                    while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
+                        n = this.node.nextSibling;
+                    } 
+                    if (n) {
+                        // We found another unnamed slot
+                        let slotOwner = (this.node as any).slotOwner;
+                        this.node = n;
+                        (this.node as any).slotOwner = slotOwner;
+                        this.bEndTag = false;
+                    } else {
+                        this.node = (this.node as any).slotOwner;
+                        this.bEndTag = true;
+                    }
+                } else {
+                    this.node = (this.node as any).slotOwner;
+                    this.bEndTag = true;
+                }
+            } else if (this.node.parentNode) {
+                this.node = this.node.parentNode;
+                this.bEndTag = true;
+            } else {
+                return false;
+            }
         }
         return true;
     }
+
     prevNode() {
         if (this.bEndTag && this.node.lastChild) {
             this.node = this.node.lastChild;

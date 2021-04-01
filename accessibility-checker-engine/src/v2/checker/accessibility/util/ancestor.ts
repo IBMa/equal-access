@@ -29,4 +29,14 @@ export class AncestorUtil {
         }
         return false;
     }
+
+    public static getOwnerFragment(node: Node) : Document | DocumentFragment {
+        let n : Node = node;
+        while(n.parentNode && (n = n.parentNode)){
+            if (n.nodeType === 11) {
+                return n as DocumentFragment;
+            }
+        }
+        return node.ownerDocument;
+    }
 }

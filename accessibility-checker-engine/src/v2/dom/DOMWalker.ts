@@ -46,6 +46,7 @@ export class DOMWalker {
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
                 let elementNode = (this.node as HTMLElement);
+                let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
                     && DOMUtil.isNodeVisible(iframeNode)
@@ -63,6 +64,13 @@ export class DOMWalker {
                     let ownerElement = this.node;
                     this.node = elementNode.shadowRoot;
                     (this.node as any).ownerElement = ownerElement;
+                } else if (this.node.nodeType === 1 
+                    && elementNode.nodeName.toLowerCase() === "slot"
+                    && slotElement.assignedNodes().length > 0) 
+                {
+                    let slotOwner = this.node;
+                    this.node = slotElement.assignedNodes()[0];
+                    (this.node as any).slotOwner = slotOwner;
                 } else if ((this.node.nodeType === 1 /* Node.ELEMENT_NODE */ || this.node.nodeType === 11) /* Node.ELEMENT_NODE */ && this.node.firstChild) {
                     this.node = this.node.firstChild;
                 } else {
@@ -77,6 +85,27 @@ export class DOMWalker {
                 } else if ((this.node as any).ownerElement) {
                     this.node = (this.node as any).ownerElement;
                     this.bEndTag = true;
+                } else if ((this.node as any).slotOwner) {
+                    if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("slot")) {
+                        // If this wasn't a named slot, look for the next unnamed node to put in the slot
+                        let n = this.node.nextSibling;
+                        while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
+                            n = this.node.nextSibling;
+                        } 
+                        if (n) {
+                            // We found another unnamed slot
+                            let slotOwner = (this.node as any).slotOwner;
+                            this.node = n;
+                            (this.node as any).slotOwner = slotOwner;
+                            this.bEndTag = false;
+                        } else {
+                            this.node = (this.node as any).slotOwner;
+                            this.bEndTag = true;
+                        }
+                    } else {
+                        this.node = (this.node as any).slotOwner;
+                        this.bEndTag = true;
+                    }
                 } else if (this.node.parentNode) {
                     this.node = this.node.parentNode;
                     this.bEndTag = true;
