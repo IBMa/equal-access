@@ -230,11 +230,13 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: report-react
-    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']/;/g" ./exceljs.js
-      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: npm install
       working-directory: accessibility-checker-extension
+    - run: grep "use-strict" ./excel.js | wc -l
+      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: sed -i'.old' -e "s/[\"|']use strict[\"|']/;/g" ./exceljs.js
+      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
+    - run: grep "use-strict" ./excel.js | wc -l
       working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
