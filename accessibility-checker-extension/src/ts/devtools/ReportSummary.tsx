@@ -43,6 +43,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
             hour: '2-digit',
             minute: '2-digit'
         };
+        //@ts-ignore
         let time = d.toLocaleString('en-us', options);
 
         // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
