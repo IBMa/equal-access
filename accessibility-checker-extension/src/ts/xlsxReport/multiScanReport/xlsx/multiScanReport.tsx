@@ -17,8 +17,7 @@
 import ReportUtil from "../../reportUtil";
 // import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
-
-import ExcelJS from 'exceljs'
+import ExcelJS from "exceljs"
 
 export default class MultiScanReport {
 
