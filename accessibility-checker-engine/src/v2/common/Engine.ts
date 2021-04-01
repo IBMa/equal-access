@@ -180,15 +180,15 @@ export class Engine implements IEngine {
             for (const namespace in this.mappers) {
                 if (!walker.bEndTag) {
                     contextHierarchies[namespace] = this.mappers[namespace].openScope(walker.node);
-                    if (namespace === "dom" && walker.node.nodeType === 1 /* Node.ELEMENT_NODE */) {
-                        const elem = walker.node as Element;
-                        let id;
-                        if (elem.hasAttribute("id") && (id = elem.getAttribute("id").trim()).length > 0) {
-                            if (root.ownerDocument.getElementById(id) === elem) {
+                    // if (namespace === "dom" && walker.node.nodeType === 1 /* Node.ELEMENT_NODE */) {
+                        // const elem = walker.node as Element;
+                        // let id;
+                        // if (elem.hasAttribute("id") && (id = elem.getAttribute("id").trim()).length > 0) {
+                            // if (root.ownerDocument.getElementById(id) === elem) {
                                 // contextHierarchies["dom"][contextHierarchies["dom"].length-1].rolePath = "//*[@id='"+id+"']";
-                            }
-                        }
-                    }
+                            // }
+                        // }
+                    // }
                 } else {
                     contextHierarchies[namespace] = this.mappers[namespace].closeScope(walker.node);
                 }

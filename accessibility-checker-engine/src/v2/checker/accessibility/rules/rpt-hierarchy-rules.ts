@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesHier: Rule[] = [{
@@ -65,7 +66,7 @@ let a11yRulesHier: Rule[] = [{
             return RuleFail("Fail_1");
         }
 
-        let descendant = ruleContext.ownerDocument.getElementById(descendant_id.trim());
+        let descendant = FragmentUtil.getById(ruleContext, descendant_id.trim());
         if (!descendant) {
             // The referenced element doesn't exist. We let 1077 to trigger the error
             return null;
@@ -88,7 +89,7 @@ let a11yRulesHier: Rule[] = [{
         if (ruleContext.hasAttribute("aria-owns")) {
             let owned_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-owns").trim()).split(" ");
             for (let i = 0; i < owned_ids.length; i++) {
-                let owned_ele = ruleContext.ownerDocument.getElementById(owned_ids[i]);
+                let owned_ele = FragmentUtil.getById(ruleContext, owned_ids[i]);
                 if (owned_ele.contains(descendant)) {
                     return RulePass("Pass_0");
                 }
@@ -104,14 +105,14 @@ let a11yRulesHier: Rule[] = [{
             pofId = 3;
             let controlled_ids = RPTUtil.normalizeSpacing(ruleContext.getAttribute("aria-controls").trim()).split(" ");
             for (let i = 0; i < controlled_ids.length; i++) {
-                let controlled_ele = ruleContext.ownerDocument.getElementById(controlled_ids[i]);
+                let controlled_ele = FragmentUtil.getById(ruleContext, controlled_ids[i]);
                 if (controlled_ele.contains(descendant)) {
                     return RulePass("Pass_0");
                 }
                 if (controlled_ele.hasAttribute("aria-owns")) {
                     let owns_ids = RPTUtil.normalizeSpacing(controlled_ele.getAttribute("aria-owns").trim()).split(" ");
                     for (let j = 0; j < owns_ids.length; j++) {
-                        let owned_ele = ruleContext.ownerDocument.getElementById(owns_ids[j]);
+                        let owned_ele = FragmentUtil.getById(ruleContext, owns_ids[j]);
                         if (owned_ele.contains(descendant)) {
                             return RulePass("Pass_0");
                         }

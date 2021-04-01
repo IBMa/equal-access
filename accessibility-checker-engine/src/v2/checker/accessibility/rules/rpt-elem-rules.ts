@@ -16,7 +16,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
-import { AncestorUtil } from "../util/ancestor";
+import { FragmentUtil } from "../util/fragment";
 
 let a11yRulesElem: Rule[] = [
     {
@@ -91,7 +91,6 @@ let a11yRulesElem: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             // JCH - NO OUT OF SCOPE hidden in context
-            let doc = AncestorUtil.getOwnerFragment(ruleContext);
             let id = ruleContext.getAttribute("id");
 
             // In the case that id is empty we should trigger a violation right away with out checking 
@@ -101,7 +100,7 @@ let a11yRulesElem: Rule[] = [
                 return RuleFail("Fail_1", [ruleContext.nodeName.toLowerCase(), id]);
             }
 
-            let element = doc.getElementById(id);
+            let element = FragmentUtil.getById(ruleContext, id);
             let passed = element === ruleContext;
             //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [ruleContext.nodeName.toLowerCase(), id]);
             if (!passed) {

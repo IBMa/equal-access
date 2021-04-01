@@ -17,6 +17,7 @@
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { CacheDocument, CacheElement } from "../../../common/Engine";
+import { FragmentUtil } from "./fragment";
 
 export class RPTUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
@@ -439,12 +440,12 @@ export class RPTUtil {
     }
 
     public static getDocElementsByTag(elem, tagName) {
-        let doc = elem.ownerDocument;
+        let doc = FragmentUtil.getOwnerFragment(elem) as any;
         tagName = tagName.toLowerCase();
         if (!doc.RPT_DOCELEMSBYTAG)
             doc.RPT_DOCELEMSBYTAG = {}
         if (!(tagName in doc.RPT_DOCELEMSBYTAG))
-            doc.RPT_DOCELEMSBYTAG[tagName] = doc.getElementsByTagName(tagName);
+            doc.RPT_DOCELEMSBYTAG[tagName] = doc.querySelectorAll(tagName);
         return doc.RPT_DOCELEMSBYTAG[tagName];
     }
 
@@ -1536,7 +1537,7 @@ export class RPTUtil {
             let referenceID = element.getAttribute("aria-owns");
 
             // Get the element for the reference ID
-            referencedElement = element.ownerDocument.getElementById(referenceID);
+            referencedElement = FragmentUtil.getById(element, referenceID);
 
             // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
             // or not.
@@ -1718,7 +1719,7 @@ export class RPTUtil {
                 } else if (elements[i].hasAttribute("aria-labelledby")) {
 
                     let labelID = elements[i].getAttribute("aria-labelledby");
-                    let labelNode = elements[i].ownerDocument.getElementById(labelID);
+                    let labelNode = FragmentUtil.getById(elements[i], labelID);
                     let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
                     let normalizedLabel = RPTUtil.normalizeSpacing(label).toLowerCase();
                     hasDuplicateLabels = normalizedLabel in uniqueAriaLabels;
@@ -1743,7 +1744,7 @@ export class RPTUtil {
                 let normalizedLabel = "";
                 for (let j = 0, length = labelIDs.length; j < length; ++j) {
                     let labelID = labelIDs[j];
-                    let labelNode = ele.ownerDocument.getElementById(labelID);
+                    let labelNode = FragmentUtil.getById(ele, labelID);
                     let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
                     normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
                 }
@@ -1809,7 +1810,7 @@ export class RPTUtil {
                     let normalizedLabel = "";
                     for (let j = 0, length = labelIDs.length; j < length; ++j) {
                         let labelID = labelIDs[j];
-                        let labelNode = elements[i].ownerDocument.getElementById(labelID);
+                        let labelNode = FragmentUtil.getById(elements[i], labelID);
                         let label = labelNode ? RPTUtil.getInnerText(labelNode) : "";
                         normalizedLabel += RPTUtil.normalizeSpacing(label).toLowerCase();
                     }
@@ -1915,7 +1916,7 @@ export class RPTUtil {
 
     /* Return a pointer to the given global variable
      * with its initial value as given */
-    public static getCache(cacheSpot: Document | Element, keyName, initValue) {
+    public static getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
 
         if (cacheObj.aceCache === undefined) {
@@ -2656,7 +2657,7 @@ export class RPTUtil {
         let labelAncestor = RPTUtil.getAncestor(node, "label");
         if (labelAncestor) {
             if (labelAncestor.hasAttribute("for")) {
-                return node.ownerDocument.getElementById(labelAncestor.getAttribute("for"));
+                return FragmentUtil.getById(node, labelAncestor.getAttribute("for"));
             }
         }
 

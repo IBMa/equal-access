@@ -19,6 +19,7 @@ import { CommonMapper } from "../common/CommonMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 import { DOMWalker } from "../dom/DOMWalker";
 import { RPTUtil } from "../checker/accessibility/util/legacy"
+import { FragmentUtil } from "../checker/accessibility/util/fragment";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
@@ -225,7 +226,7 @@ export class ARIAMapper extends CommonMapper {
             let labelledby = elem.getAttribute("aria-labelledby").split(" ");
             let validElems = [];
             for (const ref of labelledby) {
-                const refElem = cur.ownerDocument.getElementById(ref);
+                const refElem = FragmentUtil.getById(cur, ref);
                 if (refElem) {
                     validElems.push(refElem);
                 }
@@ -293,7 +294,7 @@ export class ARIAMapper extends CommonMapper {
             // TODO: If the embedded control has role combobox or listbox, return the text alternative of the chosen option.
             if (role === "combobox") {
                 if (elem.hasAttribute("aria-activedescendant")) {
-                    let selected = elem.ownerDocument.getElementById("aria-activedescendant");
+                    let selected = FragmentUtil.getById(elem, "aria-activedescendant");
                     if (selected) {
                         return ARIAMapper.computeNameHelp(walkId, selected, false, false);
                     }
@@ -378,7 +379,7 @@ export class ARIAMapper extends CommonMapper {
             name = "";
             const ids = elem.getAttribute("aria-labelledby").split(" ");
             for (const id of ids) {
-                name += elem.ownerDocument.getElementById(id).textContent + " ";
+                name += FragmentUtil.getById(elem, id).textContent + " ";
             }
             name = name.trim();
         }
@@ -432,7 +433,7 @@ export class ARIAMapper extends CommonMapper {
         let textSuggestions = function(element) {
             if (element.hasAttribute("list")) {
                 let id = element.getAttribute("list");
-                let idRef = element.ownerDocument.getElementById(id);
+                let idRef = FragmentUtil.getById(element, id);
                 if (idRef && idRef.nodeName.toLowerCase() === "datalist") {
                     return "combobox";
                 }

@@ -17,6 +17,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { FragmentUtil } from "../util/fragment";
 
 let a11yRulesLabeling: Rule[] = [
     {
@@ -742,7 +743,7 @@ let a11yRulesLabeling: Rule[] = [
                         if (aria_owns) {
                             let owns = RPTUtil.normalizeSpacing(aria_owns.trim()).split(" ");
                             for (let i = 0; i < owns.length; i++) {
-                                let owned = ruleContext.ownerDocument.getElementById(owns[i]);
+                                let owned = FragmentUtil.getById(ruleContext, owns[i]);
                                 if (owned === ruleContext) {
                                     return null;
                                 }

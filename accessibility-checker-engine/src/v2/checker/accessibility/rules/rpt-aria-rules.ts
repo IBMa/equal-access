@@ -17,6 +17,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { FragmentUtil } from "../util/fragment";
 
 let a11yRulesAria: Rule[] = [{
     /**
@@ -356,7 +357,7 @@ let a11yRulesAria: Rule[] = [{
         let pass = true;
         let attrNameArr = new Array();
         let nonExistantIDs = new Array();
-        let ownerDocument = ruleContext.ownerDocument;
+        let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
         let contextAttributes = ruleContext.attributes;
         let idTokens = new Array();
         let testedReferences = 0;
@@ -553,10 +554,9 @@ let a11yRulesAria: Rule[] = [{
     id: "Rpt_Aria_RequiredParent_Native_Host_Sematics",
     context: "dom:*[role]",
     dependencies: ["Rpt_Aria_ValidRole"],
-    run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+    run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = true;
-        let parentRoles = new Array();
         let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
@@ -564,13 +564,15 @@ let a11yRulesAria: Rule[] = [{
         let testedContainer = 0;
 
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        let parentRoles = hierarchies["aria"].map(info => info.role);
+
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
                 passed = false;
                 containerRoles = designPatterns[roles[j]].container;
                 for (let i = 0, containersLength = containerRoles.length; !passed && i < containersLength; i++) {
-                    passed = RPTUtil.getAncestorWithRole(ruleContext, containerRoles[i], true) != null;
+                    passed = parentRoles.includes(containerRoles[i]);
                     if (passed) break;
                 }
                 if (passed == false) {
@@ -1354,7 +1356,7 @@ let a11yRulesAria: Rule[] = [{
             return null;
         }
 
-        let msg_ele = ruleContext.ownerDocument.getElementById(aria_errMsgId);
+        let msg_ele = FragmentUtil.getById(ruleContext, aria_errMsgId);
 
         // POF0: Invalid id reference
         if (!msg_ele) {

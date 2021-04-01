@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
 function patternDetect(elem: Element) : String {
@@ -118,7 +119,7 @@ let a11yRulesCombobox: Rule[] = [
                     return !expanded ? null : RuleFail("Fail_1.0_missing_owns");
                 }
                 popupId = ruleContext.getAttribute("aria-owns");
-                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                popupElement = FragmentUtil.getById(ruleContext, popupId);
                 if (!popupElement) {
                     // If the combobox isn't expanded, this attribute isn't required
                     return !expanded ? null : RuleFail("Fail_1.0_popup_reference_missing", [popupId]);
@@ -129,7 +130,7 @@ let a11yRulesCombobox: Rule[] = [
                     return !expanded ? null: RuleFail("Fail_1.2_missing_controls");
                 }
                 popupId = ruleContext.getAttribute("aria-controls");
-                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                popupElement = FragmentUtil.getById(ruleContext, popupId);
                 if (!popupElement) {
                     // If the combobox isn't expanded, this attribute isn't required
                     return !expanded ? null : RuleFail("Fail_1.2_popup_reference_missing", [popupId]);
@@ -273,7 +274,7 @@ let a11yRulesCombobox: Rule[] = [
                 return null;
             }
 
-            let activeElem = ruleContext.ownerDocument.getElementById(activeId);
+            let activeElem = FragmentUtil.getById(ruleContext, activeId);
             if (!activeElem) {
                 return RuleFail("Fail_missing", [activeId]);
             }
