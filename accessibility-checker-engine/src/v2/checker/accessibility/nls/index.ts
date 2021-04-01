@@ -797,9 +797,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_MultipleNavigationLandmarks_Implicit": {
-        0: "Each element with \"nav\" role must have a unique label that describes its purpose",
+        0: "Each element with \"navigation\" role must have a unique label that describes its purpose",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with \"nav\" role do not have unique labels"
+        "Fail_1": "Multiple elements with \"navigation\" role do not have unique labels"
     },
     // JCH - DONE
     "Rpt_Aria_ComplementaryLandmarkLabel_Implicit": {
