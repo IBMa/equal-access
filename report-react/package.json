@@ -53,7 +53,7 @@
     "postcss-safe-parser": "4.0.1",
     "react": "^16.13.1",
     "react-app-polyfill": "^1.0.5",
-    "react-dev-utils": "10.1.0",
+    "react-dev-utils": "11.0.4",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.0",
     "resolve": "1.12.2",
