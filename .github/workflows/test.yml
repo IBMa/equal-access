@@ -232,6 +232,8 @@ jobs:
       working-directory: report-react
     - run: npm install
       working-directory: accessibility-checker-extension
+    - run: sed -i'.old' -e "s/[\"|']use strict[\"|']/;/g" ./exceljs.js
+      working-directory: accessibility-checker-extension/node_modules/exceljs/dist
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: npm run package:browser
