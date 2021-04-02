@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesLabel: Rule[] = [
@@ -29,7 +30,7 @@ let a11yRulesLabel: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             // JCH - NO OUT OF SCOPE hidden in context
-            let labelIds = RPTUtil.getCache(ruleContext.ownerDocument, "RPT_Label_Single", {})
+            let labelIds = RPTUtil.getCache(FragmentUtil.getOwnerFragment(ruleContext), "RPT_Label_Single", {})
             let id = ruleContext.getAttribute("for");
             let passed = !(id in labelIds);
             labelIds[id] = true;
@@ -54,7 +55,7 @@ let a11yRulesLabel: Rule[] = [
             } else if ((ruleContext.getAttribute("aria-label") || "").trim().length > 0) {
                 return RulePass("Pass_AriaLabel");
             } else if (ruleContext.hasAttribute("aria-labelledby")) {
-                let labelElem = ruleContext.ownerDocument.getElementById(ruleContext.getAttribute('aria-labelledby'));
+                let labelElem = FragmentUtil.getById(ruleContext, ruleContext.getAttribute('aria-labelledby'));
                 if (labelElem && RPTUtil.hasInnerContent(labelElem)) {
                     return RulePass("Pass_LabelledBy");
                 }
@@ -72,9 +73,8 @@ let a11yRulesLabel: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let id = ruleContext.getAttribute("for");
-            let doc = ruleContext.ownerDocument;
             let passed = false;
-            let target = doc.getElementById(id);
+            let target = FragmentUtil.getById(ruleContext, id);
             if (target) {
                 passed = true;
                 // handles null and undefined
@@ -130,7 +130,7 @@ let a11yRulesLabel: Rule[] = [
 
             let passed = true;
             let id = ruleContext.getAttribute("for");
-            let target = ruleContext.ownerDocument.getElementById(id);
+            let target = FragmentUtil.getById(ruleContext, id);
             if (target) {
                 passed = RPTUtil.getElementAttribute(target, "type") != "hidden";
             }
@@ -177,7 +177,7 @@ let a11yRulesLabel: Rule[] = [
                 if (theLabelBy) {
                     let labelValues = theLabelBy.split(/\s+/);
                     for (let j = 0; j < labelValues.length; ++j) {
-                        let elementById = ruleContext.ownerDocument.getElementById(labelValues[j]);
+                        let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
                         if (elementById) {
                             theLabel = RPTUtil.getInnerText(elementById);
                             break;
