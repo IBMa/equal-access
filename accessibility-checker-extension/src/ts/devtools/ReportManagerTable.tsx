@@ -39,7 +39,7 @@ interface IReportManagerTableProps {
     }[],
     reportHandler: (typeScan: string) => void,
     setStoredScanCount: () => void,
-    onKeyUp: (e:any, i:number) => void,
+    storeScanLabel: (e:any, i:number) => void,
     clearSelectedStoredScans: () => void,
 }
 
@@ -220,7 +220,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                             {index == 0 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 1 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 2 ? cell.value : ""}
-                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onKeyUp={(e) => {this.props.onKeyUp(e,i)}}/> : ""}
+                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i)}}/> : ""}
                                             {index == 4 ? cell.value : ""}
                                         </TableCell>
                                     ))}

@@ -529,23 +529,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         console.log("storedScans = ", this.state.storedScans);
     }
 
-    onKeyUp(event:any,i:number) {
-        console.log("onKeyUp Start");
+    storeScanLabel(event:any,i:number) {
+        console.log("storeScanLabel Start");
         const value = event.target.value;
         console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
-        if (event.nativeEvent.keyCode === 13) {
-            console.log("got Enter key");
-            // this.setState(prevState => ({
-            //     storedScans: {
-            //         ...prevState.storedScans,
-            //         [prevState.storedScans[i].scanLabel]: value,
-            //     },
-            // }));
-            let storedScansCopy = this.state.storedScans;
-            storedScansCopy[i].userScanLabel = value;
-            this.setState({storedScans: storedScansCopy});
-            console.log("onKeyUp End");
-        }
+        
+        let storedScansCopy = this.state.storedScans;
+        storedScansCopy[i].userScanLabel = value;
+        this.setState({storedScans: storedScansCopy});
+        console.log("storeScanLabel End");
+       
         console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
     }
 
@@ -926,7 +919,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         storedScans={this.state.storedScans} 
                         setStoredScanCount={this.setStoredScanCount.bind(this)} 
                         clearSelectedStoredScans={this.clearSelectedStoredScans.bind(this)} 
-                        onKeyUp={this.onKeyUp.bind(this)} 
+                        storeScanLabel={this.storeScanLabel.bind(this)} 
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
                 </div>
