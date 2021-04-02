@@ -180,25 +180,27 @@ export class Engine implements IEngine {
             for (const namespace in this.mappers) {
                 if (!walker.bEndTag) {
                     contextHierarchies[namespace] = this.mappers[namespace].openScope(walker.node);
-                    if (namespace === "dom" && walker.node.nodeType === 1 /* Node.ELEMENT_NODE */) {
-                        const elem = walker.node as Element;
-                        let id;
-                        if (elem.hasAttribute("id") && (id = elem.getAttribute("id").trim()).length > 0) {
-                            if (root.ownerDocument.getElementById(id) === elem) {
+                    // if (namespace === "dom" && walker.node.nodeType === 1 /* Node.ELEMENT_NODE */) {
+                        // const elem = walker.node as Element;
+                        // let id;
+                        // if (elem.hasAttribute("id") && (id = elem.getAttribute("id").trim()).length > 0) {
+                            // if (root.ownerDocument.getElementById(id) === elem) {
                                 // contextHierarchies["dom"][contextHierarchies["dom"].length-1].rolePath = "//*[@id='"+id+"']";
-                            }
-                        }
-                    }
+                            // }
+                        // }
+                    // }
                 } else {
                     contextHierarchies[namespace] = this.mappers[namespace].closeScope(walker.node);
                 }
             }
 
-            if (DOMUtil.isNodeVisible(walker.node)
-                || walker.node.nodeName.toLowerCase() === "style"
-                || walker.node.nodeName.toLowerCase() === "datalist"
-                || walker.node.nodeName.toLowerCase() === "param"
-                || !DOMUtil.getAncestor(walker.node, ["body"])
+            if (walker.node.nodeType !== 11 
+                && (DOMUtil.isNodeVisible(walker.node)
+                    || walker.node.nodeName.toLowerCase() === "style"
+                    || walker.node.nodeName.toLowerCase() === "datalist"
+                    || walker.node.nodeName.toLowerCase() === "param"
+                    || !DOMUtil.getAncestor(walker.node, ["body"])
+                )
             ) {
                 const context : RuleContext = {};
                 for (const ns in contextHierarchies) {
