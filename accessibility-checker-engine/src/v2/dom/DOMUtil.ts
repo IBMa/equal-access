@@ -33,22 +33,26 @@ export class DOMUtil {
     }
 
     static isNodeVisible(node: Node) {
-        let vis = null;
-        while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
-            node = node.parentElement;
-        }
-        let elem = node as Element;
-        let w = elem.ownerDocument.defaultView;
-        do {
-            let cs = w.getComputedStyle(elem);
-            if (cs.display === "none") return false;
-            if (vis === null && cs.visibility) {
-                vis = cs.visibility;
-                if (vis === "hidden") return false;
+        try {
+            let vis = null;
+            while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
+                node = node.parentElement;
             }
-            elem = elem.parentElement;
-        } while (elem);
-        return true;
+            let elem = node as Element;
+            let w = elem.ownerDocument.defaultView;
+            do {
+                let cs = w.getComputedStyle(elem);
+                if (cs.display === "none") return false;
+                if (vis === null && cs.visibility) {
+                    vis = cs.visibility;
+                    if (vis === "hidden") return false;
+                }
+                elem = elem.parentElement;
+            } while (elem);
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 
     static sameNode(a: Node, b: Node) : boolean {

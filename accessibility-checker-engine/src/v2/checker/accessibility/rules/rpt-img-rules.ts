@@ -111,9 +111,9 @@ let a11yRulesImg: Rule[] = [
                         break;
                     }
                     // Comply with the Check Hidden Content Setting if the a element should be checked or not
-                    else if (nodeName == "a" && !RPTUtil.shouldNodeBeSkippedHidden(node)) {
+                    else if (nodeName === "a" && !RPTUtil.shouldNodeBeSkippedHidden(node)) {
                         // Text before image link
-                        passed = (node.innerText || node.textContent || "").trim().toLowerCase() != altText;
+                        passed = ((node as HTMLElement).innerText || node.textContent || "").trim().toLowerCase() != altText;
                     }
                 }
                 if (!passed) {
@@ -131,7 +131,7 @@ let a11yRulesImg: Rule[] = [
                     }
                     // Comply with the Check Hidden Content Setting if the a element should be checked or not
                     else if (nodeName == "a" && !RPTUtil.shouldNodeBeSkippedHidden(node)) {
-                        passed = node.innerText.trim().toLowerCase() != altText;
+                        passed = (node as HTMLElement).innerText.trim().toLowerCase() != altText;
                     }
                 }
                 if (!passed) {

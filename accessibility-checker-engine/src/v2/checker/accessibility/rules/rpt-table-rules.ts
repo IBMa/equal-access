@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesTable: Rule[] = [
@@ -38,7 +39,7 @@ let a11yRulesTable: Rule[] = [
                 pofId = 1;
                 let summaryNodeId = ruleContext.getAttribute("aria-describedby");
                 if (summaryNodeId) {
-                    let summaryNode = ruleContext.ownerDocument.getElementById(summaryNodeId);
+                    let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
                     if (summaryNode) {
                         sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
                     }
@@ -110,7 +111,7 @@ let a11yRulesTable: Rule[] = [
             let summaryNodeId = ruleContext.getAttribute("aria-describedby");
             let sumStr;
             if (summaryNodeId) {
-                let summaryNode = ruleContext.ownerDocument.getElementById(summaryNodeId);
+                let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
                 if (summaryNode) {
                     sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
                     if (sumStr) {
