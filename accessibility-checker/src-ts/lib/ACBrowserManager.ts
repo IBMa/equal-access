@@ -49,7 +49,7 @@ export class ACBrowserManager {
         const browser = await ACBrowserManager.getBrowserChrome(false);
 
         // Clear out any pages that are already closed
-        ACBrowserManager.pages = ACBrowserManager.pages.map((page) => !page.isClosed() ? page : null);
+        ACBrowserManager.pages = ACBrowserManager.pages.filter((page) => page && !page.isClosed());
 
         // If there's an existing, ready page, use it
         let availPage;
