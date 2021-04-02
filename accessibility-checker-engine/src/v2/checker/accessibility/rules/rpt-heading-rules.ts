@@ -124,12 +124,12 @@ let a11yRulesHeading: Rule[] = [
                     passed =
                         (nw.node.nodeType == 1 && RPTUtil.attributeNonEmpty(nw.node, "alt") &&
                             (nwName == "applet" || nwName == "embed" || nwName == "img" ||
-                                (nwName == "input" && nw.node.hasAttribute("type") && nw.node.getAttribute("type") == "image")
+                                (nwName === "input" && nw.elem().hasAttribute("type") && nw.elem().getAttribute("type") == "image")
                             )
                         )
-                        || (nwName == "#text" && nw.node.nodeValue.trim().length > 0)
+                        || (nwName === "#text" && nw.node.nodeValue.trim().length > 0)
                         // Give them the benefit of the doubt if there's a link
-                        || (nwName == "a" && nw.node.hasAttribute("href") && RPTUtil.attributeNonEmpty(nw.node, "href"));
+                        || (nwName === "a" && nw.elem().hasAttribute("href") && RPTUtil.attributeNonEmpty(nw.node, "href"));
                 }
             }
             if (wordsSeen == 0) passed = true;

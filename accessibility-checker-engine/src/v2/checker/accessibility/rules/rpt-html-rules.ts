@@ -17,6 +17,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 import { AncestorUtil } from "../util/ancestor";
+import { FragmentUtil } from "../util/fragment";
 
 let a11yRulesHtml: Rule[] = [
 
@@ -122,7 +123,7 @@ let a11yRulesHtml: Rule[] = [
 
                         if (href.charAt(0) == "#" || href.startsWith(docHref + "#")) {
                             let target = RPTUtil.getFileAnchor(href);
-                            if (ruleContext.ownerDocument.getElementById(target) != null)
+                            if (FragmentUtil.getById(ruleContext, target) != null)
                                 passed = true;
                             else
                                 targets[target] = true;
