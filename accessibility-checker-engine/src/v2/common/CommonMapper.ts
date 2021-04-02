@@ -89,11 +89,15 @@ export abstract class CommonMapper implements IMapper {
             });
         }
 
+        let attr = {}
+        if (node.nodeType === 1) {
+            attr = this.getAttributes(node);
+        }
         this.hierarchyResults.push({
             node: node,
             namespace: this.getNamespace(),
             role: role,
-            attributes: this.getAttributes(node),
+            attributes: attr,
             rolePath: this.hierarchyPath[this.hierarchyPath.length-1].rolePath,
             bounds: this.getBounds(node)
         })

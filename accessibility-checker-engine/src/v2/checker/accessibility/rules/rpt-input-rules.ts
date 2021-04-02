@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
 let a11yRulesInput: Rule[] = [
@@ -73,7 +74,7 @@ let a11yRulesInput: Rule[] = [
                     } else if ((labelElem.getAttribute("aria-label") || "").trim().length > 0) {
                         hasLabelElemContent = true;
                     } else if (labelElem.hasAttribute("aria-labelledby")) {
-                        let labelledByElem = labelElem.ownerDocument.getElementById(labelElem.getAttribute('aria-labelledby'));
+                        let labelledByElem = FragmentUtil.getById(labelElem, labelElem.getAttribute('aria-labelledby'));
                         if (labelledByElem && RPTUtil.hasInnerContent(labelledByElem)) {
                             hasLabelElemContent = true;
                         }
@@ -113,7 +114,7 @@ let a11yRulesInput: Rule[] = [
                 if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && ruleContext.parentElement.hasAttribute("widgetid")) {
                     // Special handling for dijit buttons
                     let labelId = ruleContext.parentElement.getAttribute("widgetid") + "_label";
-                    let label = ruleContext.ownerDocument.getElementById(labelId);
+                    let label = FragmentUtil.getById(ruleContext, labelId);
                     if (label != null) {
                         passed = RPTUtil.hasInnerContentHidden(label);
                         // This means I failed above also
@@ -334,17 +335,22 @@ let a11yRulesInput: Rule[] = [
                         retVal = null;
                     }
                 }
+                if (!retVal) {
+                    retVal = RPTUtil.getAncestor(ruleContext, "#document-fragment");
+                }
                 return retVal;
             }
 
             // Only radio buttons and checkboxes are in scope
             let ctxType = ruleContext.hasAttribute("type") ? ruleContext.getAttribute("type").toLowerCase() : "text";
-            if (ctxType != "checkbox" && ctxType != "radio") {
+            if (ctxType !== "checkbox" && ctxType !== "radio") {
                 return null;
             }
 
             // Determine which form we're in (if any) to determine our scope
-            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") || ruleContext.ownerDocument.documentElement;
+            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") 
+                || RPTUtil.getAncestor(ruleContext, "#document-fragment")
+                || ruleContext.ownerDocument.documentElement;
 
             // Get data about all of the visible checkboxes and radios in the scope of this form 
             // and cache it for all of the other inputs in this scope
@@ -364,7 +370,9 @@ let a11yRulesInput: Rule[] = [
                 let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
                 for (let idx=0; idx<checkboxQ.length; ++idx) {
                     const cb = checkboxQ[idx];
-                    if ((RPTUtil.getAncestorWithRole(cb, "form") || ruleContext.ownerDocument.documentElement) === ctxForm 
+                    if ((RPTUtil.getAncestorWithRole(cb, "form") 
+                        || RPTUtil.getAncestor(cb, "#document-fragment")
+                        || ruleContext.ownerDocument.documentElement) === ctxForm 
                         && !RPTUtil.shouldNodeBeSkippedHidden(cb)) 
                     {
                         const name = cb.getAttribute("name") || "";
@@ -377,7 +385,10 @@ let a11yRulesInput: Rule[] = [
                 let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
                 for (let idx=0; idx<radiosQ.length; ++idx) {
                     const r = radiosQ[idx];
-                    if ((RPTUtil.getAncestorWithRole(r, "form") || ruleContext.ownerDocument.documentElement) === ctxForm
+                    const radCtx = (RPTUtil.getAncestorWithRole(r, "form") 
+                        || RPTUtil.getAncestor(r, "#document-fragment")
+                        || ruleContext.ownerDocument.documentElement);
+                    if (radCtx === ctxForm
                         && !RPTUtil.shouldNodeBeSkippedHidden(r)) 
                     {
                         const name = r.getAttribute("name") || "";
@@ -846,7 +857,7 @@ let a11yRulesInput: Rule[] = [
                         if (aria_owns) {
                             let owns = RPTUtil.normalizeSpacing(aria_owns.trim()).split(" ");
                             for (let i = 0; i < owns.length; i++) {
-                                let owned = ruleContext.ownerDocument.getElementById(owns[i]);
+                                let owned = FragmentUtil.getById(ruleContext, owns[i]);
                                 if (owned === ruleContext) {
                                     return null;
                                 }
@@ -893,7 +904,7 @@ let a11yRulesInput: Rule[] = [
                 let theLabel = ruleContext.getAttribute("aria-labelledby");
                 let labelValues = theLabel.split(/\s+/);
                 for (let j = 0; j < labelValues.length; ++j) {
-                    let elementById = ruleContext.ownerDocument.getElementById(labelValues[j]);
+                    let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
                     if (elementById && RPTUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
                         passed = true;
                         break;

@@ -120,9 +120,13 @@ var skipList = [
     path.join(testRoot, "WCAG20_Style_BeforeAfter_ruleunit", "D100.html"),
     path.join(testRoot, "WCAG20_Style_BeforeAfter_ruleunit", "D99.html"),
     path.join(testRoot, "WCAG21_Style_Viewport_ruleunit", "viewport.html"),
-    path.join(testRoot, "HAAC_Video_HasNoTrack_ruleunit", "Video-HasTrackAndKindWithcaptionDynamic.html")
+    path.join(testRoot, "HAAC_Video_HasNoTrack_ruleunit", "Video-HasTrackAndKindWithcaptionDynamic.html"),
 
-
+    // Zombie does not support shadow dom
+    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "shadowdom.html"),
+    path.join(testRoot, "Rpt_Aria_OrphanedContent_Native_Host_Sematics_ruleunit", "shadowdom.html"),
+    path.join(testRoot, "WCAG20_Input_ExplicitLabel_ruleunit", "Button-template-shadow.html"),
+    path.join(testRoot, "WCAG20_Input_RadioChkInFieldSet_ruleunit", "shadow.html")
 ]
 
 var skipMap = {}

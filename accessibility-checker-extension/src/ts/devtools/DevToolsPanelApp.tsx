@@ -721,15 +721,26 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     function selectPath(srcPath) {
                         let doc = document;
                         let element = null;
-                        while (srcPath && srcPath.includes("iframe")) {
-                            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-                            let iframe = lookup(doc, parts[1]);
-                            element = iframe || element;
-                            if (iframe && iframe.contentDocument && iframe.contentDocument) {
-                                doc = iframe.contentDocument;
-                                srcPath = parts[2];
-                            } else {
-                                srcPath = null;
+                        while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
+                            if (srcPath.includes("iframe")) {
+                                let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+                                let iframe = lookup(doc, parts[1]);
+                                element = iframe || element;
+                                if (iframe && iframe.contentDocument) {
+                                    doc = iframe.contentDocument;
+                                    srcPath = parts[2];
+                                } else {
+                                    srcPath = null;
+                                }
+                            } else if (srcPath.includes("#document-fragment")) {
+                                let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
+                                let fragment = lookup(doc, parts[1]);
+                                element = fragment || element;
+                                if (fragment && fragment.shadowRoot) {
+                                    srcPath = parts[2];
+                                } else {
+                                    srcPath = null;
+                                }
                             }
                         }
                         if (srcPath) {
