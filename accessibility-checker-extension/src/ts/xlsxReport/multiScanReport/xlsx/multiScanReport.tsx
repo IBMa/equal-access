@@ -291,6 +291,7 @@ export default class MultiScanReport {
 
         // if current scan use last scan, if 
         // if current scan use only the last scan otherwise loop through each scan an create row
+        console.log(storedScans);
         let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX FOR selected
         for (j; j < storedScans.length; j++) {
             console.log("scanType = ", scanType,"   storedScans[",j,"].isSelected = ",storedScans[j].isSelected);
@@ -325,6 +326,34 @@ export default class MultiScanReport {
                 }
             } else if (scanType === "all") {
                 console.log("add all Row ",j);
+                let row = worksheet.addRow(
+                    [storedScans[j].pageTitle, 
+                     storedScans[j].url, 
+                     storedScans[j].userScanLabel, 
+                     "none", 
+                     storedScans[j].violations,
+                     storedScans[j].needsReviews,
+                     storedScans[j].recommendations,
+                     storedScans[j].elementsNoViolations,
+                     storedScans[j].elementsNoFailures
+                ]);
+                row.height = 37; // actual height is
+                for (let i = 1; i < 5; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "left", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                }
+                for (let i = 5; i < 10; i++) {
+                    row.getCell(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+                    row.getCell(i).font = { name: "Calibri", color: { argb: "00000000" }, size: "12" };
+                    row.getCell(i).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFf8cbad'} };
+                    row.getCell(i).border = {
+                        top: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        left: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        bottom: {style:'thin', color: {argb: 'FFA6A6A6'}},
+                        right: {style:'thin', color: {argb: 'FFA6A6A6'}}
+                    }
+                }
+            } else {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
                      storedScans[j].url, 
@@ -466,6 +495,69 @@ export default class MultiScanReport {
                     }
                 }
             } else if (scanType === "all") {
+                for (let i=0; i<myStoredData.length;i++) { // for each issue row
+                    if (myStoredData[i][5] == 1) { // if level 1
+                        level1Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level1Counts[1]++;
+                            level1V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level1Counts[2]++;
+                            level1NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level1Counts[3]++;
+                            level1R.push(myStoredData[i][9]);
+                        }
+                    }
+                    if (myStoredData[i][5] == 2) { // if level 2
+                        level2Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level2Counts[1]++;
+                            level2V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level2Counts[2]++;
+                            level2NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level2Counts[3]++;
+                            level2R.push(myStoredData[i][9]);
+                        }
+                    }
+                    if (myStoredData[i][5] == 3) { // if level 3
+                        level3Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level3Counts[1]++;
+                            level3V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level3Counts[2]++;
+                            level3NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level3Counts[3]++;
+                            level3R.push(myStoredData[i][9]);
+                        }
+                    }
+                    if (myStoredData[i][5] == 4) { // if level 4
+                        level4Counts[0]++;
+                        if (myStoredData[i][4] === "Violation") {
+                            level4Counts[1]++;
+                            level4V.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Needs review") {
+                            level4Counts[2]++;
+                            level4NR.push(myStoredData[i][9]);
+                        }
+                        if (myStoredData[i][4] === "Recommendation") {
+                            level4Counts[3]++;
+                            level4R.push(myStoredData[i][9]);
+                        }
+                    }
+                }
+            } else {
                 for (let i=0; i<myStoredData.length;i++) { // for each issue row
                     if (myStoredData[i][5] == 1) { // if level 1
                         level1Counts[0]++;
@@ -1546,6 +1638,16 @@ export default class MultiScanReport {
                     rowArray.push(row);
                 }
             } else if (scanType === "all") {
+                for (let i=0; i<myStoredData.length;i++) {
+                    let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
+                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
+                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
+                            myStoredData[i][12], myStoredData[i][13] 
+                            ];
+                    rowArray.push(row);
+                }
+            } else {
                 for (let i=0; i<myStoredData.length;i++) {
                     let row = [myStoredData[i][0], myStoredData[i][1], myStoredData[i][2], 
                             myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
