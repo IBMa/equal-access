@@ -160,12 +160,12 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             <React.Fragment>
             <div className="headerLeftRN" >
                 
-                <Row style={{marginTop:"90px",paddingLeft:"16px"}}>
+                <Row style={{marginTop:"90px",paddingLeft:"16px",height:"100%"}}>
                     <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"16px"}}>
                         Stored Scans
                     </div>
                     <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>
-                    <div style={{overflowX:"auto"}}>
+                    <div style={{overflowX:"auto", paddingBottom:"16px"}}>
                     <DataTable size="compact" rows={rows} headers={headers} >
                         {({
                             //@ts-ignore
