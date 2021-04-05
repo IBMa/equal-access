@@ -161,15 +161,19 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
 
         let rows:any[] = [];
         for (let i=0; i<this.props.storedScans.length; i++) {
-            rows[i] = {};
-            rows[i].id = i;
-            rows[i].url = this.props.storedScans[i].url;
-            rows[i].title = this.props.storedScans[i].pageTitle;
-            //@ts-ignore
-            rows[i].date = this.format_date(this.props.storedScans[i].dateTime);
-            rows[i].label = this.props.storedScans[i].scanLabel;
-            rows[i].details = "view"
+            if (this.props.storedScans[i].actualStoredScan === true) {
+                rows[i] = {};
+                rows[i].id = i;
+                rows[i].url = this.props.storedScans[i].url;
+                rows[i].title = this.props.storedScans[i].pageTitle;
+                //@ts-ignore
+                rows[i].date = this.format_date(this.props.storedScans[i].dateTime);
+                rows[i].label = this.props.storedScans[i].scanLabel;
+                rows[i].details = "view"
+            }
         }
+
+        console.log("create rows", rows);
 
         return (
             <React.Fragment>
@@ -237,6 +241,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 <TableBody>
                                 {rows.map((row:any, i:any) => (
                                     <TableRow {...getRowProps({ row })}>
+                                        {console.log(row)}
                                     <TableSelectRow {...getSelectionProps({ row })} />
                                     {row.cells.map((cell:any,index:any) => (
                                         // <TableCell key={cell.id}>{cell.value}</TableCell>
