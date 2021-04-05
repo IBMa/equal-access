@@ -65,7 +65,7 @@ interface IPanelState {
     currentStoredScan: string,
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        isSelected: boolean;
+        isSelected: boolean; // stored scan is selected in the Datatable
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -367,7 +367,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 this.storeScan();
             } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
                 // console.log("choice 4");
-                this.clearStoredScans(false); // clears the current scan 
+                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                    this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
+                }
                 this.storeScan(); // add current scan
             } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
                 // console.log("choice 5");

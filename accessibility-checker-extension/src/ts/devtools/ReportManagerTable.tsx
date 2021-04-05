@@ -3,7 +3,7 @@ import React from "react";
 import { DataTable, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader,
     TableRow, TableSelectAll, TableSelectRow, TableToolbar,
     TableToolbarContent,
-    TableToolbarSearch, TableBatchActions, TableBatchAction, Row
+    TableToolbarSearch, TableBatchActions, TableBatchAction, Row, Button,
 } from 'carbon-components-react';
 
 import { Delete16, Download16 } from '@carbon/icons-react';
@@ -14,6 +14,7 @@ import "../styles/multiScanReports.scss"
 
 interface IReportManagerTableState {
     redisplayTable: boolean, // note this is just a simulated state to force table to rerender after a delete, etc.
+    // selectAllRows: boolean,
 }
 
 interface IReportManagerTableProps {
@@ -44,11 +45,14 @@ interface IReportManagerTableProps {
 }
 
 export default class ReportManagerTable extends React.Component<IReportManagerTableProps, IReportManagerTableState> {
+    myRef: React.RefObject<HTMLButtonElement>;
     constructor(props:any) {
         super(props);
+        this.myRef = React.createRef();
     }
     state: IReportManagerTableState = {
-        redisplayTable: true
+        redisplayTable: true,
+        // selectAllRows: true,
     };
 
     format_date(timestamp: string) {
@@ -78,6 +82,10 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         this.props.reportHandler("selected");
     }
 
+    // handleSelectAll = (selectAll: { (selectAll: any): void; (): void; }) => () => {
+    //     selectAll();
+    // };
+
     deleteSelected(selectedRows:any) { 
         console.log("deleteSelected");
         // get index(s) of selected row(s) to delete that match up with storedScans
@@ -105,14 +113,24 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
 
         // update state storedScanCount
         this.props.setStoredScanCount();
+        
+        // selectAll(selectAll);
 
-        // need to rerender scan manager
+        // need a change of state to rerender scan manager
         if (this.state.redisplayTable === true) {
             this.setState({ redisplayTable:  false });
         } else if (this.state.redisplayTable === false) {
             this.setState({ redisplayTable:  true });
         }
+
+        // document.getElementById("secretSelectAll")?.click();
+        //@ts-ignore
+        this.myRef.current.click();
     }    
+
+    handleSelectAll = (selectAll: { (): void; (): void; }) => () => {
+        selectAll();
+    };
 
     render() {
 
@@ -153,11 +171,9 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             rows[i].details = "view"
         }
 
-        
-        
-
         return (
             <React.Fragment>
+            
             <div className="headerLeftRN" >
                 
                 <Row style={{marginTop:"90px",paddingLeft:"16px",height:"100%"}}>
@@ -166,13 +182,21 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                     </div>
                     <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>
                     <div style={{overflowX:"auto", paddingBottom:"16px"}}>
-                    <DataTable size="compact" rows={rows} headers={headers} >
-                        {({
-                            //@ts-ignore
-                            getTableProps, rows, getRowProps, selectedRows, headers, getHeaderProps, getSelectionProps,
-                            //@ts-ignore
-                            getToolbarProps, getBatchActionProps, onInputChange, getTableContainerProps,
+                    <DataTable 
+                        size="compact" 
+                        rows={rows} 
+                        headers={headers}
+                        render={({
+                            getTableProps, rows, getRowProps, headers, getHeaderProps, 
+                            selectedRows, getSelectionProps,
+                            getBatchActionProps, onInputChange, getTableContainerProps, selectAll,
                         }) => (
+                            <React.Fragment>
+                                {/* Since I could not figure out how to call selectAll 
+                                outside of the DataTable context I made a dummy button to do it */}
+                                <Button ref={this.myRef} id="secretSelectAll"  style={{display:"none"}} onClick={this.handleSelectAll(selectAll)}>
+                                    Select All
+                                </Button>
                             <TableContainer
                             {...getTableContainerProps()}>
                                 <TableToolbar>
@@ -203,8 +227,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 <TableHead>
                                 <TableRow>
                                     <TableSelectAll {...getSelectionProps()} />
-                                    {headers.map((header:any, i:any) => (
-                                    <TableHeader key={i} {...getHeaderProps({ header })}>
+                                    {headers.map((header:any) => (
+                                    <TableHeader {...getHeaderProps({ header })}>
                                         {header.header}
                                     </TableHeader>
                                     ))}
@@ -212,7 +236,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 </TableHead>
                                 <TableBody>
                                 {rows.map((row:any, i:any) => (
-                                    <TableRow key={i} {...getRowProps({ row })}>
+                                    <TableRow {...getRowProps({ row })}>
                                     <TableSelectRow {...getSelectionProps({ row })} />
                                     {row.cells.map((cell:any,index:any) => (
                                         // <TableCell key={cell.id}>{cell.value}</TableCell>
@@ -229,8 +253,10 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 </TableBody>
                             </Table>
                             </TableContainer>
+                            </React.Fragment>
                         )}
-                        </DataTable>
+                        />
+                        {/* {selectAll(selectAll)} */}
                     </div> 
                     </div>   
                 </Row>
