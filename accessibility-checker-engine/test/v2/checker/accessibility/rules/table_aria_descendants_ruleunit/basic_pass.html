@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+    <!-- <script type="text/javascript" src="src/index.js"></script>
+    <link rel="stylesheet" href="src/styles.css" /> -->
+</head>
+
+<body>
+    <main>
+        <h1>Test page</h1>
+        <div id="testcase1">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Head 1</th>
+                        <th scope="col">Head 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Body 1</td>
+                        <td>Body 2</td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+        <div id="testcase2">
+            <table role="grid" aria-label="testcase 2">
+                <thead>
+                    <tr>
+                        <th scope="col">Head 1</th>
+                        <th scope="col">Head 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Body 1</td>
+                        <td>Body 2</td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+        <div id="testcase3">
+            <table role="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Head 1</th>
+                        <th scope="col">Head 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Body 1</td>
+                        <td>Body 2</td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+        <div id="testcase4">
+            <table role="treegrid" aria-label="testcase 4">
+                <thead>
+                    <tr>
+                        <th scope="col">Head 1</th>
+                        <th scope="col">Head 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Body 1</td>
+                        <td>Body 2</td>
+                    </tr>                        
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script>
+        UnitTest = {
+            ruleIds: ["table_aria_descendants"],
+            results: []
+        };
+    </script>
+</body>
+
+</html>

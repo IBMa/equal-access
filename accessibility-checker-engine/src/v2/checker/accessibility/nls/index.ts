@@ -544,6 +544,10 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Fail_1": "The 'role' defined on the element is not valid per WAI-ARIA specification"
     },
+    "table_aria_descendants": {
+        0: "Table structure elements cannot specify an explicit 'role' within table containers",
+        "explicit_role": "An explicit WAI-ARIA 'role' is not valid for <{0}> element within a WAI-ARIA role '{1}' per the ARIA in HTML specification"
+    },
     // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
         0: "WAI-ARIA property values must be valid",

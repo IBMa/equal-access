@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -436,6 +436,19 @@ let a11yRulesTable: Rule[] = [
                 return RuleFail("Fail_1", [currentElementToken, structuralElementTokensStr]);
             }
         }
+    },
+    {
+        /**
+         * See https://github.com/IBMa/equal-access/issues/372
+         */
+         id: "table_aria_descendants",
+         context: "aria:table dom:tr[role], aria:table dom:th[role], aria:table dom:td[role]"
+            + ", aria:grid dom:tr[role], aria:grid dom:th[role], aria:grid dom:td[role]"
+            + ", aria:treegrid dom:tr[role], aria:treegrid dom:th[role], aria:treegrid dom:td[role]",
+         run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+             let parentRole = hierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
+             return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
+         }
     }
 
 ]

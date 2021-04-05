@@ -41,7 +41,7 @@ import { a11yRulesStyle } from "./rpt-style-rules";
 import { a11yRulesLabeling } from "./rpt-ariaLabeling-rules";
 import { a11yRulesFig } from "./rpt-figure-rules";
 import { a11yRulesLabel } from "./rpt-label-rules";
-import { a11yRulesTable } from "./rpt-table-rules";
+import { a11yRulesTable } from "./table-rules";
 import { a11yRulesBlink } from "./rpt-blink-rules";
 import { a11yRulesFocus } from "./rpt-focus-rules";
 import { a11yRulesList } from "./rpt-list-rules";
