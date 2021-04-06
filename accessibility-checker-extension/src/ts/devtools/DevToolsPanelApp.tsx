@@ -65,7 +65,7 @@ interface IPanelState {
     currentStoredScan: string,
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        isSelected: boolean;
+        isSelected: boolean; // stored scan is selected in the Datatable
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -367,7 +367,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 this.storeScan();
             } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
                 // console.log("choice 4");
-                this.clearStoredScans(false); // clears the current scan 
+                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                    this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
+                }
                 this.storeScan(); // add current scan
             } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
                 // console.log("choice 5");
@@ -529,23 +531,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         console.log("storedScans = ", this.state.storedScans);
     }
 
-    onKeyUp(event:any,i:number) {
-        console.log("onKeyUp Start");
+    storeScanLabel(event:any,i:number) {
+        console.log("storeScanLabel Start");
         const value = event.target.value;
         console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
-        if (event.nativeEvent.keyCode === 13) {
-            console.log("got Enter key");
-            // this.setState(prevState => ({
-            //     storedScans: {
-            //         ...prevState.storedScans,
-            //         [prevState.storedScans[i].scanLabel]: value,
-            //     },
-            // }));
-            let storedScansCopy = this.state.storedScans;
-            storedScansCopy[i].userScanLabel = value;
-            this.setState({storedScans: storedScansCopy});
-            console.log("onKeyUp End");
-        }
+        
+        let storedScansCopy = this.state.storedScans;
+        storedScansCopy[i].userScanLabel = value;
+        this.setState({storedScans: storedScansCopy});
+        console.log("storeScanLabel End");
+       
         console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
     }
 
@@ -563,6 +558,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // window.localStorage.clear(); // not using local storage
         // await this.startScan();
     };
+
+    clearSelectedStoredScans() {
+        let storedScansCopy = this.state.storedScans;
+        for (let i=0; i<this.state.storedScans.length;i++) {
+            storedScansCopy[i].isSelected = false;
+        }
+        this.setState({storedScans: storedScansCopy});
+    }
 
     actualStoredScansCount = () => {
         let count = 0;
@@ -928,7 +931,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         layout={this.props.layout} 
                         storedScans={this.state.storedScans} 
                         setStoredScanCount={this.setStoredScanCount.bind(this)} 
-                        onKeyUp={this.onKeyUp.bind(this)} 
+                        clearSelectedStoredScans={this.clearSelectedStoredScans.bind(this)} 
+                        storeScanLabel={this.storeScanLabel.bind(this)} 
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
                 </div>

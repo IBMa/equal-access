@@ -111,7 +111,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
                     snippet = snippet + element + '\\n'
                 }
             });
-        } else  if(children.length = 1){
+        } else if (children.length === 1){
             snippet = children[0];
         }
 
