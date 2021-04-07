@@ -28,6 +28,8 @@ import MultiScanData from "./MultiScanData";
 import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
+// import html2canvas from "html2canvas"
+
 import {
     Loading
 } from 'carbon-components-react';
@@ -80,7 +82,8 @@ interface IPanelState {
         elementsNoViolations: number;
         elementsNoFailures: number;
         storedScan: string;
-        storedScanData: string
+        screenShot: string;
+        storedScanData: string;
     }[],
     storedScanCount: number, // number of scans stored
     storedScanData: number, // total amount of scan data stored in MB
@@ -442,7 +445,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     // START - New multi-scan report functions
 
-    storeScan() {
+    async storeScan() {
         console.log("storeScan");
 
         // Data to store for Report
@@ -499,8 +502,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         //     return {storedScanData: prevState.storedScanData + currentScanData.length}
         // });
 
+        // capture screenshot
+        let canvas: string = "";
         
+        let promise = new Promise((resolve, reject) => {
+            //@ts-ignore
+            chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
+                resolve(image);
+            });
+        });
 
+        let result:any = await promise;
+        canvas = result;
+            
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             actualStoredScan: this.state.scanStorage ? true : false,
@@ -519,6 +533,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             elementsNoViolations: element_no_violations,
             elementsNoFailures: element_no_failures,
             storedScan: "scan" + this.state.storedScanCount,
+            screenShot: canvas,
             storedScanData: scanData,
         };
 
@@ -527,21 +542,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             storedScans: [...this.state.storedScans, currentScan]
         }));
 
-        console.log(this.state.storedScans[0].scanLabel)
-        console.log("storedScans = ", this.state.storedScans);
+        // console.log(this.state.storedScans[0].scanLabel)
+        // console.log("storedScans = ", this.state.storedScans);
     }
 
     storeScanLabel(event:any,i:number) {
-        console.log("storeScanLabel Start");
+        // console.log("storeScanLabel Start");
         const value = event.target.value;
-        console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
+        // console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
         
         let storedScansCopy = this.state.storedScans;
         storedScansCopy[i].userScanLabel = value;
         this.setState({storedScans: storedScansCopy});
-        console.log("storeScanLabel End");
+        // console.log("storeScanLabel End");
        
-        console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
+        // console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
     }
 
     setStoredScanCount = () => {
@@ -554,9 +569,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (fromMenu === true) {
             this.setState({scanStorage: false});
         }
-        console.log("Clear stored scans with scanStorage = ", this.state.scanStorage);
-        // window.localStorage.clear(); // not using local storage
-        // await this.startScan();
     };
 
     clearSelectedStoredScans() {
@@ -617,13 +629,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHandler = () => {
-        console.log("reportManagerHandler");
+        // console.log("reportManagerHandler");
         this.setState({ reportManager: true});
     }
     
 
     reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
-        console.log("reportHandler");
+        // console.log("reportHandler");
         if (this.state.report && this.state.rulesets) {
             var reportObj: any = {
                 tabURL: this.state.tabURL,
@@ -669,7 +681,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
 
     xlsxReportHandler = (scanType:string) => {
-        console.log("xlsxReportHandler");
+        // console.log("xlsxReportHandler");
         MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount);
     }
 

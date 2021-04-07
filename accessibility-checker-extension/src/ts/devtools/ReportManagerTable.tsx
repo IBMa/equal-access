@@ -3,7 +3,7 @@ import React from "react";
 import { DataTable, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader,
     TableRow, TableSelectAll, TableSelectRow, TableToolbar,
     TableToolbarContent,
-    TableToolbarSearch, TableBatchActions, TableBatchAction, Row, Button,
+    TableToolbarSearch, TableBatchActions, TableBatchAction, Row, Button, Modal
 } from 'carbon-components-react';
 
 import { Delete16, Download16 } from '@carbon/icons-react';
@@ -11,17 +11,24 @@ import { Delete16, Download16 } from '@carbon/icons-react';
 
 
 import "../styles/multiScanReports.scss"
+import "../styles/reportManagerTable.scss"
 
 interface IReportManagerTableState {
     redisplayTable: boolean, // note this is just a simulated state to force table to rerender after a delete, etc.
-    // selectAllRows: boolean,
+    modalScreenShot: boolean,
+    screenShotRow: number,
+    screenShot: string,
+    url: string,
+    pageTitle: string,
+    date: string,
+    userScanLabel: string,
 }
 
 interface IReportManagerTableProps {
     layout: "main" | "sub",
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        isSelected: boolean;
+        isSelected: boolean; // stored scan is selected in the Datatable
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -36,7 +43,8 @@ interface IReportManagerTableProps {
         elementsNoViolations: number;
         elementsNoFailures: number;
         storedScan: string;
-        storedScanData: string
+        screenShot: string;
+        storedScanData: string;
     }[],
     reportHandler: (typeScan: string) => void,
     setStoredScanCount: () => void,
@@ -52,7 +60,13 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     }
     state: IReportManagerTableState = {
         redisplayTable: true,
-        // selectAllRows: true,
+        modalScreenShot: false,
+        screenShotRow: -1,
+        screenShot: "",
+        url: "",
+        pageTitle: "",
+        date: "",
+        userScanLabel: "",
     };
 
     format_date(timestamp: string) {
@@ -66,30 +80,20 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     }
 
     downloadScanReports(selectedRows:any) {
-        // set selected rows / scans in storedScans
-        console.log("downloadScanReports");
         // clear old selected rows
         this.props.clearSelectedStoredScans();
+        // set selected rows / scans in storedScans
         for (let i=0; i<selectedRows.length; i++) {
             if (selectedRows[i].isSelected === true) {
                 this.props.storedScans[selectedRows[i].id].isSelected = true;
             }
         }
 
-        console.log(selectedRows);
-        console.log(this.props.storedScans);
-
         this.props.reportHandler("selected");
     }
 
-    // handleSelectAll = (selectAll: { (selectAll: any): void; (): void; }) => () => {
-    //     selectAll();
-    // };
-
     deleteSelected(selectedRows:any) { 
-        console.log("deleteSelected");
         // get index(s) of selected row(s) to delete that match up with storedScans
-        console.log("storedScans.length = ", this.props.storedScans.length)
         let indexes:number[] = [];
 
         // clear old selected rows
@@ -100,21 +104,12 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                 indexes.push(selectedRows[i].id);
             }
         }
-        console.log(indexes);
-
-        console.log("storedScans.length = ", this.props.storedScans.length)
-        console.log("Before delete = ",this.props.storedScans);
 
         for (var i = indexes.length -1; i >= 0; i--)
                 this.props.storedScans.splice(indexes[i], 1);
 
-        console.log("storedScans.length = ", this.props.storedScans.length)
-        console.log("After delete = ",this.props.storedScans);
-
         // update state storedScanCount
         this.props.setStoredScanCount();
-        
-        // selectAll(selectAll);
 
         // need a change of state to rerender scan manager
         if (this.state.redisplayTable === true) {
@@ -131,6 +126,19 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     handleSelectAll = (selectAll: { (): void; (): void; }) => () => {
         selectAll();
     };
+
+    screenShotModal(rowNum:number) {
+        this.setState({ 
+            screenShotRow: rowNum, 
+            modalScreenShot: true, 
+            screenShot: this.props.storedScans[rowNum].screenShot,
+            url: this.props.storedScans[rowNum].url,
+            pageTitle: this.props.storedScans[rowNum].pageTitle,
+            //@ts-ignore
+            date: this.format_date(this.props.storedScans[rowNum].dateTime).toString(),
+            userScanLabel: this.props.storedScans[rowNum].userScanLabel,
+        });
+    }
 
     render() {
 
@@ -172,8 +180,6 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                 rows[i].details = "view"
             }
         }
-
-        console.log("create rows", rows);
 
         return (
             <React.Fragment>
@@ -239,18 +245,17 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                {rows.map((row:any, i:any) => (
+                                {rows.map((row:any, i:number) => (
                                     <TableRow {...getRowProps({ row })}>
-                                        {console.log(row)}
                                     <TableSelectRow {...getSelectionProps({ row })} />
-                                    {row.cells.map((cell:any,index:any) => (
+                                    {row.cells.map((cell:any,index:number) => (
                                         // <TableCell key={cell.id}>{cell.value}</TableCell>
                                         <TableCell key={cell.id}>
                                             {index == 0 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 1 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 2 ? cell.value : ""}
                                             {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i)}}/> : ""}
-                                            {index == 4 ? cell.value : ""}
+                                            {index == 4 ? <a onClick={() => this.screenShotModal(i)} href="javascript:void(0);">{cell.value}</a> : ""}
                                         </TableCell>
                                     ))}
                                     </TableRow>
@@ -258,6 +263,30 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 </TableBody>
                             </Table>
                             </TableContainer>
+                            <Modal
+                                aria-label="Scan details"
+                                modalHeading="Details"
+                                passiveModal={true}
+                                open={this.state.modalScreenShot}
+                                onRequestClose={(() => {
+                                    this.setState({ modalScreenShot: false });
+                                }).bind(this)}
+                                style={{paddingRight:"2rem"}}
+                            >
+                                <div className="bx--row">
+                                    <div className="bx--col-md-4 bx--col-sm-2">
+                                        <img src={this.state.screenShot} width="100%"/>  
+                                    </div>
+                                    <div className="bx--col-md-4 bx--col-sm-2">
+                                        <div><strong>Scan label: </strong>
+                                            <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow)}}/>
+                                        </div>
+                                        <div><strong>URL: </strong>{this.state.url}</div>
+                                        <div><strong>Page title: </strong>{this.state.pageTitle}</div>
+                                        <div>{this.state.date}</div>
+                                    </div>
+                                </div>
+                            </Modal>
                             </React.Fragment>
                         )}
                         />

@@ -52,7 +52,7 @@ interface IHeaderProps {
     dataFromParent: boolean[],
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        isSelected: boolean;
+        isSelected: boolean; // stored scan is selected in the Datatable
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -67,7 +67,8 @@ interface IHeaderProps {
         elementsNoViolations: number;
         elementsNoFailures: number;
         storedScan: string;
-        storedScanData: string
+        screenShot: string;
+        storedScanData: string;
     }[],
     scanning: boolean,
     scanStorage: boolean,
