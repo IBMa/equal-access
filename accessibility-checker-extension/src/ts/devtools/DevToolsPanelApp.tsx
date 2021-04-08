@@ -129,6 +129,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
+    ref: any;
 
     constructor(props: any) {
         super(props);
@@ -509,6 +510,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             //@ts-ignore
             chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
                 resolve(image);
+                reject(new Error("Capture failed"));
             });
         });
 
@@ -547,16 +549,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     storeScanLabel(event:any,i:number) {
-        // console.log("storeScanLabel Start");
+        console.log("storeScanLabel for row = ",i);
         const value = event.target.value;
-        // console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
         
-        let storedScansCopy = this.state.storedScans;
+        // let storedScansCopy = this.state.storedScans;
+        let storedScansCopy = JSON.parse(JSON.stringify(this.state.storedScans));
         storedScansCopy[i].userScanLabel = value;
         this.setState({storedScans: storedScansCopy});
-        // console.log("storeScanLabel End");
-       
-        // console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
+        console.log("this.state.storedScans[i].userScanLabel = ", this.state.storedScans[i].userScanLabel);
+        console.log("END storeScanLabel");
     }
 
     setStoredScanCount = () => {
@@ -635,45 +636,48 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
 
     reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
-        // console.log("reportHandler");
-        if (this.state.report && this.state.rulesets) {
-            var reportObj: any = {
-                tabURL: this.state.tabURL,
-                rulesets: this.state.rulesets,
-                report: {
-                    timestamp: this.state.report.timestamp,
-                    nls: this.state.report.nls,
-                    counts: {
-                        "total": this.state.report.counts.total,
-                        "filtered": this.state.report.counts.filtered
-                    },
-                    results: []
+        console.log("reportHandler");
+        if (scanType === "current") {
+            if (this.state.report && this.state.rulesets) {
+                var reportObj: any = {
+                    tabURL: this.state.tabURL,
+                    rulesets: this.state.rulesets,
+                    report: {
+                        timestamp: this.state.report.timestamp,
+                        nls: this.state.report.nls,
+                        counts: {
+                            "total": this.state.report.counts.total,
+                            "filtered": this.state.report.counts.filtered
+                        },
+                        results: []
+                    }
                 }
+                for (const result of this.state.report.results) {
+                    reportObj.report.results.push({
+                        ruleId: result.ruleId,
+                        path: result.path,
+                        value: result.value,
+                        message: result.message,
+                        snippet: result.snippet
+                    });
+                }
+    
+                var tabTitle: string = this.state.tabTitle;
+                var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
+                var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
+                //replace illegal characters in file name
+                filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
+    
+                var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+                var a = document.createElement('a');
+                a.href = fileContent;
+                a.download = filename;
+                var e = document.createEvent('MouseEvents');
+                e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
             }
-            for (const result of this.state.report.results) {
-                reportObj.report.results.push({
-                    ruleId: result.ruleId,
-                    path: result.path,
-                    value: result.value,
-                    message: result.message,
-                    snippet: result.snippet
-                });
-            }
-
-            var tabTitle: string = this.state.tabTitle;
-            var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-            var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
-            //replace illegal characters in file name
-            filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
-
-            var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
-            var a = document.createElement('a');
-            a.href = fileContent;
-            a.download = filename;
-            var e = document.createEvent('MouseEvents');
-            e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(e);
-
+            this.xlsxReportHandler(scanType);
+        } else {
             this.xlsxReportHandler(scanType);
         }
     }

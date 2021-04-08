@@ -128,6 +128,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     };
 
     screenShotModal(rowNum:number) {
+        console.log("START screenShotModal");
         this.setState({ 
             screenShotRow: rowNum, 
             modalScreenShot: true, 
@@ -138,6 +139,10 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             date: this.format_date(this.props.storedScans[rowNum].dateTime).toString(),
             userScanLabel: this.props.storedScans[rowNum].userScanLabel,
         });
+        console.log("screenShotRow = ", this.state.screenShotRow);
+        console.log("userScanLabel = ", this.state.userScanLabel);
+        console.log("storedScans = ",this.props.storedScans);
+        console.log("END screenShotModal")
     }
 
     render() {
@@ -166,7 +171,9 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         ];
 
         // create scan rows from stored scans
-
+        console.log("create rows");
+        console.log("storedScans = ",this.props.storedScans);
+        console.log("this.state.userScanLabel = ",this.state.userScanLabel);
         let rows:any[] = [];
         for (let i=0; i<this.props.storedScans.length; i++) {
             if (this.props.storedScans[i].actualStoredScan === true) {
@@ -176,10 +183,12 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                 rows[i].title = this.props.storedScans[i].pageTitle;
                 //@ts-ignore
                 rows[i].date = this.format_date(this.props.storedScans[i].dateTime);
-                rows[i].label = this.props.storedScans[i].scanLabel;
+                rows[i].label = this.props.storedScans[i].userScanLabel;
                 rows[i].details = "view"
             }
         }
+        console.log("rows = ",rows);
+        
 
         return (
             <React.Fragment>
@@ -254,7 +263,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                             {index == 0 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 1 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 2 ? cell.value : ""}
-                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i)}}/> : ""}
+                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i);this.screenShotModal(i)}}/> : ""}
                                             {index == 4 ? <a onClick={() => this.screenShotModal(i)} href="javascript:void(0);">{cell.value}</a> : ""}
                                         </TableCell>
                                     ))}
@@ -270,6 +279,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 open={this.state.modalScreenShot}
                                 onRequestClose={(() => {
                                     this.setState({ modalScreenShot: false });
+                                    console.log("close modal: ",this.props.storedScans);
                                 }).bind(this)}
                                 style={{paddingRight:"2rem"}}
                             >
@@ -279,7 +289,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                     </div>
                                     <div className="bx--col-md-4 bx--col-sm-2">
                                         <div><strong>Scan label: </strong>
-                                            <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow)}}/>
+                                            <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow);this.screenShotModal(this.state.screenShotRow) }}/>
                                         </div>
                                         <div><strong>URL: </strong>{this.state.url}</div>
                                         <div><strong>Page title: </strong>{this.state.pageTitle}</div>
