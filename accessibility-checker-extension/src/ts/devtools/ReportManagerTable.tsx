@@ -1,5 +1,5 @@
 
-import React from "react";
+import React from 'react';
 import { DataTable, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader,
     TableRow, TableSelectAll, TableSelectRow, TableToolbar,
     TableToolbarContent,
@@ -7,8 +7,6 @@ import { DataTable, Table, TableBody, TableCell, TableContainer, TableHead, Tabl
 } from 'carbon-components-react';
 
 import { Delete16, Download16 } from '@carbon/icons-react';
-
-
 
 import "../styles/multiScanReports.scss"
 import "../styles/reportManagerTable.scss"
@@ -57,6 +55,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     constructor(props:any) {
         super(props);
         this.myRef = React.createRef();
+        
     }
     state: IReportManagerTableState = {
         redisplayTable: true,
@@ -144,6 +143,14 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         console.log("storedScans = ",this.props.storedScans);
         console.log("END screenShotModal")
     }
+
+    temp() {
+        // must be in a function component not a class component
+        // const [setTheme] = useState('white');
+
+        // setTheme('g10');
+    }
+
 
     render() {
 
@@ -263,7 +270,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                             {index == 0 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 1 ? <div style={{textOverflow:"ellipsis", overflow:"hidden", whiteSpace:"nowrap", direction:"rtl", width:"10rem"}}>{cell.value}</div> : ""}
                                             {index == 2 ? cell.value : ""}
-                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i);this.screenShotModal(i)}}/> : ""}
+                                            {index == 3 ? <input style={{width:"6rem"}} type="text" placeholder={cell.value} onBlur={(e) => {this.props.storeScanLabel(e,i)}}/> : ""}
                                             {index == 4 ? <a onClick={() => this.screenShotModal(i)} href="javascript:void(0);">{cell.value}</a> : ""}
                                         </TableCell>
                                     ))}
@@ -289,7 +296,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                     </div>
                                     <div className="bx--col-md-4 bx--col-sm-2">
                                         <div><strong>Scan label: </strong>
-                                            <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow);this.screenShotModal(this.state.screenShotRow) }}/>
+                                            <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow) }}/>
                                         </div>
                                         <div><strong>URL: </strong>{this.state.url}</div>
                                         <div><strong>Page title: </strong>{this.state.pageTitle}</div>

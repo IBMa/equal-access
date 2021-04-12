@@ -22,7 +22,7 @@
  
  
  const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
- import { ArrowLeft16 } from '@carbon/icons-react';
+ // import { ArrowLeft16 } from '@carbon/icons-react';
  
  interface IHeaderState {
  }
@@ -55,7 +55,7 @@
              </div>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
+                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" kind='tertiary'>Back to list view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >

@@ -133,7 +133,11 @@ export default class MultiScanReport {
 
         // set row height for rows 2-10
         for (let i=2; i<11; i++) {
-            worksheet.getRow(i).height = 12; // results in a row height of 16
+            if (i == 7) {
+                worksheet.getRow(i).height = 36;
+            } else {
+                worksheet.getRow(i).height = 12; // results in a row height of 16
+            }
         }
 
         // note except for Report Date this is the same for all scans
@@ -143,7 +147,7 @@ export default class MultiScanReport {
             {key1: 'Rule set:', key2: theCurrentScan.ruleSet},
             {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
             {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
-            {key1: 'Platform:', key2: ""},
+            {key1: 'Platform:', key2: navigator.userAgent},
             {key1: 'Scans:', key2: scanType === "current" ? 1 : scanType === "all" ? storedScanCount : selectedStoredScanCount}, // *** NEED TO FIX FOR selected
             {key1: 'Pages:', key2: ""}
         ];
@@ -164,6 +168,10 @@ export default class MultiScanReport {
             worksheet.getRow(i).getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
             worksheet.getRow(i).getCell(1).alignment = { horizontal: "left"};
             worksheet.getRow(i).getCell(2).alignment = { horizontal: "left"};
+            if (i == 7) {
+                worksheet.getRow(i).getCell(1).alignment = { vertical: "top"};
+                worksheet.getRow(i).getCell(2).alignment = { wrapText: true };
+            }
         }
         for (let i=2; i<10; i++) {
             worksheet.getRow(i).getCell(1).value = rowData[i-2].key1; worksheet.getRow(i).getCell(2).value = rowData[i-2].key2;

@@ -22,7 +22,7 @@
     
     
     // const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
-    import { ArrowLeft16 } from '@carbon/icons-react';
+    // import { ArrowLeft16 } from '@carbon/icons-react';
     
     interface IReportManagerHeaderState {
     }
@@ -62,7 +62,7 @@
                 </div>
                 <div className="bx--row">
                     <div className="bx--col-sm-2">
-                        <Button id='backToListView' onClick={this.props.reportManagerHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
+                        <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="small" >Back to list view</Button>
                     </div>
                     <div className="bx--col-sm-2" style={{position: "relative"}}>
                         <div className="headerTools" >
