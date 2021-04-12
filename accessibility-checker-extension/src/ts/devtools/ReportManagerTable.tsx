@@ -202,8 +202,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             
             <div className="headerLeftRN" >
                 
-                <Row style={{marginTop:"90px",paddingLeft:"16px",height:"100%"}}>
-                    <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"16px"}}>
+                <Row style={{marginTop:"64px",paddingLeft:"16px",height:"100%"}}>
+                    <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
                         Stored Scans
                     </div>
                     <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>

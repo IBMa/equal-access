@@ -955,7 +955,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
-                        <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
+                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
