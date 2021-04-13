@@ -121,7 +121,7 @@ outputFolder: results
 baselineFolder: test/baselines
 ```
 
-A similar `achecker.js` file can also be used:
+A similar `aceconfig.js` file can also be used:
 
 ```js
 module.exports = {
@@ -356,7 +356,7 @@ Returns `String` representation of the scan results which can be logged to conso
 
 ### async aChecker.getConfig()
 
-Retrieve the configuration object used by accessibility-checker. See achecker.js / .achecker.yml above for details
+Retrieve the configuration object used by accessibility-checker. See aceconfig.js / .achecker.yml above for details
 
 ### async aChecker.close()
 

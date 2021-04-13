@@ -72,7 +72,7 @@ export const ACConstants : IConfigUnsupported = {
     //  ./.config/achecker.json
     // The node module, require will load js or json depending on which one is present, in the case
     // both json and js are present it loads js first.
-    configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), , pathLib.join(".config", "aceconfig")],
+    configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), pathLib.join(".config", "aceconfig")],
 
     ignoreHTTPSErrors: false
 };
