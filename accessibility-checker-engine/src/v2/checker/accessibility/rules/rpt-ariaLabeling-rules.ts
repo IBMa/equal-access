@@ -58,6 +58,8 @@ let a11yRulesLabeling: Rule[] = [
         context: "aria:main",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            let contextLabel = RPTUtil.getAriaLabel(ruleContext);
+
             let parentDocRole = RPTUtil.getAncestorWithRole(ruleContext, "document", true);
             let mains = RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, "main", true, true);
             let result = null;
@@ -66,8 +68,10 @@ let a11yRulesLabeling: Rule[] = [
                 result = RulePass("Pass_0");
                 let thisParentDocRole = RPTUtil.getAncestorWithRole(mains[i], "document", true);
                 if (thisParentDocRole == parentDocRole) {
-                    result = RuleFail("Fail_1");
-                    break;
+                    if (RPTUtil.getAriaLabel(mains[i]) === contextLabel) {
+                        result = RuleFail("Fail_1");
+                        break;
+                    }
                 }
             }
             return result;
