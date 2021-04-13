@@ -86,7 +86,7 @@ Commands:
     archives                : Display valid archive ids and policy ids
 
 Flags:
-    Flags can be set via .achecker.yml or achecker.js files. Specifying the flags here
+    Flags can be set via .achecker.yml or aceconfig.js files. Specifying the flags here
     will override those options.
 
     --ruleArchive           : Archive id to use. Run "achecker archives" for valid ids

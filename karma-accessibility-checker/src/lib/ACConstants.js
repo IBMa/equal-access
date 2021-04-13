@@ -82,7 +82,7 @@ var constants = {
     //  ./.config/achecker.json
     // The node module, require will load js or json depending on which one is present, in the case
     // both json and js are present it loads js first.
-    configFiles: [".achecker.yml", ".achecker.yaml", "achecker", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker")],
+    configFiles: [".achecker.yml", ".achecker.yaml", "achecker", "aceconfig", pathLib.join(".config", ".achecker.yml"), pathLib.join(".config", ".achecker.yaml"), pathLib.join(".config", "achecker"), pathLib.join(".config", "aceconfig")],
 
     // Specify the travis CI server to be used to build the slack notification links based of
     travisServer: "https://travis-ci.org/",
