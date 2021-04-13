@@ -168,10 +168,16 @@ try {
     }
 
     static getRuleset = async (rsId) => {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
         return ACEngineManager.customRulesets.concat(checker.rulesets).filter((function (rs) { return rs.id === rsId }))[0];
     };
 
-    static getRulesets = function () {
+    static getRulesets = async function () {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
         return ACEngineManager.customRulesets.concat(checker.rulesets);
     };
 
