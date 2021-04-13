@@ -6,4 +6,6 @@ dependencies
 npm-debug.log
 results
 package-lock.json
-src/lib/reporters/genReport.js
+src/**/*.js
+src/**/*.map
+src/**/*.d.ts

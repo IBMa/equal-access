@@ -158,7 +158,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         const tabLabels : { [key: string] : string }= {
             element: "Element roles",
             rule: "Rules",
-            checklist: "Checkpoints"
+            checklist: "Requirements"
         }
 
         let ruleset : IRuleset | null = null;
@@ -169,7 +169,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         return <React.Fragment>
-            <div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
+            <div className="bx--grid" style={{paddingLeft:"1rem"}}>
                 <div className="bx--row">
                     <div className="bx--col-sm-4">
                         <Tabs
@@ -181,7 +181,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                             role="navigation"
                             selected={this.props.tabs.indexOf(this.props.selectedTab)}
                             tabContentClassName="tab-content"
-                            triggerHref="#" 
+                            // triggerHref="#" 
                         >
                         {this.props.tabs.map(tabId => {
                             return <Tab

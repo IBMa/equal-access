@@ -734,7 +734,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -1056,6 +1056,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidRole",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -1884,7 +1889,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -2206,6 +2211,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidRole",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -2979,7 +2989,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -3271,6 +3281,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "table_aria_descendants",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "Rpt_Aria_ValidPropertyValue",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -3328,11 +3343,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_WidgetLabels_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "HAAC_Combobox_ARIA_11_Guideline",
-                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
@@ -4100,7 +4110,7 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ContentinfoWithNoMain_Implicit",
-                    level: eRulePolicy.VIOLATION,
+                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
@@ -4437,6 +4447,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "table_aria_descendants",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "Rpt_Aria_ValidPropertyValue",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -4494,11 +4509,6 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_WidgetLabels_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "HAAC_Combobox_ARIA_11_Guideline",
-                    level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {

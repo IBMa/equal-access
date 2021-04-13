@@ -35,12 +35,15 @@ let a11yRulesForm: Rule[] = [
                 while (!passed && nw.prevNode() && nw.node != ruleContext) {
                     if (!nw.bEndTag) {
                         let nodeName = nw.node.nodeName.toLowerCase();
-                        if (nodeName == "input") {
-                            let type = nw.node.getAttribute("type");
-                            passed = type == "submit" || type == "image";
-                        } else if (nodeName == "button") {
-                            passed = nw.node.getAttribute("type") == "submit";
-                        } else if (nw.node.nodeType == 1) {
+                        if (nodeName === "input") {
+                            let type = nw.elem().getAttribute("type");
+                            if (type) {
+                                type = type.toLowerCase();
+                            }
+                            passed = type === "submit" || type === "image";
+                        } else if (nodeName === "button") {
+                            passed = nw.elem().hasAttribute("type") && nw.elem().getAttribute("type").toLowerCase() === "submit";
+                        } else if (nw.node.nodeType === 1) {
                             passed = RPTUtil.hasRole(nw.node, "button");
                         }
                     }
@@ -60,7 +63,7 @@ let a11yRulesForm: Rule[] = [
         context: "dom:select[onchange], dom:input[onchange]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            let passed = ruleContext.getAttribute("onchange").trim().length == 0;
+            let passed = ruleContext.getAttribute("onchange").trim().length === 0;
             if (passed) return null;
             if (!passed) return RulePotential("Potential_1");
         }
@@ -82,7 +85,7 @@ let a11yRulesForm: Rule[] = [
             }
             const ruleContext = context["dom"].node as Element;
             let tStr = ruleContext.getAttribute("target");
-            let passed = tStr == "_parent" || tStr == "_self" || tStr == "_top" || RPTUtil.getFrameByName(ruleContext,tStr) != null;
+            let passed = tStr === "_parent" || tStr === "_self" || tStr === "_top" || RPTUtil.getFrameByName(ruleContext,tStr) != null;
             if (!passed) {
                 // Name is not part of this frameset – must have potential to create new window?
                 // See if a new window is mentioned

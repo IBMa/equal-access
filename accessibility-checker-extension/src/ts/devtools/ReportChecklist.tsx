@@ -114,7 +114,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Checkpoint
+                        Requirement
                     </div>
                 </div>
             </div>

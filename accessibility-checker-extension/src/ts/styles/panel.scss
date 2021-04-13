@@ -9,6 +9,14 @@ $feature-flags: (
     overflow: hidden;
 }
 
+.bx--overflow-menu-options {
+    width: 12rem;
+}
+
+.bx--overflow-menu-options__btn {
+    width: 12rem;
+}
+
 .fixed-header {
     position: fixed;
     top: 0;
@@ -45,10 +53,36 @@ $feature-flags: (
         }
     }
 
+    .rendered-icon svg {
+        fill: white;
+    }
+
+    
+
     .headerTools {
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
         }
+        button.bx--btn {
+            color: black;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled {
+            color: #c6c6c6;
+            border-width: 0px;
+            background-color: white;
+        }
+
+        button.bx--btn.bx--btn--disabled:hover {
+            color: #c6c6c6;
+            svg {
+                fill: #c6c6c6;
+            }
+        }
+    }
+
+    .reportButton {
         button.bx--btn {
             color: black;
             background-color: white;
@@ -174,18 +208,26 @@ $feature-flags: (
             font-weight: 600;
         }
 
-
-        .summaryBarLabels {
-            display:none;
-            
-            @media only screen and (min-width: 32rem) {
-                display:inline;
-            }
-        }
-
         img, svg {
             margin-right: 6px;
             vertical-align: middle;
+        }
+    }
+}
+
+.mainPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 78rem) {
+            display:inline;
+        }
+    }
+}
+.subPanel {
+    .summaryBarLabels {
+        display:none;
+        @media only screen and (min-width: 43rem) {
+            display:inline;
         }
     }
 }
@@ -262,9 +304,9 @@ $feature-flags: (
     }
 
 
-    .toolHelp, .toolHelp .bx--row:nth-child(1) {
-        //height: 100px;
-    }
+    // .toolHelp, .toolHelp .bx--row:nth-child(1) {
+    //      height: 100px;
+    // }
     @media (min-width: 99rem) {
         .toolHelp .bx--grid {
             padding-left: 0rem;

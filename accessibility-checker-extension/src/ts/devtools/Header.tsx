@@ -19,14 +19,14 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, Tooltip
+    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { Reset16, ReportData16, Renew16 } from '@carbon/icons-react';
+import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
-const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
+// const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -38,15 +38,39 @@ interface IHeaderProps {
     layout: "main" | "sub",
     startScan: () => void,
     collapseAll: () => void,
-    reportHandler: () => void,
-    xlsxReportHandler: () => void,
+    actualStoredScansCount: () => number,
+    clearStoredScans: (fromMenu: boolean) => void,
+    reportHandler: (scanType: string) => void,
+    xlsxReportHandler: (scanType: string) => void,
+    startStopScanStoring: () => void,
+    reportManagerHandler: () => void,
     showIssueTypeCheckBoxCallback: (checked: boolean[]) => void,
     counts?: {
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
     } | null,
     dataFromParent: boolean[],
+    storedScans: {
+        actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
+        isSelected: boolean;
+        url: string;
+        pageTitle: string;
+        dateTime: number | undefined;
+        scanLabel: string;
+        userScanLabel: string;
+        ruleSet: any;
+        guidelines: any;
+        reportDate: Date;
+        violations: any;
+        needsReviews: any;
+        recommendations: any;
+        elementsNoViolations: number;
+        elementsNoFailures: number;
+        storedScan: string;
+        storedScanData: string
+    }[],
     scanning: boolean,
+    scanStorage: boolean,
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
     selectedPolicy: string | null
@@ -114,6 +138,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         }
     }
 
+
+
     render() {
         let counts = this.props.counts;
         let noScan = counts ? true : false;
@@ -147,18 +173,62 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-3">
+                <div className="bx--col-sm-2">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right" }}>
-                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
+                    <div>
+                        <span>Status: </span>
+                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                    </div>
                 </div>
             </div>
-
+            {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-2" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                        <OverflowMenu 
+                            className="rendered-icon svg"
+                            style={{backgroundColor: "black", height:"32px", width:"32px"}} 
+                            renderIcon={ChevronDown16}
+                            ariaLabel="Report menu" 
+                            // size="xl"
+                            id="reportMenu"
+                        >
+                            <OverflowMenuItem
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                itemText="Download current scan" 
+                                onClick={() => this.props.reportHandler("current")}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
+                                onClick={this.props.startStopScanStoring}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                disabled={this.props.actualStoredScansCount() == 0 ? true : false}
+                                itemText="Clear stored scans" 
+                                onClick={() => this.props.clearStoredScans(true) }
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
+                                itemText="Download stored scans" 
+                                onClick={() => this.props.reportHandler("all")}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
+                                itemText="View stored scans" 
+                                onClick={this.props.reportManagerHandler} // need to pass selected as scanType
+                            />
+                        </OverflowMenu>
                         {isLatestArchive ? "" : (
                             <Tooltip>
                                 <p id="tooltip-body">
@@ -176,44 +246,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Tooltip>
                         )}
                     </div>
-                    <div className="bx--col-md-2" style={{ height: "28px" }}>
+                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
-                    </div>
+                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}></div>
 
-                    <div className="bx--col-md-1" style={{paddingRight:0}}>
-                        <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.collapseAll}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost" 
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reset" 
-                                type="button"
-                            >
-                                <Reset16 className="my-custom-class" />
-                            </Button>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.reportHandler}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost" 
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reports" 
-                                type="button"
-                            >
-                                <ReportData16 className="my-custom-class" />
-                            </Button>
-                        </div>
-                    </div>
-
-                    <div className="bx--col-md-3">
+                    <div className="bx--col-md-3 bx--col-sm-2">
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px"}}
@@ -248,12 +285,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
                 </div>
+                // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-
-                    <div className="bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
+                    <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        {isLatestArchive ? "" : (
+                        {/* {isLatestArchive ? "" : ( */}
                             <Tooltip>
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
@@ -268,9 +305,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     </a>
                                 </div>
                             </Tooltip>
-                        )}
+                        {/* )} */}
                     </div>
-                    <div className="bx--col-sm-2" style={{ position: "relative" }}>
+                    <div className="bx--col-sm-1" style={{ position: "relative" }}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>
@@ -290,7 +327,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </Button>
                             <Button
                                 disabled={!this.props.counts}
-                                onClick={this.props.reportHandler}
+                                onClick={() => this.props.reportHandler("current")}
                                 className="settingsButtons" 
                                 size="small" 
                                 hasIconOnly 
@@ -306,8 +343,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
                 </div>
             }
-
-            <div className="countRow summary" role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+            {/* Counts row uses same code for both Assessment and Checker Tabs */}
+            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox 
@@ -373,15 +410,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts" style={{ fontWeight: 400, lineHeight: "32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning..." : ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
-        </div>);
+        </div>); // end of headerContent
 
-        if (this.props.layout === "main") {
+        if (this.props.layout === "main") { // Checker Tab
             return <div className="fixed-header"
                 style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "50%" }}>
                 {headerContent}
             </div>
-        } else {
-            return <div className="fixed-header" style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
+        } else { // Assessment Tab
+            return <div className="fixed-header" 
+                style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
                 {headerContent}
             </div>
         }

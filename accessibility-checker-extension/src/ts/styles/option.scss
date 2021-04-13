@@ -86,11 +86,12 @@ body {
 
     h1 {
       color: #252525;
-      @include carbon--type-style("productive-heading-04");
+      @include carbon--type-style("productive-heading-03");
+      margin-bottom: 48px;
     }
 
     h2 {
-      @include carbon--type-style("productive-heading-03");
+      @include carbon--type-style("productive-heading-02");
       margin-top: 1rem;
     }
 

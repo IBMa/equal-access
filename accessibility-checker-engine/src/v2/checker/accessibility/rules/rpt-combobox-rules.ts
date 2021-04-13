@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
 function patternDetect(elem: Element) : String {
@@ -118,7 +119,7 @@ let a11yRulesCombobox: Rule[] = [
                     return !expanded ? null : RuleFail("Fail_1.0_missing_owns");
                 }
                 popupId = ruleContext.getAttribute("aria-owns");
-                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                popupElement = FragmentUtil.getById(ruleContext, popupId);
                 if (!popupElement) {
                     // If the combobox isn't expanded, this attribute isn't required
                     return !expanded ? null : RuleFail("Fail_1.0_popup_reference_missing", [popupId]);
@@ -129,7 +130,7 @@ let a11yRulesCombobox: Rule[] = [
                     return !expanded ? null: RuleFail("Fail_1.2_missing_controls");
                 }
                 popupId = ruleContext.getAttribute("aria-controls");
-                popupElement = ruleContext.ownerDocument.getElementById(popupId);
+                popupElement = FragmentUtil.getById(ruleContext, popupId);
                 if (!popupElement) {
                     // If the combobox isn't expanded, this attribute isn't required
                     return !expanded ? null : RuleFail("Fail_1.2_popup_reference_missing", [popupId]);
@@ -273,7 +274,7 @@ let a11yRulesCombobox: Rule[] = [
                 return null;
             }
 
-            let activeElem = ruleContext.ownerDocument.getElementById(activeId);
+            let activeElem = FragmentUtil.getById(ruleContext, activeId);
             if (!activeElem) {
                 return RuleFail("Fail_missing", [activeId]);
             }
@@ -285,7 +286,7 @@ let a11yRulesCombobox: Rule[] = [
                 let nw = new NodeWalker(popupElement);
                 while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        found = nw.node.getAttribute("id") === activeId;
+                        found = nw.elem().getAttribute("id") === activeId;
                     }
                 }
             }
@@ -342,7 +343,7 @@ let a11yRulesCombobox: Rule[] = [
                 let nw = new NodeWalker(popupElement);
                 while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
                     if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
-                        passed = !nw.node.hasAttribute("aria-autocomplete");
+                        passed = !nw.elem().hasAttribute("aria-autocomplete");
                     }
                 }
             }
