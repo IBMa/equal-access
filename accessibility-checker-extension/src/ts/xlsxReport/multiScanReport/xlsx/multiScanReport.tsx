@@ -201,7 +201,12 @@ export default class MultiScanReport {
 
         for (let i=0; i<4; i++) {
             cellObjects1[i].alignment = { vertical: "middle", horizontal: "center"};
-            cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            if (i == 2) {
+                cellObjects1[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            } else {
+                cellObjects1[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            }
+            
             // cellObjects1[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
             cellObjects1[i].border = {
                 top: {style:'thin', color: {argb: 'FFA6A6A6'}},
@@ -293,7 +298,12 @@ export default class MultiScanReport {
 
         for (let i=0; i<5; i++) {
             cellObjects2[i].alignment = { vertical: "middle", horizontal: "center", wrapText: true };
-            cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            if (i == 1) {
+                cellObjects2[i].font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
+            } else {
+                cellObjects2[i].font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+            }
+            
             // cellObjects2[i].fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFC65911'} };
             cellObjects2[i].border = {
                 top: {style:'thin', color: {argb: 'FFA6A6A6'}},
@@ -1301,7 +1311,7 @@ export default class MultiScanReport {
 
         level3NeedsReviewRow.getCell(2).value = level3Counts[2]; // total level 3 needs review
         level3NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
-        level3NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level3NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
         level3NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFF1C21B'} };
         level3NeedsReviewRow.getCell(2).border = {
             top: {style:'thin', color: {argb: 'FFA6A6A6'}},
@@ -1519,7 +1529,7 @@ export default class MultiScanReport {
 
         level4NeedsReviewRow.getCell(2).value = level4Counts[2]; // total level 4 needs review
         level4NeedsReviewRow.getCell(2).alignment = { vertical: "middle", horizontal: "right"};
-        level4NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "12" };
+        level4NeedsReviewRow.getCell(2).font = { name: "Calibri", color: { argb: "FF000000" }, size: "12" };
         level4NeedsReviewRow.getCell(2).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FFF1C21B'} };
         level4NeedsReviewRow.getCell(2).border = {
             top: {style:'thin', color: {argb: 'FFA6A6A6'}},

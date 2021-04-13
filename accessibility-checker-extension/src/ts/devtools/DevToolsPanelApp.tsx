@@ -965,7 +965,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                {/* <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}> */}
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
                         layout={this.props.layout}
