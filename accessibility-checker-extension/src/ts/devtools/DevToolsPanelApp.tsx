@@ -193,7 +193,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async componentDidMount() {
         var self = this;
-        // console.log("componentDidMount");
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
@@ -286,7 +285,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
@@ -351,7 +349,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             this.setState({ scanning: false }); // scan done
-            console.log("SCAN DONE");
+            // console.log("SCAN DONE");
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
@@ -447,7 +445,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     // START - New multi-scan report functions
 
     async storeScan() {
-        console.log("storeScan");
+        // console.log("storeScan");
 
         // Data to store for Report
         var xlsx_props = {
@@ -543,21 +541,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState(({
             storedScans: [...this.state.storedScans, currentScan]
         }));
-
-        // console.log(this.state.storedScans[0].scanLabel)
-        // console.log("storedScans = ", this.state.storedScans);
     }
 
     storeScanLabel(event:any,i:number) {
-        console.log("storeScanLabel for row = ",i);
         const value = event.target.value;
         
         // let storedScansCopy = this.state.storedScans;
         let storedScansCopy = JSON.parse(JSON.stringify(this.state.storedScans));
         storedScansCopy[i].userScanLabel = value;
         this.setState({storedScans: storedScansCopy});
-        console.log("this.state.storedScans[i].userScanLabel = ", this.state.storedScans[i].userScanLabel);
-        console.log("END storeScanLabel");
     }
 
     setStoredScanCount = () => {
@@ -621,7 +613,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     onFilter(filter: string) {
-        // console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
@@ -630,13 +621,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHandler = () => {
-        // console.log("reportManagerHandler");
         this.setState({ reportManager: true});
     }
     
 
     reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
-        console.log("reportHandler");
         if (scanType === "current") {
             if (this.state.report && this.state.rulesets) {
                 var reportObj: any = {
@@ -686,7 +675,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     xlsxReportHandler = (scanType:string) => {
         // console.log("xlsxReportHandler");
-        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount);
+        //@ts-ignore
+        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
     }
 
     

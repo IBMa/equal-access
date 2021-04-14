@@ -127,7 +127,6 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     };
 
     screenShotModal(rowNum:number) {
-        console.log("START screenShotModal");
         this.setState({ 
             screenShotRow: rowNum, 
             modalScreenShot: true, 
@@ -138,19 +137,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             date: this.format_date(this.props.storedScans[rowNum].dateTime).toString(),
             userScanLabel: this.props.storedScans[rowNum].userScanLabel,
         });
-        console.log("screenShotRow = ", this.state.screenShotRow);
-        console.log("userScanLabel = ", this.state.userScanLabel);
-        console.log("storedScans = ",this.props.storedScans);
-        console.log("END screenShotModal")
     }
-
-    temp() {
-        // must be in a function component not a class component
-        // const [setTheme] = useState('white');
-
-        // setTheme('g10');
-    }
-
 
     render() {
 
@@ -178,9 +165,6 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         ];
 
         // create scan rows from stored scans
-        console.log("create rows");
-        console.log("storedScans = ",this.props.storedScans);
-        console.log("this.state.userScanLabel = ",this.state.userScanLabel);
         let rows:any[] = [];
         for (let i=0; i<this.props.storedScans.length; i++) {
             if (this.props.storedScans[i].actualStoredScan === true) {
@@ -194,7 +178,6 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                 rows[i].details = "view"
             }
         }
-        console.log("rows = ",rows);
         
 
         return (
@@ -286,7 +269,6 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 open={this.state.modalScreenShot}
                                 onRequestClose={(() => {
                                     this.setState({ modalScreenShot: false });
-                                    console.log("close modal: ",this.props.storedScans);
                                 }).bind(this)}
                                 style={{paddingRight:"2rem"}}
                             >

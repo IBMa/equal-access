@@ -21,11 +21,10 @@ import ExcelJS from "exceljs"
 
 export default class MultiScanReport {
 
-    public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number) {
-        console.log("multiScanXlsxDownload");
+    public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: []) {
 
         // create workbook
-        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount);
+        var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives);
         
         // create binary buffer
         const buffer = await reportWorkbook.xlsx.writeBuffer();
@@ -37,21 +36,19 @@ export default class MultiScanReport {
         // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
 
-        // if scanStorage false clear/delete current scan
-
+        // if scanStorage false clear/delete current scan?
 
         // download file
         ReportUtil.download_file(blob, fileName);
     }
 
-    public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number) {
-        console.log("createReportWorkbook");
+    public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number, archives: []) {
         // create workbook
         // @ts-ignore
         const workbook = new ExcelJS.Workbook({useStyles: true });
             
         // create worksheets
-        this.createOverviewSheet(storedScans, scanType, storedScanCount, workbook);
+        this.createOverviewSheet(storedScans, scanType, storedScanCount, archives, workbook);
         this.createScanSummarySheet(storedScans, scanType, workbook);
         this.createIssueSummarySheet(storedScans, scanType, workbook);
         this.createIssuesSheet(storedScans, scanType, workbook);
@@ -61,8 +58,7 @@ export default class MultiScanReport {
     }
 
     
-    public static createOverviewSheet(storedScans: any, scanType: string, storedScanCount: number, workbook: any) {
-        console.log("createOverviewSheet");
+    public static createOverviewSheet(storedScans: any, scanType: string, storedScanCount: number, archives: [], workbook: any) {
 
         let violations = 0;
         let needsReviews = 0;
@@ -144,7 +140,8 @@ export default class MultiScanReport {
         const rowData = [
             {key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker'},
             {key1: 'Version:', key2: chrome.runtime.getManifest().version},
-            {key1: 'Rule set:', key2: theCurrentScan.ruleSet},
+            //@ts-ignore
+            {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
             {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
             {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
             {key1: 'Platform:', key2: navigator.userAgent},
@@ -246,7 +243,6 @@ export default class MultiScanReport {
     }
 
     public static createScanSummarySheet(storedScans: any, scanType: string, workbook: any) {
-        console.log("createScanSummarySheet");
 
         const worksheet = workbook.addWorksheet("Scan summary");
 
@@ -322,12 +318,9 @@ export default class MultiScanReport {
 
         // if current scan use last scan, if 
         // if current scan use only the last scan otherwise loop through each scan an create row
-        console.log(storedScans);
         let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX FOR selected
         for (j; j < storedScans.length; j++) {
-            console.log("scanType = ", scanType,"   storedScans[",j,"].isSelected = ",storedScans[j].isSelected);
             if (scanType === "selected" && storedScans[j].isSelected === true) {
-                console.log("add Selected Row ",j);
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
                      storedScans[j].url, 
@@ -356,7 +349,6 @@ export default class MultiScanReport {
                     }
                 }
             } else if (scanType === "all") {
-                console.log("add all Row ",j);
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
                      storedScans[j].url, 
@@ -418,7 +410,6 @@ export default class MultiScanReport {
     }
 
     public static createIssueSummarySheet(storedScans: any, scanType: string, workbook: any) {
-        console.log("createIssueSummarySheet");
 
         let violations = 0;
         let needsReviews = 0;
@@ -1649,7 +1640,6 @@ export default class MultiScanReport {
     }
 
     public static createIssuesSheet(storedScans: any, scanType: string, workbook: any) {
-        console.log("createIssuesSheet");
 
         const worksheet = workbook.addWorksheet("Issues");
 
@@ -1774,7 +1764,6 @@ export default class MultiScanReport {
     }
 
     public static createDefinitionsSheet(workbook: any) {
-        console.log("createDefinitionsSheet");
 
         const worksheet = workbook.addWorksheet("Definition of fields");
 
