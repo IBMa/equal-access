@@ -52,7 +52,10 @@ let a11yRulesColor: Rule[] = [
                 return null;
             }
             let style = win.getComputedStyle(ruleContext);
-
+            if (style.position === "absolute" && style.clip === "rect(0px, 0px, 0px, 0px)" && style.overflow !== "visible") {
+                // Corner case where item is hidden (accessibility hiding technique)
+                return null;
+            }
             // First determine the color contrast ratio
             let colorCombo = RPTUtil.ColorCombo(ruleContext);
             let fg = colorCombo.fg;
