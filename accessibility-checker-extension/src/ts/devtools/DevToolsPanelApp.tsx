@@ -504,16 +504,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // capture screenshot
         let canvas: string = "";
         
-        let promise = new Promise((resolve, reject) => {
-            //@ts-ignore
-            chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
-                resolve(image);
-                reject(new Error("Capture failed"));
-            });
-        });
+        // let promise = new Promise((resolve, reject) => {
+        //     //@ts-ignore
+        //     chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
+        //         resolve(image);
+        //         reject(new Error("Capture failed"));
+        //     });
+        // });
 
-        let result:any = await promise;
-        canvas = result;
+        // let result:any = await promise;
+        // canvas = result;
             
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
