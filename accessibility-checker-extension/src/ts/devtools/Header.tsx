@@ -22,7 +22,7 @@ import {
     Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+import { ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
