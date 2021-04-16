@@ -870,7 +870,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
-                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
+                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
                         {!this.state.report && <ReportSplash />}
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} />}

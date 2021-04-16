@@ -26,7 +26,7 @@ import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-rea
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
-// const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
+const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -178,12 +178,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
                 <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
-                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
-                    <div>
+                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
+                    {/* <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {/* Content for Checker Tab */}
@@ -312,20 +312,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.collapseAll}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost"
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reset" 
-                                type="button"
-                            >
-                                <Reset16/>
-                            </Button>
+                            
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={() => this.props.reportHandler("current")}

@@ -196,13 +196,13 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 style={{paddingTop:"6px"}}
                             >
                                 <div>
-                                    {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
                                         <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem"}}>
                                         <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem"}}>
                                         <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                 </div>
