@@ -47,7 +47,7 @@ async function initTab(tabId: number, archiveId: string) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
-            resolve();
+            resolve(_res);
         })
     });
 
@@ -62,7 +62,7 @@ async function initTab(tabId: number, archiveId: string) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
                 }
-                resolve();
+                resolve(_res);
             });
         });
     }
