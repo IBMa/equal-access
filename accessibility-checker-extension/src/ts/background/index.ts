@@ -134,9 +134,17 @@ BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
     });
 });
 
+BackgroundMessaging.addListener("DAP_SCREENSHOT", async (_message: any) => { 
+    return await new Promise((resolve, reject) => {
+        //@ts-ignore
+        chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
+            resolve(image);
+            reject(new Error("Capture failed"));
+        });
+    });
+});
+
 BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
-
-
     return await new Promise((resolve, reject) => {
 
         chrome.storage.local.get("OPTIONS", async function (result: any) {
@@ -144,9 +152,7 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
             if (result.OPTIONS) {
                 archiveId = result.OPTIONS.selected_archive.id;
-            }
-
-            try {
+            } try {
                 await initTab(message.tabId, archiveId);
 
                 chrome.tabs.executeScript(message.tabId, {
@@ -159,12 +165,10 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
                     }
                     resolve(res[0]);
                 })
-            }
-            catch (err) {
+            } catch (err) {
                 reject(err);
             }
         })
-
     });
 });
 

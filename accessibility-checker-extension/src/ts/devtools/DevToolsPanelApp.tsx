@@ -502,7 +502,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // });
 
         // capture screenshot
-        let canvas: string = "";
+        let canvas = await PanelMessaging.sendToBackground("DAP_SCREENSHOT", { });
         
         // let promise = new Promise((resolve, reject) => {
         //     //@ts-ignore
