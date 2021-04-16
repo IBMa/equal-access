@@ -194,6 +194,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <OverflowMenu 
                             className="rendered-icon svg"
                             style={{backgroundColor: "black", height:"32px", width:"32px"}} 
+                            iconDescription="Open and close report scan options"
                             renderIcon={ChevronDown16}
                             ariaLabel="Report menu" 
                             // size="xl"
