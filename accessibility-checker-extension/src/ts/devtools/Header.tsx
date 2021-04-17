@@ -173,7 +173,21 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let focusText = this.props.focusedViewText;
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+            {this.props.layout === "sub" ? 
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
+                <div className="bx--col-sm-2">
+                    <h1>IBM Equal Access Accessibility Checker</h1>
+                </div>
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
+                    <div>
+                        <span>Status: </span>
+                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                    </div>
+                </div>
+            </div>
+            : <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-2">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
@@ -186,6 +200,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div> */}
                 </div>
             </div>
+            }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
