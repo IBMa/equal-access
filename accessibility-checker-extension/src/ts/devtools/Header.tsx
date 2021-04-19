@@ -22,11 +22,11 @@ import {
     Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { Reset16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+import { ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
-// const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
+const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -52,7 +52,7 @@ interface IHeaderProps {
     dataFromParent: boolean[],
     storedScans: {
         actualStoredScan: boolean;  // denotes actual stored scan vs a current scan that is kept when scans are not being stored
-        isSelected: boolean;
+        isSelected: boolean; // stored scan is selected in the Datatable
         url: string;
         pageTitle: string;
         dateTime: number | undefined;
@@ -67,7 +67,8 @@ interface IHeaderProps {
         elementsNoViolations: number;
         elementsNoFailures: number;
         storedScan: string;
-        storedScanData: string
+        screenShot: string;
+        storedScanData: string;
     }[],
     scanning: boolean,
     scanStorage: boolean,
@@ -172,6 +173,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let focusText = this.props.focusedViewText;
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+            {this.props.layout === "sub" ? 
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-2">
                     <h1>IBM Equal Access Accessibility Checker</h1>
@@ -185,6 +187,20 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
                 </div>
             </div>
+            : <div className="bx--row" style={{ lineHeight: "1rem" }}>
+                <div className="bx--col-sm-2">
+                    <h1>IBM Equal Access Accessibility Checker</h1>
+                </div>
+                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
+                    {/* <div>
+                        <span>Status: </span>
+                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                    </div> */}
+                </div>
+            </div>
+            }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <div className="bx--row" style={{ marginTop: '10px' }}>
@@ -193,6 +209,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <OverflowMenu 
                             className="rendered-icon svg"
                             style={{backgroundColor: "black", height:"32px", width:"32px"}} 
+                            iconDescription="Open and close report scan options"
                             renderIcon={ChevronDown16}
                             ariaLabel="Report menu" 
                             // size="xl"
@@ -311,20 +328,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>
-                            <Button
-                                disabled={!this.props.counts}
-                                onClick={this.props.collapseAll}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost"
-                                tooltipAlignment="center" 
-                                tooltipPosition="top"
-                                iconDescription="Reset" 
-                                type="button"
-                            >
-                                <Reset16/>
-                            </Button>
+                            
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={() => this.props.reportHandler("current")}
