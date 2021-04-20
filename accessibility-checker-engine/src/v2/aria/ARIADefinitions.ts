@@ -227,7 +227,7 @@ export class ARIADefinitions {
      * - reqProps: required states or properties for this role
      * - reqChildren: required children for this role
      * - htmlEquiv: HTML equivalent for this role
-     * - roleType: one of widget, landmark, etc.
+     * - roleType: one of widget, structure, landmark, liveRegion, window (as seen in https://www.w3.org/TR/wai-aria-1.2/#roles_categorization)
      * - nameRequired: determines whether an accessible name is required for a widget (see ARIA spec.)
      * - nameFrom: determines how an accessible name is supplied (author or content - see ARIA spec.)
      */
@@ -250,7 +250,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "liveRegion"
+            roleType: "liveRegion",
             nameRequired: false,
             nameFrom: ["author"]
         },
@@ -261,7 +261,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "window"
+            roleType: "window",
             nameRequired: true,
             nameFrom: ["author"]
         },
@@ -429,7 +429,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "window"
+            roleType: "window",
             nameRequired: true,
             nameFrom: ["author"]
         },
@@ -649,7 +649,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "liveRegion"
+            roleType: "liveRegion",
             nameFrom: ["author"]
         },
 
@@ -669,7 +669,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "liveRegion"
+            roleType: "liveRegion",
             nameRequired: true,
             nameFrom: ["author"]
         },
@@ -964,7 +964,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "liveRegion"
+            roleType: "liveRegion",
             nameFrom: ["author"]
         },
 
@@ -1091,7 +1091,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "liveRegion"
+            roleType: "liveRegion",
             nameFrom: ["author"]
         },
 
@@ -1101,7 +1101,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "structure"
+            roleType: "structure",
             nameFrom: ["author"]
         },
 
@@ -1111,7 +1111,7 @@ export class ARIADefinitions {
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget", // "structure"
+            roleType: "structure",
             nameRequired: true,
             nameFrom: ["author", "contents"]
         },
