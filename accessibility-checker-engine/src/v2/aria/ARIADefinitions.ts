@@ -15,8 +15,8 @@
  *****************************************************************************/
 
 /*global OpenAjax*/
-// all references to WAI-ARIA specification is the WAI-ARIA 1.1
-// https://www.w3.org/TR/wai-aria-1.1/
+// all references to WAI-ARIA specification is the WAI-ARIA 1.2
+// https://www.w3.org/TR/wai-aria-1.2/
 
 export class ARIADefinitions {
     static nameFromContent(role: string) : boolean {
@@ -27,12 +27,11 @@ export class ARIADefinitions {
 
     /*
      * array of WAI-ARIA global states and properties
-     * @see https://www.w3.org/TR/wai-aria-1.1/#global_states
+     * @see https://www.w3.org/TR/wai-aria-1.2/#global_states
      */
     static globalProperties : string[] = ["aria-atomic", "aria-busy", "aria-controls", "aria-current", "aria-describedby", 
-        "aria-details", "aria-disabled", "aria-dropeffect", "aria-errormessage", "aria-flowto", "aria-grabbed", 
-        "aria-haspopup", "aria-hidden", "aria-invalid", "aria-keyshortcuts", "aria-label", "aria-labelledby", 
-        "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"];
+        "aria-details", "aria-dropeffect", "aria-flowto", "aria-grabbed", "aria-hidden", "aria-keyshortcuts",
+        "aria-label", "aria-labelledby", "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"];
 
     /*
      * XSD data types for all WAI-ARIA properties
@@ -85,7 +84,7 @@ export class ARIADefinitions {
         },
         "aria-current": {
             type: "http://www.w3.org/2001/XMLSchema#nmtoken",
-            values: ["page", "step", "location", "date", "time", "true", "false", "undefined"] //add underfined for empty value
+            values: ["page", "step", "location", "date", "time", "true", "false", "undefined"] //add undefined for empty value
         },
         "aria-describedby": {
             type: "http://www.w3.org/2001/XMLSchema#idrefs",
@@ -126,7 +125,7 @@ export class ARIADefinitions {
         },
         "aria-invalid": {
             type: "http://www.w3.org/2001/XMLSchema#nmtoken",
-            values: ["true", "false", "spelling", "grammar", "undefined"] //add underfined for empty value
+            values: ["true", "false", "spelling", "grammar", "undefined"] //add undefined for empty value
         },
         "aria-keyshortcuts": {
             type: "http://www.w3.org/2001/XMLSchema#string"
@@ -247,47 +246,50 @@ export class ARIADefinitions {
     } = {
         "alert": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "liveRegion"
             nameRequired: false,
             nameFrom: ["author"]
         },
 
         "alertdialog": {
             container: null,
-            props: ["aria-expanded", "aria-modal"],
+            props: ["aria-modal"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "window"
             nameRequired: true,
             nameFrom: ["author"]
         },
 
         "application": {
             container: null,
-            props: ["aria-activedescendant"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure", // or can be "widget"
             nameRequired: true,
             nameFrom: ["author"]
         },
 
         "article": {
             container: null,
-            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
+            props: ["aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "banner": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -295,50 +297,85 @@ export class ARIADefinitions {
             nameFrom: ["author"]
         },
 
-        "button": {
+        "blockquote": {
             container: null,
-            props: ["aria-expanded", "aria-pressed"],
+            props: null,
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: "input[@type='button']",
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+
+        "button": {
+            container: null,
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-pressed"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "button | input[@type='button']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
             presentationalChildren: true
         },
-        "cell": {
-            container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-rowindex", "aria-rowspan", "aria-expanded"],
+
+        "caption": {
+            container: ["figure", "grid", "table", "treegrid"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
+        "cell": {
+            container: ["row"],
+            props: ["aria-colindex", "aria-colspan", "aria-rowindex", "aria-rowspan"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "td",
+            roleType: "structure",
             nameFrom: ["author", "contents"]
         },
+
         "checkbox": {
             container: null,
-            props: ["aria-checked", "aria-readonly"], 
-            reqProps: null, // "aria-checked" has a default
+            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='checkbox']",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
+        },
+
+        "code": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
         },
 
         "columnheader": {
             container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-expanded", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
+            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null,
+            htmlEquiv: "th[@scope='col']",
+            roleType: "structure",
             nameRequired: true,
             nameFrom: ["author", "contents"]
         },
 
         "combobox": {
             container: null,
-            props: ["aria-expanded", "aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-readonly", "aria-required", "aria-errormessage", "aria-haspopup", "arive-invalid"],
-            reqProps: [],  // "aria-expanded" has a default, aria-controls isn't actually required when aria-expanded="false"
+            props: ["aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required"],
+            reqProps: ["aria-expanded"], // aria-controls isn't actually required when aria-expanded="false"
             reqChildren: [],
             htmlEquiv: null,
             roleType: "widget",
@@ -348,7 +385,7 @@ export class ARIADefinitions {
 
         "complementary": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -358,7 +395,7 @@ export class ARIADefinitions {
 
         "contentinfo": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -368,88 +405,130 @@ export class ARIADefinitions {
 
         "definition": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure",
             nameFrom: ["author"]
+        },
+
+        "deletion": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
         },
 
         "dialog": {
             container: null,
-            props: ["aria-expanded", "aria-modal"],
+            props: ["aria-modal"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "window"
             nameRequired: true,
             nameFrom: ["author"]
         },
 
         "directory": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure",
             nameFrom: ["author"]
         },
 
         "document": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure",
             nameRequired: false,
             nameFrom: ["author"]
         },
 
+        "emphasis": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
         "feed": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: ["article"],
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "figure": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "form": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "form",
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+
+        "generic": {
+            container: null,
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "landmark"
+            roleType: "structure",
+            nameFrom: ["prohibited"]
         },
+
         "graphics-document": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             nameRequired: true,
             nameFrom: ["author"]
         },
+        
         "graphics-object": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             nameRequired: false,
             nameFrom: ["contents", "author"]
         },
+        
         "graphics-symbol": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -457,12 +536,13 @@ export class ARIADefinitions {
             nameFrom: ["author"],
             presentationalChildren: true
         },
+        
         "grid": {
             container: null,
-            props: ["aria-level", "aria-multiselectable", "aria-readonly", "aria-activedescendant", "aria-expanded", "aria-colcount", "aria-rowcount"],
+            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-multiselectable", "aria-readonly", "aria-rowcount"],
             reqProps: null,
-            reqChildren: ["row"],
-            htmlEquiv: null,
+            reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
+            htmlEquiv: "table",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author"]
@@ -470,47 +550,60 @@ export class ARIADefinitions {
 
         "gridcell": {
             container: ["row"],
-            props: ["aria-readonly", "aria-selected", "aria-expanded", "aria-required", "aria-colindex", "aria-colspan", "aria-rowindex", "aria-rowspan"], 
+            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null,
+            htmlEquiv: "td",
             roleType: "widget",
-            nameRequired: true,
             nameFrom: ["author", "contents"]
         },
 
         "group": {
             container: null,
-            props: ["aria-activedescendant", "aria-expanded"],
+            props: ["aria-activedescendant", "aria-disabled"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "heading": {
             container: null,
-            props: ["aria-level", "aria-expanded"],
-            reqProps: null,
+            props: null,
+            reqProps: ["aria-level"],
             reqChildren: null,
-            htmlEquiv: "h1 | h2 | h3 | h4 | h5 |h6",
+            htmlEquiv: "h1 | h2 | h3 | h4 | h5 | h6",
+            roleType: "structure",
             nameRequired: true,
             nameFrom: ["author", "contents"]
         },
 
         "img": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "img",
+            roleType: "structure",
             nameRequired: true,
             nameFrom: ["author"],
             presentationalChildren: true
         },
 
+        "insertion": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
         "link": {
             container: null,
-            props: ["aria-expanded"],
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "a | link",
@@ -521,17 +614,19 @@ export class ARIADefinitions {
 
         "list": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: ["listitem"],
-            htmlEquiv: null
+            htmlEquiv: "ol | ul",
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "listbox": {
             container: null,
-            props: ["aria-expanded", "aria-activedescendant", "aria-multiselectable", "aria-readonly", "aria-required", "aria-orientation"], 
+            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
-            reqChildren: ["option"],
+            reqChildren: ["group", "option"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
@@ -539,59 +634,62 @@ export class ARIADefinitions {
         },
 
         "listitem": {
-            container: ["list", "group"],
-            props: ["aria-expanded", "aria-level", "aria-posinset", "aria-setsize"],
+            container: ["directory", "list"],
+            props: ["aria-level", "aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: "li",
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "log": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
-            nameRequired: true,
+            roleType: "widget", // "liveRegion"
             nameFrom: ["author"]
         },
 
         "main": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "landmark"
+            roleType: "landmark",
+            nameFrom: ["author"]
         },
 
         "marquee": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "liveRegion"
             nameRequired: true,
-            nameFrom: ["author"] 
+            nameFrom: ["author"]
         },
 
         "math": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure",
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: false
         },
 
         "menu": {
             container: null,
-            props: ["aria-expanded", "aria-activedescendant", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
             reqProps: null,
-            reqChildren: ["menuitem", "menuitemcheckbox", "menuitemradio"],
+            reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
@@ -600,9 +698,9 @@ export class ARIADefinitions {
 
         "menubar": {
             container: null,
-            props: ["aria-activedescendant", "aria-expanded", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
             reqProps: null,
-            reqChildren: ["menuitem", "menuitemcheckbox", "menuitemradio"],
+            reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false, 
@@ -610,8 +708,8 @@ export class ARIADefinitions {
         },
 
         "menuitem": {
-            container: ["group", "menu", "menubar"],
-            props: ["aria-posinset", "aria-setsize", "aria-expanded"], //aria-expanded is in ARIA 1.2. refer to github #801 for details
+            container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -621,34 +719,49 @@ export class ARIADefinitions {
         },
 
         "menuitemcheckbox": {
-            container: ["menu", "menubar"],
-            props: ["aria-posinset", "aria-readonly", "aria-setsize", "aria-checked"],
-            reqProps: null, // "aria-checked" has a default
+            container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
         },
 
         "menuitemradio": {
-            container: ["group", "menu", "menubar"],
-            props: ["aria-setsize", "aria-posinset", "aria-readonly", "aria-checked"],
-            reqProps: null, // "aria-checked" has a default
+            container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
+        },
+
+        "meter": {
+            container: null,
+            props: ["aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            reqProps: ["aria-valuenow"],
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameRequired: true,
+            nameFrom: ["author"],
+            presentationalChildren: true
         },
 
         "navigation": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "landmark"
+            roleType: "landmark",
+            nameFrom: ["author"]
         },
 
         "none": {
@@ -656,26 +769,40 @@ export class ARIADefinitions {
             props: [],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
         },
 
         "note": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "option": {
-            container: ["listbox"],
-            props: ["aria-checked", "aria-selected", "aria-posinset", "aria-setsize"],
+            container: ["group", "listbox"], // group only counts as a valid container if it is contained in a listbox
+            props: ["aria-selected", "aria-checked", "aria-disabled", "aria-posinset", "aria-setsize"],
             reqProps: null, // "aria-selected" has a default
             reqChildren: null,
-            htmlEquiv: null,
+            htmlEquiv: "option",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
+        },
+
+        "paragraph": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
         },
 
         "presentation": {
@@ -683,12 +810,13 @@ export class ARIADefinitions {
             props: [],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null
+            htmlEquiv: null,
+            roleType: "structure",
         },
 
         "progressbar": {
             container: null,
-            props: ["aria-expanded", "aria-valuetext", "aria-valuemax", "aria-valuemin", "aria-valuenow"],
+            props: ["aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -700,18 +828,19 @@ export class ARIADefinitions {
 
         "radio": {
             container: null,
-            props: ["aria-posinset", "aria-setsize", "aria-checked"],
-            reqProps: null, // "aria-checked" has a default
+            props: ["aria-disabled", "aria-posinset", "aria-setsize"],
+            reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='radio']",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
         },
 
         "radiogroup": {
             container: null,
-            props: ["aria-activedescendant", "aria-expanded", "aria-required", "aria-readonly", "aria-orientation"], 
+            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: ["radio"],
             htmlEquiv: null,
@@ -722,7 +851,7 @@ export class ARIADefinitions {
 
         "region": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -732,11 +861,13 @@ export class ARIADefinitions {
         },
 
         "row": {
-            container: ["grid", "treegrid", "table", "rowgroup"],
-            props: ["aria-level", "aria-setsize", "aria-posinset", "aria-selected", "aria-activedescendant", "aria-expanded", "aria-colindex", "aria-rowindex"],
+            container: ["grid", "rowgroup", "table", "treegrid"],
+            props: ["aria-activedescendant", "aria-colindex", "aria-disabled", "aria-expanded", "aria-level", "aria-posinset", "aria-rowindex", "aria-selected", "aria-setsize"],
             reqProps: null,
-            reqChildren: ["columnheader", "rowheader", "gridcell", "cell"],
-            htmlEquiv: "tr"
+            reqChildren: ["cell", "columnheader", "gridcell", "rowheader"],
+            htmlEquiv: "tr",
+            roleType: "structure",
+            nameFrom: ["author", "contents"]
         },
 
         "rowgroup": {
@@ -744,23 +875,26 @@ export class ARIADefinitions {
             props: [],
             reqProps: null,
             reqChildren: ["row"],
-            htmlEquiv: null
+            htmlEquiv: "tbody | tfoot | thead",
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "rowheader": {
             container: ["row"],
-            props: ["aria-expanded", "aria-sort", "aria-colindex", "aria-colspan", "aria-level", "aria-readonly", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-required"],
+            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null,
+            htmlEquiv: "th[@scope='row']",
+            roleType: "structure",
             nameRequired: true,
-            nameFrom: ["contents", "author"]
+            nameFrom: ["author", "contents"]
         },
 
         "scrollbar": {
             container: null,
-            props: ["aria-valuetext", "aria-orientation", "aria-valuenow", "aria-valuemax", "aria-valuemin"], 
-            reqProps: ["aria-controls"], // "aria-orientation", "aria-valuenow", "aria-valuemax", "aria-valuemin" have defaults
+            props: ["aria-disabled", "aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            reqProps: ["aria-controls", "aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
@@ -771,37 +905,40 @@ export class ARIADefinitions {
 
         "search": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "landmark"
+            roleType: "landmark",
+            nameFrom: ["author"]
         },
 
-        "searchbox": { 
+        "searchbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: null,
-            nameRequired: true, 
-            nameFrom: ["author"],
-            roleType: "widget"
+            htmlEquiv: "input[@type='search']",
+            roleType: "widget",
+            nameRequired: true,
+            nameFrom: ["author"]
         },
 
         "separator": {
             container: null,
-            props: ["aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuenow"], // when it is focusable, aria-valuetext is a valid one. It is added in the code.
-            reqProps: null, // "aria-valuemax", "aria-valuemin", "aria-valuenow" have defaults
+            props: ["aria-orientation"], // aria-disabled, aria-valuemax, aria-valuemin, aria-valuetext are valid if focusable. This is handled in the code.
+            reqProps: null, // aria-valuenow is required if focusable. This is handled in the code.
             reqChildren: null,
             htmlEquiv: null,
+            roleType: "structure", // or widget if focusable
+            nameFrom: ["author"],
             presentationalChildren: true
         },
 
         "slider": {
             container: null,
-            props: ["aria-orientation", "aria-valuetext", "aria-readonly", "aria-valuemax", "aria-valuenow", "aria-valuemin"],
-            reqProps: null, // "aria-valuemax", "aria-valuenow", "aria-valuemin" have defaults
+            props: ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-orientation", "aria-readonly", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            reqProps: ["aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
@@ -812,8 +949,8 @@ export class ARIADefinitions {
 
         "spinbutton": {
             container: null,
-            props: ["aria-activedescendant", "aria-valuetext", "aria-required", "aria-readonly", "aria-valuemax", "aria-valuenow", "aria-valuemin"], 
-            reqProps: null, // "aria-valuemax", "aria-valuenow", "aria-valuemin" have defaults
+            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-readonly", "aria-required", "aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
+            reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
@@ -823,49 +960,81 @@ export class ARIADefinitions {
 
         "status": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "liveRegion"
             nameFrom: ["author"]
         },
+
+        "strong": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
+        "subscript": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
+        "superscript": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["prohibited"]
+        },
+
         "switch": {
             container: null,
-            props: ["aria-readonly", "aria-checked"],
-            reqProps: null, // "aria-checked" has a default
+            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
-            nameRequired: true, 
-            nameFrom: ["author", "contents"]
+            nameRequired: true,
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
         },
 
         "tab": {
             container: ["tablist"],
-            props: ["aria-selected", "aria-expanded", "aria-posinset", "aria-setsize"],
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
-            nameRequired: false, 
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            presentationalChildren: true
         },
 
         "table": {
             container: null,
-            props: ["aria-colcount", "aria-rowcount", "aria-expanded"],
+            props: ["aria-colcount", "aria-rowcount"],
             reqProps: null,
-            reqChildren: ["row"],
-            htmlEquiv: null,
-            roleType: null,
-            nameFrom: ["author"],
-            nameRequired: true
+            reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
+            htmlEquiv: "table",
+            roleType: "structure",
+            nameRequired: true,
+            nameFrom: ["author"]
         },
 
         "tablist": {
             container: null,
-            props: ["aria-activedescendant", "aria-multiselectable", "aria-level", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-multiselectable", "aria-orientation"],
             reqProps: null,
             reqChildren: ["tab"],
             htmlEquiv: null,
@@ -873,10 +1042,10 @@ export class ARIADefinitions {
             nameRequired: false, 
             nameFrom: ["author"]
         },
-        
+
         "tabpanel": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -887,16 +1056,17 @@ export class ARIADefinitions {
 
         "term": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
-            htmlEquiv: "dt",
-            roleType: null
+            htmlEquiv: "dfn",
+            roleType: "structure",
+            nameFrom: ["author"]
         },
 
         "textbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "input[@type='text']",
@@ -905,46 +1075,52 @@ export class ARIADefinitions {
             nameFrom: ["author"]
         },
 
-        "timer": {
+        "time": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
-            nameRequired: true,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+
+        "timer": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "widget", // "liveRegion"
             nameFrom: ["author"]
         },
 
         "toolbar": {
             container: null,
-            props: ["aria-activedescendant", "aria-expanded", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-
-            // Although, not a widget according to the ARIA spec, Matt wants toolbars to be labeled
-            roleType: "widget",
-            nameRequired: true,
+            roleType: "widget", // "structure"
             nameFrom: ["author"]
         },
 
         "tooltip": {
             container: null,
-            props: ["aria-expanded"],
+            props: null,
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
-            roleType: "widget",
+            roleType: "widget", // "structure"
             nameRequired: true,
-            nameFrom: ["author", "contents"] 
+            nameFrom: ["author", "contents"]
         },
 
         "tree": {
             container: null,
-            props: ["aria-multiselectable", "aria-activedescendant", "aria-expanded", "aria-required", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-required"],
             reqProps: null,
-            reqChildren: ["treeitem"],
+            reqChildren: ["group", "treeitem"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
@@ -953,9 +1129,9 @@ export class ARIADefinitions {
 
         "treegrid": {
             container: null,
-            props: ["aria-activedescendant", "aria-expanded", "aria-level", "aria-multiselectable", "aria-readonly", "aria-required", "aria-colcount", "aria-rowcount", "aria-orientation"], 
+            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required", "aria-rowcount"],
             reqProps: null,
-            reqChildren: ["row"],
+            reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
@@ -963,15 +1139,15 @@ export class ARIADefinitions {
         },
 
         "treeitem": {
-            container: ["tree", "group"],
-            props: ["aria-checked", "aria-selected", "aria-expanded", "aria-level", "aria-posinset", "aria-setsize"],
-            reqProps: null, // "aria-selected" has a default
+            container: ["group", "tree"],
+            props: ["aria-checked", "aria-disabled", "aria-expanded", "aria-haspopup", "aria-level", "aria-posinset", "aria-selected", "aria-setsize"],
+            reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"]
-        }
+        },
     } // end designPatterns
 
     // copied from https://www.w3.org/TR/html5/disabled-elements.html
