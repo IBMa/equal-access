@@ -128,7 +128,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                             item.scrollTo = item.scrollTo && scrollFirst;
                             scrollFirst = scrollFirst && !item.scrollTo;
                         })
-                        return <ReportRow 
+                        return <ReportRow key={idx}
                             idx={thisIdx} 
                             report={this.props.report} 
                             group={group}
