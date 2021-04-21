@@ -231,6 +231,7 @@ export class ARIADefinitions {
      * - roleType: one of widget, structure, landmark, liveRegion, window (as seen in https://www.w3.org/TR/wai-aria-1.2/#roles_categorization)
      * - nameRequired: determines whether an accessible name is required for a widget (see ARIA spec.)
      * - nameFrom: determines how an accessible name is supplied (author or content - see ARIA spec.)
+     * - deprecated: if present, indicates that the role is deprecated, and provides a list of alternative role(s)
      */
     static designPatterns : {
         [role: string]: {
@@ -442,7 +443,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecated: ["list"]
         },
 
         "document": {
