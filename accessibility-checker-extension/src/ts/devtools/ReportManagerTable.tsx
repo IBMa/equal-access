@@ -274,7 +274,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                             >
                                 <div className="bx--row">
                                     <div className="bx--col-md-4 bx--col-sm-2">
-                                        <img src={this.state.screenShot} width="100%"/>  
+                                        <img src={this.state.screenShot} alt="Screenshot of page scanned" width="100%"/>  
                                     </div>
                                     <div className="bx--col-md-4 bx--col-sm-2">
                                         <div><strong>Scan label: </strong>

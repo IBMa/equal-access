@@ -173,24 +173,16 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                 <div className="bx--row">
                     <div className="bx--col-sm-4">
                         <Tabs
-                            ariaLabel="Report options"
-                            className="some-class"
-                            iconDescription="show menu options"
-                            // onKeyDown={function noRefCheck() { }}
-                            // onSelectionChange={function noRefCheck() { }}
+                            // ariaLabel="Report options"
                             role="navigation"
                             selected={this.props.tabs.indexOf(this.props.selectedTab)}
                             tabContentClassName="tab-content"
-                            // triggerHref="#" 
                         >
                         {this.props.tabs.map(tabId => {
-                            return <Tab
+                            return <Tab key={tabId}
                                 href="#"
                                 id={"tab-"+tabId}
                                 label={tabLabels[tabId]}
-                                // onClick={function noRefCheck() { }}
-                                // onKeyDown={function noRefCheck() { }}
-                                // renderContent={function noRefCheck() { }}
                                 role="presentation"
                                 className={"tab-content-"+tabId}
                                 style={{paddingTop:"6px"}}
