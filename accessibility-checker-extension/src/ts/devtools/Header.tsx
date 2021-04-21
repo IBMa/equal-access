@@ -148,7 +148,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+        // let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         if (!counts) {
             counts = {
@@ -246,8 +246,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>
-                        {isLatestArchive ? "" : (
-                            <Tooltip>
+                        {/* {isLatestArchive ? "" : ( */}
+                            <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
@@ -261,7 +261,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     </a>
                                 </div>
                             </Tooltip>
-                        )}
+                        {/* )} */}
                     </div>
                     <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
@@ -308,7 +308,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {/* {isLatestArchive ? "" : ( */}
-                            <Tooltip>
+                            <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
