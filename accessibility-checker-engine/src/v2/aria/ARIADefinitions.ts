@@ -121,7 +121,8 @@ export class ARIADefinitions {
             values: ["true", "false", "menu", "listbox", "tree", "grid", "dialog"]
         },
         "aria-hidden": {
-            type: "http://www.w3.org/2001/XMLSchema#boolean"
+            type: "http://www.w3.org/2001/XMLSchema#nmtoken",
+            values: ["true", "false", "undefined"]
         },
         "aria-invalid": {
             type: "http://www.w3.org/2001/XMLSchema#nmtoken",
