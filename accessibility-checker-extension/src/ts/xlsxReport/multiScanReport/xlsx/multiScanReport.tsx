@@ -318,8 +318,9 @@ export default class MultiScanReport {
 
         // if current scan use last scan, if 
         // if current scan use only the last scan otherwise loop through each scan an create row
-        let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX FOR selected
-        for (j; j < storedScans.length; j++) {
+        let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
+        for (j; j < storedScans.length; j++) { // for each scan
+            console.log("scanType = ", scanType, "   storedScans[j].isSelected = ", storedScans[j].isSelected);
             if (scanType === "selected" && storedScans[j].isSelected === true) {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
@@ -376,7 +377,7 @@ export default class MultiScanReport {
                         right: {style:'thin', color: {argb: 'FFA6A6A6'}}
                     }
                 }
-            } else {
+            } else if (scanType === "current") {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
                      storedScans[j].url, 
@@ -579,7 +580,7 @@ export default class MultiScanReport {
                         }
                     }
                 }
-            } else {
+            } else if (scanType === "current") {
                 for (let i=0; i<myStoredData.length;i++) { // for each issue row
                     if (myStoredData[i][5] == 1) { // if level 1
                         level1Counts[0]++;
@@ -1668,7 +1669,7 @@ export default class MultiScanReport {
                             ];
                     rowArray.push(row);
                 }
-            } else {
+            } else if (scanType === "current") {
                 for (let i=0; i<myStoredData.length;i++) {
                     let row = [myStoredData[i][0], myStoredData[i][1], storedScans[j].userScanLabel, 
                             myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 

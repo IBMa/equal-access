@@ -115,7 +115,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                             item.scrollTo = item.scrollTo && scrollFirst;
                             scrollFirst = scrollFirst && !item.scrollTo;
                         })
-                        return <ReportRow 
+                        return <ReportRow key={idx}
                             idx={thisIdx} 
                             report={this.props.report} 
                             group={group}
