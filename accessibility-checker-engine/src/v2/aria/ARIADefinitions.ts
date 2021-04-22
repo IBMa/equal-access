@@ -1153,11 +1153,11 @@ export class ARIADefinitions {
         },
     } // end designPatterns
 
-    // copied from https://www.w3.org/TR/html5/disabled-elements.html
-    // https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Forms
-    static elementsAllowedDisabled = ["button", "input", "select", "textarea", "optgroup", "option", "menuitem", "fieldset"];
-    static elementsAllowedRequired = ["input", "select", "textarea"];
-    static elementsAllowedReadOnly = ["input", "textarea"];
+    // copied from https://html.spec.whatwg.org/multipage/semantics-other.html#disabled-elements
+    // https://html.spec.whatwg.org/multipage/input.html#input-type-attr-summary
+    static elementsAllowedDisabled = ["button", "input", "select", "textarea", "optgroup", "option", "fieldset"]; // also form-associated custom element
+    static elementsAllowedRequired = ["input", "select", "textarea"]; // required is not supported on input@type="range", "color", "hidden" or any button types
+    static elementsAllowedReadOnly = ["input", "textarea"]; // readonly is not supported on input@type="checkbox", "radio", "range", "color", "file", hidden" or any button types
 
 
     /* https://www.w3.org/TR/html-aria/#docconformance
