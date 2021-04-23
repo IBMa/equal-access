@@ -175,23 +175,23 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             {this.props.layout === "sub" ? 
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-sm-4">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
-                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
+                {/* <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                     </div>
-                </div>
+                </div> */}
             </div>
             : <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-sm-3">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     {/* <div>
                         <span>Status: </span>
@@ -203,6 +203,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
+                <React.Fragment>
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
@@ -302,6 +303,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
                 </div>
+                <div className="bx--row" style={{ marginTop: '10px' }}>
+                    <div className="bx--col-sm-4">
+                        <div>
+                            <span>Status: </span>
+                            <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                            <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                        </div>
+                    </div>
+                </div>
+                </React.Fragment>
                 // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
