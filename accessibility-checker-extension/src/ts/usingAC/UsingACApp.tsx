@@ -81,12 +81,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <ul className="toc">
                     <li>
                       <a href="#rule_deploy" title="rule set deployment">
-                        5.1 Rule set deployment
+                        5.1 Rule set deployment date
                       </a>
                     </li>
                     <li>
                       <a href="#ruleset" title="rule set">
-                        5.2 Rule set
+                        5.2 Select accessibility guidelines
                       </a>
                     </li>
                   </ul>
@@ -113,32 +113,53 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <a
+                        href="#t_single_scan_report"
+                        title="Create scan report"
+                      >
+                        6.4 Creating a scan report
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        href="#t_multi_scan_report"
+                        title="Create multi-scan report"
+                      >
+                        6.5 Creating a multi-scan report
+                      </a>
+                    </li>
+                    <li>
+                      <a
                         href="#t_select_hidden_settings"
                         title="Select hidden content Settings"
                       >
-                        6.4 Hidden content scanning
+                        6.6 Hidden content scanning
                       </a>
                     </li>
                     <li>
                       <a href="#scan_local_files" title="Scan local files">
-                        6.5 Scanning local files
+                        6.7 Scanning local files
                       </a>
                     </li>
                     <li>
                       <a href="#a11y_considerations" title="Accessibility Considerations">
-                        6.6 Accessibility Considerations
+                        6.8 Accessibility Considerations
                       </a>
                     </li>
                   </ul>
                 </li>
                 <li>
                   <a href="#the_report" title="accessibility checker report">
-                    7. Accessibility Checker Report{" "}
+                    7. Accessibility Checker reports{" "}
                   </a>
                   <ul className="toc">
                     <li>
-                      <a href="#t_view_report" title="Reviewing report">
-                        7.1 Review the report
+                      <a href="#t_html_report" title="HTML report">
+                        7.1 HTML report
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#t_excel_report" title="Excel spreadsheet report">
+                        7.2 MS Excel Spreadsheet report
                       </a>
                     </li>
                   </ul>
@@ -163,8 +184,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               The IBM Equal Access Accessibility Checker is a browser extension
               that allows users to evaluate a web-based component or solution
-              for accessibility issues against the latest WCAG 2.1 standards
-              with explanations and suitable fixes within the tool.
+              for accessibility issues against W3C Web Content Accessibilty Guidelines 
+              (WCAG) and IBM guidelines with explanations and suitable fixes within the tool.
             </p>
             <p>
               The extension showcases two views, the{" "}
@@ -295,7 +316,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               <li>
                 <p>
                   <strong>Requirements</strong> - issues are organized by the
-                  IBM requirements, which corresponds to the WCAG 2.1 standards. Each issue is mapped to the most relevant requirement. This view makes it easy to see how to classify and
+                  IBM requirements, which corresponds to the WCAG 2.1 standards. 
+                  Each issue is mapped to the most relevant requirement. This 
+                  view makes it easy to see how to classify and
                   report issues found by the tool.
                 </p>
               </li>
@@ -373,33 +396,30 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               />
             </p>
 
-            <h3 id="rule_deploy">5.1 Rule set deployment</h3>
+            <h3 id="rule_deploy">5.1 Rule set deployment date</h3>
             <p>
               {" "}
-              From the <strong>‘Rule set deployment’</strong> dropdown choose
+              From the <strong>'Select a rule set deployment date'</strong> dropdown choose
               one of the following:
             </p>
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
-                  <strong>Latest</strong> - use the latest version of the
+                  <strong>Latest Deployment</strong> - use the latest version of the
                   selected rule set. This is the default option.
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>&lt;date&gt;</strong> Deployment - use the rule set
-                  version from a specific date. Use this option if you need to
-                  rerun a test exactly as it ran on a previous date.
+                  <strong>&lt;date&gt; Deployment</strong> - use a rule set
+                  from a specific date for consistent testing throughout a project, 
+                  or to replicate an earlier test.
                 </p>
               </li>
               <li>
                 <p>
-                  <strong>Preview</strong> - this option extends the Latest rule
-                  set to include a preview of new rules that may be added in the
-                  future. These rules are experimental and liable to change.
-                  This option is not recommended if testing results must be
-                  replicated in the future.
+                  <strong>Preview Rules</strong> - try an experimental preview of 
+                  a possible future rule set.
                 </p>
               </li>
             </ul>
@@ -409,43 +429,43 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               Close and reopen the developer tools for the change to take effect.
             </p>
 
-            <h3 id="ruleset">5.2 Rule set</h3>
+            <h3 id="ruleset">5.2 Select accessibility guidelines</h3>
             <p>
-              From the <strong>‘Select rule set’</strong> dropdown choose one of
+              From the <strong>'Select accessibility guidelines'</strong> dropdown choose one of
               the following:
             </p>
             <ul style={{ marginInlineStart: "2rem" }}>
               <li>
                 <p>
                   <strong>IBM Accessibility</strong> - Rules for Web Content
-                  Accessibility Guidelines WCAG 2.1 level A and level AA, plus
-                  additional IBM supplemental requirements. This is
-                  the default option.
+                  Accessibility Guidelines WCAG 2.1, levels A and AA, plus
+                  additional IBM requirements. This is the default option.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>IBM Accessibility Experimental</strong> - Rules for
-                  WCAG 2.1 level A and level AA plus additional IBM supplemental requirements and experimental rules.
+                  <strong>WCAG 2.1 (A,AA)</strong> - This is the current W3C recommendation. 
+                  Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.
+                  These rules align with the European EN 301 549 standards.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>WCAG 2.0</strong> - Rules for Web Content
-                  Accessibility Guidelines WCAG 2.0 level A and level AA. These
-                  rules align with the Revised US Sec 508 standards.
+                  <strong>WCAG 2.0 (A,AA)</strong> - These
+                  rules align with the Revised US Sec 508 standards, but are not the latest 
+                  W3C recommendation.
                 </p>
               </li>
 
               <li>
                 <p>
-                  <strong>WCAG 2.1</strong> - Rules for Web Content
-                  Accessibility Guidelines WCAG 2.1 level A and level AA. These
-                  rules align with the European EN 301 549 standards.
+                  <strong>IBM Accessibility BETA</strong> - Extends IBM Accessibility 
+                  with experimental rules.
                 </p>
               </li>
+
             </ul>
             <p>
               After making a change, select the <strong>'Save'</strong> button, then
@@ -460,6 +480,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               component, while the Accessibility Assessment view provides
               explanation and suggested solutions for each issue reported.
               {" "}
+              </p>
+              <p>
               <strong>Note</strong>: On rare occasions the Accessibility Checker
               extension does not appear in the developer tools for some sites
               due to a bug in the developer tools. The workaround is to go to a
@@ -543,9 +565,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The scan result displays the total number of issues found
                     with individual counts for violations, items that need
                     review, and recommendations in the issue count region. By
-                    default, the issue list is shown in the ‘Element roles’ view
-                    (see the previous definition), while ‘Requirements’ and ‘Rules’
-                    tab are also available. All views show the same set of
+                    default, the issue list is shown in the 'Element roles' view
+                    (see the previous definition), while 'Requirements' and 'Rules'
+                    tabs are also available. All views show the same set of
                     issues.
                   </p>
                 </li>
@@ -553,20 +575,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     To <strong>filter</strong> issues and focus only on
                     violations, items that need review or recommendations,
-                    deselect the checkbox by the issue type in the issue count region below the
-                    'Scan' button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
+                    deselect the checkbox by the issue type in the issue count region below the{" "}
+                    <strong>'Scan'</strong> button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Select the expand icon next to an element role, requirement,
+                    Select the expand icon (^) next to an element role, requirement,
                     or rule in the table to display the corresponding issues
                     found.
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Select the link for an issue to view more detailed help
+                    Select the 'learn more' link for an issue to view more detailed help
                     information that describes the issue and how to fix it. The
                     help includes links to more detailed explanation, and
                     summarizes why this issue is important, and who is affected
@@ -645,14 +667,16 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     <li>
                       <p style={{ marginTop: "0rem" }}>
                         Select the <strong>'Requirements'</strong> tab to view the
-                        scan results by the IBM accessibility requirements.
+                        scan results by the{" "}
+                        <a href="https://www.ibm.com/able/requirements/requirements/">
+                          IBM accessibility requirements</a>.{" "}
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
                         Select an element or an instance of an issue to
                         highlight the same set of issues and child issues as in
-                        the 'Element roles’ tab. In this view, the issues will
+                        the 'Element roles' tab. In this view, the issues will
                         be shown within the relevant requirements.
                       </p>
                     </li>
@@ -677,7 +701,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       <p style={{ marginTop: "0rem" }}>
                         Select an element or an instance of an issue to
                         highlight the same set of issues and child issues as in
-                        the 'Element roles’ tab. In this view, the issues will
+                        the 'Element roles' tab. In this view, the issues will
                         be shown within the relevant rules.
                       </p>
                     </li>
@@ -692,16 +716,12 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
-                    Use the <strong>‘Reset’</strong> button to return the view
-                    to the initial scan, with the results showing all the issues for the page,
-                    highlighted and opened.
-                  </p>
-                </li>
-                <li>
-                  <p style={{ marginTop: "0rem" }}>
-                    Use the <strong>‘Reports’</strong> button to download a
-                    standalone HTML report that includes the same three views
-                    and all the help information provided in the checker and a MS Excel spreadsheet report for easy data manipulation.
+                    Use the <strong>'Reports'</strong> menu button to download reports
+                    and to store and manage scans to combine into reports. 
+                    For details, see Sections{" "}
+                    <a href="#t_single_scan_report" title="Create scan report">6.4 Creating a scan report</a>,{" "} 
+                    <a href="#t_multi_scan_report" title="Create multi-scan report">6.5 Creating a multi-scan report</a>{" "}
+                    and <a href="#the_report" title="accessibility checker report">7 Accessibility Checker reports</a>.
                   </p>
                 </li>
                 <li>
@@ -715,22 +735,36 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </div>
 
             <h3 id="focus_view">6.2 Focus View</h3>
+            <p>
+            The <strong>'Focus view'</strong> switch allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
+            </p>
             <div className="pa">
-              The <strong>'Focus view'</strong> switch allows you to switch between viewing all issues on the page, or only the issues for a selected element or component in the DOM. To focus on any individual element or component:
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>Select the element or the component in the DOM, or</li>
                 <li>
-                  Right-click on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the element or the component in the DOM, or
+                  </p>
                 </li>
                 <li>
-                  Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
+                  <p style={{ marginTop: "0rem" }}>
+                    Right-click on a page element and select 'Inspect' (Chrome) or ‘Inspect Element’ (Firefox).
+                  </p>
                 </li>
-                <li>Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch to see all issues for the page again.</li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the element name in the <strong>‘Focus View’</strong> switch to view only the issues for that element and its children.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the <strong>'All'</strong> option in the <strong>‘Focus View’</strong> switch to see all issues for the page again.
+                  </p>
+                </li>
               
-              By default, after the first scan of a page, all issues are shown, and the &lt;html&gt; element is selected, as shown in this screenshot:
-              
+              <p>By default, after the first scan of a page, all issues are shown, and the &lt;html&gt; element is selected, as shown in this screenshot:
+              </p>
   
 
               <p>
@@ -741,10 +775,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       height="100%"
                     />
               </p>
+              <p>In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the{" "} 
+              <strong>'Focus View'</strong> switch has been set to show all the issues on the whole page:
               <br/>
-              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
-              <strong>‘Focus View’</strong> switch has has been set to show all the issues on the whole page:
-              <br/>
+              </p>
               <p>
                     <img
                       src="assets/img/searchFocusViewAll.png"
@@ -753,10 +787,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       height="100%"
                     />
               </p>
-              <br/>
-              In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the 
-              <strong>‘Focus View’</strong> switch has has been set to show only the issues for that search &lt;input&gt; element:
-              <br/>
+              <p>In this screen shot, the search &lt;input&gt; element in the DOM has been selected, and the{" "}
+              <strong>‘Focus View’</strong> switch has been set to show only the issues for that search &lt;input&gt; element:
+              </p>
               <p>
                     <img
                       src="assets/img/searchFocusView.png"
@@ -994,7 +1027,164 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </ol>
             </div>
 
-            <h3 id="t_select_hidden_settings">6.4 Hidden content scanning</h3>
+            <h3 id="t_single_scan_report">6.4 Creating a scan report</h3>
+            <div className="pa">
+            To generate a report for a single scan in the <strong>Accessibility Checker</strong> view:
+            <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Follow the instructions in <a href="#a11y_check" title="Accessibility Checker">
+                        6.1 Accessibility Checker</a> to scan the web page.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Open the <strong>'Reports'</strong> drop-down menu that follows the scan button.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Select <strong>'Download current scan'</strong>.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    The report for the most recent scan will be downloaded in both HTML and MS Excel spreadsheet formats.
+                </p>
+                </li>
+                </ol>
+                <p>To generate a report for a single scan in the <strong>Accessibility Assessment</strong> view:
+                </p>
+                <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Follow the instructions in <a href="#a11y_assess" title="Accessibility Assessment">6.3 Accessibility Assessment</a> to scan the web page.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the <strong>'Reports'</strong> button.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    The report for the most recent scan will be downloaded in both HTML and MS Excel spreadsheet formats.
+                  </p>
+                </li>
+              </ol>
+            </div>
+
+            <h3 id="t_multi_scan_report">6.5 Creating a multi-scan report</h3>
+            <p>
+              Follow these steps to combine several scans into a single report. 
+              Up to 50 scans may be combined. Reports 
+              with more than 50 scans may not open correctly in MS Excel due to 
+              limitations of the libraries used to write the reports.
+              </p>
+             <div className="pa">
+             <ol
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Open the <strong>Accessibility Checker</strong> view (as described in <a href="#a11y_check" title="Accessibility Checker">
+                        6.1 Accessibility Checker</a>).
+                 </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Open the <strong>'Reports'</strong> drop-down menu.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the <strong>'Start storing scans'</strong> menu item.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    The status indicator below the scan button will show that you are now 
+                    storing scans to build a report, and that no scans are stored.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Scan the pages you want to include in the report.  This may include scans 
+                    of the same page in different states. 
+                    The status indicator will update to show how many scans are stored.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    When storing scans, you may stop storing scans by selecting the <strong>'Stop storing scans'</strong>{" "} 
+                    option in the <strong>'Reports'</strong> drop-down menu, and your stored scans will not be lost.  
+                    You can start storing scans again at any time.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    To remove all stored scans, open the <strong>'Reports'</strong> drop-down menu and 
+                    select <strong>'Clear stored scans'</strong>.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    When you have stored the scans for the report, open the <strong>'Reports'</strong> drop-down menu and select{" "} 
+                    <strong>'View stored scans'</strong>. This opens the Scan manager view, showing a table listing all the stored scans. 
+                  </p>
+                </li>
+              </ol>
+              <p>Creating a report in the scan manager view:
+              </p><ol 
+                style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
+              >
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Review the scans listed and select the ones you want in the report. Select or unselect all 
+                    the stored scans with the checkbox in the first column of the header row of the table.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Use the <strong>'View'</strong> link in the 'Details' column at the right of the table to see a screenshot of each scan.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Unselect any scan you do not want in the report by unchecking its checkbox in the table. 
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    [Optional] To help differentiate the scans in the final report, enter meaningful scan labels 
+                    in the 'Scan label’ column of the table.  These labels will appear in the final report.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Download the multi-scan report spreadsheet by selecting the <strong>'Download'</strong> button at the top of the table.
+                    The spreadsheet will automatically download.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Remove the selected stored scans using the <strong>'Delete'</strong> button. 
+                    This preserves memory for new scans to be stored.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Return to the main checker view by selecting <strong>'Back to list view'</strong>.
+                  </p>
+                </li>
+              </ol>
+            </div>
+
+            <h3 id="t_select_hidden_settings">6.6 Hidden content scanning</h3>
             <p>
               By default, the tool skips hidden content (Web pages that use the{" "}
               <var>visibility:hidden</var> or <var>display:none</var> elements),
@@ -1005,43 +1195,65 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               Accessibility Checker can validate the content that is displayed.
             </p>
 
-            <h3 id="scan_local_files">6.5 Scan local files</h3>
-            <div className="pa">
+            <h3 id="scan_local_files">6.7 Scan local files</h3>
+            <p>
               The Accessibility Checker is able to scan local .html or .htm
               files launched in the Firefox browser by default. Follow the steps
               below to allow scanning of local .html or .htm files in the Chrome
               browser:
+              </p>
+            <div className="pa">
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>Open the Chrome browser.</li>
                 <li>
-                  Open the <strong>'Window'</strong> menu.
+                  <p style={{ marginTop: "0rem" }}>
+                    Open the Chrome browser.
+                  </p>
                 </li>
                 <li>
-                  Select the <strong>'Extensions'</strong> menu option to see
-                  all installed extensions.
+                  <p style={{ marginTop: "0rem" }}>
+                    Open the <strong>'Window'</strong> menu.
+                  </p>
                 </li>
                 <li>
-                  Select the <strong>'Details'</strong> button of the IBM Equal
-                  Access Accessibility Checker Extension.
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the <strong>'Extensions'</strong> menu option to see
+                    all installed extensions.
+                  </p>
                 </li>
                 <li>
-                  Scroll down to <strong>'Allow access to file URLs'</strong>{" "}
-                  and turn this option on.
+                  <p style={{ marginTop: "0rem" }}>
+                    Select the <strong>'Details'</strong> button of the IBM Equal
+                    Access Accessibility Checker Extension.
+                  </p>
+                </li>
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Scroll down to <strong>'Allow access to file URLs'</strong>{" "}
+                    and turn this option on.
+                  </p>
                 </li>
               </ol>
             </div>
 
-            <h3 id="a11y_considerations">6.6 Accessibility Considerations</h3>
+            <h3 id="a11y_considerations">6.8 Accessibility Considerations</h3>
+            <p>
+              Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
+            </p>
             <div className="pa">
-               Highlighted below are several accessibility features for adaptability and to ensure ease of access to the Checker functionality, including with keyboard or with a screen reader: 
               <ol
                 style={{ listStyleType: "decimal", marginInlineStart: "2rem" }}
               >
-                <li>The Accessibility Checker tool is responsive to the user's preferred font size and colors.
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    The Accessibility Checker tool is responsive to the user's preferred font size and colors.
+                  </p>
                 </li>
-                <li>Both the Accessibility Assessment view and the Accessibility Checker view are fully keyboard accessible, navigate as follows:
+                <li>
+                  <p style={{ marginTop: "0rem" }}>
+                    Both the Accessibility Assessment view and the Accessibility Checker view are fully keyboard accessible, navigate as follows:
+                  </p>
                 </li>
                   <ul
                     style={{
@@ -1057,7 +1269,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        After running the scan, press the <strong>'tab'</strong> key again, to navigate to the <strong>'Reset Selections'</strong> icon and the <strong>'Report'</strong> icon.
+                        After running the scan, press the <strong>'tab'</strong> key again, to navigate to the <strong>'Reports'</strong> drop-down menu button.
+                      </p>
+                    </li>
+                    <li>
+                      <p style={{ marginTop: "0rem" }}>
+                        In the Accessibility Checker view, press the <strong>'tab'</strong> key again to navigate to the 'Focus view’ toggle button. 
+                        Use the arrow keys to select whether the issue list includes all issues (default) or just the issues for the currently focused element and its children. 
+                        This function is not available in the Accessibility Assessment view. 
                       </p>
                     </li>
                     <li>
@@ -1082,7 +1301,9 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     </li>
                   </ul>  
                 <li>
-                  Use the <strong>headings</strong> hierarchy or the implemented <strong>landmarks</strong> to quickly navigate from one section to another. The list of implemented landmarks are as follows:
+                  <p style={{ marginTop: "0rem" }}>
+                    Use the <strong>headings</strong> hierarchy or the implemented <strong>landmarks</strong> to quickly navigate from one section to another. The list of implemented landmarks are as follows:
+                  </p>
                 </li>
                   <ul
                     style={{
@@ -1092,7 +1313,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   >
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        The <strong>IBM Accessibility Assessment</strong> or the <strong>IBM Accessibility Checker</strong> main landmark: contains the main functionality of the tool in each view and includes,
+                        The <strong>Accessibility Assessment</strong> or the <strong>Accessibility Checker</strong> main landmark contains the main functionality of the tool in each view and includes,
                       </p>
                       <ul
                           style={{
@@ -1110,16 +1331,22 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                               The <strong>Issue List</strong> region: contains the list of issues grouped by Element Roles, by Requirements or by Rules.
                             </p>
                           </li>
+                          <li>
+                          <p style={{ marginTop: "0rem" }}>
+                            In the Accessibility Checker view, the main landmark also containes issue help and the overview of stored scans, when those are 
+                            requested by the user.
+                          </p>
+                         </li>
                         </ul>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        The Accessibility Assessment view <strong>Scan Summary</strong> aside or the complementary landmark: contains the scan summary, after the scan completes or shows the issue help when any issue is selected.
+                        The Accessibility Assessment view <strong>Scan Summary</strong> aside or the complementary landmark contains the scan summary, after the scan completes or shows the issue help when any issue is selected.
                       </p>
                     </li>
                     <li>
                       <p style={{ marginTop: "0rem" }}>
-                        The Accessibility Assessment view <strong>Issue Help</strong> aside or the complementary landmark: contains the issue help when any issue is selected.
+                        The Accessibility Assessment view <strong>Issue Help</strong> aside or the complementary landmark contains the issue help when any issue is selected.
                       </p>
                     </li>
                   </ul>
@@ -1128,7 +1355,22 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
             <h2 id="the_report">7. Accessibility Checker reports</h2>
             <p>
-              The Accessibility Checker provides two kinds of reports to download, one as HTML and one as MS Excel spreadsheet. To open the Accessibility Checker reports:
+            The Accessibility Checker can create reports for a single scan, or for multiple scans combined (multi-scan reports). 
+            Single scan reports are provided in both HTML and MS Excel spreadsheet formats. 
+            Multi-scan reports are available only in MS Excel spreadsheet format. 
+            Sections <a href="#t_single_scan_report"
+                        title="Create scan report">
+                  6.4 Creating a scan report
+                  </a>{" "}
+                  and <a href="#t_multi_scan_report"
+                        title="Create multi-scan report">
+                    6.5 Creating a multi-scan report
+                  </a>{" "}
+                  describe how to generate reports.
+            </p>
+            <h3 id="t_html_report">7.1 HTML report</h3>
+            <p>
+
             </p>
             <ol
               style={{
@@ -1166,10 +1408,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </li>
             </ol>
 
-            <h3 id="t_view_report">7.1 Review the reports</h3>
             <p>
-              <strong>HTML Accessibility Checker report:</strong> This is an interactive report that you
-              can save as an HTML file for future use. It includes the report
+              This is an interactive report saved as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
               the issue details organized by requirements, by element
               roles, and by rules. Each instance of an issue also includes a{" "}
@@ -1191,14 +1431,63 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             <p>
               <img
                 src="assets/img/report.png"
-                alt="Screen shot of a Accessibility Checker Report"
+                alt="Screen shot of an Accessibility Checker Report"
                 width="100%"
                 height="100%"
               />
             </p>
-            <p><strong>MS Excel Spreadsheet report:</strong> This is a 3 sheet report. The header sheet includes the name of the tool with its version, the scan date, the ruleset and the guidelines used for the scan, and a summary of the results. The issue sheet has the issue details which now includes scan label, issue id and toolkit levels. The third sheet has definition of the fields used as columns in the issue details sheet.
+            <h3 id="t_excel_report">7.2 MS Excel Spreadsheet report</h3>
+            <p>
+              This is a 5 sheet spreadsheet report. It can describe a single scan, or multiple scans.
             </p>
-            
+            <ol
+              style={{
+                listStyleType: "decimal",
+                marginInlineStart: "2rem",
+                marginTop: " 0.75rem",
+              }}
+            >
+              <li>
+                <p style={{ marginTop: "0rem" }}>
+                  <strong>Overview</strong> includes the name of the tool with its version, the scan date, 
+                  ruleset, guidelines and platform used for the scan, and a summary of the overall results across all included scans.  
+                </p>            
+              </li>
+              <li>
+                <p style={{ marginTop: "0rem" }}>
+                  <strong>Scan summary</strong> provides an overview of the set of scans within the report.
+                </p>            
+              </li>
+              <li>
+                <p style={{ marginTop: "0rem" }}>
+                  <strong>Issue Summary</strong> provides an overview of the issues found across all the scans.  
+                  Issues are summarized in a prioritized order, starting with Level 1 items, 
+                  as defined in the IBM Equal Access Toolkit, followed by Level 2 and Levels 3 
+                  and 4.  Levels 1-3 are necessary to complete the IBM requirements. Within each 
+                  level, the summary lists issues that are Violations, items that Need Review, 
+                  and Recommendations. Counts are provided for each type of issue.
+                </p>            
+              </li>
+              <li>
+                <p style={{ marginTop: "0rem" }}>
+                  <strong>Issues</strong> has the details of the individual issues. This includes the scan label 
+                  assigned to the scan, an ID for each issue, relevant accessibility requirements, 
+                  and toolkit levels.
+                </p>            
+              </li>
+              <li>
+                <p style={{ marginTop: "0rem" }}>
+                  <strong>Definition of fields</strong> defines the columns in the other sheets.
+                </p>            
+              </li>
+            </ol>
+            <p>
+            In a multi-scan report where the same page is scanned several times, 
+            issues may be repeated across scans of the same page.  These duplicate 
+            issues can be identified by having the same Issue ID.  Where a site template 
+            or reused component has issues, these will also be repeated in the report, 
+            but may have different Issue IDs.
+            </p>            
             <h2 id="feedback">8. Feedback</h2>
               <div className="pa">
                 Visit the{" "}
@@ -1208,13 +1497,19 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 style={{ listStyleType: "circle", marginInlineStart: "2rem" }}
                 >
                   <li>
-                    Report a problem with the checker tool.
+                    <p style={{ marginTop: "0rem" }}>
+                      Report a problem with the checker tool.
+                    </p>            
                   </li>
                   <li>
-                    Report a problem with the checker rules or accuracy of the errors reported by the checker.
+                    <p style={{ marginTop: "0rem" }}>
+                      Report a problem with the checker rules or accuracy of the errors reported by the checker.
+                    </p>            
                   </li>
                   <li>
-                    Find information on any existing issues.
+                    <p style={{ marginTop: "0rem" }}>
+                      Find information on any existing issues.
+                    </p>            
                   </li>
                 </ol>
               </div>
