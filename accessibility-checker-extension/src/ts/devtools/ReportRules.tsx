@@ -98,7 +98,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                         Issues                    
                     </div>
                     <div className="bx--col-sm-3" role="columnheader">
-                        Rule
+                        Rules
                     </div>
                 </div>
             </div>
