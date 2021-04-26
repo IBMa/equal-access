@@ -389,7 +389,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </ol>
             <p>
               <img
-                src="assets/img/options.png"
+                src="assets/img/5_Options.png"
                 alt="Options page screenshot - a page where you can select a Rule set deployment and a Rule set for your checker to use."
                 width="100%"
                 height="100%"
@@ -547,7 +547,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   </p>
                   <p>
                     <img
-                      src="assets/img/a11yCheck.png"
+                      src="assets/img/Chrome_Checker.png"
                       alt="Accessibility Checker screenshot - a code scanner for developers"
                       width="100%"
                       height="100%"
@@ -570,13 +570,31 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     tabs are also available. All views show the same set of
                     issues.
                   </p>
-                </li>
+                  <p>
+                    <img
+                      src="assets/img/6_1_AccessibilityChecker5.png"
+                      alt="Accessibility Checker results"
+                      width="100%"
+                      height="100%"
+                    />
+                  </p>
+               </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     To <strong>filter</strong> issues and focus only on
                     violations, items that need review or recommendations,
                     deselect the checkbox by the issue type in the issue count region below the{" "}
-                    <strong>'Scan'</strong> button to exclude the issue type from the results. Select the checkbox by the issue type to include the issue type in the results.
+                    <strong>'Scan'</strong> button to exclude the issue type from the results. Select 
+                    the checkbox by the issue type to include the issue type in the results.
+                    In this screenshot, the 'Needs review' items have been filtered out. 
+                  </p>
+                  <p>
+                    <img
+                      src="assets/img/6_1_AccessibilityChecker6.png"
+                      alt="Accessibility Checker results with 'Needs review' issues filtered out"
+                      width="100%"
+                      height="100%"
+                    />
                   </p>
                 </li>
                 <li>
@@ -597,16 +615,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                 </li>
                 <li>
                   Element roles tab:
-                  <br/>
-                  <p>
-                    <img
-                      src="assets/img/Filters.png"
-                      alt="Accessibility Checker screenshot - results of Accessibility Checker filtered by Violations"
-                      width="100%"
-                      height="100%"
-                    />
-                  </p>
-                  <br/>
                   <ul
                     style={{
                       listStyleType: "circle",
@@ -769,8 +777,8 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
               <p>
                     <img
-                      src="assets/img/htmlFocusViewAll.png"
-                      alt="Accessibility Checker screenshot - Focus view will all issues"
+                      src="assets/img/6_2_FocusView1.png"
+                      alt="Accessibility Checker screenshot - Focus view with all issues"
                       width="100%"
                       height="100%"
                     />
@@ -781,7 +789,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </p>
               <p>
                     <img
-                      src="assets/img/searchFocusViewAll.png"
+                      src="assets/img/6_2_FocusView2.png"
                       alt="Accessibility Checker screenshot. Focus view switch options are 'input' and 'All' (selected) and all issues on the page are shown"
                       width="100%"
                       height="100%"
@@ -792,7 +800,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
               </p>
               <p>
                     <img
-                      src="assets/img/searchFocusView.png"
+                      src="assets/img/6_2_FocusView3.png"
                       alt="Accessibility Checker screenshot. Focus view switch options are 'input' (selected) and 'All' only the two issues within the search input element are shown"
                       width="100%"
                       height="100%"
@@ -853,7 +861,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   </p>
                   <p>
                     <img
-                      src="assets/img/a11yAssess.png"
+                      src="assets/img/6_3_AccessibilityAssessment2.png"
                       alt="Accessibility Assessment screenshot - A comprehensive accessibility assessment tool"
                       width="100%"
                       height="100%"
@@ -882,7 +890,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   </p>
                   <p>
                     <img
-                      src="assets/img/assessReport.png"
+                      src="assets/img/6_3_AccessibilityAssessment5.png"
                       alt="Accessibility Assessment report screenshot - a sample report of Accessibility Assessment"
                       width="100%"
                       height="100%"
@@ -921,7 +929,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                       </p>
                       <p>
                         <img
-                          src="assets/img/helpPanel.png"
+                          src="assets/img/6_3_AccessibilityAssessment7.png"
                           alt="Accessibility Assessment help panel screenshot - a sample help panel of Accessibility Assessment "
                           width="100%"
                           height="100%"
@@ -1043,6 +1051,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     Open the <strong>'Reports'</strong> drop-down menu that follows the scan button.
                   </p>
+                  <p>
+              <img
+                src="assets/img/6_4_CreatingSingleScanReport2.png"
+                alt="Screen shot of the 'Reports' menu"
+                width="100%"
+                height="100%"
+              />
+            </p>
+
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
@@ -1110,12 +1127,28 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     The status indicator below the scan button will show that you are now 
                     storing scans to build a report, and that no scans are stored.
                   </p>
+                  <p>
+                    <img
+                      src="assets/img/6_5_CreatingMulti-scanReport4.png"
+                      alt="Status: storing, no scans stored"
+                      width="100%"
+                      height="100%"
+                    />
+                  </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Scan the pages you want to include in the report.  This may include scans 
                     of the same page in different states. 
                     The status indicator will update to show how many scans are stored.
+                  </p>
+                  <p>
+                    <img
+                      src="assets/img/6_5_CreatingMulti-scanReport5.png"
+                      alt="Status: storing, 1 scan stored"
+                      width="100%"
+                      height="100%"
+                    />
                   </p>
                 </li>
                 <li>
@@ -1136,6 +1169,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                     When you have stored the scans for the report, open the <strong>'Reports'</strong> drop-down menu and select{" "} 
                     <strong>'View stored scans'</strong>. This opens the Scan manager view, showing a table listing all the stored scans. 
                   </p>
+                  <p>
+                        <img
+                          src="assets/img/6_5_CreatingMulti-scanReport8.png"
+                          alt="Accessibility Checker Stored Scans panel screenshot - a table listing the stored scans "
+                          width="100%"
+                          height="100%"
+                        />
+                  </p>
                 </li>
               </ol>
               <p>Creating a report in the scan manager view:
@@ -1152,16 +1193,40 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                   <p style={{ marginTop: "0rem" }}>
                     Use the <strong>'View'</strong> link in the 'Details' column at the right of the table to see a screenshot of each scan.
                   </p>
+                  <p>
+                        <img
+                          src="assets/img/6_5_CreatingMulti-scanReport10.png"
+                          alt="Popup dialog with screenshot of scan, and details about the scan "
+                          width="100%"
+                          height="100%"
+                        />
+                      </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     Unselect any scan you do not want in the report by unchecking its checkbox in the table. 
+                  </p>
+                  <p>
+                        <img
+                          src="assets/img/6_5_CreatingMulti-scanReport11.png"
+                          alt="Accessibility Checker Stored Scans panel screenshot - one scan is unchecked "
+                          width="100%"
+                          height="100%"
+                        />
                   </p>
                 </li>
                 <li>
                   <p style={{ marginTop: "0rem" }}>
                     [Optional] To help differentiate the scans in the final report, enter meaningful scan labels 
                     in the 'Scan label’ column of the table.  These labels will appear in the final report.
+                  </p>
+                  <p>
+                        <img
+                          src="assets/img/6_5_CreatingMulti-scanReport12.png"
+                          alt="Accessibility Checker Stored Scans panel screenshot - three scans are labelled 'Original scan', 'with form' and 'with link' "
+                          width="100%"
+                          height="100%"
+                        />
                   </p>
                 </li>
                 <li>
@@ -1370,45 +1435,6 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </p>
             <h3 id="t_html_report">7.1 HTML report</h3>
             <p>
-
-            </p>
-            <ol
-              style={{
-                listStyleType: "decimal",
-                marginInlineStart: "2rem",
-                marginTop: " 0.75rem",
-              }}
-            >
-              <li>
-                <p style={{ marginTop: "0rem" }}>
-                  Follow the instructions in{" "}
-                  <a href="#a11y_check" title="Accessibility Checker">
-                    6.1 Accessibility Checker
-                  </a>{" "}
-                  or{" "}
-                  <a href="#a11y_assess" title="Accessibility Assessment">
-                    6.2 Accessibility Assessment
-                  </a>{" "}
-                  sections to scan the web page.
-                </p>
-              </li>
-              <li>
-                <p style={{ marginTop: "0rem" }}>
-                  Select the <strong>'Reports'</strong> icon to download the
-                  reports:
-                </p>
-                <p>
-                  <img
-                    src="assets/img/fullReport.png"
-                    alt="Accessibility Checker report download screenshot - button for report download"
-                    width="100%"
-                    height="100%"
-                  />
-                </p>
-              </li>
-            </ol>
-
-            <p>
               This is an interactive report saved as an HTML file for future use. It includes the report
               scan date and time, URL, and a summary of test results followed by
               the issue details organized by requirements, by element
@@ -1430,7 +1456,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             </p>
             <p>
               <img
-                src="assets/img/report.png"
+                src="assets/img/7_1_Report.png"
                 alt="Screen shot of an Accessibility Checker Report"
                 width="100%"
                 height="100%"
