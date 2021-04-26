@@ -16,6 +16,7 @@
 
 import { ACBrowserManager } from "./lib/ACBrowserManager";
 import { ACConfigManager } from "./lib/ACConfigManager";
+import { ACEngineManager } from "./lib/ACEngineManager";
 import { getComplianceHelper } from "./lib/ACHelper";
 import { ACReportManager } from "./lib/ACReportManager";
 import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported } from "./lib/api/IChecker";
@@ -198,6 +199,18 @@ export function diffResultsWithExpected(actual, expected, clean) {
 export function cleanComplianceObjectBeforeCompare(objectToClean) {
     return ACReportManager.cleanComplianceObjectBeforeCompare(objectToClean);
 }
+
+export function addRuleset(ruleset) {
+    ACEngineManager.addRuleset(ruleset);
+}
+
+export async function getRuleset(rsId) {
+    return ACEngineManager.getRuleset(rsId);
+};
+
+export async function getRulesets() {
+    return ACEngineManager.getRulesets();
+};
 
 export const ruleIdToLegacyId = {
     "RPT_List_Misuse": "3",
