@@ -359,7 +359,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             }
             {/* Counts row uses same code for both Assessment and Checker Tabs */}
-            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox 
