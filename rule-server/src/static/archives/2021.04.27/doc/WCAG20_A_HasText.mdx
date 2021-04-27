@@ -1,0 +1,55 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_A_HasText"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Hyperlink has no description of its purpose
+
+<div id="locLevel"></div>
+
+Hyperlinks must have link text, a label or an image with a text alternative
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
+* OR If it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+
+<CodeSnippet type="multi" light={true}>&lt;h2 id="topic1"&gt;Breaking News&lt;/h2&gt;
+&lt;p&gt;The central bank cut interest rates by half a percentage to protect economy.
+&lt;a id="p1" href="news.html" aria-labelledby="p1 topic1"&gt;Read more...&lt;/a&gt;&lt;/p&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
+[WCAG 2.1 technique H30](https://www.w3.org/TR/WCAG20-TECHS/H30)
+[WCAG 2.1 technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen magnification
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
