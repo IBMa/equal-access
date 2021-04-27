@@ -200,6 +200,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
+        console.log("componentDidMount");
         var self = this;
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
@@ -244,12 +245,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 if (!self.state.listenerRegistered) {
                     PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                         if (message.tabId === self.state.tabId && message.status === "loading") {
                             if (message.tabUrl && message.tabUrl != self.state.tabURL) {
                                 self.setState({ report: null, tabURL: message.tabUrl });
                             }
                         }
                     });
+                    
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
@@ -293,6 +296,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
+        // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
