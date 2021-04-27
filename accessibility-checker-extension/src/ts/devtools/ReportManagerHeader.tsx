@@ -22,7 +22,7 @@
     
     
     // const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
-    import { ArrowLeft16 } from '@carbon/icons-react';
+    // import { ArrowLeft16 } from '@carbon/icons-react';
     
     interface IReportManagerHeaderState {
     }
@@ -46,31 +46,21 @@
    
         render() {
             // console.log("Render Report Manager Header");
-            let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
-                <div className="bx--row" style={{height: "2rem"}}>
-                    <div className="bx--col-sm-2">
-                        <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
-                    </div>
-                    <div className="bx--col-sm-2" style={{position: "relative", textAlign:"right", paddingRight:"0px", paddingTop:"2px"}}>
-                        {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
-                        <div>
-                        <span>Status: </span>
-                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
-                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
-                    </div>
-                    </div>
-                </div>
-                <div className="bx--row">
-                    <div className="bx--col-sm-2">
-                        <Button id='backToListView' onClick={this.props.reportManagerHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
-                    </div>
-                    <div className="bx--col-sm-2" style={{position: "relative"}}>
-                        <div className="headerTools" >
-               
+            let headerContent = (
+                <div className="bx--grid" style={{paddingLeft:"1rem", paddingTop:"8px"}}>
+                    <div className="bx--row">
+                        <div className="bx--col-sm-2">
+                            <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="small" >Back to list view</Button>
+                        </div>
+                        <div className="bx--col-sm-2" style={{position: "relative", textAlign:"right", paddingRight:"0px", paddingTop:"2px"}}>
+                            <div>
+                            <span>Status: </span>
+                            <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                            <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>);
+                </div>);
     
             if (this.props.layout === "main") {
                 return <div className="fixed-header" 

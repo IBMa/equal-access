@@ -21,8 +21,8 @@
  } from 'carbon-components-react';
  
  
- const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
- import { ArrowLeft16 } from '@carbon/icons-react';
+ // const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
+ // import { ArrowLeft16 } from '@carbon/icons-react';
  
  interface IHeaderState {
  }
@@ -44,18 +44,10 @@
 
      render() {
  
-         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem"}}>
-             <div className="bx--row" style={{height: "2rem"}}>
-                 <div className="bx--col-sm-3">
-                     <div className="eaacTitle"><span style={{fontWeight:"bold"}}>IBM Equal Access Accessibility Checker</span></div>
-                 </div>
-                 <div className="bx--col-sm-1" style={{position: "relative", textAlign:"right"}}>
-                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
-                 </div>
-             </div>
+         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
              <div className="bx--row">
                  <div className="bx--col-sm-2">
-                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" renderIcon={ArrowLeft16}>Back to list view</Button>
+                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" kind='tertiary'>Back to list view</Button>
                  </div>
                  <div className="bx--col-sm-2" style={{position: "relative"}}>
                      <div className="headerTools" >
@@ -71,7 +63,7 @@
                  {headerContent}                        
              </div>
          } else {
-             return <div className="fixed-header" style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)", width: "100%"}}>
+             return <div className="fixed-header" style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)", width: "100%", height:"56px"}}>
                  {headerContent}            
              </div>
          }

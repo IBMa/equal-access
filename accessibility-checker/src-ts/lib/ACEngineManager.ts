@@ -8,6 +8,7 @@ let ace;
 let checker;
 
 export class ACEngineManager {
+    static customRulesets = []
     static async loadEngine(content) {
         let config = await ACConfigManager.getConfigUnsupported();
         if (ACEngineManager.isPuppeteer(content) || ACEngineManager.isPlaywright(content)) {
@@ -162,8 +163,22 @@ try {
         return checker.engine.getHelp(ruleId);
     };
 
-    static getRulesets() {
-        return checker.rulesets;
+    static addRuleset = (ruleset) => {
+        ACEngineManager.customRulesets.push(ruleset);
+    }
+
+    static getRuleset = async (rsId) => {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
+        return ACEngineManager.customRulesets.concat(checker.rulesets).filter((function (rs) { return rs.id === rsId }))[0];
+    };
+
+    static getRulesets = async function () {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
+        return ACEngineManager.customRulesets.concat(checker.rulesets);
     };
 
     static getChecker() {

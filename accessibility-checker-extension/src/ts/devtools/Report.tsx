@@ -173,36 +173,28 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                 <div className="bx--row">
                     <div className="bx--col-sm-4">
                         <Tabs
-                            ariaLabel="Report options"
-                            className="some-class"
-                            iconDescription="show menu options"
-                            // onKeyDown={function noRefCheck() { }}
-                            // onSelectionChange={function noRefCheck() { }}
+                            // ariaLabel="Report options"
                             role="navigation"
                             selected={this.props.tabs.indexOf(this.props.selectedTab)}
                             tabContentClassName="tab-content"
-                            // triggerHref="#" 
                         >
                         {this.props.tabs.map(tabId => {
-                            return <Tab
+                            return <Tab key={tabId}
                                 href="#"
                                 id={"tab-"+tabId}
                                 label={tabLabels[tabId]}
-                                // onClick={function noRefCheck() { }}
-                                // onKeyDown={function noRefCheck() { }}
-                                // renderContent={function noRefCheck() { }}
                                 role="presentation"
                                 className={"tab-content-"+tabId}
                                 style={{paddingTop:"6px"}}
                             >
                                 <div>
-                                    {tabId === 'element' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
                                         <ReportElements layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem"}}>
                                         <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem", marginRight: "-2rem" }}>
+                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem"}}>
                                         <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                 </div>

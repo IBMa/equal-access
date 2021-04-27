@@ -1,0 +1,61 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Table_CapSummRedundant"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The table summary duplicates the caption
+
+<div id="locLevel"></div>
+
+The table summary must not duplicate the caption
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Duplicating a table’s caption and its summary description is repetitive and slows productivity for Assistive Technology users. If used, the summary should provide complementary information not already available in the caption.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+  * If the table caption describes the table purpose and structure fully, remove the summary;
+  * OR if information beyond the caption is needed, write a summary that describes the table structure without duplicating information in the caption. The summary should be referenced with an `aria-describedby` attribute.  The `summary` attribute is obsolete in HTML5.
+
+  For example:
+
+<CodeSnippet type="multi" light={true}>&lt;p id="table1_summary"&gt;
+    The age demographics of each North American country includes age structures from 0-14 years, 15-64 years, and 65 years and older.
+&lt;/p&gt;
+    
+&lt;table aria-describedby="table1_summary"&gt;
+    &lt;caption&gt;Age Demographics of North American Countries&lt;/caption&gt;
+      . . .
+&lt;/table&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+[WCAG 2.1 technique H73(https://www.w3.org/WAI/WCAG21/Techniques/html/H73)
+
+### Who does this affect?
+
+* Blind people using screen readers
+* People with low vision using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

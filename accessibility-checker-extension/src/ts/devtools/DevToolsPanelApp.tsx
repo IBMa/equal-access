@@ -28,6 +28,8 @@ import MultiScanData from "./MultiScanData";
 import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
+// import html2canvas from "html2canvas"
+
 import {
     Loading
 } from 'carbon-components-react';
@@ -80,7 +82,8 @@ interface IPanelState {
         elementsNoViolations: number;
         elementsNoFailures: number;
         storedScan: string;
-        storedScanData: string
+        screenShot: string;
+        storedScanData: string;
     }[],
     storedScanCount: number, // number of scans stored
     storedScanData: number, // total amount of scan data stored in MB
@@ -126,6 +129,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
+    ref: any;
 
     constructor(props: any) {
         super(props);
@@ -150,32 +154,40 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }
                         return "/"+findName.toLowerCase()+"["+count+"]";
                     }
-                    let retVal = "";
-                    while (node && node.nodeType === 1) {
-                        if (node) {
+                    try {
+                        let retVal = "";
+                        while (node && node.nodeType === 1) {
                             retVal = countNode(node)+retVal;
                             if (node.parentElement) {
                                 node = node.parentElement;
                             } else {
                                 let parentElement = null;
                                 try {
-                                    // Check if we're in an iframe
-                                    let parentWin = node.ownerDocument.defaultView.parent;
-                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
-                                    for (const iframe of iframes) {
-                                        try {
-                                            if (iframe.contentDocument === node.ownerDocument) {
-                                                parentElement = iframe;
-                                                break;
-                                            }
-                                        } catch (e) {}
+                                    // Check if we're in a shadow DOM
+                                    if (node.parentNode && node.parentNode.nodeType === 11) {
+                                        parentElement = node.parentNode.host;
+                                        retVal = "/#document-fragment[1]"+retVal;
+                                    } else {
+                                        // Check if we're in an iframe
+                                        let parentWin = node.ownerDocument.defaultView.parent;
+                                        let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try {
+                                                if (iframe.contentDocument === node.ownerDocument) {
+                                                    parentElement = iframe;
+                                                    break;
+                                                }
+                                            } catch (e) {}
+                                        }
                                     }
                                 } catch (e) {}
                                 node = parentElement;
                             }
                         }
+                        return retVal;
+                    } catch (err) {
+                        console.error(err);
                     }
-                    return retVal;
                 })($0)`, (result: string) => {
                     // This filter occurred because we selected an element in the elements tab
                     this.onFilter(result);
@@ -188,8 +200,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
+        console.log("componentDidMount");
         var self = this;
-        // console.log("componentDidMount");
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
@@ -233,12 +245,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 if (!self.state.listenerRegistered) {
                     PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                         if (message.tabId === self.state.tabId && message.status === "loading") {
                             if (message.tabUrl && message.tabUrl != self.state.tabURL) {
                                 self.setState({ report: null, tabURL: message.tabUrl });
                             }
                         }
                     });
+                    
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
@@ -347,7 +361,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             this.setState({ scanning: false }); // scan done
-            console.log("SCAN DONE");
+            // console.log("SCAN DONE");
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
@@ -442,8 +456,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     // START - New multi-scan report functions
 
-    storeScan() {
-        console.log("storeScan");
+    async storeScan() {
+        // console.log("storeScan");
 
         // Data to store for Report
         var xlsx_props = {
@@ -499,8 +513,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         //     return {storedScanData: prevState.storedScanData + currentScanData.length}
         // });
 
+        // capture screenshot
+        let canvas = await PanelMessaging.sendToBackground("DAP_SCREENSHOT", { });
         
+        // let promise = new Promise((resolve, reject) => {
+        //     //@ts-ignore
+        //     chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
+        //         resolve(image);
+        //         reject(new Error("Capture failed"));
+        //     });
+        // });
 
+        // let result:any = await promise;
+        // canvas = result;
+            
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             actualStoredScan: this.state.scanStorage ? true : false,
@@ -519,6 +545,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             elementsNoViolations: element_no_violations,
             elementsNoFailures: element_no_failures,
             storedScan: "scan" + this.state.storedScanCount,
+            screenShot: canvas,
             storedScanData: scanData,
         };
 
@@ -526,22 +553,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState(({
             storedScans: [...this.state.storedScans, currentScan]
         }));
-
-        console.log(this.state.storedScans[0].scanLabel)
-        console.log("storedScans = ", this.state.storedScans);
     }
 
     storeScanLabel(event:any,i:number) {
-        console.log("storeScanLabel Start");
         const value = event.target.value;
-        console.log("event.nativeEvent.keyCode = ",event.nativeEvent.keyCode);
         
-        let storedScansCopy = this.state.storedScans;
+        // let storedScansCopy = this.state.storedScans;
+        let storedScansCopy = JSON.parse(JSON.stringify(this.state.storedScans));
         storedScansCopy[i].userScanLabel = value;
         this.setState({storedScans: storedScansCopy});
-        console.log("storeScanLabel End");
-       
-        console.log("this.state.storedScans[i].scanLabel",this.state.storedScans[i].scanLabel);
     }
 
     setStoredScanCount = () => {
@@ -554,9 +574,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         if (fromMenu === true) {
             this.setState({scanStorage: false});
         }
-        console.log("Clear stored scans with scanStorage = ", this.state.scanStorage);
-        // window.localStorage.clear(); // not using local storage
-        // await this.startScan();
     };
 
     clearSelectedStoredScans() {
@@ -608,7 +625,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     onFilter(filter: string) {
-        // console.log("onFilter");
         if (this.state.report) {
             this.state.report.filterstamp = new Date().getTime();
             this.setState({ filter: filter, report: preprocessReport(this.state.report, filter, !this.ignoreNext) });
@@ -617,51 +633,52 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHandler = () => {
-        console.log("reportManagerHandler");
         this.setState({ reportManager: true});
     }
     
 
     reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
-        console.log("reportHandler");
-        if (this.state.report && this.state.rulesets) {
-            var reportObj: any = {
-                tabURL: this.state.tabURL,
-                rulesets: this.state.rulesets,
-                report: {
-                    timestamp: this.state.report.timestamp,
-                    nls: this.state.report.nls,
-                    counts: {
-                        "total": this.state.report.counts.total,
-                        "filtered": this.state.report.counts.filtered
-                    },
-                    results: []
+        if (scanType === "current") {
+            if (this.state.report && this.state.rulesets) {
+                var reportObj: any = {
+                    tabURL: this.state.tabURL,
+                    rulesets: this.state.rulesets,
+                    report: {
+                        timestamp: this.state.report.timestamp,
+                        nls: this.state.report.nls,
+                        counts: {
+                            "total": this.state.report.counts.total,
+                            "filtered": this.state.report.counts.filtered
+                        },
+                        results: []
+                    }
                 }
+                for (const result of this.state.report.results) {
+                    reportObj.report.results.push({
+                        ruleId: result.ruleId,
+                        path: result.path,
+                        value: result.value,
+                        message: result.message,
+                        snippet: result.snippet
+                    });
+                }
+    
+                var tabTitle: string = this.state.tabTitle;
+                var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
+                var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
+                //replace illegal characters in file name
+                filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
+    
+                var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+                var a = document.createElement('a');
+                a.href = fileContent;
+                a.download = filename;
+                var e = document.createEvent('MouseEvents');
+                e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                a.dispatchEvent(e);
             }
-            for (const result of this.state.report.results) {
-                reportObj.report.results.push({
-                    ruleId: result.ruleId,
-                    path: result.path,
-                    value: result.value,
-                    message: result.message,
-                    snippet: result.snippet
-                });
-            }
-
-            var tabTitle: string = this.state.tabTitle;
-            var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-            var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
-            //replace illegal characters in file name
-            filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
-
-            var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
-            var a = document.createElement('a');
-            a.href = fileContent;
-            a.download = filename;
-            var e = document.createEvent('MouseEvents');
-            e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            a.dispatchEvent(e);
-
+            this.xlsxReportHandler(scanType);
+        } else {
             this.xlsxReportHandler(scanType);
         }
     }
@@ -669,8 +686,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
 
     xlsxReportHandler = (scanType:string) => {
-        console.log("xlsxReportHandler");
-        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount);
+        // console.log("xlsxReportHandler");
+        //@ts-ignore
+        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
     }
 
     
@@ -711,13 +729,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
 
                     var script =
-                        `function lookup(doc, xpath) {
-                        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
-                        let element = nodes.iterateNext();
-                        if (element) {
+                    `function lookup(doc, xpath) {
+                        if (doc.nodeType === 11) {
+                            let selector = ":scope" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
+                            let element = doc.querySelector(selector);
                             return element;
                         } else {
-                            return null;
+                            let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                            let element = nodes.iterateNext();
+                            if (element) {
+                                return element;
+                            } else {
+                                return null;
+                            }
                         }
                     }
                     function selectPath(srcPath) {
@@ -739,6 +763,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                 let fragment = lookup(doc, parts[1]);
                                 element = fragment || element;
                                 if (fragment && fragment.shadowRoot) {
+                                    doc = fragment.shadowRoot;
                                     srcPath = parts[2];
                                 } else {
                                     srcPath = null;
@@ -864,7 +889,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
-                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
+                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
                         {!this.state.report && <ReportSplash />}
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -939,7 +964,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
-                        <div style={{ marginTop: "6rem", height: "calc(100% - 6rem)" }}>
+                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -949,7 +974,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                {/* <div style={{ display: this.state.learnMore ? "none" : "", height:"100%" }}> */}
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
                         layout={this.props.layout}

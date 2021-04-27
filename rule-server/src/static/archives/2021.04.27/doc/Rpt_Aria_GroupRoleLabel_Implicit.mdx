@@ -1,0 +1,69 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_GroupRoleLabel_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The {0} element with a `"group"` role does not have a label
+
+<div id="locLevel"></div>
+
+Elements with a `"group"` role should have a label that describes the logical collection
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+An HTML `<details>` element or an element with an explicit `"group"` role is used to form a logical collection of items in a component, such as a collection of siblings in a hierarchy. A group label helps people using assistive technologies to find and navigate the logical collections.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If there is visible text that appropriately describes the purpose of the group content, set the element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"group"` role.
+
+For example:
+
+<CodeSnippet type="multi" light={true}> &lt;h2 id="fruit"&gt;Fruits&lt;/h2&gt;
+       &lt;p&gt; The following is a grouping of fruits by type&lt;/p&gt;
+       &lt;ul&gt;
+          &lt;li&gt; &lt;h3 id="tropical"&gt;Tropical Fruits&lt;/h3&gt;
+             &lt;ul role="group" aria-labelledby="tropical"&gt;
+                &lt;li&gt;Mango&lt;/li&gt;
+                &lt;li&gt;Papaya&lt;/li&gt;
+                &lt;li&gt;Pineapple&lt;/li&gt;
+             &lt;/ul&gt;
+         &lt;/li&gt;
+         &lt;li&gt; &lt;h3 id="berries"&gt;Berries&lt;/h3&gt;
+            &lt;ul role="group" aria-labelledby="berries"&gt;
+               &lt;li&gt;Blueberry&lt;/li&gt;
+               &lt;li&gt;Strawberry&lt;/li&gt;
+            &lt;/ul&gt;
+         &lt;/li&gt;
+       &lt;/ul&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+[WAI-ARIA 1.2 Group Role](https://www.w3.org/TR/wai-aria-1.2/#group)
+
+### Who does this affect?
+
+* Blind people using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,59 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Doc_HasTitle"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Page does not have a title
+
+<div id="locLevel"></div>
+
+Every page should have a title that correctly identifies the subject of the page
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The `<title>` element labels your page. Browsers put the title in the title bar of the page window where it is quickly accessible. It is typically the first part of the page that users see (or hear), and it allows them to differentiate your page from others. Automated tools such as search engines use the title to index and classify the page.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Make sure the page has a `<head>` element;
+ * AND, make sure the `<head>` element contains a `<title>` element;
+ * AND, add text that describes the subject of the page to the `<title>` element. Make the title as unique as possible within your own site.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;html lang="en"&gt;
+&lt;head&gt;
+    &lt;title&gt;IBM Accessibility&lt;/title&gt;
+&lt;/head&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.2 Page Titled](https://www.ibm.com/able/requirements/requirements/#2_4_2)
+[WCAG 2.1 technique G88](https://www.w3.org/WAI/WCAG21/Techniques/general/G88)
+
+### Who does this affect?
+
+ * Blind people using screen readers
+ * People with low vision using screen magnification
+ * People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

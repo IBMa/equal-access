@@ -1,3 +1,9 @@
+@import '@carbon/themes/scss/themes';
+// Use the gray 10 theme
+$carbon--theme: $carbon--theme--g10;
+@include carbon--theme();
+// import Carbon styles here
+
 $feature-flags: (
   grid-columns-16: true,
 );

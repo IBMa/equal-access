@@ -7,7 +7,7 @@
     "test": "tsc && mocha test/*.test.js"
   },
   "engines": {
-    "node": "10 || 12"
+    "node": "10 || 12 || 14"
   },
   "devDependencies": {
     "accessibility-checker": "*",
