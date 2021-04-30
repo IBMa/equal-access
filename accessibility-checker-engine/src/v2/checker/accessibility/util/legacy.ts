@@ -2303,11 +2303,7 @@ export class RPTUtil {
                         tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
                     break;
                 default:
-                    if (ARIADefinitions.textLevelSemanticElements.indexOf(tagName) > -1) {
-                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["text-level-semantic-elements"];
-                    } else {
-                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
-                    }
+                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
             } //switch
         }
         return tagProperty || null;
