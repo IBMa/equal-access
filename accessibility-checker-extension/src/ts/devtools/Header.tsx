@@ -19,10 +19,10 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
+    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem, Modal
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
@@ -32,7 +32,9 @@ import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
 const { prefix } = settings;
-interface IHeaderState { }
+interface IHeaderState { 
+    modalRulsetInfo: boolean,
+}
 
 interface IHeaderProps {
     layout: "main" | "sub",
@@ -82,7 +84,9 @@ interface IHeaderProps {
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
-    state: IHeaderState = {};
+    state: IHeaderState = {
+        modalRulsetInfo: false,
+    };
 
     processFilterCheckBoxes(value: boolean, id: string) {
         // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
@@ -97,15 +101,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (newItems[1] == true && newItems[2] == true && newItems[3] == true) {
             // console.log("All true");
             newItems[0] = true;
-            this.setState({ showIssueTypeFilter: newItems });
+            //this.setState({ showIssueTypeFilter: newItems }); // JCH this is not needed
         } else if (newItems[1] == false && newItems[2] == false && newItems[3] == false) {
             // console.log("All false");
             newItems[0] = true;
-            this.setState({ showIssueTypeFilter: newItems });
+            //this.setState({ showIssueTypeFilter: newItems }); // JCH this is not needed
         } else {
             // console.log("Mixed");
             newItems[0] = false;
-            this.setState({ showIssueTypeFilter: newItems });
+            //this.setState({ showIssueTypeFilter: newItems }); // JCH this is not needed
         }
         // console.log("After process: ", newItems);
         this.props.showIssueTypeCheckBoxCallback(newItems);
@@ -247,8 +251,43 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>
+                        <Button 
+                            renderIcon={Information16} 
+                            kind="ghost"   
+                            hasIconOnly iconDescription="Ruleset info" tooltipPosition="top" 
+                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                            onClick={(() => {
+                                this.setState({ modalRulsetInfo: true });
+                            }).bind(this)}>
+                        </Button>
+                        <Modal
+                            aria-label="Ruleset information"
+                            modalHeading="Ruleset Information"
+                            passiveModal={true}
+                            open={this.state.modalRulsetInfo}
+                            onRequestClose={(() => {
+                                this.setState({ modalRulsetInfo: false });
+                            }).bind(this)}
+                        >
+                            <p>
+                                You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
+                                <span>{<br/>}</span>
+                                The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                            </p>
+                            <br></br>
+                            <div>
+                                <a
+                                    href={chrome.runtime.getURL("options.html")}
+                                    target="_blank"
+                                    className={`${prefix}--link`}
+                                >
+                                    Change rule set
+                                </a>
+                            </div>       
+                        </Modal>
                         {/* {isLatestArchive ? "" : ( */}
-                            <Tooltip iconDescription="Ruleset info">
+                            {/* <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
@@ -261,7 +300,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                         Change rule set
                                     </a>
                                 </div>
-                            </Tooltip>
+                            </Tooltip> */}
                         {/* )} */}
                     </div>
                     <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
