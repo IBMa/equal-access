@@ -1655,7 +1655,7 @@ export class ARIADefinitions {
             "with-href": {
                 implicitRole: ["link"],
                 //roleCondition: " when non-empty href attribute is present",
-                validRoles: ["button", "checkbox", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "tab", "switch", "treeitem"],
+                validRoles: ["button", "checkbox", "doc-backlink", "doc-biblioref", "doc-glossref", "doc-noteref", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "without-href": {
@@ -1672,166 +1672,112 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "without-href": { //https://www.w3.org/TR/html51/semantics-embedded-content.html#elementdef-area
-                implicitRole: ["link"],
+            "without-href": {
+                implicitRole: null,
                 //roleCondition: " when href attribute is not present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
         },
-        "button": {
-            "with-type-menu": {
-                implicitRole: ["button"],
-                //roleCondition: " with type=menu",
-                validRoles: ["menuitem"],
+// TODO
+//        "autonomous custom element": {
+//            implicitRole: ["Role exposed from author defined ElementInternals. Otherwise no corresponding role."],
+//            validRoles: ["If role defined by ElementInternals", "any role", "no role Otherwise"],
+//            globalAriaAttributesValid: true
+//        },
+
+        "figure": {
+            "des-figcaption": {
+                implicitRole: ["figure"],
+                validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "without-type-menu": {
-                implicitRole: ["button"],
-                //roleCondition: " without type=menu",
-                validRoles: ["checkbox", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
+            "no-des-figcaption": {
+                implicitRole: ["figure"],
+                validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
         },
         "footer": {
             "des-section-article": {
                 implicitRole: null,
-                validRoles: ["group", "presentation", "none"],
+                //roleCondition: " when descendant of an article, aside, main, nav or section element",
+                validRoles: ["doc-footnote", "group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
             "not-des-section-article": {
                 implicitRole: ["contentinfo"],
-                validRoles: ["group", "presentation", "none"],
+                //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
+                validRoles: ["doc-footnote", "group", "none", "presentation"],
                 globalAriaAttributesValid: true
             }
         },
-        "h1-6": {
-            "h1-6-with-aria-level-positive-integer": {
-                implicitRole: ["heading"],
-                //roleCondition: " and implicit role is heading with aria-level=positive integer",
-                validRoles: ["tab", "presentation", "none"],
+        "form": {
+            "with-name": {
+                implicitRole: ["form"],
+                //roleCondition: " when accessible name is present",
+                validRoles: ["none", "presentation", "search"],
                 globalAriaAttributesValid: true
             },
-            "h1-6-without-aria-level-positive-integer": {
+            "without-name": {
                 implicitRole: null,
-                //roleCondition: " and implicit role is heading with aria-level=positive integer",
-                validRoles: ["tab", "presentation", "none"],
+                //roleCondition: " when accessible name is not present",
+                validRoles: ["none", "presentation", "search"],
                 globalAriaAttributesValid: true
             }
         },
+// TODO
+//        "form-associated custom element": {
+//            implicitRole: ["Role exposed from author defined ElementInternals. Otherwise no corresponding role."],
+//            validRoles: ["If role defined by ElementInternals", "form-related roles: button", "checkbox", "combobox", "group", "listbox", "progressbar", "radio", "radiogroup", "searchbox", "slider", "spinbutton", "switch", "textbox", "no role Otherwise"],
+//            globalAriaAttributesValid: true
+//        },
+
         "header": {
             "des-section-article": {
                 implicitRole: null,
-                //roleCondition: " and no implicit role when descendant of an article or section element",
-                validRoles: ["group", "presentation", "none"],
+                //roleCondition: " when descendant of an article, aside, main, nav or section element",
+                validRoles: ["group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
             "not-des-section-article": {
                 implicitRole: ["banner"],
-                //roleCondition: " and implicit role is banner when not a descendant of an article or section element",
-                validRoles: ["group", "presentation", "none"],
+                //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
+                validRoles: ["group", "none", "presentation"],
                 globalAriaAttributesValid: true
             }
 
         },
-        "hgroup": { //https://www.w3.org/TR/2011/WD-html5-author-20110705/wai-aria.html
-            "with-aria-level": {
-                implicitRole: ["heading"],
-                //roleCondition: " and implicit role is heading when aria-level attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "without-aria-level": {
-                implicitRole: ["heading"],
-                //roleCondition: " when aria-level attribute is not present",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            }
-        },
         "img": {
             "img-with-empty-alt": {
-                implicitRole: null,
-                //roleCondition: " and no implicit role when empty alt attribute is present",
-                validRoles: ["presentation", "none"],
+                implicitRole: ["presentation"],
+                //roleCondition: " when empty alt attribute is present",
+                validRoles: null,
                 globalAriaAttributesValid: false
             },
             "img-without-empty-alt": {
                 implicitRole: ["img"],
-                //roleCondition: " and implicit role is img when empty alt attribute is not present",
-                validRoles: ["any"],
+                //roleCondition: " when empty alt attribute is not present",
+                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             }
         },
         "input": {
-            "number": {
-                implicitRole: ["spinbutton"],
-                //roleCondition: " with type=number",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "radio": {
-                implicitRole: ["radio"],
-                //roleCondition: " with type=radio",
-                validRoles: ["menuitemradio"],
-                globalAriaAttributesValid: true
-            },
-            "range": {
-                implicitRole: ["slider"],
-                //roleCondition: " with type=radio",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "hidden": {
-                implicitRole: null,
-                //roleCondition: " with type=hidden",
-                validRoles: null,
-                globalAriaAttributesValid: false
-            },
-            "submit": {
-                implicitRole: ["button"],
-                //roleCondition: " with type=submit",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "checkbox-with-aria-pressed": {
-                implicitRole: ["checkbox"],
-                //roleCondition: " with type=checkbox and aria-pressed attribute is present",
-                validRoles: ["button", "option", "menuitemcheckbox", "switch"],
-                globalAriaAttributesValid: true
-            },
-            "checkbox-without-aria-pressed": {
-                implicitRole: ["checkbox"],
-                //roleCondition: " with type=checkbox and aria-pressed attribute is not present",
-                validRoles: ["option", "menuitemcheckbox", "switch"],
-                globalAriaAttributesValid: true
-            },
-            "reset": {
-                implicitRole: ["button"],
-                //roleCondition: " with type=reset",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "time": {
-                implicitRole: null,
-                //roleCondition: " with type=time",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "password": {
-                implicitRole: null,
-                //roleCondition: " with type=password",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
             "button": {
                 implicitRole: ["button"],
                 validRoles: ["link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
                 globalAriaAttributesValid: true
             },
-            "image": {
-                implicitRole: ["button"],
-                //roleCondition: " with type=image",
-                validRoles: ["link", "menuitem", "menuitemcheckbox", "menuitemradio", "radio", "switch"],
+            "checkbox-with-aria-pressed": {
+                implicitRole: ["checkbox"],
+                //roleCondition: " with type=checkbox and aria-pressed attribute is present",
+                validRoles: ["button"],
+                globalAriaAttributesValid: true
+            },
+            "checkbox-without-aria-pressed": {
+                implicitRole: ["checkbox"],
+                //roleCondition: " with type=checkbox and aria-pressed attribute is not present",
+                validRoles: ["menuitemcheckbox", "option", "switch"],
                 globalAriaAttributesValid: true
             },
             "color": {
@@ -1852,10 +1798,34 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
+            "email-no-list": {
+                implicitRole: ["textbox"],
+                //roleCondition: " with type=email and no list attribute is present",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "email-with-list": {
+                implicitRole: ["combobox"],
+                //roleCondition: " with type=email and a list attribute is present",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
             "file": {
                 implicitRole: null,
                 //roleCondition: " with type=file",
                 validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "hidden": {
+                implicitRole: null,
+                //roleCondition: " with type=hidden",
+                validRoles: null,
+                globalAriaAttributesValid: false
+            },
+            "image": {
+                implicitRole: ["button"],
+                //roleCondition: " with type=image",
+                validRoles: ["link", "menuitem", "menuitemcheckbox", "menuitemradio", "radio", "switch"],
                 globalAriaAttributesValid: true
             },
             "month": {
@@ -1864,9 +1834,33 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "week": {
+            "number": {
+                implicitRole: ["spinbutton"],
+                //roleCondition: " with type=number",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "password": {
                 implicitRole: null,
-                //roleCondition: " with type=week",
+                //roleCondition: " with type=password",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "radio": {
+                implicitRole: ["radio"],
+                //roleCondition: " with type=radio",
+                validRoles: ["menuitemradio"],
+                globalAriaAttributesValid: true
+            },
+            "range": {
+                implicitRole: ["slider"],
+                //roleCondition: " with type=radio",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "reset": {
+                implicitRole: ["button"],
+                //roleCondition: " with type=reset",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
@@ -1882,39 +1876,15 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "email-no-list": {
-                implicitRole: ["textbox"],
-                //roleCondition: " with type=email and no list attribute is present",
+            "submit": {
+                implicitRole: ["button"],
+                //roleCondition: " with type=submit",
                 validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "email-with-list": {
-                implicitRole: ["combobox"],
-                //roleCondition: " with type=email and a list attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "text-no-list": {
-                implicitRole: ["textbox"],
-                //roleCondition: " with type=text and no list attribute is present",
-                validRoles: ["combobox", "searchbox", "spinbutton"], //See https://www.w3.org/TR/html-aria/#docconformance and  Defect 1027
                 globalAriaAttributesValid: true
             },
             "tel-no-list": {
                 implicitRole: ["textbox"],
                 //roleCondition: " with type=tel and no list attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "url-no-list": {
-                implicitRole: ["textbox"],
-                //roleCondition: " with type=url and no list attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "text-with-list": {
-                implicitRole: ["combobox"],
-                //roleCondition: " with type=text and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
@@ -1924,114 +1894,76 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
+            "text-no-list": {
+                implicitRole: ["textbox"],
+                //roleCondition: " with type=text and no list attribute is present",
+                validRoles: ["combobox", "searchbox", "spinbutton"], //See https://www.w3.org/TR/html-aria/#docconformance and  Defect 1027
+                globalAriaAttributesValid: true
+            },
+            "text-with-list": {
+                implicitRole: ["combobox"],
+                //roleCondition: " with type=text and a list attribute is present",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "time": {
+                implicitRole: null,
+                //roleCondition: " with type=time",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "url-no-list": {
+                implicitRole: ["textbox"],
+                //roleCondition: " with type=url and no list attribute is present",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
             "url-with-list": {
                 implicitRole: ["combobox"],
                 //roleCondition: " with type=url and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "default": { //https://www.w3.org/TR/html51/sec-forms.html#the-input-element
+            "week": {
+                implicitRole: null,
+                //roleCondition: " with type=week",
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "default": {
                 implicitRole: null,
                 //roleCondition: "",
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
         },
-        "li": {
-            "parent-ol-or-ul": {
-                implicitRole: ["listitem"],
-                //roleCondition: " when the li element's parent is an ol or ul element",
-                validRoles: ["menuitem", "menuitemcheckbox", "menuitemradio", "option", "presentation", "none", "radio", "separator", "tab", "treeitem"],
+        "section": {
+            "with-name": {
+                implicitRole: ["region"],
+                //roleCondition: " when accessible name is present",
+                validRoles: ["alert", "alertdialog", "application", "banner", "complementary", "contentinfo", "dialog", "doc-abstract", "doc-acknowledgments", "doc-afterword", "doc-appendix", "doc-bibliography", "doc-chapter", "doc-colophon", "doc-conclusion", "doc-credit", "doc-credits", "doc-dedication", "doc-endnotes", "doc-epigraph", "doc-epilogue", "doc-errata", "doc-example", "doc-foreword", "doc-glossary", "doc-index", "doc-introduction", "doc-notice", "doc-pagelist", "doc-part", "doc-preface", "doc-prologue", "doc-pullquote", "doc-qna", "doc-toc", "document", "feed", "log", "main", "marquee", "navigation", "none", "note", "presentation", "search", "status", "tabpanel"],
                 globalAriaAttributesValid: true
             },
-            "parent-not-ol-or-ul": { //TODO
-                implicitRole: ["listitem"],
-                //roleCondition: " when the li element's parent is not an ol or ul element", 
-                validRoles: ["listitem", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "tab", "treeitem", "presentation"], // added form HTML 5.1
-                globalAriaAttributesValid: true
-            }
-
-        },
-        "link": {
-            "with-href": { //link element with a href
-                implicitRole: ["link"],
-                //roleCondition: " when non-empty href attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: false //Task #978: we are following the html 5.3 requirements
-            },
-            "without-href": {
+            "without-name": {
                 implicitRole: null,
-                //roleCondition: " when non-empty href attribute is not present",
-                validRoles: null,
-                globalAriaAttributesValid: false
-            }
-        },
-        "menu": {
-            "type-context": {
-                implicitRole: ["menu"],
-                validRoles: null,
-                globalAriaAttributesValid: true
-            }
-        },
-        "menuitem": {
-            "type-command": {
-                implicitRole: ["menuitem"],
-                //roleCondition: " with type=command",
-                validRoles: null,
+                //roleCondition: " when accessible name is not present",
+                validRoles: ["alert", "alertdialog", "application", "banner", "complementary", "contentinfo", "dialog", "doc-abstract", "doc-acknowledgments", "doc-afterword", "doc-appendix", "doc-bibliography", "doc-chapter", "doc-colophon", "doc-conclusion", "doc-credit", "doc-credits", "doc-dedication", "doc-endnotes", "doc-epigraph", "doc-epilogue", "doc-errata", "doc-example", "doc-foreword", "doc-glossary", "doc-index", "doc-introduction", "doc-notice", "doc-pagelist", "doc-part", "doc-preface", "doc-prologue", "doc-pullquote", "doc-qna", "doc-toc", "document", "feed", "log", "main", "marquee", "navigation", "none", "note", "presentation", "search", "status", "tabpanel"],
                 globalAriaAttributesValid: true
             },
-            "type-checkbox": {
-                implicitRole: ["menuitemcheckbox"],
-                //roleCondition: " with type=checkbox",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "type-radio": {
-                implicitRole: ["menuitemradio"],
-                //roleCondition: " with type=radio",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "default": {
-                implicitRole: ["menuitem"],
-                //roleCondition: " without type=command, type=checkbox or type=radio",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            }
         },
-        "option": {
-            "list-suggestion-datalist": {
-                implicitRole: ["option"],
-                //roleCondition: " when option element is in a list of options or represents a suggestion in a datalist",
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "not-list-suggestion-datalist": {
-                implicitRole: ["option"],
-                //roleCondition: " when option element  is not in a list of options or does not represent a suggestion in a datalist",
-                validRoles: ["menuitem", "menuitemradio", "separator"], // https://www.w3.org/TR/html5/forms.html#the-option-element
-                globalAriaAttributesValid: true
-            }
-        },
-        "select":{
+        "select": {
             "no-multiple-attr-size-gt1": {
-                // with a multiple attribute or a size attribute having value greater than 1
+                //roleCondition: " with a multiple attribute or a size attribute having value greater than 1"
                 implicitRole: ["combobox"],
                 validRoles: ["menu"],
                 globalAriaAttributesValid: true
             },
             "multiple-attr-size-gt1": {
-                // with no multiple attribute and no size attribute having value greater than 1
+                //roleCondition: " with no multiple attribute and no size attribute having value greater than 1"
                 implicitRole: ["listbox"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
-        },
-        "text-level-semantic-elements": {
-            implicitRole: null,
-            //roleCondition: "",
-            validRoles: ["any"],
-            globalAriaAttributesValid: true
         },
         "default": {
             implicitRole: null,
