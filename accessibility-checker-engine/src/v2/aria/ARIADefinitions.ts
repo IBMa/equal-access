@@ -1792,7 +1792,7 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "datetime": {
+            "datetime-local": {
                 implicitRole: null,
                 //roleCondition: " with type=datetime",
                 validRoles: null,
@@ -1870,7 +1870,7 @@ export class ARIADefinitions {
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "search-list": {
+            "search-with-list": {
                 implicitRole: ["combobox"],
                 //roleCondition: " with type=search and a list attribute is present",
                 validRoles: null,
@@ -1897,7 +1897,7 @@ export class ARIADefinitions {
             "text-no-list": {
                 implicitRole: ["textbox"],
                 //roleCondition: " with type=text and no list attribute is present",
-                validRoles: ["combobox", "searchbox", "spinbutton"], //See https://www.w3.org/TR/html-aria/#docconformance and  Defect 1027
+                validRoles: ["combobox", "searchbox", "spinbutton"],
                 globalAriaAttributesValid: true
             },
             "text-with-list": {
@@ -1962,6 +1962,57 @@ export class ARIADefinitions {
                 //roleCondition: " with no multiple attribute and no size attribute having value greater than 1"
                 implicitRole: ["listbox"],
                 validRoles: null,
+                globalAriaAttributesValid: true
+            }
+        },
+        "td": {
+            "ancestor-table": {
+                implicitRole: ["cell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "ancestor-grid": {
+                implicitRole: ["gridcell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "ancestor-other": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            },
+        }
+        "th": {
+            "ancestor-table": {
+                implicitRole: ["columnheader", "rowheader", "cell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            }
+            "ancestor-grid": {
+                implicitRole: ["columnheader", "rowheader", "gridcell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            }
+            "ancestor-other": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            }
+        },
+        "tr": {
+            "ancestor-table": {
+                implicitRole: ["row"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            }
+            "ancestor-grid": {
+                implicitRole: ["row"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            }
+            "ancestor-other": {
+                implicitRole: ["row"],
+                validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
         },
