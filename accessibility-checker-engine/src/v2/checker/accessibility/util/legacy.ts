@@ -442,11 +442,12 @@ export class RPTUtil {
     public static getDocElementsByTag(elem, tagName) {
         let doc = FragmentUtil.getOwnerFragment(elem) as any;
         tagName = tagName.toLowerCase();
-        if (!doc.RPT_DOCELEMSBYTAG)
-            doc.RPT_DOCELEMSBYTAG = {}
-        if (!(tagName in doc.RPT_DOCELEMSBYTAG))
-            doc.RPT_DOCELEMSBYTAG[tagName] = doc.querySelectorAll(tagName);
-        return doc.RPT_DOCELEMSBYTAG[tagName];
+        let cache = RPTUtil.getCache(doc, "RPT_DOCELEMSBYTAG", {});
+        if (!(tagName in cache)) {
+            cache[tagName] = doc.querySelectorAll(tagName);
+            RPTUtil.setCache(doc, "RPT_DOCELEMSBYTAG", cache);
+        }
+        return cache[tagName];
     }
 
     /**
