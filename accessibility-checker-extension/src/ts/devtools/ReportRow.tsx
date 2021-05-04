@@ -172,14 +172,14 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView ? 
             <div className="itemRow">
             <div tabIndex={0} role="button" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
-                <div role="cell" className="bx--col-sm-1">
+                <div className="bx--col-sm-1">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[1]) && vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[2]) && nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[3]) && rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></>}</span> }
                 </div>
-                <div role="cell" className="bx--col-sm-3">
+                <div className="bx--col-sm-3">
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
                 </div>
             </div>
@@ -200,8 +200,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                                     <ReactTooltip id="selectedChildTip" place="top" effect="solid">
                                         Child element issue
                                     </ReactTooltip> : ""} */}
-                                    <div role="cell" className="bx--col-sm-1"> </div>
-                                    <div role="cell" className="bx--col-sm-3">
+                                    <div className="bx--col-sm-1"> </div>
+                                    <div className="bx--col-sm-3">
                                         <div className="itemMessage">
                                             { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 
                                             <React.Fragment>
