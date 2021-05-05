@@ -777,7 +777,7 @@ export class RPTUtil {
 
     /**
      * This function is responsible for finding if a element has given role.
-     * This function aslo finds if element has give roles as implicit role.
+     * This function aslo finds if element has given roles as implicit role.
      * @parm {HTMLElement} ele - element for which to find role.
      * @parm {list or string} roles - List or single role for which to find if element has these roles.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
@@ -2176,9 +2176,11 @@ export class RPTUtil {
                 case "area":
                     RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                     break;
-                case "button":
-                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "menu" ? tagProperty = specialTagProperties["with-type-menu"] : tagProperty = specialTagProperties["without-type-menu"];
+                case "figure": {
+                    if (RPTUtil.getChildByTag(ruleContext, "figcaption") !== null)
+                        tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
                     break;
+                }
                 case "footer": {
                     let ancestor = RPTUtil.getAncestor(ruleContext, "article");
                     if (ancestor === null)
@@ -2192,17 +2194,8 @@ export class RPTUtil {
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
                 }
-                case "h1":
-                case "h2":
-                case "h3":
-                case "h4":
-                case "h5":
-                case "h6":
-                    specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["h1-6"];
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level") && ruleContext.getAttribute("aria-level") > 0)
-                        tagProperty = specialTagProperties["h1-6-with-aria-level-positive-integer"];
-                    else
-                        tagProperty = specialTagProperties["h1-6-without-aria-level-positive-integer"];
+                case "form":
+                    hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["with-name"] : tagProperty = specialTagProperties["without-name"];
                     break;
                 case "header":
                     let ancestor = RPTUtil.getAncestor(ruleContext, "article");
@@ -2216,14 +2209,12 @@ export class RPTUtil {
                         ancestor = RPTUtil.getAncestor(ruleContext, "section");
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
-                case "hgroup":
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level"))
-                        tagProperty = specialTagProperties["with-aria-level"];
-                    else
-                        tagProperty = specialTagProperties["without-aria-level"];
-                    break;
                 case "img":
-                    ruleContext.hasAttribute("alt") && ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-without-empty-alt"];
+                    if (ruleContext.hasAttribute("alt")) {
+                        ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
+                    } else {
+                        hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
+                    }
                     break;
                 case "input":
                     if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
@@ -2231,23 +2222,23 @@ export class RPTUtil {
                         tagProperty = specialTagProperties[type];
                         if (tagProperty === null || tagProperty === undefined) {
                             switch (type) {
-                                case "search":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-list"] : tagProperty = specialTagProperties["search-no-list"];
-                                    break;
-                                case "text":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
-                                    break;
-                                case "tel":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
-                                    break;
-                                case "url":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
+                                case "checkbox":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
                                     break;
                                 case "email":
                                     RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["email-with-list"] : tagProperty = specialTagProperties["email-no-list"];
                                     break;
-                                case "checkbox":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
+                                case "search":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-with-list"] : tagProperty = specialTagProperties["search-no-list"];
+                                    break;
+                                case "tel":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
+                                    break;
+                                case "text":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                    break;
+                                case "url":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
                                     break;
                                 default:
                                     // default type is the same as type=text
@@ -2260,40 +2251,6 @@ export class RPTUtil {
                         RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
                     }
                     break;
-                case "li": {
-                    let parentNode = ruleContext.parentNode;
-                    parentNode !== null && (parentNode.tagName.toLowerCase() === "ol" || parentNode.tagName.toLowerCase() === "ul") ? tagProperty = specialTagProperties["parent-ol-or-ul"] : tagProperty = specialTagProperties["parent-not-ol-or-ul"];
-                    break;
-                }
-                case "link":
-                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"]; //https://www.w3.org/TR/html51/document-metadata.html#elementdef-link
-                    break;
-                case "menu":
-                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "context" ? tagProperty = specialTagProperties["type-context"] : tagProperty = tagProperty;
-                    break;
-                case "menuitem":
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
-                        if (ruleContext.getAttribute("type").trim().toLowerCase() === "command")
-                            tagProperty = specialTagProperties["type-command"];
-                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "checkbox")
-                            tagProperty = specialTagProperties["type-checkbox"];
-                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "radio")
-                            tagProperty = specialTagProperties["type-radio"];
-                    }
-                    if (tagProperty === null || tagProperty === undefined)
-                        tagProperty = specialTagProperties["default"];
-                    break;
-                case "option":
-                    let parentNode = ruleContext.parentNode;
-                    // https://developer.mozilla.org/en/docs/Web/HTML/Element/option
-                    /* refer to Github issue #436, we remove "select" and "optgroup" based on HTML 5.1 spec. A select can have a role of menu
-                        * A menu role requires a menuitem, menuitemcheckbox, or menuitemradio. So, "option" element needs to take one of those roles.
-                        * Hence, the conformance table is incorrect.*/
-                    if ( /*parentNode.tagName.toLowerCase() === "select" || parentNode.tagName.toLowerCase() === "optgroup" || */ parentNode.tagName.toLowerCase() === "datalist" || parentNode.tagName.toLowerCase() === "options")
-                        tagProperty = specialTagProperties["list-suggestion-datalist"];
-                    else
-                        tagProperty = specialTagProperties["not-list-suggestion-datalist"];
-                    break;
                 case "select":
                     specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
                     if (ruleContext.hasAttribute("multiple") ||
@@ -2301,6 +2258,15 @@ export class RPTUtil {
                         tagProperty = specialTagProperties["multiple-attr-size-gt1"];
                     else
                         tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
+                    break;
+                case "td":
+                case "th":
+                case "tr":
+                    if (RPTUtil.getAncestor(ruleContext, "table") !== null) {
+                        tagProperty = specialTagProperties["des-table"];
+                    } else {
+                        RPTUtil.getAncestor(ruleContext, "grid") || RPTUtil.getAncestor(ruleContext, "treegrid") ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
+                    }
                     break;
                 default:
                     tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];

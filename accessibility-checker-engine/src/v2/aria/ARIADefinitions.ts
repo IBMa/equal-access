@@ -1687,12 +1687,12 @@ export class ARIADefinitions {
 //        },
 
         "figure": {
-            "des-figcaption": {
+            "child-figcaption": {
                 implicitRole: ["figure"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "no-des-figcaption": {
+            "no-child-figcaption": {
                 implicitRole: ["figure"],
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
@@ -1749,17 +1749,23 @@ export class ARIADefinitions {
 
         },
         "img": {
-            "img-with-empty-alt": {
-                implicitRole: ["presentation"],
-                //roleCondition: " when empty alt attribute is present",
-                validRoles: null,
-                globalAriaAttributesValid: false
-            },
-            "img-without-empty-alt": {
+            "img-with-alt-text": {
                 implicitRole: ["img"],
-                //roleCondition: " when empty alt attribute is not present",
+                //roleCondition: " when alt attribute has text (is not empty)",
                 validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
+            }
+            "img-with-empty-alt": {
+                implicitRole: ["presentation"],
+                //roleCondition: " when alt attribute is empty",
+                validRoles: null,
+                globalAriaAttributesValid: false // TODO aria-hidden="true" is allowed
+            },
+            "img-without-alt": {
+                implicitRole: ["img"],
+                //roleCondition: " when alt attribute, aria-label, or aria-labelledby are not present",
+                validRoles: null,
+                globalAriaAttributesValid: false // TODO aria-hidden="true" is allowed
             }
         },
         "input": {
@@ -1966,51 +1972,51 @@ export class ARIADefinitions {
             }
         },
         "td": {
-            "ancestor-table": {
+            "des-table": {
                 implicitRole: ["cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "ancestor-grid": {
+            "des-grid": {
                 implicitRole: ["gridcell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
-            "ancestor-other": {
+            "des-other": {
                 implicitRole: null,
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
             },
         }
         "th": {
-            "ancestor-table": {
+            "des-table": {
                 implicitRole: ["columnheader", "rowheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
-            "ancestor-grid": {
+            "des-grid": {
                 implicitRole: ["columnheader", "rowheader", "gridcell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
-            "ancestor-other": {
+            "des-other": {
                 implicitRole: null,
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
         },
         "tr": {
-            "ancestor-table": {
+            "des-table": {
                 implicitRole: ["row"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
-            "ancestor-grid": {
+            "des-grid": {
                 implicitRole: ["row"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }
-            "ancestor-other": {
+            "des-other": {
                 implicitRole: ["row"],
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
