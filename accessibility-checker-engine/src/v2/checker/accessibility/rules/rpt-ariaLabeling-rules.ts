@@ -758,6 +758,7 @@ let a11yRulesLabeling: Rule[] = [
             }
 
             let passed = true;
+            let prohibited = false;
             let designPatterns = ARIADefinitions.designPatterns;
             //get attribute roles as well as implicit roles.
             let roles = RPTUtil.getRoles(ruleContext, true);
@@ -766,7 +767,7 @@ let a11yRulesLabeling: Rule[] = [
             for (let i = 0, length = roles.length; passed && i < length; ++i) {
 
                 let pattern = designPatterns[roles[i]];
-                if (pattern && pattern.nameRequired && pattern.roleType && pattern.roleType == "widget") {
+                if (pattern && pattern.nameRequired && pattern.roleType /*&& pattern.roleType == "widget"*/) { // TODO: roleType should not be necessary?
                     ++numWidgetsTested;
 
                     // All widgets may have an author supplied accessible name.
@@ -777,12 +778,16 @@ let a11yRulesLabeling: Rule[] = [
                     if (!passed && pattern.nameFrom && pattern.nameFrom.indexOf("contents") >= 0) {
 
                         // See if widget's accessible name is supplied by element's inner text
-                        // nameFrom: ["author", "content"]
+                        // nameFrom: ["author", "contents"]
                         passed = RPTUtil.hasInnerContentOrAlt(ruleContext);
                     }
 
                     if (!passed) { // check if it has implicit label, like <label><input ....>abc </label>
                         passed = RPTUtil.hasImplicitLabel(ruleContext);
+                    }
+                    
+                    if (pattern.nameFrom.indexOf("prohibited") >= 0) {
+                        prohibited = true;
                     }
                 }
             }
@@ -792,7 +797,12 @@ let a11yRulesLabeling: Rule[] = [
             } else if (!passed) {
                 return RuleFail("Fail_1");
             } else {
-                return RulePass("Pass_0");
+                //TODO
+//                if (prohibited) {
+//                    return RuleFail("Fail_2");
+//                } else {
+                    return RulePass("Pass_0");
+//                }
             }
         }
     },
