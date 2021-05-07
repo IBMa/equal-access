@@ -2182,15 +2182,15 @@ export class RPTUtil {
                     break;
                 }
                 case "footer": {
-                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
                 }
@@ -2198,15 +2198,15 @@ export class RPTUtil {
                     hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["with-name"] : tagProperty = specialTagProperties["without-name"];
                     break;
                 case "header":
-                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
                 case "img":
@@ -2262,10 +2262,10 @@ export class RPTUtil {
                 case "td":
                 case "th":
                 case "tr":
-                    if (RPTUtil.getAncestor(ruleContext, "table") !== null) {
+                    if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
                         tagProperty = specialTagProperties["des-table"];
                     } else {
-                        RPTUtil.getAncestor(ruleContext, "grid") || RPTUtil.getAncestor(ruleContext, "treegrid") ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
+                        RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
                     }
                     break;
                 default:
