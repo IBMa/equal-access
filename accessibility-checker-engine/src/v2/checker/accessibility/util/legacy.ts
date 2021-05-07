@@ -69,15 +69,8 @@ export class RPTUtil {
             "aria-live": "assertive",
             "aria-atomic": "true"
         },
-        "checkbox": {
-            "aria-checked": "false"
-        },
         "combobox": {
-            "aria-expanded": "false",
             "aria-haspopup": "listbox"
-        },
-        "heading": {
-            "aria-level": "2"
         },
         "listbox": {
             "aria-orientation": "vertical"
@@ -91,54 +84,40 @@ export class RPTUtil {
         "menubar": {
             "aria-orientation": "horizontal"
         },
-        "menuitemcheckbox": {
-            "aria-checked": "false"
-        },
-        "menuitemradio": {
-            "aria-checked": "false"
-        },
+        "meter": {
+            "aria-valuemin": "0",
+            "aria-valuemax": "100"
+        }
         "option": {
             "aria-selected": "false"
         },
-        "radio": {
-            "aria-checked": "false"
-        },
+        "progressbar": {
+            "aria-valuemin": "0",
+            "aria-valuemax": "100"
+        }
         "scrollbar": {
             "aria-orientation": "vertical",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": function (element) {
-                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
-                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
-                return "" + (((max - min) / 2) + min);
-            }
+            "aria-valuemax": "100"
         },
         "separator": {
             "aria-orientation": "horizontal",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": "50"
+            "aria-valuemax": "100"
         },
         "slider": {
             "aria-orientation": "horizontal",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": function (element) {
-                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
-                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
-                return "" + (((max - min) / 2) + min);
-            }
+            "aria-valuemax": "100"
         },
         "spinbutton": {
-            // Not sure how to encode min/max
-            "aria-valuenow": "0"
+            // Not sure how to encode min/max (or now in 1.2 - "has no value")
+            //"aria-valuenow": "0" TODO: at risk: maybe delete after ARIA 1.2 reaches proposed rec
+            // Probably just delete spinbutton from this list completely and let user agents handle "defaults"
         },
         "status": {
             "aria-live": "polite",
             "aria-atomic": "true"
-        },
-        "switch": {
-            "aria-checked": "false"
         },
         "tab": {
             "aria-selected": "false"
@@ -175,6 +154,7 @@ export class RPTUtil {
         "aria-orientation": undefined,
         "aria-pressed": undefined,
         "aria-readonly": "false",
+        //"aria-relevant": "additions text", TODO: are multiple values supported?
         "aria-required": "false",
         "aria-selected": undefined,
         "aria-sort": "none"
@@ -209,16 +189,27 @@ export class RPTUtil {
                 if (e.hasAttribute("indeterminate")) return "mixed";
             },
         },
-        "aria-haspopup": {
-            "*": function (e) {
-                if (e.hasAttribute("contextmenu")) return "true";
-                return;
-            }
-        },
-        "aria-multiselectable": {
+        "aria-disabled": {
+            "button": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "fieldset": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
             "input": function (e) {
-                if (e.hasAttribute("multiple")) return "true";
-                return;
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "optgroup": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "option": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "select": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "textarea": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
             }
         },
         "aria-expanded": {
@@ -227,6 +218,12 @@ export class RPTUtil {
             },
             "dialog": function (e) {
                 return e.getAttribute("open")
+            }
+        },
+        "aria-multiselectable": {
+            "select": function (e) {
+                if (e.hasAttribute("multiple")) return "true";
+                return;
             }
         },
         "aria-placeholder": {
@@ -246,32 +243,6 @@ export class RPTUtil {
             },
             "textarea": function (e) {
                 return e.getAttribute("required")
-            }
-        },
-        "aria-disabled": {
-            "button": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "fieldset": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "input": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "keygen": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "optgroup": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "option": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "select": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "textarea": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
             }
         }
     }
@@ -751,15 +722,12 @@ export class RPTUtil {
         }
 
         if (ARIADefinitions.designPatterns[role]) {
+            let requiredAttributes = ARIADefinitions.designPatterns[role].reqProps;
             // handle special case of separator
-            if (role.toLowerCase() === "separator") {
-                if (RPTUtil.isFocusable(ele)) {
-                    return ARIADefinitions.designPatterns[role].reqProps;
-                }
-                return null;
+            if (role.toLowerCase() === "separator" && RPTUtil.isFocusable(ele)) {
+                RPTUtil.concatUniqueArrayItemList(["aria-valuenow"], requiredAttributes);
             }
-
-            return ARIADefinitions.designPatterns[role].reqProps;
+            return requiredAttributes;
         } else {
             return null;
         }
@@ -2350,7 +2318,7 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                            RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                            RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
                         }
                     }
                 }
@@ -2379,7 +2347,7 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                    RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                    RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
                 }
             }
         }
