@@ -243,7 +243,8 @@ export class ARIADefinitions {
             roleType?: string,
             nameRequired?: boolean,
             nameFrom?: string[],
-            presentationalChildren?: boolean
+            presentationalChildren?: boolean,
+            deprecated?: string[]
         }
     } = {
         "alert": {
@@ -444,7 +445,7 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["author"],
-            deprecated: ["list"]
+            deprecated: ["list"] // TODO
         },
 
         "document": {
@@ -1754,7 +1755,7 @@ export class ARIADefinitions {
                 //roleCondition: " when alt attribute has text (is not empty)",
                 validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
-            }
+            },
             "img-with-empty-alt": {
                 implicitRole: ["presentation"],
                 //roleCondition: " when alt attribute is empty",
@@ -1987,18 +1988,18 @@ export class ARIADefinitions {
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
             },
-        }
+        },
         "th": {
             "des-table": {
                 implicitRole: ["columnheader", "rowheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
-            }
+            },
             "des-grid": {
                 implicitRole: ["columnheader", "rowheader", "gridcell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
-            }
+            },
             "des-other": {
                 implicitRole: null,
                 validRoles: ["any"],
@@ -2010,12 +2011,12 @@ export class ARIADefinitions {
                 implicitRole: ["row"],
                 validRoles: null,
                 globalAriaAttributesValid: true
-            }
+            },
             "des-grid": {
                 implicitRole: ["row"],
                 validRoles: null,
                 globalAriaAttributesValid: true
-            }
+            },
             "des-other": {
                 implicitRole: ["row"],
                 validRoles: ["any"],

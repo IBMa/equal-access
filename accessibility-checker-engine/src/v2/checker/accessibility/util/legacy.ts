@@ -87,14 +87,14 @@ export class RPTUtil {
         "meter": {
             "aria-valuemin": "0",
             "aria-valuemax": "100"
-        }
+        },
         "option": {
             "aria-selected": "false"
         },
         "progressbar": {
             "aria-valuemin": "0",
             "aria-valuemax": "100"
-        }
+        },
         "scrollbar": {
             "aria-orientation": "vertical",
             "aria-valuemin": "0",
@@ -2145,8 +2145,7 @@ export class RPTUtil {
                     RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                     break;
                 case "figure": {
-                    if (RPTUtil.getChildByTag(ruleContext, "figcaption") !== null)
-                        tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
+                    RPTUtil.getChildByTag(ruleContext, "figcaption") !== null ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
                     break;
                 }
                 case "footer": {
@@ -2163,7 +2162,7 @@ export class RPTUtil {
                     break;
                 }
                 case "form":
-                    hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["with-name"] : tagProperty = specialTagProperties["without-name"];
+                    RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["with-name"] : tagProperty = specialTagProperties["without-name"];
                     break;
                 case "header":
                     let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
@@ -2181,7 +2180,7 @@ export class RPTUtil {
                     if (ruleContext.hasAttribute("alt")) {
                         ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
                     } else {
-                        hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
+                        RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
                     }
                     break;
                 case "input":
