@@ -2218,6 +2218,13 @@ export class RPTUtil {
                         RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
                     }
                     break;
+                case "section":
+                    if (RPTUtil.getAriaLabel(ruleContext)) {
+                        tagProperty = specialTagProperties["with-name"];
+                    } else {
+                        tagProperty = specialTagProperties["without-name"];
+                    }
+                    break;
                 case "select":
                     specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
                     if (ruleContext.hasAttribute("multiple") ||
