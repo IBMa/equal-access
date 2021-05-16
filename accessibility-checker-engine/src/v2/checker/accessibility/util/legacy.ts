@@ -2125,6 +2125,7 @@ export class RPTUtil {
 
     public static getElementAriaProperty(ruleContext) {
         let tagName = null;
+        let name = null;
 
         if (ruleContext.tagName) {
             tagName = ruleContext.tagName.toLowerCase();
@@ -2162,7 +2163,7 @@ export class RPTUtil {
                     break;
                 }
                 case "form":
-                    let name = ARIAMapper.computeName(ruleContext);
+                    name = ARIAMapper.computeName(ruleContext);
                     if (name && name.trim().length > 0) {
                         tagProperty = specialTagProperties["with-name"];
                     } else {
@@ -2224,7 +2225,7 @@ export class RPTUtil {
                     }
                     break;
                 case "section":
-                    let name = ARIAMapper.computeName(ruleContext);
+                    name = ARIAMapper.computeName(ruleContext);
                     if (name && name.trim().length > 0) {
                         tagProperty = specialTagProperties["with-name"];
                     } else {
