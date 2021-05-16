@@ -2162,7 +2162,12 @@ export class RPTUtil {
                     break;
                 }
                 case "form":
-                    RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["with-name"] : tagProperty = specialTagProperties["without-name"];
+                    let name = ARIAMapper.computeName(ruleContext);
+                    if (name && name.trim().length > 0) {
+                        tagProperty = specialTagProperties["with-name"];
+                    } else {
+                        tagProperty = specialTagProperties["without-name"];
+                    }
                     break;
                 case "header":
                     let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
