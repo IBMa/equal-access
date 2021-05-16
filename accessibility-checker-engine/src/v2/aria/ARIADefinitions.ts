@@ -1342,6 +1342,36 @@ export class ARIADefinitions {
             validRoles: null,
             globalAriaAttributesValid: false
         },
+        "h1": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
+        "h2": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
+        "h3": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
+        "h4": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
+        "h5": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
+        "h6": {
+            implicitRole: ["heading"],
+            validRoles: ["doc-subtitle", "none", "presentation", "tab"],
+            globalAriaAttributesValid: true
+        },
         "hgroup": {
             implicitRole: null,
             validRoles: ["any"],
