@@ -18,6 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
+import { DOMUtil } from "../../../dom/DOMUtil";
 
 let a11yRulesLabeling: Rule[] = [
     {
@@ -784,6 +785,10 @@ let a11yRulesLabeling: Rule[] = [
 
                     if (!passed) { // check if it has implicit label, like <label><input ....>abc </label>
                         passed = RPTUtil.hasImplicitLabel(ruleContext);
+                    }
+
+                    if (!passed && ruleContext.tagName.toLowerCase() === "img" && !ruleContext.hasAttribute("role") && ruleContext.hasAttribute("alt")) {
+                        passed = DOMUtil.cleanWhitespace(ruleContext.getAttribute("alt")).trim().length > 0;
                     }
                     
                     if (pattern.nameFrom.indexOf("prohibited") >= 0) {
