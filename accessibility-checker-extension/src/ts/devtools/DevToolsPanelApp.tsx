@@ -154,32 +154,40 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         }
                         return "/"+findName.toLowerCase()+"["+count+"]";
                     }
-                    let retVal = "";
-                    while (node && node.nodeType === 1) {
-                        if (node) {
+                    try {
+                        let retVal = "";
+                        while (node && node.nodeType === 1) {
                             retVal = countNode(node)+retVal;
                             if (node.parentElement) {
                                 node = node.parentElement;
                             } else {
                                 let parentElement = null;
                                 try {
-                                    // Check if we're in an iframe
-                                    let parentWin = node.ownerDocument.defaultView.parent;
-                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
-                                    for (const iframe of iframes) {
-                                        try {
-                                            if (iframe.contentDocument === node.ownerDocument) {
-                                                parentElement = iframe;
-                                                break;
-                                            }
-                                        } catch (e) {}
+                                    // Check if we're in a shadow DOM
+                                    if (node.parentNode && node.parentNode.nodeType === 11) {
+                                        parentElement = node.parentNode.host;
+                                        retVal = "/#document-fragment[1]"+retVal;
+                                    } else {
+                                        // Check if we're in an iframe
+                                        let parentWin = node.ownerDocument.defaultView.parent;
+                                        let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                        for (const iframe of iframes) {
+                                            try {
+                                                if (iframe.contentDocument === node.ownerDocument) {
+                                                    parentElement = iframe;
+                                                    break;
+                                                }
+                                            } catch (e) {}
+                                        }
                                     }
                                 } catch (e) {}
                                 node = parentElement;
                             }
                         }
+                        return retVal;
+                    } catch (err) {
+                        console.error(err);
                     }
-                    return retVal;
                 })($0)`, (result: string) => {
                     // This filter occurred because we selected an element in the elements tab
                     this.onFilter(result);
@@ -192,6 +200,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
+        console.log("componentDidMount");
         var self = this;
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
@@ -236,12 +245,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                 if (!self.state.listenerRegistered) {
                     PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                         if (message.tabId === self.state.tabId && message.status === "loading") {
                             if (message.tabUrl && message.tabUrl != self.state.tabURL) {
                                 self.setState({ report: null, tabURL: message.tabUrl });
                             }
                         }
                     });
+                    
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
@@ -285,6 +296,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
+        // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
@@ -717,13 +729,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
 
                     var script =
-                        `function lookup(doc, xpath) {
-                        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
-                        let element = nodes.iterateNext();
-                        if (element) {
+                    `function lookup(doc, xpath) {
+                        if (doc.nodeType === 11) {
+                            let selector = ":scope" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
+                            let element = doc.querySelector(selector);
                             return element;
                         } else {
-                            return null;
+                            let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                            let element = nodes.iterateNext();
+                            if (element) {
+                                return element;
+                            } else {
+                                return null;
+                            }
                         }
                     }
                     function selectPath(srcPath) {
@@ -745,6 +763,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                 let fragment = lookup(doc, parts[1]);
                                 element = fragment || element;
                                 if (fragment && fragment.shadowRoot) {
+                                    doc = fragment.shadowRoot;
                                     srcPath = parts[2];
                                 } else {
                                     srcPath = null;

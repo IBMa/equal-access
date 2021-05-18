@@ -178,7 +178,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     BackgroundMessaging.sendToPanel("TAB_UPDATED", {
         tabId: tabId,
         status: changeInfo && changeInfo.status,
-        tabUrl: tab.url
+        tabUrl: tab.url,
+        tabTitle: tab.title
     });
 });
 

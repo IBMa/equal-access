@@ -1,0 +1,49 @@
+---
+title: "Accessibility Checker Rule Help: Valerie_Elem_DirValid"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Invalid value used for the `dir` attribute
+
+<div id="locLevel"></div>
+
+`dir` attribute value must be `"ltr"`, `"rtl"`, or `"auto"`
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The `dir` attribute specifies the rendering order of text content. It is used by assistive technology to read or present information in the intended order.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * For text that should be read from left to right, use `dir="ltr"`;
+ * OR, for text that should be read from right to left, use `dir="rtl"`;
+ * OR, if the direction of the text is truly unknown, use `dir="auto"`.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.2 Meaningful Sequence](https://www.ibm.com/able/requirements/requirements/#1_3_2)
+
+### Who does this affect?
+
+ * Blind people using screen readers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

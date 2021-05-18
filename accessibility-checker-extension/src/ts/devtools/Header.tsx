@@ -148,7 +148,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             noScan = true;
         }
 
-        let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+        // let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
 
         if (!counts) {
             counts = {
@@ -175,23 +175,23 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             {this.props.layout === "sub" ? 
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-sm-4">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
-                    {/* <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" /> */}
+                {/* <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                     </div>
-                </div>
+                </div> */}
             </div>
             : <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-2">
+                <div className="bx--col-sm-3">
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     {/* <div>
                         <span>Status: </span>
@@ -203,6 +203,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
+                <React.Fragment>
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
@@ -246,8 +247,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>
-                        {isLatestArchive ? "" : (
-                            <Tooltip>
+                        {/* {isLatestArchive ? "" : ( */}
+                            <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
@@ -261,7 +262,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     </a>
                                 </div>
                             </Tooltip>
-                        )}
+                        {/* )} */}
                     </div>
                     <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
@@ -302,13 +303,23 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     </div>
                 </div>
+                <div className="bx--row" style={{ marginTop: '10px' }}>
+                    <div className="bx--col-sm-4">
+                        <div>
+                            <span>Status: </span>
+                            <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                            <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                        </div>
+                    </div>
+                </div>
+                </React.Fragment>
                 // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
                         {/* {isLatestArchive ? "" : ( */}
-                            <Tooltip>
+                            <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
                                     You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                                 </p>
@@ -348,7 +359,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </div>
             }
             {/* Counts row uses same code for both Assessment and Checker Tabs */}
-            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" arial-label='Issue count' style={{ marginTop: "14px" }}>
+            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
                         <Checkbox 

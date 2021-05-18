@@ -229,6 +229,8 @@ try {
 let policies = ${JSON.stringify(Config.policies)};
 
 let checker = new window.ace.Checker();
+let customRulesets = ${JSON.stringify(ACEngineManager.customRulesets)};
+customRulesets.map((rs) => checker.addRuleset(rs));
 setTimeout(function() {
     checker.check(document, policies).then(function(report) {
         for (const result of report.results) {
@@ -254,7 +256,7 @@ cb(e);
         const getPolicies = "return new window.ace.Checker().rulesetIds;";
         if (curPol != null && !checkPolicy) {
             checkPolicy = true;
-            const valPolicies = await browser.executeScript(getPolicies);
+            const valPolicies = ACEngineManager.customRulesets.concat(await browser.executeScript(getPolicies));
             areValidPolicy(valPolicies, curPol);
         }
 
@@ -313,8 +315,9 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let report : Report = await page.evaluate((policies) => {
+        let report : Report = await page.evaluate((policies, customRulesets) => {
             let checker = new (window as any).ace.Checker();
+            customRulesets.forEach((rs) => checker.addRuleset(rs));
             return new Promise<Report>((resolve, reject) => {
                 setTimeout(function () {
                     checker.check(document, policies).then(function (report) {
@@ -325,10 +328,10 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                     })
                 }, 0)
             })
-        }, Config.policies);
+        }, Config.policies, ACEngineManager.customRulesets);
         report = ACReportManager.setLevels(report);
         if (curPol != null && !checkPolicy) {
-            const valPolicies = await page.evaluate("new window.ace.Checker().rulesetIds");
+            const valPolicies = ACEngineManager.customRulesets.concat(await page.evaluate("new window.ace.Checker().rulesetIds"));
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }
@@ -393,6 +396,7 @@ async function getComplianceHelperLocal(label, parsed, curPol) : Promise<IChecke
     try {
         let startScan = Date.now();
         let checker = ACEngineManager.getChecker();
+        ACEngineManager.customRulesets.forEach((rs) => checker.addRuleset(rs));
         let report : Report = await checker.check(parsed, Config.policies)
             .then(function (report) {
                 for (const result of report.results) {
