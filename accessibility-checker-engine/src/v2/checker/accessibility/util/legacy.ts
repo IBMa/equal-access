@@ -2146,7 +2146,8 @@ export class RPTUtil {
                     RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                     break;
                 case "figure": {
-                    RPTUtil.getChildByTag(ruleContext, "figcaption") !== null ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
+                    let fcs = RPTUtil.getChildByTag(ruleContext, "figcaption");
+                    fcs !== null && fcs.length > 0 ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
                     break;
                 }
                 case "footer": {
@@ -2257,13 +2258,13 @@ export class RPTUtil {
     }
 
     public static getAllowedAriaRoles(ruleContext, properties) {
-        let tagName = ruleContext.tagName.toLowerCase();
         let allowedRoles = [];
         let tagProperty = null;
-        if (properties != null && properties !== undefined)
+        if (properties !== null && properties !== undefined) {
             tagProperty = properties;
-        else
+        } else {
             tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+        }
 
         if (tagProperty !== null && tagProperty !== undefined) {
             if (tagProperty.implicitRole !== null) {
