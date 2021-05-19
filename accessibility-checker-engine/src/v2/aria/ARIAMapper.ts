@@ -397,7 +397,9 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
-            return elem.getAttribute("role").trim();
+            let retVal = elem.getAttribute("role").trim();
+            if (retVal === "presentation" || retVal === "none") return null;
+            return retVal;
         }
 
         let nodeName = elem.nodeName.toLowerCase();

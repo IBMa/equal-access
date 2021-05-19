@@ -1275,18 +1275,9 @@ let a11yRulesAria: Rule[] = [{
                     }
                 }
             } else if (allowedRoles.indexOf("any") > -1) {
-                //First check special case: <img> with nonempty alt only allows 'any' except 'presentation/none'
-                if (tagName === "img" && RPTUtil.attributeNonEmpty(ruleContext, "alt") &&
-                    (roles[i] === "presentation" || roles[i] === "none")) {
-                    if (roleTokens.indexOf(roles[i]) === -1) {
-                        roleTokens.push(roles[i]);
-                        passed = false;
-                    }
-                } else
-                    // Then check the normal case 
-                    if (permittedRoles.indexOf(roles[i]) === -1) {
-                        permittedRoles.push(roles[i]);
-                    }
+                if (permittedRoles.indexOf(roles[i]) === -1) {
+                    permittedRoles.push(roles[i]);
+                }
             }
         } // for loop
 

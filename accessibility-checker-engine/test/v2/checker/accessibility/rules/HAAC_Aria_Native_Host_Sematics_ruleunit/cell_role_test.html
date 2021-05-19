@@ -25,19 +25,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 </head>
 <body id="id-9"  aria-atomic="true">
-<div id="id-20"  aria-expanded="true" role="region" aria-label="Realtime message log">
+<div id="id-20"  role="region" aria-label="Realtime message log">
     <a class="offleft" href="#maincontent">Skip to main content</a>
     <a name="maincontent"></a>
     <table role="grid" aria-label="sample" onkeypress="keyEvent()">
          <tr role="row" tabindex="0">
             <th   role="cell" onkeypress="keyEvent()">11</th>
-		 	<th   role="cell" onkeypress="keyEvent()">12</th>
-		 	<th   role="cell" onkeypress="keyEvent()">13</th>
+		 	<th   role="gridcell" onkeypress="keyEvent()">12</th>
+		 	<th   role="gridcell" onkeypress="keyEvent()">13</th>
          </tr>
 		 <tr role="row" tabindex="0">
-		 	<td   role="cell" onkeypress="keyEvent()">11</td>
-		 	<td   role="cell" onkeypress="keyEvent()">12</td>
-		 	<td   role="cell" onkeypress="keyEvent()">13</td>
+		 	<td   role="gridcell" onkeypress="keyEvent()">11</td>
+		 	<td   role="gridcell" onkeypress="keyEvent()">12</td>
+		 	<td   role="gridcell" onkeypress="keyEvent()">13</td>
 		 </tr>
 	</table>
 	<table role="grid" aria-label="sample" onkeypress="keyEvent()">
@@ -54,14 +54,26 @@
 	</table>
 	<table role="grid" aria-label="sample" onkeypress="keyEvent()">
 	     <tr role="row" tabindex="0">
+            <th   role="gridcell" onkeypress="keyEvent()">11</th>
+		 	<th   role="gridcell" onkeypress="keyEvent()">12</th>
+		 	<th   role="gridcell" onkeypress="keyEvent()">13</th>
+         </tr>
+		 <tr role="row" tabindex="0">
+		     <td role="gridcell" onkeypress="keyEvent()" aria-pressed="true">13</td>
+		     <td role="gridcell" onkeypress="keyEvent()" aria-atomic="true">12</td>
+		 	 <td role="gridcell" onkeypress="keyEvent()">12</td>
+		 </tr>
+	</table>
+	<table aria-label="sample" onkeypress="keyEvent()">
+	     <tr role="row" tabindex="0">
             <th   role="cell" onkeypress="keyEvent()">11</th>
 		 	<th   role="cell" onkeypress="keyEvent()">12</th>
 		 	<th   role="cell" onkeypress="keyEvent()">13</th>
          </tr>
 		 <tr role="row" tabindex="0">
-		     <td role="cell" onkeypress="keyEvent()" aria-pressed="true">13</td>
-		     <td role="cell" onkeypress="keyEvent()" aria-atomic="true">12</td>
-		 	 <td role="cell" onkeypress="keyEvent()">12</td>
+		 	<td role="cell" onkeypress="keyEvent()">12</td>
+		 	<td onkeypress="keyEvent()">12</td>
+		 	<td onkeypress="keyEvent()">12</td>
 		 </tr>
 	</table>
 </div>
@@ -75,7 +87,12 @@
       passedXpaths: [
       ],
       failedXpaths: [
-          "/html/body/div/table[3]/tbody/tr[2]/td[1]"
+            "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[1]/th[1]",
+            "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[1]",
+            "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[2]",
+            "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[3]",
+            "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[2]/td[1]",
+            "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[1]"
       ]
     }
   ];
