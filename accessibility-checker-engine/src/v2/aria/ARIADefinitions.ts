@@ -1116,7 +1116,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameRequired: true,
+            nameRequired: false, // ARIA 1.2 has this as nameRequired: true, but ARIA 1.3 removed it because it makes no sense to require a name on a tooltip.
             nameFrom: ["author", "contents"]
         },
 
