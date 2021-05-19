@@ -764,11 +764,15 @@ let a11yRulesLabeling: Rule[] = [
             //get attribute roles as well as implicit roles.
             let roles = RPTUtil.getRoles(ruleContext, true);
             let numWidgetsTested = 0;
-
+            let interactiveRoleTypes = ["widget", "liveRegion", "window"];
             for (let i = 0, length = roles.length; passed && i < length; ++i) {
 
                 let pattern = designPatterns[roles[i]];
-                if (pattern && pattern.nameRequired && pattern.roleType /*&& pattern.roleType == "widget"*/) { // TODO: roleType should not be necessary?
+                if (pattern 
+                    && pattern.nameRequired 
+                    && pattern.roleType 
+                    && interactiveRoleTypes.includes(pattern.roleType))
+                { 
                     ++numWidgetsTested;
 
                     // All widgets may have an author supplied accessible name.
