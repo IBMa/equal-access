@@ -114,7 +114,7 @@ export class DOMWalker {
                 }
             }
         } while (
-            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11)
+            (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11 && this.node.nodeType !== 3 /* Node.TEXT_NODE */)
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
         );
         return true;
