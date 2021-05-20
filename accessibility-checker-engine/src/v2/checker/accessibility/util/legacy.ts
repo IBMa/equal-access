@@ -296,9 +296,11 @@ export class RPTUtil {
     public static tabTagMap = {
         "button": true,
         "input": function (element): boolean {
-            return element.getAttribute("type") != "hidden";
+            return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
         },
-        "select": true,
+        "select": function (element): boolean {
+            return !element.hasAttribute("disabled");
+        },
         "textarea": true,
         "div": function (element) {
             return element.hasAttribute("contenteditable");
@@ -2046,8 +2048,14 @@ export class RPTUtil {
 
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
-                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node))
-                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node as any));
+                hasContent = (
+                    node.nodeName.toLowerCase() === "img" 
+                    && (RPTUtil.attributeNonEmpty(node, "alt") || RPTUtil.attributeNonEmpty(node, "title"))
+                    && RPTUtil.isNodeVisible(node)
+                ) || (
+                    node.nodeName.toLowerCase() === "svg" 
+                    && RPTUtil.svgHasName(node as any)
+                );
 
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
