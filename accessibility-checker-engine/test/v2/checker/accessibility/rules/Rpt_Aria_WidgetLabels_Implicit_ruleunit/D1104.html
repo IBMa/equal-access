@@ -27,55 +27,61 @@
 <body>
 
     <!-- Pass -->
-<label for="ex1-input"
-       id="ex1-label"
-       class="combobox-label">
-  Choice 1 Fruit or Vegetable
+<label for="cb1-input">
+    State
 </label>
-<div class="combobox-wrapper">
-  <div role="combobox"
-       aria-expanded="false"
-       aria-owns="ex1-listbox"
-       aria-haspopup="listbox"
-       id="ex1-combobox">
-        <div role="textbox" 
-            contenteditable="true" 
-            aria-autocomplete="list"
-            aria-controls="ex1-listbox"
-            id="ex1-input">
-        </div>
-  </div>
-  <ul aria-labelledby="ex1-label"
-      role="listbox"
-      id="ex1-listbox"
-      class="listbox hidden">
-  </ul>
+<div class="combobox combobox-list">
+    <div class="group">
+        <input id="cb1-input"
+            class="cb_edit"
+            type="text"
+            role="combobox"
+            aria-autocomplete="both"
+            aria-expanded="false"
+            aria-controls="lb1">
+        <button type="button"
+            id="cb1-button"
+            aria-label="Open"
+            tabindex="-1">
+            ▼
+        </button>
+    </div>
+    <ul id="lb1"
+        role="listbox"
+        aria-label="States">
+        <li id="lb1-al" role="option">
+            Alabama
+        </li>
+    </ul>
 </div>
 
 <!--Fail -->
-<label for="NotFound"
-       id="ex1-label2"
-       class="combobox-label">
-  Choice 1 Fruit or Vegetable
+<label for="nothing">
+    State
 </label>
-<div class="combobox-wrapper">
-  <div role="combobox"
-       aria-expanded="false"
-       aria-owns="ex1-listbox"
-       aria-haspopup="listbox"
-       id="ex1-combobox2">
-        <div role="textbox" 
-            contenteditable="true" 
-            aria-autocomplete="list"
-            aria-controls="ex1-listbox2"
-            id="ex1-input2">
-        </div>
-  </div>
-  <ul aria-labelledby="ex1-label2"
-      role="listbox"
-      id="ex1-listbox2"
-      class="listbox hidden">
-  </ul>
+<div class="combobox combobox-list">
+    <div class="group">
+        <input id="cb2-input"
+            class="cb_edit"
+            type="text"
+            role="combobox"
+            aria-autocomplete="both"
+            aria-expanded="false"
+            aria-controls="lb2">
+        <button type="button"
+            id="cb2-button"
+            aria-label="Open"
+            tabindex="-1">
+            ▼
+        </button>
+    </div>
+    <ul id="lb2"
+        role="listbox"
+        aria-label="States">
+        <li id="lb2-al" role="option">
+            Alabama
+        </li>
+    </ul>
 </div>
 
     <script type="text/javascript">
@@ -86,7 +92,7 @@
             ruleId: "1156",
             passedXpaths: [],
             failedXpaths: [
-                "/html/body/div[2]/div/div"
+                // "/html/body/div[2]/div/div" // handled by a different rule
             ]
         }];
         //]]>
