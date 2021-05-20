@@ -189,7 +189,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                     <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
                         Stored Scans
                     </div>
-                    <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>
+                    <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0, maxWidth:"100%"}}>
                     <div style={{overflowX:"auto", paddingBottom:"16px"}}>
                     <DataTable 
                         size="compact" 
