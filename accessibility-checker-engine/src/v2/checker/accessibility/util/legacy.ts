@@ -69,15 +69,8 @@ export class RPTUtil {
             "aria-live": "assertive",
             "aria-atomic": "true"
         },
-        "checkbox": {
-            "aria-checked": "false"
-        },
         "combobox": {
-            "aria-expanded": "false",
             "aria-haspopup": "listbox"
-        },
-        "heading": {
-            "aria-level": "2"
         },
         "listbox": {
             "aria-orientation": "vertical"
@@ -91,54 +84,40 @@ export class RPTUtil {
         "menubar": {
             "aria-orientation": "horizontal"
         },
-        "menuitemcheckbox": {
-            "aria-checked": "false"
-        },
-        "menuitemradio": {
-            "aria-checked": "false"
+        "meter": {
+            "aria-valuemin": "0",
+            "aria-valuemax": "100"
         },
         "option": {
             "aria-selected": "false"
         },
-        "radio": {
-            "aria-checked": "false"
+        "progressbar": {
+            "aria-valuemin": "0",
+            "aria-valuemax": "100"
         },
         "scrollbar": {
             "aria-orientation": "vertical",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": function (element) {
-                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
-                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
-                return "" + (((max - min) / 2) + min);
-            }
+            "aria-valuemax": "100"
         },
         "separator": {
             "aria-orientation": "horizontal",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": "50"
+            "aria-valuemax": "100"
         },
         "slider": {
             "aria-orientation": "horizontal",
             "aria-valuemin": "0",
-            "aria-valuemax": "100",
-            "aria-valuenow": function (element) {
-                let max = RPTUtil.getAriaAttribute(element, "aria-valuemax");
-                let min = RPTUtil.getAriaAttribute(element, "aria-valuemin");
-                return "" + (((max - min) / 2) + min);
-            }
+            "aria-valuemax": "100"
         },
         "spinbutton": {
-            // Not sure how to encode min/max
-            "aria-valuenow": "0"
+            // Not sure how to encode min/max (or now in 1.2 - "has no value")
+            //"aria-valuenow": "0" TODO: at risk: maybe delete after ARIA 1.2 reaches proposed rec
+            // Probably just delete spinbutton from this list completely and let user agents handle "defaults"
         },
         "status": {
             "aria-live": "polite",
             "aria-atomic": "true"
-        },
-        "switch": {
-            "aria-checked": "false"
         },
         "tab": {
             "aria-selected": "false"
@@ -175,6 +154,7 @@ export class RPTUtil {
         "aria-orientation": undefined,
         "aria-pressed": undefined,
         "aria-readonly": "false",
+        //"aria-relevant": "additions text", TODO: are multiple values supported?
         "aria-required": "false",
         "aria-selected": undefined,
         "aria-sort": "none"
@@ -209,16 +189,27 @@ export class RPTUtil {
                 if (e.hasAttribute("indeterminate")) return "mixed";
             },
         },
-        "aria-haspopup": {
-            "*": function (e) {
-                if (e.hasAttribute("contextmenu")) return "true";
-                return;
-            }
-        },
-        "aria-multiselectable": {
+        "aria-disabled": {
+            "button": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "fieldset": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
             "input": function (e) {
-                if (e.hasAttribute("multiple")) return "true";
-                return;
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "optgroup": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "option": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "select": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
+            },
+            "textarea": function (e) {
+                return e.hasAttribute("disabled") ? "true" : "false"
             }
         },
         "aria-expanded": {
@@ -227,6 +218,12 @@ export class RPTUtil {
             },
             "dialog": function (e) {
                 return e.getAttribute("open")
+            }
+        },
+        "aria-multiselectable": {
+            "select": function (e) {
+                if (e.hasAttribute("multiple")) return "true";
+                return;
             }
         },
         "aria-placeholder": {
@@ -246,32 +243,6 @@ export class RPTUtil {
             },
             "textarea": function (e) {
                 return e.getAttribute("required")
-            }
-        },
-        "aria-disabled": {
-            "button": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "fieldset": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "input": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "keygen": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "optgroup": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "option": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "select": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
-            },
-            "textarea": function (e) {
-                return e.hasAttribute("disabled") ? "true" : "false"
             }
         }
     }
@@ -752,15 +723,12 @@ export class RPTUtil {
         }
 
         if (ARIADefinitions.designPatterns[role]) {
+            let requiredAttributes = ARIADefinitions.designPatterns[role].reqProps;
             // handle special case of separator
-            if (role.toLowerCase() === "separator") {
-                if (RPTUtil.isFocusable(ele)) {
-                    return ARIADefinitions.designPatterns[role].reqProps;
-                }
-                return null;
+            if (role.toLowerCase() === "separator" && RPTUtil.isFocusable(ele)) {
+                RPTUtil.concatUniqueArrayItemList(["aria-valuenow"], requiredAttributes || []);
             }
-
-            return ARIADefinitions.designPatterns[role].reqProps;
+            return requiredAttributes;
         } else {
             return null;
         }
@@ -778,7 +746,7 @@ export class RPTUtil {
 
     /**
      * This function is responsible for finding if a element has given role.
-     * This function aslo finds if element has give roles as implicit role.
+     * This function aslo finds if element has given roles as implicit role.
      * @parm {HTMLElement} ele - element for which to find role.
      * @parm {list or string} roles - List or single role for which to find if element has these roles.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
@@ -1234,7 +1202,7 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getAncestorWithRole(element, roleName, considerImplicitRoles?) {
-        let walkNode = element;
+        let walkNode = element.parentNode;
         while (walkNode != null) {
             if (considerImplicitRoles) {
                 if (RPTUtil.hasRoleInSemantics(walkNode, roleName)) {
@@ -2158,6 +2126,7 @@ export class RPTUtil {
 
     public static getElementAriaProperty(ruleContext) {
         let tagName = null;
+        let name = null;
 
         if (ruleContext.tagName) {
             tagName = ruleContext.tagName.toLowerCase();
@@ -2177,54 +2146,50 @@ export class RPTUtil {
                 case "area":
                     RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"];
                     break;
-                case "button":
-                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "menu" ? tagProperty = specialTagProperties["with-type-menu"] : tagProperty = specialTagProperties["without-type-menu"];
+                case "figure": {
+                    let fcs = RPTUtil.getChildByTag(ruleContext, "figcaption");
+                    fcs !== null && fcs.length > 0 ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
                     break;
+                }
                 case "footer": {
-                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
                 }
-                case "h1":
-                case "h2":
-                case "h3":
-                case "h4":
-                case "h5":
-                case "h6":
-                    specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["h1-6"];
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level") && ruleContext.getAttribute("aria-level") > 0)
-                        tagProperty = specialTagProperties["h1-6-with-aria-level-positive-integer"];
-                    else
-                        tagProperty = specialTagProperties["h1-6-without-aria-level-positive-integer"];
+                case "form":
+                    name = ARIAMapper.computeName(ruleContext);
+                    if (name && name.trim().length > 0) {
+                        tagProperty = specialTagProperties["with-name"];
+                    } else {
+                        tagProperty = specialTagProperties["without-name"];
+                    }
                     break;
                 case "header":
-                    let ancestor = RPTUtil.getAncestor(ruleContext, "article");
+                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "aside");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "main");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "nav");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
                     if (ancestor === null)
-                        ancestor = RPTUtil.getAncestor(ruleContext, "section");
+                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
                     ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
-                case "hgroup":
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "aria-level"))
-                        tagProperty = specialTagProperties["with-aria-level"];
-                    else
-                        tagProperty = specialTagProperties["without-aria-level"];
-                    break;
                 case "img":
-                    ruleContext.hasAttribute("alt") && ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-without-empty-alt"];
+                    if (ruleContext.hasAttribute("alt")) {
+                        ruleContext.getAttribute("alt").trim() === "" ? tagProperty = specialTagProperties["img-with-empty-alt"] : tagProperty = specialTagProperties["img-with-alt-text"];
+                    } else {
+                        RPTUtil.hasAriaLabel(ruleContext) ? tagProperty = specialTagProperties["img-with-alt-text"] : tagProperty = specialTagProperties["img-without-alt"];
+                    }
                     break;
                 case "input":
                     if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
@@ -2232,23 +2197,23 @@ export class RPTUtil {
                         tagProperty = specialTagProperties[type];
                         if (tagProperty === null || tagProperty === undefined) {
                             switch (type) {
-                                case "search":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-list"] : tagProperty = specialTagProperties["search-no-list"];
-                                    break;
-                                case "text":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
-                                    break;
-                                case "tel":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
-                                    break;
-                                case "url":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
+                                case "checkbox":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
                                     break;
                                 case "email":
                                     RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["email-with-list"] : tagProperty = specialTagProperties["email-no-list"];
                                     break;
-                                case "checkbox":
-                                    RPTUtil.attributeNonEmpty(ruleContext, "aria-pressed") ? tagProperty = specialTagProperties["checkbox-with-aria-pressed"] : tagProperty = specialTagProperties["checkbox-without-aria-pressed"];
+                                case "search":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["search-with-list"] : tagProperty = specialTagProperties["search-no-list"];
+                                    break;
+                                case "tel":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["tel-with-list"] : tagProperty = specialTagProperties["tel-no-list"];
+                                    break;
+                                case "text":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                    break;
+                                case "url":
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
                                     break;
                                 default:
                                     // default type is the same as type=text
@@ -2261,39 +2226,13 @@ export class RPTUtil {
                         RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
                     }
                     break;
-                case "li": {
-                    let parentNode = ruleContext.parentNode;
-                    parentNode !== null && (parentNode.tagName.toLowerCase() === "ol" || parentNode.tagName.toLowerCase() === "ul") ? tagProperty = specialTagProperties["parent-ol-or-ul"] : tagProperty = specialTagProperties["parent-not-ol-or-ul"];
-                    break;
-                }
-                case "link":
-                    RPTUtil.attributeNonEmpty(ruleContext, "href") ? tagProperty = specialTagProperties["with-href"] : tagProperty = specialTagProperties["without-href"]; //https://www.w3.org/TR/html51/document-metadata.html#elementdef-link
-                    break;
-                case "menu":
-                    RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "context" ? tagProperty = specialTagProperties["type-context"] : tagProperty = tagProperty;
-                    break;
-                case "menuitem":
-                    if (RPTUtil.attributeNonEmpty(ruleContext, "type")) {
-                        if (ruleContext.getAttribute("type").trim().toLowerCase() === "command")
-                            tagProperty = specialTagProperties["type-command"];
-                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "checkbox")
-                            tagProperty = specialTagProperties["type-checkbox"];
-                        else if (ruleContext.getAttribute("type").trim().toLowerCase() === "radio")
-                            tagProperty = specialTagProperties["type-radio"];
+                case "section":
+                    name = ARIAMapper.computeName(ruleContext);
+                    if (name && name.trim().length > 0) {
+                        tagProperty = specialTagProperties["with-name"];
+                    } else {
+                        tagProperty = specialTagProperties["without-name"];
                     }
-                    if (tagProperty === null || tagProperty === undefined)
-                        tagProperty = specialTagProperties["default"];
-                    break;
-                case "option":
-                    let parentNode = ruleContext.parentNode;
-                    // https://developer.mozilla.org/en/docs/Web/HTML/Element/option
-                    /* refer to Github issue #436, we remove "select" and "optgroup" based on HTML 5.1 spec. A select can have a role of menu
-                        * A menu role requires a menuitem, menuitemcheckbox, or menuitemradio. So, "option" element needs to take one of those roles.
-                        * Hence, the conformance table is incorrect.*/
-                    if ( /*parentNode.tagName.toLowerCase() === "select" || parentNode.tagName.toLowerCase() === "optgroup" || */ parentNode.tagName.toLowerCase() === "datalist" || parentNode.tagName.toLowerCase() === "options")
-                        tagProperty = specialTagProperties["list-suggestion-datalist"];
-                    else
-                        tagProperty = specialTagProperties["not-list-suggestion-datalist"];
                     break;
                 case "select":
                     specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags["select"];
@@ -2303,25 +2242,30 @@ export class RPTUtil {
                     else
                         tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
                     break;
-                default:
-                    if (ARIADefinitions.textLevelSemanticElements.indexOf(tagName) > -1) {
-                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["text-level-semantic-elements"];
+                case "td":
+                case "th":
+                case "tr":
+                    if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
+                        tagProperty = specialTagProperties["des-table"];
                     } else {
-                        tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
+                        RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
                     }
+                    break;
+                default:
+                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
             } //switch
         }
         return tagProperty || null;
     }
 
     public static getAllowedAriaRoles(ruleContext, properties) {
-        let tagName = ruleContext.tagName.toLowerCase();
         let allowedRoles = [];
         let tagProperty = null;
-        if (properties != null && properties !== undefined)
+        if (properties !== null && properties !== undefined) {
             tagProperty = properties;
-        else
+        } else {
             tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+        }
 
         if (tagProperty !== null && tagProperty !== undefined) {
             if (tagProperty.implicitRole !== null) {
@@ -2389,7 +2333,7 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                            RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                            RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
                         }
                     }
                 }
@@ -2418,7 +2362,7 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                    RPTUtil.concatUniqueArrayItemList(["aria-valuetext"], allowedAttributes);
+                    RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
                 }
             }
         }
