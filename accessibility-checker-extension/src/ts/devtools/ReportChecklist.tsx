@@ -110,10 +110,10 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by checkpoint">
             <div role="rowgroup">
                 <div className="bx--row reportHeader" role="row">
-                    <div className="bx--col-sm-1" role="columnheader">
+                    <div className="bx--col-md-2 bx--col-sm-2" role="columnheader">
                         Issues                    
                     </div>
-                    <div className="bx--col-sm-3" role="columnheader">
+                    <div className="bx--col-md-4 bx--col-sm-2" role="columnheader">
                         Requirements
                     </div>
                 </div>
