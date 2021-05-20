@@ -64,7 +64,7 @@ let a11yRulesCombobox: Rule[] = [
             }
 
             let tagName = ruleContext.tagName.toLowerCase();
-            let expanded = RPTUtil.getAriaAttribute(ruleContext, "aria-expanded").trim().toLowerCase() === "true";
+            let expanded = (RPTUtil.getAriaAttribute(ruleContext, "aria-expanded") || "").trim().toLowerCase() === "true";
             let editable = tagName === "input" && (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() === "text");
 
             let key = context["dom"].rolePath;

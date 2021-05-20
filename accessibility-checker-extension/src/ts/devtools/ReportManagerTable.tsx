@@ -60,7 +60,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     state: IReportManagerTableState = {
         redisplayTable: true,
         modalScreenShot: false,
-        screenShotRow: -1,
+        screenShotRow: 0,
         screenShot: "",
         url: "",
         pageTitle: "",
