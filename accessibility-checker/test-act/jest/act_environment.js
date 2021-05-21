@@ -50,15 +50,21 @@ let ruleMapping = {
             reasonIds: ["Fail_2"]
         }
     ],
+    "b5c3f8": [
+        {
+            ruleId: "WCAG20_Html_HasLang",
+            reasonIds: ["Fail_3"]
+        },
+        {
+            ruleId: "WCAG20_Elem_Lang_Valid",
+            reasonIds: ["Fail_1"]
+        }
+    ],
 
     // Viewport
     // "b4f0c3": [{
     //     ruleId: "",
     //     reasonIds: []
-    // }],
-    // "b5c3f8": [{
-    //     ruleId: "WCAG20_Html_HasLang",
-    //     reasonIds: ["Fail_3"]
     // }],
     // "bf051a": [{
     //     ruleId: "WCAG20_Elem_Lang_Valid",
