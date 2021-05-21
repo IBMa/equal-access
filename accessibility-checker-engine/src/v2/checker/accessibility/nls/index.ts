@@ -336,9 +336,12 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Elem_Lang_Valid": {
-        0: "The language of content must be specified in accordance with BCP 47",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Specified language is not valid BCP 47"
+        0: "The language of content must be valid and specified in accordance with BCP 47",
+        "Pass_0": "Lang has a valid primary lang and conforms to BCP 47",
+        "Fail_1": "Specified 'lang' attribute does not include a valid primary language",
+        "Fail_2": "Specified 'lang' attribute does not conform to BCP 47",
+        "Fail_3": "Specified 'lang' attribute does not include a valid primary language",
+        "Fail_4": "Specified 'xml:lang' attribute does not conform to BCP 47",
     },
     // JCH - DONE
     "WCAG20_Img_LinkTextNotRedundant": {

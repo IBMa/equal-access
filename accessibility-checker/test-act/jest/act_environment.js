@@ -68,7 +68,7 @@ let ruleMapping = {
     // }],
     // "bf051a": [{
     //     ruleId: "WCAG20_Elem_Lang_Valid",
-    //     reasonIds: ["Fail_1"]
+    //     reasonIds: ["Fail_1", "Fail_3"]
     // }],
     // "5b7ae0": [{
     //     ruleId: "WCAG20_Html_HasLang",
