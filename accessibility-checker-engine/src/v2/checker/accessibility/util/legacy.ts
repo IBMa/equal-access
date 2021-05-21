@@ -294,7 +294,9 @@ export class RPTUtil {
     }
 
     public static tabTagMap = {
-        "button": true,
+        "button": function (element): boolean {
+            return !element.hasAttribute("disabled");
+        },
         "input": function (element): boolean {
             return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
         },
