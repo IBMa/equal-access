@@ -36,10 +36,11 @@ let ruleMapping = {
         ruleId: "WCAG20_Doc_HasTitle",
         reasonIds: ["Fail_2", "Fail_3"]
     }],
-    // "e086e5": [{
-    //     ruleId: "WCAG20_Input_ExplicitLabel",
-    //     reasonIds: ["Fail_1", "Fail_2"]
-    // }],
+    "e086e5": [{
+        ruleId: "WCAG20_Input_ExplicitLabel",
+        reasonIds: ["Fail_1", "Fail_2"]
+    }],
+
     // "b4f0c3": [{
     //     ruleId: "",
     //     reasonIds: []
