@@ -43,7 +43,13 @@ let a11yRulesTitle: Rule[] = [
                     break;
                 findHead = findHead.nextSibling;
             }
-            findTitle = (ruleContext as Element).querySelector("title");
+            let possibleTitles = (ruleContext as Element).querySelectorAll("title");
+            for (let idx=0; idx<possibleTitles.length; ++idx) {
+                if (!RPTUtil.getAncestor(possibleTitles[idx], ["svg"])) {
+                    findTitle = possibleTitles[idx];
+                    break;
+                }
+            }
             if (findHead === null) {
                 if (!findTitle) {
                     return RuleFail("Fail_1");

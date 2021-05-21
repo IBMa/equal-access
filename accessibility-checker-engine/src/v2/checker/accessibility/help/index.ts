@@ -670,6 +670,13 @@ let a11yHelp = {
         "Fail_2": `${Config.helpRoot}/HAAC_Aria_ImgAlt`,
         "Fail_3": `${Config.helpRoot}/HAAC_Aria_ImgAlt`
     },
+    "HAAC_Aria_SvgAlt": {
+        0: `${Config.helpRoot}/HAAC_Aria_SvgAlt`,
+        "Pass_0": `${Config.helpRoot}/HAAC_Aria_SvgAlt`,
+        "Fail_1": `${Config.helpRoot}/HAAC_Aria_SvgAlt`,
+        "Fail_2": `${Config.helpRoot}/HAAC_Aria_SvgAlt`,
+        "Fail_3": `${Config.helpRoot}/HAAC_Aria_SvgAlt`
+    },
     // JCH - DONE
     "HAAC_BackgroundImg_HasTextOrTitle": {
         0: `${Config.helpRoot}/HAAC_BackgroundImg_HasTextOrTitle`,

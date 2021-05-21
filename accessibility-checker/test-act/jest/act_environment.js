@@ -40,12 +40,19 @@ let ruleMapping = {
         ruleId: "WCAG20_Input_ExplicitLabel",
         reasonIds: ["Fail_1", "Fail_2"]
     }],
+    "7d6734": [
+        {
+            ruleId: "HAAC_Aria_ImgAlt",
+            reasonIds: ["Fail_2"]
+        },
+        {
+            ruleId: "HAAC_Aria_SvgAlt",
+            reasonIds: ["Fail_2"]
+        }
+    ],
 
+    // Viewport
     // "b4f0c3": [{
-    //     ruleId: "",
-    //     reasonIds: []
-    // }],
-    // "7d6734": [{
     //     ruleId: "",
     //     reasonIds: []
     // }],

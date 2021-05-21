@@ -659,6 +659,13 @@ let a11yNls = {
         "Fail_2": "Element with \"img\" role has no label or an empty label",
         "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
     },
+    "HAAC_Aria_SvgAlt": {
+        0: "An element with \"{0}\" graphics role must have a non-empty label",
+        "Pass_0": "Rule Passed",
+        "Fail_1": "Element with \"{0}\" graphics role has no label",
+        "Fail_2": "Element with \"{0}\" graphics role has no label or an empty label",
+        "Fail_3": "Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'"
+    },
     // JCH - DONE
     "HAAC_BackgroundImg_HasTextOrTitle": {
         0: "Background images that convey important information must have a text alternative that describes the image",
