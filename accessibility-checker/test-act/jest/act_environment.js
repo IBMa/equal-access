@@ -4,22 +4,29 @@ const request = require("request");
 process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
 
 let ruleMapping = {
+    "c487ae": [{
+        ruleId: "WCAG20_A_HasText",
+        reasonIds: ["Fail_1"]
+    }],
+    "23a2a8": [
+        {
+            ruleId: "WCAG20_Img_HasAlt",
+            reasonIds: ["Fail_1", "Fail_2"]
+        },
+        {
+            ruleId: "HAAC_Aria_ImgAlt",
+            reasonIds: ["Fail_1", "Fail_2", "Fail_3"]        
+        }
+    ],
+
     // "2779a5": [{
     //     ruleId: "WCAG20_Doc_HasTitle",
     //     reasonIds: ["Fail_2", "Fail_3"]
-    // }],
-    // "23a2a8": [{
-    //     ruleId: "WCAG20_Img_HasAlt",
-    //     reasonIds: ["Fail_1", "Fail_2"]
     // }],
     // "59796f": [{
     //     ruleId: "WCAG20_Input_ExplicitLabel",
     //     reasonIds: []
     // }],
-    "c487ae": [{
-        ruleId: "WCAG20_A_HasText",
-        reasonIds: ["Fail_1"]
-    }],
     // "97a4e1": [{
     //     ruleId: "WCAG20_Input_ExplicitLabel",
     //     reasonIds: []

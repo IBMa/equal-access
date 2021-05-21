@@ -180,7 +180,8 @@ let a11yNls = {
         0: "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
         "Pass_0": "Rule Passed",
         "Fail_1": "Image 'alt' attribute value consists only of whitespace",
-        "Fail_2": "Image does not have an 'alt' attribute short text alternative"
+        "Fail_2": "Image does not have an 'alt' attribute short text alternative",
+        "Fail_3": "Image does not have an 'alt' attribute and 'title' attribute value consists only of whitespace"
     },
     // JCH - DONE
     "RPT_Style_BackgroundImage": {

@@ -28,21 +28,45 @@ let a11yRulesImg: Rule[] = [
         context: "dom:img",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            // If not visible to the screen reader, ignore
+            if (!RPTUtil.isNodeVisible(ruleContext) || ruleContext.getAttribute("aria-hidden") === "true") {
+                return null;
+            }
+            // Images with different roles should be handled by other ARIA rules
+            if (ruleContext.hasAttribute("role")) {
+                let role = ruleContext.getAttribute("role");
+                if (role === "presentation" || role === "none") {
+                    if (RPTUtil.isTabbable(ruleContext)) {
+                        // Ignore the role
+                    } else {
+                        return RulePass("Pass_0");
+                    }
+                } else {
+                    return null;
+                }
+            } 
             // JCH - NO OUT OF SCOPE hidden in context
-            let passed = ruleContext.hasAttribute("alt");
-            if (passed) {
+            if (ruleContext.hasAttribute("alt")) {
                 let alt = ruleContext.getAttribute("alt");
-                if (alt.trim().length == 0 && alt.length != 0) {
+                if (alt.trim().length === 0 && alt.length !== 0) {
                     // Alt, but it's whitespace (alt=" ")
                     return RuleFail("Fail_1");
+                } else {
+                    return RulePass("Pass_0");
                 }
-            }
-            if (!passed) {
-                // No Alt
-                return RuleFail("Fail_2");
+            } else if (ruleContext.hasAttribute("title")) {
+                let title = ruleContext.getAttribute("title");
+                if (title.length === 0) {
+                    // Same as no alt
+                    return RuleFail("Fail_2");
+                } else if (title.trim().length === 0) {
+                    // title = " "
+                    return RuleFail("Fail_3");
+                } else {
+                    return RulePass("Pass_0");
+                }
             } else {
-                // Alt content or alt == ""
-                return RulePass("Pass_0");
+                return RuleFail("Fail_2");
             }
         }
     },
