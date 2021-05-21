@@ -51,6 +51,10 @@ let a11yRulesInput: Rule[] = [
             if (nodeName == "input" && type == "") {
                 type = "text";
             }
+            if (type === "image") {
+                // Handled by WCAG20_Input_ExplicitLabelImage
+                return null;
+            }
 
             let POF = -1;
             let textTypes = [

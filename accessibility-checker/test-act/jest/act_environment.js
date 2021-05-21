@@ -18,14 +18,20 @@ let ruleMapping = {
             reasonIds: ["Fail_1", "Fail_2", "Fail_3"]        
         }
     ],
+    "59796f": [
+        {
+            ruleId: "WCAG20_Input_ExplicitLabelImage",
+            reasonIds: ["Fail"]
+        },
+        {
+            ruleId: "Rpt_Aria_ValidIdRef",
+            reasonIds: ["Fail_1"]
+        }
+    ],
 
     // "2779a5": [{
     //     ruleId: "WCAG20_Doc_HasTitle",
     //     reasonIds: ["Fail_2", "Fail_3"]
-    // }],
-    // "59796f": [{
-    //     ruleId: "WCAG20_Input_ExplicitLabel",
-    //     reasonIds: []
     // }],
     // "97a4e1": [{
     //     ruleId: "WCAG20_Input_ExplicitLabel",
