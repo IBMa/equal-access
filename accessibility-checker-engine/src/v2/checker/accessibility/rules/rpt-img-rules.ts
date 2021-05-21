@@ -387,6 +387,10 @@ let a11yRulesImg: Rule[] = [
         context: "aria:img",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            if (!ruleContext.hasAttribute("role")) {
+                // If no role, this is implicit, and covered by WCAG20_Img_HasAlt
+                return null;
+            }
             /* removed the role check role= presentation since if an element has role=img, then there needs to be a check for alt attribute regardless of the presecne of role=presentation
             if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none")){
                     return RulePass(1);

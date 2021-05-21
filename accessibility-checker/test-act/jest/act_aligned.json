@@ -1,0 +1,58 @@
+{
+    "c487ae": [{
+        "ruleId": "WCAG20_A_HasText",
+        "reasonIds": ["Fail_1"]
+    }],
+    "23a2a8": [
+        {
+            "ruleId": "WCAG20_Img_HasAlt",
+            "reasonIds": ["Fail_1", "Fail_2"]
+        },
+        {
+            "ruleId": "HAAC_Aria_ImgAlt",
+            "reasonIds": ["Fail_1", "Fail_2", "Fail_3"]        
+        }
+    ],
+    "59796f": [
+        {
+            "ruleId": "WCAG20_Input_ExplicitLabelImage",
+            "reasonIds": ["Fail"]
+        },
+        {
+            "ruleId": "Rpt_Aria_ValidIdRef",
+            "reasonIds": ["Fail_1"]
+        }
+    ],
+    "97a4e1": [{
+        "ruleId": "WCAG20_Input_ExplicitLabel",
+        "reasonIds": ["Fail_1", "Fail_2"]
+    }],
+    "2779a5": [{
+        "ruleId": "WCAG20_Doc_HasTitle",
+        "reasonIds": ["Fail_2", "Fail_3"]
+    }],
+    "e086e5": [{
+        "ruleId": "WCAG20_Input_ExplicitLabel",
+        "reasonIds": ["Fail_1", "Fail_2"]
+    }],
+    "7d6734": [
+        {
+            "ruleId": "HAAC_Aria_ImgAlt",
+            "reasonIds": ["Fail_2"]
+        },
+        {
+            "ruleId": "HAAC_Aria_SvgAlt",
+            "reasonIds": ["Fail_2"]
+        }
+    ],
+    "b5c3f8": [
+        {
+            "ruleId": "WCAG20_Html_HasLang",
+            "reasonIds": ["Fail_3"]
+        },
+        {
+            "ruleId": "WCAG20_Elem_Lang_Valid",
+            "reasonIds": ["Fail_1"]
+        }
+    ]
+}
