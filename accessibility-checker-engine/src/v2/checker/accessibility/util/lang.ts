@@ -68,4 +68,18 @@ export class LangUtil {
         }
         return validPrimaryLangs[primary.charCodeAt(0)-97].includes(primary);
     }
+
+    public static matchPrimaryLang(lang1: string, lang2: string): boolean {
+        let primary1 = lang1;
+        if (primary1.includes("-")) {
+            primary1 = primary1.split("-")[0];
+        }
+
+        let primary2 = lang2;
+        if (primary2.includes("-")) {
+            primary2 = primary2.split("-")[0];
+        }
+
+        return primary1 === primary2;
+    }
 }

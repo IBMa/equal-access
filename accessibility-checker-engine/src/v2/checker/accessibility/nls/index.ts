@@ -286,7 +286,8 @@ let a11yNls = {
         "Fail_1": "Page detected as XHTML 1.0, but has neither 'lang' nor 'xml:lang' attributes",
         "Fail_2": "Page detected as XHTML, but does not have an 'xml:lang' attribute",
         "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute",
-        "Fail_4": "Page detected as XHTML 1.0 with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
+        "Fail_4": "Page detected with 'lang' and 'xml:lang' attributes and primary languages do not match: \"{0}\", \"{1}\"",
+        "Fail_5": "Page detected with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
         "Potential_5": "Page detected as XHTML 1.0 with only a 'lang' attribute. Confirm that page is only delivered via text/html mime type",
         "Potential_6": "Page detected as XHTML 1.0 with only an 'xml:lang' attribute. Confirm that page is only delivered via xml mime type"
     },
