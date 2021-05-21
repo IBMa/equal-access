@@ -31,12 +31,10 @@ let a11yRulesTitle: Rule[] = [
         context: "dom:html",
         run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
             // This rule does not apply inside a presentational frame
-            if (AncestorUtil.isPresentationFrame(contextHierarchies)) {
+            if (AncestorUtil.isFrame(contextHierarchies)) {
                 return null;
             }
             const ruleContext = context["dom"].node as Node;
-            // JCH - NO OUT OF SCOPE hidden in context
-            let offNode = ruleContext;
             // First, find the head element
             let findHead = ruleContext.firstChild as Node;
             let findTitle = null;
@@ -45,19 +43,14 @@ let a11yRulesTitle: Rule[] = [
                     break;
                 findHead = findHead.nextSibling;
             }
-            if (findHead != null) { // have head
-                offNode = findHead;
-                findTitle = findHead.firstChild as Node;
-                while (findTitle != null) {
-                    if (findTitle.nodeName.toLowerCase() == "title")
-                        break;
-                    findTitle = findTitle.nextSibling;
+            findTitle = (ruleContext as Element).querySelector("title");
+            if (findHead === null) {
+                if (!findTitle) {
+                    return RuleFail("Fail_1");
                 }
-            } else { // don't have head so first PoF
-                return RuleFail("Fail_1");
             }
 
-            if (findTitle == null) { // don't have title second PoF
+            if (findTitle === null) { // don't have title second PoF
                 return RuleFail("Fail_2");
             }
 

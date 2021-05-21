@@ -22,7 +22,23 @@ export class AncestorUtil {
             // Skip current node because we want ancestry
             for (let idx=contextHierarchy.dom.length-2; idx >= 0; --idx) {
                 const elem = (contextHierarchy.dom[idx].node as HTMLElement);
-                if (elem.nodeType === 1 && elem.getAttribute("role") === "presentation" || elem.getAttribute("aria-hidden") === "true") {
+                if (elem.nodeType === 1 
+                    && elem.nodeName.toLowerCase() === "iframe"
+                    && (elem.getAttribute("role") === "presentation" || elem.getAttribute("aria-hidden") === "true")) 
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static isFrame(contextHierarchy: RuleContextHierarchy) : boolean {
+        if (contextHierarchy && contextHierarchy.dom) {
+            // Skip current node because we want ancestry
+            for (let idx=contextHierarchy.dom.length-2; idx >= 0; --idx) {
+                const elem = (contextHierarchy.dom[idx].node as HTMLElement);
+                if (elem.nodeType === 1 && elem.nodeName.toLowerCase() === "iframe") {
                     return true;
                 }
             }
