@@ -54,5 +54,13 @@
             "ruleId": "WCAG20_Elem_Lang_Valid",
             "reasonIds": ["Fail_1"]
         }
-    ]
+    ],
+    "3ea0c8": [{
+        "ruleId": "RPT_Elem_UniqueId",
+        "reasonIds": ["Fail_2"]
+    }],
+    "73f2c2": [{
+        "ruleId": "WCAG21_Input_Autocomplete",
+        "reasonIds": ["Fail_1"]
+    }]
 }

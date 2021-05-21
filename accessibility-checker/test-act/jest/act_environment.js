@@ -6,6 +6,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
 // Aligned rules
 let ruleMapping = require("./act_aligned.json");
 
+// let ruleMapping = {
+// }
 /*
 // Missing published
 let ruleMapping = {
@@ -37,10 +39,6 @@ let ruleMapping = {
         ruleId: "HAAC_Aria_Native_Host_Sematics",
         reasonIds: ["Fail_1"]
     }],
-    "73f2c2": [{
-        ruleId: "WCAG21_Input_Autocomplete",
-        reasonIds: []
-    }],
     "6cfa84": [{
         ruleId: "",
         reasonIds: []
@@ -48,10 +46,6 @@ let ruleMapping = {
     "a25f45": [{
         ruleId: "",
         reasonIds: []
-    }],
-    "3ea0c8": [{
-        ruleId: "RPT_Elem_UniqueId",
-        reasonIds: ["Fail_2"]
     }],
     "m6b1q3": [{
         ruleId: "",
