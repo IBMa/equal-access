@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "build": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby clean && gatsby build --prefix-paths",
+    "build": "NODE_OPTIONS=--max-old-space-size=8192 shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby clean && gatsby build --prefix-paths",
     "start": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby develop",
     "start:clean": "gatsby clean && gatsby develop",
     "serve": "shx cp ./src/gatsby-theme-carbon/config/lunr-options.js ./node_modules/gatsby-theme-carbon/config/lunr-options.js && gatsby serve"
