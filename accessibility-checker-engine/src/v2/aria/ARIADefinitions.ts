@@ -101,7 +101,7 @@ export class ARIADefinitions {
             values: ["copy", "move", "link", "execute", "popup", "none"]
         },
         "aria-errormessage": {
-            type: "http://www.w3.org/2001/XMLSchema#idrefs",
+            type: "http://www.w3.org/2001/XMLSchema#idref",
             hiddenIDRefSupported: true
         },
         "aria-expanded": {
