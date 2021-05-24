@@ -32,6 +32,10 @@ let ruleMapping = {
     "de46e4": [{
         ruleId: "WCAG20_Elem_Lang_Valid",
         reasonIds: ["Fail_1"]
+    }],
+    "674b10": [{
+        ruleId: "Rpt_Aria_ValidRole",
+        reasonIds: ["Fail_2"]
     }]
 }
 */

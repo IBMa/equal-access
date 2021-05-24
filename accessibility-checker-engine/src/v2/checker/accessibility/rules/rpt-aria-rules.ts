@@ -30,10 +30,16 @@ let a11yRulesAria: Rule[] = [{
     context: "dom:*[role]",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-
-        let passed = true;
+        let roleStr = ruleContext.getAttribute("role").trim().toLowerCase();
+        if (roleStr.length === 0) {
+            return null;
+        }
+        if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
+            return null;
+        }
+        
         let designPatterns = ARIADefinitions.designPatterns;
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        let roles = roleStr.split(/\s+/);
         // now we have all role attributes
         let invalidRoles = [];
         for (const role of roles) {
@@ -42,8 +48,10 @@ let a11yRulesAria: Rule[] = [{
             }
         }
         //return new ValidationResult(passed, [ruleContext], 'role', '', [roles[i]]);
-        if (invalidRoles.length > 0) {
-            return RuleFail("Fail_1", [invalidRoles.join(",")]);
+        if (invalidRoles.length === roles.length) {
+            return RuleFail("Fail_2", [invalidRoles.join(",")]);
+        } else if (invalidRoles.length > 0) {
+            return RulePotential("Fail_1", [invalidRoles.join(",")]);
         } else {
             return RulePass("Pass_0");
         }

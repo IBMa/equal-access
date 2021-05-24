@@ -447,7 +447,388 @@ export class ARIADefinitions {
             nameFrom: ["author"],
             deprecated: ["list"] // TODO
         },
-
+        "doc-abstract": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-acknowledgments": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-afterword": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-appendix": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-backlink": {
+            container: null,
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "a | link",
+            roleType: "widget",
+            nameRequired: true,
+            nameFrom: ["author", "contents"]
+        },
+        "doc-biblioentry": {
+            container: ["directory", "list"],
+            props: ["aria-level", "aria-posinset", "aria-setsize"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "li",
+            roleType: "structure",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-bibliography": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-biblioref": {
+            container: null,
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "a | link",
+            roleType: "widget",
+            nameRequired: true,
+            nameFrom: ["author", "contents"]
+        },
+        "doc-chapter": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-colophon": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-conclusion": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-cover": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "img",
+            roleType: "structure",
+            nameFrom: ["author"],
+            presentationalChildren: true
+        },
+        "doc-credit": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-credits": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-dedication": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-endnote": {
+            container: ["directory", "list"],
+            props: ["aria-level", "aria-posinset", "aria-setsize"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "li",
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+        "doc-endnotes": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-epigraph": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-epilogue": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-errata": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-example": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-footnote": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-foreword": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-glossary": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-glossref": {
+            container: null,
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "a | link",
+            roleType: "widget",
+            nameRequired: true,
+            nameFrom: ["author", "contents"]
+        },
+        "doc-index": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameFrom: ["author"]
+        },
+        "doc-introduction": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-noteref": {
+            container: null,
+            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: "a | link",
+            roleType: "widget",
+            nameRequired: true,
+            nameFrom: ["author", "contents"]
+        },
+        "doc-notice": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+        "doc-pagebreak": {
+            container: null,
+            props: ["aria-orientation"], // aria-disabled, aria-valuemax, aria-valuemin, aria-valuetext are valid if focusable. This is handled in the code.
+            reqProps: null, // aria-valuenow is required if focusable. This is handled in the code.
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure", // or widget if focusable
+            nameFrom: ["author"],
+            presentationalChildren: true
+        },
+        "doc-pagelist": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameFrom: ["author"]
+        },
+        "doc-part": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-preface": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-prologue": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-pullquote": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+        "doc-qna": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameRequired: true,
+            nameFrom: ["author"]
+        },
+        "doc-subtitle": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+        "doc-tip": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"]
+        },
+        "doc-toc": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "landmark",
+            nameFrom: ["author"]
+        },
         "document": {
             container: null,
             props: null,
@@ -1986,7 +2367,7 @@ export class ARIADefinitions {
                 //roleCondition: " when accessible name is not present",
                 validRoles: ["alert", "alertdialog", "application", "banner", "complementary", "contentinfo", "dialog", "doc-abstract", "doc-acknowledgments", "doc-afterword", "doc-appendix", "doc-bibliography", "doc-chapter", "doc-colophon", "doc-conclusion", "doc-credit", "doc-credits", "doc-dedication", "doc-endnotes", "doc-epigraph", "doc-epilogue", "doc-errata", "doc-example", "doc-foreword", "doc-glossary", "doc-index", "doc-introduction", "doc-notice", "doc-pagelist", "doc-part", "doc-preface", "doc-prologue", "doc-pullquote", "doc-qna", "doc-toc", "document", "feed", "log", "main", "marquee", "navigation", "none", "note", "presentation", "search", "status", "tabpanel"],
                 globalAriaAttributesValid: true
-            },
+            }
         },
         "select": {
             "no-multiple-attr-size-gt1": {
@@ -2017,7 +2398,7 @@ export class ARIADefinitions {
                 implicitRole: null,
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
-            },
+            }
         },
         "th": {
             "des-table": {

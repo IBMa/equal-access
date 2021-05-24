@@ -558,7 +558,8 @@ let a11yHelp = {
     "Rpt_Aria_ValidRole": {
         0: `${Config.helpRoot}/Rpt_Aria_ValidRole`,
         "Pass_0": `${Config.helpRoot}/Rpt_Aria_ValidRole`,
-        "Fail_1": `${Config.helpRoot}/Rpt_Aria_ValidRole`
+        "Fail_1": `${Config.helpRoot}/Rpt_Aria_ValidRole`,
+        "Fail_2": `${Config.helpRoot}/Rpt_Aria_ValidRole`
     },
     // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
