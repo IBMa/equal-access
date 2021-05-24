@@ -180,7 +180,8 @@ let a11yNls = {
         0: "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
         "Pass_0": "Rule Passed",
         "Fail_1": "Image 'alt' attribute value consists only of whitespace",
-        "Fail_2": "Image does not have an 'alt' attribute short text alternative"
+        "Fail_2": "Image does not have an 'alt' attribute short text alternative",
+        "Fail_3": "Image does not have an 'alt' attribute and 'title' attribute value consists only of whitespace"
     },
     // JCH - DONE
     "RPT_Style_BackgroundImage": {
@@ -285,7 +286,8 @@ let a11yNls = {
         "Fail_1": "Page detected as XHTML 1.0, but has neither 'lang' nor 'xml:lang' attributes",
         "Fail_2": "Page detected as XHTML, but does not have an 'xml:lang' attribute",
         "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute",
-        "Fail_4": "Page detected as XHTML 1.0 with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
+        "Fail_4": "Page detected with 'lang' and 'xml:lang' attributes and primary languages do not match: \"{0}\", \"{1}\"",
+        "Fail_5": "Page detected with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
         "Potential_5": "Page detected as XHTML 1.0 with only a 'lang' attribute. Confirm that page is only delivered via text/html mime type",
         "Potential_6": "Page detected as XHTML 1.0 with only an 'xml:lang' attribute. Confirm that page is only delivered via xml mime type"
     },
@@ -335,9 +337,12 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Elem_Lang_Valid": {
-        0: "The language of content must be specified in accordance with BCP 47",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Specified language is not valid BCP 47"
+        0: "The language of content must be valid and specified in accordance with BCP 47",
+        "Pass_0": "Lang has a valid primary lang and conforms to BCP 47",
+        "Fail_1": "Specified 'lang' attribute does not include a valid primary language",
+        "Fail_2": "Specified 'lang' attribute does not conform to BCP 47",
+        "Fail_3": "Specified 'lang' attribute does not include a valid primary language",
+        "Fail_4": "Specified 'xml:lang' attribute does not conform to BCP 47",
     },
     // JCH - DONE
     "WCAG20_Img_LinkTextNotRedundant": {
@@ -542,7 +547,8 @@ let a11yNls = {
     "Rpt_Aria_ValidRole": {
         0: "Elements must have a valid 'role' per WAI-ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The 'role' defined on the element is not valid per WAI-ARIA specification"
+        "Fail_1": "Some of the 'role's defined on the element are not valid per WAI-ARIA specification",
+        "Fail_2": "The 'role' defined on the element is not valid per WAI-ARIA specification"
     },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
@@ -657,6 +663,13 @@ let a11yNls = {
         "Fail_1": "Element with \"img\" role has no label",
         "Fail_2": "Element with \"img\" role has no label or an empty label",
         "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
+    },
+    "HAAC_Aria_SvgAlt": {
+        0: "An element with \"{0}\" graphics role must have a non-empty label",
+        "Pass_0": "Rule Passed",
+        "Fail_1": "Element with \"{0}\" graphics role has no label",
+        "Fail_2": "Element with \"{0}\" graphics role has no label or an empty label",
+        "Fail_3": "Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'"
     },
     // JCH - DONE
     "HAAC_BackgroundImg_HasTextOrTitle": {
