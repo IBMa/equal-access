@@ -172,15 +172,15 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView ? 
             <div className="itemRow">
             <div tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
-                <div role="cell" className="bx--col-sm-1">
+                <div role="cell" className="bx--col-md-2 bx--col-sm-2">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp16/>: <ChevronDown16 />}</span>
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[1]) && vCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{vCount}</span> <img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" />&nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[2]) && nrCount > 0 && <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{nrCount}</span> <img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" />&nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[3]) && rCount > 0 &&  <><span style={{verticalAlign:"text-top",lineHeight:"8px"}}>{rCount}</span> <img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /></>}</span> }
                 </div>
-                <div role="cell" className="bx--col-sm-3">
-                    <span >{group.title.length === 0 ? "Page" : group.title}</span>
+                <div role="cell" className="bx--col-md-4 bx--col-sm-2">
+                    <span style={{wordBreak:"break-all"}}>{group.title.length === 0 ? "Page" : group.title}</span>
                 </div>
             </div>
             { !open && <div className="bx--row itemDetail" /> }
@@ -192,34 +192,26 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
                                 // (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
                                 (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
-                                    {/* {focusedView && item.selected ?
-                                    <ReactTooltip id="selectedTip" place="top" effect="solid">
-                                        Parent element issue
-                                    </ReactTooltip> : ""}
-                                    {focusedView && item.selectedChild ?
-                                    <ReactTooltip id="selectedChildTip" place="top" effect="solid">
-                                        Child element issue
-                                    </ReactTooltip> : ""} */}
-                                    <div role="cell" className="bx--col-sm-1"> </div>
-                                    <div role="cell" className="bx--col-sm-3">
+                                    {/* <div role="cell" className="bx--col-sm-1"> </div> */}
+                                    <div role="cell" className="bx--col-sm-4" style={{paddingLeft:"44px"}}>
                                         <div className="itemMessage">
                                             { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 
                                             <React.Fragment>
-                                            <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Violation" /></span>
+                                            <span><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Violation" /></span>
                                             <span style={{fontSize:"12px"}}>{item.message}</span>
                                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                                             </React.Fragment>
                                             }
                                             { (this.props.dataFromParent[0] || this.props.dataFromParent[2]) && val === "Needs review" && 
                                             <React.Fragment>
-                                            <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"4px"}} alt="Needs review" /></span>
+                                            <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Needs review" /></span>
                                             <span style={{fontSize:"12px"}}>{item.message}</span>
                                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                                             </React.Fragment>
                                             }
                                             { (this.props.dataFromParent[0] || this.props.dataFromParent[3]) && val === "Recommendation" && 
                                             <React.Fragment>
-                                            <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"2px"}} alt="Recommendation" /></span>
+                                            <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Recommendation" /></span>
                                             <span style={{fontSize:"12px"}}>{item.message}</span>
                                             {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
                                             </React.Fragment>
@@ -227,8 +219,6 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                                         </div>
                                     </div>
                                 </div>
-                                
-                                
                                 )
                             : ""
                         : "" }
