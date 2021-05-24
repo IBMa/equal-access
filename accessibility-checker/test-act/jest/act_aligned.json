@@ -62,5 +62,15 @@
     "73f2c2": [{
         "ruleId": "WCAG21_Input_Autocomplete",
         "reasonIds": ["Fail_1"]
-    }]
+    }],
+    "4e8ab6": [
+        {
+            "ruleId": "Rpt_Aria_RequiredProperties",
+            "reasonIds": []
+        },
+        {
+            "ruleId": "combobox_popup_reference",
+            "reasonIds": ["Fail_1.2_missing_controls", "Fail_1.2_popup_reference_missing"]
+        }
+    ]
 }

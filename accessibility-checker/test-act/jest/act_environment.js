@@ -127,10 +127,6 @@ let ruleMapping = {
         ruleId: "WCAG20_Elem_Lang_Valid",
         reasonIds: []
     }],
-    "4e8ab6": [{
-        ruleId: "Rpt_Aria_RequiredProperties",
-        reasonIds: []
-    }],
     "cae760": [{
         ruleId: "WCAG20_Frame_HasTitle",
         reasonIds: []
