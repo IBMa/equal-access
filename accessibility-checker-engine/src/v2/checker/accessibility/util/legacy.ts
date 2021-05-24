@@ -297,6 +297,7 @@ export class RPTUtil {
         "button": function (element): boolean {
             return !element.hasAttribute("disabled");
         },
+        "iframe": true,
         "input": function (element): boolean {
             return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
         },

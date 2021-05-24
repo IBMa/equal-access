@@ -72,5 +72,9 @@
             "ruleId": "combobox_popup_reference",
             "reasonIds": ["Fail_1.2_missing_controls", "Fail_1.2_popup_reference_missing"]
         }
-    ]
+    ],
+    "cae760": [{
+        "ruleId": "WCAG20_Frame_HasTitle",
+        "reasonIds": ["Fail_1"]
+    }]
 }
