@@ -9,6 +9,20 @@ let ruleMapping = require("./act_aligned.json");
 // ruleMapping = {
 // }
 /*
+/*
+// Testcase defect
+    "6a7281": [
+        {
+            ruleId: "Rpt_Aria_ValidPropertyValue",
+            reasonIds: ["Fail_1"]
+        },
+        {
+            ruleId: "Rpt_Aria_ValidIdRef",
+            reasonIds: ["Fail_1"]
+        }
+    ]
+*/
+/*
 // Missing published
 let ruleMapping = {
     // Viewport
@@ -113,10 +127,6 @@ let ruleMapping = {
     }],
     "bc4a75": [{
         ruleId: "",
-        reasonIds: []
-    }],
-    "6a7281": [{
-        ruleId: "Rpt_Aria_ValidPropertyValue",
         reasonIds: []
     }],
     "e7aa44": [{

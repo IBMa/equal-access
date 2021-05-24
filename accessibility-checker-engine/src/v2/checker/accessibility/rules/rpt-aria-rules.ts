@@ -37,7 +37,7 @@ let a11yRulesAria: Rule[] = [{
         if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
             return null;
         }
-        
+
         let designPatterns = ARIADefinitions.designPatterns;
         let roles = roleStr.split(/\s+/);
         // now we have all role attributes
@@ -312,8 +312,15 @@ let a11yRulesAria: Rule[] = [{
                                 }
                             }
                         }
-                    } else if (dataTypes && dataTypes.type && (dataTypes.type == "http://www.w3.org/2001/XMLSchema#int" || dataTypes.type == "http://www.w3.org/2001/XMLSchema#decimal")) {
-                        if (isNaN(nodeValue)) {
+                    } else if (dataTypes && dataTypes.type && dataTypes.type === "http://www.w3.org/2001/XMLSchema#int") {
+                        let iVal = parseInt(nodeValue);
+                        if (isNaN(iVal) || (""+iVal !== nodeValue)) {
+                            valueArr.push(nodeValue);
+                            attrNameArr.push(attrName);
+                        }
+                    } else if (dataTypes && dataTypes.type && dataTypes.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                        let fVal = parseFloat(nodeValue);
+                        if (isNaN(fVal)) {
                             valueArr.push(nodeValue);
                             attrNameArr.push(attrName);
                         }
@@ -323,6 +330,7 @@ let a11yRulesAria: Rule[] = [{
                             valueArr.push(nodeValue);
                             attrNameArr.push(attrName);
                         }
+                    } else if (dataTypes && dataTypes.type && (dataTypes.type == "http://www.w3.org/2001/XMLSchema#string")) {
                     } else {
                         testedPropertyValues--;
                     }
