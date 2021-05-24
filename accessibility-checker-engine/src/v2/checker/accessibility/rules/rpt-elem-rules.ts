@@ -31,7 +31,7 @@ let a11yRulesElem: Rule[] = [
             const ruleContext = context["dom"].node as Element;
             let nodeName = ruleContext.nodeName.toLowerCase();
             if (ruleContext.hasAttribute("lang")) {
-                if (nodeName !== "html" && !RPTUtil.attributeNonEmpty(ruleContext, "lang")) {
+                if (nodeName !== "html" && ruleContext.getAttribute("lang") === "") {
                     // It's okay to have a lang="" if not on html
                 } else {
                     let langStr = ruleContext.getAttribute("lang");
@@ -44,7 +44,7 @@ let a11yRulesElem: Rule[] = [
                 }
             }
             if (ruleContext.hasAttribute("xml:lang")) {
-                if (nodeName !== "html" && !RPTUtil.attributeNonEmpty(ruleContext, "xml:lang")) {
+                if (nodeName !== "html" && ruleContext.getAttribute("xml:lang") === "") {
                     // It's okay to have a lang="" if not on html
                 } else {
                     let langStr = ruleContext.getAttribute("xml:lang");

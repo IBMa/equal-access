@@ -53,7 +53,7 @@ export class LangUtil {
     }
 
     public static validPrimaryLang(langStr: string): boolean {
-        let primary = langStr;
+        let primary = langStr.toLowerCase();
         if (primary.includes("-")) {
             primary = primary.split("-")[0];
         }

@@ -6,7 +6,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
 // Aligned rules
 let ruleMapping = require("./act_aligned.json");
 
-// let ruleMapping = {
+// ruleMapping = {
 // }
 /*
 // Missing published
@@ -28,6 +28,10 @@ let ruleMapping = {
     "5b7ae0": [{
         ruleId: "WCAG20_Html_HasLang",
       reasonIds: []
+    }],
+    "de46e4": [{
+        ruleId: "WCAG20_Elem_Lang_Valid",
+        reasonIds: ["Fail_1"]
     }]
 }
 */
