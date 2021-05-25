@@ -76,5 +76,9 @@
     "cae760": [{
         "ruleId": "WCAG20_Frame_HasTitle",
         "reasonIds": ["Fail_1"]
+    }],
+    "5c01ea": [{
+        "ruleId": "aria_semantics_attribute",
+        "reasonIds": ["Fail_1"]
     }]
 }

@@ -3022,215 +3022,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/title[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<title>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[2]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta content=\"text\" name=\"Description\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]/meta[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<meta charset=\"utf-8\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/head[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<head>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/h1[1]",
-                "aria": "/document[1]/main[1]/heading[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<h1>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/div[2]",
-                "aria": "/document[1]/main[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 143,
-                "height": 0,
-                "width": 784
-            },
-            "snippet": "<div id=\"firstDiv\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/div[1]",
-                "aria": "/document[1]/main[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 143,
-                "height": 0,
-                "width": 784
-            },
-            "snippet": "<div id=\"firstDiv\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]/a[1]",
-                "aria": "/document[1]/main[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 0,
-                "width": 0
-            },
-            "snippet": "<a name=\"navskip\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Application_Role_Text",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3256,33 +3048,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[1]/a[1]",
-                "aria": "/document[1]/navigation[1]/link[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 17,
-                "width": 56
-            },
-            "snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Application_Role_Text",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3308,59 +3074,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]",
-                "aria": "/document[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 114,
-                "width": 784
-            },
-            "snippet": "<body>",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]",
-                "aria": ""
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 0,
-                "top": 0,
-                "height": 143,
-                "width": 800
-            },
-            "snippet": "<html lang=\"en\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Application_Role_Text",
+            "ruleId": "aria_semantics_role",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3372,7 +3086,10 @@
             "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
-            "messageArgs": [],
+            "messageArgs": [
+                "main",
+                "div"
+            ],
             "apiArgs": [],
             "bounds": {
                 "left": 8,
@@ -3386,7 +3103,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Application_Role_Text",
+            "ruleId": "aria_semantics_role",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3398,7 +3115,10 @@
             "ruleTime": 0,
             "reasonId": "Pass_0",
             "message": "Rule Passed",
-            "messageArgs": [],
+            "messageArgs": [
+                "navigation",
+                "div"
+            ],
             "apiArgs": [],
             "bounds": {
                 "left": 8,
@@ -3412,7 +3132,7 @@
             "level": "pass"
         }
     ],
-    "numExecuted": 130,
+    "numExecuted": 119,
     "nls": {
         "WCAG20_Html_HasLang": {
             "0": "Page must identify the default language of the document with a 'lang' attribute",
@@ -3452,10 +3172,6 @@
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
             "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
-            "Pass_0": "Rule Passed"
-        },
-        "HAAC_Aria_Native_Host_Sematics": {
-            "0": "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
@@ -3498,6 +3214,10 @@
             "0": "Interactive WAI_ARIA UI components must provide keyboard access",
             "Pass_0": "Rule Passed"
         },
+        "aria_semantics_role": {
+            "0": "WAI-ARIA roles must be valid for the element to which they are assigned",
+            "Pass_0": "Rule Passed"
+        },
         "IBMA_Color_Contrast_WCAG2AA": {
             "0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed"
@@ -3527,10 +3247,10 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 129,
+            "pass": 118,
             "ignored": 0
         },
-        "scanTime": 33,
+        "scanTime": 25,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
             "IBM_Accessibility"

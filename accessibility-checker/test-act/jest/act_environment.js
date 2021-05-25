@@ -11,7 +11,7 @@ let ruleMapping = require("./act_aligned.json");
 /*
 /*
 // Testcase defect
-    "6a7281": [
+    "6a7281": [ // https://github.com/act-rules/act-rules.github.io/issues/1617
         {
             ruleId: "Rpt_Aria_ValidPropertyValue",
             reasonIds: ["Fail_1"]
@@ -20,7 +20,11 @@ let ruleMapping = require("./act_aligned.json");
             ruleId: "Rpt_Aria_ValidIdRef",
             reasonIds: ["Fail_1"]
         }
-    ]
+    ],
+    "2ee8b8": [{ // https://github.com/act-rules/act-rules.github.io/issues/1618
+        ruleId: "WCAG21_Label_Accessible",
+        reasonIds: ["Fail_1"]
+    }]
 */
 /*
 // Missing published
@@ -57,10 +61,6 @@ let ruleMapping = {
 /*
 // Unaligned / unpublished rules
 let ruleMapping = {
-    "5c01ea": [{
-        ruleId: "HAAC_Aria_Native_Host_Sematics",
-        reasonIds: ["Fail_1"]
-    }],
     "6cfa84": [{
         ruleId: "",
         reasonIds: []
@@ -120,10 +120,6 @@ let ruleMapping = {
     "0ssw9k": [{
         ruleId: "",
         reasonIds: []
-    }],
-    "2ee8b8": [{
-        ruleId: "WCAG21_Label_Accessible",
-        reasonIds: ["Fail_1"]
     }],
     "bc4a75": [{
         ruleId: "",

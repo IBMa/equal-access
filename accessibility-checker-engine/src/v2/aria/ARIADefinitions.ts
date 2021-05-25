@@ -18,6 +18,12 @@
 // all references to WAI-ARIA specification is the WAI-ARIA 1.2
 // https://www.w3.org/TR/wai-aria-1.2/
 
+export interface IDocumentConformanceRequirement {
+    implicitRole: string[],
+    validRoles: string[],
+    globalAriaAttributesValid: boolean
+}
+
 export class ARIADefinitions {
     static nameFromContent(role: string) : boolean {
         return (role in ARIADefinitions.designPatterns) 
@@ -1547,11 +1553,7 @@ export class ARIADefinitions {
         * documentConformanceRequirementSpecialTags contains those tags that require special considerations
         */
     static documentConformanceRequirement: { 
-        [role: string]: {
-            implicitRole: string[],
-            validRoles: string[],
-            globalAriaAttributesValid: boolean
-        }
+        [role: string]: IDocumentConformanceRequirement
     } = {
         "abbr": {
             implicitRole: null,
@@ -2061,7 +2063,9 @@ export class ARIADefinitions {
     } // end documentConformanceRequirement
 
     static documentConformanceRequirementSpecialTags: {
-
+        [role: string]: {
+            [key: string] : IDocumentConformanceRequirement
+        } | IDocumentConformanceRequirement
     } = {
         "a": {
             "with-href": {
