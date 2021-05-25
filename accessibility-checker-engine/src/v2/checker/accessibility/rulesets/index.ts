@@ -1095,6 +1095,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -2250,6 +2255,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -3312,6 +3322,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "HAAC_Aria_ImgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "HAAC_Aria_SvgAlt",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -4478,6 +4493,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "HAAC_Aria_ImgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "HAAC_Aria_SvgAlt",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },

@@ -39,6 +39,10 @@ let a11yRulesInput: Rule[] = [
                 return RulePass(1);
             */
 
+            if (ruleContext.getAttribute("aria-hidden")) {
+                return null;
+            }
+
             // Determine the input type
             let passed = true;
             let nodeName = ruleContext.nodeName.toLowerCase();
@@ -50,6 +54,10 @@ let a11yRulesInput: Rule[] = [
             }
             if (nodeName == "input" && type == "") {
                 type = "text";
+            }
+            if (type === "image") {
+                // Handled by WCAG20_Input_ExplicitLabelImage
+                return null;
             }
 
             let POF = -1;
@@ -66,7 +74,8 @@ let a11yRulesInput: Rule[] = [
             let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
             if (textTypes.indexOf(type) !== -1) { // If type is in the list
                 // Get only the non-hidden labels for element, in the case that an label is hidden then it is a violation
-                let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
+                // Note: label[for] does not work for ARIA-defined inputs
+                let labelElem = ruleContext.hasAttribute("role") ? null : RPTUtil.getLabelForElementHidden(ruleContext, true);
                 let hasLabelElemContent = false;
                 if (labelElem) {
                     if (RPTUtil.hasInnerContentHidden(labelElem)) {
@@ -80,10 +89,10 @@ let a11yRulesInput: Rule[] = [
                         }
                     }
                 }
-    
-                passed = (labelElem != null && hasLabelElemContent) ||
-                    (labelElem == null && RPTUtil.attributeNonEmpty(ruleContext, "title")) ||
-                    RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.hasImplicitLabel(ruleContext);
+                passed = (!!labelElem && hasLabelElemContent) ||
+                    (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
+                    RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
+
                 if (!passed) POF = 2 + textTypes.indexOf(type);
             } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
                 if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {

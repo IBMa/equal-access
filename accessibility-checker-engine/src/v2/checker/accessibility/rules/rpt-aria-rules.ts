@@ -30,10 +30,16 @@ let a11yRulesAria: Rule[] = [{
     context: "dom:*[role]",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        let roleStr = ruleContext.getAttribute("role").trim().toLowerCase();
+        if (roleStr.length === 0) {
+            return null;
+        }
+        if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
+            return null;
+        }
 
-        let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        let roles = roleStr.split(/\s+/);
         // now we have all role attributes
         let invalidRoles = [];
         for (const role of roles) {
@@ -42,8 +48,10 @@ let a11yRulesAria: Rule[] = [{
             }
         }
         //return new ValidationResult(passed, [ruleContext], 'role', '', [roles[i]]);
-        if (invalidRoles.length > 0) {
-            return RuleFail("Fail_1", [invalidRoles.join(",")]);
+        if (invalidRoles.length === roles.length) {
+            return RuleFail("Fail_2", [invalidRoles.join(",")]);
+        } else if (invalidRoles.length > 0) {
+            return RulePotential("Fail_1", [invalidRoles.join(",")]);
         } else {
             return RulePass("Pass_0");
         }
@@ -304,8 +312,15 @@ let a11yRulesAria: Rule[] = [{
                                 }
                             }
                         }
-                    } else if (dataTypes && dataTypes.type && (dataTypes.type == "http://www.w3.org/2001/XMLSchema#int" || dataTypes.type == "http://www.w3.org/2001/XMLSchema#decimal")) {
-                        if (isNaN(nodeValue)) {
+                    } else if (dataTypes && dataTypes.type && dataTypes.type === "http://www.w3.org/2001/XMLSchema#int") {
+                        let iVal = parseInt(nodeValue);
+                        if (isNaN(iVal) || (""+iVal !== nodeValue)) {
+                            valueArr.push(nodeValue);
+                            attrNameArr.push(attrName);
+                        }
+                    } else if (dataTypes && dataTypes.type && dataTypes.type == "http://www.w3.org/2001/XMLSchema#decimal") {
+                        let fVal = parseFloat(nodeValue);
+                        if (isNaN(fVal)) {
                             valueArr.push(nodeValue);
                             attrNameArr.push(attrName);
                         }
@@ -315,6 +330,7 @@ let a11yRulesAria: Rule[] = [{
                             valueArr.push(nodeValue);
                             attrNameArr.push(attrName);
                         }
+                    } else if (dataTypes && dataTypes.type && (dataTypes.type == "http://www.w3.org/2001/XMLSchema#string")) {
                     } else {
                         testedPropertyValues--;
                     }

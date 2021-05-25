@@ -21,7 +21,6 @@ import { a11yRulesFrame } from "./rpt-frame-rules";
 import { a11yRulesMeta } from "./rpt-meta-rules";
 import { a11yRulesColor } from "./rpt-color-rules";
 import { a11yRulesHeading } from "./rpt-heading-rules";
-import { a11yRulesMobile } from "./rpt-mobile-iOS-rules";
 import { a11yRulesApplet } from "./rpt-applet-rules";
 import { a11yRulesCombobox } from "./rpt-combobox-rules";
 import { a11yRulesHier } from "./rpt-hierarchy-rules";
@@ -62,7 +61,6 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesMeta
     , a11yRulesColor
     , a11yRulesHeading
-    , a11yRulesMobile
     , a11yRulesApplet
     , a11yRulesCombobox
     , a11yRulesHier
