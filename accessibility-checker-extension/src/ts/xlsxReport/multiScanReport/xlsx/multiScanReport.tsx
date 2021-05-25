@@ -1641,19 +1641,21 @@ export default class MultiScanReport {
     }
 
     public static createIssuesSheet(storedScans: any, scanType: string, workbook: any) {
-
+        console.log("createIssuesSheet");
         const worksheet = workbook.addWorksheet("Issues");
 
         // build rows
+        console.log("build rows");
         let rowArray = [];
         let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
         for (j; j < storedScans.length; j++) {
             const myStoredData = storedScans[j].storedScanData;
             if (scanType === "selected" && storedScans[j].isSelected === true) {
                 for (let i=0; i<myStoredData.length;i++) {
+                    console.log(Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5]);
                     let row = [myStoredData[i][0], myStoredData[i][1], storedScans[j].userScanLabel, 
-                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
-                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5], 
+                            myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8], 
                             myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
                             myStoredData[i][12], myStoredData[i][13] 
                             ];
@@ -1661,9 +1663,10 @@ export default class MultiScanReport {
                 }
             } else if (scanType === "all") {
                 for (let i=0; i<myStoredData.length;i++) {
+                    console.log(Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5]);
                     let row = [myStoredData[i][0], myStoredData[i][1], storedScans[j].userScanLabel,
-                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
-                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5], 
+                            myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8], 
                             myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
                             myStoredData[i][12], myStoredData[i][13] 
                             ];
@@ -1671,9 +1674,10 @@ export default class MultiScanReport {
                 }
             } else if (scanType === "current") {
                 for (let i=0; i<myStoredData.length;i++) {
+                    console.log(Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5]);
                     let row = [myStoredData[i][0], myStoredData[i][1], storedScans[j].userScanLabel, 
-                            myStoredData[i][3], myStoredData[i][4], myStoredData[i][5], 
-                            myStoredData[i][6], myStoredData[i][7], myStoredData[i][8], 
+                            myStoredData[i][3], myStoredData[i][4], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][5], 
+                            myStoredData[i][6], Number.isNaN(myStoredData[i][5]) ? "n/a" : myStoredData[i][7], myStoredData[i][8], 
                             myStoredData[i][9], myStoredData[i][10], myStoredData[i][11],
                             myStoredData[i][12], myStoredData[i][13] 
                             ];
