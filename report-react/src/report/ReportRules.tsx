@@ -71,7 +71,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
                 </div>
                 <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
-                    <div className="label">Rule</div>
+                    <div className="label">Rules</div>
                 </div>
             </div>
             {groups.map(group => {
