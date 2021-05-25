@@ -136,7 +136,7 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
                     <div className="bx--row">
                         <div className="bx--col-sm-4 bx--col-md-8 bx--offset-lg-4 bx--col-lg-12">
                             <div className="summReport" role="table" aria-label="Issues grouped by checkpoint">
-                                <h2 className="title">Results organized by checklist</h2>
+                                <h2 className="title">Results organized by requirements</h2>
                                 <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
                             </div>
                         </div>

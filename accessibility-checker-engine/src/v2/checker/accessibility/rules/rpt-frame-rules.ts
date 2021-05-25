@@ -14,6 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
+import { ARIAMapper } from "../../../..";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 
@@ -32,9 +33,9 @@ let a11yRulesFrame: Rule[] = [
             /*removed only the check for role=none. Although role=presentation is not allowed in the
              https://www.w3.org/TR/html-aria/#docconformance  table, the check has been kept due to the
              decisions taken in DAP "Check iframes with role="presentation" should consider role="none" also (96395)*/
-            if (RPTUtil.hasRole(ruleContext, "presentation")) {
+            if (RPTUtil.hasRole(ruleContext, "presentation") || !RPTUtil.isTabbable(ruleContext)) {
                 return null;
-            } else if (RPTUtil.attributeNonEmpty(ruleContext, "title")) {
+            } else if (ARIAMapper.computeName(ruleContext).trim().length > 0) {
                 return RulePass("Pass_0");
             } else {
                 return RuleFail("Fail_1");
