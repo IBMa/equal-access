@@ -1885,7 +1885,7 @@ export default class MultiScanReport {
 
         rowData = [
             {key1: 'Page', key2: 'Identifies the page or html file that was scanned.'},
-            {key1: 'Scan label', key2: 'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.'},
+            {key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.'},
             {key1: 'Issue ID', key2: 'Identifier for this issue within this page. Rescanning the same page will produce the same issue ID. '},
             {key1: 'Issue type', key2: 'Violation, needs review, or recommendation'},
             {key1: 'Toolkit level', key2: '1, 2 or 3. Priority level defined by the IBM Equal Access Toolkit. See https://www.ibm.com/able/toolkit/plan#pace-of-completion for details'}, 
