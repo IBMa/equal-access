@@ -14,6 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
+import { ARIAMapper } from "../../../..";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 
@@ -34,8 +35,22 @@ let a11yRulesObject: Rule[] = [
             if (ruleContext.hasAttribute("type") && (ruleContext.getAttribute("type")).indexOf("text") !== -1) {
                 return null;
             }
+            if (ruleContext.getAttribute("aria-hidden") === "true") {
+                return null;
+            }
+            let role = ruleContext.getAttribute("role");
+            if (role === "presentation" || role === "none") {
+                return null;
+            }
 
-            let passed = RPTUtil.hasInnerContentHidden(ruleContext);
+            // Per ACT, ignore embedded HTML files
+            let data = ruleContext.getAttribute("data");
+            let ext = data.substring(data.lastIndexOf("."));
+            if (ext === ".html" || ext === ".htm") {
+                return null;
+            }
+
+            let passed = RPTUtil.hasInnerContentHidden(ruleContext) || ARIAMapper.computeName(ruleContext).trim().length > 0;
             if (passed) {
                 return RulePass("Pass_0");
             } else {

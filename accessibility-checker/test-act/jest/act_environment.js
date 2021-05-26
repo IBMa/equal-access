@@ -69,10 +69,6 @@ let ruleMapping = {
         ruleId: "",
         reasonIds: []
     }],
-    "8fc3b6": [{
-        ruleId: "",
-        reasonIds: []
-    }],
     "b33eff": [{
         ruleId: "",
         reasonIds: []
