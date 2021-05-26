@@ -1095,12 +1095,22 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "HAAC_Aria_Native_Host_Sematics",
+                    id: "aria_semantics_role",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_semantics_attribute",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -2250,12 +2260,22 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "HAAC_Aria_Native_Host_Sematics",
+                    id: "aria_semantics_role",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_semantics_attribute",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -3316,12 +3336,22 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "HAAC_Aria_Native_Host_Sematics",
+                    id: "aria_semantics_role",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_semantics_attribute",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -4482,12 +4512,22 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "HAAC_Aria_SvgAlt",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "HAAC_Canvas",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "HAAC_Aria_Native_Host_Sematics",
+                    id: "aria_semantics_role",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_semantics_attribute",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },

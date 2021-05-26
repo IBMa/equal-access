@@ -60,7 +60,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
     state: IReportManagerTableState = {
         redisplayTable: true,
         modalScreenShot: false,
-        screenShotRow: -1,
+        screenShotRow: 0,
         screenShot: "",
         url: "",
         pageTitle: "",
@@ -189,7 +189,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                     <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
                         Stored Scans
                     </div>
-                    <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0}}>
+                    <div className="bx--col-lg-8 bx--col-sm-6" style={{paddingLeft:0, maxWidth:"100%"}}>
                     <div style={{overflowX:"auto", paddingBottom:"16px"}}>
                     <DataTable 
                         size="compact" 
@@ -273,10 +273,10 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 style={{paddingRight:"2rem"}}
                             >
                                 <div className="bx--row">
-                                    <div className="bx--col-md-4 bx--col-sm-2">
+                                    <div className="bx--col-lg-8 bx--col-md-4 bx--col-sm-2">
                                         <img src={this.state.screenShot} alt="Screenshot of page scanned" width="100%"/>  
                                     </div>
-                                    <div className="bx--col-md-4 bx--col-sm-2">
+                                    <div className="bx--col-lg-8 bx--col-md-4 bx--col-sm-2">
                                         <div><strong>Scan label: </strong>
                                             <input style={{width:"6rem"}} type="text" placeholder={this.state.userScanLabel} onBlur={(e) => {this.props.storeScanLabel(e,this.state.screenShotRow) }}/>
                                         </div>

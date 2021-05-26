@@ -14,27 +14,22 @@
     limitations under the License.
  *****************************************************************************/
 
+import { ARIAMapper } from "../../../..";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesAnchor: Rule[] = [{
     id: "WCAG20_A_HasText",
-    context: "dom:a",
+    context: "aria:link",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // Rule only passes if an element has inner content, 
-        // in the case that there is only hidden content under the the element it is a violation
-        const domAttrs = context["dom"].attributes;
-        // If this is an anchor element, it's not in scope of this rule - we're only assessing hyperlinks
-        if (!ruleContext.hasAttribute("href") && (RPTUtil.attributeNonEmpty(ruleContext, "id")
-            || RPTUtil.attributeNonEmpty(ruleContext, "name"))) {
+        if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
             return null;
         }
+        // Rule only passes if an element has inner content, 
+        // in the case that there is only hidden content under the the element it is a violation
         let passed = 
-            RPTUtil.hasInnerContentHiddenHyperLink(ruleContext, true)
-            || RPTUtil.attributeNonEmpty(ruleContext, "aria-label")
-            || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
-            || RPTUtil.attributeNonEmpty(ruleContext, "title")
+            ARIAMapper.computeName(ruleContext).trim().length > 0
             || RPTUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
             return RuleFail("Fail_1");

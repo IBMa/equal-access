@@ -79,7 +79,7 @@ var skipList = [
     path.join(testRoot, "HAAC_BackgroundImg_HasTextOrTitle_ruleunit", "APassedFileWithNoImg.html"),
     path.join(testRoot, "RPT_Blink_CSSTrigger1_ruleunit", "TextDecoration-Blink.html"),
     // CSS processing errors
-    path.join(testRoot, "HAAC_Aria_Native_Host_Sematics_ruleunit", "input_type_test.html"),
+    path.join(testRoot, "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
     path.join(testRoot, "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics_ruleunit", "eventHandlerMissingRole2.html"),
     path.join(testRoot, "Rpt_Aria_WidgetLabels_Implicit_ruleunit", "menuItemCheckboxNoInnerText.html"),
     // Can't access referenced files

@@ -49,26 +49,27 @@
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["WCAG20_Html_HasLang"],
-            results: [{
-                "ruleId": "WCAG20_Html_HasLang",
-                "value": [
+            results: [
+                {
+                    "ruleId": "WCAG20_Html_HasLang",
+                    "value": [
                     "INFORMATION",
                     "FAIL"
-                ],
-                "path": {
+                    ],
+                    "path": {
                     "dom": "/html[1]",
                     "aria": ""
-                },
-                "reasonId": "Fail_4",
-                //"message": "Page detected as XHTML 1.0 with lang and xml:lang attributes that do not match: 'fr', 'fr+fr'.",
-                "message": "Page detected as XHTML 1.0 with 'lang' and 'xml:lang' attributes that do not match: \"fr\", \"fr+fr\"",
-                "messageArgs": [
+                    },
+                    "reasonId": "Fail_4",
+                    "message": "Page detected with 'lang' and 'xml:lang' attributes and primary languages do not match: \"fr\", \"fr+fr\"",
+                    "messageArgs": [
                     "fr",
                     "fr+fr"
-                ],
-                "apiArgs": [],
-                "category": "Accessibility"
-            }]
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                }
+            ]
         }
     </script>
 </body>

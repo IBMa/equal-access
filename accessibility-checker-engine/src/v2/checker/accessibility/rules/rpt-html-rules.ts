@@ -18,6 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil } from "../util/legacy";
 import { AncestorUtil } from "../util/ancestor";
 import { FragmentUtil } from "../util/fragment";
+import { LangUtil } from "../util/lang";
 
 let a11yRulesHtml: Rule[] = [
 
@@ -39,16 +40,27 @@ let a11yRulesHtml: Rule[] = [
             let lang = ruleContext.getAttribute("lang");
             let langXML = ruleContext.getAttribute("xml:lang");
 
-            // Handle XHTML 1.0
-            if (doctypeString.includes('XHTML') && doctypeString.includes("1.0")) {
+            if (doctypeString.includes('XHTML') && !doctypeString.includes("1.0")) {
+                if (!langXML) {
+                    // XHTML != 1.0 (must have xml:lang
+                    return RuleFail("Fail_2");
+                } else {
+                    return RulePass("Pass_0",[langXML]);
+                }
+            } else if (doctypeString.includes('XHTML') && doctypeString.includes("1.0")) {
+                // Handle XHTML 1.0
                 // If neither is provided, it's a failure
                 if (!lang && !langXML) {
                     // XHTML and no lang
                     return RuleFail("Fail_1");
                 } else if (lang && langXML) {
-                    if (lang != langXML) {
-                        // XHTML and lang and xml:lang, but they don't match
-                        return RuleFail("Fail_4", [lang, langXML], []);
+                    if (lang !== langXML) {
+                        if (!LangUtil.matchPrimaryLang(lang, langXML)) {
+                            // XHTML and lang and xml:lang, but they don't match
+                            return RuleFail("Fail_4", [lang, langXML], []);
+                        } else {
+                            return RuleFail("Fail_5", [lang, langXML], []);
+                        }
                     } else {
                         // XHTML and lang and xml:lang match
                         return RulePass("Pass_0",[lang])
@@ -60,16 +72,22 @@ let a11yRulesHtml: Rule[] = [
                     // XHTML and only xml:lang (okay if only delivered via xml mime type)
                     return RulePotential("Potential_6");
                 }
-            } else if (doctypeString.includes('XHTML')) {
-                if (!langXML) {
-                    // XHTML != 1.0 (must have xml:lang
-                    return RuleFail("Fail_2");
-                } else {
-                    return RulePass("Pass_0",[langXML]);
-                }
             } else {
                 if (!lang) {
                     return RuleFail("Fail_3");
+                } else if (lang && langXML) {
+                    // HTML5 polyglot documents
+                    if (lang !== langXML) {
+                        if (!LangUtil.matchPrimaryLang(lang, langXML)) {
+                            // XHTML and lang and xml:lang, but they don't match
+                            return RuleFail("Fail_4", [lang, langXML], []);
+                        } else {
+                            return RuleFail("Fail_5", [lang, langXML], []);
+                        }
+                    } else {
+                        // XHTML and lang and xml:lang match
+                        return RulePass("Pass_0",[lang])
+                    }
                 } else {
                     return RulePass("Pass_0",[lang]);
                 }

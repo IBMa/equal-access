@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { ARIADefinitions, IDocumentConformanceRequirement } from "../../../aria/ARIADefinitions";
 import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { CacheDocument, CacheElement } from "../../../common/Engine";
 import { FragmentUtil } from "./fragment";
@@ -294,11 +294,16 @@ export class RPTUtil {
     }
 
     public static tabTagMap = {
-        "button": true,
-        "input": function (element): boolean {
-            return element.getAttribute("type") != "hidden";
+        "button": function (element): boolean {
+            return !element.hasAttribute("disabled");
         },
-        "select": true,
+        "iframe": true,
+        "input": function (element): boolean {
+            return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
+        },
+        "select": function (element): boolean {
+            return !element.hasAttribute("disabled");
+        },
         "textarea": true,
         "div": function (element) {
             return element.hasAttribute("contenteditable");
@@ -668,8 +673,8 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getRoles(ele: Element, considerImplicitRoles: boolean) {
-        let roles = [];
+    public static getRoles(ele: Element, considerImplicitRoles: boolean) : string[] {
+        let roles : string[] = [];
         if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
             let attrRoles = RPTUtil.normalizeSpacing(ele.getAttribute("role").trim()).split(" ");
             for (let i = 0; i < attrRoles.length; ++i) {
@@ -1870,11 +1875,6 @@ export class RPTUtil {
         else return -1;
     }
 
-    /* Determine if given string is a valid language */
-    public static validLang(langStr) {
-        return /^(([a-zA-Z]{2,3}(-[a-zA-Z](-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4}|[a-zA-Z]{5,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([0-9a-zA-Z]{5,8}|[0-9][a-zA-Z]{3}))*(-[0-9a-wy-zA-WY-Z](-[a-zA-Z0-9]{2,8})+)*(-x(-[a-zA-Z0-9]{1,8})+)?|x(-[a-zA-Z0-9]{1,8})+|(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE|art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$/.test(langStr)
-    }
-
     /**
      *  Determine if the given attribute of the given element is not empty
      *  @memberOf RPTUtil
@@ -2046,8 +2046,14 @@ export class RPTUtil {
 
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
-                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node))
-                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node as any));
+                hasContent = (
+                    node.nodeName.toLowerCase() === "img" 
+                    && (RPTUtil.attributeNonEmpty(node, "alt") || RPTUtil.attributeNonEmpty(node, "title"))
+                    && RPTUtil.isNodeVisible(node)
+                ) || (
+                    node.nodeName.toLowerCase() === "svg" 
+                    && RPTUtil.svgHasName(node as any)
+                );
 
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
@@ -2112,12 +2118,12 @@ export class RPTUtil {
         return hasContent;
     }
 
-    public static concatUniqueArrayItem(item, arr) {
+    public static concatUniqueArrayItem(item: string, arr: string[]) : string[] {
         arr.indexOf(item) === -1 && item !== null ? arr.push(item) : false;
         return arr;
     }
 
-    public static concatUniqueArrayItemList(itemList, arr) {
+    public static concatUniqueArrayItemList(itemList: string[], arr: string[]) : string[] {
         for (let i = 0; itemList !== null && i < itemList.length; i++) {
             arr = RPTUtil.concatUniqueArrayItem(itemList[i], arr);
         }
@@ -2135,7 +2141,7 @@ export class RPTUtil {
         }
 
         // check if the tagProperty exists in the documentConformanceRequirement hash.
-        let tagProperty = ARIADefinitions.documentConformanceRequirement[tagName];
+        let tagProperty : IDocumentConformanceRequirement = ARIADefinitions.documentConformanceRequirement[tagName];
         // The tag needs to check some special attributes
         if (tagProperty === null || tagProperty === undefined) {
             let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
@@ -2252,15 +2258,15 @@ export class RPTUtil {
                     }
                     break;
                 default:
-                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
+                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
             } //switch
         }
         return tagProperty || null;
     }
 
-    public static getAllowedAriaRoles(ruleContext, properties) {
-        let allowedRoles = [];
-        let tagProperty = null;
+    public static getAllowedAriaRoles(ruleContext, properties: IDocumentConformanceRequirement) {
+        let allowedRoles : string[] = [];
+        let tagProperty : IDocumentConformanceRequirement = null;
         if (properties !== null && properties !== undefined) {
             tagProperty = properties;
         } else {
