@@ -6,8 +6,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
 // Aligned rules
 let ruleMapping = require("./act_aligned.json");
 
-ruleMapping = {
-}
+// ruleMapping = {
+// }
 /*
 // Rule defect
     "ff89c9": [{ // https://github.ibm.com/ibma/e2e/issues/3142
@@ -64,7 +64,7 @@ let ruleMapping = {
 */
 
 /*
-// Unaligned / unpublished rules
+// Not evaluated
 let ruleMapping = {
     "6cfa84": [{
         ruleId: "",
@@ -75,10 +75,6 @@ let ruleMapping = {
         reasonIds: []
     }],
     "b33eff": [{
-        ruleId: "",
-        reasonIds: []
-    }],
-    "5f99a7": [{
         ruleId: "",
         reasonIds: []
     }],

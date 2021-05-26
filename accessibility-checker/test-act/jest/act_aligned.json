@@ -88,5 +88,9 @@
     "8fc3b6": [{
         "ruleId": "WCAG20_Object_HasText",
         "reasonIds": ["Fail_1"]
+    }],
+    "5f99a7": [{
+        "ruleId": "Rpt_Aria_ValidProperty",
+        "reasonIds": ["Fail_1"]
     }]
 }

@@ -45,7 +45,7 @@ let a11yRulesObject: Rule[] = [
 
             // Per ACT, ignore embedded HTML files
             let data = ruleContext.getAttribute("data");
-            let ext = data.substring(data.lastIndexOf("."));
+            let ext = data && typeof data === typeof "" ? data.substring(data.lastIndexOf(".")) : "";
             if (ext === ".html" || ext === ".htm") {
                 return null;
             }
