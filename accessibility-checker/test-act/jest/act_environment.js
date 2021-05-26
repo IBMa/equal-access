@@ -6,9 +6,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
 // Aligned rules
 let ruleMapping = require("./act_aligned.json");
 
-// ruleMapping = {
-// }
+ruleMapping = {
+}
 /*
+// Rule defect
+    "ff89c9": [{ // https://github.ibm.com/ibma/e2e/issues/3142
+        ruleId: "Rpt_Aria_RequiredParent_Native_Host_Sematics",
+        reasonIds: ["Fail_1"]
+    }],
 /*
 // Testcase defect
     "6a7281": [ // https://github.com/act-rules/act-rules.github.io/issues/1617
@@ -70,10 +75,6 @@ let ruleMapping = {
         reasonIds: []
     }],
     "b33eff": [{
-        ruleId: "",
-        reasonIds: []
-    }],
-    "ff89c9": [{
         ruleId: "",
         reasonIds: []
     }],
