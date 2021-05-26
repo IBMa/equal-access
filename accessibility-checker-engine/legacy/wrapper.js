@@ -125,7 +125,6 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "HAAC_Canvas": "1143",
     "HAAC_Figure_label": "1144",
     "HAAC_Input_Placeholder": "1145",
-    "HAAC_Aria_Native_Host_Sematics": "1146",
     "RPT_Form_ChangeEmpty": "1147",
     "IBMA_Color_Contrast_WCAG2AA": "1148",
     "IBMA_Color_Contrast_WCAG2AA_PV": "1149",

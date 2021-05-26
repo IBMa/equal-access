@@ -76,5 +76,21 @@
     "cae760": [{
         "ruleId": "WCAG20_Frame_HasTitle",
         "reasonIds": ["Fail_1"]
+    }],
+    "5c01ea": [{
+        "ruleId": "aria_semantics_attribute",
+        "reasonIds": ["Fail_1"]
+    }],
+    "m6b1q3": [{
+        "ruleId": "Rpt_Aria_WidgetLabels_Implicit",
+        "reasonIds": ["Fail_1"]
+    }],
+    "8fc3b6": [{
+        "ruleId": "WCAG20_Object_HasText",
+        "reasonIds": ["Fail_1"]
+    }],
+    "5f99a7": [{
+        "ruleId": "Rpt_Aria_ValidProperty",
+        "reasonIds": ["Fail_1"]
     }]
 }

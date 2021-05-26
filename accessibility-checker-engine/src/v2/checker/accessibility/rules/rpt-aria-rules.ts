@@ -18,6 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil, NodeWalker } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
+import { ARIAMapper } from "../../../..";
 
 let a11yRulesAria: Rule[] = [{
     /**
@@ -1243,78 +1244,115 @@ let a11yRulesAria: Rule[] = [{
 {
     /**
      * Description: Triggers if role conflict with ARIA implicitSemantics restrictions
+     * 
+     * Note: Rpt_Aria_ValidRole checks if the role specified is defined by ARIA. This determines
+     * if that role is valid given the context.
      * Native host semantics 1146
      */
-    id: "HAAC_Aria_Native_Host_Sematics",
+    id: "aria_semantics_role",
     context: "dom:*", // checks for all elements, since role might not be specified but the attributes need to be checked.
     dependencies: ["Rpt_Aria_ValidProperty"],  //we can't use Rpt_Aria_ValidRole to validate the roles because the context is different
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
-        let passed = true;
-
-        let roles = [];
+        let domRoles : string[] = [];
         if (ruleContext.getAttribute("role") !== null) {
-            roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
+            domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
         }
         let tagName = ruleContext.tagName.toLowerCase();
+        // Roles allowed on this node
         let allowedRoles = [];
-        let allowedAttributes = [];
 
-        let roleTokens = [];
-        let attributeTokens = [];
-        let allowedRoleTokens = [];
-        let allowedAttributeTokens = [];
-
-        let permittedRoles = [];
+        // Failing roles
+        let failRoleTokens = [];
+        // Passing roles
+        let passRoleTokens = [];
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
 
 
         // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
-        for (let i = 0; i < roles.length; i++) {
+        for (let i = 0; i < domRoles.length; i++) {
             if (allowedRoles.length === 0) {
-                passed = false;
-                if (roleTokens.indexOf(roles[i]) === -1) {
-                    roleTokens.push(roles[i]);
+                if (!failRoleTokens.includes(domRoles[i])) {
+                    failRoleTokens.push(domRoles[i]);
                 }
-            } else if (allowedRoles.indexOf("any") === -1) { // any role is valid so no checking here. the validity of the aria role is checked by Rpt_Aria_ValidRole
-                if (allowedRoles.indexOf(roles[i]) === -1) {
-                    if (roleTokens.indexOf(roles[i]) === -1) {
-                        roleTokens.push(roles[i]);
-                        passed = false;
+            } else if (!allowedRoles.includes("any")) { // any role is valid so no checking here. the validity of the aria role is checked by Rpt_Aria_ValidRole
+                if (!allowedRoles.includes(domRoles[i])) {
+                    if (!failRoleTokens.includes(domRoles[i])) {
+                        failRoleTokens.push(domRoles[i]);
                     }
-                } else {
-                    if (permittedRoles.indexOf(roles[i]) === -1) {
-                        permittedRoles.push(roles[i])
-                    }
+                } else if (!passRoleTokens.includes(domRoles[i])) {
+                    passRoleTokens.push(domRoles[i])
                 }
-            } else if (allowedRoles.indexOf("any") > -1) {
-                if (permittedRoles.indexOf(roles[i]) === -1) {
-                    permittedRoles.push(roles[i]);
+            } else if (allowedRoles.includes("any")) {
+                if (passRoleTokens.indexOf(domRoles[i]) === -1) {
+                    passRoleTokens.push(domRoles[i]);
                 }
             }
         } // for loop
+        if (failRoleTokens.includes("presentation") || failRoleTokens.includes("none") && RPTUtil.isTabbable(ruleContext)) {
+            return RuleFail("Fail_2", [failRoleTokens.join(", "), tagName]);
+        } else if (failRoleTokens.length > 0) {
+            RPTUtil.setCache(ruleContext, "aria_semantics_role", "Fail_1");
+            return RuleFail("Fail_1", [failRoleTokens.join(", "), tagName]);
+        } else if (passRoleTokens.length > 0) {
+            return RulePass("Pass_0", [passRoleTokens.join(", "), tagName]);
+        } else {
+            return null;
+        }
 
-        allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, permittedRoles, tagProperty);
+        // below for listing all allowed role and attributes.  We can delete it if we are not using it next year (2018) #283
+        //      return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName, allowedRoleOrAttributeTokens]);
+    }
+},
+{
+    /**
+     * Description: Triggers if role conflict with ARIA implicitSemantics restrictions
+     * 
+     * Note: Rpt_Aria_ValidRole checks if the role specified is defined by ARIA. This determines
+     * if that role is valid given the context.
+     * Native host semantics 1146
+     */
+    id: "aria_semantics_attribute",
+    context: "dom:*", // checks for all elements, since role might not be specified but the attributes need to be checked.
+    dependencies: [],  //we can't use Rpt_Aria_ValidRole to validate the roles because the context is different
+    run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        // The the ARIA role is completely invalid, skip this check
+        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        let role = ARIAMapper.nodeToRole(ruleContext);
+        let tagName = ruleContext.tagName.toLowerCase();
+
+        // Failing attributes
+        let failAttributeTokens = [];
+        // Passing attributes
+        let passAttributeTokens = [];
+
+        let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+        // Attributes allowed on this node
+        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
 
         // input type="password" has no role but it can take an aria-required. This is the only case like this.
         // So we add it in the code instead of adding new mechanism to the aria-definition.js
-        if (ruleContext.nodeName.toLowerCase() == "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() == "password") {
+        if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
             allowedAttributes.push("aria-required");
         }
 
-        let contextAttributes = ruleContext.attributes;
+        let domAttributes = ruleContext.attributes;
 
-        if (contextAttributes) {
-            for (let i = 0; i < contextAttributes.length; i++) {
-                let attrName = contextAttributes[i].name.trim().toLowerCase();
-                let defined = attrName.substring(0, 5) === 'aria-';
-                if (defined && allowedAttributes.indexOf(attrName) === -1) {
-                    //valid attributes can be none also which is covered here
-                    passed = false;
-                    attributeTokens.indexOf(attrName) === -1 ? attributeTokens.push(attrName) : false;
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase();
+                let isAria = attrName.substring(0, 5) === 'aria-';
+                if (isAria) {
+                    if (!allowedAttributes.includes(attrName)) {
+                        //valid attributes can be none also which is covered here
+                        !failAttributeTokens.includes(attrName) ? failAttributeTokens.push(attrName) : false;
+                    } else {
+                        !passAttributeTokens.includes(attrName) ? passAttributeTokens.push(attrName) : false;
+                    }
                 }
             }
         }
@@ -1330,21 +1368,19 @@ let a11yRulesAria: Rule[] = [{
         //
         //	    }
 
-        let roleOrAttributeTokens = roleTokens.concat(attributeTokens).join(", ");
-        //      let allowedRoleOrAttributeTokens = allowedRoleTokens.concat(allowedAttributeTokens).join(", ");
-
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
-        if (passed) {
-            return RulePass("Pass_0");
+        if (failAttributeTokens.length > 0) {
+            return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
+        } else if (passAttributeTokens.length > 0) {
+            return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
         } else {
-            return RuleFail("Fail_1", [roleOrAttributeTokens, tagName]);
+            return null;
         }
 
         // below for listing all allowed role and attributes.  We can delete it if we are not using it next year (2018) #283
         //      return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName, allowedRoleOrAttributeTokens]);
     }
 },
-
 {
     /**
      * Description: Triggers if ARIA error message is hidden or doesn't exist 
