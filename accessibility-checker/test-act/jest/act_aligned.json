@@ -80,5 +80,9 @@
     "5c01ea": [{
         "ruleId": "aria_semantics_attribute",
         "reasonIds": ["Fail_1"]
+    }],
+    "m6b1q3": [{
+        "ruleId": "Rpt_Aria_WidgetLabels_Implicit",
+        "reasonIds": ["Fail_1"]
     }]
 }

@@ -773,7 +773,7 @@ let a11yNls = {
     "Rpt_Aria_WidgetLabels_Implicit": {
         0: "Interactive component must have a programmatically associated name",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Interactive component does not have a programmatically associated name"
+        "Fail_1": "Interactive component with WAI-ARIA role '{0}' does not have a programmatically associated name"
     },
     // JCH - DONE
     "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {

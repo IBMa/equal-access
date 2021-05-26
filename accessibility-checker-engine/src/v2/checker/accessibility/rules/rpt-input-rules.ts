@@ -107,7 +107,7 @@ let a11yRulesInput: Rule[] = [
                 let bAlt = false;
                 if (ruleContext.nodeName.toLowerCase() === "img" && ruleContext.hasAttribute("alt")) {
                     let alt = ruleContext.getAttribute("alt");
-                    if (alt.trim().length == 0 && alt.length != 0) {
+                    if (alt.trim().length === 0) {
                         bAlt = false;
                     } else {
                         bAlt = true;
