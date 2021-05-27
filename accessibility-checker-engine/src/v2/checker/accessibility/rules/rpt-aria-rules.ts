@@ -129,10 +129,12 @@ let a11yRulesAria: Rule[] = [{
         let roleNameArr = new Array();
         let designPatterns = ARIADefinitions.designPatterns;
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        let implicitRole = ARIAMapper.elemToImplicitRole(ruleContext);
         let hasAttribute = RPTUtil.hasAttribute;
         let testedRoles = 0;
 
         for (let j = 0, rolesLength = roles.length; j < rolesLength; ++j) {
+            if (roles[j] === implicitRole) continue;
             if (designPatterns[roles[j]] && RPTUtil.getRoleRequiredProperties(roles[j], ruleContext) != null) {
                 let requiredRoleProps = RPTUtil.getRoleRequiredProperties(roles[j], ruleContext);
                 let roleMissingReqProp = false;
@@ -168,7 +170,7 @@ let a11yRulesAria: Rule[] = [{
         retToken.push(roleNameArr.join(", "));
         retToken.push(attrNameArr.join(", "));
         //return new ValidationResult(passed, [ruleContext], attrNameArr, '', passed == true ? [] : retToken);
-        if (testedRoles == 0) {
+        if (testedRoles === 0) {
             return null;
         } else if (!passed) {
             return RuleFail("Fail_1", retToken);
