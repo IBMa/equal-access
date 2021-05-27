@@ -568,14 +568,13 @@ export class ARIAMapper extends CommonMapper {
             "h6": "heading",
             "header": function(element) {
                 let parent = element.parentNode;
-                let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
-                while (parent) {
+                while (parent && parent.nodeType === 1) {
+                    let nodeName = parent.nodeName.toLowerCase();
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
                     parent = parent.parentNode;
-                    nodeName = parent.nodeName.toLowerCase();
                 }
                 return null;
             },
