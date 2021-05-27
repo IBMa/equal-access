@@ -19,11 +19,12 @@ A web browser extensions that adds automated accessibility checking capabilities
 
 There are several different modes that you can run with. These will build the extension to `accessibility-checker-extension/dist` (See loading into the browser below)
 
-**Run local rule server**
+**Run local extension with local rule server**
 1. Under the `rule-server` directory, `npm start`
 2. On a new command line window, under the `accessibility-checker-extension` directory, `npm run build:watch:local`
 
 **Run local extension with production rule server**
+
 From the `accessibility-checker-extension` directory:
 * To continuously build when changes occur, `npm run build:watch:local`
 * To build once for development, `npm run build:dev`
