@@ -26,7 +26,7 @@ There are several different modes that you can run with. These will build the ex
 **Run local extension with production rule server**
 
 From the `accessibility-checker-extension` directory:
-* To continuously build when changes occur, `npm run build:watch:local`
+* To continuously build when changes occur, `npm run build:watch`
 * To build once for development, `npm run build:dev`
 * To build for production, `npm run build:prod`
 
