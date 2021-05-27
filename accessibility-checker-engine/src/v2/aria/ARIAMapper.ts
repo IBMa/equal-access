@@ -418,7 +418,10 @@ export class ARIAMapper extends CommonMapper {
                 }    
             }
         }
+        return this.elemToImplicitRole(elem);
+    }
 
+    public static elemToImplicitRole(elem : Element) {
         let nodeName = elem.nodeName.toLowerCase();
 
         if (!(nodeName in ARIAMapper.elemToRoleMap)) {

@@ -64,9 +64,8 @@
         "reasonIds": ["Fail_1"]
     }],
     "4e8ab6": [
-        {
-            "ruleId": "Rpt_Aria_RequiredProperties",
-            "reasonIds": []
+        {   "ruleId": "Rpt_Aria_RequiredProperties",
+            "reasonIds": ["Fail_1"]
         },
         {
             "ruleId": "combobox_popup_reference",
@@ -92,5 +91,10 @@
     "5f99a7": [{
         "ruleId": "Rpt_Aria_ValidProperty",
         "reasonIds": ["Fail_1"]
+    }],
+    "bf051a": [{
+        "ruleId": "WCAG20_Elem_Lang_Valid",
+        "reasonIds": ["Fail_1", "Fail_3"],
+        "treatAsPass": ["Fail_2"]
     }]
 }

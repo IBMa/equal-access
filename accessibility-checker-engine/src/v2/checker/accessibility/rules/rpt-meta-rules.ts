@@ -29,17 +29,20 @@ let a11yRulesMeta: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             // JCH - NO OUT OF SCOPE hidden in context
-            let passed = true;
-            if (ruleContext.getAttribute("http-equiv").toLowerCase() == 'refresh') {
-                let content = ruleContext.getAttribute("content").toLowerCase();
-                let fail = content.indexOf("url") != -1 && !content.startsWith("0;");
-                if (fail) {
-                    return RuleFail("Fail_1");
-                } else {
-                    return RulePass("Pass_0");
-                }
-            } else {
+            if (ruleContext.getAttribute("http-equiv").toLowerCase() !== 'refresh') {
                 return null;
+            }
+
+            let content = ruleContext.getAttribute("content").toLowerCase();
+            // Invalid content field
+            if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
+                return null;
+            }
+            let fail = content.match(/^\d+; +[^ ]/) && !content.startsWith("0;");
+            if (fail) {
+                return RuleFail("Fail_1");
+            } else {
+                return RulePass("Pass_0");
             }
         }
     },
@@ -52,10 +55,15 @@ let a11yRulesMeta: Rule[] = [
         context: "dom:meta[http-equiv][content]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            if (ruleContext.getAttribute("http-equiv").toLowerCase() != 'refresh')
-                return RulePass("Pass_0");
+            if (ruleContext.getAttribute("http-equiv").toLowerCase() !== 'refresh')
+                return null;
+
             let content = ruleContext.getAttribute("content").toLowerCase();
-            let fail = content.indexOf("url=") == -1;
+            // Invalid content field
+            if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
+                return null;
+            }
+            let fail = !content.match(/^\d+; +[^ ]/);
             return !fail ? RulePass("Pass_0") : RulePotential("Potential_1");
         }
     }

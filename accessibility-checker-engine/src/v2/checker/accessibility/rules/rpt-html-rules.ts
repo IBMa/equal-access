@@ -55,6 +55,10 @@ let a11yRulesHtml: Rule[] = [
                     return RuleFail("Fail_1");
                 } else if (lang && langXML) {
                     if (lang !== langXML) {
+                        if (!LangUtil.validPrimaryLang(lang) || !LangUtil.validPrimaryLang(langXML)) {
+                            // Let Elem_Lang_Valid handle this
+                            return null;
+                        }
                         if (!LangUtil.matchPrimaryLang(lang, langXML)) {
                             // XHTML and lang and xml:lang, but they don't match
                             return RuleFail("Fail_4", [lang, langXML], []);
@@ -78,6 +82,10 @@ let a11yRulesHtml: Rule[] = [
                 } else if (lang && langXML) {
                     // HTML5 polyglot documents
                     if (lang !== langXML) {
+                        if (!LangUtil.validPrimaryLang(lang) || !LangUtil.validPrimaryLang(langXML)) {
+                            // Let Elem_Lang_Valid handle this
+                            return null;
+                        }
                         if (!LangUtil.matchPrimaryLang(lang, langXML)) {
                             // XHTML and lang and xml:lang, but they don't match
                             return RuleFail("Fail_4", [lang, langXML], []);
