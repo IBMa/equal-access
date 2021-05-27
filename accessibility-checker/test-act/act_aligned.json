@@ -64,9 +64,8 @@
         "reasonIds": ["Fail_1"]
     }],
     "4e8ab6": [
-        {
-            "ruleId": "Rpt_Aria_RequiredProperties",
-            "reasonIds": []
+        {   "ruleId": "Rpt_Aria_RequiredProperties",
+            "reasonIds": ["Fail_1"]
         },
         {
             "ruleId": "combobox_popup_reference",
