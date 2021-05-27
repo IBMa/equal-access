@@ -21,7 +21,8 @@ There are several different modes that you can run with. These will build the ex
 
 **Run local extension with local rule server**
 1. Under the `rule-server` directory, `npm start`
-2. On a new command line window, under the `accessibility-checker-extension` directory, `npm run build:watch:local`
+2. Open https://localhost:9445 in your browser and accept any self-signed certs. In chrome you may need to type 'thisisunsafe', which will accept the cert (you will not actually see anywhere to type it). You should get "Cannot GET /".
+3. On a new command line window, under the `accessibility-checker-extension` directory, `npm run build:watch:local`
 
 **Run local extension with production rule server**
 
