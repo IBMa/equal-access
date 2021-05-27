@@ -91,5 +91,10 @@
     "5f99a7": [{
         "ruleId": "Rpt_Aria_ValidProperty",
         "reasonIds": ["Fail_1"]
+    }],
+    "bf051a": [{
+        "ruleId": "WCAG20_Elem_Lang_Valid",
+        "reasonIds": ["Fail_1", "Fail_3"],
+        "treatAsPass": ["Fail_2"]
     }]
 }

@@ -63,11 +63,14 @@ async function getResult(page, testcaseId, aceRules) {
         return match;
     });
     let issuesPass = results.report.results.filter(result => {
-        if (result.value[1] !== "PASS") return false;
         let match = false;
         for (let aceRule of aceRules) {
+            if (result.ruleId === aceRule.ruleId && aceRule.treatAsPass && aceRule.treatAsPass.includes(result.reasonId)) {
+                return true;
+            }
             match = match || (result.ruleId === aceRule.ruleId);
         }
+        if (result.value[1] !== "PASS") return false;
         return match;
     });
     let issues2 = results.report.results;
