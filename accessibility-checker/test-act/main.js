@@ -49,7 +49,9 @@ const fs = require("fs");
 Failures: ${JSON.stringify(issuesFail, null, 2)}
 Review: ${JSON.stringify(issuesReview, null, 2)}
 Pass: ${JSON.stringify(issuesPass, null, 2)}
-All: ${JSON.stringify(issuesAll.map(result => result.ruleId+":"+result.value[1]), null, 2)}\x1b[0m`);
+All: ${JSON.stringify(issuesAll
+    .filter(result=>result.value[1] !== "PASS")
+    .map(result => result.ruleId+":"+result.reasonId+":"+result.value[1]), null, 2)}\x1b[0m`);
                             }
                     }
                     console.groupEnd();
