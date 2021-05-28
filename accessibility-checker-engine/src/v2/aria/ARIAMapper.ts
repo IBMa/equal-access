@@ -438,12 +438,12 @@ export class ARIAMapper extends CommonMapper {
     }
 
     public static hasParentRole(element, role) : boolean {
-        let parent = element.parentNode;
+        let parent = DOMUtil.parentNode(element);
         // If link is in a menu, it's a menuitem
         while (parent) {
             if (ARIAMapper.nodeToRole(parent) === role)
                 return true;
-            parent = parent.parentNode;
+            parent = DOMUtil.parentNode(parent);
         }
         return false;
     }
@@ -547,14 +547,14 @@ export class ARIAMapper extends CommonMapper {
             "details": "group",
             "dialog": "dialog",
             "footer": function(element) {
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent) {
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                     nodeName = parent.nodeName.toLowerCase();
                 }
                 return null;
@@ -567,14 +567,14 @@ export class ARIAMapper extends CommonMapper {
             "h5": "heading",
             "h6": "heading",
             "header": function(element) {
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
                     let nodeName = parent.nodeName.toLowerCase();
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },
@@ -628,13 +628,13 @@ export class ARIAMapper extends CommonMapper {
             "textarea": "textbox",
             "tbody": "rowgroup",
             "td": function(element) {
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
                     if (role === "grid") return "gridcell";
 
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },
@@ -668,13 +668,13 @@ export class ARIAMapper extends CommonMapper {
                 }
 
                 // We're a cell - determine if we're a table cell or a grid cell
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
                     if (role === "grid") return "gridcell";
 
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },

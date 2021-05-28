@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMWalker } from "../../../dom/DOMWalker";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
@@ -344,9 +345,6 @@ let a11yRulesInput: Rule[] = [
                         retVal = null;
                     }
                 }
-                if (!retVal) {
-                    retVal = RPTUtil.getAncestor(ruleContext, "#document-fragment");
-                }
                 return retVal;
             }
 
@@ -358,7 +356,7 @@ let a11yRulesInput: Rule[] = [
 
             // Determine which form we're in (if any) to determine our scope
             let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") 
-                || RPTUtil.getAncestor(ruleContext, "#document-fragment")
+                || RPTUtil.getAncestor(ruleContext, "html")
                 || ruleContext.ownerDocument.documentElement;
 
             // Get data about all of the visible checkboxes and radios in the scope of this form 
@@ -376,11 +374,28 @@ let a11yRulesInput: Rule[] = [
                 }
                 // Get all of the checkboxes in the form or body (but not nested in something else and not hidden)
                 // And get a mapping of these checkboxes to 
-                let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
+                let cWalker = new DOMWalker(ctxForm, false, ctxForm);
+                let checkboxQ = [];
+                let radiosQ = [];
+                while (cWalker.nextNode()) {
+                    if (!cWalker.bEndTag
+                        && cWalker.node.nodeType === 1 
+                        && cWalker.node.nodeName.toLowerCase() === "input"
+                        && RPTUtil.isNodeVisible(cWalker.node))
+                    {
+                        let type = (cWalker.node as Element).getAttribute("type");
+                        if (type === "checkbox") {
+                            checkboxQ.push(cWalker.node);
+                        } else if (type === "radio") {
+                            radiosQ.push(cWalker.node);
+                        }
+                    }
+                }
+                // let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
                 for (let idx=0; idx<checkboxQ.length; ++idx) {
                     const cb = checkboxQ[idx];
                     if ((RPTUtil.getAncestorWithRole(cb, "form") 
-                        || RPTUtil.getAncestor(cb, "#document-fragment")
+                        || RPTUtil.getAncestor(ruleContext, "html")
                         || ruleContext.ownerDocument.documentElement) === ctxForm 
                         && !RPTUtil.shouldNodeBeSkippedHidden(cb)) 
                     {
@@ -391,11 +406,11 @@ let a11yRulesInput: Rule[] = [
                     }
                 }
                 // Get all of the radios in the form or body (but not nested in something else and not hidden)
-                let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
+                // let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
                 for (let idx=0; idx<radiosQ.length; ++idx) {
                     const r = radiosQ[idx];
                     const radCtx = (RPTUtil.getAncestorWithRole(r, "form") 
-                        || RPTUtil.getAncestor(r, "#document-fragment")
+                        || RPTUtil.getAncestor(ruleContext, "html")
                         || ruleContext.ownerDocument.documentElement);
                     if (radCtx === ctxForm
                         && !RPTUtil.shouldNodeBeSkippedHidden(r)) 

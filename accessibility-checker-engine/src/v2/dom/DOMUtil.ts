@@ -77,4 +77,18 @@ export class DOMUtil {
         let retVal = s.replace(/ +/g," ");
         return retVal;
     }
+
+    static parentNode(node: Node) : Node | null {
+        let p : Node = node.parentNode;
+        if (p && p.nodeType === 11) {
+            if ((p as ShadowRoot).host) {
+                p = (p as ShadowRoot).host;
+            } else if ((p as any).ownerElement) {
+                p = (p as any).ownerElement;
+            } else {
+                p = null;
+            }
+        }
+        return p;
+    }
 }
