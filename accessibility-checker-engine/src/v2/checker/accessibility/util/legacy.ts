@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { ARIADefinitions, IDocumentConformanceRequirement } from "../../../aria/ARIADefinitions";
 import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { CacheDocument, CacheElement } from "../../../common/Engine";
 import { FragmentUtil } from "./fragment";
@@ -673,8 +673,8 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getRoles(ele: Element, considerImplicitRoles: boolean) {
-        let roles = [];
+    public static getRoles(ele: Element, considerImplicitRoles: boolean) : string[] {
+        let roles : string[] = [];
         if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
             let attrRoles = RPTUtil.normalizeSpacing(ele.getAttribute("role").trim()).split(" ");
             for (let i = 0; i < attrRoles.length; ++i) {
@@ -2118,12 +2118,12 @@ export class RPTUtil {
         return hasContent;
     }
 
-    public static concatUniqueArrayItem(item, arr) {
+    public static concatUniqueArrayItem(item: string, arr: string[]) : string[] {
         arr.indexOf(item) === -1 && item !== null ? arr.push(item) : false;
         return arr;
     }
 
-    public static concatUniqueArrayItemList(itemList, arr) {
+    public static concatUniqueArrayItemList(itemList: string[], arr: string[]) : string[] {
         for (let i = 0; itemList !== null && i < itemList.length; i++) {
             arr = RPTUtil.concatUniqueArrayItem(itemList[i], arr);
         }
@@ -2141,7 +2141,7 @@ export class RPTUtil {
         }
 
         // check if the tagProperty exists in the documentConformanceRequirement hash.
-        let tagProperty = ARIADefinitions.documentConformanceRequirement[tagName];
+        let tagProperty : IDocumentConformanceRequirement = ARIADefinitions.documentConformanceRequirement[tagName];
         // The tag needs to check some special attributes
         if (tagProperty === null || tagProperty === undefined) {
             let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
@@ -2258,15 +2258,15 @@ export class RPTUtil {
                     }
                     break;
                 default:
-                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
+                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
             } //switch
         }
         return tagProperty || null;
     }
 
-    public static getAllowedAriaRoles(ruleContext, properties) {
-        let allowedRoles = [];
-        let tagProperty = null;
+    public static getAllowedAriaRoles(ruleContext, properties: IDocumentConformanceRequirement) {
+        let allowedRoles : string[] = [];
+        let tagProperty : IDocumentConformanceRequirement = null;
         if (properties !== null && properties !== undefined) {
             tagProperty = properties;
         } else {
@@ -2470,7 +2470,7 @@ export class RPTUtil {
         //  9 /* Node.DOCUMENT_NODE */               --> 9
         //  Node.DOCUMENT_TYPE_NODE          --> 10
         //  Node.DOCUMENT_FRAGMENT_NODE      --> 11
-        else if (node.nodeType != 1) {
+        if (node.nodeType !== 1) {
             return true;
         }
 

@@ -709,10 +709,16 @@ let a11yNls = {
         "Potential_2": "Additional visible label referenced by 'aria-labelledby' is not valid"
     },
     // JCH - DONE
-    "HAAC_Aria_Native_Host_Sematics": {
-        0: "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
+    "aria_semantics_role": {
+        0: "WAI-ARIA roles must be valid for the element to which they are assigned",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The WAI-ARIA role or attribute '{0}' is not valid for the element <{1}>"
+        "Fail_1": "The WAI-ARIA role '{0}' is not valid for the element <{1}>",
+        "Fail_2": "The WAI-ARIA role '{0}' is not valid for the element <{1}> and may be ignored by the browser since the element is focusable"
+    },
+    "aria_semantics_attribute": {
+        0: "WAI-ARIA attributes must be valid for the element and WAI-ARIA role to which they are assigned",
+        "Pass_0": "Rule Passed",
+        "Fail_1": "The WAI-ARIA attribute '{0}' is not valid for the element <{1}> with WAI-ARIA role '{2}'"
     },
     // JCH - DONE
     "RPT_Form_ChangeEmpty": {
@@ -767,7 +773,7 @@ let a11yNls = {
     "Rpt_Aria_WidgetLabels_Implicit": {
         0: "Interactive component must have a programmatically associated name",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Interactive component does not have a programmatically associated name"
+        "Fail_1": "Interactive component with WAI-ARIA role '{0}' does not have a programmatically associated name"
     },
     // JCH - DONE
     "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {

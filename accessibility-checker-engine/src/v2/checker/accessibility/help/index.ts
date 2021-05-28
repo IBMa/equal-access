@@ -716,10 +716,16 @@ let a11yHelp = {
         "Potential_2": `${Config.helpRoot}/HAAC_Input_Placeholder`
     },
     // JCH - DONE
-    "HAAC_Aria_Native_Host_Sematics": {
-        0: `${Config.helpRoot}/HAAC_Aria_Native_Host_Sematics`,
-        "Pass_0": `${Config.helpRoot}/HAAC_Aria_Native_Host_Sematics`,
-        "Fail_1": `${Config.helpRoot}/HAAC_Aria_Native_Host_Sematics`
+    "aria_semantics_role": {
+        0: `${Config.helpRoot}/aria_semantics_role`,
+        "Pass_0": `${Config.helpRoot}/aria_semantics_role`,
+        "Fail_1": `${Config.helpRoot}/aria_semantics_role`,
+        "Fail_2": `${Config.helpRoot}/aria_semantics_role`
+    },
+    "aria_semantics_attribute": {
+        0: `${Config.helpRoot}/aria_semantics_attribute`,
+        "Pass_0": `${Config.helpRoot}/aria_semantics_attribute`,
+        "Fail_1": `${Config.helpRoot}/aria_semantics_attribute`
     },
     // JCH - DONE
     "RPT_Form_ChangeEmpty": {
@@ -1133,7 +1139,6 @@ let a11yHelpOld = {
     "HAAC_Canvas": ["idhi_accessibility_check_g1143.html"],
     "HAAC_Figure_label": ["idhi_accessibility_check_g1144.html"],
     "HAAC_Input_Placeholder": ["idhi_accessibility_check_g1145.html"],
-    "HAAC_Aria_Native_Host_Sematics": ["idhi_accessibility_check_g1146.html"],
     "RPT_Form_ChangeEmpty": ["idhi_accessibility_check_g1147.html"],
     "IBMA_Color_Contrast_WCAG2AA": ["idhi_accessibility_check_g1148.html"],
     "IBMA_Color_Contrast_WCAG2AA_PV": ["idhi_accessibility_check_g1149.html"],

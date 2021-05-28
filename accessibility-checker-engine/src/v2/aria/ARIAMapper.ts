@@ -405,17 +405,23 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
-            let retVal = elem.getAttribute("role").trim();
-            if (retVal === "presentation" || retVal === "none") {
-                // If element is focusable, then presentation roles are to be ignored
-                if (!RPTUtil.isFocusable(elem)) {
-                    return null;
-                }
-            } else {
-                return retVal;
+            let roleStr = elem.getAttribute("role").trim();
+            let roles = roleStr.split(" ");
+            for (const role of roles) {
+                if (role === "presentation" || role === "none") {
+                    // If element is focusable, then presentation roles are to be ignored
+                    if (!RPTUtil.isFocusable(elem)) {
+                        return null;
+                    }
+                } else if (role in ARIADefinitions.designPatterns) {
+                    return role;
+                }    
             }
         }
+        return this.elemToImplicitRole(elem);
+    }
 
+    public static elemToImplicitRole(elem : Element) {
         let nodeName = elem.nodeName.toLowerCase();
 
         if (!(nodeName in ARIAMapper.elemToRoleMap)) {
@@ -562,14 +568,13 @@ export class ARIAMapper extends CommonMapper {
             "h6": "heading",
             "header": function(element) {
                 let parent = element.parentNode;
-                let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
-                while (parent) {
+                while (parent && parent.nodeType === 1) {
+                    let nodeName = parent.nodeName.toLowerCase();
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
                     parent = parent.parentNode;
-                    nodeName = parent.nodeName.toLowerCase();
                 }
                 return null;
             },

@@ -1,5 +1,5 @@
 ---
-title: "Accessibility Checker Rule Help: HAAC_Aria_Native_Host_Sematics"
+title: "Accessibility Checker Rule Help: aria_semantics_attribute"
 ---
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The WAI-ARIA role or attribute `{0}` is not valid for the element `<{1}>` 
+### The WAI-ARIA attribute `{0}` is not valid for the element `<{1}>` with WAI-ARIA role `{2}`
 
 <div id="locLevel"></div>
 
-WAI-ARIA roles and attributes must be valid for the element they are assigned to
+WAI-ARIA attributes must be valid for the element and WAI-ARIA role to which they are assigned
 
 </Column>
 </Row>
@@ -27,8 +27,8 @@ Some HTML elements or attributes have native semantics that map, by default, to 
 
 ### What to do
 
-* If a native HTML element fits the intended behavior, use that instead of adding ARIA markup;
-* OR, update the role and/or attributes on the element using the guidance in the [Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) section of the W3C ARIA in HTML specification. This reference provides details of valid ARIA markup on native HTML elements.
+* If a native HTML attribute fits the intended behavior, use that instead of adding ARIA markup;
+* OR, update the attributes on the element using the guidance in the [Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) section of the W3C ARIA in HTML specification. This reference provides details of valid ARIA markup on native HTML elements.
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">

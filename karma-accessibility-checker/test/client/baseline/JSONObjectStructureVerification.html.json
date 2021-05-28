@@ -318,7 +318,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -526,7 +526,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -762,7 +762,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -970,7 +970,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1178,7 +1178,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1438,7 +1438,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1776,7 +1776,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2074,7 +2074,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2412,7 +2412,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2646,7 +2646,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2970,7 +2970,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3256,7 +3256,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3516,7 +3516,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Aria_Native_Host_Sematics",
+            "ruleId": "HAAC_Aria_Native_Host_Semantics",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3577,7 +3577,7 @@
         "IBMA_Color_Contrast_WCAG2AA_PV": {
             "Pass_0": "Rule Passed"
         },
-        "HAAC_Aria_Native_Host_Sematics": {
+        "HAAC_Aria_Native_Host_Semantics": {
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
