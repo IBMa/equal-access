@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { RPTUtil, RPTUtilStyle, NodeWalker } from "../util/legacy";
 
 let a11yRulesColor: Rule[] = [
@@ -212,7 +213,7 @@ let a11yRulesColor: Rule[] = [
                     if (isLink(walkPrev.node) || isItem(walkPrev.node))
                         break;
                     if (walkPrev.node.nodeType == 3 && walkPrev.node.nodeValue.trim().length > 0) {
-                        walkPrev.node = walkPrev.node.parentNode;
+                        walkPrev.node = DOMUtil.parentNode(walkPrev.node);
                         cache.prev = testInfo(walkPrev.node);
                         break;
                     }
@@ -224,7 +225,7 @@ let a11yRulesColor: Rule[] = [
                     if (isLink(walkNext.node) || isItem(walkNext.node))
                         break;
                     if (walkNext.node.nodeType == 3 && walkNext.node.textContent.trim().length > 0) {
-                        walkNext.node = walkNext.node.parentNode;
+                        walkNext.node = DOMUtil.parentNode(walkNext.node);
                         cache.next = testInfo(walkNext.node);
                         break;
                     }

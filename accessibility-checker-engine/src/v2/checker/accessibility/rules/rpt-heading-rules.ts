@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
 let a11yRulesHeading: Rule[] = [
@@ -103,8 +104,8 @@ let a11yRulesHeading: Rule[] = [
             let passed = false;
             while (!passed &&
                 nw.nextNode() &&
-                nw.node != ruleContext &&
-                nw.node != ruleContext.parentNode &&
+                nw.node !== ruleContext &&
+                nw.node !== DOMUtil.parentNode(ruleContext) &&
                 !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
             {
                 let nwName = nw.node.nodeName.toLowerCase();
