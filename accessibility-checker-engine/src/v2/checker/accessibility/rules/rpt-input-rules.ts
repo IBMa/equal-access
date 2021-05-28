@@ -378,8 +378,10 @@ let a11yRulesInput: Rule[] = [
                 let checkboxQ = [];
                 let radiosQ = [];
                 while (cWalker.nextNode()) {
-                    if (cWalker.node.nodeType === 1 
-                        && cWalker.node.nodeName.toLowerCase() === "input")
+                    if (!cWalker.bEndTag
+                        && cWalker.node.nodeType === 1 
+                        && cWalker.node.nodeName.toLowerCase() === "input"
+                        && RPTUtil.isNodeVisible(cWalker.node))
                     {
                         let type = (cWalker.node as Element).getAttribute("type");
                         if (type === "checkbox") {
