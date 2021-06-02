@@ -18,6 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil } from "../util/legacy";
 import { FragmentUtil } from "../util/fragment";
 import { LangUtil } from "../util/lang";
+import { DOMUtil } from "../../../dom/DOMUtil";
 
 let a11yRulesElem: Rule[] = [
     {
@@ -160,7 +161,7 @@ let a11yRulesElem: Rule[] = [
                 // assume the validity of the id (of aria-labelledby) is checked by a different rule
                 passed = true;
             } else if (ruleContext.nodeName.toLowerCase() === "input"
-                && ruleContext.parentNode.nodeName.toLowerCase() === "label") {
+                && DOMUtil.parentNode(ruleContext).nodeName.toLowerCase() === "label") {
                 // assume the validity of the label, e.g. empty label, is checked by a different rule
                 passed = true;
             }

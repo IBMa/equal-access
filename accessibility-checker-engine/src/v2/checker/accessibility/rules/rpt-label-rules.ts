@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -218,7 +219,7 @@ let a11yRulesLabel: Rule[] = [
                     // look for a <label> element
                     let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
                     if (!labelElem) {
-                        let parentNode = ruleContext.parentNode;
+                        let parentNode = DOMUtil.parentNode(ruleContext);
                         if (parentNode.nodeName.toLowerCase() === "label" /*&& RPTUtil.isFirstFormElement(parentNode, ruleContext)*/) {
                             let parentClone = parentNode.cloneNode(true);
                             // exclude all form elements from the label since they might also have inner content

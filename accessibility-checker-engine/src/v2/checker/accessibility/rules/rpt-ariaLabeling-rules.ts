@@ -649,9 +649,9 @@ let a11yRulesLabeling: Rule[] = [
 
             let passed = RPTUtil.hasAriaLabel(ruleContext);
             if (!passed) {
-                passed = RPTUtil.getAncestorWithRole(ruleContext, "menubar") ||
-                    RPTUtil.getAncestorWithRole(ruleContext, "menu") ||
-                    RPTUtil.getAncestorWithRole(ruleContext, "tree");
+                passed = !!RPTUtil.getAncestorWithRole(ruleContext, "menubar") ||
+                    !!RPTUtil.getAncestorWithRole(ruleContext, "menu") ||
+                    !!RPTUtil.getAncestorWithRole(ruleContext, "tree");
                 if (passed) {
                     // Rule does not apply in a menubar/menu/tree
                     return null;

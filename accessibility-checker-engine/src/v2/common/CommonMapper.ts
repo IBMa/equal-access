@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { IMapper, IMapResult, Bounds } from "../api/IMapper";
+import { DOMUtil } from "../dom/DOMUtil";
 
 export abstract class CommonMapper implements IMapper {
     abstract childrenHaveRole(node: Node, role: string) : boolean;
@@ -46,10 +47,10 @@ export abstract class CommonMapper implements IMapper {
         }];
 
         let ancestors : Node[] = [];
-        let parent = node.parentNode;
+        let parent = DOMUtil.parentNode(node);
         while (parent && parent.nodeType != 9 /* Node.DOCUMENT_NODE */) {
             ancestors.push(parent);
-            parent = parent.parentNode;
+            parent = DOMUtil.parentNode(parent);
         }
         ancestors = ancestors.reverse();
 
