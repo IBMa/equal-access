@@ -1325,6 +1325,9 @@ let a11yRulesAria: Rule[] = [{
         // The the ARIA role is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
         let role = ARIAMapper.nodeToRole(ruleContext);
+        if (!role) {
+            role = "none";
+        }
         let tagName = ruleContext.tagName.toLowerCase();
 
         // Failing attributes
