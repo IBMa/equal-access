@@ -307,6 +307,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                             <Modal 
                                 aria-label="Delete stored scans"
                                 modalHeading="Delete stored scans"
+                                size='sm'
                                 danger={true}
                                 open={this.state.deleteModal}
                                 shouldSubmitOnEnter={false}
