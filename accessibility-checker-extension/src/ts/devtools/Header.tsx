@@ -19,7 +19,7 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem
+    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem, Modal
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
 import { ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
@@ -32,7 +32,9 @@ import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
 const { prefix } = settings;
-interface IHeaderState { }
+interface IHeaderState {
+    deleteModal: boolean
+ }
 
 interface IHeaderProps {
     layout: "main" | "sub",
@@ -82,7 +84,9 @@ interface IHeaderProps {
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
-    state: IHeaderState = {};
+    state: IHeaderState = {
+        deleteModal: false
+     };
 
     processFilterCheckBoxes(value: boolean, id: string) {
         // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
@@ -97,15 +101,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         if (newItems[1] == true && newItems[2] == true && newItems[3] == true) {
             // console.log("All true");
             newItems[0] = true;
-            this.setState({ showIssueTypeFilter: newItems });
+            // this.setState({ showIssueTypeFilter: newItems });
         } else if (newItems[1] == false && newItems[2] == false && newItems[3] == false) {
             // console.log("All false");
             newItems[0] = true;
-            this.setState({ showIssueTypeFilter: newItems });
+            // this.setState({ showIssueTypeFilter: newItems });
         } else {
             // console.log("Mixed");
             newItems[0] = false;
-            this.setState({ showIssueTypeFilter: newItems });
+            // this.setState({ showIssueTypeFilter: newItems });
         }
         // console.log("After process: ", newItems);
         this.props.showIssueTypeCheckBoxCallback(newItems);
@@ -137,6 +141,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         } else {
             return false;
         }
+    }
+    
+    deleteModalHandler() {
+        this.setState({ 
+            deleteModal: true, 
+        });
     }
 
 
@@ -231,8 +241,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.actualStoredScansCount() == 0 ? true : false}
-                                itemText="Clear stored scans" 
-                                onClick={() => this.props.clearStoredScans(true) }
+                                itemText="Delete stored scans" 
+                                // onClick={() => this.props.clearStoredScans(true) }
+                                onClick={() => this.deleteModalHandler() }
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
@@ -247,6 +258,31 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onClick={this.props.reportManagerHandler} // need to pass selected as scanType
                             />
                         </OverflowMenu>
+                        <Modal
+                            aria-label="Delete stored scans"
+                            modalHeading="Delete stored scans"
+                            open={this.state.deleteModal}
+                            shouldSubmitOnEnter={false}
+                            onRequestClose={(() => {
+                                this.setState({ deleteModal: false });
+                            }).bind(this)}
+                            onRequestSubmit={(() => {
+                                this.setState({ deleteModal: false });
+                                this.props.clearStoredScans(true);
+                            }).bind(this)}
+                            danger={true}
+                            size='sm'
+                            selectorPrimaryFocus=".bx--modal-footer .bx--btn--secondary"
+                            primaryButtonText="Delete"
+                            secondaryButtonText="Cancel"
+                            primaryButtonDisabled={false}
+                            preventCloseOnClickOutside={true}
+                        >
+                            <p style={{ marginBottom: '1rem' }}>
+                                Are you sure you want to delete stored scans?
+                                This action is irreversible.
+                            </p>
+                        </Modal>
                         {/* {isLatestArchive ? "" : ( */}
                             <Tooltip iconDescription="Ruleset info">
                                 <p id="tooltip-body">
