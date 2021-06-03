@@ -20,6 +20,8 @@ interface IReportManagerTableState {
     pageTitle: string,
     date: string,
     userScanLabel: string,
+    deleteModal: boolean,
+    deleteModalSelectedRows: any
 }
 
 interface IReportManagerTableProps {
@@ -66,6 +68,8 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
         pageTitle: "",
         date: "",
         userScanLabel: "",
+        deleteModal: false,
+        deleteModalSelectedRows: null
     };
 
     format_date(timestamp: string) {
@@ -136,6 +140,12 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
             //@ts-ignore
             date: this.format_date(this.props.storedScans[rowNum].dateTime).toString(),
             userScanLabel: this.props.storedScans[rowNum].userScanLabel,
+        });
+    }
+
+    deleteModalHandler() {
+        this.setState({ 
+            deleteModal: true, 
         });
     }
 
@@ -220,7 +230,15 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                     <TableBatchAction
                                         tabIndex={getBatchActionProps().shouldShowBatchActions ? 0 : -1}
                                         renderIcon={Delete16}
-                                        onClick={() => this.deleteSelected(selectedRows)}
+                                        //onClick={() => this.deleteSelected(selectedRows)}
+                                        onClick={(() => {
+                                            this.setState({ deleteModalSelectedRows: selectedRows });
+                                            this.deleteModalHandler();
+                                            // console.log(selectedRows);
+                                            // console.log(typeof selectedRows);
+                                            // this.deleteSelected(selectedRows);
+                                            // this.props.clearStoredScans(true);
+                                        }).bind(this)}
                                     >
                                         Delete
                                     </TableBatchAction>
@@ -285,6 +303,30 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                         <div>{this.state.date}</div>
                                     </div>
                                 </div>
+                            </Modal>
+                            <Modal 
+                                aria-label="Delete stored scans"
+                                modalHeading="Delete stored scans"
+                                danger={true}
+                                open={this.state.deleteModal}
+                                shouldSubmitOnEnter={false}
+                                onRequestClose={(() => {
+                                    this.setState({ deleteModal: false });
+                                }).bind(this)}
+                                onRequestSubmit={(() => {
+                                    this.setState({ deleteModal: false });
+                                    this.deleteSelected(this.state.deleteModalSelectedRows);
+                                }).bind(this)}
+                                selectorPrimaryFocus=".bx--modal-footer .bx--btn--secondary"
+                                primaryButtonText="Delete"
+                                secondaryButtonText="Cancel"
+                                primaryButtonDisabled={false}
+                                preventCloseOnClickOutside={true}
+                            >
+                                <p style={{ marginBottom: '1rem' }}>
+                                    Are you sure you want to delete selected scans?
+                                    This action is irreversible.
+                                </p>
                             </Modal>
                             </React.Fragment>
                         )}
