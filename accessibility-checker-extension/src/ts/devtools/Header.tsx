@@ -19,10 +19,10 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, Tooltip, OverflowMenu, OverflowMenuItem, Modal
+    Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
@@ -33,7 +33,8 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 
 const { prefix } = settings;
 interface IHeaderState {
-    deleteModal: boolean
+    deleteModal: boolean,
+    modalRulsetInfo: boolean,
  }
 
 interface IHeaderProps {
@@ -84,9 +85,30 @@ interface IHeaderProps {
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
+    infoButton1Ref: React.RefObject<HTMLButtonElement>;
+    infoButton2Ref: React.RefObject<HTMLButtonElement>;
+    constructor(props:any) {
+        super(props);
+        this.infoButton1Ref = React.createRef();
+        this.infoButton2Ref = React.createRef();
+    }
+    
     state: IHeaderState = {
-        deleteModal: false
-     };
+        deleteModal: false,
+        modalRulsetInfo: false,
+    };
+
+    focusInfoButton1() {
+        setTimeout(() => {
+            this.infoButton1Ref.current?.focus();
+        }, 0);
+    }
+
+    focusInfoButton2() {
+        setTimeout(() => {
+            this.infoButton2Ref.current?.focus();
+        }, 0);
+    }
 
     processFilterCheckBoxes(value: boolean, id: string) {
         // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
@@ -283,22 +305,44 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 This action is irreversible.
                             </p>
                         </Modal>
-                        {/* {isLatestArchive ? "" : ( */}
-                            <Tooltip iconDescription="Ruleset info">
-                                <p id="tooltip-body">
-                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
-                                </p>
-                                <div className={`${prefix}--tooltip__footer`}>
-                                    <a
-                                        href={chrome.runtime.getURL("options.html")}
-                                        target="_blank"
-                                        className={`${prefix}--link`}
-                                    >
-                                        Change rule set
-                                    </a>
-                                </div>
-                            </Tooltip>
-                        {/* )} */}
+                        <Button 
+                            ref={this.infoButton1Ref}
+                            renderIcon={Information16} 
+                            kind="ghost"   
+                            hasIconOnly iconDescription="Ruleset info" tooltipPosition="top" 
+                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                            onClick={(() => {
+                                this.setState({ modalRulsetInfo: true });
+                            }).bind(this)}>
+                        </Button>
+                        <Modal
+                            aria-label="Ruleset information"
+                            modalHeading="Ruleset Information"
+                            size='xs'
+                            passiveModal={true}
+                            open={this.state.modalRulsetInfo}
+                            onRequestClose={(() => {
+                                this.setState({ modalRulsetInfo: false });
+                                this.focusInfoButton1();
+                            }).bind(this)}
+                        >
+                            <p>
+                                You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
+                                <span>{<br/>}</span>
+                                The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                            </p>
+                            <br></br>
+                            <div>
+                                <a
+                                    href={chrome.runtime.getURL("options.html")}
+                                    target="_blank"
+                                    className={`${prefix}--link`}
+                                >
+                                    Change rule set
+                                </a>
+                            </div>       
+                        </Modal>
                     </div>
                     <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
@@ -354,22 +398,43 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        {/* {isLatestArchive ? "" : ( */}
-                            <Tooltip iconDescription="Ruleset info">
-                                <p id="tooltip-body">
-                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}. The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
-                                </p>
-                                <div className={`${prefix}--tooltip__footer`}>
-                                    <a
-                                        href={chrome.runtime.getURL("options.html")}
-                                        target="_blank"
-                                        className={`${prefix}--link`}
-                                    >
-                                        Change rule set
-                                    </a>
-                                </div>
-                            </Tooltip>
-                        {/* )} */}
+                        <Button 
+                            ref={this.infoButton2Ref}
+                            renderIcon={Information16} 
+                            kind="ghost"   
+                            hasIconOnly iconDescription="Ruleset info" tooltipPosition="top" 
+                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                            onClick={(() => {
+                                this.setState({ modalRulsetInfo: true });
+                            }).bind(this)}>
+                        </Button>
+                        <Modal
+                            aria-label="Ruleset information"
+                            modalHeading="Ruleset Information"
+                            passiveModal={true}
+                            open={this.state.modalRulsetInfo}
+                            onRequestClose={(() => {
+                                this.setState({ modalRulsetInfo: false });
+                                this.focusInfoButton2();
+                            }).bind(this)}
+                        >
+                            <p>
+                                You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
+                                <span>{<br/>}</span>
+                                The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                            </p>
+                            <br></br>
+                            <div>
+                                <a
+                                    href={chrome.runtime.getURL("options.html")}
+                                    target="_blank"
+                                    className={`${prefix}--link`}
+                                >
+                                    Change rule set
+                                </a>
+                            </div>       
+                        </Modal>
                     </div>
                     <div className="bx--col-sm-1" style={{ position: "relative" }}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
