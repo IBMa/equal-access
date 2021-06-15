@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { RPTUtil } from "../../accessibility/util/legacy";
 
 const PALETTE = [
@@ -35,12 +36,12 @@ let designRulesColor: Rule[] = [{
             child = child.nextSibling;
         }
         let inBody = false;
-        let parentWalk = ruleContext;
+        let parentWalk : Element = ruleContext;
         while (parentWalk) {
             if (parentWalk.nodeName.toLowerCase() === "body") {
                 inBody = true;
             }
-            parentWalk = parentWalk.parentElement;
+            parentWalk = DOMUtil.parentElement(parentWalk);
         }
         if (!hasText || !inBody) {
             return null;
@@ -63,12 +64,12 @@ let designRulesColor: Rule[] = [{
     context: "dom:*",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        let parentWalk = ruleContext.parentElement;
+        let parentWalk = DOMUtil.parentElement(ruleContext);
         while (parentWalk) {
             if (RPTUtil.getCache(parentWalk, "DESIGN_COLOR_Palette_Background", null)) {
                 return null;
             }
-            parentWalk = parentWalk.parentElement;
+            parentWalk = DOMUtil.parentElement(parentWalk);
         }
         let colorCombo = RPTUtil.ColorCombo(ruleContext);
         let bg = colorCombo.bg.toHex();
