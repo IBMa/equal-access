@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { DOMWalker } from "../../../dom/DOMWalker";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
@@ -121,9 +122,9 @@ let a11yRulesInput: Rule[] = [
 
             // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
             if (!passed && (buttonTypes.indexOf(type) !== -1)) {
-                if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && ruleContext.parentElement.hasAttribute("widgetid")) {
+                if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMUtil.parentElement(ruleContext).hasAttribute("widgetid")) {
                     // Special handling for dijit buttons
-                    let labelId = ruleContext.parentElement.getAttribute("widgetid") + "_label";
+                    let labelId = DOMUtil.parentElement(ruleContext).getAttribute("widgetid") + "_label";
                     let label = FragmentUtil.getById(ruleContext, labelId);
                     if (label != null) {
                         passed = RPTUtil.hasInnerContentHidden(label);

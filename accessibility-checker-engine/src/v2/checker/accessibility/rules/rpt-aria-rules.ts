@@ -19,6 +19,7 @@ import { RPTUtil, NodeWalker } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
 import { ARIAMapper } from "../../../..";
+import { DOMUtil } from "../../../dom/DOMUtil";
 
 let a11yRulesAria: Rule[] = [{
     /**
@@ -710,10 +711,10 @@ let a11yRulesAria: Rule[] = [{
             passed = parentRoles.filter(role => role in params.mapLandmarks).length > 0
             if (!passed) {
                 // Don't fail elements when a parent or sibling has failed - causes too many messages.
-                let walkElement = ruleContext.parentElement as Element;
+                let walkElement = DOMUtil.parentElement(ruleContext);
                 while (!passed && walkElement != null) {
                     passed = RPTUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
-                    walkElement = walkElement.parentElement;
+                    walkElement = DOMUtil.parentElement(walkElement);
                 }
                 walkElement = ruleContext.nextElementSibling;
                 while (!passed && walkElement != null) {
@@ -1191,7 +1192,7 @@ let a11yRulesAria: Rule[] = [{
             // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
             // and continue to the next node.
             while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("autocomplete")))) {
-                myNode = myNode.parentElement;
+                myNode = DOMUtil.parentElement(myNode);
             }
 
             if ((myNode != null) && (myNode.hasAttribute("autocomplete"))) {
@@ -1220,7 +1221,7 @@ let a11yRulesAria: Rule[] = [{
             // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
             // and continue to the next node.
             while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("disabled")))) {
-                myNode = myNode.parentElement;
+                myNode = DOMUtil.parentElement(myNode);
             }
 
             if ((myNode != null) && (myNode.hasAttribute("disabled"))) {

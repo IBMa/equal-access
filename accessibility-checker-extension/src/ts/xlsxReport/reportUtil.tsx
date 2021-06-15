@@ -44,7 +44,7 @@ export default class ReportUtil {
     public static single_page_report_file_name(tab_title: string) {
 
         var tab_title_substring = tab_title ? tab_title.substring(0, 50) : "";
-        var file_name = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tab_title_substring + ".xlsx";
+        var file_name = "Accessibility_Report-" + tab_title_substring + ".xlsx";
 
         //replace illegal characters in file name
         file_name = file_name.replace(/[/\\?%*:|"<>]/g, '-');

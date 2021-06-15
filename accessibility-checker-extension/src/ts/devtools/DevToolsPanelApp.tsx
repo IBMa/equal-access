@@ -665,7 +665,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
                 var tabTitle: string = this.state.tabTitle;
                 var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-                var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
+                var filename = "Accessibility_Report-" + tabTitleSubString + ".html";
                 //replace illegal characters in file name
                 filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
     

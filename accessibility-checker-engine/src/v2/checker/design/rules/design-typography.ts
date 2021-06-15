@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { RPTUtil } from "../../accessibility/util/legacy";
 
 let designRulesType: Rule[] = [{
@@ -23,7 +24,7 @@ let designRulesType: Rule[] = [{
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         let inBody = false;
-        let parentWalk = ruleContext;
+        let parentWalk : Element = ruleContext;
         while (parentWalk) {
             if (parentWalk.nodeName.toLowerCase() === "style" || parentWalk.nodeName.toLowerCase() === "script") {
                 inBody = false;
@@ -32,7 +33,7 @@ let designRulesType: Rule[] = [{
             if (parentWalk.nodeName.toLowerCase() === "body") {
                 inBody = true;
             }
-            parentWalk = parentWalk.parentElement;
+            parentWalk = DOMUtil.parentElement(parentWalk);
         }
         let hasText = false;
         let child : Node = ruleContext.firstChild;
@@ -61,12 +62,12 @@ let designRulesType: Rule[] = [{
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         let inBody = false;
-        let parentWalk = ruleContext;
+        let parentWalk : Element = ruleContext;
         while (parentWalk) {
             if (parentWalk.nodeName.toLowerCase() === "body") {
                 inBody = true;
             }
-            parentWalk = parentWalk.parentElement;
+            parentWalk = DOMUtil.parentElement(parentWalk);
         }
         let hasText = (ruleContext.innerText || "").trim().length > 0;
         if (!inBody || !hasText) {

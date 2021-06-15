@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -27,7 +28,7 @@ let a11yRulesHier: Rule[] = [{
     context: "aria:group",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let parent = ruleContext.parentElement;
+        let parent = DOMUtil.parentElement(ruleContext);
         if (!RPTUtil.hasRoleInSemantics(parent, "list")) {
             return null;
         }
