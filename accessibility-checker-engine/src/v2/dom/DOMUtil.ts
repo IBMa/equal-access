@@ -17,17 +17,17 @@
 export class DOMUtil {
     
     static hasParent(node: Node, names:string[]) {
-        let p = node.parentElement;
+        let p = DOMUtil.parentElement(node);
         while (p && !names.includes(p.nodeName)) {
-            p = p.parentElement;
+            p = DOMUtil.parentElement(p);
         }
         return !!p;
     }
 
     static getAncestor(node: Node, names:string[]) {
-        let p = node.parentElement;
+        let p = DOMUtil.parentElement(node);
         while (p && !names.includes(p.nodeName.toLowerCase())) {
-            p = p.parentElement;
+            p = DOMUtil.parentElement(p);
         }
         return p;
     }
@@ -36,7 +36,7 @@ export class DOMUtil {
         try {
             let vis = null;
             while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
-                node = node.parentElement;
+                node = DOMUtil.parentElement(node);
             }
             let elem = node as Element;
             let w = elem.ownerDocument.defaultView;
@@ -47,7 +47,7 @@ export class DOMUtil {
                     vis = cs.visibility;
                     if (vis === "hidden") return false;
                 }
-                elem = elem.parentElement;
+                elem = DOMUtil.parentElement(elem);
             } while (elem);
             return true;
         } catch (err) {
@@ -90,5 +90,13 @@ export class DOMUtil {
             }
         }
         return p;
+    }
+
+    static parentElement(node: Node) : Element | null {
+        let elem;
+        do {
+            elem = DOMUtil.parentNode(node) as Element;
+        } while (elem && elem.nodeType !== 1);
+        return elem;
     }
 }

@@ -2084,7 +2084,7 @@ export class RPTUtil {
                 // In the case we detect nodetype as text node and the patent of the text node is
                 // the same element we are checking has Inner content for then get the inner content of this
                 // text node.
-                if (node.nodeType === 3 && node.parentElement === element) {
+                if (node.nodeType === 3 && DOMUtil.parentElement(node) === element) {
                     // Check if the innerText of the element is empty or not
                     hasContent = !RPTUtil.isInnerTextEmpty(node);
                 }
@@ -2997,11 +2997,11 @@ export class RPTUtil {
         }
 
         var ancestors = [];
-        var walkNode = ruleContext;
+        let walkNode : Element = ruleContext;
         while (walkNode) {
             if (walkNode.nodeType === 1)
                 ancestors.push(walkNode);
-            walkNode = walkNode.parentElement;
+            walkNode = DOMUtil.parentElement(walkNode);
         }
 
         var retVal = {
