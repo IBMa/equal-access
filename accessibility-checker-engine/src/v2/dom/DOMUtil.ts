@@ -93,9 +93,9 @@ export class DOMUtil {
     }
 
     static parentElement(node: Node) : Element | null {
-        let elem;
+        let elem : Element = node as Element;
         do {
-            elem = DOMUtil.parentNode(node) as Element;
+            elem = DOMUtil.parentNode(elem) as Element;
         } while (elem && elem.nodeType !== 1);
         return elem;
     }
