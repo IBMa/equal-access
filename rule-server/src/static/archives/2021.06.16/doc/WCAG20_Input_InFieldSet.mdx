@@ -1,0 +1,62 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_InFieldSet"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Use the `<fieldset>` element to group logically related input elements
+
+<div id="locLevel"></div>
+
+Groups of logically related input elements should be contained within a `<fieldset>` element
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Groups of logically related input elements must be contained within a fieldset element. All controls within a given fieldset element are then related and the relationship may then provided to the user by user agents.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Use a `<fieldset>` element to group the related input elements.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;form action="..." method="post"&gt;
+    &lt;fieldset&gt;
+        &lt;legend&gt;Legend text: Personal Information&lt;/legend&gt;
+        &lt;p&gt;Fieldset text: Please enter your personal information.&lt;/p&gt;
+        &lt;label for="fn1"&gt;First Name&lt;/label&gt;
+        &lt;input type="text" name="firstname" id="fn1" value="enter first name" title="enter first name"&gt;
+        &lt;label for="ln1"&gt;Last Name&lt;/label&gt;
+        &lt;input type="text" name="lastname" id="ln1" value="enter last name" title="enter last name"&gt;
+    &lt;/fieldset&gt;
+&lt;/form&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+[WCAG 2.1 HTML technique H71](https://www.w3.org/WAI/WCAG21/Techniques/html/H71)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People who rely on keyboard control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
