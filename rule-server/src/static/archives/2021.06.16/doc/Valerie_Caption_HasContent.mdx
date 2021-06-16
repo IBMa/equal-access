@@ -1,0 +1,59 @@
+---
+title: "Accessibility Checker Rule Help: Valerie_Caption_HasContent"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### A `<table>` element has an empty `<caption>` element
+
+<div id="locLevel"></div>
+
+A `<caption>` element for a `<table>` element must contain descriptive text
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The caption for a table is an identifier and acts like a title or heading for the table. The `<caption>` element allows screen readers to navigate directly to the caption to get the description of the table.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Add descriptive text to the `<caption>` element.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;table id="data_table1" border="1"&gt;
+&lt;caption&gt;Boys and Girls in Elementary School Classes&lt;/caption&gt;
+	&lt;tr&gt;
+		&lt;th scope="col"&gt;Class&lt;/th&gt;
+		&lt;th scope="col"&gt;# of Boys&lt;/th&gt;
+		&lt;th scope="col"&gt;# of Girls&lt;/th&gt;
+	&lt;/tr&gt;
+&lt;/table&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+[WCAG 2.1 technique H39](https://www.w3.org/WAI/WCAG21/Techniques/html/H39)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
