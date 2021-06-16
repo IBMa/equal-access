@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_OrphanedContent_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Content is not within a landmark element
+
+<div id="locLevel"></div>
+
+All content must reside within an element with a landmark role
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Landmark roles provide programmatic access to sections of a web page, making it easy for the user to understand the structure of the page and easily navigate to different sections. They also enable users to skip over blocks of content that are repeated on multiple pages.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Enclose the content within an HTML5 sectioning element with an implicit landmark role (e.g. `<main>Content</main>`);
+* OR use the `"role"` attribute on an enclosing element to specify an appropriate WAI-ARIA landmark value (e.g. `<div role="contentinfo">...</div>`).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+[IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+[WCAG 2.1 technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
+[HTML5 Sectioning elements](https://www.w3.org/TR/wai-aria-practices/examples/landmarks/HTML5.html)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People who physically cannot use a pointing device
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
