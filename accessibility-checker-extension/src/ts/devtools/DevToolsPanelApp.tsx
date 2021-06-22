@@ -207,6 +207,78 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             let archiveId = process.env.defaultArchiveId + "";
             const archives = await self.getArchives();
             const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
+            console.log("validArchive = ", validArchive);
+            //if default archive id is not good, pick 'latest'
+            if (!validArchive(archiveId)){ 
+                archiveId = "latest";
+            }
+
+            //use archive id if it is in storage,
+            if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
+                archiveId = result.OPTIONS.selected_archive.id;
+            }
+
+            let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
+            console.log("archiveId = ", archiveId);
+
+            let policyId: string = selectedArchive.policies[0].id;
+            const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
+            console.log("validPolicy = ", validPolicy);
+            if (!validPolicy(policyId)){ 
+                policyId = "IBM_Accessibility";
+            }
+
+            //use policy id if it is in storage
+            if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
+                policyId = result.OPTIONS.selected_ruleset.id;
+            }
+            console.log("policyId = ", policyId);
+            
+            // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
+            // and get url using chrome.tabs.get via message "TAB_INFO"
+            let thisTabId = chrome.devtools.inspectedWindow.tabId;
+            let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
+            if (tab.id && tab.url && tab.id && tab.title) {
+                let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
+
+                if (rulesets.error) {
+                    self.setError(rulesets);
+                    return;
+                }
+
+                if (!self.state.listenerRegistered) {
+                    PanelMessaging.addListener("TAB_UPDATED", async message => {
+                        self.setState({ tabTitle: message.tabTitle }); // added so titles updated
+                        if (message.tabId === self.state.tabId && message.status === "loading") {
+                            if (message.tabUrl && message.tabUrl != self.state.tabURL) {
+                                self.setState({ report: null, tabURL: message.tabUrl });
+                            }
+                        }
+                    });
+                    
+                    PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+
+                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
+                }
+                if (self.props.layout === "sub") {
+                    self.selectElementInElements();
+                }
+                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
+                    tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
+                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
+            }
+        });
+    }
+
+    readOptionsData() {
+        console.log("readOptionsData");
+        var self = this;
+        chrome.storage.local.get("OPTIONS", async function (result: any) {
+            //pick default archive id from env
+            let archiveId = process.env.defaultArchiveId + "";
+            const archives = await self.getArchives();
+            const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
+            
             //if default archive id is not good, pick 'latest'
             if (!validArchive(archiveId)){ 
                 archiveId = "latest";
@@ -219,8 +291,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
 
+            console.log("archiveId = ", archiveId);
+
             let policyId: string = selectedArchive.policies[0].id;
             const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
+            
             if (!validPolicy(policyId)){ 
                 policyId = "IBM_Accessibility";
             }
@@ -229,8 +304,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
                 policyId = result.OPTIONS.selected_ruleset.id;
             }
+            console.log("policyId = ", policyId);
 
-            
             // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
             // and get url using chrome.tabs.get via message "TAB_INFO"
             let thisTabId = chrome.devtools.inspectedWindow.tabId;
@@ -303,6 +378,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({firstScan: true});
         }
         this.state.prevTabURL = tabURL;
+
+        this.readOptionsData();
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -683,15 +760,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    
-
     xlsxReportHandler = (scanType:string) => {
         // console.log("xlsxReportHandler");
         //@ts-ignore
         MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
     }
-
-    
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {

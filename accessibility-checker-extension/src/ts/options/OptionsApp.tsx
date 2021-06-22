@@ -254,7 +254,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   <Button 
                         renderIcon={Information16} 
                         kind="ghost"   
-                        hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
+                        hasIconOnly iconDescription="Guidelines info" tooltipPosition="top" 
                         style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                                 paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
                         onClick={(() => {
