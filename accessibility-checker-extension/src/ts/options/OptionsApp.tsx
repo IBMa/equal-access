@@ -25,7 +25,7 @@ import {
 
 import { Restart16, Save16, Information16 } from "@carbon/icons-react";
 import OptionMessaging from "../util/optionMessaging";
-import OptionUtil  from '../util/optionUtil';
+// import OptionUtil  from '../util/optionUtil';
 import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 
 interface OptionsAppState {
@@ -66,6 +66,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       if (result != null && result.OPTIONS == undefined) {
         //find the latest archive
         selected_archive = self.getLatestArchive(archives);
+        
         rulesets = await self.getRulesets(selected_archive);
         selected_ruleset = rulesets[0];
       } else {
@@ -165,8 +166,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       ...this.state,
     };
 
-    var rulesetDate = OptionUtil.getRuleSetDate(selected_archive?.id, archives);
-
     const manifest = chrome.runtime.getManifest();
     if (archives && rulesets) {
       return (
@@ -217,7 +216,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   <Dropdown
                     ariaLabel={undefined}
                     disabled={false}
-                    helperText={"Currently active: " + rulesetDate}
+                    // helperText={"Currently active: " + currentArchiveName}
                     id="archivedRuleset"
                     items={archives}
                     itemToString={(item: any) => (item ? item["name"] : "")}
@@ -266,7 +265,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 <Dropdown
                   ariaLabel={undefined}
                   disabled={false}
-                  helperText={"Currently active: " + rulesets[0].name}
+                  // helperText={"Currently active: " + rulesets[0].name}
                   id="rulesetSelection"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}

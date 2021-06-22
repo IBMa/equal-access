@@ -200,78 +200,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
-        console.log("componentDidMount");
-        var self = this;
-        chrome.storage.local.get("OPTIONS", async function (result: any) {
-            //pick default archive id from env
-            let archiveId = process.env.defaultArchiveId + "";
-            const archives = await self.getArchives();
-            const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
-            console.log("validArchive = ", validArchive);
-            //if default archive id is not good, pick 'latest'
-            if (!validArchive(archiveId)){ 
-                archiveId = "latest";
-            }
-
-            //use archive id if it is in storage,
-            if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
-                archiveId = result.OPTIONS.selected_archive.id;
-            }
-
-            let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
-            console.log("archiveId = ", archiveId);
-
-            let policyId: string = selectedArchive.policies[0].id;
-            const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
-            console.log("validPolicy = ", validPolicy);
-            if (!validPolicy(policyId)){ 
-                policyId = "IBM_Accessibility";
-            }
-
-            //use policy id if it is in storage
-            if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
-                policyId = result.OPTIONS.selected_ruleset.id;
-            }
-            console.log("policyId = ", policyId);
-            
-            // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
-            // and get url using chrome.tabs.get via message "TAB_INFO"
-            let thisTabId = chrome.devtools.inspectedWindow.tabId;
-            let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
-            if (tab.id && tab.url && tab.id && tab.title) {
-                let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
-
-                if (rulesets.error) {
-                    self.setError(rulesets);
-                    return;
-                }
-
-                if (!self.state.listenerRegistered) {
-                    PanelMessaging.addListener("TAB_UPDATED", async message => {
-                        self.setState({ tabTitle: message.tabTitle }); // added so titles updated
-                        if (message.tabId === self.state.tabId && message.status === "loading") {
-                            if (message.tabUrl && message.tabUrl != self.state.tabURL) {
-                                self.setState({ report: null, tabURL: message.tabUrl });
-                            }
-                        }
-                    });
-                    
-                    PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
-
-                    PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
-                }
-                if (self.props.layout === "sub") {
-                    self.selectElementInElements();
-                }
-                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                    tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
-                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
-            }
-        });
+        // console.log("componentDidMount");
+        this.readOptionsData();
     }
 
     readOptionsData() {
-        console.log("readOptionsData");
+        // console.log("readOptionsData");
         var self = this;
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
@@ -291,9 +225,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
 
-            console.log("archiveId = ", archiveId);
-
             let policyId: string = selectedArchive.policies[0].id;
+            let policyName: string = selectedArchive.policies[0].name;
             const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
             
             if (!validPolicy(policyId)){ 
@@ -303,8 +236,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             //use policy id if it is in storage
             if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
                 policyId = result.OPTIONS.selected_ruleset.id;
+                policyName = result.OPTIONS.selected_ruleset.name;
             }
-            console.log("policyId = ", policyId);
 
             // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
             // and get url using chrome.tabs.get via message "TAB_INFO"
@@ -337,7 +270,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                     tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
-                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
+                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyName });
             }
         });
     }
@@ -992,6 +925,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             focusedViewFilter={this.state.focusedViewFilter}
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
+                            readOptionsData={this.readOptionsData.bind(this)}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1071,6 +1005,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         focusedViewFilter={this.state.focusedViewFilter}
                         focusedViewText={this.state.focusedViewText}
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
+                        readOptionsData={this.readOptionsData.bind(this)}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
