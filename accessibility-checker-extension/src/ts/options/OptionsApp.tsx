@@ -31,20 +31,25 @@ import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 interface OptionsAppState {
   archives: any;
   selected_archive: any;
+  currentArchive: any;
   rulesets: any;
   selected_ruleset: any;
+  currentRuleset: any;
   show_notif: boolean;
   show_reset_notif: boolean;
   modalRuleSet: boolean;
   modalGuidelines: boolean;
+  
 }
 
 class OptionsApp extends React.Component<{}, OptionsAppState> {
   state: OptionsAppState = {
     archives: [],
     selected_archive: null,
+    currentArchive: null,
     rulesets: null,
     selected_ruleset: null,
+    currentRuleset: null,
     show_notif: false,
     show_reset_notif: false,
     modalRuleSet: false,
@@ -59,8 +64,10 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
       //always sync archives with server
       var archives = await self.getArchives();
       var selected_archive: any = null;
+      var currentArchive: any = null;
       var rulesets: any = null;
       var selected_ruleset: any = null;
+      var currentRuleset: any = null;
 
       //OPTIONS are not in storage
       if (result != null && result.OPTIONS == undefined) {
@@ -94,7 +101,15 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         }
       }
 
-      self.setState({ archives, selected_archive, rulesets, selected_ruleset });
+      currentArchive = selected_archive.name;
+      currentRuleset = selected_ruleset.name;
+
+      // self.setState({ archives, selected_archive, rulesets, selected_ruleset });
+      self.setState({ 
+        archives: archives, selected_archive: selected_archive, rulesets: rulesets, 
+        selected_ruleset: selected_ruleset, currentArchive: currentArchive, 
+        currentRuleset: currentRuleset 
+      });
       self.save_options_to_storage(self.state);
     });
   }
@@ -140,8 +155,13 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
   };
 
   handleSave = () => {
+    // TODO if there are stored scans we need to put up modal
+    //      modal choices  
+    //            delete scans and update ruleset
+    //            keep stored scans and don't update rulset (ali says don't give this choice)
+    this.setState({ currentArchive: this.state.selected_archive.name, currentRuleset: this.state.selected_ruleset.name })
     this.save_options_to_storage(this.state);
-    this.setState({ show_notif: true, show_reset_notif: false });
+    this.setState({ show_notif: true, show_reset_notif: false, });
   };
 
   handlReset = () => {
@@ -216,7 +236,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                   <Dropdown
                     ariaLabel={undefined}
                     disabled={false}
-                    // helperText={"Currently active: " + currentArchiveName}
+                    helperText={"Currently active: " + this.state.currentArchive}
                     id="archivedRuleset"
                     items={archives}
                     itemToString={(item: any) => (item ? item["name"] : "")}
@@ -265,7 +285,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 <Dropdown
                   ariaLabel={undefined}
                   disabled={false}
-                  // helperText={"Currently active: " + rulesets[0].name}
+                  helperText={"Currently active: " + this.state.currentRuleset}
                   id="rulesetSelection"
                   items={rulesets}
                   itemToString={(item: any) => (item ? item["name"] : "")}
