@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Check combobox component is coded to WAI-ARIA 1.2 Authoring Practices
+### Check combobox component is coded to ARIA 1.2 Authoring Practices
 
 <div id="locLevel"></div>
 
-Combobox widget should be coded to WAI-ARIA 1.2 Authoring Practices
+Combobox widget should be coded to ARIA 1.2 Authoring Practices
 
 </Column>
 </Row>
@@ -27,10 +27,10 @@ The features and behaviors of combobox implementations are complex and vary wide
 
 ### What to do
 
-* Confirm the element with `combobox` role follows a supported design pattern as described in [W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox);
+* Confirm the element with `combobox` role follows a supported design pattern as described in [ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox);
 * AND, perform a manual test to ensure the keyboard interaction, focus management and manipulation of the roles, states, and properties work as intended.
 
-Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due to problems with implementation of the WAI-ARIA 1.1 pattern. The recommended combobox pattern for WAI-ARIA 1.2 is:
+Alert: The guidance for combobox is changing significantly in ARIA 1.2 due to problems with implementation of the ARIA 1.1 pattern. The recommended combobox pattern for ARIA 1.2 is:
 
 <CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
   &lt;input type="text" id="tag_combo"
@@ -42,7 +42,7 @@ Alert: The guidance for combobox is changing significantly in WAI-ARIA 1.2 due t
    &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
 &lt;/ul&gt;</CodeSnippet>
 
-Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (WAI-ARIA) 1.2 W3C Working Draft 18 December 2019](https://www.w3.org/TR/wai-aria-1.2/#combobox). Copyright © [2013-2019] W3C® (MIT, ERCIM, Keio, Beihang).
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
@@ -50,7 +50,7 @@ Note, example code includes material copied from or derived from [W3C, Accessibl
 ### About this requirement
 
 [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-[W3C WAI-ARIA v1.2 Authoring Practices - Combobox](https://www.w3.org/TR/wai-aria-1.2/#combobox)
+[ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox)
 
 ### Who does this affect?
 
