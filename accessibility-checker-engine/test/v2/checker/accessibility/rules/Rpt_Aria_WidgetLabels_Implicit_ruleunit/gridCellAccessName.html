@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Grid cell with access name</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <a href="#navskip">skip to banner content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA widgets where accessible name may be provided by inner text of element or alt text</h3>
+ 
+    <table id='navskip' role="grid" aria-label="test">
+        <header>
+            <th>Column 1</th>
+            <th>Column 2</th>
+        </header>
+        <tr>
+          <td role="gridcell">
+            <div><span aria-label="col1-data">data1</span></div>
+          </td>
+          <td role="gridcell">
+            <div><span aria-label="col2-data">date2</span></div>
+          </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        //<![CDATA[
+        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+        OpenAjax.a11y.ruleCoverage = [{
+            ruleId: "1156",
+            passedXpaths: [],
+            failedXpaths: [
+                 "/html/body/main/table/tbody/tr[2]/td[1]", 
+                 "/html/body/main/table/tbody/tr[2]/td[2]"
+            ]
+        }];
+        //]]>
+    </script>
+  </body>
+</html>
