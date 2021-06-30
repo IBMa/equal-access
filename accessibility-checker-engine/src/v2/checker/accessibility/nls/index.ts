@@ -1020,6 +1020,12 @@ let a11yNls = {
         0: "An input element must have an associated visible label", 
         "Pass_0": "Rule Passed",
         "Potential_1": "The input element does not have an associated visible label"
+    },
+    "aria_hidden_focus_misuse": {
+        0: "Element with aria-hidden has focusable content",
+        "Pass": "Element with aria-hidden has no focusable content",
+        "Fail_1": "Element with aria-hidden has focusable form field incorrectly disabled",
+        "Fail_inline": "Child of element with aria-hidden can't reset aria-hidden to true"
     }
 }
 export { a11yNls }
