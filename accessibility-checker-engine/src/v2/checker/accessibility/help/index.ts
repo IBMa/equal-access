@@ -1027,6 +1027,11 @@ let a11yHelp = {
         0: `${Config.helpRoot}/WCAG20_Input_VisibleLabel`, 
         "Pass_0": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`,
         "Potential_1": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`
+    },
+    "aria_hidden_focus_misuse": {
+        0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
+        "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
     }
 }
 

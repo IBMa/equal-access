@@ -1,0 +1,45 @@
+---
+title: "Accessibility Checker Rule Help: aria_hidden_focus_misuse"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The WAI-ARIA attribute `{0}` is not valid for the element `<{1}>` with WAI-ARIA role `{2}`
+### Element `{0}` with aria-hidden has no focusable content
+<div id="locLevel"></div>
+
+Element with aria-hidden has no focusable content
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+This rule checks that elements with an aria-hidden attribute do not contain focusable elements.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* This rule checks that elements with an aria-hidden attribute do not contain focusable elements.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

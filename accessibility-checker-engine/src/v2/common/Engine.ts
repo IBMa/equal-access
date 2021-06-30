@@ -158,6 +158,7 @@ export class Engine implements IEngine {
         if (root.nodeType === 9 /* Node.DOCUMENT_NODE */) {
             root = (root as Document).documentElement;
         }
+        
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
         Engine.clearCaches(root);
         const walker = new DOMWalker(root);
