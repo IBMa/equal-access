@@ -1023,9 +1023,20 @@ let a11yNls = {
     },
     "aria_hidden_focus_misuse": {
         0: "Element with aria-hidden has focusable content",
-        "Pass": "Element with aria-hidden has no focusable content",
-        "Fail_1": "Element with aria-hidden has focusable form field incorrectly disabled",
-        "Fail_inline": "Child of element with aria-hidden can't reset aria-hidden to true"
+        "Pass_default": "Element with aria-hidden has no focusable content",
+        "Pass_hidden_css": "Element with aria-hidden has no focusable content",
+        "Pass_no_focus": "Element with aria-hidden has no focusable content",
+        "Pass_disabled": "Element with aria-hidden has no focusable content",
+        "Pass_hidden_false": "Element with aria-hidden has no focusable content",
+        "Pass_no_focus_tabindex": "Element with aria-hidden has no focusable content",
+        "Pass_null_aria-hidden_value": "Element with aria-hidden has no focusable content",
+        "Pass_false_aria-hidden_value": "Element with aria-hidden has no focusable content",
+        "Pass_incorrect_aria-hidden_value": "Element with aria-hidden has no focusable content",
+        "Fail_off_screen_link": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" with off screen link",
+        "Fail_disabled_form_field": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" that is disabled",
+        "Fail_reset_hidden": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" with aria-hidden reset to true",
+        "Fail_reset_focus_with_tabindex": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" reset through tabindex",
+        "Fail_with_summary_element": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" that is a summary element"
     }
 }
 export { a11yNls }

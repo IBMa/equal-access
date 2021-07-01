@@ -31,22 +31,24 @@
             console.log("aria hidden context=" + JSON.stringify(context));
             console.log("aria hidden ruleContext=" + JSON.stringify(ruleContext));
             
-            let passed = false;
             let nodeName = ruleContext.nodeName.toLowerCase();
+            console.log("node name=" + nodeName);
+
             // ignore if it's not focusable
             if (!RPTUtil.isTabbable(ruleContext)) return null;
+            if (RPTUtil.isNodeDisabled(ruleContext))
+                //'Focusable form field, incorrectly disabled';
+                return RuleFail("Fail_1", [nodeName]);
+                
+            if (RPTUtil.getCache(ruleContext, "PT_NODE_DISABLED", false))
+                //'Focusable form field, incorrectly disabled';
+                return RuleFail("Fail_2", [nodeName]);
             
-
-                let alt = ruleContext.getAttribute("alt").trim();
-                if (ruleContext.hasAttribute("code") && alt == ruleContext.getAttribute("code").trim()) {
-                    return RuleFail("Fail_2");
-                } else if (!RPTUtil.hasInnerContentHidden(ruleContext)) {
-                    return RuleFail("Fail_3");
-                } else {
-                    return RulePass("Pass_0");
-                }
-            }
+            
+            return RulePass("Pass_0");
+                
         }
-    
-    ]
+            
+    }]
+
     export { ariaHiddenRule }

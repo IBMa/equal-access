@@ -1030,8 +1030,20 @@ let a11yHelp = {
     },
     "aria_hidden_focus_misuse": {
         0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
-        "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
-        "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
+        "Pass_default": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_hidden_css": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_no_focus": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_disabled": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_hidden_false": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_no_focus_tabindex": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_null_aria-hidden_value": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_false_aria-hidden_value": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Pass_incorrect_aria-hidden_value": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_off_screen_link": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_disabled_form_field": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_reset_hidden": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_reset_focus_with_tabindex": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_with_summary_element": `${Config.helpRoot}/aria_hidden_focus_misuse`
     }
 }
 
