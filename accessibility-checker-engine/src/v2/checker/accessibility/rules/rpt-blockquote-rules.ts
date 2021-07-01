@@ -77,7 +77,7 @@ let a11yRulesBlockquote: Rule[] = [
                     // we're not already marked up
                     // Also skip if we're in a script - there's lots of quotes used in scripts
                     if ((dblQuotes != null || snglQuotes != null) &&
-                        RPTUtil.getAncestor(walkNode, ["blockquote", "q", "script"]) == null) {
+                        RPTUtil.getAncestor(walkNode, ["blockquote", "q", "script", "style"]) == null) {
                         if (dblQuotes != null) {
                             for (let i = 0; passed && i < dblQuotes.length; ++i)
                                 passed = RPTUtil.wordCount(dblQuotes[i]) < minWords;
@@ -107,6 +107,11 @@ let a11yRulesBlockquote: Rule[] = [
                 // Don't trigger if we're not in the body or if we're in a script or code segment
                 let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
                 passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
+            }
+
+            //if the violatedtext is longer than 69 chars, only keep the first 32, the " ... ", and the last 32 chars 
+            if (!passed && violatedtext.length && violatedtext.length > 69) {
+                violatedtext = violatedtext.substring(0, 32) + " ... " + violatedtext.substring(violatedtext.length-32);
             }
 
             return passed ? RulePass("Pass_0") : RulePotential("Potential_1", [violatedtext]);
