@@ -34,24 +34,55 @@
             ruleIds: ["aria_hidden_focus_misuse"],
             results: [
                 {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/detail[1]/summary[1]",
-                        "aria": "/html[1]/body[1]/detail[1]/summary[1]"
-                    },
-                    "reasonId": "Fail_with_summary_element",
-                    "message": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" that is a summary element",
-                    "messageArgs": [
-                        "detail",
-                        "summary"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                } 
+                "ruleId": "aria_hidden_focus_misuse",
+                "value": [
+                "INFORMATION",
+                "PASS"
+                ],
+                "path": {
+                "dom": "/html[1]/body[1]/details[1]",
+                "aria": "/document[1]/group[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            },
+            {
+                "ruleId": "aria_hidden_focus_misuse",
+                "value": [
+                "INFORMATION",
+                "FAIL"
+                ],
+                "path": {
+                "dom": "/html[1]/body[1]/details[1]/summary[1]",
+                "aria": "/document[1]/group[1]"
+                },
+                "reasonId": "Fail_1",
+                "message": "Element “summary” should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’",
+                "messageArgs": [
+                "summary"
+                ],
+                "apiArgs": [],
+                "category": "Accessibility"
+            },
+            {
+                "ruleId": "aria_hidden_focus_misuse",
+                "value": [
+                "INFORMATION",
+                "PASS"
+                ],
+                "path": {
+                "dom": "/html[1]/body[1]/details[1]/p[1]",
+                "aria": "/document[1]/group[1]"
+                },
+                "reasonId": "Pass_0",
+                "message": "Rule Passed",
+                "messageArgs": [],
+                "apiArgs": [],
+                "category": "Accessibility"
+            }
             ]
         }
     </script>

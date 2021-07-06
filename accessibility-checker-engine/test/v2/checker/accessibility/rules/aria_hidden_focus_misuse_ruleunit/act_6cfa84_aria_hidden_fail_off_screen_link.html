@@ -26,32 +26,47 @@
 
 <body id="id-9" aria-atomic="true">
     <div aria-hidden="true">
-        <a href="/" style="position:absolute; top:-999em">Link</a>
+        <a href="/" style="position:absolute; top:-999em">Link1</a> 
     </div>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["aria_hidden_focus_misuse"],
             results: [
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/a[1]",
-                        "aria": "/html[1]/body[1]/div[1]/a[1]"
-                    },
-                    "reasonId": "Fail_off_screen_link",
-                    "message": "Element \"{0}\" with aria-hidden has focusable content \"{1}\" with off screen link",
-                    "messageArgs": [
-                        "div",
-                        "a"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                } 
-            ]
+            {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_hidden_focus_misuse",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Element “a” should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’",
+            "messageArgs": [
+              "a"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
         }
     </script>
 </body>

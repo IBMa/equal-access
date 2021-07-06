@@ -16,6 +16,7 @@
 
     import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
     import { RPTUtil } from "../util/legacy";
+    import { DOMUtil } from "../../../dom/DOMUtil";
     
     let ariaHiddenRule : Rule[] = [
                 
@@ -25,30 +26,17 @@
          * Origin: ACT https://act-rules.github.io/rules/6cfa84
          */
         id: "aria_hidden_focus_misuse",
-        context: "dom:*[aria-hidden=true] dom:*",
+        context: "dom:*[aria-hidden=true], dom:*[aria-hidden=true] dom:*",
         run: (context: RuleContext, options?: {}) : RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            console.log("aria hidden context=" + JSON.stringify(context));
-            console.log("aria hidden ruleContext=" + JSON.stringify(ruleContext));
             
             let nodeName = ruleContext.nodeName.toLowerCase();
-            console.log("node name=" + nodeName);
-
-            // ignore if it's not focusable
-            if (!RPTUtil.isTabbable(ruleContext)) return null;
-            if (RPTUtil.isNodeDisabled(ruleContext))
-                //'Focusable form field, incorrectly disabled';
+            if (RPTUtil.isTabbable(ruleContext))
                 return RuleFail("Fail_1", [nodeName]);
-                
-            if (RPTUtil.getCache(ruleContext, "PT_NODE_DISABLED", false))
-                //'Focusable form field, incorrectly disabled';
-                return RuleFail("Fail_2", [nodeName]);
-            
             
             return RulePass("Pass_0");
                 
-        }
-            
+        }        
     }]
 
     export { ariaHiddenRule }

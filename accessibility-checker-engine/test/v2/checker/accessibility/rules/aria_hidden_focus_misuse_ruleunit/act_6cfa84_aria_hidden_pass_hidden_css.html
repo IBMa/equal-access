@@ -32,24 +32,22 @@
         UnitTest = {
             ruleIds: ["aria_hidden_focus_misuse"],
             results: [
-                {
+               {
                     "ruleId": "aria_hidden_focus_misuse",
                     "value": [
-                        "INFORMATION",
-                        "PASS"
+                    "INFORMATION",
+                    "PASS"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/div[1]/a[1]",
-                        "aria": "/html[1]/body[1]/div[1]/a[1]"
+                    "dom": "/html[1]/body[1]/div[1]",
+                    "aria": "/document[1]"
                     },
-                    "reasonId": "Pass_hidden_css",
-                    "message": "Element with aria-hidden has no focusable content",
-                    "messageArgs": [
-                        
-                    ],
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [],
                     "apiArgs": [],
                     "category": "Accessibility"
-                } 
+                }
             ]
         }
     </script>
