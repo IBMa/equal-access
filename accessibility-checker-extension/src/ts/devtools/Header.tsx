@@ -15,7 +15,6 @@
   *****************************************************************************/
 
 import React from "react";
-
 import ReactTooltip from "react-tooltip";
 
 import {
@@ -81,7 +80,8 @@ interface IHeaderProps {
     focusedViewCallback: (focus: boolean) => void,
     focusedViewFilter: boolean,
     focusedViewText: string,
-    getCurrentSelectedElement: () => void
+    getCurrentSelectedElement: () => void,
+    readOptionsData: () => void
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -109,6 +109,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             this.infoButton2Ref.current?.focus();
         }, 0);
     }
+
+    onLinkClick = () => {
+        this.setState({ modalRulsetInfo: false });
+        this.focusInfoButton1();
+    };
 
     processFilterCheckBoxes(value: boolean, id: string) {
         // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
@@ -309,16 +314,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             ref={this.infoButton1Ref}
                             renderIcon={Information16} 
                             kind="ghost"   
-                            hasIconOnly iconDescription="Ruleset info" tooltipPosition="top" 
+                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                                     paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
                             onClick={(() => {
+                                this.props.readOptionsData();
                                 this.setState({ modalRulsetInfo: true });
                             }).bind(this)}>
                         </Button>
                         <Modal
-                            aria-label="Ruleset information"
-                            modalHeading="Ruleset Information"
+                            aria-label="Rule set information"
+                            modalHeading="Rule set information"
                             size='xs'
                             passiveModal={true}
                             open={this.state.modalRulsetInfo}
@@ -331,10 +337,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
                                 <span>{<br/>}</span>
                                 The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                <br/><br/>
+                                You are using the guidelines from {this.props.selectedPolicy}
                             </p>
                             <br></br>
                             <div>
                                 <a
+                                    onClick={this.onLinkClick}
                                     href={chrome.runtime.getURL("options.html")}
                                     target="_blank"
                                     className={`${prefix}--link`}
@@ -402,16 +411,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             ref={this.infoButton2Ref}
                             renderIcon={Information16} 
                             kind="ghost"   
-                            hasIconOnly iconDescription="Ruleset info" tooltipPosition="top" 
+                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                                     paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
                             onClick={(() => {
+                                this.props.readOptionsData();
                                 this.setState({ modalRulsetInfo: true });
                             }).bind(this)}>
                         </Button>
                         <Modal
-                            aria-label="Ruleset information"
-                            modalHeading="Ruleset Information"
+                            aria-label="Rule set information"
+                            modalHeading="Rule set Information"
                             passiveModal={true}
                             open={this.state.modalRulsetInfo}
                             onRequestClose={(() => {
@@ -430,6 +440,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     href={chrome.runtime.getURL("options.html")}
                                     target="_blank"
                                     className={`${prefix}--link`}
+                                    
                                 >
                                     Change rule set
                                 </a>
