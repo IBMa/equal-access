@@ -1828,7 +1828,7 @@ export default class MultiScanReport {
 
         let rowData = [
             {key1: 'Page', key2: 'Identifies the page or html file that was scanned.'},
-            {key1: 'Scan label', key2: 'Label for the scan. Default value is date and time of scan but other values can be programmatically assigned in automated testing.'},
+            {key1: 'Scan label', key2: 'Label for the scan. Default values can be edited in the Accessibility Checker before saving this report, or programmatically assigned in automated testing.'},
             {key1: 'Base scan', key2: 'Scan label for a previous scan against which this scan was compared. Only new issues are reported when a base scan is used.'},
             {key1: 'Violations', key2: 'Accessibility failures that need to be corrected.'},
             {key1: 'Needs review', key2: 'Issues that may not be a violation. These need a manual review to identify whether there is an accessibility problem.'}, 
