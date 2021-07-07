@@ -1022,7 +1022,7 @@ let a11yNls = {
         "Potential_1": "The input element does not have an associated visible label"
     },
     "aria_hidden_focus_misuse": {
-        0: "Element with aria-hidden has focusable content",
+        0: "Element \“{0}\” should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’",
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \“{0}\” should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’"
     }
