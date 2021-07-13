@@ -29,23 +29,20 @@
 
     <!-- ################################################################### -->
 
-    <table id="treegrid" aria-readonly="true" summary="ARIA treegrid example">
+    <table id="treegrid" role="treegrid" aria-readonly="true" summary="ARIA treegrid example">
         <tbody>
           <tr id="1" role="row" aria-level="1" aria-posinset="1" aria-setsize="1" aria-expanded="true">
             <td role="gridcell">Treegrids are broken</td>
             <td role="gridcell">How do we fix them?</td>
-            
           </tr>
           <tr id="1.1" role="row" aria-level="2" aria-posinset="1" aria-setsize="3">
              <td role="gridcell">re: Treegrids are broken</td>
              <td role="gridcell">I agree with you, but ...</td>
-             
-          </tr>
+           </tr>
           <tr id="1.2" role="row" aria-level="2" aria-posinset="2" aria-setsize="3" aria-expanded="true">
              <td role="gridcell">re: Treegrids are broken
              <td role="gridcell">Not that many people use them
-             
-          </tr>
+                Rpt_Aria_ValidProperty</tr>
         </tbody>
       </table>
 
@@ -54,21 +51,40 @@
             ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
             results: [
             {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
-              "aria": "/document[1]/table[1]"
+              "aria": "/document[1]/treegrid[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA attribute 'aria-readonly' is not valid for the element <table> with WAI-ARIA role 'table'",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "treegrid",
+              "table"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/treegrid[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "aria-readonly",
               "table",
-              "table"
+              "treegrid"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -81,7 +97,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -100,7 +116,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -116,14 +132,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/gridcell[1]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[1]/gridcell[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"
@@ -135,14 +151,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/gridcell[2]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[1]/gridcell[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"
@@ -158,7 +174,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -177,7 +193,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -193,14 +209,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/gridcell[1]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[2]/gridcell[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"
@@ -212,14 +228,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/gridcell[2]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[2]/gridcell[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"
@@ -235,7 +251,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[3]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -254,7 +270,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[3]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -270,14 +286,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/gridcell[1]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[3]/gridcell[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"
@@ -289,14 +305,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/gridcell[2]"
+              "aria": "/document[1]/treegrid[1]/rowgroup[1]/row[3]/gridcell[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "gridcell",
               "td"

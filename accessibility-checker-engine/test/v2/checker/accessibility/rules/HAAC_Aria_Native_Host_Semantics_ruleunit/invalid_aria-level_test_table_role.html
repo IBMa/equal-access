@@ -25,30 +25,20 @@
 
 <body>
 
-    <h2>Test case: aria-level_test.html</h2>
+    <h2>Test case: aria-level_test_treegrid.html</h2>
 
     <!-- ################################################################### -->
 
-    <table id="treegrid" aria-readonly="true" summary="ARIA treegrid example">
-        <tbody>
-          <tr id="1" role="row" aria-level="1" aria-posinset="1" aria-setsize="1" aria-expanded="true">
-            <td role="gridcell">Treegrids are broken</td>
-            <td role="gridcell">How do we fix them?</td>
-            
-          </tr>
-          <tr id="1.1" role="row" aria-level="2" aria-posinset="1" aria-setsize="3">
-             <td role="gridcell">re: Treegrids are broken</td>
-             <td role="gridcell">I agree with you, but ...</td>
-             
-          </tr>
-          <tr id="1.2" role="row" aria-level="2" aria-posinset="2" aria-setsize="3" aria-expanded="true">
-             <td role="gridcell">re: Treegrids are broken
-             <td role="gridcell">Not that many people use them
-             
-          </tr>
-        </tbody>
-      </table>
-
+    <div role="table" aria-label="Semantic Elements" aria-describedby="semantic_elements_table_desc" aria-rowcount="81">
+        <div role="row" aria-level="1" aria-posinset="1" aria-setsize="1">
+            <span role="columnheader" aria-sort="none">ARIA Role</span>
+            <span role="columnheader" aria-sort="none">Semantic Element</span>
+        </div>
+        <div role="row" aria-level="1" aria-posinset="1" aria-setsize="1">
+            <span role="cell">header</span>
+            <span role="cell">h1</span>
+        </div>
+    </div>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
