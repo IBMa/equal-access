@@ -30,11 +30,11 @@
     <!-- ################################################################### -->
 
     <div role="table" aria-label="test table">
-        <div role="row" aria-level="1" aria-posinset="1" aria-setsize="1">
+        <div role="row">
             <span role="columnheader" aria-sort="none">ARIA Role</span>
             <span role="columnheader" aria-sort="none">Semantic Element</span>
         </div>
-        <div role="row" aria-level="1" aria-posinset="1" aria-setsize="1">
+        <div role="row">
             <span role="cell">header</span>
             <span role="cell">h1</span>
         </div>
@@ -102,26 +102,6 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]",
-              "aria": "/document[1]/table[1]/row[1]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <div> with WAI-ARIA role 'row'",
-            "messageArgs": [
-              "aria-level, aria-posinset, aria-setsize",
-              "div",
-              "row"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
@@ -214,26 +194,6 @@
             "messageArgs": [
               "row",
               "div"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_attribute",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[2]",
-              "aria": "/document[1]/table[1]/row[2]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <div> with WAI-ARIA role 'row'",
-            "messageArgs": [
-              "aria-level, aria-posinset, aria-setsize",
-              "div",
-              "row"
             ],
             "apiArgs": [],
             "category": "Accessibility"

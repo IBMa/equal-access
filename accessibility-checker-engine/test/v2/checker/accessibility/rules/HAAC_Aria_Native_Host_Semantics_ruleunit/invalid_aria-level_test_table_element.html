@@ -29,11 +29,7 @@
 
     <!-- ################################################################### -->
 
-    <table aria-label="Semantic Elements" aria-describedby="semantic_elements_table_desc" aria-rowcount="81">
-        <tr aria-level="1" aria-posinset="1" aria-setsize="1">
-            <td role="columnheader" aria-sort="none">ARIA Role</td>
-            <td role="columnheader" aria-sort="none">Semantic Element</td>
-        </tr>
+    <table aria-label="test table">
         <tr aria-level="1" aria-posinset="1" aria-setsize="1">
             <td role="cell">header</td>
             <td role="cell">h1</td>
@@ -41,22 +37,22 @@
     </table>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_attribute"],
             results: [
             {
             "ruleId": "aria_semantics_attribute",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA attribute 'aria-readonly' is not valid for the element <table> with WAI-ARIA role 'table'",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
-              "aria-readonly",
+              "aria-label",
               "table",
               "table"
             ],
@@ -64,232 +60,21 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [
-              "row",
-              "tr"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
             "ruleId": "aria_semantics_attribute",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [
-              "aria-level, aria-posinset, aria-setsize, aria-expanded",
-              "tr",
-              "row"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/gridcell[1]"
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
             },
             "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/gridcell[2]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [
-              "row",
-              "tr"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_attribute",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "message": "The WAI-ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <tr> with WAI-ARIA role 'row'",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "tr",
               "row"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/gridcell[1]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/gridcell[2]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [
-              "row",
-              "tr"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_attribute",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [
-              "aria-level, aria-posinset, aria-setsize, aria-expanded",
-              "tr",
-              "row"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/gridcell[1]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_semantics_role",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[2]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/gridcell[2]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The WAI-ARIA role 'gridcell' is not valid for the element <td>",
-            "messageArgs": [
-              "gridcell",
-              "td"
             ],
             "apiArgs": [],
             "category": "Accessibility"
