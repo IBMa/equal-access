@@ -66,6 +66,49 @@ let a11yRulesMeta: Rule[] = [
             let fail = !content.match(/^\d+; +[^ ]/);
             return !fail ? RulePass("Pass_0") : RulePotential("Potential_1");
         }
+    },
+    {
+        /**
+         * Description: Trigger for viewport
+         * Origin: ACT b4f0c3 https://act-rules.github.io/rules/b4f0c3
+         */
+        id: "ACT_Meta_Viewport",
+        context: "dom:meta[name][content]",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            if (ruleContext.getAttribute("name").toLowerCase() !== 'viewport')
+                return null;
+
+            let content = ruleContext.getAttribute("content").toLowerCase();
+            // neither maximum-scale nor user-scalable (default yes)
+            if (!content || content.trim() === ''|| (!content.includes('maximum-scale') && !content.includes('user-scalable'))) 
+                return null;
+            
+            const props = content.split(",");    
+            let user_scale_value = '';
+            let maximum_scale_value = '';
+            for (const prop  of props)  {
+                const pieces = prop.split('=');
+                if (pieces.length < 2) continue;
+                if (prop.includes('user-scalable')) {
+                    user_scale_value = pieces[1].trim(); 
+                    if (user_scale_value.startsWith("'") || user_scale_value.startsWith('"')) {
+                        user_scale_value = user_scale_value.substring(1, user_scale_value.length-2);
+                    }
+                } else if (prop.includes('maximum-scale')) {
+                    let maximum_scale_value = pieces[1].trim(); 
+                    if (maximum_scale_value.startsWith("'") || maximum_scale_value.startsWith('"')) {
+                        maximum_scale_value = maximum_scale_value.substring(1, maximum_scale_value.length-2).trim();
+                    }
+                }
+            }
+            
+            // user-scalable set to 'yes'
+            if (user_scale_value !== 'yes' && parseFloat(maximum_scale_value) < 2.0 )  
+                return RuleFail("Fail_0")
+            
+            return RulePass("Pass_0");
+        }
     }
 
 ]
