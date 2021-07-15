@@ -2375,6 +2375,21 @@ export class RPTUtil {
                 }
             }
         }
+
+        // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
+        if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
+             let index = -1;
+             if ((index = allowedAttributes.indexOf("aria-level")) > -1) 
+                allowedAttributes.splice(index, 1);
+             
+             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1) 
+                allowedAttributes.splice(index, 1);
+            
+             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1) 
+                allowedAttributes.splice(index, 1);
+             
+        }
+
         return allowedAttributes;
     }
 
