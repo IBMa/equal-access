@@ -1375,10 +1375,8 @@ let a11yRulesAria: Rule[] = [{
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
-            console.log("failed tagName=" +tagName +", role=" + role);
             return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
-            console.log("passed tagName=" +tagName +", role=" + role);
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
         } else {
             return null;

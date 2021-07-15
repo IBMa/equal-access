@@ -35,9 +35,9 @@ module.exports = (config) => {
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaption.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaptionDynamic.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithSubtitles.html', watched: true },
-            { pattern: 'test/v2/checker/accessibility/rules/HAAC_Aria_Native_Host_Semantics_ruleunit/valid_aria-level_test_table.html', watched: true },
-            //{ pattern: 'test/**/*_ruleunit/*.html', watched: true },
-            //{ pattern: 'test/**/*_ruleunit/*.htm', watched: true },
+            //{ pattern: 'test/v2/checker/accessibility/rules/HAAC_Aria_Native_Host_Semantics_ruleunit/valid_aria-level_test_treegrid.html', watched: true },
+            { pattern: 'test/**/*_ruleunit/*.html', watched: true },
+            { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
             // all files ending in "_test"
             // { pattern: 'test/*_test.js', watched: true },
             { pattern: 'test/**/*_test.js', watched: true }
