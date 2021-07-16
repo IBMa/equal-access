@@ -21,6 +21,12 @@ import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 let metrics = new ACMetricsLogger("ac-extension");
 
+// chrome.tabs.onActivated.addListener(tab =>{
+//     chrome.tabs.get(tab.tabId, current_tab_info => {
+//         console.log(current_tab_info.url)
+//     }
+// })
+
 async function initTab(tabId: number, archiveId: string) {
     // Determine if we've ever loaded any engine
     let isLoaded = await new Promise((resolve, reject) => {
@@ -70,6 +76,12 @@ async function initTab(tabId: number, archiveId: string) {
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
     await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
+    return true;
+});
+
+BackgroundMessaging.addListener("DAP_CACHED1", async (message: any) => {
+    // await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
+    console.log("ALIWASHERE!")
     return true;
 });
 

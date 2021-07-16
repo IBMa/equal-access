@@ -926,6 +926,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                             readOptionsData={this.readOptionsData.bind(this)}
+                            tabURL = {this.state.tabURL}
+                            tabId = {this.state.tabId}                        
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1006,6 +1008,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         focusedViewText={this.state.focusedViewText}
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
+                        tabURL = {this.state.tabURL}
+                        tabId = {this.state.tabId}                        
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>

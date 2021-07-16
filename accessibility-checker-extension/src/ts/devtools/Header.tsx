@@ -29,6 +29,8 @@ const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
+import PanelMessaging from '../util/panelMessaging';
+
 
 const { prefix } = settings;
 interface IHeaderState {
@@ -82,6 +84,8 @@ interface IHeaderProps {
     focusedViewText: string,
     getCurrentSelectedElement: () => void,
     readOptionsData: () => void
+    tabURL: string,
+    tabId: number,
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -352,6 +356,21 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 </a>
                             </div>       
                         </Modal>
+
+                        <Button 
+                            // ref={this.infoButton1Ref}
+                            // renderIcon={Information16} 
+                            kind="ghost"   
+                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
+                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                            onClick={() => {
+                                PanelMessaging.sendToBackground("DAP_CACHED1", { tabId: this.props.tabId, tabURL: this.props.tabURL })
+                            }}>
+                                Draw Tabs
+                        </Button>
+
+
                     </div>
                     <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
 
