@@ -76,6 +76,10 @@ let a11yRulesMeta: Rule[] = [
         context: "dom:meta[name][content]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            console.log("context=" + JSON.stringify(context));
+            console.log("name=" + ruleContext.getAttribute("name"));
+            console.log("content=" + ruleContext.getAttribute("content"));
+            
             if (ruleContext.getAttribute("name").toLowerCase() !== 'viewport')
                 return null;
 
@@ -105,7 +109,7 @@ let a11yRulesMeta: Rule[] = [
             
             // user-scalable set to 'yes'
             if (user_scale_value !== 'yes' && parseFloat(maximum_scale_value) < 2.0 )  
-                return RuleFail("Fail_0")
+                return RulePotential("Potential_1");
             
             return RulePass("Pass_0");
         }

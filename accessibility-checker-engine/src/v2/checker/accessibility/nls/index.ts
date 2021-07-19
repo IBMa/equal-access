@@ -1020,6 +1020,11 @@ let a11yNls = {
         0: "An input element must have an associated visible label", 
         "Pass_0": "Rule Passed",
         "Potential_1": "The input element does not have an associated visible label"
+    },
+    "ACT_Meta_Viewport": {
+        0: "Page should retain the user agent ability to zoom", 
+        "Pass_0": "Rule Passed",
+        "Potential_1": "Page does not retain the user agent ability to zoom"
     }
 }
 export { a11yNls }

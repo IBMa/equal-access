@@ -35,9 +35,9 @@ module.exports = (config) => {
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaption.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaptionDynamic.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithSubtitles.html', watched: true },
-            // { pattern: 'test/v2/checker/accessibility/rules/WCAG20_Input_ExplicitLabel_ruleunit/ImgRoleButtonAlt.html', watched: true },
-            { pattern: 'test/**/*_ruleunit/*.html', watched: true },
-            { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
+            { pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_pass_enough_maxium_user_scale.html', watched: true },
+            //{ pattern: 'test/**/*_ruleunit/*.html', watched: true },
+            //{ pattern: 'test/**/*_ruleunit/*.htm', watched: true },
             // all files ending in "_test"
             // { pattern: 'test/*_test.js', watched: true },
             { pattern: 'test/**/*_test.js', watched: true }
