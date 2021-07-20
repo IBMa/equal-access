@@ -76,9 +76,9 @@ let a11yRulesMeta: Rule[] = [
         context: "dom:meta[name][content]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            console.log("context=" + JSON.stringify(context));
-            console.log("name=" + ruleContext.getAttribute("name"));
-            console.log("content=" + ruleContext.getAttribute("content"));
+            //console.log("context=" + JSON.stringify(context));
+            //console.log("name=" + ruleContext.getAttribute("name"));
+            //console.log("content=" + ruleContext.getAttribute("content"));
             
             if (ruleContext.getAttribute("name").toLowerCase() !== 'viewport')
                 return null;
@@ -89,26 +89,45 @@ let a11yRulesMeta: Rule[] = [
                 return null;
             
             const props = content.split(",");    
-            let user_scale_value = '';
-            let maximum_scale_value = '';
+            let user_scale_value = 'yes';
+            let maximum_scale_value = '2.0';
             for (const prop  of props)  {
-                const pieces = prop.split('=');
+                const pieces = prop.trim().split('=');
                 if (pieces.length < 2) continue;
                 if (prop.includes('user-scalable')) {
                     user_scale_value = pieces[1].trim(); 
                     if (user_scale_value.startsWith("'") || user_scale_value.startsWith('"')) {
-                        user_scale_value = user_scale_value.substring(1, user_scale_value.length-2);
+                        user_scale_value = user_scale_value.substring(1, user_scale_value.length-1);
                     }
                 } else if (prop.includes('maximum-scale')) {
-                    let maximum_scale_value = pieces[1].trim(); 
+                    maximum_scale_value = pieces[1].trim();
                     if (maximum_scale_value.startsWith("'") || maximum_scale_value.startsWith('"')) {
-                        maximum_scale_value = maximum_scale_value.substring(1, maximum_scale_value.length-2).trim();
+                        maximum_scale_value = maximum_scale_value.substring(1, maximum_scale_value.length-1).trim();
                     }
                 }
             }
             
-            // user-scalable set to 'yes'
-            if (user_scale_value !== 'yes' && parseFloat(maximum_scale_value) < 2.0 )  
+            let value = Number(user_scale_value);
+            if (!isNaN(value)) { 
+                if (value >=1 || value <= -1) user_scale_value = 'yes';
+            }
+            
+            let maximum_scale = 2.0; 
+            value = Number(maximum_scale_value);
+            if (!isNaN(value)) { 
+                if (value < 0) maximum_scale = 2.0;
+                else maximum_scale = value;
+            } else {
+                if (maximum_scale_value === 'yes') maximum_scale = 1.0;
+                else maximum_scale = 0.1;
+            }
+        
+            console.log("user_scale_value=" + user_scale_value +", maximum_scale=" + maximum_scale);
+            // user-scalable is not set to 'yes', ignore maximum_scale
+            if (user_scale_value !== 'yes' )  
+                return RulePotential("Potential_1");
+            
+            if (maximum_scale < 2.0 )  
                 return RulePotential("Potential_1");
             
             return RulePass("Pass_0");

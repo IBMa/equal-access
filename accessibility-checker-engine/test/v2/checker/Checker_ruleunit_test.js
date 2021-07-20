@@ -262,9 +262,9 @@ describe("Rule Unit Tests", function() {
                     let legacyExpectedInfo = iframeWin.OpenAjax &&
                         iframeWin.OpenAjax.a11y &&
                         iframeWin.OpenAjax.a11y.ruleCoverage;
-                    if (expectedInfo && expectedInfo.ruleIds) { console.log("expectedInfo=" +JSON.stringify(expectedInfo));
+                    if (expectedInfo && expectedInfo.ruleIds) {
                         let filtReport = [];
-                        for (const issue of report.results) { console.log("report.results=" +JSON.stringify(report.results));
+                        for (const issue of report.results) {
                             delete issue.node;
                             delete issue.ruleTime;
                             delete issue.bounds;
