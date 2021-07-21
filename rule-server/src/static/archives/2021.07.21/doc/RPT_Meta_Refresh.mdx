@@ -1,0 +1,55 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Meta_Refresh"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check if a page is being caused to refresh automatically
+
+<div id="locLevel"></div>
+
+Pages should not refresh automatically
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Some individuals might need more time to read or interact with a page than the author expects. If the page auto-refreshes while they are still reading/working, it might prevent access to content by resetting their location on the page.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Remove the `<META>` tag that causes an automatic page refresh (e.g. `<META HTTP-EQUIV="Refresh" CONTENT="10">`) and use a different method to update information on the page;
+ * OR, provide an option to turn off, extend, or adjust the timing of the page refresh;
+ * OR, at the top of the page, provide a single line of explanation and link to a non-refreshing page. For example "This page automatically reloads every 10 seconds. A `<a href="..."> non-updating equivalent page </a>` with a refresh button is available."
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.2.1 Timing Adjustable](https://www.ibm.com/able/requirements/requirements/#2_2_1)
+[WCAG 2.1 failure technique F41](https://www.w3.org/WAI/WCAG21/Techniques/failures/F41)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairment
+* People who physically cannot use a pointing device
+* People with reading disabilities
+* Many older adults
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
