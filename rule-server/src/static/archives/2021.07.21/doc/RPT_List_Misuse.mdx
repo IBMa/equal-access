@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: RPT_List_Misuse"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### List element is missing or improperly structured
+
+<div id="locLevel"></div>
+
+List elements should only be used for lists of related items
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Lists add structural information that helps users navigate without vision. Using list markup improperly hinders accessibility by making it difficult for users with specialized software to understand the organization of the page or to navigate through it.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Check that list items are represented with `<li>` elements and enclosed within list elements `<ul>` or `<ol>`;
+ * AND check that definition list items are represented with `<dt>`, or `<di>` and enclosed within a definition list element `<dl>`;
+ * AND check that elements within a list element do form a list.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+[WCAG 2.1 technique H48](https://www.w3.org/WAI/WCAG21/Techniques/html/H48)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,56 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_OneBannerInSiblingSet_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### There is more than one element with `"banner"` role on the page
+
+<div id="locLevel"></div>
+
+There must be only one element with `"banner"` role used on the page
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When more than one `"banner"` landmark role is used on a web page, it can confuse people who use assistive technologies that rely on this information to easily navigate the various sections in the page.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove `"banner"` role from all but one element. (The`<header>` element has an implicit role of banner when it is a descendent of the body element.)
+
+For example:
+
+<CodeSnippet type="multi" light={true}> &lt;body&gt;
+	&lt;div role="banner"&gt;banner content...&lt;/div&gt;
+	&lt;div role="search"&gt;Search widget&lt;/div&gt;
+	&lt;div role="contentinfo"&gt;Copyright information...&lt;/div&gt;
+&lt;/body&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+[W3C WAI-ARIA 1.2 HTML Sectioning Elements](https://www.w3.org/TR/wai-aria-practices-1.2/examples/landmarks/HTML5.html)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
