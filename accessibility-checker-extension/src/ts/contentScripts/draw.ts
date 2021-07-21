@@ -1,9 +1,10 @@
-// import "./draw.css";
+// import "./draw.scss";
+import { tabbable } from 'tabbable';
 import TabMessaging from "../util/tabMessaging";
 
 
-console.log("ALIwashereDRAW -------------")
-console.log("ALIWASHERE! draw.ts")
+console.log("DRAW -------------")
+console.log("draw.ts")
 
 TabMessaging.addListener("DAP_CACHED2", async (message: any) => {
     console.log("ALIWASHERE! message DAP_CACHED2 recieved in foreground")
@@ -82,21 +83,6 @@ function draw() {
 }
 
 function redraw() {
-    // setTimeout(() => {
-    //     let nodes = getNodesToDrawBettween()
-    //     console.log("Checking nodes")
-    //     console.log(nodes)
-    //     for (let i = 0; i < nodes.length - 1; i++) {
-    //         let centerX1 = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width / 2
-    //         let centerY1 = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height / 2
-
-    //         let centerX2 = nodes[i + 1].getBoundingClientRect().x + nodes[i + 1].getBoundingClientRect().width / 2
-    //         let centerY2 = nodes[i + 1].getBoundingClientRect().y + nodes[i + 1].getBoundingClientRect().height / 2
-
-    //         // console.log(centerX1, centerY1, centerX2, centerY2);
-    //         makeLine(centerX1, centerY1, centerX2, centerY2)
-    //     }
-    // }, 1)
     setTimeout(()=>{
         let nodes = getNodesToDrawBettween()
 
@@ -163,25 +149,6 @@ function makeLine(x1: number,y1: number,x2: number,y2: number) {
 }
 
 
-// function makeLine(x1: number, y1: number, x2: number, y2: number) {
-//     // TODO make a circle and then draw line
-//     let line = document.getElementsByClassName('original')[0]
-//     var lineClone = line.cloneNode(true);
-//     (lineClone as HTMLElement).classList.add("deleteMe");
-//     (lineClone as HTMLElement).setAttribute('x1', x1.toString());
-//     (lineClone as HTMLElement).setAttribute('y1', y1.toString());
-//     (lineClone as HTMLElement).setAttribute('x2', x2.toString());
-//     (lineClone as HTMLElement).setAttribute('y2', y2.toString());
-//     document.getElementById('svg')?.appendChild(lineClone);
-// }
-
-
-// function insertSVGIntoBody() {
-//     console.log("insertSVGIntoBody")
-//     if (document.getElementById("svg") == null) {
-//         document.body.innerHTML += '<svg id="svg"><line id="line" class="line   original" stroke-dasharray="5, 5"/></svg>'
-//     }
-// }
 function insertSVGIntoBody(){
     if (document.getElementById("svg2") == null) {
         document.body.innerHTML += '<svg id="svg2"><line id="line" class="tabLine"/></svg>'
@@ -193,12 +160,9 @@ function insertSVGIntoBody(){
 
 }
 
-function getNodesToDrawBettween() { // Replace for isTabbable later TODO ask Tom if the return value if isTabbale ordered correctly for drawing 
-    console.log("getNodesToDrawBettween")
-    return document.querySelectorAll("a")
+function getNodesToDrawBettween() {
+    let tabStops = tabbable(document.body);
+    console.log("tabStops = ", tabStops);
+    return tabStops;
 }
 
-// function getNodesToDrawBettween(){ // Replace for isTabbable later TODO ask Tom if the return value if isTabbale ordered correctly for drawing 
-//     tabStops = tabbable(document.body);
-//     return tabStops;
-// }
