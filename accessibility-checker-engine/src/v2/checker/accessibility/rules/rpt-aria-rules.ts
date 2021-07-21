@@ -1339,6 +1339,7 @@ let a11yRulesAria: Rule[] = [{
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
         let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
+
         // input type="password" has no role but it can take an aria-required. This is the only case like this.
         // So we add it in the code instead of adding new mechanism to the aria-definition.js
         if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
