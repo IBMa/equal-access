@@ -1,0 +1,56 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_RegionLabel_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### An element with a `"region"` role does not have a label
+
+<div id="locLevel"></div>
+
+Elements with a `"region"` role must have a label that describes their purpose
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Elements with a `"region"` role must have a label that describes the purpose of the region. This information helps people using assistive technologies to find and navigate the region.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If there is visible text that appropriately describes the region's purpose, set the region element's `aria-labelledby` attribute to the `id` value of that text (example below);
+* OR, use the `aria-label` attribute to add a label directly to the element with the `"region"` role.
+
+For example, the HTML `<section>` element has an implicit role of `"region"`:
+
+<CodeSnippet type="multi" light={true}>&lt;section aria-labelledby="log1"&gt;
+	&lt;h3 id="log1"&gt;Real time log&lt;/h3&gt;
+	This is the text contained within the landmark region...
+&lt;/section&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+[W3C WAI-ARIA Practices 1.2 Region Landmark](https://www.w3.org/TR/wai-aria-practices-1.2/examples/landmarks/region.html)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
