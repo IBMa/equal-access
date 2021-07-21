@@ -358,14 +358,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </Modal>
 
                         <Button 
-                            // ref={this.infoButton1Ref}
-                            // renderIcon={Information16} 
                             kind="ghost"   
-                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
+                            hasIconOnly iconDescription="Draw Tabs" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                                     paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
                             onClick={() => {
-                                PanelMessaging.sendToBackground("DAP_CACHED1", { tabId: this.props.tabId, tabURL: this.props.tabURL })
+                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL })
                             }}>
                                 Draw Tabs
                         </Button>

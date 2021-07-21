@@ -79,11 +79,9 @@ BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
     return true;
 });
 
-BackgroundMessaging.addListener("DAP_CACHED1", async (message: any) => {
-    // await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
-    console.log("ALIWASHERE! message DAP_CACHED1 recieved in background")
-    console.log(message)
-    await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED2", { tabId: message.tabId, tabURL: message.tabURL});
+BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+    console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
+    await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL});
 
     return true;
 });
