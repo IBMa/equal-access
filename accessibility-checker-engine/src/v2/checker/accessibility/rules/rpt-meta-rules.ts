@@ -76,9 +76,6 @@ let a11yRulesMeta: Rule[] = [
         context: "dom:meta[name][content]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            //console.log("context=" + JSON.stringify(context));
-            //console.log("name=" + ruleContext.getAttribute("name"));
-            //console.log("content=" + ruleContext.getAttribute("content"));
             
             if (ruleContext.getAttribute("name").toLowerCase() !== 'viewport')
                 return null;
@@ -88,6 +85,8 @@ let a11yRulesMeta: Rule[] = [
             if (!content || content.trim() === ''|| (!content.includes('maximum-scale') && !content.includes('user-scalable'))) 
                 return null;
             
+            let user_msg = null;
+            let max_msg = null; 
             const props = content.split(",");    
             let user_scale_value = 'yes';
             let maximum_scale_value = '2.0';
@@ -95,11 +94,13 @@ let a11yRulesMeta: Rule[] = [
                 const pieces = prop.trim().split('=');
                 if (pieces.length < 2) continue;
                 if (prop.includes('user-scalable')) {
+                    user_msg = prop;
                     user_scale_value = pieces[1].trim(); 
                     if (user_scale_value.startsWith("'") || user_scale_value.startsWith('"')) {
                         user_scale_value = user_scale_value.substring(1, user_scale_value.length-1);
                     }
                 } else if (prop.includes('maximum-scale')) {
+                    max_msg = prop;
                     maximum_scale_value = pieces[1].trim();
                     if (maximum_scale_value.startsWith("'") || maximum_scale_value.startsWith('"')) {
                         maximum_scale_value = maximum_scale_value.substring(1, maximum_scale_value.length-1).trim();
@@ -122,14 +123,14 @@ let a11yRulesMeta: Rule[] = [
                 else maximum_scale = 0.1;
             }
         
-            console.log("user_scale_value=" + user_scale_value +", maximum_scale=" + maximum_scale);
             // user-scalable is not set to 'yes', ignore maximum_scale
-            if (user_scale_value !== 'yes' )  
-                return RulePotential("Potential_1");
-            
-            if (maximum_scale < 2.0 )  
-                return RulePotential("Potential_1");
-            
+            if (user_scale_value !== 'yes' ) {
+                return RulePotential("Potential_1", [user_msg]);
+            }
+            // user-scalable is 'yes', but maximum_scale is too small
+            if (maximum_scale < 2.0 ) {
+                return RulePotential("Potential_1", [max_msg]);
+            }
             return RulePass("Pass_0");
         }
     }

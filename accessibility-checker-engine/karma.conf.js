@@ -43,6 +43,7 @@ module.exports = (config) => {
             //{ pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_pass_allow_user_scale.html', watched: true },
             //{ pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_fail_user_scale_no.html', watched: true },
             //{ pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_fail_maximum_user_scale_1.0.html', watched: true },
+            //{ pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_fail_maximum_user_scale_1.5.html', watched: true },
             //{ pattern: 'test/v2/checker/accessibility/rules/ACT_Meta_Viewport_ruleunit/viewport_fail_yes_maximum_user_scale.html', watched: true },
              
             { pattern: 'test/**/*_ruleunit/*.html', watched: true },
