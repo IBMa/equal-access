@@ -22,16 +22,27 @@
   </head>
   <body>
     <main>
-      <div hidden>
-        <img src="about:blank" />
-        Test
-      </div>
-      <div style="display:block;visibility:collapse;"><img src="about:blank" /></div>
+      <div hidden='false' style="display: block;"><img src="about:blank" /></div>
     </main>
     <script>
       UnitTest = {
         ruleIds: ['WCAG20_Img_HasAlt'],
-        results: []
+                results: [{
+                  "ruleId": "WCAG20_Img_HasAlt",
+                  "value": [
+                    "INFORMATION",
+                    "FAIL"
+                  ],
+                  "path": {
+                    "dom": "/html[1]/body[1]/main[1]/div[1]/img[1]",
+                    "aria": "/document[1]/main[1]/img[1]"
+                  },
+                  "reasonId": "Fail_2",
+                  "message": "Image does not have an 'alt' attribute short text alternative",
+                  "messageArgs": [],
+                  "apiArgs": [],
+                  "category": "Accessibility"
+                }]
       };
     </script>
   </body>
