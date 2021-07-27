@@ -1,6 +1,10 @@
 // import "./draw.scss";
+// import { TabsSkeleton } from 'carbon-components-react';
 import { tabbable } from 'tabbable';
+import ContextScriptMessaging from "../util/contextScriptMessaging";
 import TabMessaging from "../util/tabMessaging";
+// import getAbsoluteXPath from "../util/xpath";
+// import PanelMessaging from '../util/panelMessaging';
 
 
 // console.log("Content Script for drawing tab stops has loaded")
@@ -141,8 +145,40 @@ function insertSVGIntoBody() {
 
 }
 
+
 function getNodesToDrawBettween() {
     let tabStops = tabbable(document.body);
-    // console.log("tabStops = ", tabStops);
+
+    console.log(chrome)
+
+    let xpathArray = [];
+    for (let i = 0; i < tabStops.length; i++){
+        let singleXPath:any = {};
+        singleXPath.xpath = getXPathForElement(tabStops[i])
+        xpathArray[i] = singleXPath;
+    }
+
+    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", { message:"TestMessage", xpaths: xpathArray})
+
     return tabStops;
 }
+
+function getXPathForElement(element:any) {
+    const idx:any = (sib:any, name:any) => sib 
+        ? idx(sib.previousElementSibling, name||sib.localName) + (sib.localName == name)
+        : 1;
+    const segs:any = (elm:any) => (!elm || elm.nodeType !== 1) 
+        ? ['']
+        : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+    return segs(element).join('/');
+}
+
+// UNUSED xpath evaluation function:
+// function getElementByXPath(path:any) { 
+//     return (new XPathEvaluator()) 
+//         .evaluate(path, document.documentElement, null, 
+//                         XPathResult.FIRST_ORDERED_NODE_TYPE, null) 
+//         .singleNodeValue; 
+// } 
+
+

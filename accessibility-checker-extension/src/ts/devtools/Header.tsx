@@ -32,6 +32,7 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 import PanelMessaging from '../util/panelMessaging';
 
 
+
 const { prefix } = settings;
 interface IHeaderState {
     deleteModal: boolean,

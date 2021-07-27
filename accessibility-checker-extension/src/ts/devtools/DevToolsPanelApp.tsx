@@ -93,7 +93,8 @@ interface IPanelState {
     selectedArchive: string | null,
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
-    focusedViewText: string
+    focusedViewText: string,
+    tabStops: any
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -123,7 +124,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         selectedArchive: null,
         selectedPolicy: null,
         focusedViewFilter: false,
-        focusedViewText: ""
+        focusedViewText: "",
+        tabStops: null
     }
 
     ignoreNext = false;
@@ -202,6 +204,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         // console.log("componentDidMount");
         this.readOptionsData();
+        PanelMessaging.addListener("SEND_TABBING_DATA_TO_PANEL", async message => {
+            console.log("Recieved SEND_TABBING_DATA_TO_PANEL in the DevTools Panel");
+            this.setState({ tabStops: message });
+            console.log(this.state.tabStops) 
+        });
     }
 
     readOptionsData() {
