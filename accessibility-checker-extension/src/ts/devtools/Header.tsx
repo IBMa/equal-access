@@ -84,9 +84,10 @@ interface IHeaderProps {
     focusedViewFilter: boolean,
     focusedViewText: string,
     getCurrentSelectedElement: () => void,
-    readOptionsData: () => void
+    readOptionsData: () => void,
     tabURL: string,
     tabId: number,
+    tabStopsShow: () => void
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -364,7 +365,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                                     paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
                             onClick={() => {
-                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL })
+                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                this.props.tabStopsShow();
                             }}>
                                 Draw Tabs
                         </Button>
