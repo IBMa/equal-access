@@ -183,7 +183,7 @@ function getNodesToDrawBettween() {
         xpathArray[i] = singleXPath;
     }
 
-    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStops: xpathArray})
+    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStopsData: xpathArray})
 
     return tabStops;
 }

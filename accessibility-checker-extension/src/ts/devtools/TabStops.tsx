@@ -16,28 +16,64 @@
  
     import React from "react";
 
+    import { Row } from 'carbon-components-react';
+
     import { IReport } from './Report';
+
+    import "../styles/subpanel.scss"
     
     interface ITabStopsState {
     }
     
     interface ITabStopsProps {
         report: IReport | null,
-        tabStops: any
+        tabStops: any,
+        tabStopsPanelData: any
     }
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
         state: ITabStopsState = {};
 
+        // tabStopsMatches () {
+        //     let matchedTabStops:any = [];
+        //     if (this.props.tabStops && this.props.tabStops.tabStopsData) {
+        //         for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) { // for every Tab stop xpath
+        //             console.log(this.props.tabStops.tabStopsData[i].xpath);
+        //             this.props.report?.results.map((result: any, index: any) => {
+        //                 // console.log("result.path.dom = ", result.path.dom);
+        //                 if (this.props.tabStops.tabStopsData[i].xpath === result.path.dom) {
+        //                     console.log("index = ", index, "result.path.dom = ", result.path.dom);
+        //                     matchedTabStops.push(result);
+        //                 }
+        //             })
+        //         }
+        //         console.log("matchedTabStops = ", matchedTabStops);
+        //     }
+        // }
+
         printTabStops() {
-            console.log("printTabStops");
             let temp = [];
-            if (this.props.tabStops) {
-                // return <div>BigHowdy</div>
-                console.log("this.props.tabStops.length = ", this.props.tabStops.xpaths.length)
-                for (let i=0; i<this.props.tabStops.xpaths.length; i++) {
-                    console.log(this.props.tabStops.xpaths[i].xpath);
-                temp.push(<div>Tab Stop: {i+1}  {this.props.tabStops.xpaths[i].xpath}</div>);
+            if (this.props.tabStops && this.props.tabStops.tabStopsData) {
+                console.log("this.props.tabStops.length = ", this.props.tabStops.length)
+                for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
+                    console.log(this.props.tabStops.tabStopsData[i].xpath);
+                    temp.push(
+                        // <div>Tab Stop: {i+1}  {this.props.tabStops.tabStopsData[i].xpath}</div>
+                        <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                                {i+1}
+                            </div>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                                
+                            </div>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                                {this.props.tabStops.tabStopsData[i].role}
+                            </div>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                                {this.props.tabStops.tabStopsData[i].name}
+                            </div>
+                        </Row>
+                    );
                 }
             }
             return temp;
@@ -45,16 +81,33 @@
     
         render() {
             console.log("tabStops = ", this.props.tabStops);
+            console.log("report = ", this.props.report);
 
-            return <div style={{height: "100%", width: "100%", padding: "0rem"}}>
-                <div>Joho here</div>
-                {console.log("Joho here again")}
+            // this.tabStopsMatches();
+
+            return <div style={{height: "100%", width: "100%", paddingLeft: "0rem"}}>
+                <Row style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
+                    <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
+                        Tab stops summary
+                    </div>
+                </Row>
+                <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
+                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                        Index
+                    </div>
+                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                        Issues
+                    </div>
+                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                        Role
+                    </div>
+                    <div className="bx--col-lg-10 bx--col-md-5 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                        Name
+                    </div>
+                </Row>
+
                 {this.printTabStops()}
                 
-                
-                {/* {this.props.report && 
-                    <HelpFileSwitcher report={this.props.report} item={this.props.item}/>
-                } */}
             </div>
         }
     }

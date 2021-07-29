@@ -359,17 +359,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </div>       
                         </Modal>
 
-                        <Button 
-                            kind="ghost"   
-                            hasIconOnly iconDescription="Draw Tabs" tooltipPosition="top" 
-                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
-                            onClick={() => {
-                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                this.props.tabStopsShow();
-                            }}>
-                                Draw Tabs
-                        </Button>
+                        
 
 
                     </div>
@@ -420,6 +410,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                         </div>
                     </div>
+                    <Button 
+                        kind="ghost"   
+                        hasIconOnly iconDescription="Draw Tabs" tooltipPosition="top" 
+                        style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                                paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                        onClick={() => {
+                            PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                            this.props.tabStopsShow();
+                        }}>
+                            Draw Tabs
+                    </Button>
                 </div>
                 </React.Fragment>
                 // Content for the Assessment Tab

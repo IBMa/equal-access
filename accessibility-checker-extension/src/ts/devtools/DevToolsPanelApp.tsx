@@ -97,6 +97,7 @@ interface IPanelState {
     focusedViewFilter: boolean,
     focusedViewText: string,
     tabStops: any,
+    tabStopsPanelData: any,
     tabStopsPanel: boolean
 }
 
@@ -129,6 +130,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         focusedViewFilter: false,
         focusedViewText: "",
         tabStops: null,
+        tabStopsPanelData: null,
         tabStopsPanel: false
     }
 
@@ -1021,7 +1023,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </div>
                         </div>
                     </div>
-                    {this.subPanelRef.current?.scrollTo(0, 0)}
+                    {/* {this.subPanelRef.current?.scrollTo(0, 0)} */}
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height:"100%" }}>
                     <Header
