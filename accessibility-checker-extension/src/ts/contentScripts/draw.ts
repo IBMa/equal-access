@@ -155,10 +155,35 @@ function getNodesToDrawBettween() {
     for (let i = 0; i < tabStops.length; i++){
         let singleXPath:any = {};
         singleXPath.xpath = getXPathForElement(tabStops[i])
+        singleXPath.innerHTML = tabStops[i].innerHTML
+        singleXPath.tagName = tabStops[i].tagName
+        if (tabStops[i].children.length > 0) {
+            singleXPath.name = tabStops[i].children[0].innerHTML
+        }else{
+            singleXPath.name = tabStops[i].innerHTML
+        }
+        // singleXPath.innerHTML = tabStops[i].innerHTML
+
+        if(tabStops[i].tagName.toLowerCase() == "a"){
+            singleXPath.role = "link"
+        }else if(tabStops[i].tagName.toLowerCase() == "button"){
+            singleXPath.role = "button"
+        }else if(tabStops[i].tagName.toLowerCase() == "link"){
+            singleXPath.role = "link"
+        }else if(tabStops[i].tagName.toLowerCase() == "input"){
+            singleXPath.role = "textbox"
+        }else if(tabStops[i].tagName.toLowerCase() == "select"){
+            singleXPath.role = "listbox"
+        }else if(tabStops[i].tagName.toLowerCase() == "textarea"){
+            singleXPath.role = "textbox"
+        }else{
+            singleXPath.role = ""
+        }
+
         xpathArray[i] = singleXPath;
     }
 
-    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", { message:"TestMessage", xpaths: xpathArray})
+    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStops: xpathArray})
 
     return tabStops;
 }
