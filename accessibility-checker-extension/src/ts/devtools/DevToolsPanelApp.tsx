@@ -16,6 +16,8 @@
 
 import React from "react";
 import Header from "./Header";
+import TabStopsHeader from "./TabStopsHeader";
+import TabStops from "./TabStops"
 import ReportManagerHeader from "./ReportManagerHeader";
 import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
@@ -94,7 +96,8 @@ interface IPanelState {
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
     focusedViewText: string,
-    tabStops: any
+    tabStops: any,
+    tabStopsPanel: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -125,7 +128,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         selectedPolicy: null,
         focusedViewFilter: false,
         focusedViewText: "",
-        tabStops: null
+        tabStops: null,
+        tabStopsPanel: false
     }
 
     ignoreNext = false;
@@ -874,6 +878,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ reportManager: false });
     }
 
+    tabStopsShow() {
+        let mythis = this;
+
+        this.setState({ tabStopsPanel: true });
+        setTimeout(function() {
+            console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+          }, 1);
+    }
+
+    tabStopsHandler() {
+        this.setState({ tabStopsPanel: false });
+        console.log("tabStopsPanel1 = ", this.state.tabStopsPanel);
+    }
+
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
@@ -934,7 +952,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                             readOptionsData={this.readOptionsData.bind(this)}
                             tabURL = {this.state.tabURL}
-                            tabId = {this.state.tabId}                        
+                            tabId = {this.state.tabId} 
+                            tabStopsShow={this.tabStopsShow.bind(this)}                    
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -960,7 +979,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             return <React.Fragment>
                 {/* ok now need three way display for Report Manager so need reportManager state */}
-                <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height:"100%" }}>
                     <ReportManagerHeader 
                         reportManagerHelp={this.reportManagerHelp.bind(this)} 
                         actualStoredScansCount={this.actualStoredScansCount.bind(this)} 
@@ -977,7 +996,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
                 </div>
-                <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
@@ -990,7 +1009,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     </div>
                     {this.subPanelRef.current?.scrollTo(0, 0)}
                 </div>
-                <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
+                    <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
+                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                            <div>
+                                <div className="subPanel">
+                                    {/* {this.state.report && <TabStops report={this.state.report!} tabStops={this.state.tabStops} />} */}
+                                    {<TabStops report={this.state.report!} tabStops={this.state.tabStops} />}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {this.subPanelRef.current?.scrollTo(0, 0)}
+                </div>
+                <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height:"100%" }}>
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
@@ -1016,7 +1049,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
                         tabURL = {this.state.tabURL}
-                        tabId = {this.state.tabId}                        
+                        tabId = {this.state.tabId}  
+                        tabStopsShow={this.tabStopsShow.bind(this)}                      
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
