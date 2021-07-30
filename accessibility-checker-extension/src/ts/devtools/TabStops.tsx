@@ -56,7 +56,7 @@
             let temp = [];
             if (this.props.tabStops && this.props.tabStops.tabStopsData) { 
                 for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
-                    console.log(this.props.tabStops[i].xpath);
+                    console.log(this.props.tabStops.tabStopsData[i].xpath);
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
                             <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>

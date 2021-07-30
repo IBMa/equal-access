@@ -879,6 +879,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     tabStopsShow() {
+        console.log("tabStopsShow");
         let mythis = this;
 
         this.setState({ tabStopsPanel: true });
@@ -888,6 +889,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     tabStopsHandler() {
+        console.log("tabStopsHandler");
         let mythis = this;
 
         this.setState({ tabStopsPanel: false });

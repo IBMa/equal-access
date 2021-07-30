@@ -414,8 +414,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div >
                         <div className="bx--col-sm-2">
                             <a href="#" onClick={() => {
+                                console.log("START");
                                 PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                this.props.tabStopsShow.bind(this);
+                                this.props.tabStopsShow();
+                                console.log("DONE");
                             }}>
                                 Show tab stops</a>
                         </div>
