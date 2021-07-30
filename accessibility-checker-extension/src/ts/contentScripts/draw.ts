@@ -7,7 +7,7 @@ import TabMessaging from "../util/tabMessaging";
 // import PanelMessaging from '../util/panelMessaging';
 
 
-// console.log("Content Script for drawing tab stops has loaded")
+console.log("Content Script for drawing tab stops has loaded")
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
@@ -183,6 +183,7 @@ function getNodesToDrawBettween() {
         xpathArray[i] = singleXPath;
     }
 
+    console.log("In the contentScripts and I am SEND_TABBING_DATA_TO_BACKGROUND")
     ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStopsData: xpathArray})
 
     return tabStops;

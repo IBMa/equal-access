@@ -198,7 +198,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 
 BackgroundMessaging.addListener("SEND_TABBING_DATA_TO_BACKGROUND", async (message: any) => {
-    console.log("Message SEND_TABBING_DATA_TO_BACKGROUND recieved in background")
+    console.log("I the background scripts and I am reciving SEND_TABBING_DATA_TO_BACKGROUND and sending SEND_TABBING_DATA_TO_PANEL the the panel")
     console.log(message)
     BackgroundMessaging.sendToPanel("SEND_TABBING_DATA_TO_PANEL", message);
 
