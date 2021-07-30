@@ -885,7 +885,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         setTimeout(function() {
             console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
         }, 1);
-        this.forceUpdate();
     }
 
     tabStopsHandler() {
