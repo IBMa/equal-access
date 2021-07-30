@@ -28,7 +28,6 @@
     interface ITabStopsProps {
         report: IReport | null,
         tabStops: any,
-        tabStopsPanelData: any
     }
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
@@ -52,13 +51,13 @@
         // }
 
         printTabStops() {
+            console.log("printTabStops");
+            console.log("this.props.tabStops = ", this.props.tabStops);
             let temp = [];
-            if (this.props.tabStops && this.props.tabStops.tabStopsData) {
-                console.log("this.props.tabStops.length = ", this.props.tabStops.length)
+            if (this.props.tabStops && this.props.tabStops.tabStopsData) { 
                 for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
-                    console.log(this.props.tabStops.tabStopsData[i].xpath);
+                    console.log(this.props.tabStops[i].xpath);
                     temp.push(
-                        // <div>Tab Stop: {i+1}  {this.props.tabStops.tabStopsData[i].xpath}</div>
                         <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
                             <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
                                 {i+1}
@@ -80,34 +79,33 @@
         }
     
         render() {
-            console.log("tabStops = ", this.props.tabStops);
-            console.log("report = ", this.props.report);
+            console.log("TabStopsRENDER");
 
             // this.tabStopsMatches();
 
-            return <div style={{height: "100%", width: "100%", paddingLeft: "0rem"}}>
-                <Row style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
-                    <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
-                        Tab stops summary
-                    </div>
-                </Row>
-                <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
-                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
-                        Index
-                    </div>
-                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
-                        Issues
-                    </div>
-                    <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
-                        Role
-                    </div>
-                    <div className="bx--col-lg-10 bx--col-md-5 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
-                        Name
-                    </div>
-                </Row>
+            return  <div style={{height: "100%", width: "100%", paddingLeft: "0rem"}}>
+                        <Row style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
+                            <div className="bx--col-lg-3 bx--col-sm-4 stored-scans" style={{marginBottom:"14px"}}>
+                                Tab stops summary
+                            </div>
+                        </Row>
+                        <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                                Index
+                            </div>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                                Issues
+                            </div>
+                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                                Role
+                            </div>
+                            <div className="bx--col-lg-10 bx--col-md-5 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                                Name
+                            </div>
+                        </Row>
 
-                {this.printTabStops()}
-                
-            </div>
+                        {this.printTabStops()}
+                        
+                    </div>
         }
     }

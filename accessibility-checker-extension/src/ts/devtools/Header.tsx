@@ -29,8 +29,6 @@ const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
-import PanelMessaging from '../util/panelMessaging';
-
 
 
 const { prefix } = settings;
@@ -403,24 +401,28 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
                 </div>
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-4">
+                    <div className="bx--col-sm-2">
                         <div>
                             <span>Status: </span>
                             <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                             <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                         </div>
+                    </div >
+                    <div className="bx--col-sm-2">
+                        <a href="#" onClick={this.props.tabStopsShow.bind(this)}>Show tab stops</a>
+                        {/* <Button 
+                            kind="primary" 
+                            size="small"  
+                            hasIconOnly iconDescription="Draw Tabs" tooltipPosition="top" 
+                            style={{border:"none", height: "24px", verticalAlign: "top", paddingTop:"0px", paddingLeft:"8px", paddingRight:"8px"}}
+                            onClick={() => {
+                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                this.props.tabStopsShow();
+                            }}>
+                                Draw Tabs
+                        </Button> */}
                     </div>
-                    <Button 
-                        kind="ghost"   
-                        hasIconOnly iconDescription="Draw Tabs" tooltipPosition="top" 
-                        style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
-                        onClick={() => {
-                            PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                            this.props.tabStopsShow();
-                        }}>
-                            Draw Tabs
-                    </Button>
+                    
                 </div>
                 </React.Fragment>
                 // Content for the Assessment Tab

@@ -97,7 +97,6 @@ interface IPanelState {
     focusedViewFilter: boolean,
     focusedViewText: string,
     tabStops: any,
-    tabStopsPanelData: any,
     tabStopsPanel: boolean
 }
 
@@ -130,7 +129,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         focusedViewFilter: false,
         focusedViewText: "",
         tabStops: null,
-        tabStopsPanelData: null,
         tabStopsPanel: false
     }
 
@@ -886,12 +884,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ tabStopsPanel: true });
         setTimeout(function() {
             console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
-          }, 1);
+        }, 1);
+        this.forceUpdate();
     }
 
     tabStopsHandler() {
+        let mythis = this;
+
         this.setState({ tabStopsPanel: false });
-        console.log("tabStopsPanel1 = ", this.state.tabStopsPanel);
+        setTimeout(function() {
+            console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
+        }, 1);
     }
 
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
