@@ -200,13 +200,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
-        console.log("componentDidMount");
+        // console.log("componentDidMount");
+        this.readOptionsData();
+    }
+
+    readOptionsData() {
+        // console.log("readOptionsData");
         var self = this;
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
             const archives = await self.getArchives();
             const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
+            
             //if default archive id is not good, pick 'latest'
             if (!validArchive(archiveId)){ 
                 archiveId = "latest";
@@ -220,7 +226,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
 
             let policyId: string = selectedArchive.policies[0].id;
+            let policyName: string = selectedArchive.policies[0].name;
             const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
+            
             if (!validPolicy(policyId)){ 
                 policyId = "IBM_Accessibility";
             }
@@ -228,9 +236,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             //use policy id if it is in storage
             if (result.OPTIONS && result.OPTIONS.selected_ruleset && validPolicy(result.OPTIONS.selected_ruleset.id)) {
                 policyId = result.OPTIONS.selected_ruleset.id;
+                policyName = result.OPTIONS.selected_ruleset.name;
             }
 
-            
             // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
             // and get url using chrome.tabs.get via message "TAB_INFO"
             let thisTabId = chrome.devtools.inspectedWindow.tabId;
@@ -262,7 +270,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                     tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
-                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyId });
+                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyName });
             }
         });
     }
@@ -303,6 +311,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({firstScan: true});
         }
         this.state.prevTabURL = tabURL;
+
+        this.readOptionsData();
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -665,7 +675,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     
                 var tabTitle: string = this.state.tabTitle;
                 var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-                var filename = "IBM_Equal_Access_Accessibility_Checker_Report_for_Page---" + tabTitleSubString + ".html";
+                var filename = "Accessibility_Report-" + tabTitleSubString + ".html";
                 //replace illegal characters in file name
                 filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
     
@@ -683,15 +693,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    
-
     xlsxReportHandler = (scanType:string) => {
         // console.log("xlsxReportHandler");
         //@ts-ignore
         MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
     }
-
-    
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
         if (this.state.report) {
@@ -919,6 +925,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             focusedViewFilter={this.state.focusedViewFilter}
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
+                            readOptionsData={this.readOptionsData.bind(this)}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -998,6 +1005,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         focusedViewFilter={this.state.focusedViewFilter}
                         focusedViewText={this.state.focusedViewText}
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
+                        readOptionsData={this.readOptionsData.bind(this)}
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>

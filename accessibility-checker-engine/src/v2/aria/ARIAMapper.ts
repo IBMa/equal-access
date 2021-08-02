@@ -207,20 +207,21 @@ export class ARIAMapper extends CommonMapper {
         if (cur.nodeType === 3 /* Node.TEXT_NODE */) return cur.nodeValue;
         if (cur.nodeType === 11) return "";
         if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) {
-            throw new Error ("Can only compute name on Element and Text");
+            if (walkTraverse || labelledbyTraverse) return "";
+            throw new Error ("Can only compute name on Element and Text" + cur.nodeType);
         }
 
         const elem = cur as Element;
         // We've been here before - prevent recursion
         if (RPTUtil.getCache(elem, "data-namewalk", null) === ""+walkId) return "";
         RPTUtil.setCache(elem, "data-namewalk", ""+walkId);
-
         // See https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-search-input-type-tel-input-type-url-and-textarea-element
 
         // 2a. Only show hidden content if it's referenced by a labelledby
-        if (!!labelledbyTraverse && !DOMUtil.isNodeVisible(cur)) {
+        if (!labelledbyTraverse && !DOMUtil.isNodeVisible(cur)) {
             return "";
         }
+
         // 2b. collect valid id references
         if (!labelledbyTraverse && elem.hasAttribute("aria-labelledby")) {
             let labelledby = elem.getAttribute("aria-labelledby").split(" ");
@@ -254,7 +255,7 @@ export class ARIAMapper extends CommonMapper {
 
         // 2d. 
         if (role !== "presentation" && role !== "none") {
-            if (cur.nodeName.toLowerCase() === "img" && elem.hasAttribute("alt")) {
+            if ((cur.nodeName.toLowerCase() === "img" || cur.nodeName.toLowerCase() === "area") && elem.hasAttribute("alt")) {
                 return DOMUtil.cleanWhitespace(elem.getAttribute("alt")).trim();
             }
 
@@ -312,7 +313,7 @@ export class ARIAMapper extends CommonMapper {
         }
 
         // 2f. 2h.
-        if (!walkTraverse && (ARIADefinitions.nameFromContent(role) || labelledbyTraverse)) {
+        if (walkTraverse || ARIADefinitions.nameFromContent(role) || labelledbyTraverse) {
             // 2fi. Set the accumulated text to the empty string.
             let accumulated = "";
             // 2fii. Check for CSS generated textual content associated with the current node and 
@@ -334,11 +335,10 @@ export class ARIAMapper extends CommonMapper {
             //   Compute the text alternative of the current node beginning with step 2. Set the result 
             //     to that text alternative.
             //   Append the result to the accumulated text.
-            let walkChild = new DOMWalker(elem,false,elem);
-            while (walkChild.nextNode() && !walkChild.atRoot()) {
-                if (!walkChild.bEndTag) {
-                    accumulated += " " + ARIAMapper.computeNameHelp(walkId, walkChild.node, labelledbyTraverse, true);
-                }
+            let walkChild = elem.firstChild;
+            while (walkChild) {
+                accumulated += " " + ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
+                walkChild = walkChild.nextSibling;
             }
 
             let after = null;
@@ -352,12 +352,20 @@ export class ARIAMapper extends CommonMapper {
             }
             // 2fiv. Return the accumulated text.
             accumulated = accumulated.replace(/\s+/g," ").trim();
-            return accumulated;
+            if (accumulated.trim().length > 0) {
+                return accumulated;
+            }
         }
 
         // 2i. Otherwise, if the current node has a Tooltip attribute, return its value.
         if (elem.hasAttribute("title")) {
             return elem.getAttribute("title");
+        }
+        if (elem.tagName.toLowerCase() === "svg") {
+            let title = elem.querySelector("title");
+            if (title) {
+                return title.textContent || title.innerText;
+            }
         }
 
         return "";
@@ -397,11 +405,23 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
         if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
-            let retVal = elem.getAttribute("role").trim();
-            if (retVal === "presentation" || retVal === "none") return null;
-            return retVal;
+            let roleStr = elem.getAttribute("role").trim();
+            let roles = roleStr.split(" ");
+            for (const role of roles) {
+                if (role === "presentation" || role === "none") {
+                    // If element is focusable, then presentation roles are to be ignored
+                    if (!RPTUtil.isFocusable(elem)) {
+                        return null;
+                    }
+                } else if (role in ARIADefinitions.designPatterns) {
+                    return role;
+                }    
+            }
         }
+        return this.elemToImplicitRole(elem);
+    }
 
+    public static elemToImplicitRole(elem : Element) {
         let nodeName = elem.nodeName.toLowerCase();
 
         if (!(nodeName in ARIAMapper.elemToRoleMap)) {
@@ -418,12 +438,12 @@ export class ARIAMapper extends CommonMapper {
     }
 
     public static hasParentRole(element, role) : boolean {
-        let parent = element.parentNode;
+        let parent = DOMUtil.parentNode(element);
         // If link is in a menu, it's a menuitem
         while (parent) {
             if (ARIAMapper.nodeToRole(parent) === role)
                 return true;
-            parent = parent.parentNode;
+            parent = DOMUtil.parentNode(parent);
         }
         return false;
     }
@@ -527,14 +547,14 @@ export class ARIAMapper extends CommonMapper {
             "details": "group",
             "dialog": "dialog",
             "footer": function(element) {
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent) {
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                     nodeName = parent.nodeName.toLowerCase();
                 }
                 return null;
@@ -547,15 +567,14 @@ export class ARIAMapper extends CommonMapper {
             "h5": "heading",
             "h6": "heading",
             "header": function(element) {
-                let parent = element.parentNode;
-                let nodeName = parent.nodeName.toLowerCase();
+                let parent = DOMUtil.parentNode(element);
                 // If nearest sectioningRoot or sectioningContent is body
-                while (parent) {
+                while (parent && parent.nodeType === 1) {
+                    let nodeName = parent.nodeName.toLowerCase();
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
-                    parent = parent.parentNode;
-                    nodeName = parent.nodeName.toLowerCase();
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },
@@ -609,13 +628,13 @@ export class ARIAMapper extends CommonMapper {
             "textarea": "textbox",
             "tbody": "rowgroup",
             "td": function(element) {
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
                     if (role === "grid") return "gridcell";
 
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },
@@ -649,13 +668,13 @@ export class ARIAMapper extends CommonMapper {
                 }
 
                 // We're a cell - determine if we're a table cell or a grid cell
-                let parent = element.parentNode;
+                let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
                     if (role === "grid") return "gridcell";
 
-                    parent = parent.parentNode;
+                    parent = DOMUtil.parentNode(parent);
                 }
                 return null;
             },

@@ -19,6 +19,7 @@ import { RPTUtil } from "../util/legacy";
 import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
 import { DOMUtil } from "../../../dom/DOMUtil";
+import { ARIAMapper } from "../../../..";
 
 let a11yRulesLabeling: Rule[] = [
     {
@@ -648,9 +649,9 @@ let a11yRulesLabeling: Rule[] = [
 
             let passed = RPTUtil.hasAriaLabel(ruleContext);
             if (!passed) {
-                passed = RPTUtil.getAncestorWithRole(ruleContext, "menubar") ||
-                    RPTUtil.getAncestorWithRole(ruleContext, "menu") ||
-                    RPTUtil.getAncestorWithRole(ruleContext, "tree");
+                passed = !!RPTUtil.getAncestorWithRole(ruleContext, "menubar") ||
+                    !!RPTUtil.getAncestorWithRole(ruleContext, "menu") ||
+                    !!RPTUtil.getAncestorWithRole(ruleContext, "tree");
                 if (passed) {
                     // Rule does not apply in a menubar/menu/tree
                     return null;
@@ -717,24 +718,33 @@ let a11yRulesLabeling: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             /* removed the role check role= presentation and role=none since these 2 roles are not in the list of widget type roles */
-            if ((ruleContext.hasAttribute("type") && ruleContext.getAttribute("type") == "hidden")
+            if ((ruleContext.hasAttribute("type") && ruleContext.getAttribute("type") === "hidden")
                 || (RPTUtil.getAncestorWithRole(ruleContext, "combobox") &&
                     !(RPTUtil.hasRoleInSemantics(ruleContext, "textbox") ||
                         RPTUtil.hasRoleInSemantics(ruleContext, "searchbox")))) { // we need to diagnose that a combobox input textbox has a label(github issue #1104) 
                 return null;
             }
 
-            // Form/input elements are checked by G41, we skip them from this rule. Github issue 449
-            let skipElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
-            if (skipElements.indexOf(ruleContext.nodeName.toLowerCase()) != -1) {
-                return null;
-            }
+            let elemRole = ARIAMapper.nodeToRole(ruleContext);
+            let tagName = ruleContext.nodeName.toLowerCase();
+            
+            // Handled by WCAG20_Input_ExplicitLabel
+            let skipRoles = ["button", "checkbox", "combobox", 
+                "listbox", "menuitemcheckbox", "menuitemradio", "radio", "searchbox", 
+                "slider", "spinbutton", "switch", "textbox", "progressbar", "link"
+            ]
+            if (skipRoles.includes(elemRole)) return null;
+            if (tagName === "output" 
+                || tagName === "input" && ruleContext.getAttribute("type") === "file")
+            {
 
-            // exclude <link>, <area> and <a>(#775) that has href.
-            if ((ruleContext.nodeName.toLowerCase() === "link" ||
-                ruleContext.nodeName.toLowerCase() === "a" ||
-                ruleContext.nodeName.toLowerCase() === "area") && ruleContext.hasAttribute("href")) {
-                return null;
+            }
+            if (!ruleContext.hasAttribute("role")) {
+                // Form/input elements are checked by G41, we skip them from this rule. Github issue 449
+                let skipElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
+                if (skipElements.indexOf(ruleContext.nodeName.toLowerCase()) != -1) {
+                    return null;
+                }
             }
 
             // avoid diagnosing the popup list of a combobox.
@@ -768,6 +778,7 @@ let a11yRulesLabeling: Rule[] = [
             for (let i = 0, length = roles.length; passed && i < length; ++i) {
 
                 let pattern = designPatterns[roles[i]];
+
                 if (pattern 
                     && pattern.nameRequired 
                     && pattern.roleType 
@@ -800,11 +811,11 @@ let a11yRulesLabeling: Rule[] = [
                     }
                 }
             }
-            //return new ValidationResult(passed, [ruleContext], '', '', []);
+
             if (numWidgetsTested === 0) {
                 return null;
             } else if (!passed) {
-                return RuleFail("Fail_1");
+                return RuleFail("Fail_1", [elemRole]);
             } else {
                 //TODO
 //                if (prohibited) {

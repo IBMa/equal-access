@@ -9,35 +9,27 @@ A web browser extensions that adds automated accessibility checking capabilities
 
 ### Install dependencies
 
-1. Under the root directory ```equal-access``` directory 
+1. Under the root directory `equal-access` directory 
 
     ```
     npm install
     ```
 
-2. Under the accessibility-checker-extension directory 
-    ```
-    npm install
-    ```
+### Build
 
-3. Go back to the root directory ```cd ..```
+There are several different modes that you can run with. These will build the extension to `accessibility-checker-extension/dist` (See loading into the browser below)
 
-4. Under the report-react directory
-    ```
-    npm install
-    npm start
-    ```
+**Run local extension with local rule server**
+1. Under the `rule-server` directory, `npm start`
+2. Open https://localhost:9445 in your browser and accept any self-signed certs. In chrome you may need to type 'thisisunsafe', which will accept the cert (you will not actually see anywhere to type it). You should get "Cannot GET /".
+3. On a new command line window, under the `accessibility-checker-extension` directory, `npm run build:watch:local`
 
-5. On a new command line window, navigate to the accessibility-checker-extension directory 
-   and execute
-    ```
-    npm run build:watch:local
-    ```
-    Build run options:<br> 
-    Build for dev: `npm run build:dev`<br> 
-    Build for dev and watch for changes: `npm run build:watch`<br> 
-    Build for production: `npm run build:prod`<br> 
+**Run local extension with production rule server**
 
+From the `accessibility-checker-extension` directory:
+* To continuously build when changes occur, `npm run build:watch`
+* To build once for development, `npm run build:dev`
+* To build for production, `npm run build:prod`
 
 ## Loading into the browser:
 ### In Chrome web browser

@@ -28,21 +28,45 @@ let a11yRulesImg: Rule[] = [
         context: "dom:img",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            // If not visible to the screen reader, ignore
+            if (!RPTUtil.isNodeVisible(ruleContext) || ruleContext.getAttribute("aria-hidden") === "true") {
+                return null;
+            }
+            // Images with different roles should be handled by other ARIA rules
+            if (ruleContext.hasAttribute("role")) {
+                let role = ruleContext.getAttribute("role");
+                if (role === "presentation" || role === "none") {
+                    if (RPTUtil.isTabbable(ruleContext)) {
+                        // Ignore the role
+                    } else {
+                        return RulePass("Pass_0");
+                    }
+                } else {
+                    return null;
+                }
+            } 
             // JCH - NO OUT OF SCOPE hidden in context
-            let passed = ruleContext.hasAttribute("alt");
-            if (passed) {
+            if (ruleContext.hasAttribute("alt")) {
                 let alt = ruleContext.getAttribute("alt");
-                if (alt.trim().length == 0 && alt.length != 0) {
+                if (alt.trim().length === 0 && alt.length !== 0) {
                     // Alt, but it's whitespace (alt=" ")
                     return RuleFail("Fail_1");
+                } else {
+                    return RulePass("Pass_0");
                 }
-            }
-            if (!passed) {
-                // No Alt
-                return RuleFail("Fail_2");
+            } else if (ruleContext.hasAttribute("title")) {
+                let title = ruleContext.getAttribute("title");
+                if (title.length === 0) {
+                    // Same as no alt
+                    return RuleFail("Fail_2");
+                } else if (title.trim().length === 0) {
+                    // title = " "
+                    return RuleFail("Fail_3");
+                } else {
+                    return RulePass("Pass_0");
+                }
             } else {
-                // Alt content or alt == ""
-                return RulePass("Pass_0");
+                return RuleFail("Fail_2");
             }
         }
     },
@@ -353,8 +377,103 @@ let a11yRulesImg: Rule[] = [
             if (!passed) return RuleManual("Manual_1");
 
         }
-    }
+    },
+    {
+        /**
+         * Description: Triggers if a image role does not have a meaningful alternate text.
+         * Origin:  HAAC, G1128
+         */
+        id: "HAAC_Aria_ImgAlt",
+        context: "aria:img",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            if (!ruleContext.hasAttribute("role")) {
+                // If no role, this is implicit, and covered by WCAG20_Img_HasAlt
+                return null;
+            }
+            /* removed the role check role= presentation since if an element has role=img, then there needs to be a check for alt attribute regardless of the presecne of role=presentation
+            if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none")){
+                    return RulePass(1);
+            }*/
 
+            /* JCH - Points of failure
+             *    0. Missing alt attr with value 
+             *    1. Missing aria-label or aria-labelledby
+             *    2. Missing title attr with value
+             */
+            // Skip an image with a structural role - img must be in the role list at least
+            if (ruleContext.getAttribute("aria-hidden") === "true") return null;
+
+            // If role === img, you must use an aria label
+            //check attributes aria-label and aria-labelledby for other tags (e.g. <div>, <span>, etc)
+            let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;
+
+            if (!passed && ruleContext.nodeName.toLowerCase() === "svg") {
+                let svgTitle = ruleContext.querySelector("title");
+                passed = svgTitle && RPTUtil.hasInnerContent(svgTitle);
+            }
+
+            if (!passed) {
+                //check title attribute
+                passed = RPTUtil.attributeNonEmpty(ruleContext, "title");
+                // We should guide people to use alt or label - this is just a secondary approach to silence the rule.
+                // So, we should keep the POF from above.
+                // if (!passed) POF = "Fail_3";
+            }
+            //return new ValidationResult(passed, [ruleContext], 'role', '', []);
+            if (passed) {
+                return RulePass("Pass_0");
+            } else {
+                return RuleFail("Fail_2")
+            }
+        }
+    },
+    {
+        /**
+         * Description: Triggers if a image role does not have a meaningful alternate text.
+         * Origin:  HAAC, G1128
+         */
+        id: "HAAC_Aria_SvgAlt",
+        context: "aria:graphics-document,aria:graphics-symbol",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            /* removed the role check role= presentation since if an element has role=img, then there needs to be a check for alt attribute regardless of the presecne of role=presentation
+            if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none")){
+                    return RulePass(1);
+            }*/
+
+            /* JCH - Points of failure
+             *    0. Missing alt attr with value 
+             *    1. Missing aria-label or aria-labelledby
+             *    2. Missing title attr with value
+             */
+            // Skip an image with a structural role - img must be in the role list at least
+            if (ruleContext.getAttribute("aria-hidden") === "true") return null;
+
+            // If role === img, you must use an aria label
+            //check attributes aria-label and aria-labelledby for other tags (e.g. <div>, <span>, etc)
+            let passed = RPTUtil.getAriaLabel(ruleContext).length > 0;
+
+            if (!passed && ruleContext.nodeName.toLowerCase() === "svg") {
+                let svgTitle = ruleContext.querySelector("title");
+                passed = svgTitle && RPTUtil.hasInnerContent(svgTitle);
+            }
+
+            if (!passed) {
+                //check title attribute
+                passed = RPTUtil.attributeNonEmpty(ruleContext, "title");
+                // We should guide people to use alt or label - this is just a secondary approach to silence the rule.
+                // So, we should keep the POF from above.
+                // if (!passed) POF = "Fail_3";
+            }
+            //return new ValidationResult(passed, [ruleContext], 'role', '', []);
+            if (passed) {
+                return RulePass("Pass_0");
+            } else {
+                return RuleFail("Fail_2", [ruleContext.getAttribute("role")])
+            }
+        }
+    }
 ]
 
 export { a11yRulesImg }

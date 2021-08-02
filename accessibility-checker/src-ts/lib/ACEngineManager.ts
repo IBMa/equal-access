@@ -126,14 +126,15 @@ try {
 
     static isPuppeteer(content) {
         if (content && content.constructor) {
-            return content.constructor.toString().includes("Puppeteer");
+            return !!content.constructor.toString().match(/Function: Page/) 
+                || content.constructor.toString().includes("Puppeteer");
         }
         return false;
     }
     
     static isPlaywright(content) {
         if (content && content.constructor) {
-            return content.constructor.toString().includes("Page");
+            return !!content.constructor.toString().match(/class Page /);
         }
         return false;
     }

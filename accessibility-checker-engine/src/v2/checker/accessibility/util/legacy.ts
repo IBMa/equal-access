@@ -14,9 +14,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { ARIADefinitions } from "../../../aria/ARIADefinitions";
+import { ARIADefinitions, IDocumentConformanceRequirement } from "../../../aria/ARIADefinitions";
 import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { CacheDocument, CacheElement } from "../../../common/Engine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "./fragment";
 
 export class RPTUtil {
@@ -294,11 +295,16 @@ export class RPTUtil {
     }
 
     public static tabTagMap = {
-        "button": true,
-        "input": function (element): boolean {
-            return element.getAttribute("type") != "hidden";
+        "button": function (element): boolean {
+            return !element.hasAttribute("disabled");
         },
-        "select": true,
+        "iframe": true,
+        "input": function (element): boolean {
+            return element.getAttribute("type") !== "hidden" && !element.hasAttribute("disabled");
+        },
+        "select": function (element): boolean {
+            return !element.hasAttribute("disabled");
+        },
         "textarea": true,
         "div": function (element) {
             return element.hasAttribute("contenteditable");
@@ -546,9 +552,9 @@ export class RPTUtil {
 
             // Keep looping until we are at the very parent node of the entire page, so that we can loop through
             // all the nodes.
-            while (root.parentNode != null) {
+            while (DOMUtil.parentNode(root) !== null) {
                 // Get the parentNode
-                root = root.parentNode;
+                root = DOMUtil.parentNode(root);
             }
 
             // Build a nodewalter based of the root node, this node walter will be use loop over all the nodes
@@ -668,8 +674,8 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getRoles(ele: Element, considerImplicitRoles: boolean) {
-        let roles = [];
+    public static getRoles(ele: Element, considerImplicitRoles: boolean) : string[] {
+        let roles : string[] = [];
         if (ele && ele.hasAttribute && ele.hasAttribute("role")) {
             let attrRoles = RPTUtil.normalizeSpacing(ele.getAttribute("role").trim()).split(" ");
             for (let i = 0; i < attrRoles.length; ++i) {
@@ -1172,7 +1178,7 @@ export class RPTUtil {
             } else if (thisTag in tagNames) {
                 break;
             }
-            walkNode = walkNode.parentNode;
+            walkNode = DOMUtil.parentNode(walkNode);
         }
         return walkNode;
     }
@@ -1181,7 +1187,9 @@ export class RPTUtil {
     public static isSibling(element1, element2) {
         if (element1 && element2) {
             let node = null;
-            if (element1.parentNode && element1.parentNode.firstChild) node = element1.parentNode.firstChild;
+            if (DOMUtil.parentNode(element1) && DOMUtil.parentNode(element1).firstChild) {
+                node = DOMUtil.parentNode(element1).firstChild;
+            }
             while (node) {
                 if (node === element2) return true;
                 node = node.nextSibling;
@@ -1202,7 +1210,7 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getAncestorWithRole(element, roleName, considerImplicitRoles?) {
-        let walkNode = element.parentNode;
+        let walkNode = DOMUtil.parentNode(element);
         while (walkNode != null) {
             if (considerImplicitRoles) {
                 if (RPTUtil.hasRoleInSemantics(walkNode, roleName)) {
@@ -1213,7 +1221,7 @@ export class RPTUtil {
                     break;
                 }
             }
-            walkNode = walkNode.parentNode;
+            walkNode = DOMUtil.parentNode(walkNode);
         }
         return walkNode;
     }
@@ -1337,12 +1345,12 @@ export class RPTUtil {
     }
 
     public static isDescendant(parent, child) {
-        let node = child.parentNode;
+        let node = DOMUtil.parentNode(child);
         while (node != null) {
             if (node === parent) {
                 return true;
             }
-            node = node.parentNode;
+            node = DOMUtil.parentNode(node);
         }
         return false;
     }
@@ -1827,7 +1835,7 @@ export class RPTUtil {
         let depth = 0;
         let walkNode = element;
         while (walkNode != null) {
-            walkNode = walkNode.parentNode;
+            walkNode = DOMUtil.parentNode(walkNode);
             depth = depth + 1;
         }
         return depth;
@@ -1849,30 +1857,25 @@ export class RPTUtil {
         let bDepth = RPTUtil.nodeDepth(nodeB);
         if (bDepth > aDepth) {
             for (let i = 0; i < bDepth - aDepth; ++i)
-                nodeB = nodeB.parentNode;
+                nodeB = DOMUtil.parentNode(nodeB);
             if (nodeA === nodeB) // Node B nested in Node A
                 return -2;
         } else if (aDepth > bDepth) {
             for (let i = 0; i < aDepth - bDepth; ++i)
-                nodeA = nodeA.parentNode;
+                nodeA = DOMUtil.parentNode(nodeA);
             if (nodeA === nodeB) // Node A nested in Node B
                 return 2;
         }
-        while (nodeA != null && nodeB != null && nodeA.parentNode != nodeB.parentNode) {
-            nodeA = nodeA.parentNode;
-            nodeB = nodeB.parentNode;
+        while (nodeA != null && nodeB != null && DOMUtil.parentNode(nodeA) != DOMUtil.parentNode(nodeB)) {
+            nodeA = DOMUtil.parentNode(nodeA);
+            nodeB = DOMUtil.parentNode(nodeB);
         }
-        if (nodeA === null || nodeB === null || nodeA.parentNode != nodeB.parentNode) return null;
+        if (nodeA === null || nodeB === null || DOMUtil.parentNode(nodeA) != DOMUtil.parentNode(nodeB)) return null;
         while (nodeB != null && nodeB != nodeA)
             nodeB = nodeB.previousSibling;
         if (nodeB === null) // nodeB before nodeA
             return 1;
         else return -1;
-    }
-
-    /* Determine if given string is a valid language */
-    public static validLang(langStr) {
-        return /^(([a-zA-Z]{2,3}(-[a-zA-Z](-[a-zA-Z]{3}){0,2})?|[a-zA-Z]{4}|[a-zA-Z]{5,8})(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([0-9a-zA-Z]{5,8}|[0-9][a-zA-Z]{3}))*(-[0-9a-wy-zA-WY-Z](-[a-zA-Z0-9]{2,8})+)*(-x(-[a-zA-Z0-9]{1,8})+)?|x(-[a-zA-Z0-9]{1,8})+|(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE|art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$/.test(langStr)
     }
 
     /**
@@ -2046,8 +2049,14 @@ export class RPTUtil {
 
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
-                hasContent = (node.nodeName.toLowerCase() === "img" && RPTUtil.attributeNonEmpty(node, "alt") && RPTUtil.isNodeVisible(node))
-                    || (node.nodeName.toLowerCase() === "svg" && RPTUtil.svgHasName(node as any));
+                hasContent = (
+                    node.nodeName.toLowerCase() === "img" 
+                    && (RPTUtil.attributeNonEmpty(node, "alt") || RPTUtil.attributeNonEmpty(node, "title"))
+                    && RPTUtil.isNodeVisible(node)
+                ) || (
+                    node.nodeName.toLowerCase() === "svg" 
+                    && RPTUtil.svgHasName(node as any)
+                );
 
                 // Now we check if this node is of type element, visible
                 if (!hasContent && node.nodeType === 1 && RPTUtil.isNodeVisible(node)) {
@@ -2075,7 +2084,7 @@ export class RPTUtil {
                 // In the case we detect nodetype as text node and the patent of the text node is
                 // the same element we are checking has Inner content for then get the inner content of this
                 // text node.
-                if (node.nodeType === 3 && node.parentElement === element) {
+                if (node.nodeType === 3 && DOMUtil.parentElement(node) === element) {
                     // Check if the innerText of the element is empty or not
                     hasContent = !RPTUtil.isInnerTextEmpty(node);
                 }
@@ -2112,12 +2121,12 @@ export class RPTUtil {
         return hasContent;
     }
 
-    public static concatUniqueArrayItem(item, arr) {
+    public static concatUniqueArrayItem(item: string, arr: string[]) : string[] {
         arr.indexOf(item) === -1 && item !== null ? arr.push(item) : false;
         return arr;
     }
 
-    public static concatUniqueArrayItemList(itemList, arr) {
+    public static concatUniqueArrayItemList(itemList: string[], arr: string[]) : string[] {
         for (let i = 0; itemList !== null && i < itemList.length; i++) {
             arr = RPTUtil.concatUniqueArrayItem(itemList[i], arr);
         }
@@ -2135,7 +2144,7 @@ export class RPTUtil {
         }
 
         // check if the tagProperty exists in the documentConformanceRequirement hash.
-        let tagProperty = ARIADefinitions.documentConformanceRequirement[tagName];
+        let tagProperty : IDocumentConformanceRequirement = ARIADefinitions.documentConformanceRequirement[tagName];
         // The tag needs to check some special attributes
         if (tagProperty === null || tagProperty === undefined) {
             let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
@@ -2252,15 +2261,15 @@ export class RPTUtil {
                     }
                     break;
                 default:
-                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"];
+                    tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
             } //switch
         }
         return tagProperty || null;
     }
 
-    public static getAllowedAriaRoles(ruleContext, properties) {
-        let allowedRoles = [];
-        let tagProperty = null;
+    public static getAllowedAriaRoles(ruleContext, properties: IDocumentConformanceRequirement) {
+        let allowedRoles : string[] = [];
+        let tagProperty : IDocumentConformanceRequirement = null;
         if (properties !== null && properties !== undefined) {
             tagProperty = properties;
         } else {
@@ -2366,6 +2375,21 @@ export class RPTUtil {
                 }
             }
         }
+
+        // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
+        if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
+             let index = -1;
+             if ((index = allowedAttributes.indexOf("aria-level")) > -1) 
+                allowedAttributes.splice(index, 1);
+             
+             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1) 
+                allowedAttributes.splice(index, 1);
+            
+             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1) 
+                allowedAttributes.splice(index, 1);
+             
+        }
+
         return allowedAttributes;
     }
 
@@ -2452,7 +2476,7 @@ export class RPTUtil {
         // we get the parentnode and set that as the node as a text nodes,
         // visibility is directly related to the parent node.
         if (node.nodeType === 3) {
-            node = node.parentNode;
+            node = DOMUtil.parentNode(node);
         }
 
         // We should only allow nodeType element, and TextNode all other nodesTypes
@@ -2464,7 +2488,7 @@ export class RPTUtil {
         //  9 /* Node.DOCUMENT_NODE */               --> 9
         //  Node.DOCUMENT_TYPE_NODE          --> 10
         //  Node.DOCUMENT_FRAGMENT_NODE      --> 11
-        else if (node.nodeType != 1) {
+        if (node.nodeType !== 1) {
             return true;
         }
 
@@ -2520,15 +2544,12 @@ export class RPTUtil {
             // Get the hidden element property and hidden attribute
             let hiddenAttribute = node.getAttribute("hidden");
             let hiddenPropertyCustom = RPTUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
-            ;
-
             // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
             // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
             // which is under the form element then, node.hidden gives the element/list of elements which have id="hidden". Refer to
             // mozilla bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1267356
             let hiddenProperty = typeof node.hidden === "boolean" ? node.hidden : false;
-
             // If compStyle object is empty, node does't have hidden property, node does't have hidden attribute and does't have custom PT
             // hidden property then we can just return true (node visible) at this point.
             if (!compStyle &&
@@ -2549,11 +2570,9 @@ export class RPTUtil {
             //  node attribute hidden set (to any value)
             //  node custom hidden property ser (node.PT_NODE_HIDDEN)
             // If any of the above conditions are true then we return false as this element is not visible
-            if ((compStyle !== null && (compStyle.getPropertyValue('display') === 'none' ||
-                (!node.Visibility_Check_Parent && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
-                hiddenProperty ||
-                hiddenAttribute != null ||
-                hiddenPropertyCustom) {
+            if ((compStyle !== null && ((compStyle.getPropertyValue('display') === 'none' ||
+                (!RPTUtil.getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
+                (compStyle.getPropertyValue('display') !== 'block'  && (hiddenProperty || hiddenAttribute != null || hiddenPropertyCustom)))) {
                 // Set a custom expandos property on the the node to identify that it is hidden, so that we can uses
                 // use this in the rules to determine if the node is hidden or not, if we need to.
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos
@@ -2567,7 +2586,7 @@ export class RPTUtil {
         // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
         // the hidden CSS, property or attribute. Only keep checking until we are all the way back to the parentNode
         // element.
-        let parentElement = node.parentNode;
+        let parentElement = DOMUtil.parentNode(node);
 
         // If the parent node exists and the nodetype is element (1), then run recursive call to perform the check
         // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
@@ -2578,7 +2597,7 @@ export class RPTUtil {
             // so that in the function we can skip checking visibility: hidden for parent elements since visibility: hidden
             // is inherited, which allows a child to have a different setting then the child. This property only needs to be checked
             // once for the first element that is passed down and that is all. Ignore it for all the parents that we iterate over.
-            parentElement.Visibility_Check_Parent = true;
+            RPTUtil.setCache(parentElement as Element, "Visibility_Check_Parent", true);
 
             // Check upwards recursively, and save the results in an variable
             let nodeVisible = RPTUtil.isNodeVisible(parentElement);
@@ -2616,7 +2635,7 @@ export class RPTUtil {
                     idDict[ancestor.getAttribute("id")] = true;
                 }
             }
-            parentWalk = parentWalk.parentNode;
+            parentWalk = DOMUtil.parentNode(parentWalk);
         }
 
         // Iterate through controls that use aria-labelledby and see if any of them reference one of my ancestor ids
@@ -2668,7 +2687,7 @@ export class RPTUtil {
         // we get the parentnode and set that as the node as a text nodes,
         // disabled is directly related to the parent node.
         if (node.nodeType === 3) {
-            node = node.parentNode;
+            node = DOMUtil.parentNode(node);
         }
 
         // Variable Declaration
@@ -2691,7 +2710,7 @@ export class RPTUtil {
         // Get the parentNode for this node, becuase we have to check all parents to make sure they do not have
         // disabled attribute. Only keep checking until we are all the way back to the parentNode
         // element.
-        let parentElement = node.parentNode;
+        let parentElement = DOMUtil.parentNode(node);
 
         // If the parent node exists and the nodetype is element (1), then run recursive call to perform the check
         // all the way up to the very parent node. Use recursive call here instead of a while loop so that we do not
@@ -2988,11 +3007,11 @@ export class RPTUtil {
         }
 
         var ancestors = [];
-        var walkNode = ruleContext;
+        let walkNode : Element = ruleContext;
         while (walkNode) {
             if (walkNode.nodeType === 1)
                 ancestors.push(walkNode);
-            walkNode = walkNode.parentElement;
+            walkNode = DOMUtil.parentElement(walkNode);
         }
 
         var retVal = {

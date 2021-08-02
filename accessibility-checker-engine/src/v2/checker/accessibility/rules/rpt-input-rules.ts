@@ -15,6 +15,8 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
+import { DOMWalker } from "../../../dom/DOMWalker";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil, NodeWalker } from "../util/legacy";
 
@@ -39,6 +41,10 @@ let a11yRulesInput: Rule[] = [
                 return RulePass(1);
             */
 
+            if (ruleContext.getAttribute("aria-hidden")) {
+                return null;
+            }
+
             // Determine the input type
             let passed = true;
             let nodeName = ruleContext.nodeName.toLowerCase();
@@ -50,6 +56,10 @@ let a11yRulesInput: Rule[] = [
             }
             if (nodeName == "input" && type == "") {
                 type = "text";
+            }
+            if (type === "image") {
+                // Handled by WCAG20_Input_ExplicitLabelImage
+                return null;
             }
 
             let POF = -1;
@@ -66,7 +76,8 @@ let a11yRulesInput: Rule[] = [
             let buttonTypesWithDefaults = ["reset", "submit"]; // 'submit' and 'reset' have visible defaults.
             if (textTypes.indexOf(type) !== -1) { // If type is in the list
                 // Get only the non-hidden labels for element, in the case that an label is hidden then it is a violation
-                let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
+                // Note: label[for] does not work for ARIA-defined inputs
+                let labelElem = ruleContext.hasAttribute("role") ? null : RPTUtil.getLabelForElementHidden(ruleContext, true);
                 let hasLabelElemContent = false;
                 if (labelElem) {
                     if (RPTUtil.hasInnerContentHidden(labelElem)) {
@@ -80,10 +91,10 @@ let a11yRulesInput: Rule[] = [
                         }
                     }
                 }
-    
-                passed = (labelElem != null && hasLabelElemContent) ||
-                    (labelElem == null && RPTUtil.attributeNonEmpty(ruleContext, "title")) ||
-                    RPTUtil.hasAriaLabel(ruleContext) || RPTUtil.hasImplicitLabel(ruleContext);
+                passed = (!!labelElem && hasLabelElemContent) ||
+                    (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
+                    RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
+
                 if (!passed) POF = 2 + textTypes.indexOf(type);
             } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
                 if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
@@ -98,7 +109,7 @@ let a11yRulesInput: Rule[] = [
                 let bAlt = false;
                 if (ruleContext.nodeName.toLowerCase() === "img" && ruleContext.hasAttribute("alt")) {
                     let alt = ruleContext.getAttribute("alt");
-                    if (alt.trim().length == 0 && alt.length != 0) {
+                    if (alt.trim().length === 0) {
                         bAlt = false;
                     } else {
                         bAlt = true;
@@ -111,9 +122,9 @@ let a11yRulesInput: Rule[] = [
 
             // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
             if (!passed && (buttonTypes.indexOf(type) !== -1)) {
-                if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && ruleContext.parentElement.hasAttribute("widgetid")) {
+                if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMUtil.parentElement(ruleContext).hasAttribute("widgetid")) {
                     // Special handling for dijit buttons
-                    let labelId = ruleContext.parentElement.getAttribute("widgetid") + "_label";
+                    let labelId = DOMUtil.parentElement(ruleContext).getAttribute("widgetid") + "_label";
                     let label = FragmentUtil.getById(ruleContext, labelId);
                     if (label != null) {
                         passed = RPTUtil.hasInnerContentHidden(label);
@@ -335,9 +346,6 @@ let a11yRulesInput: Rule[] = [
                         retVal = null;
                     }
                 }
-                if (!retVal) {
-                    retVal = RPTUtil.getAncestor(ruleContext, "#document-fragment");
-                }
                 return retVal;
             }
 
@@ -349,7 +357,7 @@ let a11yRulesInput: Rule[] = [
 
             // Determine which form we're in (if any) to determine our scope
             let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") 
-                || RPTUtil.getAncestor(ruleContext, "#document-fragment")
+                || RPTUtil.getAncestor(ruleContext, "html")
                 || ruleContext.ownerDocument.documentElement;
 
             // Get data about all of the visible checkboxes and radios in the scope of this form 
@@ -367,11 +375,28 @@ let a11yRulesInput: Rule[] = [
                 }
                 // Get all of the checkboxes in the form or body (but not nested in something else and not hidden)
                 // And get a mapping of these checkboxes to 
-                let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
+                let cWalker = new DOMWalker(ctxForm, false, ctxForm);
+                let checkboxQ = [];
+                let radiosQ = [];
+                while (cWalker.nextNode()) {
+                    if (!cWalker.bEndTag
+                        && cWalker.node.nodeType === 1 
+                        && cWalker.node.nodeName.toLowerCase() === "input"
+                        && RPTUtil.isNodeVisible(cWalker.node))
+                    {
+                        let type = (cWalker.node as Element).getAttribute("type");
+                        if (type === "checkbox") {
+                            checkboxQ.push(cWalker.node);
+                        } else if (type === "radio") {
+                            radiosQ.push(cWalker.node);
+                        }
+                    }
+                }
+                // let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
                 for (let idx=0; idx<checkboxQ.length; ++idx) {
                     const cb = checkboxQ[idx];
                     if ((RPTUtil.getAncestorWithRole(cb, "form") 
-                        || RPTUtil.getAncestor(cb, "#document-fragment")
+                        || RPTUtil.getAncestor(ruleContext, "html")
                         || ruleContext.ownerDocument.documentElement) === ctxForm 
                         && !RPTUtil.shouldNodeBeSkippedHidden(cb)) 
                     {
@@ -382,11 +407,11 @@ let a11yRulesInput: Rule[] = [
                     }
                 }
                 // Get all of the radios in the form or body (but not nested in something else and not hidden)
-                let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
+                // let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
                 for (let idx=0; idx<radiosQ.length; ++idx) {
                     const r = radiosQ[idx];
                     const radCtx = (RPTUtil.getAncestorWithRole(r, "form") 
-                        || RPTUtil.getAncestor(r, "#document-fragment")
+                        || RPTUtil.getAncestor(ruleContext, "html")
                         || ruleContext.ownerDocument.documentElement);
                     if (radCtx === ctxForm
                         && !RPTUtil.shouldNodeBeSkippedHidden(r)) 

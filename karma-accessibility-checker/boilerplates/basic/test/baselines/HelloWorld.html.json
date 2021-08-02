@@ -173,10 +173,6 @@
             "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
             "Pass_0": "Rule Passed"
         },
-        "HAAC_Aria_Native_Host_Sematics": {
-            "0": "WAI-ARIA roles and attributes must be valid for the element they are assigned to",
-            "Pass_0": "Rule Passed"
-        },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
             "0": "All content must reside within an element with a landmark role",
             "Pass_0": "Rule Passed"

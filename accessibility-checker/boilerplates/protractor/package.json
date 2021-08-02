@@ -5,9 +5,10 @@
         "test": "protractor conf.js"
     },
     "devDependencies": {
-        "accessibility-checker": "^3.0.1",
+        "accessibility-checker": "^3.1.6",
+        "chromedriver": "*",
         "express": "^4.16.3",
-        "protractor": "^5.4.0",
+        "protractor": "^5.4.4",
         "serve-index": "^1.9.1"
     }
 }

@@ -17,6 +17,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 import { FragmentUtil } from "../util/fragment";
+import { LangUtil } from "../util/lang";
+import { DOMUtil } from "../../../dom/DOMUtil";
 
 let a11yRulesElem: Rule[] = [
     {
@@ -28,28 +30,34 @@ let a11yRulesElem: Rule[] = [
         context: "dom:*[lang], dom:*[xml:lang]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            let passed = true;
+            let nodeName = ruleContext.nodeName.toLowerCase();
             if (ruleContext.hasAttribute("lang")) {
-                passed = RPTUtil.validLang(ruleContext.getAttribute("lang"));
-                // Lang is bad and I'm not on the html element
-                if (!passed && ruleContext.nodeName.toLowerCase() !== "html") {
-                    // It's okay to have a lang=""
-                    passed = !RPTUtil.attributeNonEmpty(ruleContext, "lang");
+                if (nodeName !== "html" && ruleContext.getAttribute("lang") === "") {
+                    // It's okay to have a lang="" if not on html
+                } else {
+                    let langStr = ruleContext.getAttribute("lang");
+                    if (!LangUtil.validPrimaryLang(langStr)) {
+                        return RuleFail("Fail_1");
+                    }
+                    if (!LangUtil.isBcp47(langStr)) {
+                        return RuleFail("Fail_2");
+                    }
                 }
             }
-            if (passed && ruleContext.hasAttribute("xml:lang")) {
-                passed = RPTUtil.validLang(ruleContext.getAttribute("xml:lang"));
-                // Lang is bad and I'm not in the html element
-                if (!passed && ruleContext.nodeName.toLowerCase() !== "html") {
-                    // It's okay to have a lang=""
-                    passed = !RPTUtil.attributeNonEmpty(ruleContext, "xml:lang");
+            if (ruleContext.hasAttribute("xml:lang")) {
+                if (nodeName !== "html" && ruleContext.getAttribute("xml:lang") === "") {
+                    // It's okay to have a lang="" if not on html
+                } else {
+                    let langStr = ruleContext.getAttribute("xml:lang");
+                    if (!LangUtil.validPrimaryLang(langStr)) {
+                        return RuleFail("Fail_3");
+                    }
+                    if (!LangUtil.isBcp47(langStr)) {
+                        return RuleFail("Fail_4");
+                    }
                 }
             }
-            if (!passed) {
-                return RuleFail("Fail_1");
-            } else {
-                return RulePass("Pass_0");
-            }
+            return RulePass("Pass_0");
         }
     },
     {
@@ -153,7 +161,7 @@ let a11yRulesElem: Rule[] = [
                 // assume the validity of the id (of aria-labelledby) is checked by a different rule
                 passed = true;
             } else if (ruleContext.nodeName.toLowerCase() === "input"
-                && ruleContext.parentNode.nodeName.toLowerCase() === "label") {
+                && DOMUtil.parentNode(ruleContext).nodeName.toLowerCase() === "label") {
                 // assume the validity of the label, e.g. empty label, is checked by a different rule
                 passed = true;
             }

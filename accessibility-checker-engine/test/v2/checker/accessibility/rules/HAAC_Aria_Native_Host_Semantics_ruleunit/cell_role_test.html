@@ -1,0 +1,861 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en" id="id-32">
+
+<head id="id-29">
+    <title id="id-36">The WAI ARIA role should meet the implicit ARIA semantic restriction(s) for the element</title>
+    <link id="id-38" href="google.com" rel="test">
+    </link>
+    <base id="id-8">
+    </base>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+</head>
+
+<body id="id-9" aria-atomic="true">
+    <div id="id-20" role="region" aria-label="Realtime message log">
+        <a class="offleft" href="#maincontent">Skip to main content</a>
+        <a name="maincontent"></a>
+        <table role="grid" aria-label="sample" onkeypress="keyEvent()">
+            <tr role="row" tabindex="0">
+                <th role="cell" onkeypress="keyEvent()">11</th>
+                <th role="gridcell" onkeypress="keyEvent()">12</th>
+                <th role="gridcell" onkeypress="keyEvent()">13</th>
+            </tr>
+            <tr role="row" tabindex="0">
+                <td role="gridcell" onkeypress="keyEvent()">11</td>
+                <td role="gridcell" onkeypress="keyEvent()">12</td>
+                <td role="gridcell" onkeypress="keyEvent()">13</td>
+            </tr>
+        </table>
+        <table role="grid" aria-label="sample" onkeypress="keyEvent()">
+            <tr role="row" tabindex="0">
+                <th role="cell" onkeypress="keyEvent()">11</th>
+                <th role="cell" onkeypress="keyEvent()">12</th>
+                <th role="cell" onkeypress="keyEvent()">13</th>
+            </tr>
+            <tr role="row" tabindex="0">
+                <td role="cell" onkeypress="keyEvent()">12</td>
+                <td onkeypress="keyEvent()">12</td>
+                <td onkeypress="keyEvent()">12</td>
+            </tr>
+        </table>
+        <table role="grid" aria-label="sample" onkeypress="keyEvent()">
+            <tr role="row" tabindex="0">
+                <th role="gridcell" onkeypress="keyEvent()">11</th>
+                <th role="gridcell" onkeypress="keyEvent()">12</th>
+                <th role="gridcell" onkeypress="keyEvent()">13</th>
+            </tr>
+            <tr role="row" tabindex="0">
+                <td role="gridcell" onkeypress="keyEvent()" aria-pressed="true">13</td>
+                <td role="gridcell" onkeypress="keyEvent()" aria-atomic="true">12</td>
+                <td role="gridcell" onkeypress="keyEvent()">12</td>
+            </tr>
+        </table>
+        <table aria-label="sample" onkeypress="keyEvent()">
+            <tr role="row" tabindex="0">
+                <th role="cell" onkeypress="keyEvent()">11</th>
+                <th role="cell" onkeypress="keyEvent()">12</th>
+                <th role="cell" onkeypress="keyEvent()">13</th>
+            </tr>
+            <tr role="row" tabindex="0">
+                <td role="cell" onkeypress="keyEvent()">12</td>
+                <td onkeypress="keyEvent()">12</td>
+                <td onkeypress="keyEvent()">12</td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            results: [
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]",
+                        "aria": "/document[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-atomic",
+                        "body",
+                        "document"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]",
+                        "aria": "/document[1]/region[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "region",
+                        "div"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]",
+                        "aria": "/document[1]/region[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-label",
+                        "div",
+                        "region"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]",
+                        "aria": "/document[1]/region[1]/grid[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "grid",
+                        "table"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]",
+                        "aria": "/document[1]/region[1]/grid[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-label",
+                        "table",
+                        "grid"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[1]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[1]/th[1]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[1]/cell[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA role 'cell' is not valid for the element <th>",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[1]/th[2]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[1]/gridcell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[1]/th[3]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[1]/gridcell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[2]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[2]/gridcell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[2]/td[2]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[2]/gridcell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[1]/tbody[1]/tr[2]/td[3]",
+                        "aria": "/document[1]/region[1]/grid[1]/rowgroup[1]/row[2]/gridcell[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]",
+                        "aria": "/document[1]/region[1]/grid[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "grid",
+                        "table"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]",
+                        "aria": "/document[1]/region[1]/grid[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-label",
+                        "table",
+                        "grid"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[1]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[1]/cell[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA role 'cell' is not valid for the element <th>",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[2]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[1]/cell[2]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA role 'cell' is not valid for the element <th>",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[1]/th[3]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[1]/cell[3]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA role 'cell' is not valid for the element <th>",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[2]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[2]/tbody[1]/tr[2]/td[1]",
+                        "aria": "/document[1]/region[1]/grid[2]/rowgroup[1]/row[2]/cell[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA role 'cell' is not valid for the element <td>",
+                    "messageArgs": [
+                        "cell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]",
+                        "aria": "/document[1]/region[1]/grid[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "grid",
+                        "table"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]",
+                        "aria": "/document[1]/region[1]/grid[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-label",
+                        "table",
+                        "grid"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[1]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[1]/th[1]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[1]/gridcell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[1]/th[2]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[1]/gridcell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[1]/th[3]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[1]/gridcell[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[1]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[1]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "The WAI-ARIA attribute 'aria-pressed' is not valid for the element <td> with WAI-ARIA role 'gridcell'",
+                    "messageArgs": [
+                        "aria-pressed",
+                        "td",
+                        "gridcell"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[2]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[2]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-atomic",
+                        "td",
+                        "gridcell"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[3]",
+                        "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "gridcell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_attribute",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]",
+                        "aria": "/document[1]/region[1]/table[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "aria-label",
+                        "table",
+                        "table"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[1]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[1]/th[1]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[1]/cell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[1]/th[2]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[1]/cell[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[1]/th[3]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[1]/cell[3]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "cell",
+                        "th"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[2]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[2]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "row",
+                        "tr"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "aria_semantics_role",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]/table[4]/tbody[1]/tr[2]/td[1]",
+                        "aria": "/document[1]/region[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [
+                        "cell",
+                        "td"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                }
+            ]
+        }
+    </script>
+</body>
+
+</html>
