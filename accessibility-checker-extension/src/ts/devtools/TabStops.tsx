@@ -58,17 +58,17 @@
                 for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
                     console.log(this.props.tabStops.tabStopsData[i].xpath);
                     temp.push(
-                        <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                        <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
+                            <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 {i+1}
                             </div>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 
                             </div>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 {this.props.tabStops.tabStopsData[i].role}
                             </div>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 row-message" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-2 tabStopsContent" style={{marginBottom:"14px", width:"150px"}}>
                                 {this.props.tabStops.tabStopsData[i].name}
                             </div>
                         </Row>
@@ -89,17 +89,17 @@
                                 Tab stops summary
                             </div>
                         </Row>
-                        <Row style={{marginTop:"0px",paddingLeft: "1rem",height:"100%"}}>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                        <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
+                            <div className="bx--col-1 summaryBarCounts" style={{marginBottom:"14px"}}>
                                 Index
                             </div>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-1 summaryBarCounts" style={{marginBottom:"14px"}}>
                                 Issues
                             </div>
-                            <div className="bx--col-lg-2 bx--col-md-1 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-1 summaryBarCounts" style={{marginBottom:"14px"}}>
                                 Role
                             </div>
-                            <div className="bx--col-lg-10 bx--col-md-5 bx--col-sm-1 summaryBarCounts" style={{marginBottom:"14px"}}>
+                            <div className="bx--col-2 summaryBarCounts" style={{marginBottom:"14px"}}>
                                 Name
                             </div>
                         </Row>
