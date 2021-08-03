@@ -204,3 +204,10 @@ BackgroundMessaging.addListener("SEND_TABBING_DATA_TO_BACKGROUND", async (messag
 
     return true;
 });
+
+BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
+    console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND recieved in background")
+    await BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
+
+    return true;
+});

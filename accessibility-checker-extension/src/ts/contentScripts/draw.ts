@@ -28,7 +28,12 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             width: 100%;
             height: 100%;
             overflow: visible;
-        }`
+        }
+        
+        .highlightSVG{
+            fill: blue
+        }
+        `
     );
     injectCSS(
         `#svg2{
@@ -51,6 +56,19 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
     return true;
 });
+
+TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    // console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground")
+    // console.log(message)
+    
+    // Clearing any that are already highlighted
+    document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
+    // Highlighting any that are "clicked"
+    document.getElementsByClassName("circleNumber"+message.tabStopId)[0].classList.add("highlightSVG");
+    return true;
+});
+
+
 
 function clearLines(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
@@ -89,7 +107,7 @@ function redraw() {
             let centerX1 = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width / 2;
             let centerY1 = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height / 2;
 
-            makeCircle(centerX1, centerY1);
+            makeCircle(centerX1, centerY1, i);
         }
 
         for (let i = 0; i < nodes.length; i++) {
@@ -102,10 +120,11 @@ function redraw() {
     }, 1)
 }
 
-function makeCircle(x1: number, y1: number) {
+function makeCircle(x1: number, y1: number, circleNumber:number) {
     let circle = document.getElementsByClassName('tabCircle')[0]
     var circleClone = circle.cloneNode(true);
     (circleClone as HTMLElement).classList.add("deleteMe");
+    (circleClone as HTMLElement).classList.add("circleNumber"+circleNumber);
     (circleClone as HTMLElement).setAttribute('cx', String(x1));
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
     (circleClone as HTMLElement).setAttribute('r', String(15));

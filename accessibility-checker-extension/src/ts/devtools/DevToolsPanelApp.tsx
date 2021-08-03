@@ -905,6 +905,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     tabStopsHighlight(index:number) {
         console.log("Highlight tab stop with index = ", index);
+        PanelMessaging.sendToBackground("HIGHLIGHT_TABSTOP_TO_BACKGROUND", { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopId: index });
     }
 
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
