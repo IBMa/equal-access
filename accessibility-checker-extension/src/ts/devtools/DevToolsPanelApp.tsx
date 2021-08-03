@@ -383,6 +383,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             this.setState({ scanning: false }); // scan done
             // console.log("SCAN DONE");
+            console.log("report: ", this.state.report);
+            this.state.report?.results.map(element => {
+                console.log(element.path.dom);
+                console.log(element.snippet);
+            });
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
@@ -898,6 +903,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }, 1);
     }
 
+    tabStopsHighlight(index:number) {
+        console.log("Highlight tab stop with index = ", index);
+    }
+
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
@@ -1022,7 +1031,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             <div>
                                 <div className="subPanel">
                                     {/* {this.state.report && <TabStops report={this.state.report!} tabStops={this.state.tabStops} />} */}
-                                    {<TabStops report={this.state.report!} tabStops={this.state.tabStops} />}
+                                    {<TabStops report={this.state.report!} tabStops={this.state.tabStops} tabStopsHighlight={this.tabStopsHighlight.bind(this)} />}
                                 </div>
                             </div>
                         </div>

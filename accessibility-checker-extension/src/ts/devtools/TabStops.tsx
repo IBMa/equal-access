@@ -28,6 +28,7 @@
     interface ITabStopsProps {
         report: IReport | null,
         tabStops: any,
+        tabStopsHighlight: (index: number) => void,
     }
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
@@ -57,6 +58,7 @@
             if (this.props.tabStops && this.props.tabStops.tabStopsData) { 
                 for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
                     console.log(this.props.tabStops.tabStopsData[i].xpath);
+                    let index = i+1;
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
@@ -66,7 +68,12 @@
                                 
                             </div>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
-                                {this.props.tabStops.tabStopsData[i].role}
+                                <a href="#" onClick={() => {
+                                    console.log("role onclick START");
+                                    this.props.tabStopsHighlight(index);
+                                    console.log("role onclick DONE ");
+                                }}>
+                                {this.props.tabStops.tabStopsData[i].role}</a>
                             </div>
                             <div className="bx--col-2 tabStopsContent" style={{marginBottom:"14px", width:"150px"}}>
                                 {this.props.tabStops.tabStopsData[i].name}
