@@ -68,9 +68,11 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
     return true;
 });
 
+//@ts-ignore
 TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     // console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
     // console.log(message)
+    
     deleteDrawing(".deleteMe");
     return true;
 });
