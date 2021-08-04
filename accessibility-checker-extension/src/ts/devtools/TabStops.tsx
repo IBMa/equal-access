@@ -28,28 +28,12 @@
     interface ITabStopsProps {
         report: IReport | null,
         tabStops: any,
-        tabStopsHighlight: (index: number) => void,
+        tabStopsHighlight: (index: number, result: any) => void,
+        tabStopsResults: IReport | null,
     }
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
-        state: ITabStopsState = {};
-
-        // tabStopsMatches () {
-        //     let matchedTabStops:any = [];
-        //     if (this.props.tabStops && this.props.tabStops.tabStopsData) {
-        //         for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) { // for every Tab stop xpath
-        //             console.log(this.props.tabStops.tabStopsData[i].xpath);
-        //             this.props.report?.results.map((result: any, index: any) => {
-        //                 // console.log("result.path.dom = ", result.path.dom);
-        //                 if (this.props.tabStops.tabStopsData[i].xpath === result.path.dom) {
-        //                     console.log("index = ", index, "result.path.dom = ", result.path.dom);
-        //                     matchedTabStops.push(result);
-        //                 }
-        //             })
-        //         }
-        //         console.log("matchedTabStops = ", matchedTabStops);
-        //     }
-        // }
+        state: ITabStopsState = {};        
 
         printTabStops() {
             console.log("printTabStops");
@@ -57,8 +41,9 @@
             let temp = [];
             if (this.props.tabStops && this.props.tabStops.tabStopsData) { 
                 for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
-                    console.log(this.props.tabStops.tabStopsData[i].xpath);
+                    // console.log(this.props.tabStops.tabStopsData[i].xpath);
                     let index = i;
+                    console.log("index first = ", index);
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
@@ -70,7 +55,12 @@
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 <a href="#" onClick={() => {
                                     console.log("role onclick START");
-                                    this.props.tabStopsHighlight(index);
+                                    console.log("index = ",index);
+                                    // JCH - possible null problem here
+                                    //@ts-ignore
+                                    console.log("result = ",this.props.tabStopsResults[index]);
+                                    //@ts-ignore
+                                    this.props.tabStopsHighlight(index, this.props.tabStopsResults[index]);
                                     console.log("role onclick DONE ");
                                 }}>
                                 {this.props.tabStops.tabStopsData[i].role}</a>
