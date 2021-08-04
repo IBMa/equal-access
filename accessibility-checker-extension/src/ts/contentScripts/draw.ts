@@ -10,7 +10,7 @@ import TabMessaging from "../util/tabMessaging";
 console.log("Content Script for drawing tab stops has loaded")
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
+    console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     console.log(message)
     injectCSS(
         `#line {
@@ -49,7 +49,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     );
     draw();
     window.addEventListener('resize', function () {
-        clearLines(".deleteMe");
+        deleteDrawing(".deleteMe");
         redraw();
     })
 
@@ -68,11 +68,12 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
     return true;
 });
 
-
-
-function clearLines(classToRemove: string) {
-    document.querySelectorAll(classToRemove).forEach(e => e.remove());
-}
+TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    // console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
+    // console.log(message)
+    deleteDrawing(".deleteMe");
+    return true;
+});
 
 function injectCSS(styleString: string) {
     const style = document.createElement('style');
@@ -84,6 +85,10 @@ function draw() {
     // console.log("Inside Draw function")
     insertSVGIntoBody()
     redraw()
+}
+
+function deleteDrawing(classToRemove: string) {
+    document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
 function redraw() {

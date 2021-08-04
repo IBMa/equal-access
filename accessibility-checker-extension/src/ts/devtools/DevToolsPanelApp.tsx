@@ -900,6 +900,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         console.log("tabStopsHandler");
         let mythis = this;
 
+        PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
         this.setState({ tabStopsPanel: false });
         setTimeout(function() {
             console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
