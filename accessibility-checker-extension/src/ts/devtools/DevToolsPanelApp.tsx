@@ -905,6 +905,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         setTimeout(function() {
             console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
         }, 1);
+        this.selectElementInElements();
     }
 
     tabStopsHighlight(index:number, result: any) {
