@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The `<{0}>` element with `{1}` does not have a valid WAI-ARIA role specified.
+
+<div id="locLevel"></div>
+
+Elements with event handlers must have a valid WAI-ARIA role
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When UI elements are programmed with script to receive focus and be interactive, setting a valid `role` attribute or using an element with an implicit role allows assistive technologies to provide information about and manage an interactive element appropriately, including providing keyboard operability.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If using native HTML, determine why the element does not have an implicit role and address the cause (e.g., &lt;`a`&gt; does not have a role of `link` unless it also has an `href` attribute);
+ * OR, change the element type to one with an implicit role that matches the behavior of the element (e.g., use &lt;`button`&gt; instead of &lt;`div`&gt;);
+ * OR, assign a valid WAI-ARIA `role` that reflects the behavior of the element (e.g., use &lt;`div role="button"`&gt;).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+[W3C WAI-ARIA 1.2 Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex)
+
+### Who does this affect?
+
+ * People who rely on keyboard control
+ * People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
