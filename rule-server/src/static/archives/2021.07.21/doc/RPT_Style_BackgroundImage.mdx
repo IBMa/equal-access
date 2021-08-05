@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Style_BackgroundImage"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check the CSS background image does not convey important information
+
+<div id="locLevel"></div>
+
+Use CSS to include decorative images only.
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Use CSS to include decorative images only. Background images in CSS do not support text alternatives. When users do not see the default page background, any important information in CSS background images is lost.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the background image contains important text, use real text rather than an image of text;
+* OR, if the background image conveys important information, use the `<img>` element with an `"alt"` attribute instead of a background image;
+* OR provide a text alternative for the information that shows if the CSS image is not displayed (e.g. for users using alternate backgrounds and users using high contrast mode).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+[WCAG 2.1 failure technique F3](https://www.w3.org/WAI/WCAG21/Techniques/failures/F3)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with visual impairment using color contrast enhancement
+* People who use alternate backgrounds to increase legibility
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

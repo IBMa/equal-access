@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ValidProperty"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The attribute(s) `{0}` referenced by the element `<{1}>` is not a valid WAI-ARIA state or property
+
+<div id="locLevel"></div>
+
+WAI-ARIA attributes must be valid for the element's role
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When elements are assigned a WAI-ARIA `role`, WAI-ARIA 1.2 specifies which attributes are valid for that role. If invalid WAI-ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove WAI-ARIA state or property attributes that are not valid for the element role;
+* OR, change the `role` value to a role that supports the intended behavior of the element, using the WAI-ARIA 1.2 specification as a guide.
+In the following example the element references only valid WAI-ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1"&gt;
+    
+&lt;li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"&gt;&lt;span&gt;Fruits&lt;/span&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+[WC3 WAI-ARIA 1.2 states and properties](https://www.w3.org/WAI/PF/aria-1.2/states_and_properties)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
