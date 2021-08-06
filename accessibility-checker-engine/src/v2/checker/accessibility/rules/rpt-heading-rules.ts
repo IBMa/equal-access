@@ -135,9 +135,9 @@ let a11yRulesHeading: Rule[] = [
             }
             if (wordsSeen == 0) passed = true;
 
-            if (passed) {
+            if (passed) { 
                 return RulePass("Pass_0");
-            } else {
+            } else { 
                 return RulePotential("Potential_1", [wordStr.join(" ")]);
             }
         }
