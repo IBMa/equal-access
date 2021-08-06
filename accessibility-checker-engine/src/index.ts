@@ -104,4 +104,17 @@ function checkDemo(timeout?: number) {
     }, timeout);
 }
 
-export { Checker, Context, ARIAMapper, checkDemo, Config/*, simDemo*/, DOMWalker };
+async function getTabbable(timeout?: number) {
+    if (!timeout) timeout = 0;
+    return await new Promise((resolve, reject) => {
+        let checker = new Checker();
+        setTimeout(async function() {
+            let report = await checker.check(document.documentElement, ["IBM_Accessibility", "IBM_Design"])
+            let tabbable = report.results.filter(rule => rule.ruleId === "detector_tabbable");
+            tabbable.sort((a,b) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
+            resolve(tabbable);
+        },timeout);
+    
+    })
+}
+export { Checker, Context, ARIAMapper, checkDemo, Config/*, simDemo*/, DOMWalker, getTabbable };
