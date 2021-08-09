@@ -58,8 +58,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 });
 
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    // console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground")
-    // console.log(message)
+    console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground");
+    console.log(message);
     
     // Clearing any that are already highlighted
     document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
@@ -94,8 +94,9 @@ function deleteDrawing(classToRemove: string) {
 }
 
 function redraw() {
+    console.log("redraw");
     setTimeout(() => {
-        let nodes = getNodesToDrawBettween()
+        let nodes = getNodesToDrawBettween();
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length - 1; i++) {
@@ -173,9 +174,10 @@ function insertSVGIntoBody() {
 
 
 function getNodesToDrawBettween() {
+    console.log("getNodesToDrawBettween");
     let tabStops = tabbable(document.body);
 
-    // console.log(tabStops);
+    console.log(tabStops);
 
     let xpathArray = [];
     for (let i = 0; i < tabStops.length; i++){
