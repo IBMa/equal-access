@@ -99,6 +99,12 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
         "FAIL": "Recommendation",
         "PASS": "Pass",
         "MANUAL": "Recommendation"
+    },
+    "INFORMATION": {
+        "POTENTIAL": "Needs review",
+        "FAIL": "Violation",
+        "PASS": "Pass",
+        "MANUAL": "Recommendation"
     }
 };
 
@@ -117,7 +123,9 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
         "total": {},
         "filtered": {}
     };
+
     for (const item of report.results) {
+        console.log(JSON.stringify(item.value));
         let filtVal = "";
         item.selected = false;
         item.selectedChild = false;
