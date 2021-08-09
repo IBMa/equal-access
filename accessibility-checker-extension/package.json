@@ -19,6 +19,7 @@
 	"license": "Apache-2.0",
 	"dependencies": {
 		"@carbon/themes": "^10.31.0",
+		"@types/prop-types": "^15.7.4",
 		"carbon-components": "^10.10.1",
 		"carbon-components-react": "^7.10.1",
 		"carbon-icons": "^7.0.7",

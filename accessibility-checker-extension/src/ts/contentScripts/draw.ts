@@ -175,7 +175,7 @@ function insertSVGIntoBody() {
 function getNodesToDrawBettween() {
     let tabStops = tabbable(document.body);
 
-    console.log(chrome)
+    // console.log(tabStops);
 
     let xpathArray = [];
     for (let i = 0; i < tabStops.length; i++){
