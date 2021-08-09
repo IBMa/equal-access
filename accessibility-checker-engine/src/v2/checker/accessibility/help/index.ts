@@ -1027,6 +1027,11 @@ let a11yHelp = {
         0: `${Config.helpRoot}/WCAG20_Input_VisibleLabel`, 
         "Pass_0": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`,
         "Potential_1": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`
+    },
+    "ACT_Meta_Viewport": {
+        0: `${Config.helpRoot}/ACT_Meta_Viewport`, 
+        "Pass_0": `${Config.helpRoot}/ACT_Meta_Viewport`,
+        "Potential_1": `${Config.helpRoot}/ACT_Meta_Viewport`
     }
 }
 
