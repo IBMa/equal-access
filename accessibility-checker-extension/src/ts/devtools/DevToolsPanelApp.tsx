@@ -387,8 +387,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     selectedItem: undefined
                 });
             }
-            this.setState({ scanning: false }); // scan done
-            // console.log("SCAN DONE");
+            // JCH before finish scan collect and order tab stops
+            let tabbable: any = [];
+            report.results.map((result: any) => {
+                if (result.ruleId === "detector_tabbable") {
+                    tabbable.push(result);
+                }
+            });
+            tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
+            console.log(tabbable);
+
+            
+            this.setState({ scanning: false }); // SCAN DONE
+            // ***** SCAN DONE *****
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans

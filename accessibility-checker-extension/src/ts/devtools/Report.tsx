@@ -125,7 +125,7 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
     };
 
     for (const item of report.results) {
-        console.log(JSON.stringify(item.value));
+        // console.log(JSON.stringify(item.value));
         let filtVal = "";
         item.selected = false;
         item.selectedChild = false;
