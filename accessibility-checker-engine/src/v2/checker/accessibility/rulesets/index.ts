@@ -472,6 +472,11 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
+                    id: "ACT_Meta_Viewport",
+                    level: eRulePolicy.RECOMMENDATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -487,7 +492,13 @@ let a11yRulesets: Ruleset[] = [
             "name": "Reflow",
             "wcagLevel": "AA",
             "summary": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
-            "rules": []
+            "rules": [
+                {
+                    id: "ACT_Meta_Viewport",
+                    level: eRulePolicy.RECOMMENDATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                }
+            ]
         },
         {
             "num": "1.4.11",
