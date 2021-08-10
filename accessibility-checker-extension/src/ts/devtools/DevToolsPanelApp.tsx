@@ -98,7 +98,7 @@ interface IPanelState {
     focusedViewText: string,
     tabStops: any,
     tabStopsPanel: boolean,
-    tabStopsResults: IReport | null
+    tabStopsResults: []
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -131,7 +131,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         focusedViewText: "",
         tabStops: null,
         tabStopsPanel: false,
-        tabStopsResults: null
+        tabStopsResults: []
     }
 
     ignoreNext = false;
@@ -397,7 +397,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
             console.log(tabbable);
             this.setState({ tabStopsResults: tabbable});
-            
+
 
             
             this.setState({ scanning: false }); // SCAN DONE

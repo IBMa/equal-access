@@ -29,7 +29,7 @@
         report: IReport | null,
         tabStops: any,
         tabStopsHighlight: (index: number, result: any) => void,
-        tabStopsResults: IReport | null,
+        tabStopsResults: []
     }
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
@@ -37,17 +37,16 @@
 
         printTabStops() {
             console.log("printTabStops");
-            console.log("this.props.tabStops = ", this.props.tabStops);
-            let temp = [];
-            if (this.props.tabStops && this.props.tabStops.tabStopsData) { 
-                for (let i=0; i<this.props.tabStops.tabStopsData.length; i++) {
-                    // console.log(this.props.tabStops.tabStopsData[i].xpath);
-                    let index = i;
-                    console.log("index first = ", index);
+            console.log("this.props.tabStopsResults = ", this.props.tabStopsResults);
+            let temp:any = [];
+            if (this.props.tabStopsResults !== undefined) {
+                console.log("this.props.tabStopsResults 2nd = ", this.props.tabStopsResults);
+                this.props.tabStopsResults.map((result: any, index:number) => {
+                    console.log(result);
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
-                                {i+1}
+                                {index+1}
                             </div>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 
@@ -58,21 +57,23 @@
                                     console.log("index = ",index);
                                     // JCH - possible null problem here
                                     //@ts-ignore
-                                    console.log("result = ",this.props.tabStopsResults[index]);
+                                    console.log("result = ",result);
                                     //@ts-ignore
-                                    this.props.tabStopsHighlight(index, this.props.tabStopsResults[index]);
+                                    this.props.tabStopsHighlight(index, result);
                                     console.log("role onclick DONE ");
                                 }}>
-                                {this.props.tabStops.tabStopsData[i].role}</a>
+                                {result.apiArgs[0].role}</a>
                             </div>
                             <div className="bx--col-2 tabStopsContent" style={{marginBottom:"14px", width:"150px"}}>
-                                {this.props.tabStops.tabStopsData[i].name}
+                                {result.apiArgs[0].name}
                             </div>
                         </Row>
                     );
-                }
+                });
+                
+                return temp;
             }
-            return temp;
+            
         }
     
         render() {
