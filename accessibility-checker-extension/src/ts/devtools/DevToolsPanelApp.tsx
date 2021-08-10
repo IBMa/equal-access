@@ -1099,7 +1099,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabStopsShow={this.tabStopsShow.bind(this)}                      
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
-                        <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
+                        <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report

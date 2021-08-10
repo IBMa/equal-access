@@ -99,6 +99,12 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
         "FAIL": "Recommendation",
         "PASS": "Pass",
         "MANUAL": "Recommendation"
+    },
+    "INFORMATION": {
+        "POTENTIAL": "Needs review",
+        "FAIL": "Violation",
+        "PASS": "Pass",
+        "MANUAL": "Recommendation"
     }
 };
 
@@ -117,7 +123,9 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
         "total": {},
         "filtered": {}
     };
+
     for (const item of report.results) {
+        console.log(JSON.stringify(item.value));
         let filtVal = "";
         item.selected = false;
         item.selectedChild = false;
@@ -185,7 +193,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 label={tabLabels[tabId]}
                                 role="presentation"
                                 className={"tab-content-"+tabId}
-                                style={{paddingTop:"6px"}}
+                                style={{paddingTop:"12px"}}
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
