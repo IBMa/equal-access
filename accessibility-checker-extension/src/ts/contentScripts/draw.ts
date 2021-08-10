@@ -211,7 +211,8 @@ function getNodesToDrawBettween() {
         xpathArray[i] = singleXPath;
     }
 
-    console.log("In the contentScripts and I am SEND_TABBING_DATA_TO_BACKGROUND")
+    console.log("In the contentScripts and I am SEND_TABBING_DATA_TO_BACKGROUND");
+    // JCH do we need an await here?
     ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStopsData: xpathArray})
 
     return tabStops;
