@@ -200,21 +200,21 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 BackgroundMessaging.addListener("SEND_TABBING_DATA_TO_BACKGROUND", async (message: any) => {
     console.log("I the background scripts and I am receiving SEND_TABBING_DATA_TO_BACKGROUND and sending SEND_TABBING_DATA_TO_PANEL the the panel")
     console.log(message)
-    await BackgroundMessaging.sendToPanel("SEND_TABBING_DATA_TO_PANEL", message);
+    BackgroundMessaging.sendToPanel("SEND_TABBING_DATA_TO_PANEL", message);
 
     return true;
 });
 
 BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
     console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
-    await BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
+    BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
 
     return true;
 });
 
 BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS received in background")
-    await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
+    BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
 
     return true;
 });
