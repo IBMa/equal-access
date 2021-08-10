@@ -210,14 +210,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async componentDidMount() {
         console.log("componentDidMount START");
         this.readOptionsData();
-        PanelMessaging.addListener("SEND_TABBING_DATA_TO_PANEL", async message => {
-            console.log("Recieved SEND_TABBING_DATA_TO_PANEL in the DevTools Panel");
-            this.setState({ tabStops: message }, () => {
-                this.tabStopsMatches();
-            });
-            console.log("CDM tabStops: ", this.state.tabStops);
-            console.log("CDM tabStopsResults: ", this.state.tabStopsResults);
-        });
+        // PanelMessaging.addListener("SEND_TABBING_DATA_TO_PANEL", async message => {
+        //     console.log("Recieved SEND_TABBING_DATA_TO_PANEL in the DevTools Panel");
+        //     this.setState({ tabStops: message }, () => {
+        //         this.tabStopsMatches();
+        //     });
+        //     console.log("CDM tabStops: ", this.state.tabStops);
+        //     console.log("CDM tabStopsResults: ", this.state.tabStopsResults);
+        // });
         console.log("componentDidMount DONE");
     }
 
@@ -396,6 +396,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             });
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
             console.log(tabbable);
+            this.setState({ tabStopsResults: tabbable});
+            
 
             
             this.setState({ scanning: false }); // SCAN DONE
