@@ -193,7 +193,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 label={tabLabels[tabId]}
                                 role="presentation"
                                 className={"tab-content-"+tabId}
-                                style={{paddingTop:"6px"}}
+                                style={{paddingTop:"12px"}}
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
