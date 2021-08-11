@@ -36,13 +36,9 @@
         state: ITabStopsState = {};        
 
         printTabStops() {
-            console.log("printTabStops");
-            console.log("this.props.tabStopsResults = ", this.props.tabStopsResults);
             let temp:any = [];
             if (this.props.tabStopsResults !== undefined) {
-                console.log("this.props.tabStopsResults 2nd = ", this.props.tabStopsResults);
                 this.props.tabStopsResults.map((result: any, index:number) => {
-                    console.log(result);
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
@@ -53,14 +49,8 @@
                             </div>
                             <div className="bx--col-1 tabStopsContent" style={{marginBottom:"14px"}}>
                                 <a href="#" onClick={() => {
-                                    console.log("role onclick START");
-                                    console.log("index = ",index);
-                                    // JCH - possible null problem here
-                                    //@ts-ignore
-                                    console.log("result = ",result);
                                     //@ts-ignore
                                     this.props.tabStopsHighlight(index, result);
-                                    console.log("role onclick DONE ");
                                 }}>
                                 {result.apiArgs[0].role}</a>
                             </div>
