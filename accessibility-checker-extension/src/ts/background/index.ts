@@ -196,15 +196,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
 });
 
-// TODO: JCH I don't think that SEND_TABBING_DATA_TO_BACKGROUND or SEND_TABBING_DATA_TO_PANEL are needed anymore
-BackgroundMessaging.addListener("SEND_TABBING_DATA_TO_BACKGROUND", async (message: any) => {
-    console.log("I the background scripts and I am receiving SEND_TABBING_DATA_TO_BACKGROUND and sending SEND_TABBING_DATA_TO_PANEL the the panel")
-    console.log(message)
-    BackgroundMessaging.sendToPanel("SEND_TABBING_DATA_TO_PANEL", message);
-
-    return true;
-});
-
 BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
     console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
     BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});

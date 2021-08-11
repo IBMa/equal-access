@@ -1,7 +1,7 @@
 // import "./draw.scss";
 // import { TabsSkeleton } from 'carbon-components-react';
 import { tabbable } from 'tabbable';
-import ContextScriptMessaging from "../util/contextScriptMessaging";
+// import ContextScriptMessaging from "../util/contextScriptMessaging";
 import TabMessaging from "../util/tabMessaging";
 // import getAbsoluteXPath from "../util/xpath";
 // import PanelMessaging from '../util/panelMessaging';
@@ -272,10 +272,6 @@ function getNodesToDrawBettween() {
 
         xpathArray[i] = singleXPath;
     }
-
-    console.log("In the contentScripts and I am SEND_TABBING_DATA_TO_BACKGROUND");
-    // TODO: JCH this is not needed anymore
-    ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStopsData: xpathArray})
 
     return tabStops;
 }
