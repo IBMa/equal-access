@@ -27,7 +27,6 @@
     
     interface ITabStopsProps {
         report: IReport | null,
-        tabStops: any,
         tabStopsHighlight: (index: number, result: any) => void,
         tabStopsResults: []
     }

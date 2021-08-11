@@ -96,7 +96,7 @@ interface IPanelState {
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
     focusedViewText: string,
-    tabStops: any,
+    tabStops: [],
     tabStopsPanel: boolean,
     tabStopsResults: []
 }
@@ -129,7 +129,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         selectedPolicy: null,
         focusedViewFilter: false,
         focusedViewText: "",
-        tabStops: null,
+        tabStops: [], // array of xpaths of the tab stops
         tabStopsPanel: false,
         tabStopsResults: []
     }
@@ -208,17 +208,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
-        console.log("componentDidMount START");
         this.readOptionsData();
-        // PanelMessaging.addListener("SEND_TABBING_DATA_TO_PANEL", async message => {
-        //     console.log("Recieved SEND_TABBING_DATA_TO_PANEL in the DevTools Panel");
-        //     this.setState({ tabStops: message }, () => {
-        //         this.tabStopsMatches();
-        //     });
-        //     console.log("CDM tabStops: ", this.state.tabStops);
-        //     console.log("CDM tabStopsResults: ", this.state.tabStopsResults);
-        // });
-        console.log("componentDidMount DONE");
     }
 
     readOptionsData() {
@@ -389,6 +379,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             // JCH before finish scan collect and order tab stops
             let tabbable: any = [];
+            let tabXpaths: any = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
                     tabbable.push(result);
@@ -397,7 +388,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
             console.log(tabbable);
             this.setState({ tabStopsResults: tabbable});
-
+            tabbable.map((result: any) => {
+                tabXpaths.push(result.path.dom);
+            });
+            console.log(tabXpaths);
+            this.setState({ tabStops: tabXpaths});
 
             
             this.setState({ scanning: false }); // SCAN DONE
@@ -927,29 +922,29 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.selectItem(result, undefined);
     }
 
-    tabStopsMatches() {
-        console.log("tabStopsMatches");
-        // console.log("this.props.report?.results = ", this.props.report?.results);
-        let matchedTabStops:any = [];
-        console.log("TABSTOPS ***** = ", this.state.tabStops);
-        if (this.state.tabStops && this.state.tabStops.tabStopsData) {
-            console.log("Got Here");
-            for (let i=0; i<this.state.tabStops.tabStopsData.length; i++) { // for every Tab stop xpath
-                // console.log("this.props.tabStops.tabStopsData[i].xpath = ", this.props.tabStops.tabStopsData[i].xpath);
-                let firstMatch = false;
-                this.state.report?.results.map((result: any, index: number) => {
-                    // console.log("result.path.dom = ", result.path.dom);
-                    if (this.state.tabStops.tabStopsData[i].xpath === result.path.dom && firstMatch === false) {
-                        console.log("MATCH FOUND index = ", index, "result.path.dom = ", result.path.dom);
-                        matchedTabStops.push(result);
-                        firstMatch = true;
-                    }
-                })
-            }
-            console.log("matchedTabStops = ", matchedTabStops);
-            this.setState({tabStopsResults: matchedTabStops});
-        }
-    }
+    // tabStopsMatches() {
+    //     console.log("tabStopsMatches");
+    //     // console.log("this.props.report?.results = ", this.props.report?.results);
+    //     let matchedTabStops:any = [];
+    //     console.log("TABSTOPS ***** = ", this.state.tabStops);
+    //     if (this.state.tabStops && this.state.tabStops.tabStopsData) {
+    //         console.log("Got Here");
+    //         for (let i=0; i<this.state.tabStops.tabStopsData.length; i++) { // for every Tab stop xpath
+    //             // console.log("this.props.tabStops.tabStopsData[i].xpath = ", this.props.tabStops.tabStopsData[i].xpath);
+    //             let firstMatch = false;
+    //             this.state.report?.results.map((result: any, index: number) => {
+    //                 // console.log("result.path.dom = ", result.path.dom);
+    //                 if (this.state.tabStops.tabStopsData[i].xpath === result.path.dom && firstMatch === false) {
+    //                     console.log("MATCH FOUND index = ", index, "result.path.dom = ", result.path.dom);
+    //                     matchedTabStops.push(result);
+    //                     firstMatch = true;
+    //                 }
+    //             })
+    //         }
+    //         console.log("matchedTabStops = ", matchedTabStops);
+    //         this.setState({tabStopsResults: matchedTabStops});
+    //     }
+    // }
 
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
@@ -1075,7 +1070,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             <div>
                                 <div className="subPanel">
                                     {/* {this.state.report && <TabStops report={this.state.report!} tabStops={this.state.tabStops} />} */}
-                                    {<TabStops report={this.state.report!} tabStops={this.state.tabStops} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />}
+                                    {<TabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />}
                                 </div>
                             </div>
                         </div>
