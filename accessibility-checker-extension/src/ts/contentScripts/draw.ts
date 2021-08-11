@@ -104,6 +104,7 @@ function redraw() {
     console.log("redraw");
     setTimeout(() => {
         let nodes = getNodesToDrawBettween();
+        console.log("nodes = ", nodes);
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length - 1; i++) {
@@ -230,7 +231,10 @@ function insertSVGIntoBody() {
 
 }
 
-
+// TODO: JCH this funciton should get its data from tabStopsResults
+// so need to message tabStopsResults from Panel to Background to Content script
+// also you do not need to process xpaths anymore in that the xpaths in tabStopsResults
+// are fully qualified Chrome xpaths
 function getNodesToDrawBettween() {
     console.log("getNodesToDrawBettween");
     let tabStops = tabbable(document.body);
@@ -270,7 +274,7 @@ function getNodesToDrawBettween() {
     }
 
     console.log("In the contentScripts and I am SEND_TABBING_DATA_TO_BACKGROUND");
-    // JCH do we need an await here?
+    // TODO: JCH this is not needed anymore
     ContextScriptMessaging.sendToBackground("SEND_TABBING_DATA_TO_BACKGROUND", {tabStopsData: xpathArray})
 
     return tabStops;
