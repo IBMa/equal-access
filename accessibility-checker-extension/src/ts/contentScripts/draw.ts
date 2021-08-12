@@ -1,6 +1,5 @@
 // import "./draw.scss";
 // import { TabsSkeleton } from 'carbon-components-react';
-import { tabbable } from 'tabbable';
 // import ContextScriptMessaging from "../util/contextScriptMessaging";
 import TabMessaging from "../util/tabMessaging";
 // import getAbsoluteXPath from "../util/xpath";
@@ -54,10 +53,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         `
     );
-    draw();
+    draw(message.tabStopsResults);
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
-        redraw();
+        redraw(message.tabStopsResults);
     })
 
 
@@ -90,20 +89,21 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw() {
+function draw(tabStopsResults:any) {
     // console.log("Inside Draw function")
-    insertSVGIntoBody()
-    redraw()
+    insertSVGIntoBody();
+    redraw(tabStopsResults);
 }
 
 function deleteDrawing(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
-function redraw() {
+function redraw(tabStopsResults:any) {
     console.log("redraw");
     setTimeout(() => {
-        let nodes = getNodesToDrawBettween();
+        // let nodes = getNodesToDrawBettween();
+        let nodes = getNodesXpaths(tabStopsResults);
         console.log("nodes = ", nodes);
 
         // JCH - need for last line to return to first node
@@ -231,61 +231,25 @@ function insertSVGIntoBody() {
 
 }
 
-// TODO: JCH this funciton should get its data from the state variable tabStops
-// which contains an array of tab stop xpaths so need to message tabStops from Panel 
-// to Background to Content script (draw.ts)
-// also you do not need to process xpaths anymore in that the xpaths in tabStops
-// are fully qualified Chrome xpaths
-function getNodesToDrawBettween() {
-    console.log("getNodesToDrawBettween");
-    let tabStops = tabbable(document.body);
-
-    console.log(tabStops);
-
-    let xpathArray = [];
-    for (let i = 0; i < tabStops.length; i++) {
-        let singleXPath: any = {};
-        singleXPath.xpath = getXPathForElement(tabStops[i])
-        singleXPath.innerHTML = tabStops[i].innerHTML
-        singleXPath.tagName = tabStops[i].tagName
-        if (tabStops[i].children.length > 0) {
-            singleXPath.name = tabStops[i].children[0].innerHTML
-        } else {
-            singleXPath.name = tabStops[i].innerHTML
-        }
-        // singleXPath.innerHTML = tabStops[i].innerHTML
-
-        if (tabStops[i].tagName.toLowerCase() == "a") {
-            singleXPath.role = "link"
-        } else if (tabStops[i].tagName.toLowerCase() == "button") {
-            singleXPath.role = "button"
-        } else if (tabStops[i].tagName.toLowerCase() == "link") {
-            singleXPath.role = "link"
-        } else if (tabStops[i].tagName.toLowerCase() == "input") {
-            singleXPath.role = "textbox"
-        } else if (tabStops[i].tagName.toLowerCase() == "select") {
-            singleXPath.role = "listbox"
-        } else if (tabStops[i].tagName.toLowerCase() == "textarea") {
-            singleXPath.role = "textbox"
-        } else {
-            singleXPath.role = ""
-        }
-
-        xpathArray[i] = singleXPath;
-    }
-
-    return tabStops;
+function getNodesXpaths(nodes:any) {
+    let tabXpaths: any = [];
+    nodes.map((result: any) => {
+        result.push(result.path.dom);
+    });
+    return tabXpaths;
 }
 
-function getXPathForElement(element: any) {
-    const idx: any = (sib: any, name: any) => sib
-        ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name)
-        : 1;
-    const segs: any = (elm: any) => (!elm || elm.nodeType !== 1)
-        ? ['']
-        : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
-    return segs(element).join('/');
-}
+
+
+// function getXPathForElement(element: any) {
+//     const idx: any = (sib: any, name: any) => sib
+//         ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name)
+//         : 1;
+//     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1)
+//         ? ['']
+//         : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+//     return segs(element).join('/');
+// }
 
 // UNUSED xpath evaluation function:
 // function getElementByXPath(path:any) { 

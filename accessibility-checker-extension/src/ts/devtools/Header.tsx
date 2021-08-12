@@ -87,7 +87,8 @@ interface IHeaderProps {
     readOptionsData: () => void,
     tabURL: string,
     tabId: number,
-    tabStopsShow: () => void
+    tabStopsShow: () => void,
+    tabStopsResults: []
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -414,7 +415,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div >
                         <div className="bx--col-sm-2">
                             <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
-                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults });
                                 this.props.tabStopsShow();
                             }}>
                                 Show tab stops</a>

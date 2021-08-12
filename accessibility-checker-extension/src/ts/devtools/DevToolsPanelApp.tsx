@@ -388,6 +388,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
             console.log(tabbable);
             this.setState({ tabStopsResults: tabbable});
+            
             tabbable.map((result: any) => {
                 tabXpaths.push(result.path.dom);
             });
@@ -984,7 +985,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             readOptionsData={this.readOptionsData.bind(this)}
                             tabURL = {this.state.tabURL}
                             tabId = {this.state.tabId} 
-                            tabStopsShow={this.tabStopsShow.bind(this)}                    
+                            tabStopsShow={this.tabStopsShow.bind(this)} 
+                            tabStopsResults = {this.state.tabStopsResults}                   
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1081,7 +1083,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         readOptionsData={this.readOptionsData.bind(this)}
                         tabURL = {this.state.tabURL}
                         tabId = {this.state.tabId}  
-                        tabStopsShow={this.tabStopsShow.bind(this)}                      
+                        tabStopsShow={this.tabStopsShow.bind(this)} 
+                        tabStopsResults={this.state.tabStopsResults}                     
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>
