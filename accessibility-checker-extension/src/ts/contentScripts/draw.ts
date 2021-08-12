@@ -104,6 +104,7 @@ function redraw(tabStopsResults:any) {
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
+        nodes = convertXpathsToHtmlElements(nodes);
         console.log("nodes = ", nodes);
 
         // JCH - need for last line to return to first node
@@ -231,10 +232,18 @@ function insertSVGIntoBody() {
 
 }
 
+function convertXpathsToHtmlElements(nodes:any){
+    let results: any = [];
+    nodes.map((elem: any) => {
+        results.push(document.evaluate(elem, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue);
+    });
+    return results;
+}
+
 function getNodesXpaths(nodes:any) {
     let tabXpaths: any = [];
     nodes.map((result: any) => {
-        result.push(result.path.dom);
+        tabXpaths.push(result.path.dom);
     });
     return tabXpaths;
 }
