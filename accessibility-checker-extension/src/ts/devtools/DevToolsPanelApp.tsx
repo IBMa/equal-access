@@ -393,6 +393,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             });
             console.log(tabXpaths);
             this.setState({ tabStops: tabXpaths});
+            // End of tab stops stored state
 
             
             this.setState({ scanning: false }); // SCAN DONE

@@ -231,9 +231,10 @@ function insertSVGIntoBody() {
 
 }
 
-// TODO: JCH this funciton should get its data from tabStopsResults
-// so need to message tabStopsResults from Panel to Background to Content script
-// also you do not need to process xpaths anymore in that the xpaths in tabStopsResults
+// TODO: JCH this funciton should get its data from the state variable tabStops
+// which contains an array of tab stop xpaths so need to message tabStops from Panel 
+// to Background to Content script (draw.ts)
+// also you do not need to process xpaths anymore in that the xpaths in tabStops
 // are fully qualified Chrome xpaths
 function getNodesToDrawBettween() {
     console.log("getNodesToDrawBettween");
