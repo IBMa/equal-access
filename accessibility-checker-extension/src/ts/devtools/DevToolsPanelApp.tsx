@@ -395,9 +395,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
             });
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
-            console.log("tabbable =", tabbable);
+            console.log(tabbable);
             this.setState({ tabStopsResults: tabbable});
-            PanelMessaging.sendToBackground("SEND_TABSTOPS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopsResults: tabbable });
 
 
             

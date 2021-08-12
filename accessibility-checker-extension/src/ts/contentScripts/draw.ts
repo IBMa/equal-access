@@ -84,12 +84,6 @@ TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: 
     return true;
 });
 
-TabMessaging.addListener("SEND_TABSTOPS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("Message SEND_TABSTOPS_TO_CONTEXT_SCRIPTS recieved in foreground ", message);
-    // console.log(message);
-    return true;
-});
-
 function injectCSS(styleString: string) {
     const style = document.createElement('style');
     style.textContent = styleString;
