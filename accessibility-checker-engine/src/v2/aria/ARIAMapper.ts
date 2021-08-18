@@ -667,14 +667,14 @@ export class ARIAMapper extends CommonMapper {
                         if (scope === "row" || scope === 'rowgroup') return "rowheader";
                         if (scope === "col" || scope === 'colgroup') return "columnheader";
                     }
-
+                    
                     // scope is auto, default (without a scope) or invalid value.
                     // if all the sibling elements are th, then return "columnheader" 
                     var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType == 1 && node.tagName != "TH");
                     if (siblings == null || siblings.length == 0)
                         return "columnheader"; 
                     else return "rowheader";
-
+                    
                     /**
                      *  dead code here 
                     if (role === "table") return "cell";
