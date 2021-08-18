@@ -668,12 +668,18 @@ export class ARIAMapper extends CommonMapper {
                         if (scope === "col" || scope === 'colgroup') return "columnheader";
                     }
 
-                    // scope is auto, default (without a scope) or invalid value. figure out if we might be a column or data header
-                    
+                    // scope is auto, default (without a scope) or invalid value.
+                    // if all the sibling elements are th, then return "columnheader" 
+                    var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType == 1 && node.tagName != "TH");
+                    if (siblings == null || siblings.length == 0)
+                        return "columnheader"; 
+                    else return "rowheader";
 
+                    /**
+                     *  dead code here 
                     if (role === "table") return "cell";
                     if (role === "grid" || role === "treegrid") return "gridcell";
-                    
+                    */
                 }
                 return null;
             },

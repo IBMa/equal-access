@@ -29,23 +29,24 @@
 </head>
 
 <body>
-
+  <div id='summary1'>first table summary</div>
+  <div id='summary2'>first table summary</div>
 <a href="#navskip">skip to main content</a>
 
 
 <h3>Test case: Table-Scope-all.html</h3>
 
-<table id="data_table1" summary="simple data table showing the number of boys and girls in each grade of an elementary school">
+<table id="data_table1" aria-describedby='summary1 summary2' summary="simple data table showing the number of boys and girls in each grade of an elementary school">
 	<caption>Boys and Girls in Classes</caption>
 
 	<tr>
-		<th scope='col'>Class</th>
-		<th scope="col"># of Boys</th>
-		<th scope="col"># of Girls</th>
+		<th scope='row'>Class</th>
+		<td># of Boys</th>
+		<td ># of Girls</th>
 	</tr>
 
 	<tr>
-		<th scope="row">1st Grade</th>
+		<th scope="row">1st Grade</td>
 		<td scope="rowgroup">11</td>
 		<td>10</td>
 	</tr>
