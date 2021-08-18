@@ -382,11 +382,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             let tabXpaths: any = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
+                    console.log("detector_tabbable result = ")
                     tabbable.push(result);
                 }
             });
             tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
-            console.log(tabbable);
+            console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable});
             
             tabbable.map((result: any) => {
