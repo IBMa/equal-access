@@ -148,6 +148,7 @@ export class Engine implements IEngine {
         let nw = new DOMWalker(cacheRoot);
         do {
             delete (nw.node as CacheElement).aceCache;
+            nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
         } while (nw.nextNode());
     }
 

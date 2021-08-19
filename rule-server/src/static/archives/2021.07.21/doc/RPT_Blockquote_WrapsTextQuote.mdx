@@ -1,0 +1,62 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Blockquote_WrapsTextQuote"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### If the following text is a quotation, mark it as a `<q>` or `<blockquote>` element: "{0}"
+
+<div id="locLevel"></div>
+
+Quotations should be marked with `<q>` or `<blockquote>` elements
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The HTML `<q>` and `<blockquote>` elements tell assistive technologies such as screen readers which content is part of a quotation or citation. Any such text must be included in the appropriate element that enables assistive technology users to understand its meaning and purpose.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify the text is not a quotation;
+ * OR, if the quotation is 10 words or less, enclose it in a `<q>` element;
+ * OR, for a longer quotation, enclose it in a `<blockquote>` element.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;p&gt;As she walked up she said, &lt;q&gt;Hi, my name is Natasha.&lt;/q&gt;&lt;/p&gt;
+    
+&lt;p&gt;Quotation from &lt;cite="https://www.shakespeare.com/loveslabourlost"&gt;Love's Labour's Lost by William Shakespeare&lt;/cite&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+    Painfully to pore upon a book
+    To seek the light of truth; while truth the while
+    Doth falsely blind the eyesight of his look.
+&lt;/blockquote&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+[IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
