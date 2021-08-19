@@ -21,40 +21,50 @@ Element with aria-hidden should not have focusable content
 
 ### Why is this important?
 
-This rule checks that elements with an aria-hidden attribute do not contain focusable elements.
+Using either `role="presentation"` or `aria-hidden="true"` on a focusable element will result in some users focusing on "nothing".
+A focusable element with `aria-hidden="true"` is ignored as part of the reading order, 
+but still part of the focus order, 
+making its state of visible or hidden unclear.
+This rule checks that elements with an `'aria-hidden'` attribute do not contain focusable elements.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* None of the target elements are part of sequential focus navigation, nor do they have descendants in the flat tree that are part of sequential focus navigation.
+When designers and developers want to hide parts of a web page that are pure decoration, 
+such as icon fonts - that are not meant to be read by assistive technologies:
+* ensure that assistive technologies will ignore the element by adding `aria-hidden="true"` to the element
+* enure none of the target elements are part of sequential focus navigation
+* ensure no descendants are part of sequential focus navigation 
+
+### Example
+
+* In the following example, the 'buttom' element is focusable by default. 
+Therefore, it violates the rule. 
+Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element. 
+aria-hidden="true" hides itself and all its content from assistive technologies.
+<CodeSnippet type="multi" light={true}>
+        &lt;div aria-hidden="true"&gt;
+            &lt;div aria-hidden="false"&gt;
+                &lt;button&gt;Some button&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+</CodeSnippet>
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
- * By adding aria-hidden="true" to an element, content authors ensure that assistive technologies will ignore the element. This can be used to hide parts of a web page that are pure decoration, such as icon fonts - that are not meant to be read by assistive technologies.
-
-* A focusable element with aria-hidden="true" is ignored as part of the reading order, but still part of the focus order, making its state of visible or hidden unclear.
+  
+ * [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+ * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+ * [Fourth Rule of ARIA Use](https://www.w3.org/TR/using-aria/#fourth)
+ * [ACT rule: Element with aria-hidden has no focusable content](https://act-rules.github.io/rules/6cfa84)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
+ * People using a screen reader, including blind, low vision and neurodivergent people
 
-</Column>
-
-<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
-
-### Example
-
-* In the following example, the 'buttom' element is focusable by default. Therefore, it violates the rule. Note: Using aria-hidden="false" on a descendant of an element with aria-hidden="true" does not expose that element. aria-hidden="true" hides itself and all its content from assistive technologies.
-    
-        <div aria-hidden="true">
-            <div aria-hidden="false">
-                <button>Some button</button>
-            </div>
-        </div>
-    
 </Column>
 </Row>
 </div>
