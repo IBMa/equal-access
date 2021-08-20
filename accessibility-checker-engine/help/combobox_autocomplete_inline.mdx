@@ -36,12 +36,12 @@ may be unable to understand and present the component's autocomplete functionali
 ### What to do
 
 * If the combobox has autocomplete behavior that includes both inline text appearing after the user's cursor and a popup element, use `aria-autocomplete="both"`;
-* OR, if the combobox has autocomplete behavior provided only through a popup element, use `aria-autocomplete="list"`;
-* OR, if the combobox does not have autocomplete behavior, remove the `aria-autocomplete` attribute (the default value is `"none"`).
+* **Or**, if the combobox has autocomplete behavior provided only through a popup element, use `aria-autocomplete="list"`;
+* **Or**, if the combobox does not have autocomplete behavior, remove the `aria-autocomplete` attribute (the default value is `"none"`).
 
 Also,
 * Remove the `aria-autocomplete` attribute from popup elements of the combobox
-* AND, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
+* **And**, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
 
 For example:
 
