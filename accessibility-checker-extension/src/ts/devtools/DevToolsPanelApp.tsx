@@ -97,8 +97,8 @@ interface IPanelState {
     focusedViewFilter: boolean,
     focusedViewText: string,
     tabStops: [],
-    tabStopsPanel: boolean,
-    tabStopsResults: []
+    tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
+    tabStopsResults: IReportItem[],
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -378,23 +378,22 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             // JCH before finish scan collect and order tab stops
-            let tabbable: any = [];
-            let tabXpaths: any = [];
+            // Note: the collection is actually all issues that are tab stops
+            let tabbable: IReportItem[] = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
-                    console.log("detector_tabbable result = ")
-                    tabbable.push(result);
+                    // there will always be at least one tab
+                    tabbable?.push(result);
                 }
             });
-            tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
+            if (tabbable !== null) {
+                tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
+            }
+            
             console.log("tabbable =", tabbable);
+            console.log("report = ", report);https://app.mural.co/invitation/mural/ibmaccessibility7766/1627656064061?sender=trewin6298&key=a687f42a-b813-4f01-a20d-e8503c6bfe1f
             this.setState({ tabStopsResults: tabbable});
             
-            tabbable.map((result: any) => {
-                tabXpaths.push(result.path.dom);
-            });
-            console.log(tabXpaths);
-            this.setState({ tabStops: tabXpaths});
             // End of tab stops stored state
 
             

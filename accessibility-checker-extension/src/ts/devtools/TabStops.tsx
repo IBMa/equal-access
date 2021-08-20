@@ -18,7 +18,7 @@
 
     import { Row } from 'carbon-components-react';
 
-    import { IReport } from './Report';
+    import { IReport, IReportItem} from "./Report";
 
     // import { ChevronUp16, ChevronDown16 } from '@carbon/icons-react';
     import Violation16 from "../../assets/Violation16.svg";
@@ -32,22 +32,86 @@
     }
     
     interface ITabStopsProps {
-        report: IReport | null,
+        report: IReport,
         tabStopsHighlight: (index: number, result: any) => void,
-        tabStopsResults: []
+        tabStopsResults: IReportItem[] // Note: the collection is actually all issues that are tab stops
     }
+
+    // interface IGroup {
+    //     title: string,  // aria path for the element role row
+    //     counts: { [key: string]: number },   // number of Violations, Needs Review, Recommendations 
+    //                                         // associated with the element role
+    //     fvCounts: { [key: string]: number },
+    //     items: IReportItem[]    // issue rows associated with the element role
+    // };
     
     export default class TabStops extends React.Component<ITabStopsProps, ITabStopsState> {
         state: ITabStopsState = {};        
 
         printTabStops() {
             console.log("printTabStops");
+
+            // let itemIdx = 0;
+            // let groups : IGroup[] = []   
+            // let groupMap : {
+            //     [key: string]: IGroup
+            // } | null = {};
+            if (this.props.tabStopsResults !== null) {
+                for (const item of this.props.tabStopsResults) {
+                    console.log("item = ", item);
+                    console.log("item.value[1] = ", item.value[1]);
+                    // if (item.value[1] === "PASS") {
+                    //     continue;
+                    // }
+                    // item.itemIdx = itemIdx++;
+                    // // group by element role === aria path
+                    // let thisGroup = groupMap[item.path.aria];
+                    // if (!thisGroup) {
+                    //     thisGroup = {
+                    //         title: item.path.aria,
+                    //         counts: {},
+                    //         fvCounts: {},
+                    //         items: []
+                    //     }
+                    //     groupMap[item.path.aria] = thisGroup;
+                    //     groups.push(thisGroup);
+                    // }
+                    // thisGroup.items.push(item);
+                    // let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
+                    // thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
+                    // if (item.selected || item.selectedChild) {
+                    //     thisGroup.fvCounts[val] = (thisGroup.fvCounts[val] || 0) + 1;
+                    // }
+                }
+    
+                // to sort issue according to type in order Violations, Needs Review, Recommendations
+                // within each group need to sort the items according to their value
+                // const valPriority = ["Violation", "Needs review", "Recommendation"];
+                // let groupVals = [];
+                // groups.map(group => {
+                //     groupVals.length = 0;
+                //     group.items.sort( function(a,b) {
+                //         let aVal = valueMap[a.value[0]][a.value[1]] || a.value[0] + "_" + a.value[1];
+                //         let bVal = valueMap[b.value[0]][b.value[1]] || b.value[0] + "_" + b.value[1];
+                //         let aIndex = valPriority.indexOf(aVal);
+                //         let bIndex = valPriority.indexOf(bVal);
+                //         return aIndex - bIndex;
+                //     })
+                // })
+                
+                //let idx=0;
+                //let scrollFirst = true;
+            }
+            
+
+
+
             let temp:any = [];
             let vCount = 1;
             let nrCount = 1;
             let rCount = 1;
             if (this.props.tabStopsResults !== undefined) {
-                this.props.tabStopsResults.map((result: any, index:number) => {
+                this.props.tabStopsResults?.map((result: any, index:number) => {
                     temp.push(
                         <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                             <div className="emulated-flex-gap">
@@ -81,6 +145,7 @@
     
         render() {
             console.log("TabStopsRENDER");
+            
 
             // this.tabStopsMatches();
 

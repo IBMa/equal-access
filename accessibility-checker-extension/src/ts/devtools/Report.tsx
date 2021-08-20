@@ -42,6 +42,11 @@ export interface IReport {
 }
 
 export interface IReportItem {
+    apiArgs: {
+        name: string,
+        role: string,
+        tab: string
+    }
     ruleId: string,
     node: any,
     path: {
