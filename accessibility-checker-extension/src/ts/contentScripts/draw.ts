@@ -10,7 +10,7 @@ console.log("Content Script for drawing tab stops has loaded")
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
-    console.log(message)
+    console.log(message.tabStopsResults);
     injectCSS(
         `#line {
                 stroke-width: 5px;
@@ -90,7 +90,7 @@ function injectCSS(styleString: string) {
 }
 
 function draw(tabStopsResults:any) {
-    // console.log("Inside Draw function")
+    console.log("Inside Draw function")
     insertSVGIntoBody();
     redraw(tabStopsResults);
 }
@@ -140,7 +140,6 @@ function redraw(tabStopsResults:any) {
 
             makeIcons(centerX1, centerY1, null);
         }
-
 
     }, 1)
 }

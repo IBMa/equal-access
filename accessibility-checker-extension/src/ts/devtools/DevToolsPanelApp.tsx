@@ -391,7 +391,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             
             console.log("tabbable =", tabbable);
-            console.log("report = ", report);https://app.mural.co/invitation/mural/ibmaccessibility7766/1627656064061?sender=trewin6298&key=a687f42a-b813-4f01-a20d-e8503c6bfe1f
             this.setState({ tabStopsResults: tabbable});
             
             // End of tab stops stored state
@@ -1048,8 +1047,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
-                                    {/* {this.state.report && <TabStops report={this.state.report!} tabStops={this.state.tabStops} />} */}
-                                    {<TabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />}
+                                    <TabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
                                 </div>
                             </div>
                         </div>
