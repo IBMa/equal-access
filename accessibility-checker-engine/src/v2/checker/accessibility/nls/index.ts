@@ -886,15 +886,15 @@ let a11yNls = {
     },
     // JCH - DONE
     "IBMA_Focus_Tabbable": {
-        0: "Component must have at least one tabable element",
+        0: "Component must have at least one tabbable element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Component with \"{0}\" role does not have a tabable element"
+        "Potential_1": "Component with \"{0}\" role does not have a tabbable element"
     },
     // JCH - DONE
     "IBMA_Focus_MultiTab": {
-        0: "Certain components must have no more than one tabable element",
+        0: "Certain components must have no more than one tabbable element",
         "Pass_0": "Rule Passed",
-        "Potential_1": "Component with \"{0}\" role has more than one tabable element"
+        "Potential_1": "Component with \"{0}\" role has more than one tabbable element"
     },
     // JCH - DONE
     "WCAG20_Table_SummaryAria3": {
@@ -978,7 +978,7 @@ let a11yNls = {
         "Fail_combobox_popup_role_mismatch": "The value of the combobox 'aria-haspopup' attribute \"{0}\" does not match the 'role' value of the popup element \"{1}\""
     },    
     "combobox_focusable_elements": {
-        0: "Tabable focus for the combobox must be allowed only on the text input, except when using a dialog popup",
+        0: "Tabbable focus for the combobox must be allowed only on the text input, except when using a dialog popup",
         "Pass": "DOM focus is allowed only on the combobox element as required",
         "Fail_not_tabbable": "The combobox element does not allow DOM focus as required",
         "Fail_tabbable_child": "The popup of the combobox has DOM focus or has 'aria-activedescendant' defined, which is not allowed"
