@@ -3203,11 +3203,11 @@
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_ValidRole": {
-            "0": "Elements must have a valid 'role' per WAI-ARIA specification",
+            "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
-            "0": "An element with a WAI-ARIA role must contain required children",
+            "0": "An element with a ARIA role must contain required children",
             "Pass_0": "Rule Passed"
         },
         "Rpt_Aria_MissingKeyboardHandler": {
@@ -3215,7 +3215,7 @@
             "Pass_0": "Rule Passed"
         },
         "aria_semantics_role": {
-            "0": "WAI-ARIA roles must be valid for the element to which they are assigned",
+            "0": "ARIA roles must be valid for the element to which they are assigned",
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA": {
