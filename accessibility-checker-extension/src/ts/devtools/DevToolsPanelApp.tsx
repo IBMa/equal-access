@@ -17,7 +17,8 @@
 import React from "react";
 import Header from "./Header";
 import TabStopsHeader from "./TabStopsHeader";
-import TabStops from "./TabStops"
+// import TabStops from "./TabStops";
+import ReportTabStops from "./ReportTabStops";
 import ReportManagerHeader from "./ReportManagerHeader";
 import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
@@ -1047,7 +1048,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
-                                    <TabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
+                                    <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
                                 </div>
                             </div>
                         </div>
