@@ -119,30 +119,9 @@ function redraw(tabStopsResults:any) {
         console.log("nodes = ", nodes);
 
         // JCH - need for last line to return to first node
-        for (let i = 0; i < nodes.length - 1; i++) {
+        for (let i = 0; i < nodes.length - 1; i++) { //Make lines between numbers
             makeLine(nodes[i].getBoundingClientRect().x-offset, nodes[i].getBoundingClientRect().y-offset, nodes[i+1].getBoundingClientRect().x-offset, nodes[i+1].getBoundingClientRect().y-offset);
         }
-
-        // for (let i = 0; i < nodes.length; i++) {
-        //     let centerX1 = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width / 2;
-        //     let centerY1 = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height / 2;
-
-        //     makeCircle(centerX1, centerY1, i);
-        // }
-
-        // for (let i = 0; i < nodes.length; i++) {
-        //     let centerX1 = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width / 2;
-        //     let centerY1 = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height / 2;
-
-        //     makeText(centerX1, centerY1, (i + 1).toString());
-        // }
-
-        // for (let i = 0; i < nodes.length; i++) {
-        //     let centerX1 = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width / 2;
-        //     let centerY1 = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height / 2;
-
-        //     makeIcons(centerX1, centerY1, null);
-        // }
 
         for (let i = 0; i < nodes.length; i++) {
             let x = nodes[i].getBoundingClientRect().x - offset;
@@ -157,73 +136,11 @@ function redraw(tabStopsResults:any) {
             makeCircleSmall(x, y, i);
             makeTextSmall(x, y, (i + 1).toString());
 
-            // makeLine(x, y, x+10, y+10);
-
-
+            // Make box around active component
             makeLine(x, y, xPlusWidth, y);
             makeLine(x, y, x, yPlusHeight);
             makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight);
             makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight);
-            // console.log("x2 y2 :",x2 ," ",y2)
-            if(i == 32){
-                console.log("x y try2:",x ," ",y)
-            }
-
-            // if(i>=1){
-                
-                
-            //     let h = nodes[i].getBoundingClientRect().height;
-            //     let w = nodes[i].getBoundingClientRect().width;
-
-            //     let y1 = (nodes[i-1].getBoundingClientRect().y + nodes[i-1].getBoundingClientRect().height)/2; 
-            //     let y2 = (nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height)/2;
-                
-            //     let x1 = (nodes[i-1].getBoundingClientRect().x + nodes[i-1].getBoundingClientRect().width)/2; 
-            //     let x2 = (nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width)/2;
-                
-            //     let s = (y2-y1)/(x2-x1);
-                
-            //     let hh = h/2;
-            //     let hw = w/2;
-
-            //     var hsw = s * w / 2;
-            //     var hsh = ( h / 2 ) / s;
-            
-    
-            //     let intersection = "";
-            //     // if( (-h/2 <= s*w/2) && (s*w/2 <= h/2) ){
-            //     if(-hh <= hsw && hsw <= hh){
-            //             if(x2 < x1){
-            //             intersection = "rightEdge"
-            //         }else if(x2 > x1){
-            //             intersection = "leftEdge"
-            //         }
-            //     }
-            //     // if((-w/2 <= s*(h/2)) && (s*(h/2) <= w/2)){
-            //     if(-hw <= hsh && hsh <= hw){
-            //             if(y2 < y1){
-            //             intersection = "topEdge"
-            //         }else if(y2 > y1){
-            //             intersection = "bottomEdge"
-            //         }
-            //     }
-            //     console.log("---------------")
-
-            //     console.log("s: ",s)
-            //     console.log("s*w/2: ",s*w/2)
-            //     console.log("s*(h/2): ", s*(h/2))
-            //     console.log("(-h/2 <= s*w/2) :",(-h/2 <= s*w/2))
-            //     console.log("(s*w/2 <= h/2) :",(s*w/2 <= h/2))
-
-            //     console.log("-w/2 <= s*(h/2) :", -w/2 <= s*(h/2))
-            //     console.log("(s*(h/2) <= w/2) :",(s*(h/2) <= w/2))
-            //     console.log("x1 y1 :",x1 ," ",y1)
-            //     console.log("x2 y2 :",x2 ," ",y2)
-            //     console.log("index ",i+1,": ",intersection)
-            // }
-
-
-
         }
 
 
@@ -290,29 +207,6 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     (textClone as HTMLElement).innerHTML = n;
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
-
-
-// function makeCircle(x1: number, y1: number, circleNumber: number) {
-//     let circle = document.getElementsByClassName('tabCircle')[0]
-//     var circleClone = circle.cloneNode(true);
-//     (circleClone as HTMLElement).classList.add("deleteMe");
-//     (circleClone as HTMLElement).classList.add("circleNumber" + circleNumber);
-//     (circleClone as HTMLElement).setAttribute('cx', String(x1));
-//     (circleClone as HTMLElement).setAttribute('cy', String(y1));
-//     (circleClone as HTMLElement).setAttribute('r', String(10));
-//     (circleClone as HTMLElement).onclick = () => {alert("You have found circle number: " + (circleNumber +1))};
-//     document.getElementById('svgCircle')?.appendChild(circleClone)
-// }
-
-// function makeText(x1: number, y1: number, n: string) {
-//     let text = document.getElementsByClassName('circleText')[0]
-//     var textClone = text.cloneNode(true);
-//     (textClone as HTMLElement).classList.add("deleteMe");
-//     (textClone as HTMLElement).setAttribute('x', String(x1 - 3));
-//     (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
-//     (textClone as HTMLElement).innerHTML = n;
-//     document.getElementById('svgCircle')?.appendChild(textClone)
-// }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number) {
     let line = document.getElementsByClassName('tabLine')[0]
