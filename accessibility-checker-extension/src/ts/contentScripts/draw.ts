@@ -23,6 +23,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             top: 0;
             left: 0;
             overflow: visible;
+            pointer-events: none;
         }
         
         .highlightSVG{
@@ -273,6 +274,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
     (circleClone as HTMLElement).classList.add("circleNumber" + circleNumber);
     (circleClone as HTMLElement).setAttribute('cx', String(x1));
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
+    (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
     (circleClone as HTMLElement).setAttribute('r', String(7));
     (circleClone as HTMLElement).onclick = () => {alert("You have found circle number: " + (circleNumber +1))};
     document.getElementById('svgCircle')?.appendChild(circleClone)
