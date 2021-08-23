@@ -17,7 +17,8 @@
 import React from "react";
 import Header from "./Header";
 import TabStopsHeader from "./TabStopsHeader";
-import TabStops from "./TabStops"
+// import TabStops from "./TabStops";
+import ReportTabStops from "./ReportTabStops";
 import ReportManagerHeader from "./ReportManagerHeader";
 import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
@@ -97,8 +98,8 @@ interface IPanelState {
     focusedViewFilter: boolean,
     focusedViewText: string,
     tabStops: [],
-    tabStopsPanel: boolean,
-    tabStopsResults: []
+    tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
+    tabStopsResults: IReportItem[],
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -378,22 +379,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
             // JCH before finish scan collect and order tab stops
-            let tabbable: any = [];
-            let tabXpaths: any = [];
+            // Note: the collection is actually all issues that are tab stops
+            let tabbable: IReportItem[] = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
-                    tabbable.push(result);
+                    // there will always be at least one tab
+                    tabbable?.push(result);
                 }
             });
-            tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
-            console.log(tabbable);
+            if (tabbable !== null) {
+                tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
+            }
+            
+            console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable});
             
-            tabbable.map((result: any) => {
-                tabXpaths.push(result.path.dom);
-            });
-            console.log(tabXpaths);
-            this.setState({ tabStops: tabXpaths});
             // End of tab stops stored state
 
             
@@ -1048,8 +1048,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
-                                    {/* {this.state.report && <TabStops report={this.state.report!} tabStops={this.state.tabStops} />} */}
-                                    {<TabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />}
+                                    <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
                                 </div>
                             </div>
                         </div>

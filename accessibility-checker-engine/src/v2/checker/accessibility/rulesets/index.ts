@@ -3442,6 +3442,11 @@ let a11yRulesets: Ruleset[] = [
             "summary": "All non-text content that is presented to the user has a text alternative that serves the equivalent purpose.",
             "rules": [
                 {
+                    id: "detector_tabbable",
+                    level: eRulePolicy.INFORMATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_FOUR
+                },
+                {
                     id: "WCAG20_Input_ExplicitLabelImage",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE

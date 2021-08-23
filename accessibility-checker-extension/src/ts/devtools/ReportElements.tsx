@@ -57,7 +57,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 continue;
             }
             item.itemIdx = itemIdx++;
-
+            // group by element role === aria path
             let thisGroup = groupMap[item.path.aria];
             if (!thisGroup) {
                 thisGroup = {

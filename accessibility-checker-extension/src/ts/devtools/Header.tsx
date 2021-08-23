@@ -16,6 +16,7 @@
 
 import React from "react";
 import ReactTooltip from "react-tooltip";
+import { IReportItem } from "./Report";
 
 import {
     Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
@@ -88,7 +89,7 @@ interface IHeaderProps {
     tabURL: string,
     tabId: number,
     tabStopsShow: () => void,
-    tabStopsResults: []
+    tabStopsResults: IReportItem[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
