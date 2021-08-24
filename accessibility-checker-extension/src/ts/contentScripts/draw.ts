@@ -24,6 +24,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             left: 0;
             overflow: visible;
             pointer-events: none;
+            z-index: 2147483646 !important;
         }
         
         .highlightSVG{
@@ -47,6 +48,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             left: 0;
             overflow: visible;
             pointer-events: none;
+            z-index: 2147483646 !important;
         }
         .svgIconTest{
             position: absolute;
