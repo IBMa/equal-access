@@ -122,6 +122,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                             layout={this.props.layout}
                             dataFromParent={this.props.dataFromParent}
                             focusedViewFilter={this.props.focusedViewFilter}
+                            breakType={"break-word"}
                         />                
                     })
                 }

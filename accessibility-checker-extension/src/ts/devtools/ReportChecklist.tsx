@@ -138,6 +138,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                             layout={this.props.layout} 
                             dataFromParent={this.props.dataFromParent} 
                             focusedViewFilter={this.props.focusedViewFilter}
+                            breakType={"break-word"}
                         />;
                     })
                 }
