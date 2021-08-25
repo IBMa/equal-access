@@ -179,7 +179,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[2]) && nrCount > 0 && <><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" /><span style={{verticalAlign:"text-top",lineHeight:"8px", paddingLeft:"4px"}}>{nrCount}</span> &nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[3]) && rCount > 0 &&  <><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /><span style={{verticalAlign:"text-top",lineHeight:"8px", paddingLeft:"4px"}}>{rCount}</span> </>}</span> }
                 </div>
-                <div role="cell" className="bx--col-md-4 bx--col-sm-2">
+                <div role="cell" className="bx--col-md-6 bx--col-sm-2">
                     <span style={{wordBreak:"break-all"}}>{group.title.length === 0 ? "Page" : group.title}</span>
                 </div>
             </div>
