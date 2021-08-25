@@ -12,10 +12,14 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     console.log(message.tabStopsResults);
     injectCSS(
-        `#line {
+        `.line {
                 stroke-width: 1px;
                 stroke: black;
-            }`
+            }
+        .lineEmboss {
+            stroke-width: 1px;
+            stroke: white;
+        }`
     );
     injectCSS(
         `#svgCircle{
@@ -78,7 +82,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
     // console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground");
     // console.log(message);
-    
+
     // Clearing any that are already highlighted
     document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
     // Highlighting any that are "clicked"
@@ -101,7 +105,7 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw(tabStopsResults:any) {
+function draw(tabStopsResults: any) {
     console.log("Inside Draw function")
     insertSVGIntoBody();
     redraw(tabStopsResults);
@@ -111,7 +115,7 @@ function deleteDrawing(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
-function redraw(tabStopsResults:any) {
+function redraw(tabStopsResults: any) {
     console.log("redraw");
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
@@ -122,27 +126,69 @@ function redraw(tabStopsResults:any) {
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length - 1; i++) { //Make lines between numbers
-            makeLine(nodes[i].getBoundingClientRect().x-offset, nodes[i].getBoundingClientRect().y-offset, nodes[i+1].getBoundingClientRect().x-offset, nodes[i+1].getBoundingClientRect().y-offset);
+            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+
+            makeLine(nodes[i].getBoundingClientRect().x - offset,
+                nodes[i].getBoundingClientRect().y - offset,
+                nodes[i + 1].getBoundingClientRect().x - offset,
+                nodes[i + 1].getBoundingClientRect().y - offset, "line");
+
+            // Create white outline
+            if ( Math.abs(slope)  < 1){  // Low slope move y
+                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                nodes[i].getBoundingClientRect().y - offset - 1,
+                nodes[i + 1].getBoundingClientRect().x - offset,
+                nodes[i + 1].getBoundingClientRect().y - offset - 1, "lineEmboss");
+
+                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                nodes[i].getBoundingClientRect().y - offset + 1,
+                nodes[i + 1].getBoundingClientRect().x - offset,
+                nodes[i + 1].getBoundingClientRect().y - offset + 1, "lineEmboss");
+
+            }else{ // high slope move x
+                makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                    nodes[i].getBoundingClientRect().y - offset,
+                    nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                    nodes[i + 1].getBoundingClientRect().y - offset, "lineEmboss");
+    
+                makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                    nodes[i].getBoundingClientRect().y - offset,
+                    nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                    nodes[i + 1].getBoundingClientRect().y - offset, "lineEmboss");
+            }
         }
+
 
         for (let i = 0; i < nodes.length; i++) {
             let x = nodes[i].getBoundingClientRect().x - offset;
-            let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width +  offset;
+            let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
             let y = nodes[i].getBoundingClientRect().y - offset;
             let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-            if(i == 32){
-                console.log("x y :",x ," ",y)
+            if (i == 32) {
+                console.log("x y :", x, " ", y)
             }
             makeCircleSmall(x, y, i);
             makeTextSmall(x, y, (i + 1).toString());
 
             // Make box around active component
-            makeLine(x, y, xPlusWidth, y);
-            makeLine(x, y, x, yPlusHeight);
-            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight);
-            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight);
+            makeLine(x, y, xPlusWidth, y, "line");
+            makeLine(x, y, x, yPlusHeight, "line");
+            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, "line");
+            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, "line");
+
+            // Make white stroke around active component outline
+            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, "lineEmboss");
+            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, "lineEmboss");
+            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmboss");
+            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmboss");
+
+            // Make white stroke inside active component outline
+            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, "lineEmboss");
+            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, "lineEmboss");
+            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmboss");
+            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmboss");
         }
 
 
@@ -182,8 +228,8 @@ function redraw(tabStopsResults:any) {
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
-    if(circleNumber == 32){
-        console.log("x y circle:",x1 ," ",y1)
+    if (circleNumber == 32) {
+        console.log("x y circle:", x1, " ", y1)
     }
 
     let circle = document.getElementsByClassName('tabCircle')[0]
@@ -195,7 +241,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
     (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
     (circleClone as HTMLElement).setAttribute('r', String(7));
-    (circleClone as HTMLElement).onclick = () => {alert("You have found circle number: " + (circleNumber +1))};
+    (circleClone as HTMLElement).onclick = () => { alert("You have found circle number: " + (circleNumber + 1)) };
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -210,9 +256,12 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
 
-function makeLine(x1: number, y1: number, x2: number, y2: number) {
+function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string) {
     let line = document.getElementsByClassName('tabLine')[0]
     var lineClone = line.cloneNode(true);
+    if (CSSclass) {
+        (lineClone as HTMLElement).classList.add(CSSclass);
+    }
     (lineClone as HTMLElement).classList.add("deleteMe");
     (lineClone as HTMLElement).setAttribute('x1', String(x1));
     (lineClone as HTMLElement).setAttribute('y1', String(y1));
@@ -245,7 +294,7 @@ function insertSVGIntoBody() {
 
 }
 
-function convertXpathsToHtmlElements(nodes:any){
+function convertXpathsToHtmlElements(nodes: any) {
     let results: any = [];
     nodes.map((elem: any) => {
         results.push(document.evaluate(elem, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue);
@@ -253,7 +302,7 @@ function convertXpathsToHtmlElements(nodes:any){
     return results;
 }
 
-function getNodesXpaths(nodes:any) {
+function getNodesXpaths(nodes: any) {
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         tabXpaths.push(result.path.dom);
