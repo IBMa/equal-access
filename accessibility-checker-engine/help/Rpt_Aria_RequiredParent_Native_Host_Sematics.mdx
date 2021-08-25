@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### An element with WAI-ARIA role `{0}` is not contained in or owned by an element with one of the following WAI-ARIA roles: `{1}`
+### An element with ARIA role `{0}` is not contained in or owned by an element with one of the following ARIA roles: `{1}`
 
 <div id="locLevel"></div>
 
-An element with WAI-ARIA role must be contained within a valid element
+An element with ARIA role must be contained within a valid element
 
 </Column>
 </Row>
@@ -21,7 +21,7 @@ An element with WAI-ARIA role must be contained within a valid element
 
 ### Why is this important?
 
-If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA parent element that is required for that role must also be set for the element. If the parent element's native WAI-ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
+If a ARIA `role` attribute is specified for an element, any ARIA parent element that is required for that role must also be set for the element. If the parent element's native ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
 
 <div id="locSnippet"></div>
 
@@ -40,8 +40,8 @@ For example, the following `<li>` element uses an `"option"` role. The `"option"
 
 ### About this requirement
 
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-[W3C WAI-ARIA 1.2 Required Context Role](https://www.w3.org/TR/wai-aria/#scope)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA - Required Context Role](https://www.w3.org/TR/wai-aria/#scope)
 
 ### Who does this affect?
 

@@ -28,11 +28,11 @@ The HTML5 `<canvas>` element can be used to create a canvas area on the page whe
 ### What to do
 
  * If the same functionality can be achieved using native HTML elements, do not use the `<canvas>` element;
- * OR, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
- * OR, if the `<canvas>` element is more complex such as a static chart, or an interactive drawing, provide an alternative accessible rendering;
- * OR, use canvas fallback content (between the `<canvas>` tags) with keyboard access.
+ * **Or**, if the `<canvas>` element contains a simple drawing, provide a `role="img"` on the `<canvas>` element with a label. If the label is not sufficient to make the drawing accessible, also provide a description (`aria-describedby="foo"`);
+ * **Or**, if the `<canvas>` element is more complex such as a static chart, or an interactive drawing, provide an alternative accessible rendering;
+ * **Or**, use canvas fallback content (between the `<canvas>` tags) with keyboard access.
 
-This example shows the use of the `<canvas>` element with its content exposed as an image with a WAI-ARIA `role` attribute, a label, and a description.
+This example shows the use of the `<canvas>` element with its content exposed as an image with a ARIA `role` attribute, a label, and a description.
 
 <CodeSnippet type="multi" light={true}>&lt;!-- Canvas exposed as an image element. --&gt;
 &lt;canvas id="example" role="img" alt="Circles" aria-describedby="img1"&gt;&lt;/canvas&gt;
@@ -52,10 +52,10 @@ This example shows an interactive `&lt;canvas&gt;` with equivalent accessible in
 
 ### About this requirement
 
-[IBM 1.1.1 Non-Text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
-[IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
-[IBM 2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [IBM 1.1.1 Non-Text Content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [IBM 2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
 
 ### Who does this affect?
 

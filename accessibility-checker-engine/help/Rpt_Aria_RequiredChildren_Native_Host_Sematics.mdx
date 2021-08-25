@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### An element with WAI-ARIA `role="{0}"` does not contain or own at least one child element with each of the following WAI-ARIA roles: `{1}`
+### An element with ARIA `role="{0}"` does not contain or own at least one child element with each of the following ARIA roles: `{1}`
 
 <div id="locLevel"></div>
 
-An element with WAI-ARIA `role` must contain required children
+An element with ARIA `role` must contain required children
 
 </Column>
 </Row>
@@ -21,7 +21,7 @@ An element with WAI-ARIA `role` must contain required children
 
 ### Why is this important?
 
-If a WAI-ARIA `role` attribute is specified for an element, any WAI-ARIA child elements required for that role must also be present. Child elements' native WAI-ARIA roles satisfy the requirement - the role does not have to be explicitly set. Without the required child elements, assistive technologies may not be able to accurately represent or interact with the element.
+If a ARIA `role` attribute is specified for an element, any ARIA child elements required for that role must also be present. Child elements' native ARIA roles satisfy the requirement - the role does not have to be explicitly set. Without the required child elements, assistive technologies may not be able to accurately represent or interact with the element.
 
 <div id="locSnippet"></div>
 
@@ -42,7 +42,7 @@ Example with an implicit role:
      &lt;tr&gt;
          &lt;td&gt;
             element with role= "treegrid" requires child element with role="row".
-            TR has implicit WAI-ARIA role="row", so the condition is met
+            TR has implicit ARIA role="row", so the condition is met
          &lt;td&gt;
      &lt;tr&gt;
 &lt;/table&gt;</CodeSnippet>
@@ -52,8 +52,8 @@ Example with an implicit role:
 
 ### About this requirement
 
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-[W3C WAI-ARIA 1.2 Required Owned Elements](https://www.w3.org/TR/wai-aria-1.2/#mustContain)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA practices - Required Owned Elements](https://w3c.github.io/aria-practices/#mustContain)
 
 ### Who does this affect?
 
