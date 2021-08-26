@@ -39,7 +39,7 @@ module.exports = (config) => {
             // { pattern: 'test/v2/checker/accessibility/rules/Hidden_ruleunit/opacity_override_test.html', watched: true },
 
             { pattern: 'test/**/*_ruleunit/*.html', watched: true },
-            //{ pattern: 'test/**/*_ruleunit/*.htm', watched: true },
+            { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
             // all files ending in "_test"
             // { pattern: 'test/*_test.js', watched: true },
             { pattern: 'test/**/*_test.js', watched: true }

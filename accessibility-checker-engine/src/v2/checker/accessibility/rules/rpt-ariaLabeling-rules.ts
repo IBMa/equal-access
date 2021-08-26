@@ -642,7 +642,6 @@ let a11yRulesLabeling: Rule[] = [
         context: "dom:*[role], dom:details",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            
             let roleName = "group";
             if (!RPTUtil.hasRoleInSemantics(ruleContext, roleName)) {
                 return null;

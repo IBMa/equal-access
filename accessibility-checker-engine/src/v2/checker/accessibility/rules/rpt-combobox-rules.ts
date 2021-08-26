@@ -326,7 +326,6 @@ let a11yRulesCombobox: Rule[] = [
         dependencies: ["combobox_popup_reference"],
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            
             let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
             let cachedElem = cache[context["dom"].rolePath];
             if (!cachedElem) return null;
