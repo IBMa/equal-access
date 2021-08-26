@@ -1322,7 +1322,7 @@ let a11yRulesAria: Rule[] = [{
     context: "dom:*", // checks for all elements, since role might not be specified but the attributes need to be checked.
     dependencies: [],  //we can't use Rpt_Aria_ValidRole to validate the roles because the context is different
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;            
+        const ruleContext = context["dom"].node as Element;
         // The the ARIA role is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
         let role = ARIAMapper.nodeToRole(ruleContext);
