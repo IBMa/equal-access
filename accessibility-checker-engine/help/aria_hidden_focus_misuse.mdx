@@ -12,7 +12,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 
 <div id="locLevel"></div>
 
-Element with aria-hidden should not have focusable content
+Element with 'aria-hidden' should not have focusable content
 
 </Column>
 </Row>
@@ -39,10 +39,8 @@ such as icon fonts - that are not meant to be read by assistive technologies:
 
 ### Example
 
-* In the following example, the 'buttom' element is focusable by default. 
-Therefore, it violates the rule. 
-Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element. 
-aria-hidden="true" hides itself and all its content from assistive technologies.
+* In the following example, the `button` element is focusable by default. 
+Therefore, using `aria-hidden="true"` violates the rule: 
 <CodeSnippet type="multi" light={true}>
         &lt;div aria-hidden="true"&gt;
             &lt;div aria-hidden="false"&gt;
@@ -50,6 +48,9 @@ aria-hidden="true" hides itself and all its content from assistive technologies.
             &lt;/div&gt;
         &lt;/div&gt;
 </CodeSnippet>
+
+Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element.
+Using `aria-hidden="true"` hides itself and all its content from assistive technologies.
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
