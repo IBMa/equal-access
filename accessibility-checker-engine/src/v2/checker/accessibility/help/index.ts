@@ -1032,6 +1032,11 @@ let a11yHelp = {
         0: `${Config.helpRoot}/ACT_Meta_Viewport`, 
         "Pass_0": `${Config.helpRoot}/ACT_Meta_Viewport`,
         "Potential_1": `${Config.helpRoot}/ACT_Meta_Viewport`
+    },
+    "aria_hidden_focus_misuse": {
+        0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
+        "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
     }
 }
 
