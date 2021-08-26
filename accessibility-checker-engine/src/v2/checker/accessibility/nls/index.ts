@@ -21,7 +21,7 @@ let a11yNls = {
     "WCAG20_Input_ExplicitLabelImage": {
         0: "The <input> element of type \"image\" should have a text alternative",
         "Pass_0": "Image button provides alternative text using the 'alt' attribute",
-        "Pass_1": "Image button provides alternative text using a WAI-ARIA label",
+        "Pass_1": "Image button provides alternative text using a ARIA label",
         "Pass_2": "Image button provides alternative text using the 'title' attribute",
         "Fail": "The <input> element of type \"image\" has no text alternative"
     },
@@ -545,44 +545,44 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_ValidRole": {
-        0: "Elements must have a valid 'role' per WAI-ARIA specification",
+        0: "Elements must have a valid 'role' per ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Some of the 'role's defined on the element are not valid per WAI-ARIA specification",
-        "Fail_2": "The 'role' defined on the element is not valid per WAI-ARIA specification"
+        "Fail_1": "Some of the 'role's defined on the element are not valid per ARIA specification",
+        "Fail_2": "The 'role' defined on the element is not valid per ARIA specification"
     },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
-        "explicit_role": "An explicit WAI-ARIA 'role' is not valid for <{0}> element within a WAI-ARIA role '{1}' per the ARIA in HTML specification"
+        "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within a ARIA role '{1}' per the ARIA in HTML specification"
     },
     // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
-        0: "WAI-ARIA property values must be valid",
+        0: "ARIA property values must be valid",
         "Pass_0": "Rule Passed",
         "Fail_1": "The value \"{0}\" specified for attribute '{1}' on element <{2}> is not valid"
     },
     // JCH - DONE
     "Rpt_Aria_ValidIdRef": {
-        0: "The WAI-ARIA property must reference a non-empty unique id of an existing element that is visible",
+        0: "The ARIA property must reference a non-empty unique id of an existing element that is visible",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The 'id' \"{0}\" specified for the WAI-ARIA property '{1}' value is not valid"
+        "Fail_1": "The 'id' \"{0}\" specified for the ARIA property '{1}' value is not valid"
     },
     // JCH - DONE
     "Rpt_Aria_RequiredProperties": {
-        0: "When using a WAI-ARIA role on an element, the required attributes for that role must be defined",
+        0: "When using a ARIA role on an element, the required attributes for that role must be defined",
         "Pass_0": "Rule Passed",
-        "Fail_1": "An element with WAI-ARIA role '{0}' does not have the required WAI-ARIA attribute(s): '{1}'"
+        "Fail_1": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
     },
     // JCH - DONE
     "Rpt_Aria_EmptyPropertyValue": {
-        0: "When specifying a required WAI-ARIA attribute, the value must not be empty",
+        0: "When specifying a required ARIA attribute, the value must not be empty",
         "Pass_0": "Rule Passed",
         "Fail_1": "The element attribute(s): '{0}' value is empty"
     },
     // JCH - DONE
     "Rpt_Aria_ValidProperty": {
-        0: "WAI-ARIA attributes must be valid for the element's role",
+        0: "ARIA attributes must be valid for the element's role",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The attribute(s) '{0}' referenced by the element <{1}> is not a valid WAI-ARIA state or property"
+        "Fail_1": "The attribute(s) '{0}' referenced by the element <{1}> is not a valid ARIA state or property"
     },
     // JCH - DONE
     "Rpt_Aria_InvalidTabindexForActivedescendant": {
@@ -685,9 +685,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Aria_Or_HTML5_Attr": {
-        0: "HTML5 attributes must not conflict with the associated WAI-ARIA attribute used on an input element",
+        0: "HTML5 attributes must not conflict with the associated ARIA attribute used on an input element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "HTML5 attribute is in conflict with the associated WAI-ARIA attribute used on an input element"
+        "Fail_1": "HTML5 attribute is in conflict with the associated ARIA attribute used on an input element"
     },
     // JCH - DONE
     "HAAC_Canvas": {
@@ -710,15 +710,15 @@ let a11yNls = {
     },
     // JCH - DONE
     "aria_semantics_role": {
-        0: "WAI-ARIA roles must be valid for the element to which they are assigned",
+        0: "ARIA roles must be valid for the element to which they are assigned",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The WAI-ARIA role '{0}' is not valid for the element <{1}>",
-        "Fail_2": "The WAI-ARIA role '{0}' is not valid for the element <{1}> and may be ignored by the browser since the element is focusable"
+        "Fail_1": "The ARIA role '{0}' is not valid for the element <{1}>",
+        "Fail_2": "The ARIA role '{0}' is not valid for the element <{1}> and may be ignored by the browser since the element is focusable"
     },
     "aria_semantics_attribute": {
-        0: "WAI-ARIA attributes must be valid for the element and WAI-ARIA role to which they are assigned",
+        0: "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The WAI-ARIA attribute '{0}' is not valid for the element <{1}> with WAI-ARIA role '{2}'"
+        "Fail_1": "The ARIA attribute '{0}' is not valid for the element <{1}> with ARIA role '{2}'"
     },
     // JCH - DONE
     "RPT_Form_ChangeEmpty": {
@@ -743,7 +743,7 @@ let a11yNls = {
     "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
         0: "Pages must provide a way to skip directly to the main content",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)"
+        "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
     },
     // JCH - DONE
     "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
@@ -753,27 +753,27 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
-        0: "An element with a WAI-ARIA role must contain required children",
+        0: "An element with a ARIA role must contain required children",
         "Pass_0": "Rule Passed",
-        "Potential_1": "The element with WAI-ARIA role of \"{0}\" does not contain or own at least one child element with each of the following WAI-ARIA roles: \"{1}\""
+        "Potential_1": "The element with ARIA role of \"{0}\" does not contain or own at least one child element with each of the following ARIA roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
-        0: "An element with a WAI-ARIA role must be contained within a valid element",
+        0: "An element with a ARIA role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with \"{0}\" role is not contained in or owned by an element with one of the following WAI-ARIA roles: \"{1}\""
+        "Fail_1": "The element with \"{0}\" role is not contained in or owned by an element with one of the following ARIA roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
-        0: "Elements with event handlers must have a valid WAI-ARIA role",
+        0: "Elements with event handlers must have a valid ARIA role",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The <{0}> element with '{1}' does not have a valid WAI-ARIA role specified"
+        "Fail_1": "The <{0}> element with '{1}' does not have a valid ARIA role specified"
     },
     // JCH - DONE
     "Rpt_Aria_WidgetLabels_Implicit": {
         0: "Interactive component must have a programmatically associated name",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Interactive component with WAI-ARIA role '{0}' does not have a programmatically associated name"
+        "Fail_1": "Interactive component with ARIA role '{0}' does not have a programmatically associated name"
     },
     // JCH - DONE
     "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
@@ -955,14 +955,14 @@ let a11yNls = {
         "Fail_1": "Multiple toolbar components do not have unique labels"
     },
     "combobox_version": {
-        0: "The combobox design pattern must be valid for WAI-ARIA 1.2",
-        "Pass_1.0": "The combobox design pattern is detected as WAI-ARIA 1.0, which is allowed by WAI-ARIA 1.2",
-        "Fail_1.1": "The combobox design pattern is detected as WAI-ARIA 1.1, which is not allowed by WAI-ARIA 1.2",
-        "Pass_1.2": "The combobox design pattern is detected as WAI-ARIA 1.2"
+        0: "The combobox design pattern must be valid for ARIA 1.2",
+        "Pass_1.0": "The combobox design pattern is detected as ARIA 1.0, which is allowed by ARIA 1.2",
+        "Fail_1.1": "The combobox design pattern is detected as ARIA 1.1, which is not allowed by ARIA 1.2",
+        "Pass_1.2": "The combobox design pattern is detected as ARIA 1.2"
     },
     "combobox_popup_reference": {
-        0: "The 'aria-controls' (for WAI-ARIA 1.2) or the 'aria-owns' (for WAI-ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value",
-        "Pass_expanded": "The combobox popup referenced by 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) exists and is visible",
+        0: "The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value",
+        "Pass_expanded": "The combobox popup referenced by 'aria-controls' (ARIA 1.2) or 'aria-owns' (ARIA 1.0) exists and is visible",
         "Pass_collapsed": "The combobox popup in its collapsed state does not reference any visible popup as required",
         "Fail_1.0_missing_owns": "The 'aria-owns' attribute of the expanded combobox is missing",
         "Fail_1.2_missing_controls": "The 'aria-controls' attribute of the expanded combobox is missing",
@@ -972,8 +972,8 @@ let a11yNls = {
         "Fail_combobox_collapsed_visible": "The combobox 'aria-expanded' attribute is false, but the combobox popup is visible"
     },
     "combobox_haspopup": {
-        0: "The combobox attribute 'aria-haspopup' value must be appropriate for the role of the element referenced by 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0)",
-        "Pass": "The 'aria-controls' (WAI-ARIA 1.2) or 'aria-owns' (WAI-ARIA 1.0) appropriately references a valid popup 'id' value",
+        0: "The combobox attribute 'aria-haspopup' value must be appropriate for the role of the element referenced by 'aria-controls' (ARIA 1.2) or 'aria-owns' (ARIA 1.0)",
+        "Pass": "The 'aria-controls' (ARIA 1.2) or 'aria-owns' (ARIA 1.0) appropriately references a valid popup 'id' value",
         "Fail_popup_role_invalid": "The 'role' value \"{0}\" of the popup element \"{1}\" should be one of \"listbox\", \"grid\", \"tree\" or \"dialog\"",
         "Fail_combobox_popup_role_mismatch": "The value of the combobox 'aria-haspopup' attribute \"{0}\" does not match the 'role' value of the popup element \"{1}\""
     },    
@@ -988,7 +988,7 @@ let a11yNls = {
         "Pass": "'aria-activedescendant' is used appropriately for this combobox",
         "Fail_missing": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist",
         "Fail_not_in_popup": "The element referenced by 'aria-activedescendant' \"{0}\" does not exist within the popup referenced by 'id' \"{1}\"",
-        "Fail_active_role_invalid": "The 'aria-activedescendant' \"{0}\" references an element with the roles \"{1}\", which does not have a valid WAI-ARIA role of 'option', 'gridcell', 'row', or 'treeitem'",
+        "Fail_active_role_invalid": "The 'aria-activedescendant' \"{0}\" references an element with the roles \"{1}\", which does not have a valid ARIA role of 'option', 'gridcell', 'row', or 'treeitem'",
         "Fail_active_not_selected": "The 'aria-activedescendant' \"{0}\" references an element that does not have 'aria-selected' set to true",
     },
     "combobox_autocomplete": {
