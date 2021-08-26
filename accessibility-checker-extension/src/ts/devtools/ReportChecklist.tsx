@@ -113,7 +113,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                     <div className="bx--col-md-2 bx--col-sm-2" role="columnheader">
                         Issues                    
                     </div>
-                    <div className="bx--col-md-4 bx--col-sm-2" role="columnheader">
+                    <div className="bx--col-md-6 bx--col-sm-2" role="columnheader">
                         Requirements
                     </div>
                 </div>
@@ -138,6 +138,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                             layout={this.props.layout} 
                             dataFromParent={this.props.dataFromParent} 
                             focusedViewFilter={this.props.focusedViewFilter}
+                            breakType={"break-word"}
                         />;
                     })
                 }
