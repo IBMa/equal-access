@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### WAI-ARIA widget with a graphics role has no label or an empty label
+### ARIA widget with a graphics role has no label or an empty label
 
 <div id="locLevel"></div>
 
@@ -28,8 +28,8 @@ A component with a graphics role can contain important information as well as mu
 ### What to do
 
 * Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label;
-* OR, add an `aria-label` attribute to the element with a `role="graphics-*"`;
-* OR, only if the design cannot have a visible label, use the `title` attribute to provide a label
+* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`;
+* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:
 
@@ -40,8 +40,8 @@ Example:
 
 ### About this requirement
 
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-[WAI-ARIA Graphics Module](https://www.w3.org/TR/graphics-aria-1.0/)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA Graphics Module](https://www.w3.org/TR/graphics-aria/)
 
 ### Who does this affect?
 

@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `<{0}>` element with `{1}` does not have a valid WAI-ARIA role specified.
+### The `<{0}>` element with `{1}` does not have a valid ARIA role specified.
 
 <div id="locLevel"></div>
 
-Elements with event handlers must have a valid WAI-ARIA role
+Elements with event handlers must have a valid ARIA role
 
 </Column>
 </Row>
@@ -28,16 +28,16 @@ When UI elements are programmed with script to receive focus and be interactive,
 ### What to do
 
  * If using native HTML, determine why the element does not have an implicit role and address the cause (e.g., &lt;`a`&gt; does not have a role of `link` unless it also has an `href` attribute);
- * OR, change the element type to one with an implicit role that matches the behavior of the element (e.g., use &lt;`button`&gt; instead of &lt;`div`&gt;);
- * OR, assign a valid WAI-ARIA `role` that reflects the behavior of the element (e.g., use &lt;`div role="button"`&gt;).
+ * **Or**, change the element type to one with an implicit role that matches the behavior of the element (e.g., use &lt;`button`&gt; instead of &lt;`div`&gt;);
+ * **Or**, assign a valid ARIA `role` that reflects the behavior of the element (e.g., use &lt;`div role="button"`&gt;).
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
 
-[IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-[W3C WAI-ARIA 1.2 Design Patterns and Widgets](https://www.w3.org/TR/wai-aria-practices-1.2/#aria_ex)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA practices - Design Patterns and Widgets](https://w3c.github.io/aria-practices/#aria_ex)
 
 ### Who does this affect?
 
