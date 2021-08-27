@@ -70,7 +70,6 @@ ace_mapping["bc659a"] = [{ // Not clear the difference between this and bisz58
 
 // Not evaluated
 ace_mapping["ffd0e9"] = []
-ace_mapping["6cfa84"] = []
 ace_mapping["a25f45"] = []
 ace_mapping["b33eff"] = []
 ace_mapping["80f0bf"] = []

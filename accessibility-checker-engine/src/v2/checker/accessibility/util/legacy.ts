@@ -321,7 +321,8 @@ export class RPTUtil {
         },
         "video": function (element) {
             return element.hasAttribute("controls");
-        }
+        },
+        "summary": true
     }
 
     public static wordCount(str) : number {
@@ -1422,7 +1423,7 @@ export class RPTUtil {
         return descendant;
     }
     /**
-     * This function is responsible for getting a All descendant elements with the specified role, under
+     * This function is responsible for getting All descendant elements with the specified role, under
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
