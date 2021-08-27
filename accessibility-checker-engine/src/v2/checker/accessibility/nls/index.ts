@@ -1027,9 +1027,9 @@ let a11yNls = {
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
     },
     "aria_hidden_focus_misuse": {
-        0: "Element \"{0}\" should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’", 
+        0: "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an ‘aria-hidden’ attribute with value ‘true’"
+        "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     }
 }
 export { a11yNls }
