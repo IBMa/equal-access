@@ -53,6 +53,7 @@ import { a11yRulesBody } from "./rpt-body-rules";
 import { a11yRulesForm } from "./rpt-form-rules";
 import { a11yRulesMedia } from "./rpt-media-rules";
 import { a11yRulesVideo } from "./rpt-video-rules";
+import { ariaHiddenRule } from "./aria_hidden_focus_misuse";
 
 let a11yRules: Rule[] = [].concat(
     a11yRulesAnchor
@@ -93,6 +94,7 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesForm
     , a11yRulesMedia
     , a11yRulesVideo
+    , ariaHiddenRule
 );
 
 export { a11yRules }

@@ -1028,10 +1028,15 @@ let a11yHelp = {
         "Pass_0": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`,
         "Potential_1": `${Config.helpRoot}/WCAG20_Input_VisibleLabel`
     },
-    "ACT_Meta_Viewport": {
-        0: `${Config.helpRoot}/ACT_Meta_Viewport`, 
-        "Pass_0": `${Config.helpRoot}/ACT_Meta_Viewport`,
-        "Potential_1": `${Config.helpRoot}/ACT_Meta_Viewport`
+    "meta_viewport_zoom": {
+        0: `${Config.helpRoot}/meta_viewport_zoom`, 
+        "Pass_0": `${Config.helpRoot}/meta_viewport_zoom`,
+        "Potential_1": `${Config.helpRoot}/meta_viewport_zoom`
+    },
+    "aria_hidden_focus_misuse": {
+        0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
+        "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
+        "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
     }
 }
 
