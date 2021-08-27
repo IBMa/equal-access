@@ -479,7 +479,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "ACT_Meta_Viewport",
+                    id: "meta_viewport_zoom",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
@@ -499,7 +499,7 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
             "rules": [
                 {
-                    id: "ACT_Meta_Viewport",
+                    id: "meta_viewport_zoom",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }

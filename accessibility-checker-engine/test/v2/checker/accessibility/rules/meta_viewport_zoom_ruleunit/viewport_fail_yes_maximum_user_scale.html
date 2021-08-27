@@ -21,7 +21,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <meta name="viewport" content="user-scalable=no" />
+    <meta name="viewport" content="maximum-scale=yes" />
 </head>
 
 <body>
@@ -30,9 +30,9 @@
   </p>
     <script>
         UnitTest = {
-            ruleIds: ["ACT_Meta_Viewport"],
+            ruleIds: ["meta_viewport_zoom"],
             results: [{
-              "ruleId": "ACT_Meta_Viewport",
+              "ruleId": "meta_viewport_zoom",
               "value": [
                 "INFORMATION",
                 "POTENTIAL"
@@ -42,9 +42,9 @@
                 "aria": ""
               },
               "reasonId": "Potential_1",
-              "message": "Confirm the 'meta[name=viewport]' with \"user-scalable=no\" can be zoomed by user",
+              "message": "Confirm the 'meta[name=viewport]' with \"maximum-scale=yes\" can be zoomed by user",
               "messageArgs": [
-                "user-scalable=no"
+                "maximum-scale=yes"
               ],
               "apiArgs": [],
               "category": "Accessibility"

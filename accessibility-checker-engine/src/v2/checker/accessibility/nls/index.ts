@@ -1021,7 +1021,7 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Potential_1": "The input element does not have an associated visible label"
     },
-    "ACT_Meta_Viewport": {
+    "meta_viewport_zoom": {
         0: "The 'meta[name=viewport]' should not prevent the browser zooming the content", 
         "Pass_0": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
