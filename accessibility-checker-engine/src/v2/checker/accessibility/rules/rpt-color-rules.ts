@@ -24,7 +24,7 @@ let a11yRulesColor: Rule[] = [
         "context": "dom:*",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLElement;
-            let nodeName = ruleContext.nodeName.toLowerCase();
+            let nodeName = ruleContext.nodeName.toLowerCase();console.log("nodeName=" + nodeName);
             // avoid diagnosing elements that are not visible
             if (!RPTUtil.isNodeVisible(ruleContext) ||
                 (RPTUtil.hiddenByDefaultElements != null &&
@@ -40,10 +40,10 @@ let a11yRulesColor: Rule[] = [
                 if (childNodes[i].nodeType == 3) {
                     childStr += childNodes[i].nodeValue;
                 }
-            }
+            } 
             if (childStr.trim().length == 0)
                 return null;
-
+            console.log("text=" + childStr.trim());
             let doc = ruleContext.ownerDocument;
             if (!doc) {
                 return null;
@@ -68,13 +68,23 @@ let a11yRulesColor: Rule[] = [
             let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
             let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
 
-            let isDisabled = RPTUtil.isNodeDisabled(ruleContext);
+            let isDisabled = RPTUtil.isNodeDisabled(ruleContext);console.log("disabled="+isDisabled +",hasBackground="+hasBackground);
             if (!isDisabled) {
                 let control = RPTUtil.getControlOfLabel(ruleContext);
                 if (control) {
                     isDisabled = RPTUtil.isNodeDisabled(control);
                 }
             }
+            
+            if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(ruleContext)) {console.log("label element disabled by form control");
+                //ignore label that has a disabled control
+                isDisabled = true; 
+            }
+
+            if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(ruleContext)) {
+                    isDisabled = true; console.log("disabled by referring element")
+            }
+
             RPTUtil.setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
                 "ratio": ratio,
                 "isLargeScale": isLargeScale,
@@ -83,7 +93,7 @@ let a11yRulesColor: Rule[] = [
                 "hasBackground": hasBackground,
                 "isDisabled": isDisabled
             });
-            if (hasBackground) {
+            if (hasBackground) {console.log("no background");
                 // Allow other color rule to fire if we have a background
                 return null;
             }
@@ -95,12 +105,12 @@ let a11yRulesColor: Rule[] = [
 
             //return new ValidationResult(passed, [ruleContext], '', '', [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
             if (!passed) {
-                if (fg.toHex() === bg.toHex()) {
+                if (fg.toHex() === bg.toHex()) {console.log("potential: " + ratio.toFixed(2));
                     return RulePotential("Potential_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
-                } else {
+                } else {console.log("fail: " + ratio.toFixed(2));
                     return RuleFail("Fail_1", [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
                 }
-            } else {
+            } else {console.log("passed: " + ratio.toFixed(2));
                 return RulePass("Pass_0",[ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
             }
         }
