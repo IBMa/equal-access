@@ -15,9 +15,27 @@
  *****************************************************************************/
 
 import { Ruleset } from "../../Checker";
-import { eRulePolicy, eRuleCategory, eToolkitLevel} from "../../../api/IEngine";
+import { eRulePolicy, eRuleCategory, eToolkitLevel, eRulesetType} from "../../../api/IEngine";
 
 let a11yRulesets: Ruleset[] = [
+{
+    id: "EXTENSIONS",
+    name: "Extension Rules",
+    category: eRuleCategory.ACCESSIBILITY,
+    description: "Rules for enabling the browser extensions",
+    type: eRulesetType.EXTENSION,
+    checkpoints: [{
+        "num": "1",
+        name: "Extension CP 1",
+        wcagLevel: "A",
+        summary: "Rules for Extension",
+        rules: [{
+            id: "detector_tabbable",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        } ]
+    }]
+},
 {
     id: "IBM_Accessibility",
     name: "IBM Accessibility",

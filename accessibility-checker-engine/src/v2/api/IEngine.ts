@@ -42,6 +42,11 @@ export enum eRuleCategory {
     OTHER = "Other"
 }
 
+export enum eRulesetType {
+    DEFAULT = "default",
+    EXTENSION = "extension"
+}
+
 export function RulePass(reasonId: number | string, messageArgs? : string[], apiArgs? : any[]) : RuleResult {
     if (typeof reasonId === "undefined" || reasonId === null) throw new Error("Reason ID must be defined");
     return {
