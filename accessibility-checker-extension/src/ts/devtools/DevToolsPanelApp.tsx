@@ -314,7 +314,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        // console.log("startScan");
+        console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
@@ -347,26 +347,27 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
+        console.log("onReport")
         try {
             if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                 let blob_url = message.blob_url;
                 let blob = await fetch(blob_url).then(r => r.blob());
                 message = JSON.parse(await blob.text());
             }
-
+            console.log("1");
             let report = message.report;
             let archives = await this.getArchives();
             
             if (!report) return;
-
-        let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
+            console.log("2");
+            let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
             // JCH add itemIdx to report (used to be in message.report)
             report.results.map((result: any, index: any) => {
                 result["itemIdx"] = index;
             })
             let tabId = message.tabId;
-
+            console.log("3");
 
             if (this.state.tabId === tabId) {
                 report.timestamp = new Date().getTime();
@@ -382,18 +383,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             // JCH before finish scan collect and order tab stops
             // Note: the collection is actually all issues that are tab stops
+            console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
             let tabbableErrors: IReportItem[] = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
                     // there will always be at least one tab
                     tabbable?.push(result);
-                } else if (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" &&
-                result.ruleId === "IBMA_Focus_Tabbable" &&
-                result.ruleId === "Rpt_Aria_MissingKeyboardHandler" &&
-                result.ruleId === "Rpt_Aria_MissingFocusableChild" &&
-                result.ruleId === "IBMA_Focus_MultiTab" &&
-                result.ruleId === "RPT_Elem_EventMouseAndKey" &&
+                } else if (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" ||
+                result.ruleId === "IBMA_Focus_Tabbable" ||
+                result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
+                result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
+                result.ruleId === "IBMA_Focus_MultiTab" ||
+                result.ruleId === "RPT_Elem_EventMouseAndKey" ||
                 result.ruleId === "Rpt_Aria_ValidRole" ) {
                     tabbableErrors?.push(result);
                 }
@@ -404,6 +406,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             
             console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable});
+            console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors});
             
             // End of tab stops stored state

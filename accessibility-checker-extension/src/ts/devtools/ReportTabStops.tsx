@@ -72,7 +72,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                     if (item.value[1] === "PASS") {
                         continue;
                     }
-                    console.log("tabStop ",index, " aria path: ",result.path.aria, item.path.aria);
+                    // console.log("tabStop ",index, " aria path: ",result.path.aria, item.path.aria);
                     item.itemIdx = itemIdx++;
                     // group by element role === aria path
                     // if (item.path.aria === result.path.aria) {
@@ -101,7 +101,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                         }
                     }
                 }
-                console.log("groups before sort = ",groups);
+                // console.log("groups before sort = ",groups);
 
                 // JCH - now for tab stops we need to sort issues 
                 // according to type in order Violations, Needs Review, Recommendations
@@ -120,7 +120,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                 })
                 
             })
-            console.log("groups = ",groups);
+            // console.log("groups = ",groups);
             
         }
     
