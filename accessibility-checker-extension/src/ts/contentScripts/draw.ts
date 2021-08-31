@@ -137,12 +137,12 @@ function deleteDrawing(classToRemove: string) {
 function redrawErrors(tabStopsErrors: any) {
     console.log("Inside redrawErrors")
     setTimeout(() => {
+        console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
         nodes = convertXpathsToHtmlElements(nodes);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
-        console.log("tabbable error nodes = ", nodes);
         let offset = 0;
 
 
