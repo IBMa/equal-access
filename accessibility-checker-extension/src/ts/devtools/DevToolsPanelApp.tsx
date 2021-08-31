@@ -390,13 +390,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 if (result.ruleId === "detector_tabbable") {
                     // there will always be at least one tab
                     tabbable?.push(result);
-                } else if (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" ||
-                result.ruleId === "IBMA_Focus_Tabbable" ||
-                result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
-                result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
-                result.ruleId === "IBMA_Focus_MultiTab" ||
-                result.ruleId === "RPT_Elem_EventMouseAndKey" ||
-                result.ruleId === "Rpt_Aria_ValidRole" ) {
+                } else if (result.value[1] !== "PASS" && (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" ||
+                    result.ruleId === "IBMA_Focus_Tabbable" ||
+                    result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
+                    result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
+                    result.ruleId === "IBMA_Focus_MultiTab" ||
+                    result.ruleId === "RPT_Elem_EventMouseAndKey" ||
+                    result.ruleId === "Rpt_Aria_ValidRole") ) {
                     tabbableErrors?.push(result);
                 }
             });
