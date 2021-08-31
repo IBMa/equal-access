@@ -1361,8 +1361,10 @@ export class RPTUtil {
         if (element.firstChild != null) {
             let nw = new NodeWalker(element);
             while (nw.nextNode()) {
-                if (formElements.includes(nw.node.nodeName.toLowerCase()) && RPTUtil.isNodeDisabled(nw.node)) {
-                    return true;
+                if (formElements.includes(nw.node.nodeName.toLowerCase())) {
+                    if (RPTUtil.isNodeDisabled(nw.node))
+                       return true;
+                    return false;   
                 }
             }
         }
