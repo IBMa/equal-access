@@ -33,7 +33,48 @@ let a11yRulesets: Ruleset[] = [
             id: "detector_tabbable",
             level: eRulePolicy.INFORMATION,
             toolkitLevel: eToolkitLevel.LEVEL_FOUR
-        } ]
+        },
+        {
+            id: "Rpt_Aria_InvalidTabindexForActivedescendant",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "combobox_focusable_elements",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "IBMA_Focus_Tabbable",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "IBMA_Focus_MultiTab",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_MissingKeyboardHandler",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_MissingFocusableChild",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "RPT_Elem_EventMouseAndKey",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_ValidRole",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        }
+     ]
     }]
 },
 {
