@@ -122,6 +122,10 @@ function redraw(tabStopsResults: any) {
         let nodes = getNodesXpaths(tabStopsResults);
         let offset = 3;
         nodes = convertXpathsToHtmlElements(nodes);
+        nodes = nodes.filter(function (el:any) {  // Removing failure case of null nodes being sent
+            return el != null;
+          });
+          
         console.log("nodes = ", nodes);
 
         // JCH - need for last line to return to first node
