@@ -100,6 +100,7 @@ interface IPanelState {
     tabStops: [],
     tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
     tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[],
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -132,7 +133,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         focusedViewText: "",
         tabStops: [], // array of xpaths of the tab stops
         tabStopsPanel: false,
-        tabStopsResults: []
+        tabStopsResults: [],
+        tabStopsErrors: []
     }
 
     ignoreNext = false;
@@ -381,10 +383,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // JCH before finish scan collect and order tab stops
             // Note: the collection is actually all issues that are tab stops
             let tabbable: IReportItem[] = [];
+            let tabbableErrors: IReportItem[] = [];
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
                     // there will always be at least one tab
                     tabbable?.push(result);
+                } else if (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" &&
+                result.ruleId === "IBMA_Focus_Tabbable" &&
+                result.ruleId === "Rpt_Aria_MissingKeyboardHandler" &&
+                result.ruleId === "Rpt_Aria_MissingFocusableChild" &&
+                result.ruleId === "IBMA_Focus_MultiTab" &&
+                result.ruleId === "RPT_Elem_EventMouseAndKey" &&
+                result.ruleId === "Rpt_Aria_ValidRole" ) {
+                    tabbableErrors?.push(result);
                 }
             });
             if (tabbable !== null) {
@@ -393,6 +404,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             
             console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable});
+            this.setState({ tabStopsErrors: tabbableErrors});
             
             // End of tab stops stored state
 
@@ -986,7 +998,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             tabURL = {this.state.tabURL}
                             tabId = {this.state.tabId} 
                             tabStopsShow={this.tabStopsShow.bind(this)} 
-                            tabStopsResults = {this.state.tabStopsResults}                   
+                            tabStopsResults = {this.state.tabStopsResults} 
+                            tabStopsErrors = {this.state.tabStopsErrors}                  
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1083,7 +1096,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabURL = {this.state.tabURL}
                         tabId = {this.state.tabId}  
                         tabStopsShow={this.tabStopsShow.bind(this)} 
-                        tabStopsResults={this.state.tabStopsResults}                     
+                        tabStopsResults={this.state.tabStopsResults} 
+                        tabStopsErrors = {this.state.tabStopsErrors}                    
                     />
                     <div style={{overflowY:"scroll", height:"100%"}}>
                         <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>

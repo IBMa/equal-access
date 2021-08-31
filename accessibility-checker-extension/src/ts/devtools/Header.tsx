@@ -90,7 +90,8 @@ interface IHeaderProps {
     tabURL: string,
     tabId: number,
     tabStopsShow: () => void,
-    tabStopsResults: IReportItem[]
+    tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -420,7 +421,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             {this.state.showHideTabStops ? 
                                 <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
                                     this.setState({ showHideTabStops: false });
-                                    PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults });
+                                    PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
                                     // this.props.tabStopsShow(); // old code that we should keep
                                 }}>Show tab stops</a>
                             :   <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
