@@ -66,9 +66,9 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         .svgIconTest{
             position: absolute;
-            pointer-events: none;
-            z-index: 1000;
             overflow: visible;
+            pointer-events: none;
+            z-index: 2147483646 !important;
         }
         .circleText{
             pointer-events: none;
@@ -159,7 +159,6 @@ function redrawErrors(tabStopsErrors: any) {
             // makeCircleSmall(x, y, i);
             // makeTextSmall(x, y, (i + 1).toString());
             
-            // makeIcon(x, y, "test");
             
             // Make box around active component
             makeLine(x, y, xPlusWidth, y, "lineError");
@@ -178,6 +177,9 @@ function redrawErrors(tabStopsErrors: any) {
             makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, "lineEmbossError");
             makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
+
+            makeIcon(xPlusWidth-6, y-6, "test");
+
         }
 
 
@@ -381,13 +383,10 @@ function insertSVGIntoBody() {
         document.body.innerHTML += '<svg id="svgCircle"><circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/><text id="text" class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/></svg>'
     }
 
-    // if (document.getElementById("svgIcon1") == null) {
-    //     document.body.innerHTML += '<svg class="svgIcon1" display="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"> <defs> <style> .cls-1 { fill: none; } </style> </defs> <path d="M28,17v5H4V6H15V4H4A2,2,0,0,0,2,6V22a2,2,0,0,0,2,2h8v4H8v2H24V28H20V24h8a2,2,0,0,0,2-2V17ZM18,28H14V24h4Z" transform="translate(0 0)"/> <path d="M29,14H17a1,1,0,0,1-.8574-1.5144l6-10a1,1,0,0,1,1.7154,0l6,10A1,1,0,0,1,29,14ZM18.7661,12h8.4678L23,4.9436Z" transform="translate(0 0)"/> <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/> </svg>'
-    // }
-
     if (document.getElementById("svgIcon1") == null) {
-        document.body.innerHTML += '<svg class="svgIcon1" display="none" version="1.1" id="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve"> <style type="text/css"> .st0{fill:none;} .st1{opacity:0;fill-opacity:0;} </style> <rect id="_Transparent_Rectangle_" class="st0" width="32" height="32"/> <path d="M16,2C8.3,2,2,8.3,2,16s6.3,14,14,14s14-6.3,14-14S23.7,2,16,2z M21.4,23L16,17.6L10.6,23L9,21.4l5.4-5.4L9,10.6L10.6,9 l5.4,5.4L21.4,9l1.6,1.6L17.6,16l5.4,5.4L21.4,23z"/> <path id="inner-path" class="st1" d="M21.4,23L16,17.6L10.6,23L9,21.4l5.4-5.4L9,10.6L10.6,9l5.4,5.4L21.4,9l1.6,1.6L17.6,16 l5.4,5.4L21.4,23z"/> </svg>'
+        document.body.innerHTML += '<svg class="svgIcon1" display="none" xmlns="http://www.w3.org/2000/svg" id="icon" width="12px" height="12px" viewBox="0 0 32 32"> <defs> <style> .cls-1 { fill: none; } </style> </defs> <path id="inner-path" class="cls-1" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style="&#10;    fill: black;&#10;"/> <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style="&#10;    fill: yellow;&#10;"/> <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style="&#10;    fill: black;&#10;"/> <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/> </svg>'
     }
+
 
     if (document.getElementById("svgIcons") == null) {
         document.body.innerHTML += '<div class="svgIcons"> </div>'
