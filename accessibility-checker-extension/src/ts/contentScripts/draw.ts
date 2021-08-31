@@ -12,7 +12,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     console.log(message.tabStopsResults);
     injectCSS(
-        `.line {
+        `
+        .line {
                 stroke-width: 1px;
                 stroke: black;
             }
@@ -142,7 +143,7 @@ function redrawErrors(tabStopsErrors: any) {
             return el != null;
         });
         console.log("tabbable error nodes = ", nodes);
-        let offset = 5;
+        let offset = 0;
 
 
         for (let i = 0; i < nodes.length; i++) {
@@ -155,9 +156,11 @@ function redrawErrors(tabStopsErrors: any) {
             if (i == 32) {
                 console.log("x y :", x, " ", y)
             }
-            makeCircleSmall(x, y, i);
-            makeTextSmall(x, y, (i + 1).toString());
-
+            // makeCircleSmall(x, y, i);
+            // makeTextSmall(x, y, (i + 1).toString());
+            
+            // makeIcon(x, y, "test");
+            
             // Make box around active component
             makeLine(x, y, xPlusWidth, y, "lineError");
             makeLine(x, y, x, yPlusHeight, "lineError");
@@ -284,20 +287,20 @@ function redraw(tabStopsResults: any) {
 
 // }
 
-// function makeIcon(x1: number, y1: number, iconName: string) {
-//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-//     let icon = document.getElementsByClassName('svgIcon1')[0]
-//     var iconClone = icon.cloneNode(true);
-//     (iconClone as HTMLElement).removeAttribute("display");
-//     (iconClone as HTMLElement).classList.remove("svgIcon1");
-//     (iconClone as HTMLElement).classList.add("svgIconTest");
-//     (iconClone as HTMLElement).classList.add("deleteMe");
-//     (iconClone as HTMLElement).style.position = "absolute";
-//     (iconClone as HTMLElement).style.left = String(x1) + "px";
-//     (iconClone as HTMLElement).style.top = String(y1) + "px";
-//     (iconClone as HTMLElement).style.fill = "red";
-//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-// }
+function makeIcon(x1: number, y1: number, iconName: string) {
+    iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
+    let icon = document.getElementsByClassName('svgIcon1')[0]
+    var iconClone = icon.cloneNode(true);
+    (iconClone as HTMLElement).removeAttribute("display");
+    (iconClone as HTMLElement).classList.remove("svgIcon1");
+    (iconClone as HTMLElement).classList.add("svgIconTest");
+    (iconClone as HTMLElement).classList.add("deleteMe");
+    (iconClone as HTMLElement).style.position = "absolute";
+    (iconClone as HTMLElement).style.left = String(x1) + "px";
+    (iconClone as HTMLElement).style.top = String(y1) + "px";
+    (iconClone as HTMLElement).style.fill = "red";
+    document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+}
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
