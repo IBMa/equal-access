@@ -16,10 +16,19 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
                 stroke-width: 1px;
                 stroke: black;
             }
+        .lineError {
+                stroke-width: 1px;
+                stroke: red;
+        }
         .lineEmboss {
             stroke-width: 1px;
             stroke: white;
-        }`
+        }
+        .lineEmbossError {
+            stroke-width: 1px;
+            stroke: white;
+        }
+        `
     );
     injectCSS(
         `#svgCircle{
@@ -70,9 +79,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         `
     );
     draw(message.tabStopsResults);
+    drawErrors(message.tabStopsErrors);
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(message.tabStopsResults);
+        redrawErrors(message.tabStopsErrors)
     })
 
 
@@ -105,28 +116,86 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw(tabStopsResults: any) {
-    console.log("Inside Draw function")
+function draw(tabStopsErrors: any) {
+    console.log("Inside draw")
     insertSVGIntoBody();
-    redraw(tabStopsResults);
+    redraw(tabStopsErrors);
+}
+
+function drawErrors(tabStopsErrors: any) {
+    console.log("Inside drawErrors")
+    // insertSVGIntoBody();
+    redrawErrors(tabStopsErrors);
 }
 
 function deleteDrawing(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
+
+function redrawErrors(tabStopsErrors: any) {
+    console.log("Inside redrawErrors")
+    setTimeout(() => {
+        let nodes = getNodesXpaths(tabStopsErrors);
+        nodes = convertXpathsToHtmlElements(nodes);
+        nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+            return el != null;
+        });
+        console.log("tabbable error nodes = ", nodes);
+        let offset = 5;
+
+
+        for (let i = 0; i < nodes.length; i++) {
+            let x = nodes[i].getBoundingClientRect().x - offset;
+            let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+
+            let y = nodes[i].getBoundingClientRect().y - offset;
+            let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+
+            if (i == 32) {
+                console.log("x y :", x, " ", y)
+            }
+            makeCircleSmall(x, y, i);
+            makeTextSmall(x, y, (i + 1).toString());
+
+            // Make box around active component
+            makeLine(x, y, xPlusWidth, y, "lineError");
+            makeLine(x, y, x, yPlusHeight, "lineError");
+            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, "lineError");
+            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, "lineError");
+
+            // Make white stroke around active component outline
+            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, "lineEmbossError");
+            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, "lineEmbossError");
+            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmbossError");
+            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmbossError");
+
+            // Make white stroke inside active component outline
+            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, "lineEmbossError");
+            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, "lineEmbossError");
+            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
+            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
+        }
+
+
+
+    }, 1)
+}
+
+
+
 function redraw(tabStopsResults: any) {
-    console.log("redraw");
+    console.log("Inside redraw")
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
         let offset = 3;
         nodes = convertXpathsToHtmlElements(nodes);
-        nodes = nodes.filter(function (el:any) {  // Removing failure case of null nodes being sent
+        nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
-          });
-          
-        console.log("nodes = ", nodes);
+        });
+
+        console.log("tabbable nodes = ", nodes);
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length - 1; i++) { //Make lines between numbers
@@ -138,23 +207,23 @@ function redraw(tabStopsResults: any) {
                 nodes[i + 1].getBoundingClientRect().y - offset, "line");
 
             // Create white outline
-            if ( Math.abs(slope)  < 1){  // Low slope move y
+            if (Math.abs(slope) < 1) {  // Low slope move y
                 makeLine(nodes[i].getBoundingClientRect().x - offset,
-                nodes[i].getBoundingClientRect().y - offset - 1,
-                nodes[i + 1].getBoundingClientRect().x - offset,
-                nodes[i + 1].getBoundingClientRect().y - offset - 1, "lineEmboss");
+                    nodes[i].getBoundingClientRect().y - offset - 1,
+                    nodes[i + 1].getBoundingClientRect().x - offset,
+                    nodes[i + 1].getBoundingClientRect().y - offset - 1, "lineEmboss");
 
                 makeLine(nodes[i].getBoundingClientRect().x - offset,
-                nodes[i].getBoundingClientRect().y - offset + 1,
-                nodes[i + 1].getBoundingClientRect().x - offset,
-                nodes[i + 1].getBoundingClientRect().y - offset + 1, "lineEmboss");
+                    nodes[i].getBoundingClientRect().y - offset + 1,
+                    nodes[i + 1].getBoundingClientRect().x - offset,
+                    nodes[i + 1].getBoundingClientRect().y - offset + 1, "lineEmboss");
 
-            }else{ // high slope move x
+            } else { // high slope move x
                 makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
                     nodes[i].getBoundingClientRect().y - offset,
                     nodes[i + 1].getBoundingClientRect().x - offset - 1,
                     nodes[i + 1].getBoundingClientRect().y - offset, "lineEmboss");
-    
+
                 makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
                     nodes[i].getBoundingClientRect().y - offset,
                     nodes[i + 1].getBoundingClientRect().x - offset + 1,
@@ -235,10 +304,10 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
-    if (x1 >= -10 && x1 <= 6){
+    if (x1 >= -10 && x1 <= 6) {
         x1 = 7;
     }
-    if (y1 >= -10 &&  y1 <= 6){
+    if (y1 >= -10 && y1 <= 6) {
         y1 = 7;
     }
 
@@ -259,10 +328,10 @@ function makeTextSmall(x1: number, y1: number, n: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
-    if (x1 >= -10 && x1 <= 6){
+    if (x1 >= -10 && x1 <= 6) {
         x1 = 7;
     }
-    if (y1 >= -10 &&  y1 <= 6){
+    if (y1 >= -10 && y1 <= 6) {
         y1 = 7;
     }
 
@@ -271,13 +340,13 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     (textClone as HTMLElement).classList.add("deleteMe");
     (textClone as HTMLElement).classList.add("circleSmall");
 
-    if (n.length >=3){ // If number has 3+ digits shift it a few more px to center it
+    if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
         (textClone as HTMLElement).setAttribute('x', String(x1 - 6));
         (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
-    }else if(n.length == 2){ // number has 2 digits
+    } else if (n.length == 2) { // number has 2 digits
         (textClone as HTMLElement).setAttribute('x', String(x1 - 4));
         (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
-    }else{ // number has 1 digit
+    } else { // number has 1 digit
         (textClone as HTMLElement).setAttribute('x', String(x1 - 2));
         (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
     }
