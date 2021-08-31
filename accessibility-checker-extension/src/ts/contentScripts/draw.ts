@@ -252,7 +252,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
 }
 
 function makeTextSmall(x1: number, y1: number, n: string) {
-    
+
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
     if (x1 >= -10 && x1 <= 6){
@@ -266,8 +266,17 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     var textClone = text.cloneNode(true);
     (textClone as HTMLElement).classList.add("deleteMe");
     (textClone as HTMLElement).classList.add("circleSmall");
-    (textClone as HTMLElement).setAttribute('x', String(x1 - 3));
-    (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+
+    if (n.length >=3){ // If number has 3+ digits shift it a few more px to center it
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 6));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+    }else if(n.length == 2){ // number has 2 digits
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 4));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+    }else{ // number has 1 digit
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 2));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+    }
     (textClone as HTMLElement).innerHTML = n;
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
