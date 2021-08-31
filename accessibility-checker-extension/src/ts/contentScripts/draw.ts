@@ -228,8 +228,14 @@ function redraw(tabStopsResults: any) {
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
-    if (circleNumber == 32) {
-        console.log("x y circle:", x1, " ", y1)
+
+    // TODO: Find possible better way to deal with this (Talk to design)
+    // If the circle is being drawn slighly off of the screen move it into the screen
+    if (x1 >= -10 && x1 <= 6){
+        x1 = 7;
+    }
+    if (y1 >= -10 &&  y1 <= 6){
+        y1 = 7;
     }
 
     let circle = document.getElementsByClassName('tabCircle')[0]
@@ -246,6 +252,16 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
 }
 
 function makeTextSmall(x1: number, y1: number, n: string) {
+    
+    // TODO: Find possible better way to deal with this (Talk to design)
+    // If the circle is being drawn slighly off of the screen move it into the screen
+    if (x1 >= -10 && x1 <= 6){
+        x1 = 7;
+    }
+    if (y1 >= -10 &&  y1 <= 6){
+        y1 = 7;
+    }
+
     let text = document.getElementsByClassName('circleText')[0]
     var textClone = text.cloneNode(true);
     (textClone as HTMLElement).classList.add("deleteMe");
