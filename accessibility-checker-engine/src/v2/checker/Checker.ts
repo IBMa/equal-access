@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IEngine, eRulePolicy, Report, eRuleCategory, eToolkitLevel } from "../api/IEngine";
+import { IEngine, eRulePolicy, Report, eRuleCategory, eToolkitLevel, eRulesetType } from "../api/IEngine";
 import { Engine } from "../common/Engine";
 import { ARIAMapper } from "../aria/ARIAMapper";
 import { StyleMapper } from "../style/StyleMapper";
@@ -28,6 +28,7 @@ export type Ruleset = {
     name: string,
     category: eRuleCategory,
     description: string,
+    type?: eRulesetType,
     checkpoints: Array<{
         num: string,
         // JCH: add name of checkpoint and summary description
