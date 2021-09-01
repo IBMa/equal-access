@@ -15,10 +15,26 @@
  *****************************************************************************/
 
 import { ARIAMapper } from "../../../..";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass } from "../../../api/IEngine";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesAnchor: Rule[] = [{
+    id: "detector_tabbable",
+    context: "dom:*",
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        if (!RPTUtil.isTabbable(ruleContext)) {
+            return null;
+        }
+        let hierContext = contextHierarchies.aria[contextHierarchies.aria.length-1];
+        return RulePass("Pass_0", [], [{
+            name: hierContext.attributes.name,
+            role: hierContext.role,
+            tabindex: parseInt(ruleContext.getAttribute("tabindex") || "0")
+        }]);
+    }
+},
+{
     id: "WCAG20_A_HasText",
     context: "aria:link",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
