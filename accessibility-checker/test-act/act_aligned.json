@@ -96,5 +96,9 @@
         "ruleId": "WCAG20_Elem_Lang_Valid",
         "reasonIds": ["Fail_1", "Fail_3"],
         "treatAsPass": ["Fail_2"]
+    }],
+    "6cfa84": [{
+        "ruleId": "aria_hidden_focus_misuse",
+        "reasonIds": ["Fail_1"]
     }]
 }
