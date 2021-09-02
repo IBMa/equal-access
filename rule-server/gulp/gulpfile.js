@@ -45,6 +45,7 @@ const archivePolicies = () => {
         .pipe(modifyFile((content, path, file) => {
             let archives = JSON.parse(content);
             let latestPol = [];
+            let latestRS = {};
             let latestArchive = null;
             for (const archive of archives) {
                 if (archive.id !== "latest") {
@@ -55,19 +56,31 @@ const archivePolicies = () => {
                         ace = require("../../accessibility-checker-engine/dist/ace-node.js");
                     }
                     let policies = [];
+                    let rulesets = {};
                     try {
                         let checker = new ace.Checker();
                         for (const rs of checker.rulesets) {
-                            policies.push({
+                            let type = rs.type || "default";
+                            if (type === "default") {
+                                policies.push({
+                                    id: rs.id,
+                                    name: rs.name,
+                                    description: rs.description
+                                });
+                            }
+                            rulesets[type] = rulesets[type] || []
+                            rulesets[type].push({
                                 id: rs.id,
                                 name: rs.name,
                                 description: rs.description
-                            });
+                            })
                         }
                     } catch (e) {}
                     archive.policies = policies;
+                    archive.rulesets = rulesets;
                     if (archive.latest) {
                         latestPol = policies;
+                        latestRS = rulesets;
                     }
                 } else {
                     latestArchive = archive;
@@ -75,6 +88,7 @@ const archivePolicies = () => {
             }
             if (latestArchive) {
                 latestArchive.policies = latestPol;
+                latestArchive.rulesets = latestRS;
             }
             return JSON.stringify(archives, null, 2);
         }))

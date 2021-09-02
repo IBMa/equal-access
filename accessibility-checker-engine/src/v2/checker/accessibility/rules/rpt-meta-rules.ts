@@ -72,7 +72,7 @@ let a11yRulesMeta: Rule[] = [
          * Description: Trigger for viewport
          * Origin: ACT b4f0c3 https://act-rules.github.io/rules/b4f0c3
          */
-        id: "ACT_Meta_Viewport",
+        id: "meta_viewport_zoom",
         context: "dom:meta[name][content]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
