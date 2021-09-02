@@ -66,7 +66,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
             [key: string]: IGroup
         } | null = {};
         if (this.props.report !== null) {
-            this.props.tabStopsResults.map((result:any, index) => { // for each tab stop
+            this.props.tabStopsResults.map((result:any) => { // for each tab stop
                 
                 for (const item of this.props.report.results) {  // for each issue
                     if (item.value[1] === "PASS") {
