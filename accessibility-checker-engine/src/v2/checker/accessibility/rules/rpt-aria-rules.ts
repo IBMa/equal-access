@@ -583,16 +583,22 @@ let a11yRulesAria: Rule[] = [{
         let containerRoles = new Array();
         let testedContainer = 0;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        let parentRoles = hierarchies["aria"].map(info => info.role);
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);console.log("roles="+roles);
+        let ancestorRoles = hierarchies["aria"].map(info => info.role);
+        let parentRole = ancestorRoles[ancestorRoles.length-2];
+        let count = 2;
+        while (parentRole === 'none') {
+            count++;
+            parentRole = ancestorRoles[ancestorRoles.length-count];
 
+        }   
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
                 passed = false;
                 containerRoles = designPatterns[roles[j]].container;
                 for (let i = 0, containersLength = containerRoles.length; !passed && i < containersLength; i++) {
-                    passed = parentRoles.includes(containerRoles[i]);
+                    passed = parentRole === containerRoles[i];
                     if (passed) break;
                 }
                 if (passed == false) {
