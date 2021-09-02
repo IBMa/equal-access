@@ -178,7 +178,9 @@ function redrawErrors(tabStopsErrors: any) {
             makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
 
-            makeIcon(xPlusWidth-6, y-6, "test");
+            // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
+            makeIcon(x, y, "test");
+
 
         }
 
