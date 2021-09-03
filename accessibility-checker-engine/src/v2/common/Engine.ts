@@ -35,7 +35,7 @@ class WrappedRule {
 
     constructor (public rule: Rule, public parsedInfo : Context) {
         this.ns = this.parsedInfo.contextInfo[this.parsedInfo.contextInfo.length-1].namespace;
-        Config.DEBUG && console.log("Added Rule:", rule.id, this.parsedInfo);
+        Config.DEBUG && console.log("Added Rule:", rule.id, JSON.stringify(this.parsedInfo));
     }
 
     /**
@@ -148,6 +148,7 @@ export class Engine implements IEngine {
         let nw = new DOMWalker(cacheRoot);
         do {
             delete (nw.node as CacheElement).aceCache;
+            nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
         } while (nw.nextNode());
     }
 

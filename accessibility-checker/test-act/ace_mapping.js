@@ -31,7 +31,11 @@ ace_mapping["2ee8b8"] = [{ // https://github.com/act-rules/act-rules.github.io/i
 
 // Missing published
 // Viewport
-ace_mapping["b4f0c3"] = []
+ace_mapping["b4f0c3"] = [{
+    "ruleId": "meta_viewport_zoom",
+    "reasonIds": [],
+    "treatAsFail": ["Potential_1"]
+}]
 
 // Aligned on failures
 ace_mapping["5b7ae0"] = [// Mismatch because they only check when both are specified
@@ -70,7 +74,6 @@ ace_mapping["bc659a"] = [{ // Not clear the difference between this and bisz58
 
 // Not evaluated
 ace_mapping["ffd0e9"] = []
-ace_mapping["6cfa84"] = []
 ace_mapping["a25f45"] = []
 ace_mapping["b33eff"] = []
 ace_mapping["80f0bf"] = []

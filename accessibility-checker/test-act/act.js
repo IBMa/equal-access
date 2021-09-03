@@ -44,35 +44,27 @@ async function getResult(page, testcaseId, aceRules) {
         }
     }
     let results = await aChecker.getCompliance(page, testcaseId);
-    let issuesFail = results.report.results.filter(result => {
-        if (result.value[1] !== "FAIL") return false;
-        let match = false;
-        for (let aceRule of aceRules) {
-            match = match || (result.ruleId === aceRule.ruleId && aceRule.reasonIds.includes(result.reasonId));
-        }
-        return match;
-    });
-    let issuesReview = results.report.results.filter(result => {
-        if (result.value[1] !== "POTENTIAL" && result.value[1] !== "MANUAL") {
-            return false;
-        }
-        let match = false;
-        for (let aceRule of aceRules) {
-            match = match || (result.ruleId === aceRule.ruleId && aceRule.reasonIds.includes(result.reasonId));
-        }
-        return match;
-    });
-    let issuesPass = results.report.results.filter(result => {
-        let match = false;
-        for (let aceRule of aceRules) {
-            if (result.ruleId === aceRule.ruleId && aceRule.treatAsPass && aceRule.treatAsPass.includes(result.reasonId)) {
-                return true;
+    let issuesFail = [];
+    let issuesReview = [];
+    let issuesPass = [];
+    for (const result of results.report.results) {
+        for (const aceRule of aceRules) {
+            if (result.ruleId === aceRule.ruleId) {
+                if (aceRule.treatAsPass && aceRule.treatAsPass.includes(result.reasonId)) {
+                    issuesPass.push(result);
+                } else if (aceRule.treatAsFail && aceRule.treatAsFail.includes(result.reasonId)) {
+                    issuesFail.push(result);
+                } else if (result.value[1] === "FAIL") {
+                    issuesFail.push(result);
+                } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
+                    issuesReview.push(result);
+                } else {
+                    issuesPass.push(result);
+                }
             }
-            match = match || (result.ruleId === aceRule.ruleId);
         }
-        if (result.value[1] !== "PASS") return false;
-        return match;
-    });
+    }
+
     let issues2 = results.report.results;
     let ruleStrs = [];
     for (let aceRule of aceRules) {

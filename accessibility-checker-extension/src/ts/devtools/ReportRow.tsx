@@ -37,7 +37,7 @@ export interface IReportRowGroup {
 interface IReportRowState {
     expanded: boolean,
     lastTimestamp: number,
-    scrollTo: boolean,
+    scrollTo: boolean
 }
 
 interface IReportRowProps {
@@ -49,7 +49,8 @@ interface IReportRowProps {
     learnItem: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
-    focusedViewFilter: boolean
+    focusedViewFilter: boolean,
+    breakType?: string
 }
 
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
@@ -123,6 +124,17 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
     }
 
+    rowContentWordBreak(){
+        const group = this.props.group;
+        if(this.props.breakType == "break-word"){
+          return  <span style={{wordBreak:"break-word"}}>{group.title.length === 0 ? "Page" : group.title}</span>
+        }else{
+            return  <span style={{wordBreak:"break-all"}}>{group.title.length === 0 ? "Page" : group.title}</span>
+        }
+
+        return null;
+    }
+
     render() {
         const group = this.props.group;
         let vCount = group.counts["Violation"] || 0;
@@ -132,6 +144,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         let rCount = group.counts["Recommendation"] || 0;
         let fvRCount = group.fvCounts["Recommendation"] || 0;
         let open = this.state.expanded;
+
         if (this.state.scrollTo) {
             setTimeout(() => {
                 const element = this.scrollRef.current;
@@ -179,8 +192,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[2]) && nrCount > 0 && <><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Needs review" /><span style={{verticalAlign:"text-top",lineHeight:"8px", paddingLeft:"4px"}}>{nrCount}</span> &nbsp;</>}</span> }
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[3]) && rCount > 0 &&  <><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"10px"}} alt="Recommendation" /><span style={{verticalAlign:"text-top",lineHeight:"8px", paddingLeft:"4px"}}>{rCount}</span> </>}</span> }
                 </div>
-                <div role="cell" className="bx--col-md-4 bx--col-sm-2">
-                    <span style={{wordBreak:"break-all"}}>{group.title.length === 0 ? "Page" : group.title}</span>
+                <div role="cell" className="bx--col-md-6 bx--col-sm-2">
+                    {this.rowContentWordBreak()}
                 </div>
             </div>
             { !open && <div className="bx--row itemDetail" /> }

@@ -97,7 +97,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                     <div className="bx--col-md-2 bx--col-sm-2" role="columnheader">
                         Issues                    
                     </div>
-                    <div className="bx--col-md-4 bx--col-sm-2" role="columnheader">
+                    <div className="bx--col-md-6 bx--col-sm-2" role="columnheader">
                         Rules
                     </div>
                 </div>
@@ -122,6 +122,7 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
                             layout={this.props.layout}
                             dataFromParent={this.props.dataFromParent}
                             focusedViewFilter={this.props.focusedViewFilter}
+                            breakType={"break-word"}
                         />                
                     })
                 }

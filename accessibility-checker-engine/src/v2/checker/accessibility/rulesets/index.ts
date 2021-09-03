@@ -15,9 +15,68 @@
  *****************************************************************************/
 
 import { Ruleset } from "../../Checker";
-import { eRulePolicy, eRuleCategory, eToolkitLevel} from "../../../api/IEngine";
+import { eRulePolicy, eRuleCategory, eToolkitLevel, eRulesetType} from "../../../api/IEngine";
 
 let a11yRulesets: Ruleset[] = [
+{
+    id: "EXTENSIONS",
+    name: "Extension Rules",
+    category: eRuleCategory.ACCESSIBILITY,
+    description: "Rules for enabling the browser extensions",
+    type: eRulesetType.EXTENSION,
+    checkpoints: [{
+        "num": "1",
+        name: "Extension CP 1",
+        wcagLevel: "A",
+        summary: "Rules for Extension",
+        rules: [{
+            id: "detector_tabbable",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_InvalidTabindexForActivedescendant",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "combobox_focusable_elements",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "IBMA_Focus_Tabbable",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "IBMA_Focus_MultiTab",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_MissingKeyboardHandler",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_MissingFocusableChild",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "RPT_Elem_EventMouseAndKey",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        },
+        {
+            id: "Rpt_Aria_ValidRole",
+            level: eRulePolicy.INFORMATION,
+            toolkitLevel: eToolkitLevel.LEVEL_FOUR
+        }
+     ]
+    }]
+},
 {
     id: "IBM_Accessibility",
     name: "IBM Accessibility",
@@ -364,6 +423,11 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
+                    id: "aria_hidden_focus_misuse",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                }
                 
             ]
         },
@@ -477,6 +541,11 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG21_Style_Viewport",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
+                    id: "meta_viewport_zoom",
+                    level: eRulePolicy.RECOMMENDATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 }
             ]
         },
@@ -492,7 +561,13 @@ let a11yRulesets: Ruleset[] = [
             "name": "Reflow",
             "wcagLevel": "AA",
             "summary": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
-            "rules": []
+            "rules": [
+                {
+                    id: "meta_viewport_zoom",
+                    level: eRulePolicy.RECOMMENDATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                }
+            ]
         },
         {
             "num": "1.4.11",
@@ -1181,6 +1256,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "combobox_autocomplete",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -1529,6 +1609,11 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
+                    id: "aria_hidden_focus_misuse",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                }
                 
             ]
         },
@@ -2348,6 +2433,11 @@ let a11yRulesets: Ruleset[] = [
                     id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_hidden_focus_misuse",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         }
@@ -2694,6 +2784,11 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
+                    id: "aria_hidden_focus_misuse",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                }
                 
             ]
         },
@@ -3422,6 +3517,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "combobox_autocomplete",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -3775,6 +3875,11 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
+                    id: "aria_hidden_focus_misuse",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                }
                 
             ]
         },
@@ -4603,6 +4708,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "combobox_autocomplete",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
