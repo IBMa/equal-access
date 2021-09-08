@@ -7,7 +7,7 @@
 		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
 		"build:help": "gulp --gulpfile ./gulp/gulpFile.js",
 		"build:dev": "npm run build:report && npm run build:help && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
-		"build:prod": "npm run build:report && npm run build:help && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -p && shx mv dist/background*.js dist/background.js && mv dist/tabListeners*.js dist/tabListeners.js",
+		"build:prod": "npm run build:report && npm run build:help && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -p && shx mv dist/background*.js dist/background.js && mv dist/tabListeners*.js dist/tabListeners.js && mv dist/draw*.js dist/draw.js",
 		"build:watch": "npm run build:report && npm run build:help && cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
 		"build:watch:local": "npm run build:report && npm run build:help && cross-env NODE_ENV=watch_local SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack -d",
 		"clean": "shx rm -rf ./dist && shx rm -rf ./package",
