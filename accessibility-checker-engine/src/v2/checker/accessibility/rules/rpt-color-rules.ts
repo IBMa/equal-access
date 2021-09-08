@@ -40,10 +40,10 @@ let a11yRulesColor: Rule[] = [
                 if (childNodes[i].nodeType == 3) {
                     childStr += childNodes[i].nodeValue;
                 }
-            }
+            } 
             if (childStr.trim().length == 0)
                 return null;
-
+            
             let doc = ruleContext.ownerDocument;
             if (!doc) {
                 return null;
@@ -75,6 +75,15 @@ let a11yRulesColor: Rule[] = [
                     isDisabled = RPTUtil.isNodeDisabled(control);
                 }
             }
+            
+            if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(ruleContext)) {
+                isDisabled = true; 
+            }
+
+            if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(ruleContext)) {
+                    isDisabled = true;
+            }
+
             RPTUtil.setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
                 "ratio": ratio,
                 "isLargeScale": isLargeScale,

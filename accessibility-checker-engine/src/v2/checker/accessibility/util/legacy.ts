@@ -321,7 +321,8 @@ export class RPTUtil {
         },
         "video": function (element) {
             return element.hasAttribute("controls");
-        }
+        },
+        "summary": true
     }
 
     public static wordCount(str) : number {
@@ -1355,6 +1356,43 @@ export class RPTUtil {
         return false;
     }
 
+    //check if the first form control child is disabled
+    public static isDisabledByFirstChildFormElement(element) {
+        let formElements = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
+        if (element.firstChild != null) {
+            let nw = new NodeWalker(element);
+            while (nw.nextNode()) {
+                if (formElements.includes(nw.node.nodeName.toLowerCase())) {
+                    if (RPTUtil.isNodeDisabled(nw.node))
+                       return true;
+                    return false;   
+                }
+            }
+        }
+        return false;
+    }
+
+    public static isDisabledByReferringElement(element) {
+        let id = element.getAttribute("id");
+        let doc = element.ownerDocument;
+        let root = doc.body;
+        while (DOMUtil.parentNode(root) !== null) {
+            // Get the parentNode
+            root = DOMUtil.parentNode(root);
+        }
+        let nw = new NodeWalker(root);
+        while (nw.nextNode()) {
+            // check the element whose 'aria-describedby' equals to the id
+            if (nw.node && nw.node.nodeType === 1 && nw.elem() && nw.elem().getAttribute("aria-describedby") === id) {
+                if (RPTUtil.isNodeDisabled(nw.node)) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.
@@ -1422,7 +1460,7 @@ export class RPTUtil {
         return descendant;
     }
     /**
-     * This function is responsible for getting a All descendant elements with the specified role, under
+     * This function is responsible for getting All descendant elements with the specified role, under
      * the element that was provided. This function aslo finds elements with implicit roles.
      *
      * @parm {element} element - parent element for which we will be checking descendants for
@@ -2544,15 +2582,12 @@ export class RPTUtil {
             // Get the hidden element property and hidden attribute
             let hiddenAttribute = node.getAttribute("hidden");
             let hiddenPropertyCustom = RPTUtil.getCache(node, "PT_NODE_HIDDEN", undefined);
-            ;
-
             // To get the hidden property we need to perform a special check as in some cases the hidden property will not be
             // a boolean, for theses cases we set it to false as we are not able to determine the true hidden condition.
             // The reason for this is because form elements are able to perform an override, so when we have id="hidden" for an element
             // which is under the form element then, node.hidden gives the element/list of elements which have id="hidden". Refer to
             // mozilla bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1267356
             let hiddenProperty = typeof node.hidden === "boolean" ? node.hidden : false;
-
             // If compStyle object is empty, node does't have hidden property, node does't have hidden attribute and does't have custom PT
             // hidden property then we can just return true (node visible) at this point.
             if (!compStyle &&
@@ -2573,11 +2608,9 @@ export class RPTUtil {
             //  node attribute hidden set (to any value)
             //  node custom hidden property ser (node.PT_NODE_HIDDEN)
             // If any of the above conditions are true then we return false as this element is not visible
-            if ((compStyle !== null && (compStyle.getPropertyValue('display') === 'none' ||
+            if ((compStyle !== null && ((compStyle.getPropertyValue('display') === 'none' ||
                 (!RPTUtil.getCache(node, "Visibility_Check_Parent", null) && compStyle.getPropertyValue('visibility') === 'hidden'))) ||
-                hiddenProperty ||
-                hiddenAttribute != null ||
-                hiddenPropertyCustom) {
+                (compStyle.getPropertyValue('display') !== 'block'  && (hiddenProperty || hiddenAttribute != null || hiddenPropertyCustom)))) {
                 // Set a custom expandos property on the the node to identify that it is hidden, so that we can uses
                 // use this in the rules to determine if the node is hidden or not, if we need to.
                 // Use expandos property instead of a hash map which stores the elements, adding/checking expandos

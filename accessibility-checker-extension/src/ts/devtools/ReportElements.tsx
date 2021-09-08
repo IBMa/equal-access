@@ -100,7 +100,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                     <div className="bx--col-md-2 bx--col-sm-2" role="columnheader">
                         Issues                    
                     </div>
-                    <div className="bx--col-md-4 bx--col-sm-2" role="columnheader">
+                    <div className="bx--col-md-6 bx--col-sm-2" role="columnheader">
                         Element Roles
                     </div>
                 </div>
