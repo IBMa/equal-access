@@ -1,3 +1,4 @@
+import { launch } from 'puppeteer';
 // import "./draw.scss";
 // import { TabsSkeleton } from 'carbon-components-react';
 // import ContextScriptMessaging from "../util/contextScriptMessaging";
@@ -8,9 +9,12 @@ import TabMessaging from "../util/tabMessaging";
 
 console.log("Content Script for drawing tab stops has loaded")
 
+// var intervalTimer: any;
+
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     console.log(message.tabStopsResults);
+
     injectCSS(
         `
         .line {
@@ -28,6 +32,22 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         .lineEmbossError {
             stroke-width: 1px;
             stroke: white;
+        }
+        .lineTop {
+            stroke-width: 1px;
+            stroke: black;
+        }
+        .lineBottom {
+            stroke-width: 1px;
+            stroke: black;
+        }
+        .lineLeft {
+            stroke-width: 1px;
+            stroke: black;
+        }
+        .lineRight {
+            stroke-width: 1px;
+            stroke: black;
         }
         `
     );
@@ -85,7 +105,35 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         deleteDrawing(".deleteMe");
         redraw(message.tabStopsResults);
         redrawErrors(message.tabStopsErrors)
+        // clearInterval(intervalTimer)
     })
+
+    // intervalTimer = setInterval(function () {
+    //     let nodes = getNodesXpaths(message.tabStopsResults);
+    //     nodes = convertXpathsToHtmlElements(nodes);
+    //     nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+    //         return el != null;
+    //     });
+
+    //     for (let i = 0; i < nodes.length; i++) {
+    //         let node = nodes[i]  //document.evaluate(message.tabStopsResults[i].path.dom, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    //         let line: any = document.getElementsByClassName('lineTop lineNumber'+i)[0]
+
+    //         console.log("Evaluated noded",i," =", (node));
+    //         console.log("Evaluated node: = ", (node as HTMLElement).getBoundingClientRect().y);
+    //         console.log("Evaluated line y1: = ", line.y1.baseVal.value);
+
+    //         if (Math.abs((node as HTMLElement).getBoundingClientRect().y - line.y1.baseVal.value) > 3) { // Set to 3 because the offset variable is set to 3
+    //             deleteDrawing(".deleteMe");
+    //             redraw(message.tabStopsResults);
+    //             redrawErrors(message.tabStopsErrors)
+    //             break;
+    //         }
+
+    //     }
+
+    // }, 3000);
+
 
 
     return true;
@@ -153,30 +201,27 @@ function redrawErrors(tabStopsErrors: any) {
             let y = nodes[i].getBoundingClientRect().y - offset;
             let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-            if (i == 32) {
-                console.log("x y :", x, " ", y)
-            }
             // makeCircleSmall(x, y, i);
             // makeTextSmall(x, y, (i + 1).toString());
-            
-            
+
+
             // Make box around active component
-            makeLine(x, y, xPlusWidth, y, "lineError");
-            makeLine(x, y, x, yPlusHeight, "lineError");
-            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, "lineError");
-            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, "lineError");
+            makeLine(x, y, xPlusWidth, y, ["lineError"]);
+            makeLine(x, y, x, yPlusHeight, ["lineError"]);
+            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
+            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
 
             // Make white stroke around active component outline
-            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, "lineEmbossError");
-            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, "lineEmbossError");
-            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmbossError");
-            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmbossError");
+            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
+            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
+            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
 
             // Make white stroke inside active component outline
-            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, "lineEmbossError");
-            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, "lineEmbossError");
-            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
-            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmbossError");
+            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
+            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
+            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
 
             // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
             makeIcon(x, y, "test");
@@ -211,30 +256,30 @@ function redraw(tabStopsResults: any) {
             makeLine(nodes[i].getBoundingClientRect().x - offset,
                 nodes[i].getBoundingClientRect().y - offset,
                 nodes[i + 1].getBoundingClientRect().x - offset,
-                nodes[i + 1].getBoundingClientRect().y - offset, "line");
+                nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
             // Create white outline
             if (Math.abs(slope) < 1) {  // Low slope move y
                 makeLine(nodes[i].getBoundingClientRect().x - offset,
                     nodes[i].getBoundingClientRect().y - offset - 1,
                     nodes[i + 1].getBoundingClientRect().x - offset,
-                    nodes[i + 1].getBoundingClientRect().y - offset - 1, "lineEmboss");
+                    nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
                 makeLine(nodes[i].getBoundingClientRect().x - offset,
                     nodes[i].getBoundingClientRect().y - offset + 1,
                     nodes[i + 1].getBoundingClientRect().x - offset,
-                    nodes[i + 1].getBoundingClientRect().y - offset + 1, "lineEmboss");
+                    nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
 
             } else { // high slope move x
                 makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
                     nodes[i].getBoundingClientRect().y - offset,
                     nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                    nodes[i + 1].getBoundingClientRect().y - offset, "lineEmboss");
+                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
 
                 makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
                     nodes[i].getBoundingClientRect().y - offset,
                     nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                    nodes[i + 1].getBoundingClientRect().y - offset, "lineEmboss");
+                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
             }
         }
 
@@ -253,22 +298,23 @@ function redraw(tabStopsResults: any) {
             makeTextSmall(x, y, (i + 1).toString());
 
             // Make box around active component
-            makeLine(x, y, xPlusWidth, y, "line");
-            makeLine(x, y, x, yPlusHeight, "line");
-            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, "line");
-            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, "line");
+            makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+            makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+
 
             // Make white stroke around active component outline
-            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, "lineEmboss");
-            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, "lineEmboss");
-            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmboss");
-            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, "lineEmboss");
+            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
 
             // Make white stroke inside active component outline
-            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, "lineEmboss");
-            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, "lineEmboss");
-            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmboss");
-            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, "lineEmboss");
+            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
         }
 
 
@@ -361,11 +407,13 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
 
-function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string) {
+function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
     let line = document.getElementsByClassName('tabLine')[0]
     var lineClone = line.cloneNode(true);
     if (CSSclass) {
-        (lineClone as HTMLElement).classList.add(CSSclass);
+        for (let i = 0; i < CSSclass.length; i++) {
+            (lineClone as HTMLElement).classList.add(CSSclass[i]);
+        }
     }
     (lineClone as HTMLElement).classList.add("deleteMe");
     (lineClone as HTMLElement).setAttribute('x1', String(x1));
