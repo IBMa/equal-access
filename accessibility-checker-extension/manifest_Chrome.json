@@ -43,7 +43,6 @@
         {
         "matches": ["<all_urls>"],
         "js": ["draw.js"],
-        "css":["draw.css"]
         }
     ], 
     "incognito": "split"
