@@ -412,6 +412,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // End of tab stops stored state
 
             
+            
             this.setState({ scanning: false }); // SCAN DONE
             // ***** SCAN DONE *****
             
