@@ -1356,6 +1356,43 @@ export class RPTUtil {
         return false;
     }
 
+    //check if the first form control child is disabled
+    public static isDisabledByFirstChildFormElement(element) {
+        let formElements = ["input", "textarea", "select", "keygen", "progress", "meter", "output"];
+        if (element.firstChild != null) {
+            let nw = new NodeWalker(element);
+            while (nw.nextNode()) {
+                if (formElements.includes(nw.node.nodeName.toLowerCase())) {
+                    if (RPTUtil.isNodeDisabled(nw.node))
+                       return true;
+                    return false;   
+                }
+            }
+        }
+        return false;
+    }
+
+    public static isDisabledByReferringElement(element) {
+        let id = element.getAttribute("id");
+        let doc = element.ownerDocument;
+        let root = doc.body;
+        while (DOMUtil.parentNode(root) !== null) {
+            // Get the parentNode
+            root = DOMUtil.parentNode(root);
+        }
+        let nw = new NodeWalker(root);
+        while (nw.nextNode()) {
+            // check the element whose 'aria-describedby' equals to the id
+            if (nw.node && nw.node.nodeType === 1 && nw.elem() && nw.elem().getAttribute("aria-describedby") === id) {
+                if (RPTUtil.isNodeDisabled(nw.node)) {
+                    return true;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.
