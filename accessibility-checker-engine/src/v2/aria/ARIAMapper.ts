@@ -16,14 +16,17 @@
 
 import { ARIADefinitions } from "./ARIADefinitions";
 import { CommonMapper } from "../common/CommonMapper";
+import { IMapResult} from "../api/IMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { DOMWalker } from "../dom/DOMWalker";
 import { RPTUtil } from "../checker/accessibility/util/legacy"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
 export class ARIAMapper extends CommonMapper {
+    //dom-defined relationship overridden by aria-owns: elemId : parentRolePath
+    private ariaRelation: { [id: string] : string } = {}; 
+    
     childrenHaveRole(node: Node, role: string) : boolean {
         // if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
         //     const elem = node as Element;
@@ -79,9 +82,39 @@ export class ARIAMapper extends CommonMapper {
         return retVal;
     }
 
-    reset(node: Node) {
+    reset(node: Node) { 
+        let parent = DOMUtil.parentNode(node);
+        if (parent && parent.nodeType === 9 /* Node.DOCUMENT_NODE */) {
+            let top = (parent as Document).documentElement;
+            let list = top.querySelectorAll('[aria-owns]');
+            if (list !== null) {
+                list.forEach((node) => {
+                    let context = this.openScope(node);
+                    let rolePath = context[context.length-1].rolePath;
+                    let attrValue = node.getAttribute("aria-owns");
+                    let ids = attrValue.trim().split(" ");
+                    ids.forEach((id) => {
+                        this.ariaRelation[id.trim()] = rolePath;
+                    }); 
+                });
+            }
+        } console.log("this.ariaRelation="+JSON.stringify(this.ariaRelation));
+
         ARIAMapper.nameComputationId = 0;
         super.reset(node);
+    }
+
+    //rewrite aria role path for aria-owns
+    rewriteContext(elem : Element, contextMap : IMapResult) : IMapResult {console.log("contextMap orig=" + JSON.stringify(contextMap));
+        const value = elem.getAttribute("id");
+        if (value) {
+            const rolePath = this.ariaRelation[value];
+            if (rolePath) {
+                contextMap.rolePath = rolePath;
+                console.log("contextMap=" + JSON.stringify(contextMap));
+            }    
+        } 
+        return contextMap;
     }
 
     ////////////////////////////////////////////////////////////////////////////

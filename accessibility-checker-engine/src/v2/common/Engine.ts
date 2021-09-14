@@ -21,6 +21,7 @@ import { Config } from "../config/Config";
 import { IMapResult, IMapper } from "../api/IMapper";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
+import { ARIAMapper } from "../..";
 
 export interface CacheDocument extends Document {
     aceCache: { [key: string]: any }
@@ -192,7 +193,7 @@ export class Engine implements IEngine {
                     // }
                 } else {
                     contextHierarchies[namespace] = this.mappers[namespace].closeScope(walker.node);
-                }
+                } //if (namespace ==='aria') console.log("node=" + walker.node.nodeName +", this.hierarchyPath="+JSON.stringify(contextHierarchies[namespace]));
             }
 
             if (walker.node.nodeType !== 11 
@@ -203,11 +204,15 @@ export class Engine implements IEngine {
                     || !DOMUtil.getAncestor(walker.node, ["body"])
                 )
             ) {
-                const context : RuleContext = {};
+                let context : RuleContext = {};
                 for (const ns in contextHierarchies) {
                     const nsHier = contextHierarchies[ns];
                     const lastHier = nsHier[nsHier.length-1];
-                    context[ns] = lastHier;
+                    context[ns] = lastHier; 
+                    if (ns === 'aria' && walker.node.nodeType === 1 ) {
+                        context[ns] = (this.mappers[ns] as ARIAMapper).rewriteContext(<Element>walker.node, context[ns]);
+                        //console.log("context[ns]=" + JSON.stringify(context[ns]));
+                    }    
                 }
 
                 let matchingRules = this.getMatchingRules(contextHierarchies);
