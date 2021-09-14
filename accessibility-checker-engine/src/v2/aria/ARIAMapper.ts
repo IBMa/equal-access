@@ -105,12 +105,15 @@ export class ARIAMapper extends CommonMapper {
     }
 
     //rewrite aria role path for aria-owns
-    rewriteContext(elem : Element, contextMap : IMapResult) : IMapResult {console.log("contextMap orig=" + JSON.stringify(contextMap));
+    rewriteContext(elem : Element, contextMap : IMapResult) : IMapResult {
         const value = elem.getAttribute("id");
         if (value) {
             const rolePath = this.ariaRelation[value];
-            if (rolePath) {
-                contextMap.rolePath = rolePath;
+            if (rolePath) {console.log("contextMap orig=" + JSON.stringify(contextMap));
+                const pos = contextMap.rolePath.lastIndexOf("/");
+                let role = null;
+                if (pos != -1) role = contextMap.rolePath.substring(pos);
+                contextMap.rolePath = (role === null ? rolePath : rolePath + role);
                 console.log("contextMap=" + JSON.stringify(contextMap));
             }    
         } 

@@ -209,10 +209,8 @@ export class Engine implements IEngine {
                     const nsHier = contextHierarchies[ns];
                     const lastHier = nsHier[nsHier.length-1];
                     context[ns] = lastHier; 
-                    if (ns === 'aria' && walker.node.nodeType === 1 ) {
+                    if (ns === 'aria' && walker.node.nodeType === 1 )
                         context[ns] = (this.mappers[ns] as ARIAMapper).rewriteContext(<Element>walker.node, context[ns]);
-                        //console.log("context[ns]=" + JSON.stringify(context[ns]));
-                    }    
                 }
 
                 let matchingRules = this.getMatchingRules(contextHierarchies);
