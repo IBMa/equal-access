@@ -17,19 +17,10 @@
   *****************************************************************************/
 -->
 <html lang="en-US">
-
-<head>
-    <title>Sandbox</title>
-    <meta charset="UTF-8" />
-</head>
-
 <body>
-    <div role="list" aria-owns="item1 item2">
-        <div role="navigation">
-            <div id="item1" role="listitem">List item 1</div>
-            <div id="item2" role="listitem">List item 2</div>
-        </div>
-    </div>
+    <div id="item1" role="listitem">List item 1</div>
+    <div id="item2" role="listitem">List item 2</div>
+    <div role="list" aria-owns="item1 item2"></div>
     <script>
         UnitTest = {
             ruleIds: ["Rpt_Aria_RequiredParent_Native_Host_Sematics"],
@@ -41,7 +32,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]",
+              "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/list[1]/listitem[1]"
             },
             "reasonId": "Pass_0",
@@ -57,7 +48,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]/div[2]",
+              "dom": "/html[1]/body[1]/div[2]",
               "aria": "/document[1]/list[1]/listitem[2]"
             },
             "reasonId": "Pass_0",

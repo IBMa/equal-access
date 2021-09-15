@@ -25,8 +25,11 @@ type NodeCalc = (node: Node) => string;
 
 export class ARIAMapper extends CommonMapper {
     //dom-defined relationship overridden by aria-owns: elemId : parentRolePath
-    private ariaRelation: { [id: string] : string } = {}; 
-    
+    private ariaRelation: Array<{  
+          id: string,
+          rolePath: string,
+          hierarchies: string
+    }> = []; 
     childrenHaveRole(node: Node, role: string) : boolean {
         // if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
         //     const elem = node as Element;
@@ -89,35 +92,40 @@ export class ARIAMapper extends CommonMapper {
             let list = top.querySelectorAll('[aria-owns]');
             if (list !== null) {
                 list.forEach((node) => {
-                    let context = this.openScope(node);
-                    let rolePath = context[context.length-1].rolePath;
+                    let hierarchies : IMapResult[] = this.openScope(node);
+                    let rolePath = hierarchies[hierarchies.length-1].rolePath;
                     let attrValue = node.getAttribute("aria-owns");
                     let ids = attrValue.trim().split(" ");
                     ids.forEach((id) => {
-                        this.ariaRelation[id.trim()] = rolePath;
+                        this.ariaRelation.push({id: id.trim(), rolePath:rolePath, hierarchies: JSON.stringify(hierarchies)});
                     }); 
                 });
             }
-        } console.log("this.ariaRelation="+JSON.stringify(this.ariaRelation));
+        }
 
         ARIAMapper.nameComputationId = 0;
         super.reset(node);
     }
 
     //rewrite aria role path for aria-owns
-    rewriteContext(elem : Element, contextMap : IMapResult) : IMapResult {
+    rewriteContext(elem : Element, contextMap : IMapResult[]) : IMapResult[] {
+        if (this.ariaRelation.length === 0) return contextMap;
         const value = elem.getAttribute("id");
-        if (value) {
-            const rolePath = this.ariaRelation[value];
-            if (rolePath) {console.log("contextMap orig=" + JSON.stringify(contextMap));
-                const pos = contextMap.rolePath.lastIndexOf("/");
-                let role = null;
-                if (pos != -1) role = contextMap.rolePath.substring(pos);
-                contextMap.rolePath = (role === null ? rolePath : rolePath + role);
-                console.log("contextMap=" + JSON.stringify(contextMap));
-            }    
-        } 
-        return contextMap;
+        if (!value) return contextMap;
+        const ariaMap = this.ariaRelation.find(aria => aria.id === value);
+        if (!ariaMap) return contextMap;
+        const rolePath = ariaMap.rolePath;
+        if (!rolePath || rolePath === '') return contextMap;
+        const newContext = JSON.parse(JSON.stringify(contextMap[contextMap.length-1]));
+        const pos = newContext.rolePath.lastIndexOf("/");
+        let role = null;
+        if (pos !== -1) role = newContext.rolePath.substring(pos);
+        const newRolePath = (role === null ? rolePath : rolePath + role);
+        newContext.rolePath = newRolePath;
+        let newContextMap : IMapResult[] = JSON.parse(ariaMap.hierarchies);
+        newContextMap.push(newContext);
+           
+        return newContextMap;
     }
 
     ////////////////////////////////////////////////////////////////////////////

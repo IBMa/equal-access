@@ -577,13 +577,12 @@ let a11yRulesAria: Rule[] = [{
     run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = true;
-        let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
         let containerRoles = new Array();
         let testedContainer = 0;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);console.log("roles="+roles);
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         let ancestorRoles = hierarchies["aria"].map(info => info.role);
         let parentRole = ancestorRoles[ancestorRoles.length-2];
         let count = 2;

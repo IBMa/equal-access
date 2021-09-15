@@ -206,12 +206,12 @@ export class Engine implements IEngine {
             ) {
                 let context : RuleContext = {};
                 for (const ns in contextHierarchies) {
+                    if (ns === 'aria' && walker.node.nodeType === 1 )
+                    contextHierarchies[ns] = (this.mappers[ns] as ARIAMapper).rewriteContext(<Element>walker.node, contextHierarchies[ns]);
                     const nsHier = contextHierarchies[ns];
                     const lastHier = nsHier[nsHier.length-1];
                     context[ns] = lastHier; 
-                    if (ns === 'aria' && walker.node.nodeType === 1 )
-                        context[ns] = (this.mappers[ns] as ARIAMapper).rewriteContext(<Element>walker.node, context[ns]);
-                }
+                    }
 
                 let matchingRules = this.getMatchingRules(contextHierarchies);
                 let depMatch = {}
