@@ -39,7 +39,9 @@ let a11yHelp = {
     "WCAG20_Input_ExplicitLabelImage": {
         0: `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`,
-        "Potential_1": `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`
+        "Pass_1": `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`,
+        "Pass_2": `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`,
+        "Fail": `${Config.helpRoot}/WCAG20_Input_ExplicitLabelImage`
     },
     // JCH - DONE
     "RPT_Img_UsemapValid": {
@@ -196,7 +198,8 @@ let a11yHelp = {
         0: `${Config.helpRoot}/WCAG20_Img_HasAlt`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Img_HasAlt`,
         "Fail_1": `${Config.helpRoot}/WCAG20_Img_HasAlt`,
-        "Fail_2": `${Config.helpRoot}/WCAG20_Img_HasAlt`
+        "Fail_2": `${Config.helpRoot}/WCAG20_Img_HasAlt`,
+        "Fail_3": `${Config.helpRoot}/WCAG20_Img_HasAlt`
     },
     // JCH - DONE
     "RPT_Style_BackgroundImage": {
@@ -302,6 +305,7 @@ let a11yHelp = {
         "Fail_2": `${Config.helpRoot}/WCAG20_Html_HasLang`,
         "Fail_3": `${Config.helpRoot}/WCAG20_Html_HasLang`,
         "Fail_4": `${Config.helpRoot}/WCAG20_Html_HasLang`,
+        "Fail_5": `${Config.helpRoot}/WCAG20_Html_HasLang`,
         "Potential_5": `${Config.helpRoot}/WCAG20_Html_HasLang`,
         "Potential_6": `${Config.helpRoot}/WCAG20_Html_HasLang`
     },
@@ -353,7 +357,10 @@ let a11yHelp = {
     "WCAG20_Elem_Lang_Valid": {
         0: `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`,
-        "Fail_1": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`
+        "Fail_1": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`,
+        "Fail_2": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`,
+        "Fail_3": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`,
+        "Fail_4": `${Config.helpRoot}/WCAG20_Elem_Lang_Valid`
     },
     // JCH - DONE
     "WCAG20_Img_LinkTextNotRedundant": {
@@ -965,7 +972,11 @@ let a11yHelp = {
         0: `${Config.helpRoot}/combobox_version`,
         "Pass_1.0": `${Config.helpRoot}/combobox_version`,
         "Fail_1.1": `${Config.helpRoot}/combobox_version`,
-        "Fail_1.2": `${Config.helpRoot}/combobox_version`
+        "Pass_1.2": `${Config.helpRoot}/combobox_version`
+    },
+    "table_aria_descendants": {
+        0: `${Config.helpRoot}/table_aria_descendants`,
+        "explicit_role": `${Config.helpRoot}/table_aria_descendants`
     },
     "combobox_popup_reference": {
         0: `${Config.helpRoot}/combobox_popup_reference`,
