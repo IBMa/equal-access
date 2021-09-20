@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/carbon-components/css/carbon-components.min.css"
+    />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <div class="bx--form-item bx--text-input-wrapper">
+        <label for="test2" class="bx--label bx--label--disabled"
+          >Text input label</label
+        >
+        <div class="bx--text-input__field-outer-wrapper">
+          <div class="bx--text-input__field-wrapper">
+            <input
+              id="test2"
+              placeholder="Placeholder text"
+              type="text"
+              class="bx--text-input some-class"
+              title="Placeholder text"
+              disabled
+              value="This is not a default value"
+              aria-describedby="helperText"
+            />
+          </div>
+          <div
+            class="bx--form__helper-text bx--form__helper-text--disabled"
+            id="helperText"
+          >
+            Optional help text
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["IBMA_Color_Contrast_WCAG2AA"],
+        results: [
+          {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/h1[1]",
+              "aria": "/document[1]/main[1]/heading[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "18.10",
+              42,
+              300,
+              "#161616",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "1.71",
+              12,
+              400,
+              "#c6c6c6",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "1.71",
+              12,
+              400,
+              "#c6c6c6",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
