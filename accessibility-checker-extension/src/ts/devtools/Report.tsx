@@ -175,9 +175,15 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         let ruleset : IRuleset | null = null;
+        let extRuleset : IRuleset | null = null;
         for (const rs of this.props.rulesets) {
+            
             if (rs.id === "IBM_Accessibility") {
                 ruleset = rs;
+            }
+            // JCH added in EXTENSIONS ruleset
+            if (rs.id === "EXTENSIONS") {
+                extRuleset = rs;
             }
         }
 
@@ -207,8 +213,8 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                     {tabId === 'rule' && <div style={{marginLeft: "-2rem"}}>
                                         <ReportRules layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem"}}>
-                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
+                                    {tabId === 'checklist' && ruleset && extRuleset && <div style={{marginLeft: "-2rem"}}>
+                                        <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} report={this.props.report} ruleset={ruleset} extRuleset={extRuleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                 </div>
                             </Tab>

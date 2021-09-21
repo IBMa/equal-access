@@ -73,6 +73,8 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             }
         }
 
+        console.log("Report Rules itemIdx = ", itemIdx);
+
         let groups : IGroup[] = [];
         for (const ruleId in groupMap) {
             groups.push(groupMap[ruleId]);

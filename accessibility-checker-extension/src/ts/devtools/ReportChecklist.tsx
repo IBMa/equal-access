@@ -26,6 +26,7 @@ interface IReportChecklistState {
 }
 interface IReportChecklistProps {
     ruleset: IRuleset,
+    extRuleset: IRuleset,
     report: IReport,
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
@@ -53,7 +54,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         } = {};
         let groups : IGroup[] = [];
 
-        for (const checkpoint of this.props.ruleset.checkpoints) {
+        for (const checkpoint of this.props.ruleset.checkpoints) { // JCH - this does not include the Extenison Rules ruleset
             let cpGroup = {
                 // TODO: Change out for passive rule message
                 title: `${checkpoint.num} ${checkpoint.name}`,
@@ -64,8 +65,17 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
             groups.push(cpGroup);
             for (const rule of checkpoint.rules) {
-                ruleToGroups[rule.id] = ruleToGroups[rule.id] || []
+                ruleToGroups[rule.id] = ruleToGroups[rule.id] || [];
                 ruleToGroups[rule.id].push(cpGroup);
+            }
+            // JCH add the rules from EXTENSIONS ruleset
+            for (const extCheckpoint of this.props.extRuleset.checkpoints) {
+                if (extCheckpoint.name === checkpoint.name) {
+                    for (const rule of extCheckpoint.rules) {
+                        ruleToGroups[rule.id] = ruleToGroups[rule.id] || [];
+                        ruleToGroups[rule.id].push(cpGroup);
+                    }
+                }
             }
         }
 
