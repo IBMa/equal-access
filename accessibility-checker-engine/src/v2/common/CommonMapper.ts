@@ -23,15 +23,15 @@ export abstract class CommonMapper implements IMapper {
     abstract getNamespace() : string;
     abstract getAttributes(node: Node) : { [key:string]: string };
 
-    private hierarchyRole : string[] = null;
-    private hierarchyChildrenHaveRole: boolean[] = null;
-    private hierarchyPath: Array<{
+    protected hierarchyRole : string[] = null;
+    protected hierarchyChildrenHaveRole: boolean[] = null;
+    protected hierarchyPath: Array<{
         rolePath: string,
         roleCount: {
             [role: string]: number
         }
     }> = null;
-    private hierarchyResults: IMapResult[] = null;
+    protected hierarchyResults: IMapResult[] = null;
 
     getBounds(node: Node) : Bounds {
         return null;
@@ -52,8 +52,7 @@ export abstract class CommonMapper implements IMapper {
             ancestors.push(parent);
             parent = DOMUtil.parentNode(parent);
         }
-        ancestors = ancestors.reverse();
-
+        ancestors = ancestors.reverse();  
         for (const ancestor of ancestors) {
             let siblings = [];
             let sibling = ancestor.previousSibling;
@@ -70,7 +69,7 @@ export abstract class CommonMapper implements IMapper {
         }
     }
 
-    private pushHierarchy(node: Node) {
+    pushHierarchy(node: Node) {
         let role : string;
         let presentationalContainer = this.hierarchyChildrenHaveRole.length > 0 && !this.hierarchyChildrenHaveRole[this.hierarchyChildrenHaveRole.length-1];
         if (presentationalContainer) {
