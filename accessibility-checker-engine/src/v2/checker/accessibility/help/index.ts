@@ -1048,6 +1048,11 @@ let a11yHelp = {
         0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
         "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
         "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
+    },
+    "table_headers_with_valid_reference": {
+        0: `${Config.helpRoot}/table_headers_with_valid_reference`, 
+        "Pass_0": `${Config.helpRoot}/table_headers_with_valid_reference`,
+        "Fail_1": `${Config.helpRoot}/table_headers_with_valid_reference`
     }
 }
 

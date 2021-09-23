@@ -1,0 +1,42 @@
+---
+title: "Accessibility Checker Rule Help: table_headers_with_valid_reference"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The 'headers' attribute {0} should refer to a valid cell in the same table
+
+<div id="locLevel"></div>
+
+The 'headers' attribute value {0} does not refer to a valid cell in the same table
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+
+
+<div id="locSnippet"></div>
+
+### What to do
+
+
+
+### Example
+
+
+### Who does this affect?
+
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

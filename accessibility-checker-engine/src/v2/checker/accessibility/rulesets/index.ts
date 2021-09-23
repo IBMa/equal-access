@@ -422,6 +422,11 @@ let a11yRulesets: Ruleset[] = [
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
+                    id: "table_headers_with_valid_reference",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
                 
             ]
