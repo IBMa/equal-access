@@ -107,7 +107,7 @@ export class ARIAMapper extends CommonMapper {
     }
 
     reset(node: Node) {
-        if (this.ariaHierarchy == null) {
+        if (this.ariaHierarchy === null) {
             let parent = DOMUtil.parentNode(node);
             if (parent && parent.nodeType === 9 /* Node.DOCUMENT_NODE */) {
                 let top = (parent as Document).documentElement;
@@ -201,7 +201,7 @@ export class ARIAMapper extends CommonMapper {
 
     //rewrite aria role path for aria-owns
     switchParentHierarchies(node : Node) : boolean {
-        if (this.ariaHierarchy == null || this.ariaHierarchy.length == 0 || node.nodeType !== node.ELEMENT_NODE) return false; 
+        if (this.ariaHierarchy === null || this.ariaHierarchy.length === 0 || node.nodeType !== node.ELEMENT_NODE) return false; 
         const value : string = (node as Element).getAttribute("id"); 
         if (value === null) return false;
         const ariaMap = this.ariaHierarchy.find(aria => aria.id === value);
@@ -734,7 +734,7 @@ export class ARIAMapper extends CommonMapper {
                 // Default type is command
                 if (!element.hasAttribute("type")) return "menuitem";
                 let eType = element.getAttribute("type").toLowerCase();
-                if (eType.trim().length == 0) return "menuitem";
+                if (eType.trim().length === 0) return "menuitem";
 
                 if (eType === "command") return "menuitem";
                 if (eType === "checkbox") return "menuitemcheckbox";
