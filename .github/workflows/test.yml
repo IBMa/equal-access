@@ -7,6 +7,28 @@ on: [ pull_request ]
 
 jobs:
 ###############################################################################
+# Help build
+####
+  help-build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: rule-server
+    - run: npm install
+      working-directory: rule-server/src-gatsby
+    - run: npm run build
+      working-directory: rule-server
+###############################################################################
 # Engine test
 ####
   accessibility-checker-engine-test:
@@ -26,7 +48,7 @@ jobs:
       working-directory: rule-server
     - run: npm install
       working-directory: rule-server/src-gatsby
-    - run: npm run build
+    - run: npm run build:nohelp
       working-directory: rule-server
     - run: node main.js &
       working-directory: rule-server/dist
@@ -59,7 +81,7 @@ jobs:
         working-directory: rule-server
       - run: npm install
         working-directory: rule-server/src-gatsby
-      - run: npm run build
+      - run: npm run build:nohelp
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -105,7 +127,7 @@ jobs:
         working-directory: rule-server
       - run: npm install
         working-directory: rule-server/src-gatsby
-      - run: npm run build
+      - run: npm run build:nohelp
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -145,7 +167,7 @@ jobs:
         working-directory: rule-server
       - run: npm install
         working-directory: rule-server/src-gatsby
-      - run: npm run build
+      - run: npm run build:nohelp
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -185,7 +207,7 @@ jobs:
         working-directory: rule-server
       - run: npm install
         working-directory: rule-server/src-gatsby
-      - run: npm run build
+      - run: npm run build:nohelp
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -230,7 +252,7 @@ jobs:
         working-directory: rule-server
       - run: npm install
         working-directory: rule-server/src-gatsby
-      - run: npm run build
+      - run: npm run build:nohelp
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist

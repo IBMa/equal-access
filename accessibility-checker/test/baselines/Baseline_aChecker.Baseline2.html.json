@@ -38,7 +38,7 @@
             },
             "ruleTime": 0,
             "reasonId": "Fail_1",
-            "message": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)",
+            "message": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -1366,7 +1366,7 @@
             "Pass_0": "Rule Passed"
         },
         "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
-            "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)"
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (ARIA \"main\" landmark or a skip link)"
         },
         "WCAG20_Img_HasAlt": {
             "Fail_2": "Image does not have an 'alt' attribute short text alternative"

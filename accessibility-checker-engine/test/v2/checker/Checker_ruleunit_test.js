@@ -252,6 +252,16 @@ describe("Rule Unit Tests", function() {
 
                     // Get the iframe document that was just created
                     let iframeDoc = iframeWin.document;
+                    // If we have a script with the UnitTest and it hasn't finished loading (can happen with linked CSS)
+                    // Wait until the load is complete
+                    let scripts = iframeDoc.querySelectorAll("script");
+                    for (const script of scripts) {
+                        if (script.innerHTML.includes("UnitTest")) {
+                            while (!iframeWin.UnitTest) {
+                                await new Promise((resolve, reject) => setTimeout(resolve, 1));
+                            }
+                        }
+                    }
 
                     let checker = new ace.Checker();
                     let report = await checker.check(iframeDoc, null);
