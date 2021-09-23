@@ -652,29 +652,34 @@ export class ARIAMapper extends CommonMapper {
                  *   no data cells in any of the cells covering slots with x-coordinates x .. x+width-1.
                  */
                 // Note: auto is default scope
-
-                // Easiest answer is if scope is specified
-                if (element.hasAttribute("scope")) {
-                    let scope = element.getAttribute("scope").toLowerCase();
-                    if (scope === "row") return "rowheader";
-                    if (scope === "col") return "columnheader";
-                }
-
-                // We don't have a scope..  figure out if we might be a column or data header
-                if (!element.hasAttribute("scope") || element.getAttribute("scope").toLowerCase() === "auto") {
-                    // TODO: We need to generate the full table. We should do this once on the table as part of the engine
-                    // and re-use it in the rules. We are already doing this in the table rules, but should formalize it better
-                    // and move it into the engine.
-                }
-
-                // We're a cell - determine if we're a table cell or a grid cell
+                
                 let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
+                    
+                    if (role !== "table" && role !== "grid" && role !== "treegrid") {
+                         parent = DOMUtil.parentNode(parent);
+                         continue; 
+                    }     
+                    // Easiest answer is if scope is specified
+                    if (element.hasAttribute("scope")) {
+                        let scope = element.getAttribute("scope").toLowerCase();
+                        if (scope === "row" || scope === 'rowgroup') return "rowheader";
+                        if (scope === "col" || scope === 'colgroup') return "columnheader";
+                    }
+                    
+                    // scope is auto, default (without a scope) or invalid value.
+                    // if all the sibling elements are th, then return "columnheader" 
+                    var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType == 1 && node.tagName != "TH");
+                    if (siblings == null || siblings.length == 0)
+                        return "columnheader"; 
+                    else return "rowheader";
+                    
+                    /**
+                     *  dead code here 
                     if (role === "table") return "cell";
-                    if (role === "grid") return "gridcell";
-
-                    parent = DOMUtil.parentNode(parent);
+                    if (role === "grid" || role === "treegrid") return "gridcell";
+                    */
                 }
                 return null;
             },
