@@ -34,11 +34,6 @@ let a11yRulesets: Ruleset[] = [
             level: eRulePolicy.INFORMATION,
             toolkitLevel: eToolkitLevel.LEVEL_FOUR
         },
-        {
-            id: "Rpt_Aria_ValidRole",
-            level: eRulePolicy.INFORMATION,
-            toolkitLevel: eToolkitLevel.LEVEL_FOUR
-        }
      ]
     },
     {
@@ -53,7 +48,7 @@ let a11yRulesets: Ruleset[] = [
                 toolkitLevel: eToolkitLevel.LEVEL_FOUR
             }
             , {
-                id: "IBMA_Focus_MultiTab",
+                id: "IBMA_Focus_Tabbable",
                 level: eRulePolicy.INFORMATION,
                 toolkitLevel: eToolkitLevel.LEVEL_FOUR
             }
