@@ -1,7 +1,6 @@
 # accessibility-checker-engine rules
 
-This README is oriented toward rule creation and rule modification. Rules should be test driven so that
-modifications can be tested and confirmed over time.
+This README is oriented toward rule creation and rule modification. Users who want to understand the existing rules, modify an existing rule, or create a new rule should read this document. Any change to a rule should be fully tested.
 
 ## Specification and structure
 
@@ -14,7 +13,7 @@ Multiple objects are needed for a rule to fire and show up in the tool results:
   
 ### Rule object
 
-These are located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules). The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). The possibilities for the context property is defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
+The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). Rule implementation is located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules).  The rule context, DOM objects and/or attributes (including explicit and implicit CSS and ARIA attributes) that may cause a rule to trigger, is defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
 * RulePass("MSG_ID")
 * RuleFail("MSG_ID")
 * RulePotential("MSG_ID")
@@ -39,7 +38,7 @@ An example rule might look like:
 
 ### Ruleset mapping
 
-Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
+Rules are mapped into different rulesets based on checkpoints. A rule may mapped to one or multiple rulesets. Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
 ```
 {
     id: "TRIGGER_ALL_BODY",
@@ -61,7 +60,7 @@ Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/
 
 ### Help file
 
-Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts). Mappings are defined as:
+Each rule has its own help file in .mdx format. A help file contains description, explanation and examples. The rule help files are located in [help](help). The mapping between the rule and its help file is defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts):
 
 ```
 "TRIGGER_ALL_BODY": {
@@ -71,11 +70,9 @@ Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2
 }
 ```
 
-Help files are found in [help](help).
-
 ## Test cases
 
-Test cases are located in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules). The basic template of the test cases is:
+Each rule may have one or more text cases. Test cases are located in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules). The basic template of the test cases is:
 ```
 <!DOCTYPE html>
 <html lang="en">
