@@ -13,7 +13,7 @@ Multiple objects are needed for a rule to fire and show up in the tool results:
   
 ### Rule object
 
-The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). Rule implementation is located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules).  The rule context, DOM objects and/or attributes, including explicit and implicit CSS and ARIA attributes, that may cause a rule to trigger, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
+The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). Rule implementation is located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
 * RulePass("MSG_ID")
 * RuleFail("MSG_ID")
 * RulePotential("MSG_ID")
@@ -133,7 +133,8 @@ Note: Rule changes are not automatically rebuilt. You will have to kill the rule
 ## Summary of steps to implement/update and test a new rule
 
 * Create a rule id for a new rule. 
-* Add the rule and ruleset mapping to [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). 
-* Create the <rule id>.mdx help file, and add the rule and the help file mapping to [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts):.
+* Create the rule and ruleset mapping to [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). 
+* Create the <rule id>.mdx help file in [help](help), and add the rule and the help file mapping to [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts).
+* Create the rule implementation in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules). The rule implementation includes the rule context, logic and outcome (Pass or Fail).
 * Create test cases for the rule in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules).
 * Test the rules with the test cases. You may run the test cases locally, or run with the local rule server. 
