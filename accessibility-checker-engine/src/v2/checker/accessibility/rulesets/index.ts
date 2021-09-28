@@ -235,7 +235,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -816,8 +816,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1345,7 +1345,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
-
                 {
                     id: "RPT_Embed_HasAlt",
                     level: eRulePolicy.RECOMMENDATION,
@@ -1432,7 +1431,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -2002,8 +2001,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -2234,7 +2233,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Input_VisibleLabel",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -2531,7 +2530,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
-
                 {
                     id: "RPT_Embed_HasAlt",
                     level: eRulePolicy.RECOMMENDATION,
@@ -2618,7 +2616,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -3133,8 +3131,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -3331,7 +3329,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Input_VisibleLabel",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
