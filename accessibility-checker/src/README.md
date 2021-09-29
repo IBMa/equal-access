@@ -202,7 +202,7 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
     puppeteer: undefined,
     report: {
         scanID: "18504e0c-fcaa-4a78-a07c-4f96e433f3e7",
-        toolID: "accessibility-checker-v2.0.8",
+        toolID: "accessibility-checker-v3.0.0",
         // Label passed to getCompliance
         label: "MyTestLabel",
         // Number of rules executed
