@@ -6,7 +6,7 @@
   "devDependencies": {
     "accessibility-checker": "^3.0.1",
     "chai": "^4.2.0",
-    "chromedriver": "94.0.4606.61",
+    "chromedriver": "94.0.0",
     "cucumber": "^6.0.5",
     "cucumber-html-reporter": "^5.2.0",
     "eslint": "^7.0.0",
