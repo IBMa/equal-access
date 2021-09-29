@@ -18,7 +18,7 @@
   "author": "IBM Accessibility",
   "license": "Apache-2.0",
   "dependencies": {
-    "chromedriver": "*",
+    "chromedriver": "94",
     "deep-diff": "^0.3.4",
     "js-yaml": "^3.13.1",
     "puppeteer": "^5.3.0",
