@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -449,6 +450,47 @@ let a11yRulesTable: Rule[] = [
              let parentRole = hierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
              return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
          }
+    },
+    {
+        /**
+         * See https://github.com/IBMa/equal-access/tree/syan-3138  
+         */
+         id: "table_headers_with_valid_reference",
+         context: "dom:td[headers], dom:th[headers]",
+         run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+            // If this is a layout table or a simple table the rule does not apply.
+            if (parentTable == null || !RPTUtil.isNodeVisible(parentTable)  || !RPTUtil.isDataTable(parentTable))
+                return null;
+
+            let nodeName = ruleContext.nodeName.toLowerCase();
+            let doc = ruleContext.ownerDocument; 
+            let value = ruleContext.getAttribute("headers"); 
+            if (!value) return null;
+            let ids = value.split(" ");
+            let headerValues = [];
+            for (let i=0; i < ids.length; i++ ) { 
+                let id = ids[i];
+                if (id.trim() === '') continue;
+                const elem = doc.getElementById(id);
+                if (!elem || DOMUtil.sameNode(elem, ruleContext) || !DOMUtil.isInSameTable(elem, ruleContext)) {
+                    headerValues.push(id);
+                    continue;
+                }
+                let elemName = elem.nodeName.toLowerCase();
+                if (elemName !== 'th') {
+                    const roles = RPTUtil.getRoles(elem, true);
+                    if (!roles.includes('columnheader') && !roles.includes('rowheader'))
+                        headerValues.push(id);
+                } 
+            } 
+            if (headerValues.length == 0) {
+                return RulePass("Pass_0");
+            } else {
+                return RuleFail("Fail_1", [JSON.stringify(headerValues)]);
+            }
+        }    
     }
 
 ]

@@ -99,4 +99,16 @@ export class DOMUtil {
         } while (elem && elem.nodeType !== 1);
         return elem;
     }
+
+    // return true if element1 and element2 (cells) are in the same table
+    static isInSameTable(element1, element2) {
+        if (element1 && element2) {
+            const parentName = ['table'];
+            const parent1= DOMUtil.getAncestor(element1, parentName);
+            const parent2= DOMUtil.getAncestor(element2, parentName);
+            if (parent1 !== null && parent2 != null && DOMUtil.sameNode(parent1, parent2))
+                return true;
+        }
+        return false;
+    }
 }
