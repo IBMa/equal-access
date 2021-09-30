@@ -983,8 +983,7 @@
         "scanTime": 34,
         "ruleArchive": "Preview Rules (preview)",
         "policies": [
-            "IBM_Accessibility",
-            "IBM_Accessibility_BETA"
+            "IBM_Accessibility"
         ],
         "reportLevels": [
             "violation",
