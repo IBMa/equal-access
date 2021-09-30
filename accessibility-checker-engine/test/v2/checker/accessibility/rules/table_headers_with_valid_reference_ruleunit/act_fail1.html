@@ -19,6 +19,7 @@
 
 <html lang="en" id="id-32">
 <body id="id-9" aria-atomic="true">
+    <table>
     <tr>
 		<th id="headerOfColumn1">Projects</th>
 		<th id="headerOfColumn2">Objective</th>
@@ -27,26 +28,47 @@
 		<td headers="headOfColumn1">15%</td>
 		<td headers="headOfColumn2">10%</td>
 	</tr>
+</table>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["table_headers_with_valid_reference"],
             results: [
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                    "INFORMATION",
-                    "PASS"
-                    ],
-                    "path": {
-                    "dom": "/html[1]/body[1]/p[1]",
-                    "aria": "/document[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "table_headers_with_valid_reference",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"headOfColumn1\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "headOfColumn1"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_headers_with_valid_reference",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[2]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/cell[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"headOfColumn2\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "headOfColumn2"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>

@@ -19,6 +19,7 @@
 
 <html lang="en" id="id-32">
 <body id="id-9" aria-atomic="true">
+    <table>
     <thead>
 		<tr>
 			<th id="header1">Projects</th>
@@ -30,26 +31,27 @@
 			<td colspan="2" headers="header1 header2">15%</td>
 		</tr>
 	</tbody>
+</table>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["table_headers_with_valid_reference"],
             results: [
-                {
-                    "ruleId": "aria_hidden_focus_misuse",
-                    "value": [
-                    "INFORMATION",
-                    "PASS"
-                    ],
-                    "path": {
-                    "dom": "/html[1]/body[1]/p[1]",
-                    "aria": "/document[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "table_headers_with_valid_reference",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/cell[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>

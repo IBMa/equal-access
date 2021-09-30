@@ -458,13 +458,13 @@ let a11yRulesTable: Rule[] = [
          id: "table_headers_with_valid_reference",
          context: "dom:td[headers], dom:th[headers]",
          run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+            const ruleContext = context["dom"].node as Element; console.log("node=" + ruleContext.nodeName);
+            let parentTable = RPTUtil.getAncestor(ruleContext, "table");console.log("node=" + ruleContext.nodeName + ", parentTable=" + RPTUtil.isDataTable(parentTable));
             // If this is a layout table or a simple table the rule does not apply.
             if (parentTable == null || !RPTUtil.isNodeVisible(parentTable)  || !RPTUtil.isDataTable(parentTable))
                 return null;
 
-            let nodeName = ruleContext.nodeName.toLowerCase();
+            let nodeName = ruleContext.nodeName.toLowerCase();console.log("node=" +nodeName + ", parentTable=" + JSON.stringify(parentTable));
             let doc = ruleContext.ownerDocument; 
             let value = ruleContext.getAttribute("headers"); 
             if (!value) return null;
@@ -488,7 +488,7 @@ let a11yRulesTable: Rule[] = [
             if (headerValues.length == 0) {
                 return RulePass("Pass_0");
             } else {
-                return RuleFail("Fail_1", [JSON.stringify(headerValues)]);
+                return RuleFail("Fail_1", [headerValues.toString()]);
             }
         }    
     }

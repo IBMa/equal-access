@@ -20,19 +20,33 @@
 <html lang="en">
 <body>
     <table>
-    <thead>
-		<tr>
-			<th id="header1">Projects</th>
-			<th id="header2">Objective</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td headers="header1">15%</td>
-			<td headers="header2">10%</td>
-		</tr>
-	</tbody>
-</table>
+        <thead>
+        <tr>
+          <th id="header1">Projects</th>
+          <th id="header2">Objective</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td headers="header1">15%</td>
+          <td headers="header2">10%</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <thead>
+      <tr>
+        <th id="header21">Projects</th>
+        <th id="header22">Objective</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td headers="header21">15%</td>
+        <td headers="header22">10%</td>
+      </tr>
+    </tbody>
+  </table>
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["table_headers_with_valid_reference"],
@@ -62,6 +76,38 @@
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[2]",
               "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/cell[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_headers_with_valid_reference",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[2]/tbody[1]/tr[1]/td[1]",
+              "aria": "/document[1]/table[2]/rowgroup[2]/row[1]/cell[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "table_headers_with_valid_reference",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[2]/tbody[1]/tr[1]/td[2]",
+              "aria": "/document[1]/table[2]/rowgroup[2]/row[1]/cell[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
