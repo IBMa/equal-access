@@ -5,7 +5,7 @@ ruleArchive : latest
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility
-# i.e. Multiple policies: IBM_Accessibility,IBM_Accessibility_BETA
+# i.e. Multiple policies: IBM_Accessibility,WCAG_2_1
 # Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
 policies:
     - IBM_Accessibility
