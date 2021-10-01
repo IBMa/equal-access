@@ -1052,7 +1052,10 @@ let a11yHelp = {
     "table_headers_ref_valid": {
         0: `${Config.helpRoot}/table_headers_ref_valid`, 
         "Pass_0": `${Config.helpRoot}/table_headers_ref_valid`,
-        "Fail_1": `${Config.helpRoot}/table_headers_ref_valid`
+        "Fail_1": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_2": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_3": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_4": `${Config.helpRoot}/table_headers_ref_valid`
     }
 }
 

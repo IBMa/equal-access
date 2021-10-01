@@ -1032,9 +1032,12 @@ let a11yNls = {
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
     "table_headers_ref_valid": {
-        0: "The 'headers' attribute \"{0}\" should refer to a valid cell in the same table", 
+        0: "The 'headers' attribute should refer to a valid cell in the same table", 
         "Pass_0": "Rule Passed",
-        "Fail_1": "The 'headers' attribute value \"{0}\" does not refer to a valid cell in the same table"
+        "Fail_1": "The 'headers' attribute value \"{0}\" does not reference a valid 'id' in this document",
+        "Fail_2": "The 'headers' attribute value \"{0}\" refers to itself",
+        "Fail_3": "The 'headers' attribute value \"{0}\" does not refer to a cell in the same table",
+        "Fail_4": "The 'headers' attribute value \"{0}\" does not refer to a cell indicated with <th> or a role of 'columnheader' or 'rowheader'"
     }
 }
 export { a11yNls }
