@@ -8,13 +8,12 @@ ruleArchive: preview
 ignoreHTTPSErrors: true
 
 # optional - Specify one or many policies to scan.
-# i.e. For one policy use policies: IBM_Accessibility_2017_02
-# i.e. Multiple policies: IBM_Accessibility_2017_02,CI162_5_2_DCP070116 or refer to below as a list
+# i.e. For one policy use policies: IBM_Accessibility
+# i.e. Multiple policies: IBM_Accessibility,WCAG_2_1 or refer to below as a list
 # Default: null
 # We are setting no policies because we want the unit test to run for all policies
 policies:
     - IBM_Accessibility
-    - IBM_Accessibility_BETA
 
 # optional - Specify one or many violation levels on which to fail the test
 #            i.e. If specified violation then the testcase will only fail if
