@@ -1031,7 +1031,7 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
-    "table_headers_with_valid_reference": {
+    "table_headers_ref_valid": {
         0: "The 'headers' attribute \"{0}\" should refer to a valid cell in the same table", 
         "Pass_0": "Rule Passed",
         "Fail_1": "The 'headers' attribute value \"{0}\" does not refer to a valid cell in the same table"

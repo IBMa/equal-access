@@ -455,16 +455,16 @@ let a11yRulesTable: Rule[] = [
         /**
          * See https://github.com/IBMa/equal-access/tree/syan-3138  
          */
-         id: "table_headers_with_valid_reference",
+         id: "table_headers_ref_valid",
          context: "dom:td[headers], dom:th[headers]",
          run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element; console.log("node=" + ruleContext.nodeName);
-            let parentTable = RPTUtil.getAncestor(ruleContext, "table");console.log("node=" + ruleContext.nodeName + ", parentTable=" + RPTUtil.isDataTable(parentTable));
+            const ruleContext = context["dom"].node as Element;
+            let parentTable = RPTUtil.getAncestor(ruleContext, "table");
             // If this is a layout table or a simple table the rule does not apply.
             if (parentTable == null || !RPTUtil.isNodeVisible(parentTable)  || !RPTUtil.isDataTable(parentTable))
                 return null;
 
-            let nodeName = ruleContext.nodeName.toLowerCase();console.log("node=" +nodeName + ", parentTable=" + JSON.stringify(parentTable));
+            let nodeName = ruleContext.nodeName.toLowerCase();
             let doc = ruleContext.ownerDocument; 
             let value = ruleContext.getAttribute("headers"); 
             if (!value) return null;

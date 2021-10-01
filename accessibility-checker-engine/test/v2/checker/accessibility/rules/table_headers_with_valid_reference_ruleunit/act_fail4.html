@@ -22,14 +22,14 @@
     <table>
         <thead>
         <tr>
-          <th id="header1">Projects</th>
-          <th id="header2">Objective</th>
+          <th id="header11">Projects</th>
+          <th id="header12">Objective</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td headers="header1">15%</td>
-          <td headers="header2">10%</td>
+          <td headers="header21">15%</td>
+          <td headers="header22">10%</td>
         </tr>
       </tbody>
     </table>
@@ -42,76 +42,84 @@
     </thead>
     <tbody>
       <tr>
-        <td headers="header21">15%</td>
-        <td headers="header22">10%</td>
+        <td headers="header11">15%</td>
+        <td headers="header12">10%</td>
       </tr>
     </tbody>
   </table>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["table_headers_with_valid_reference"],
+            ruleIds: ["table_headers_ref_valid"],
             results: [
             {
-            "ruleId": "table_headers_with_valid_reference",
+            "ruleId": "table_headers_ref_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[1]",
               "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/cell[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"header21\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "header21"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "table_headers_with_valid_reference",
+            "ruleId": "table_headers_ref_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/td[2]",
               "aria": "/document[1]/table[1]/rowgroup[2]/row[1]/cell[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"header22\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "header22"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "table_headers_with_valid_reference",
+            "ruleId": "table_headers_ref_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[2]/tbody[1]/tr[1]/td[1]",
               "aria": "/document[1]/table[2]/rowgroup[2]/row[1]/cell[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"header11\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "header11"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "table_headers_with_valid_reference",
+            "ruleId": "table_headers_ref_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[2]/tbody[1]/tr[1]/td[2]",
               "aria": "/document[1]/table[2]/rowgroup[2]/row[1]/cell[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_1",
+            "message": "The 'headers' attribute value \"header12\" does not refer to a valid cell in the same table",
+            "messageArgs": [
+              "header12"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

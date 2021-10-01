@@ -424,7 +424,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "table_headers_with_valid_reference",
+                    id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
