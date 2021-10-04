@@ -469,26 +469,44 @@ let a11yRulesTable: Rule[] = [
             let value = ruleContext.getAttribute("headers"); 
             if (!value) return null;
             let ids = value.split(" ");
-            let headerValues = [];
+            let invalidHeaderValues = [];
+            let sameNodeHeaderValues = [];
+            let sameTableHeaderValues = [];
+            let invalidElemHeaderValues = [];
             for (let i=0; i < ids.length; i++ ) { 
                 let id = ids[i];
                 if (id.trim() === '') continue;
                 const elem = doc.getElementById(id);
-                if (!elem || DOMUtil.sameNode(elem, ruleContext) || !DOMUtil.isInSameTable(elem, ruleContext)) {
-                    headerValues.push(id);
-                    continue;
-                }
-                let elemName = elem.nodeName.toLowerCase();
-                if (elemName !== 'th') {
-                    const roles = RPTUtil.getRoles(elem, true);
-                    if (!roles.includes('columnheader') && !roles.includes('rowheader'))
-                        headerValues.push(id);
-                } 
-            } 
-            if (headerValues.length == 0) {
+                if (!elem)
+                    invalidHeaderValues.push(id);
+                else if (DOMUtil.sameNode(elem, ruleContext)) 
+                    sameNodeHeaderValues.push(id);
+                else if (!DOMUtil.isInSameTable(elem, ruleContext))
+                    sameTableHeaderValues.push(id);
+                else {
+                    let elemName = elem.nodeName.toLowerCase();
+                    if (elemName !== 'th') {
+                        const roles = RPTUtil.getRoles(elem, true);
+                        if (!roles.includes('columnheader') && !roles.includes('rowheader'))
+                            invalidElemHeaderValues.push(id);
+                    }
+                }     
+            }
+            
+            let results = [];
+            if (invalidHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_1", [invalidHeaderValues.toString()]));
+            if (sameNodeHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_2", [sameNodeHeaderValues.toString()]));    
+            if (sameTableHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_3", [sameTableHeaderValues.toString()]));    
+            if (invalidElemHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_4", [invalidElemHeaderValues.toString()]));    
+            
+            if (results.length == 0) {
                 return RulePass("Pass_0");
             } else {
-                return RuleFail("Fail_1", [headerValues.toString()]);
+                return results;
             }
         }    
     }
