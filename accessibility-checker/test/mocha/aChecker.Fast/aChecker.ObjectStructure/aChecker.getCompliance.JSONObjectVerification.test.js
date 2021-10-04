@@ -97,7 +97,7 @@ describe("JSON Structure Verification Zombie", function () {
                     report.summary.scanTime = expected.summary.scanTime = 999;
                     report.summary.startScan = expected.summary.startScan = 99999999999;
                     report.scanID = expected.scanID = "uuid";
-                    report.toolID = "accessibility-checker-v2.0.8";
+                    report.toolID = "accessibility-checker-v3.0.0";
                     report.summary.URL = expected.summary.URL = "<URL>"
 
                     for (const issue of report.results) {

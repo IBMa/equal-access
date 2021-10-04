@@ -911,12 +911,6 @@ let a11yHelp = {
         "Potential_1": `${Config.helpRoot}/IBMA_Focus_MultiTab`
     },
     // JCH - DONE
-    "WCAG20_Table_SummaryAria3": {
-        0: `${Config.helpRoot}/WCAG20_Table_SummaryAria3`,
-        "Pass_0": `${Config.helpRoot}/WCAG20_Table_SummaryAria3`,
-        "Potential_1": `${Config.helpRoot}/WCAG20_Table_SummaryAria3`
-    },
-    // JCH - DONE
     "RPT_Style_Trigger2": {
         0: `${Config.helpRoot}/RPT_Style_Trigger2`,
         "Pass_0": `${Config.helpRoot}/RPT_Style_Trigger2`,
@@ -1197,7 +1191,6 @@ let a11yHelpOld = {
     "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": ["idhi_accessibility_check_g1176.html"],
     "IBMA_Focus_Tabbable": ["idhi_accessibility_check_g1177.html"],
     "IBMA_Focus_MultiTab": ["idhi_accessibility_check_g1178.html"],
-    "WCAG20_Table_SummaryAria3": ["idhi_accessibility_check_g1179.html"],
     "RPT_Style_Trigger2": ["idhi_accessibility_check_g1180.html"],
     "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": ["idhi_accessibility_check_g1182.html"],
     "HAAC_Media_DocumentTrigger2": ["idhi_accessibility_check_g1183.html"],
