@@ -351,7 +351,6 @@ export const ruleIdToLegacyId = {
     "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": "1176",
     "IBMA_Focus_Tabbable": "1177",
     "IBMA_Focus_MultiTab": "1178",
-    "WCAG20_Table_SummaryAria3": "1179",
     "RPT_Style_Trigger2": "1180",
     "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": "1182",
     "HAAC_Media_DocumentTrigger2": "1183",

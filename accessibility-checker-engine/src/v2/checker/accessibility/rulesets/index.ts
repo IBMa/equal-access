@@ -373,11 +373,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1569,16 +1564,10 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
-
             ]
         },
         {
@@ -2752,11 +2741,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
                     id: "aria_hidden_focus_misuse",
