@@ -1,7 +1,6 @@
 # accessibility-checker-engine rules
 
-This README is oriented toward rule creation and rule modification. Rules should be test driven so that
-modifications can be tested and confirmed over time.
+This README is oriented toward rule creation or modification. Users who want to modify an existing rule or create a new rule should read this document. Any rule addition or change should be fully reviewed and tested before being approved for public release.
 
 ## Specification and structure
 
@@ -14,7 +13,7 @@ Multiple objects are needed for a rule to fire and show up in the tool results:
   
 ### Rule object
 
-These are located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules). The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). The possibilities for the context property is defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
+The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). Rule implementation is located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
 * RulePass("MSG_ID")
 * RuleFail("MSG_ID")
 * RulePotential("MSG_ID")
@@ -39,7 +38,7 @@ An example rule might look like:
 
 ### Ruleset mapping
 
-Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
+Rules are mapped to rulesets based on checkpoints. A rule may be mapped to one or more rulesets, and a ruleset may include one or more rules. The ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
 ```
 {
     id: "TRIGGER_ALL_BODY",
@@ -50,7 +49,7 @@ Ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts]
 
 ### Messages
 
-Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/v2/checker/accessibility/nls/index.ts). Mappings are defined as:
+Each rule message is a short description of the result of a rule execution. Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/v2/checker/accessibility/nls/index.ts). Mappings are defined as:
 ```
 "TRIGGER_ALL_BODY": {
     0: "Passive message used for rule groupings",
@@ -61,7 +60,7 @@ Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/
 
 ### Help file
 
-Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts). Mappings are defined as:
+Each rule has its own help file in .mdx format. A help file contains rule description and examples. The rule help files are located in [help](help). The mapping between a rule and its help file is defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts):
 
 ```
 "TRIGGER_ALL_BODY": {
@@ -71,11 +70,9 @@ Help mappings are defined in [src/v2/checker/accessibility/help/index.ts](src/v2
 }
 ```
 
-Help files are found in [help](help).
-
 ## Test cases
 
-Test cases are located in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules). The basic template of the test cases is:
+Each rule may have one or more test cases. Test cases are located in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules). The basic template of the test cases is:
 ```
 <!DOCTYPE html>
 <html lang="en">
@@ -124,9 +121,20 @@ Then, run `npm test` again.
 
 ## Run local server with local browser extension
 
+You can run test cases to verify a rule implementation, or you can deploy the rules to a local rule server, and then build the browser extension to access the rules deployed in the local server to test. The steps to use a local server are:
+
 * Build and start rule server. In `rule-server` run `npm run start` or without help `npm run start:nohelp`.
 * Load `https://localhost:9445/` in the browser and type `thisisunsafe` to bypass cert warnings.
 * Build extension. In `accessibility-checker-extension` run `npm run build:watch:local`.
 * Add the extension in the `accessibility-checker-extension/dist` directory to Chrome. It will have the `(local)` label on the DevTools tab.
 
 Note: Rule changes are not automatically rebuilt. You will have to kill the rule server (Ctrl+C) and then rebuild, rerun. The extension may need to be refreshed to reload the rules.
+
+## Summary of steps to implement/update and test a new rule
+
+* Create a rule id for a new rule. 
+* Create the rule and ruleset mapping to [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). 
+* Create the <rule id>.mdx help file in [help](help), and add the rule and the help file mapping to [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts).
+* Create the rule implementation in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules). The rule implementation includes the rule context, logic and outcome (Pass or Fail).
+* Create test cases for the rule in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules).
+* Test the rules with the test cases. You may run the test cases locally, or run with the local rule server. 
