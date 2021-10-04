@@ -897,12 +897,6 @@ let a11yNls = {
         "Potential_1": "Component with \"{0}\" role has more than one tabbable element"
     },
     // JCH - DONE
-    "WCAG20_Table_SummaryAria3": {
-        0: "Complex data tables should have a 'summary' or an 'aria-describedby' that references an overview of the table",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "A complex data table should have a 'summary' or an 'aria-describedby' that references an overview of the table"
-    },
-    // JCH - DONE
     "RPT_Style_Trigger2": {
         0: "Windows high contrast mode must be supported when using CSS to include, position or alter non-decorative content",
         "Pass_0": "Rule Passed",
