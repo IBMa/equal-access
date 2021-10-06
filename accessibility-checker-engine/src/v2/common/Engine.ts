@@ -21,6 +21,7 @@ import { Config } from "../config/Config";
 import { IMapResult, IMapper } from "../api/IMapper";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
+import { ARIAMapper } from "../..";
 
 export interface CacheDocument extends Document {
     aceCache: { [key: string]: any }
@@ -203,11 +204,11 @@ export class Engine implements IEngine {
                     || !DOMUtil.getAncestor(walker.node, ["body"])
                 )
             ) {
-                const context : RuleContext = {};
+                let context : RuleContext = {};
                 for (const ns in contextHierarchies) {
                     const nsHier = contextHierarchies[ns];
                     const lastHier = nsHier[nsHier.length-1];
-                    context[ns] = lastHier;
+                    context[ns] = lastHier; 
                 }
 
                 let matchingRules = this.getMatchingRules(contextHierarchies);
