@@ -1389,8 +1389,9 @@ export class RPTUtil {
                     return true;
                 }
             }
-    }
-
+    
+        }
+    }    
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.
