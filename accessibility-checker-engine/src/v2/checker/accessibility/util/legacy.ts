@@ -1385,7 +1385,7 @@ export class RPTUtil {
             // check the element whose 'aria-describedby' equals to the id
             if (nw.node && nw.node.nodeType === 1 && nw.elem()) {
                 let AriaDescribedbyIDArray = (nw.elem().getAttribute("aria-describedby") || "").split(" ");
-                if (AriaDescriedbyIDArray.includes(id) && RPTUtil.isNodeDisabled(nw.node)) {
+                if (AriaDescribedbyIDArray.includes(id) && RPTUtil.isNodeDisabled(nw.node)) {
                     return true;
                 }
             }
