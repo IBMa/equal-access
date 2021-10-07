@@ -99,4 +99,11 @@ export class DOMUtil {
         } while (elem && elem.nodeType !== 1);
         return elem;
     }
+
+    static shadowRootNode(node: Node) : Node | null {
+        let nd = node;
+        while (nd != null && nd.nodeType !== Node.DOCUMENT_FRAGMENT_NODE)
+            nd = nd.parentNode;
+        return nd;
+    }
 }

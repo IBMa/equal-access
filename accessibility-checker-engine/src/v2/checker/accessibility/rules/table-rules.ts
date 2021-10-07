@@ -99,39 +99,6 @@ let a11yRulesTable: Rule[] = [
 
     {
         /**
-         * Description: Trigger if role!="presentation" or role!="none", and missing a summary or summary does not correspond to aria-label or aria-labelledby
-         * Origin: WCAG 2.0 Technique H73
-         */
-        id: "WCAG20_Table_SummaryAria3",
-        context: "dom:table",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let passed = !RPTUtil.isComplexDataTable(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "summary") || ruleContext.hasAttribute("aria-describedby");
-            // check if aria-describedby points to valid id or valid summary
-            let summaryNodeId = ruleContext.getAttribute("aria-describedby");
-            let sumStr;
-            if (summaryNodeId) {
-                let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
-                if (summaryNode) {
-                    sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
-                    if (sumStr) {
-                        passed = true;
-                    }
-                    else
-                        passed = false;
-                }
-                else
-                    passed = false;
-            }
-
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RulePotential("Potential_1");
-
-        }
-    },
-
-    {
-        /**
          * Description: Require that there be at least one header row or header column for a data table.
          * Origin: RPT 5.6 G113
          */

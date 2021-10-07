@@ -15,7 +15,7 @@
  *****************************************************************************/
 
 import { Ruleset } from "../../Checker";
-import { eRulePolicy, eRuleCategory, eToolkitLevel, eRulesetType} from "../../../api/IEngine";
+import { eRulePolicy, eRuleCategory, eToolkitLevel, eRulesetType } from "../../../api/IEngine";
 
 let a11yRulesets: Ruleset[] = [
 {
@@ -33,10 +33,9 @@ let a11yRulesets: Ruleset[] = [
             id: "detector_tabbable",
             level: eRulePolicy.INFORMATION,
             toolkitLevel: eToolkitLevel.LEVEL_FOUR
-        },
-     ]
-    }
-    ]
+
+        }]
+    }]
 },
 
 {
@@ -151,7 +150,7 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
-                
+
                 {
                     id: "RPT_Embed_HasAlt",
                     level: eRulePolicy.RECOMMENDATION,
@@ -238,7 +237,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -376,16 +375,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
-                
+
             ]
         },
         {
@@ -819,8 +813,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1234,13 +1228,13 @@ let a11yRulesets: Ruleset[] = [
                 }
             ]
         }
-    ]    
+    ]
 },
 {
     id: "WCAG_2_1",
     name: "WCAG 2.1 (A, AA)",
     category: eRuleCategory.ACCESSIBILITY,
-    description: "Rules for WCAG 2.1 AA. This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.", 
+    description: "Rules for WCAG 2.1 AA. This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0.",
     "checkpoints": [
         {
             "num": "1.1.1",
@@ -1348,7 +1342,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
-                
                 {
                     id: "RPT_Embed_HasAlt",
                     level: eRulePolicy.RECOMMENDATION,
@@ -1435,7 +1428,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -1573,16 +1566,10 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
-                
             ]
         },
         {
@@ -2005,8 +1992,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -2237,7 +2224,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Input_VisibleLabel",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -2420,7 +2407,7 @@ let a11yRulesets: Ruleset[] = [
                 }
             ]
         }
-    ]    
+    ]
 },
 {
     id: "WCAG_2_0",
@@ -2534,7 +2521,6 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_FOUR
                 },
-                
                 {
                     id: "RPT_Embed_HasAlt",
                     level: eRulePolicy.RECOMMENDATION,
@@ -2621,7 +2607,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Media_VideoObjectTrigger",
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -2759,16 +2745,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
-                    id: "WCAG20_Table_SummaryAria3",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
-                
+
             ]
         },
         {
@@ -3136,8 +3117,8 @@ let a11yRulesets: Ruleset[] = [
                     id: "IBMA_Focus_Tabbable",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-                , {
+                },
+                {
                     id: "IBMA_Focus_MultiTab",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -3334,7 +3315,7 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Input_VisibleLabel",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
+                }
             ]
         },
         {
@@ -3517,8 +3498,8 @@ let a11yRulesets: Ruleset[] = [
                 }
             ]
         }
-    ]    
-},
+    ]
+}
 ]
 
 export { a11yRulesets }

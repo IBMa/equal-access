@@ -46,7 +46,7 @@ export default class MultiScanData {
                 "POTENTIAL": "Needs review",
                 "FAIL": "Violation",
                 "PASS": "Pass",
-                "MANUAL": "Recommendation"
+                "MANUAL": "Needs review"
             },
             "RECOMMENDATION": {
                 "POTENTIAL": "Recommendation",
