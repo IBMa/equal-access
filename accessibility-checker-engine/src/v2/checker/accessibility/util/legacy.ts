@@ -1383,17 +1383,12 @@ export class RPTUtil {
         let nw = new NodeWalker(root);
         while (nw.nextNode()) {
             // check the element whose 'aria-describedby' equals to the id
-            let AriaDescribedbyIDArray = nw.elem().getAttribute("aria-describedby").split(" ");
-            for(let i = 0; i < AriaDescribedbyIDArray.length ; i++){
-                if (nw.node && nw.node.nodeType === 1 && nw.elem() && AriaDescribedbyIDArray[i] === id) {
-                    if (RPTUtil.isNodeDisabled(nw.node)) {
-                        return true;
-                    }
-                    // return false;
+            if (nw.node && nw.node.nodeType === 1 && nw.elem()) {
+                let AriaDescribedbyIDArray = (nw.elem().getAttribute("aria-describedby") || "").split(" ");
+                if (AriaDescriedbyIDArray.includes(id) && RPTUtil.isNodeDisabled(nw.node)) {
+                    return true;
                 }
             }
-        }
-        return false;
     }
 
     /**
