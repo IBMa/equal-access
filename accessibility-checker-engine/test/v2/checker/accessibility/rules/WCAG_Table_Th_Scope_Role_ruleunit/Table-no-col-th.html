@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+	<style type='text/css'>
+        table { border: solid gray 1px; }
+        td, th { border-style: inset; border-width: 1px; }
+    </style>
+</head>
+
+<body>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h3>Test case: Table-no-th.html</h3>
+
+<table id="data_table1" summary="simple data table showing the number of boys and girls in each grade of an elementary school">
+	<caption>Boys and Girls in Classes</caption>
+
+	<tr>
+		<th scope='row'>Class</td>
+		<td ># of Boys</td>
+		<td ># of Girls</td>
+	</tr>
+
+	<tr>
+		<th scope='row'>1st Grade</th>
+		<td >11</td>
+		<td>10</td>
+	</tr>
+
+	<tr>
+		<th scope='row'>2nd Grade</th>
+		<td >7</td>
+		<td>12</td>
+	</tr>
+
+	<tr>
+		<th scope='row'>3rd Grade</th>
+		<td>12</td>
+		<td>14</td>
+	</tr>
+</table>
+
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1025",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    },
+  ];
+//]]>
+</script></body>
+
+</html>
