@@ -37,13 +37,18 @@ let a11yRulesTable: Rule[] = [
                 sumStr = ruleContext.getAttribute("summary").trim().toLowerCase();
             } else if (ruleContext.hasAttribute("aria-describedby")) {
                 pofId = 1;
-                let summaryNodeId = ruleContext.getAttribute("aria-describedby");
-                if (summaryNodeId) {
-                    let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
-                    if (summaryNode) {
-                        sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
-                    }
+                let summaryNodeIds = ruleContext.getAttribute("aria-describedby").split(" ");
+                let summaryNodeConcat = "";
+                for (let i=0; i<summaryNodeIds.length; i++) {
+                    let summaryNodeId = summaryNodeIds[i];
+                    if (summaryNodeId) {
+                        let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
+                        if (summaryNode) {
+                            summaryNodeConcat += " " + RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
+                        }
+                    } 
                 }
+                sumStr = summaryNodeConcat;
             }
             if (!sumStr) {
                 return null;
@@ -53,7 +58,7 @@ let a11yRulesTable: Rule[] = [
                     return null;
                 } else if (sumStr.length > 0) {
                     let capStr = RPTUtil.getInnerText(capElems[0]).trim().toLowerCase();
-                    if (sumStr != capStr) {
+                    if (!sumStr.includes(capStr)) {
                         return RulePass("Pass_0");
                     } else {
                         return RuleFail("Fail_1")
