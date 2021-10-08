@@ -1031,7 +1031,7 @@ let a11yNls = {
         "Fail_1": "The 'headers' attribute value \"{0}\" does not reference a valid 'id' in this document",
         "Fail_2": "The 'headers' attribute value \"{0}\" refers to itself",
         "Fail_3": "The 'headers' attribute value \"{0}\" does not refer to a cell in the same table",
-        "Fail_4": "The 'headers' attribute value \"{0}\" does not refer to a cell indicated with <th> or a role of 'columnheader' or 'rowheader'"
+        "Fail_4": "The 'headers' attribute value \"{0}\" does not refer to a cell indicated with <th> or a role of \"columnheader\" or \"rowheader\""
     }
 }
 export { a11yNls }
