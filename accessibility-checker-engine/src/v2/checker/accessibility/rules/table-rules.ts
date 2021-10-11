@@ -251,6 +251,11 @@ let a11yRulesTable: Rule[] = [
         context: "dom:td[scope], dom:th[scope]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            const nodeName = ruleContext.nodeName.toLowerCase();
+            if (nodeName === 'td')
+                return RuleFail("Fail_2");
+
+            //only continue for 'th'    
             let scopeVal = ruleContext.getAttribute("scope").trim().toLowerCase();
             let passed = /^(row|col|rowgroup|colgroup)$/.test(scopeVal);
             if (!passed) {
