@@ -29,41 +29,31 @@
 </head>
 
 <body>
-
+  <div id='summary1'>first table summary</div>
+  <div id='summary2'>first table summary</div>
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: Table-CapSummRedundant.html</h2>
+<h3>Test case: Table-Scope-all.html</h3>
 
-
-<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
-
-
-<h3>Data Table Tests</h3>
-
-
-<ul>
-	<li>Test - Simple Data Table with redundant aria-describedby and caption</li>
-</ul>
-<p id="tblDesc">Boys and Girls in Elementary School Classes</p>
-<table id="data_table1" aria-describedby="tblDesc">
-	<caption>Boys and Girls in Elementary School Classes</caption>
+<table id="data_table1" aria-describedby='summary1 summary2' summary="simple data table showing the number of boys and girls in each grade of an elementary school">
+	<caption>Boys and Girls in Classes</caption>
 
 	<tr>
-		<th scope="col">Class</th>
-		<th scope="col"># of Boys</th>
-		<th scope="col"># of Girls</th>
+		<th scope='row'>Class</th>
+		<td># of Boys</th>
+		<td ># of Girls</th>
 	</tr>
 
 	<tr>
-		<th scope="row">1st Grade</th>
-		<td>11</td>
+		<th scope="row">1st Grade</td>
+		<td scope="rowgroup">11</td>
 		<td>10</td>
 	</tr>
 
 	<tr>
 		<th scope="row">2nd Grade</th>
-		<td>7</td>
+		<td scope="colgroup">7</td>
 		<td>12</td>
 	</tr>
 
@@ -74,35 +64,24 @@
 	</tr>
 </table>
 
-<br>
 
-
-<a name="navskip">End</a>
+<a name="navskip"></a>
 
 
 <script type="text/javascript">
-  UnitTest = {
-      ruleIds: ["WCAG20_Table_CapSummRedundant"],
-      results: [
-      {
-            "ruleId": "WCAG20_Table_CapSummRedundant",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]",
-              "aria": "/document[1]/table[1]"
-            },
-            "reasonId": "Fail_1",
-            "message": "The table summary duplicates the caption",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1025",
+      passedXpaths: [
+      ],
+      failedXpaths: [
       ]
-  }
-</script>
-</body>
+    },
+  ];
+//]]>
+</script></body>
 
 </html>

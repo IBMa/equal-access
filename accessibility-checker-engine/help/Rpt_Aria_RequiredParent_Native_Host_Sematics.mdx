@@ -8,11 +8,12 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### An element with ARIA role `{0}` is not contained in or owned by an element with one of the following ARIA roles: `{1}`
+
+### The element with `role="{0}"` is not contained in or owned by an element with one of the following roles: `{1}`
 
 <div id="locLevel"></div>
 
-An element with ARIA role must be contained within a valid element
+An element with an implicit or explicit role must be contained within a valid element
 
 </Column>
 </Row>
@@ -21,7 +22,7 @@ An element with ARIA role must be contained within a valid element
 
 ### Why is this important?
 
-If a ARIA `role` attribute is specified for an element, any ARIA parent element that is required for that role must also be set for the element. If the parent element's native ARIA role satisfies the requirement this role does not have to be explicitly set. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
+If an ARIA `'role'` attribute is specified for an element, the parent element that is required for that role must also be present in the accessibility tree. If the parent element's implicit role satisfies the requirement (e.g., `<ul>`), this role does not have to be explicitly set with ARIA. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
 
 <div id="locSnippet"></div>
 
