@@ -69,19 +69,108 @@
 
 
 <script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "1025",
-      passedXpaths: [
-      ],
-      failedXpaths: [
+  UnitTest = {
+      ruleIds: ["WCAG20_Table_Scope_Valid"],
+      results: [
+      {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used in a <th> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used in a <th> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[4]/th[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[4]/rowheader[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
-    },
-  ];
-//]]>
-</script></body>
+  }
+</script>
+</body>
 
 </html>
