@@ -110,5 +110,12 @@ export class DOMUtil {
                 return true;
         }
         return false;
+
+    static shadowRootNode(node: Node) : Node | null {
+        let nd = node;
+        while (nd != null && nd.nodeType !== Node.DOCUMENT_FRAGMENT_NODE)
+            nd = nd.parentNode;
+        return nd;
+
     }
 }

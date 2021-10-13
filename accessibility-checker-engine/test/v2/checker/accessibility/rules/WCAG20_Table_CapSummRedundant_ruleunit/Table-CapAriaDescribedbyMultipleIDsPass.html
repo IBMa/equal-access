@@ -45,8 +45,9 @@
 <ul>
 	<li>Test - Simple Data Table with redundant aria-describedby and caption</li>
 </ul>
-<p id="tblDesc">Boys and Girls in Elementary School Classes</p>
-<table id="data_table1" aria-describedby="tblDesc">
+<p id="tblDesc">This table describes the </p>
+<p id="tblDesc2"> children in Elementary School Classes</p>
+<table id="data_table1" aria-describedby="tblDesc tblDesc2">
 	<caption>Boys and Girls in Elementary School Classes</caption>
 
 	<tr>
@@ -88,14 +89,14 @@
             "ruleId": "WCAG20_Table_CapSummRedundant",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The table summary duplicates the caption",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
