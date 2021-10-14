@@ -258,6 +258,11 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
                 {
+                    id: "table_headers_ref_valid",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                }, 
+                {
                     id: "RPT_Headers_FewWords",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -374,11 +379,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
@@ -744,7 +744,7 @@ let a11yRulesets: Ruleset[] = [
                 {
                     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                     level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE 
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
@@ -1453,6 +1453,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
+                {
+                    id: "table_headers_ref_valid",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                },                
                 {
                     id: "RPT_Headers_FewWords",
                     level: eRulePolicy.VIOLATION,
@@ -2632,6 +2637,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
+                {
+                    id: "table_headers_ref_valid",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                }, 
                 {
                     id: "RPT_Headers_FewWords",
                     level: eRulePolicy.VIOLATION,
