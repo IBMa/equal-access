@@ -397,6 +397,7 @@ let a11yNls = {
         "Potential_1": "Verify that the <embed> element is immediately followed by a non-embedded element"
     },
     // JCH - DONE
+    //       "Fail_2" added per HTML 5 spec
     "WCAG20_Table_Scope_Valid": {
         0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
