@@ -398,10 +398,10 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Table_Scope_Valid": {
-        0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
+        0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\" and used only on header cells",
         "Pass_0": "Rule Passed",
         "Fail_1": "Value provided is invalid for the 'scope' attribute",
-        "Fail_2": "The 'scope' attribute should only be used in a <th> element"
+        "Fail_2": "The 'scope' attribute should only be used on a <th> element"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
