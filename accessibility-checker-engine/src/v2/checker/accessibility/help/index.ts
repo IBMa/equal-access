@@ -418,7 +418,8 @@ let a11yHelp = {
     "WCAG20_Table_Scope_Valid": {
         0: `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
-        "Fail_1": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`
+        "Fail_1": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
+        "Fail_2": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
