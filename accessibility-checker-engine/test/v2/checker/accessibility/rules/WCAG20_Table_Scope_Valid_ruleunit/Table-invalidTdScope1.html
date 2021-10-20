@@ -57,13 +57,13 @@
 
 	<tr>
 		<th scope="row">1st Grade</th>
-		<td>11</td>
+		<td scope="rowgroup">11</td>
 		<td>10</td>
 	</tr>
 
 	<tr>
 		<th scope="row">2nd Grade</th>
-		<td>7</td>
+		<td scope="colgroup">7</td>
 		<td>12</td>
 	</tr>
 
@@ -150,6 +150,22 @@
             "ruleId": "WCAG20_Table_Scope_Valid",
             "value": [
               "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[2]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used on a <th> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
               "PASS"
             ],
             "path": {
@@ -158,6 +174,22 @@
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Table_Scope_Valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]/td[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/row[3]/cell[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The 'scope' attribute should only be used on a <th> element",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
