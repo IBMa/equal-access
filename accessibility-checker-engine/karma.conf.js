@@ -39,11 +39,11 @@ module.exports = (config) => {
 
             // { pattern: 'test/v2/checker/accessibility/rules/WCAG20_Table_CapSummRedundant_ruleunit/*.html', watched: true },
 
-            //{ pattern: 'test/v2/checker/accessibility/rules/WCAG20_Table_Scope_Valid_ruleunit/Table-invalidThScope.html', watched: true },
+            //{ pattern: 'test/v2/checker/accessibility/rules/HAAC_Aria_ImgAlt_ruleunit/*.html', watched: true },
+            { pattern: 'test/v2/checker/accessibility/rules/HAAC_Aria_ImgAlt_ruleunit/D3494_2_svg.html', watched: true },
 
-
-            { pattern: 'test/**/*_ruleunit/*.html', watched: true },
-            { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
+            //{ pattern: 'test/**/*_ruleunit/*.html', watched: true },
+            //{ pattern: 'test/**/*_ruleunit/*.htm', watched: true },
             // all files ending in "_test"
             // { pattern: 'test/*_test.js', watched: true },
             { pattern: 'test/**/*_test.js', watched: true }
