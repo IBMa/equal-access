@@ -32,39 +32,21 @@
 
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["HAAC_Aria_SvgAlt"],
+            ruleIds: ["HAAC_Aria_ImgAlt"],
             results: [
             {
-            "ruleId": "HAAC_Aria_SvgAlt",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "HAAC_Aria_SvgAlt",
+            "ruleId": "HAAC_Aria_ImgAlt",
             "value": [
               "INFORMATION",
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/input[1]",
-              "aria": "/document[1]/textbox[1]"
+              "dom": "/html[1]/body[1]/svg[1]",
+              "aria": "/document[1]/img[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "Element \"input\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
-            "messageArgs": [
-              "input"
-            ],
+            "reasonId": "Fail_2",
+            "message": "Element with \"img\" role has no label or an empty label",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
