@@ -380,7 +380,7 @@ let a11yNls = {
     "WCAG20_Input_LabelBefore": {
         0: "Text inputs and <select> elements must have a label before the input control",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Text input is nested in label, so label is not before the text input control",
+        "Fail_1": "Text input is nested in label such that input precedes the label text",
         "Fail_2": "Label text is located after its associated text input or <select> element"
     },
     // JCH - DONE
@@ -397,10 +397,12 @@ let a11yNls = {
         "Potential_1": "Verify that the <embed> element is immediately followed by a non-embedded element"
     },
     // JCH - DONE
+    //       "Fail_2" added per HTML 5 spec
     "WCAG20_Table_Scope_Valid": {
         0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Value provided is invalid for the 'scope' attribute"
+        "Fail_1": "Value provided is invalid for the 'scope' attribute",
+        "Fail_2": "The 'scope' attribute should only be used on a <th> element"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
