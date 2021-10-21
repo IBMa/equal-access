@@ -35,12 +35,7 @@ module.exports = (config) => {
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaption.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithcaptionDynamic.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/HAAC_Video_HasNoTrack_ruleunit/Video-HasTrackAndKindWithSubtitles.html', watched: true },
-            // { pattern: 'test/v2/checker/accessibility/rules/WCAG20_Input_ExplicitLabel_ruleunit/ImgRoleButtonAlt.html', watched: true },
-
-            // { pattern: 'test/v2/checker/accessibility/rules/WCAG20_Table_CapSummRedundant_ruleunit/*.html', watched: true },
-
-            // { pattern: 'test/v2/checker/accessibility/rules/Rpt_Aria_RequiredParent_Native_Host_Sematics_ruleunit/ACT_ff89c9_pass4.html', watched: true },
-
+            //{ pattern: 'test/v2/checker/accessibility/rules/table_headers_ref_valid_ruleunit/act_fail3.html', watched: true },
 
             { pattern: 'test/**/*_ruleunit/*.html', watched: true },
             { pattern: 'test/**/*_ruleunit/*.htm', watched: true },
