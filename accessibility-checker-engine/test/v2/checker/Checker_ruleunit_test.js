@@ -157,7 +157,6 @@ const mapRuleToG = {
     "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": "1176",
     "IBMA_Focus_Tabbable": "1177",
     "IBMA_Focus_MultiTab": "1178",
-    "WCAG20_Table_SummaryAria3": "1179",
     "RPT_Style_Trigger2": "1180",
     "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": "1182",
     "HAAC_Media_DocumentTrigger2": "1183",
@@ -252,6 +251,16 @@ describe("Rule Unit Tests", function() {
 
                     // Get the iframe document that was just created
                     let iframeDoc = iframeWin.document;
+                    // If we have a script with the UnitTest and it hasn't finished loading (can happen with linked CSS)
+                    // Wait until the load is complete
+                    let scripts = iframeDoc.querySelectorAll("script");
+                    for (const script of scripts) {
+                        if (script.innerHTML.includes("UnitTest")) {
+                            while (!iframeWin.UnitTest) {
+                                await new Promise((resolve, reject) => setTimeout(resolve, 1));
+                            }
+                        }
+                    }
 
                     let checker = new ace.Checker();
                     let report = await checker.check(iframeDoc, null);

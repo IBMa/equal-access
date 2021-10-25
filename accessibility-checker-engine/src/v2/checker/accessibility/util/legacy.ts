@@ -1383,16 +1383,15 @@ export class RPTUtil {
         let nw = new NodeWalker(root);
         while (nw.nextNode()) {
             // check the element whose 'aria-describedby' equals to the id
-            if (nw.node && nw.node.nodeType === 1 && nw.elem() && nw.elem().getAttribute("aria-describedby") === id) {
-                if (RPTUtil.isNodeDisabled(nw.node)) {
+            if (nw.node && nw.node.nodeType === 1 && nw.elem()) {
+                let AriaDescribedbyIDArray = (nw.elem().getAttribute("aria-describedby") || "").split(" ");
+                if (AriaDescribedbyIDArray.includes(id) && RPTUtil.isNodeDisabled(nw.node)) {
                     return true;
                 }
-                return false;
             }
+    
         }
-        return false;
-    }
-
+    }    
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.

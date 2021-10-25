@@ -380,7 +380,7 @@ let a11yNls = {
     "WCAG20_Input_LabelBefore": {
         0: "Text inputs and <select> elements must have a label before the input control",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Text input is nested in label, so label is not before the text input control",
+        "Fail_1": "Text input is nested in label such that input precedes the label text",
         "Fail_2": "Label text is located after its associated text input or <select> element"
     },
     // JCH - DONE
@@ -397,10 +397,12 @@ let a11yNls = {
         "Potential_1": "Verify that the <embed> element is immediately followed by a non-embedded element"
     },
     // JCH - DONE
+    //       "Fail_2" added per HTML 5 spec
     "WCAG20_Table_Scope_Valid": {
         0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Value provided is invalid for the 'scope' attribute"
+        "Fail_1": "Value provided is invalid for the 'scope' attribute",
+        "Fail_2": "The 'scope' attribute should only be used on a <th> element"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
@@ -755,13 +757,13 @@ let a11yNls = {
     "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
         0: "An element with a ARIA role must contain required children",
         "Pass_0": "Rule Passed",
-        "Potential_1": "The element with ARIA role of \"{0}\" does not contain or own at least one child element with each of the following ARIA roles: \"{1}\""
+        "Potential_1": "The element with role \"{0}\" does not contain or own at least one child element with each of the following roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
-        0: "An element with a ARIA role must be contained within a valid element",
+        0: "An element with an implicit or explicit role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with \"{0}\" role is not contained in or owned by an element with one of the following ARIA roles: \"{1}\""
+        "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
@@ -897,12 +899,6 @@ let a11yNls = {
         "Potential_1": "Component with \"{0}\" role has more than one tabbable element"
     },
     // JCH - DONE
-    "WCAG20_Table_SummaryAria3": {
-        0: "Complex data tables should have a 'summary' or an 'aria-describedby' that references an overview of the table",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "A complex data table should have a 'summary' or an 'aria-describedby' that references an overview of the table"
-    },
-    // JCH - DONE
     "RPT_Style_Trigger2": {
         0: "Windows high contrast mode must be supported when using CSS to include, position or alter non-decorative content",
         "Pass_0": "Rule Passed",
@@ -1030,6 +1026,14 @@ let a11yNls = {
         0: "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'", 
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
+    },
+    "table_headers_ref_valid": {
+        0: "The 'headers' attribute should refer to a valid cell in the same table", 
+        "Pass_0": "Rule Passed",
+        "Fail_1": "The 'headers' attribute value \"{0}\" does not reference a valid 'id' in this document",
+        "Fail_2": "The 'headers' attribute value \"{0}\" refers to itself",
+        "Fail_3": "The 'headers' attribute value \"{0}\" does not refer to a cell in the same table",
+        "Fail_4": "The 'headers' attribute value \"{0}\" does not refer to a cell indicated with <th> or a role of \"columnheader\" or \"rowheader\""
     }
 }
 export { a11yNls }
