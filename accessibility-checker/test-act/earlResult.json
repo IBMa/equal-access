@@ -183,21 +183,6 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/6cfa84/a8370a7c4e710e4dcece674a415c6dd4d4e69382.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "aria_hidden_focus_misuse:Fail_1"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/6cfa84/8028b91449bd3f9f607dcc91be3b559035bf719c.html",
       "assertions": [
         {
@@ -371,7 +356,7 @@
             "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Fail_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -431,14 +416,14 @@
             "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Fail_1"
           },
           "result": {
-            "outcome": "earl:passed"
+            "outcome": "earl:failed"
           }
         }
       ]
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/ff89c9/dbdabc97037d644bbf483da28e874c47bc696196.html",
+      "source": "https://act-rules.github.io/testcases/ff89c9/16bf36473060bd2e626a1d1a061029bd7f981319.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2463,7 +2448,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/038550a1540200d236781ca3cf0f1144f2292b3d.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/47486ff08596b8ae32b83602a589ccb60a1c338a.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2538,7 +2523,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/bd2200ee42cd30c8a9070e5d3bb8a48534722191.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/6243ece20495552d4455d286334289e5d14482a5.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2643,7 +2628,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/f0aca8473af9a91357f5ee6c6000be4432244a22.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/f1de3c8936de268146a99faaa32e2d5c92dda188.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2658,7 +2643,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/b65d8cfb648161ea0363f67877180cb4b59cb4a4.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/4b8fdc64e5133b1e277dde4dca8dd63bcdff1915.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2673,7 +2658,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/cc2a04dfd87465eae2165854c41094a9552227d8.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/ff29a9f56f52e0ed45a2abb3267a39d72a740b36.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2688,7 +2673,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/73f2c2/f64dd012d1b6e63e6b469b68936ddf962e2c005a.html",
+      "source": "https://act-rules.github.io/testcases/73f2c2/ead23d3e8316748e758c5189c16add0861161b5a.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4263,6 +4248,36 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/off6ek/644b02adff16c2c445bbee516f65fed519ea5cca.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": ""
+          },
+          "result": {
+            "outcome": "earl:untested"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/off6ek/5cffdfdf2102e81f9b32a2c517001fb44faf40a5.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": ""
+          },
+          "result": {
+            "outcome": "earl:untested"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/de46e4/52b44481e1067806d435c1020422dc401c9a23b4.html",
       "assertions": [
         {
@@ -4443,6 +4458,36 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/de46e4/a2290d9cd1226c969b2063a8464e8d6ac4187f08.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Fail_1"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/de46e4/a925c1aefbeec908d327431a48f5044bf16068a1.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Fail_1"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/de46e4/dbbbdb101cce4c8be156e489fe06648827fe02d3.html",
       "assertions": [
         {
@@ -4503,7 +4548,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/d2376f664c3f9fa50d812e6c0be2da80f05351ae.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/ce1c1cd0b2d3ebd3ba2ced0828fad552ebce9478.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4518,7 +4563,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/3e7e68027e4a9faee951621fdc95d4e3e76fa25c.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/28f897e44c4acb1dd6c56ca2614220becfdce327.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4548,7 +4593,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/9a8dab22acd170c003ed2bb9ac71d94dcb41b5f0.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/1c245ab649c5c45fadb73bfb06c45083944e0753.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4563,7 +4608,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/90bd58b1ff496fea3d6ccae7763f170a063ab9c3.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/9ec2552d03bd2dee13fc1fc62a974f9d7873ae76.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4608,7 +4653,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/1bb3c615f8639cee0364df19d59492763cdf64f0.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/d38ad4919ecaf72895aaea2fad3b3cd5c53a6107.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4638,7 +4683,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/46ca7f/6cbbb6526b978c74150a01149d955574a22ab2e2.html",
+      "source": "https://act-rules.github.io/testcases/46ca7f/58506437710bad6573f48bd5881acc71ff3edd0d.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -5613,6 +5658,21 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/e086e5/e860f8badc29cd5db9b60050f73c395a0a8de519.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Input_ExplicitLabel:Fail_1,Fail_2"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/e086e5/2531f5fa4a4c2f8f357de91cc8a54e244fd1e3d1.html",
       "assertions": [
         {
@@ -5688,7 +5748,22 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/e086e5/5be867508d4da11703175f32d6f3541b42538256.html",
+      "source": "https://act-rules.github.io/testcases/e086e5/5891d23a51ac07d7b85d2b469f970637d45a6382.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Input_ExplicitLabel:Fail_1,Fail_2"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/e086e5/a9ff16fec8b977eb20b51b2150574b06bb81a177.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -6483,6 +6558,36 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/ucwvc8/2f7b367cd2275113214c1a6d8c33aec89c6ed994.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": ""
+          },
+          "result": {
+            "outcome": "earl:untested"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/ucwvc8/9c40e88aea85e182663aa0cae6cadd20b79cfc7a.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": ""
+          },
+          "result": {
+            "outcome": "earl:untested"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/bf051a/dfb5c0b5168f4b961f2f7a1c5bfa4cd1d96faf0a.html",
       "assertions": [
         {
@@ -6529,6 +6634,36 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/bf051a/e806126ba40cc2ee3da9d01afb217bded3b816bc.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Fail_1,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/bf051a/6b30e5fdcfd916ef0f745359c8130cc53c46006c.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Fail_1,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/bf051a/ead0da7af1ba13e4006e7fc024555a6f08d77592.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -6687,6 +6822,36 @@
           },
           "result": {
             "outcome": "earl:passed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/bf55db9cf1da4fc8c905bfa6f978b2a2303707ea.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Html_HasLang:Fail_4"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/ff33366d81a3e62e13a1e6c42db2f9a7d4deab0b.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Html_HasLang:Fail_4"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -13968,7 +14133,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/09o5cg/96a63532b27f1f45457a135f7840698fb3e37872.html",
+      "source": "https://act-rules.github.io/testcases/09o5cg/bb8261f0e50d0cb4eb52b11b653c2088ddb97a55.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -14388,21 +14553,6 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c5a4ea/51991f17502dcc8a459e32e849af3211c7efe68a.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": ""
-          },
-          "result": {
-            "outcome": "earl:untested"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/c5a4ea/26d6803551b1f3b247c4f4750d1291b8d99f5d22.html",
       "assertions": [
         {
@@ -14448,7 +14598,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c5a4ea/9510a72dd0fa1dad4bb46d36ea997d6482ed37ed.html",
+      "source": "https://act-rules.github.io/testcases/c5a4ea/3938988521b4347e0dd1d9624b79c92c8339a691.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -14463,7 +14613,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c5a4ea/3938988521b4347e0dd1d9624b79c92c8339a691.html",
+      "source": "https://act-rules.github.io/testcases/c5a4ea/51991f17502dcc8a459e32e849af3211c7efe68a.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -14913,22 +15063,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c3232f/17189684688eb0b0fb6cbb3109527bf1558756b3.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": ""
-          },
-          "result": {
-            "outcome": "earl:untested"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c3232f/6a99cc94a6811aeb0e6d41f01ef93cefd2a8be96.html",
+      "source": "https://act-rules.github.io/testcases/c3232f/90b7864f21830a00f59c2a52b3d9a2359d2c2867.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -14959,21 +15094,6 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/c3232f/7d7a94d0ae749de98095b3af35f0adf65cb01bd1.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": ""
-          },
-          "result": {
-            "outcome": "earl:untested"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/c3232f/26130992612441b49f6975a5fa48f5051e627e1e.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -15019,6 +15139,21 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/c3232f/f0a60f2924c927d3dc97676d02c83ab38025955f.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": ""
+          },
+          "result": {
+            "outcome": "earl:untested"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/c3232f/17189684688eb0b0fb6cbb3109527bf1558756b3.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -15453,21 +15588,6 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/1ec09b/9164db309a6589b695bdcf93c31506c9c6f3fb59.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": ""
-          },
-          "result": {
-            "outcome": "earl:untested"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/1ec09b/a2b46a07e183c60af65528dc7c2de446776ab694.html",
       "assertions": [
         {
@@ -15498,7 +15618,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/1ec09b/6576860a379624e6ee6784abd5a6ab748ef199fd.html",
+      "source": "https://act-rules.github.io/testcases/1ec09b/a6839ec6a83ef44c14587870afbabfafc13daac2.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -15513,7 +15633,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/1ec09b/a6839ec6a83ef44c14587870afbabfafc13daac2.html",
+      "source": "https://act-rules.github.io/testcases/1ec09b/9164db309a6589b695bdcf93c31506c9c6f3fb59.html",
       "assertions": [
         {
           "@type": "Assertion",
