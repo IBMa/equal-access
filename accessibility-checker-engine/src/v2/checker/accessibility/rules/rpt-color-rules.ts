@@ -87,6 +87,9 @@ let a11yRulesColor: Rule[] = [
             console.log("style.left = ", style.left);
             console.log("parseInt(style.left.replace(/[^0-9.+-]/, '')) = ", parseInt(style.left.replace(/[^0-9.+-]/, '')));
             console.log(style.left === "auto" || parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0);
+            console.log("style.top = ", style.top);
+            console.log("parseInt(style.top.replace(/[^0-9.+-]/, '')) = ", parseInt(style.top.replace(/[^0-9.+-]/, '')));
+            console.log(style.top === "auto" || parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0);
             // check if element visible
             let visible = true;
             if (style.width !== "0" &&
@@ -95,10 +98,10 @@ let a11yRulesColor: Rule[] = [
                 style.display !=='none' &&
                 style.visibility !== 'hidden' && 
                 style.overflow !== 'hidden' && 
-                // JCH TODO this only works for left not top, right, or bottom - Tom add top
-                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0))) { // this works with all absolute units
-                    visible = true;
-                    console.log("element IS visible");
+                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0)) &&
+                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0))) { // this works with all absolute units
+                visible = true;
+                console.log("element IS visible");
             } else {
                 visible = false;
                 console.log("element NOT visible");
@@ -155,29 +158,29 @@ let a11yRulesColor: Rule[] = [
 
             // JCH don't do clip-path now 
             let clipPathHeight = -1;
-            if (style.clipPath !== "auto") {
-                console.log("style.clipPath = ",style.clipPath);
-                console.log("style.clipPath.toString = ",style.clipPath.toString());
-                let clipString = style.clipPath.toString();
-                if (clipString.includes("inset")) {
-                    var reBrackets = /\((.*)\)/g;
-                  var listOfText = [];
-                  var found = reBrackets.exec(clipString);
-                  var foundArr = found[1].split(' ');
-                  for (let i=0; i<foundArr.length; i++) {
-                    console.log("foundArr[",i,"] = ",foundArr[i]);
-                    listOfText.push(foundArr[i]);
-                  };
-                }
-                console.log("listOfText = ",listOfText);
+            // if (style.clipPath !== "auto") {
+            //     console.log("style.clipPath = ",style.clipPath);
+            //     console.log("style.clipPath.toString = ",style.clipPath.toString());
+            //     let clipString = style.clipPath.toString();
+            //     if (clipString.includes("inset")) {
+            //         var reBrackets = /\((.*)\)/g;
+            //       var listOfText = [];
+            //       var found = reBrackets.exec(clipString);
+            //       var foundArr = found[1].split(' ');
+            //       for (let i=0; i<foundArr.length; i++) {
+            //         console.log("foundArr[",i,"] = ",foundArr[i]);
+            //         listOfText.push(foundArr[i]);
+            //       };
+            //     }
+            //     console.log("listOfText = ",listOfText);
                 // clipPathHeight = parseInt(listOfText[0].replace(/px/g, '')) - parseInt(listOfText[2].replace(/px/g, ''));
                 // clipPathHeight = Math.abs(clipHeight);
-            }
+            // }
             // console.log("clipPathHeight = ", clipPathHeight);
 
             // if (style.position === "absolute" && style.clip === "rect(0px, 0px, 0px, 0px)" && style.overflow !== "visible") {
             // JCH arbitrarily use less that 7px for clipHeight
-            if (style.position === "absolute" && clipHeight < 7) {
+            if (style.position === "absolute" && clipHeight < 7 && clipHeight !== -1) {
                 // Corner case where item is hidden (accessibility hiding technique)
                 return null;
             }
