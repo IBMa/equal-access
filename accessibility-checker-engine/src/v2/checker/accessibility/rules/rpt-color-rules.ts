@@ -73,23 +73,6 @@ let a11yRulesColor: Rule[] = [
             //          stroke-box
             //      NOTE: the CSS clip property is deprecated
             //      Also: clip only works if the element is absolutely positioned and can only do rectangles
-            // QUESTION: Should clipHeight be an absolute value?
-            console.log("*************************************");
-            console.log("Element: ", ruleContext.tagName);
-            console.log("Text = ", ruleContext.innerHTML);
-            console.log("style.width = ", style.width);
-            console.log("style.height = ", style.height);
-            console.log("style.opacity = ", style.opacity);
-            console.log("style.display = ", style.display);
-            console.log("style.visibility = ", style.visibility);
-            console.log("style.overflow = ", style.overflow);
-            console.log("style.position = ", style.position);
-            console.log("style.left = ", style.left);
-            console.log("parseInt(style.left.replace(/[^0-9.+-]/, '')) = ", parseInt(style.left.replace(/[^0-9.+-]/, '')));
-            console.log(style.left === "auto" || parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0);
-            console.log("style.top = ", style.top);
-            console.log("parseInt(style.top.replace(/[^0-9.+-]/, '')) = ", parseInt(style.top.replace(/[^0-9.+-]/, '')));
-            console.log(style.top === "auto" || parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0);
             // check if element visible
             let visible = true;
             if (style.width !== "0" &&
@@ -98,23 +81,24 @@ let a11yRulesColor: Rule[] = [
                 style.display !=='none' &&
                 style.visibility !== 'hidden' && 
                 style.overflow !== 'hidden' && 
+                // left and right work with all absolute units
                 (style.left === "auto" || (style.position === 'absolute' && parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0)) &&
-                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0))) { // this works with all absolute units
+                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0))) { 
                 visible = true;
-                console.log("element IS visible");
+                // console.log("element IS visible");
+                // console.log("CHECK COLOR CONTRAST unless to small");
             } else {
                 visible = false;
-                console.log("element NOT visible");
+                // console.log("element NOT visible");
             }
             if (visible === false) {
+                // console.log("DO NOT CHECK COLOR CONTRAST");
                 return null;
             }
             
 
             let clipHeight = -1;
             if (style.clip !== "auto") {
-                console.log("style.clip = ",style.clip);
-                console.log("style.clip.toString = ",style.clip.toString());
                 let clipString = style.clip.toString();
                 if (clipString.includes("rect")) {
                     var reBrackets = /\((.*)\)/g;
@@ -122,15 +106,14 @@ let a11yRulesColor: Rule[] = [
                   var found = reBrackets.exec(clipString);
                   var foundArr = found[1].split(', ');
                   for (let i=0; i<foundArr.length; i++) {
-                    console.log("foundArr[",i,"] = ",foundArr[i]);
+                    // console.log("foundArr[",i,"] = ",foundArr[i]);
                     listOfText.push(foundArr[i]);
                   };
                 }
-                console.log("listOfText = ",listOfText);
+                // console.log("listOfText = ",listOfText);
                 clipHeight = parseInt(listOfText[0].replace(/px/g, '')) - parseInt(listOfText[2].replace(/px/g, ''));
                 clipHeight = Math.abs(clipHeight);
             }
-            console.log("clipHeight = ", clipHeight);
 
             // JCH clip-path INFO:
             //      Excellent article on clip-path: https://ishadeed.com/article/clip-path/
@@ -151,10 +134,6 @@ let a11yRulesColor: Rule[] = [
             //      
             //      So the key question is what amount of effort do we want to invest into clip-path
             // 
-
-
-            console.log("height = ", ruleContext.offsetHeight);
-            console.log("width = ", ruleContext.offsetWidth);
 
             // JCH don't do clip-path now 
             let clipPathHeight = -1;
@@ -181,6 +160,7 @@ let a11yRulesColor: Rule[] = [
             // if (style.position === "absolute" && style.clip === "rect(0px, 0px, 0px, 0px)" && style.overflow !== "visible") {
             // JCH arbitrarily use less that 7px for clipHeight
             if (style.position === "absolute" && clipHeight < 7 && clipHeight !== -1) {
+                // console.log("DO NOT CHECK COLOR CONTRAST because too small");
                 // Corner case where item is hidden (accessibility hiding technique)
                 return null;
             }
@@ -189,7 +169,7 @@ let a11yRulesColor: Rule[] = [
             let fg = colorCombo.fg;
             let bg = colorCombo.bg;
             let ratio = fg.contrastRatio(bg);
-            console.log("fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
+            // console.log("fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
             let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
             let size = RPTUtilStyle.getFontInPixels(style.fontSize);
             let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
@@ -229,7 +209,6 @@ let a11yRulesColor: Rule[] = [
             if (!passed && isDisabled) {
                 passed = true;
             }
-            console.log("*************************************");
             //return new ValidationResult(passed, [ruleContext], '', '', [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
             if (!passed) {
                 if (fg.toHex() === bg.toHex()) {
