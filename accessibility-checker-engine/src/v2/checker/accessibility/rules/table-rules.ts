@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -256,6 +257,11 @@ let a11yRulesTable: Rule[] = [
         context: "dom:td[scope], dom:th[scope]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            const nodeName = ruleContext.nodeName.toLowerCase();
+            if (nodeName === 'td')
+                return RuleFail("Fail_2");
+
+            //only continue for 'th'    
             let scopeVal = ruleContext.getAttribute("scope").trim().toLowerCase();
             let passed = /^(row|col|rowgroup|colgroup)$/.test(scopeVal);
             if (!passed) {
@@ -421,6 +427,65 @@ let a11yRulesTable: Rule[] = [
              let parentRole = hierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
              return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
          }
+    },
+    {
+        /**
+         * See https://github.com/IBMa/equal-access/tree/syan-3138  
+         */
+         id: "table_headers_ref_valid",
+         context: "dom:td[headers], dom:th[headers]",
+         run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+            // If this is a layout table or a simple table the rule does not apply.
+            if (parentTable == null || !RPTUtil.isNodeVisible(parentTable)  || !RPTUtil.isDataTable(parentTable))
+                return null;
+
+            let nodeName = ruleContext.nodeName.toLowerCase();
+            let doc = ruleContext.ownerDocument; 
+            let value = ruleContext.getAttribute("headers"); 
+            if (!value) return null;
+            let ids = value.split(" ");
+            let invalidHeaderValues = [];
+            let sameNodeHeaderValues = [];
+            let sameTableHeaderValues = [];
+            let invalidElemHeaderValues = [];
+            for (let i=0; i < ids.length; i++ ) { 
+                let id = ids[i];
+                if (id.trim() === '') continue;
+                const elem = doc.getElementById(id);
+                if (!elem)
+                    invalidHeaderValues.push(id);
+                else if (DOMUtil.sameNode(elem, ruleContext)) 
+                    sameNodeHeaderValues.push(id);
+                else if (!DOMUtil.isInSameTable(elem, ruleContext))
+                    sameTableHeaderValues.push(id);
+                else {
+                    let elemName = elem.nodeName.toLowerCase();
+                    if (elemName !== 'th') {
+                        const roles = RPTUtil.getRoles(elem, true);
+                        if (!roles.includes('columnheader') && !roles.includes('rowheader'))
+                            invalidElemHeaderValues.push(id);
+                    }
+                }     
+            }
+            
+            let results = [];
+            if (invalidHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_1", [invalidHeaderValues.toString()]));
+            if (sameNodeHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_2", [sameNodeHeaderValues.toString()]));    
+            if (sameTableHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_3", [sameTableHeaderValues.toString()]));    
+            if (invalidElemHeaderValues.length != 0) 
+                results.push(RuleFail("Fail_4", [invalidElemHeaderValues.toString()]));    
+            
+            if (results.length == 0) {
+                return RulePass("Pass_0");
+            } else {
+                return results;
+            }
+        }    
     }
 
 ]
