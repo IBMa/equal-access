@@ -1,4 +1,8 @@
 let a11yNls = {
+    // No {tokens} in passive messages, such as 0= "a passive message..."
+    // No back-ticks used in messages here, only <, ", '
+    // Changes in messages will require corresponding change in test cases
+    //
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",
@@ -136,7 +140,7 @@ let a11yNls = {
     "RPT_Block_ShouldBeHeading": {
         0: "Heading text must use a heading element", 
         "Pass_0": "Rule Passed",
-        "Potential_1": `Check if this text should be marked up as a heading: {0}`
+        "Potential_1": "Check if this text should be marked up as a heading: {0}"
     },
     // JCH - DONE
     "WCAG20_Form_HasSubmit": {
