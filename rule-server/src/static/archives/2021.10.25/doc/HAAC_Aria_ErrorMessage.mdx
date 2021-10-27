@@ -1,0 +1,64 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Aria_ErrorMessage"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Custom error message has invalid reference `id`
+
+<div id="locLevel"></div>
+
+A custom error message must reference a valid `id` and when triggered the message must be appropriately exposed
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When a user input is detected as invalid, users expect to be informed about the error. 
+Using a custom error message and making the content of the error message available and exposed programmatically makes the error message accessible through audio or other channels.
+
+<div id="locSnippet"></div>
+
+### What to do
+* If the `aria-errormessage` attribute does not reference a valid `id`, update the value to reference a valid `id`;
+* **Or**, if the `aria-errormessage` attribute references a valid `id`, verify the content is in a container that is not hidden when the message is triggered.
+
+Example:
+
+<CodeSnippet type="multi" light={true}>&lt;!-- Initial valid state --&gt;
+&lt;label for="startTime"&gt;Please enter a start time for the meeting:&lt;/label&gt;
+&lt;input id="startTime" type="text" aria-errormessage="msgID" value="" aria-invalid="false"&gt;
+&lt;span id="msgID" aria-live="off" style="visibility:hidden"&gt;Invalid time:  the time must be between 9:00 AM and 5:00 PM&lt;/span&gt;
+    
+&lt;!-- User has entered an invalid value --&gt;
+&lt;label for="startTime"&gt;Please enter a start time for the meeting:&lt;/label&gt;
+    
+&lt;input id="startTime" type="text" aria-errormessage="msgID" aria-invalid="true" value="11:30" PM&gt;
+&lt;span id="msgID" aria-live="assertive" style="visibility:visible"&gt;Invalid time:  the time must be between 9:00 AM and 5:00 PM&lt;/span&gt;</CodeSnippet>
+
+Note: Example code includes material copied from or derived from ARIA 1.1 Copyright © [2013-2017] W3C® (MIT, ERCIM, Keio, Beihang)
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 3.3.1 Error Identification](https://www.ibm.com/able/requirements/requirements/#3_3_1) 
+* [WCAG technique G84](https://www.w3.org/WAI/WCAG21/Techniques/general/G84) 
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Meta_RedirectZero"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check page does not automatically refresh without warning or options
+
+<div id="locLevel"></div>
+
+Page should not automatically refresh without warning or option to turn it off or adjust the time limit
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Unexpected automatic page refresh within a short time interval without an option to turn it off or adjust the time limit, can disorient people and prevent them from reading or finishing the task at hand.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the time limit is required or essential, no action is needed;
+* **Or**, provide an option to allow the user to turn auto-refresh off;
+* **Or**, allow the user to adjust or extend the time limit and warn them before it expires;
+* **Or**, set the time limit longer than 20 hours.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 2.2.1 Timing Adjustable](https://www.ibm.com/able/requirements/requirements/#2_2_1)
+* [WCAG technique F41](https://www.w3.org/WAI/WCAG21/Techniques/failures/F41)
+
+### Who does this affect?
+
+* People who are deaf or hard of hearing using sign language interpreters
+* People with cognitive limitations
+* People with dexterity impairments
+* People with low vision
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
