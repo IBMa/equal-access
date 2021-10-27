@@ -1,5 +1,5 @@
 let a11yNls = {
-    // No {tokens} in passive messages, such as 0= "a passive message..."
+    // No {tokens} in passive messages, such as 0: "a passive message..."
     // No back-ticks used in messages here, only <, ", '
     // Changes in messages will require corresponding change in test cases
     //
@@ -1027,7 +1027,7 @@ let a11yNls = {
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
     },
     "aria_hidden_focus_misuse": {
-        0: "A focusable element should not be within the subtree of an element with an 'aria-hidden' attribute with value 'true'", 
+        0: "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
