@@ -1,4 +1,8 @@
 let a11yNls = {
+    // No {tokens} in passive messages, such as 0: "a passive message..."
+    // No back-ticks used in messages here, only <, ", '
+    // Changes in messages will require corresponding change in test cases
+    //
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",
@@ -136,7 +140,7 @@ let a11yNls = {
     "RPT_Block_ShouldBeHeading": {
         0: "Heading text must use a heading element", 
         "Pass_0": "Rule Passed",
-        "Potential_1": `Check if this text should be marked up as a heading: {0}`
+        "Potential_1": "Check if this text should be marked up as a heading: {0}"
     },
     // JCH - DONE
     "WCAG20_Form_HasSubmit": {
@@ -667,7 +671,7 @@ let a11yNls = {
         "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
     },
     "HAAC_Aria_SvgAlt": {
-        0: "An element with \"{0}\" graphics role must have a non-empty label",
+        0: "An element with a graphics role must have a non-empty label",
         "Pass_0": "Rule Passed",
         "Fail_1": "Element with \"{0}\" graphics role has no label",
         "Fail_2": "Element with \"{0}\" graphics role has no label or an empty label",
@@ -1023,7 +1027,7 @@ let a11yNls = {
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
     },
     "aria_hidden_focus_misuse": {
-        0: "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'", 
+        0: "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
