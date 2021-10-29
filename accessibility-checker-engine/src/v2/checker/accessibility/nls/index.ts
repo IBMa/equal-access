@@ -767,7 +767,7 @@ let a11yNls = {
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
         0: "An element with an implicit or explicit role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element is not contained within or owned by a valid element 
+        "Fail_1": "The element is not contained within or owned by a valid element"
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
