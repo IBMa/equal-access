@@ -53,7 +53,114 @@ let a11yRulesColor: Rule[] = [
                 return null;
             }
             let style = win.getComputedStyle(ruleContext);
-            if (style.position === "absolute" && style.clip === "rect(0px, 0px, 0px, 0px)" && style.overflow !== "visible") {
+            
+            
+            // JCH clip INFO:
+            //      The clip property lets you specify a rectangle to clip an absolutely positioned element. 
+            //      The rectangle specified as four coordinates, all from the top-left corner of the element to be clipped.
+            //      Property values:
+            //          none        This is default. No clipping is done
+            //          auto        No clipping will be done
+            //          shape       The only valid value is: rect (top, right, bottom, left)
+            //                      e.g., clip: rect(10px, 20px, 30px, 40px);
+            //                      Note: the four values are in the same order as margin/padding
+            //                      The rect values are positive pixel values, e.g., 10px, etc.
+            //          margin-box  Uses the margin box as the reference box
+            //          border-box  Uses the border box as the reference box
+            //          padding-box Uses the padding box as the reference box
+            //          content-box
+            //          fill-box
+            //          stroke-box
+            //      NOTE: the CSS clip property is deprecated
+            //      Also: clip only works if the element is absolutely positioned and can only do rectangles
+            // check if element visible
+            let visible = true;
+            if (style.width !== "0" &&
+                style.height !== "0" &&
+                style.opacity !== "0" &&
+                style.display !=='none' &&
+                style.visibility !== 'hidden' && 
+                style.overflow !== 'hidden' && 
+                // left and right work with all absolute units
+                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.left.replace(/[^0-9.+-]/, '')) > 0)) &&
+                (style.left === "auto" || (style.position === 'absolute' && parseInt(style.top.replace(/[^0-9.+-]/, '')) > 0))) { 
+                visible = true;
+                // console.log("element IS visible");
+                // console.log("CHECK COLOR CONTRAST unless to small");
+            } else {
+                visible = false;
+                // console.log("element NOT visible");
+            }
+            if (visible === false) {
+                // console.log("DO NOT CHECK COLOR CONTRAST");
+                return null;
+            }
+            
+
+            let clipHeight = -1;
+            if (style.clip !== "auto") {
+                let clipString = style.clip.toString();
+                if (clipString.includes("rect")) {
+                    var reBrackets = /\((.*)\)/g;
+                  var listOfText = [];
+                  var found = reBrackets.exec(clipString);
+                  var foundArr = found[1].split(', ');
+                  for (let i=0; i<foundArr.length; i++) {
+                    // console.log("foundArr[",i,"] = ",foundArr[i]);
+                    listOfText.push(foundArr[i]);
+                  };
+                }
+                // console.log("listOfText = ",listOfText);
+                clipHeight = parseInt(listOfText[0].replace(/px/g, '')) - parseInt(listOfText[2].replace(/px/g, ''));
+                clipHeight = Math.abs(clipHeight);
+            }
+
+            // JCH clip-path INFO:
+            //      Excellent article on clip-path: https://ishadeed.com/article/clip-path/
+            //      clip-path is a totally different animal with many, many different variations
+            //      The goal was for it to not be as limited as clip
+            //      The syntax is more complicated (as it does more) and it is different from clip,
+            //      e.g., the above clip rectangle would be clip-path: inset(10px 20px 30px 40px);
+            //      Note: there are no commas
+            //      Also, it can take single values to make all sides the same, or 2 values (vert/hori).
+            //      or 3 values (top/hori/bottom)
+            //      And percentages can works as well as px
+            //      
+            //      Although there are five different shapes: inset (term used for rectangle), circle,
+            //          ellipse, polygon, path - we will only concern ourselves with inset
+            //      There are 7 box values: margin-box, border-box, padding-box, content-box, fill-box, stroke-box, view-box
+            //      Box and shape values may be combined: clip-path: padding-box circle(50px at 0 100px);
+            //      NOTE: the box values are NOT intuitive, see: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Shapes/From_box_values#margin-box
+            //      
+            //      So the key question is what amount of effort do we want to invest into clip-path
+            // 
+
+            // JCH don't do clip-path now 
+            let clipPathHeight = -1;
+            // if (style.clipPath !== "auto") {
+            //     console.log("style.clipPath = ",style.clipPath);
+            //     console.log("style.clipPath.toString = ",style.clipPath.toString());
+            //     let clipString = style.clipPath.toString();
+            //     if (clipString.includes("inset")) {
+            //         var reBrackets = /\((.*)\)/g;
+            //       var listOfText = [];
+            //       var found = reBrackets.exec(clipString);
+            //       var foundArr = found[1].split(' ');
+            //       for (let i=0; i<foundArr.length; i++) {
+            //         console.log("foundArr[",i,"] = ",foundArr[i]);
+            //         listOfText.push(foundArr[i]);
+            //       };
+            //     }
+            //     console.log("listOfText = ",listOfText);
+                // clipPathHeight = parseInt(listOfText[0].replace(/px/g, '')) - parseInt(listOfText[2].replace(/px/g, ''));
+                // clipPathHeight = Math.abs(clipHeight);
+            // }
+            // console.log("clipPathHeight = ", clipPathHeight);
+
+            // if (style.position === "absolute" && style.clip === "rect(0px, 0px, 0px, 0px)" && style.overflow !== "visible") {
+            // JCH arbitrarily use less that 7px for clipHeight
+            if (style.position === "absolute" && clipHeight < 7 && clipHeight !== -1) {
+                // console.log("DO NOT CHECK COLOR CONTRAST because too small");
                 // Corner case where item is hidden (accessibility hiding technique)
                 return null;
             }
@@ -62,6 +169,7 @@ let a11yRulesColor: Rule[] = [
             let fg = colorCombo.fg;
             let bg = colorCombo.bg;
             let ratio = fg.contrastRatio(bg);
+            // console.log("fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
             let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
             let size = RPTUtilStyle.getFontInPixels(style.fontSize);
             let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
@@ -101,7 +209,6 @@ let a11yRulesColor: Rule[] = [
             if (!passed && isDisabled) {
                 passed = true;
             }
-
             //return new ValidationResult(passed, [ruleContext], '', '', [ratio.toFixed(2), size, weight, fg.toHex(), bg.toHex(), colorCombo.hasBGImage, colorCombo.hasGradient]);
             if (!passed) {
                 if (fg.toHex() === bg.toHex()) {
