@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### An explicit ARIA 'role' is not valid for {0} element within a ARIA role '{1}' per the ARIA in HTML specification
+### An explicit ARIA `'role'` is not valid for the element within an ARIA role per the ARIA in HTML specification
 
 <div id="locLevel"></div>
 
-Table structure elements cannot specify an explicit 'role' within table containers
+Table structure elements cannot specify an explicit `'role'` within table containers
 
 </Column>
 </Row>
@@ -23,15 +23,15 @@ Table structure elements cannot specify an explicit 'role' within table containe
 
 The ARIA specification provides a collection of accessibility roles as the main indicator 
 of the type of control. This is used to support platform accessibility APIs. Using a valid 
-ARIA `role` on an element as defined in the ARIA specification allows assistive 
+ARIA `'role'` with an element as defined in the ARIA specification allows assistive 
 technologies to use the role semantics to present and support consistent object interaction.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Remove any `role` definitions from table structure elements (`tr`, `th`, `td`) withing any 
-container with `role` of `table`, `grid`, or `treegrid`. The following example shows an element 
+* Remove any `'role'` definitions from table structure elements (`<tr>`, `<th>`, `<td>`) withing any 
+container with `'role'` of `"table"`, `"grid"`, or `"treegrid"`. The following example shows an element 
 with a valid `role="grid"` with appropriate table structures:
 
 <CodeSnippet type="multi" light={true}> 

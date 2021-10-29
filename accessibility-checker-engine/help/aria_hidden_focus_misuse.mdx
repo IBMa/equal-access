@@ -21,7 +21,7 @@ Element with `aria-hidden="true"` should not have focusable content
 
 ### Why is this important?
 
-Using either `role="presentation"` or `aria-hidden="true"` on a focusable element will result in some users focusing on "nothing".
+Using either `role="presentation"` or `aria-hidden="true"` with a focusable element will result in some users focusing on "nothing".
 A focusable element with `aria-hidden="true"` is ignored as part of the reading order, 
 but still part of the focus order, 
 making its state of visible or hidden unclear.
@@ -50,7 +50,7 @@ Therefore, using `aria-hidden="true"` violates the rule:
         &lt;/div&gt;
 </CodeSnippet>
 
-Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element.
+Note: Using `aria-hidden="false"` with a descendant of an element with `aria-hidden="true"` does not expose that element.
 Using `aria-hidden="true"` hides itself and all its content from assistive technologies.
 
 </Column>

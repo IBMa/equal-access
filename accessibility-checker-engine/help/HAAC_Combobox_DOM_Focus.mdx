@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Initial DOM focus is not correctly set on the combobox
+### Initial DOM focus is not correctly set with the combobox
 
 <div id="locLevel"></div>
 
-Initial DOM focus on the combobox must be set on the `<text>` input
+Initial DOM focus with the combobox must be set with the `<text>` input
 
 </Column>
 </Row>
@@ -21,13 +21,13 @@ Initial DOM focus on the combobox must be set on the `<text>` input
 
 ### Why is this important?
 
-A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. When a combobox receives focus, the focus should be set on the `<text>` input element that can either display the current value or supports editing, so people who use assistive technologies are able accurately navigate and interact with the content.
+A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. When a combobox receives focus, the focus should be set with the `<text>` input element that can either display the current value or supports editing, so people who use assistive technologies are able accurately navigate and interact with the content.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Set the initial DOM focus only on the combobox’s `<text>` input element. (Note: This was necessary for the Combobox using ARIA 1.1 implementation which should be avoided due to problems with implementation. Follow the guidance for combobox in [ARIA 1.2](https://w3c.github.io/aria-practices/#combobox) which has changed significantly.)
+* Set the initial DOM focus only with the combobox’s `<text>` input element. (Note: This was necessary for the Combobox using ARIA 1.1 implementation which should be avoided due to problems with implementation. Follow the guidance for combobox in [ARIA 1.2](https://w3c.github.io/aria-practices/#combobox) which has changed significantly.)
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">

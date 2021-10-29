@@ -5,7 +5,7 @@ let a11yNls = {
     //
     // JCH - DONE
     "RPT_List_Misuse": {
-        0: "List elements should only be used for lists of related items",
+        0: "List elements should only be used with lists of related items",
         "Pass_0": "Rule Passed",
         "Potential_1": "List element is missing or improperly structured"
     },
@@ -96,7 +96,7 @@ let a11yNls = {
     "WCAG20_Area_HasAlt": {
         0: "<area> elements in an image map must have a text alternative",
         "Pass_0": "Rule Passed",
-        "Fail_1": "<area> element in an image map has no text alternative"
+        "Fail_1": "<area>  element within an image map has no text alternative"
     },
     // JCH - DONE
     "RPT_Media_ImgColorUsage": {
@@ -133,7 +133,7 @@ let a11yNls = {
         0: "The page should have a title that correctly identifies the subject of the page",
         "Pass_0": "Rule Passed",
         "Fail_1": "Missing <head> element so there can be no <title> element present",
-        "Fail_2": "Missing <title> element in <head> element",
+        "Fail_2": "Missing <title> element with <head> element",
         "Fail_3": "The <title> element is empty (no innerHTML)"
     },
     // JCH - DONE
@@ -406,7 +406,7 @@ let a11yNls = {
         0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
         "Fail_1": "Value provided is invalid for the 'scope' attribute",
-        "Fail_2": "The 'scope' attribute should only be used on a <th> element"
+        "Fail_2": "The 'scope' attribute should only be used with a <th> element"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
@@ -515,9 +515,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "WCAG20_Elem_UniqueAccessKey": {
-        0: "'accesskey' attribute values on each element must be unique for the page",
+        0: "'accesskey' attribute values with each element must be unique for the page",
         "Pass_0": "Rule Passed",
-        "Fail_1": "'accesskey' attribute value on the element is not unique"
+        "Fail_1": "'accesskey' attribute value with the element is not unique"
     },
     // JCH - DONE
     "WCAG20_Script_FocusBlurs": {
@@ -527,7 +527,7 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Img_UsemapAlt": {
-        0: "An image map and each <area> element in an image map must have text alternative(s)",
+        0: "An image map and each <area>  element within an image map must have text alternative(s)",
         "Pass_0": "Rule Passed",
         "Fail_1": "Image map or child <area> has no text alternative"
     },
@@ -553,8 +553,8 @@ let a11yNls = {
     "Rpt_Aria_ValidRole": {
         0: "Elements must have a valid 'role' per ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Some of the 'role's defined on the element are not valid per ARIA specification",
-        "Fail_2": "The 'role' defined on the element is not valid per ARIA specification"
+        "Fail_1": "Some of the 'role's defined with the element are not valid per ARIA specification",
+        "Fail_2": "The 'role' defined with the element is not valid per ARIA specification"
     },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
@@ -564,7 +564,7 @@ let a11yNls = {
     "Rpt_Aria_ValidPropertyValue": {
         0: "ARIA property values must be valid",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The value \"{0}\" specified for attribute '{1}' on element <{2}> is not valid"
+        "Fail_1": "The value \"{0}\" specified for attribute '{1}' with element <{2}> is not valid"
     },
     // JCH - DONE
     "Rpt_Aria_ValidIdRef": {
@@ -574,7 +574,7 @@ let a11yNls = {
     },
     // JCH - DONE
     "Rpt_Aria_RequiredProperties": {
-        0: "When using a ARIA role on an element, the required attributes for that role must be defined",
+        0: "When using a ARIA role with an element, the required attributes for that role must be defined",
         "Pass_0": "Rule Passed",
         "Fail_1": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
     },
@@ -691,9 +691,9 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Aria_Or_HTML5_Attr": {
-        0: "HTML5 attributes must not conflict with the associated ARIA attribute used on an input element",
+        0: "HTML5 attributes must not conflict with the associated ARIA attribute used with an input element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "HTML5 attribute is in conflict with the associated ARIA attribute used on an input element"
+        "Fail_1": "HTML5 attribute is in conflict with the associated ARIA attribute used with an input element"
     },
     // JCH - DONE
     "HAAC_Canvas": {
@@ -767,7 +767,7 @@ let a11yNls = {
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
         0: "An element with an implicit or explicit role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\""
+        "Fail_1": "The element is not contained within or owned by a valid element 
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
@@ -978,8 +978,8 @@ let a11yNls = {
         "Fail_combobox_popup_role_mismatch": "The value of the combobox 'aria-haspopup' attribute \"{0}\" does not match the 'role' value of the popup element \"{1}\""
     },    
     "combobox_focusable_elements": {
-        0: "Tabbable focus for the combobox must be allowed only on the text input, except when using a dialog popup",
-        "Pass": "DOM focus is allowed only on the combobox element as required",
+        0: "Tabbable focus for the combobox must be allowed only with the text input, except when using a dialog popup",
+        "Pass": "DOM focus is allowed only with the combobox element as required",
         "Fail_not_tabbable": "The combobox element does not allow DOM focus as required",
         "Fail_tabbable_child": "The popup of the combobox has DOM focus or has 'aria-activedescendant' defined, which is not allowed"
     },
@@ -992,9 +992,9 @@ let a11yNls = {
         "Fail_active_not_selected": "The 'aria-activedescendant' \"{0}\" references an element that does not have 'aria-selected' set to true",
     },
     "combobox_autocomplete": {
-        0: "A combobox that supports autocompletion behavior must have the 'aria-autocomplete' attribute only on its text input element with a valid value; a value of '\"inline\"' is not supported",
+        0: "A combobox that supports autocompletion behavior must have the 'aria-autocomplete' attribute only with its text input element with a valid value; a value of '\"inline\"' is not supported",
         "Pass": "The combobox does not use 'aria-autocomplete' value '\"inline\"' nor does it have 'aria-autocomplete' defined within the popup",
-        "Fail_1": "The combobox has the 'aria-autocomplete' attribute incorrectly set on an element within the popup referenced by \"{0}\"",
+        "Fail_1": "The combobox has the 'aria-autocomplete' attribute incorrectly set with an element within the popup referenced by \"{0}\"",
         "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute value set to '\"inline\"' "
     },
     // JCH - DONE

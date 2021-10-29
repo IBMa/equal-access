@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### An element with ARIA `role="{0}"` does not contain or own at least one child element with each of the following ARIA roles: `{1}`
+### An element with ARIA `'role'` does not contain or own at least one child element with a valid ARIA role
 
 <div id="locLevel"></div>
 
-An element with ARIA `role` must contain required children
+An element with ARIA `'role'` must contain required children
 
 </Column>
 </Row>
@@ -21,7 +21,9 @@ An element with ARIA `role` must contain required children
 
 ### Why is this important?
 
-If a ARIA `role` attribute is specified for an element, any ARIA child elements required for that role must also be present. Child elements' native ARIA roles satisfy the requirement - the role does not have to be explicitly set. Without the required child elements, assistive technologies may not be able to accurately represent or interact with the element.
+If an ARIA `'role'` attribute is specified for an element, any ARIA child elements required for that role must also be present. 
+Child elements' native ARIA roles satisfy the requirement - the role does not have to be explicitly set. 
+Without the required child elements, assistive technologies may not be able to accurately represent or interact with the element.
 
 <div id="locSnippet"></div>
 

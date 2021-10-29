@@ -21,13 +21,13 @@ UI component must have at least one focusable child element for keyboard access
 
 ### Why is this important?
 
-Setting the `tabindex` value to 0 or -1 on a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
+Setting the `tabindex` value to 0 or -1 with a child element not focusable by default ensures the UI component will be included in the tab sequence and receive focus for keyboard access. Using values greater than 0 should be avoided as it can break the logical tab order.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Set the value of the `tabindex` attribute equal to 0 or -1 on at least one of the required child elements to include the UI component in the tab sequence. 
+* Set the value of the `tabindex` attribute equal to 0 or -1 with at least one of the required child elements to include the UI component in the tab sequence. 
 
 The following example shows a component with `role="tree"` with its required child with `role="treeitem"`. The child contains `tabindex="0"` which makes the `treeitem` keyboard operable:
 
