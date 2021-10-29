@@ -527,7 +527,7 @@ let a11yNls = {
     },
     // JCH - DONE
     "HAAC_Img_UsemapAlt": {
-        0: "An image map and each <area>  element within an image map must have text alternative(s)",
+        0: "An image map and each <area> element within an image map must have text alternative(s)",
         "Pass_0": "Rule Passed",
         "Fail_1": "Image map or child <area> has no text alternative"
     },
