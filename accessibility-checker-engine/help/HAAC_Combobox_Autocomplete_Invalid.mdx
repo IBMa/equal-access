@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `aria-autocomplete` attribute value of `"inline"` is not valid for a combobox
+### The `'aria-autocomplete'` attribute value of `"inline"` is not valid for a combobox
 
 <div id="locLevel"></div>
 
-The `aria-autocomplete` attribute value for a combobox text input element must not be `"inline"`
+The `'aria-autocomplete'` attribute value for a combobox text input element must not be `"inline"`
 
 </Column>
 </Row>
@@ -21,7 +21,7 @@ The `aria-autocomplete` attribute value for a combobox text input element must n
 
 ### Why is this important?
 
-Assistive technologies can present different types of combobox to their users according to their intended behavior. The `"inline"` value for the `aria-autocomplete` attribute is not valid for a combobox text entry element, so assistive technologies may be unable to operate it. A combobox that supports inline forms of autocomplete would do this in combination with having a popup element, and should use `aria-autocomplete="both"`.
+Assistive technologies can present different types of combobox to their users according to their intended behavior. The `"inline"` value for the `'aria-autocomplete'` attribute is not valid for a combobox text entry element, so assistive technologies may be unable to operate it. A combobox that supports inline forms of autocomplete would do this in combination with having a popup element, and should use `aria-autocomplete="both"`.
 
 <div id="locSnippet"></div>
 
@@ -29,7 +29,7 @@ Assistive technologies can present different types of combobox to their users ac
 
 * If the combobox has autocomplete behavior that includes both inline text appearing after the user's cursor and a popup element, use `aria-autocomplete="both"`;
 * **Or**, if the combobox has autocomplete behavior provided only through a popup element, use `aria-autocomplete="list"`;
-* **Or**, if the combobox does not have autocomplete behavior, remove the `aria-autocomplete` attribute (the default value is `"none"`).
+* **Or**, if the combobox does not have autocomplete behavior, remove the `'aria-autocomplete'` attribute (the default value is `"none"`).
 
 For example:
 

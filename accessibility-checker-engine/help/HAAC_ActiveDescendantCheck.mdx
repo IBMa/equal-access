@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `aria-activedescendant` property of the component does not reference the `id` of a valid child element.
+### The `'aria-activedescendant'` property of the component does not reference the `'id'` of a valid child element.
 
 <div id="locLevel"></div>
 
-The `aria-activedescendant` property must reference the `id` of a non-empty, non-hidden active child element.
+The `'aria-activedescendant'` property must reference the `'id'` of a non-empty, non-hidden active child element.
 
 </Column>
 </Row>
@@ -21,17 +21,17 @@ The `aria-activedescendant` property must reference the `id` of a non-empty, non
 
 ### Why is this important?
 
-In a composite component where the child elements are not normally able to take keyboard focus, the `aria-activedescendant` attribute can be used to identify the child element that currently has focus. This enables proper keyboard control of the component, and allows assistive technologies to gather information about the component and its state.
+In a composite component where the child elements are not normally able to take keyboard focus, the `'aria-activedescendant'` attribute can be used to identify the child element that currently has focus. This enables proper keyboard control of the component, and allows assistive technologies to gather information about the component and its state.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Verify that the `aria-activedescendant` attribute value is the `id` of the currently active child element;
+* Verify that the `'aria-activedescendant'` attribute value is the `'id'` of the currently active child element;
 * **And**, verify that the child element is not hidden;
 * **And**, verify that the child element is either a descendant of this element, or is owned by this element (indicated by using the aria-owns attribute with this element).
 
-The following example* shows a radio group using `aria-activedescendant` to indicate the active radio button, which is coded as a DOM descendant:
+The following example* shows a radio group using `'aria-activedescendant'` to indicate the active radio button, which is coded as a DOM descendant:
 
 <CodeSnippet type="multi" light={true}> 
    &lt;h3 id="group_label_1"&gt;Pizza Crust&lt;/h3&gt;

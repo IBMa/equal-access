@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `aria-owns` or the `aria-controls` attribute of the expanded combobox does not reference a valid popup `id`
+### The `'aria-owns'` or the `'aria-controls'` attribute of the expanded combobox does not reference a valid popup `'id'`
 
 <div id="locLevel"></div>
 
@@ -23,11 +23,11 @@ The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute o
 
 A combobox combines a text input element and a popup element that helps the user set the value of the 
 input. The popup becomes visible when the combobox is in an expanded state and is controlled by using 
-an attribute `aria-controls` referencing its `id`. When the value of the `aria-controls` attribute of
-the expanded combobox does not reference a valid popup `id`, assistive 
+an attribute `'aria-controls'` referencing its `'id'`. When the value of the `'aria-controls'` attribute of
+the expanded combobox does not reference a valid popup `'id'`, assistive 
 technologies may not be able to present and control the content correctly.
 
-Additionally, when the element with `role="combobox"` has an `aria-expanded` attribute with value `true`,
+Additionally, when the element with `role="combobox"` has an `'aria-expanded'` attribute with value `true`,
 the related popup element must be visible so that the assistive technology is able to present the
 popup to the user.
 
@@ -37,8 +37,8 @@ popup to the user.
 
 
  * Code the combobox as in the ARIA 1.2 example below;
- * **And**, set the value of the combobox `aria-controls` attribute to the `id` value of an element with `role="listbox"`;
- * **Or**, if using the ARIA 1.0 style of combobox, update the value of the `aria-owns` attribute of the combobox to reference the `id` value of the combobox popup element;
+ * **And**, set the value of the combobox `'aria-controls'` attribute to the `'id'` value of an element with `role="listbox"`;
+ * **Or**, if using the ARIA 1.0 style of combobox, update the value of the `'aria-owns'` attribute of the combobox to reference the `'id'` value of the combobox popup element;
 
 <CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
   &lt;input type="text" id="tag_combo"

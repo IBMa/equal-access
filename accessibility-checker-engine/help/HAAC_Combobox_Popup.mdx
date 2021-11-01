@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The value of the combobox `aria-haspopup` attribute does not match the `role` value of the popup element
+### The value of the combobox `'aria-haspopup'` attribute does not match the `'role'` value of the popup element
 
 <div id="locLevel"></div>
 
-The value of the combobox `aria-haspopup` attribute must match the `role` value of the popup element
+The value of the combobox `'aria-haspopup'` attribute must match the `'role'` value of the popup element
 
 </Column>
 </Row>
@@ -21,13 +21,13 @@ The value of the combobox `aria-haspopup` attribute must match the `role` value 
 
 ### Why is this important?
 
-An element with `role="combobox"` may have a popup element with the role of "listbox", "tree", "grid", or "dialog". If the value for the `aria-haspopup` attribute does not match the value for the popup element's `role` attribute, people who use assistive technologies may may see unexpected behavior and will not know how to interact with the content.
+An element with `role="combobox"` may have a popup element with the role of "listbox", "tree", "grid", or "dialog". If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` attribute, people who use assistive technologies may may see unexpected behavior and will not know how to interact with the content.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Set the value of the `aria-haspopup` attribute of the combobox element to match the value of the `role` attribute of the implemented popup. Allowed popup element `role` attribute values are "listbox", "tree", "grid", or "dialog".
+ * Set the value of the `'aria-haspopup'` attribute of the combobox element to match the value of the `'role'` attribute of the implemented popup. Allowed popup element `'role'` attribute values are "listbox", "tree", "grid", or "dialog".
 
 Alert: The guidance for combobox is changing significantly in ARIA 1.2 due to problems with implementation of the ARIA 1.1 pattern. The recommended combobox pattern for ARIA 1.2 is:
 

@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The combobox has the `aria-autocomplete` attribute set with an element that isn't a text input
+### The combobox has the `'aria-autocomplete'` attribute set with an element that isn't a text input
 
 <div id="locLevel"></div>
 
-A combobox that supports autocompletion behavior must have the `aria-autocomplete` attribute only with its text input element
+A combobox that supports autocompletion behavior must have the `'aria-autocomplete'` attribute only with its text input element
 
 </Column>
 </Row>
@@ -21,14 +21,14 @@ A combobox that supports autocompletion behavior must have the `aria-autocomplet
 
 ### Why is this important?
 
-A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. Only the text entry element can have the `aria-autocomplete` attribute, otherwise assistive technologies may be unable to understand and present the component's autocomplete functionality effectively.
+A combobox is a UI interactive component that combines an input and another element, such as a listbox or grid, that can dynamically pop up to help the user set the value of the input. Only the text entry element can have the `'aria-autocomplete'` attribute, otherwise assistive technologies may be unable to understand and present the component's autocomplete functionality effectively.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Remove the `aria-autocomplete` attribute from combobox elements that are not text input elements;
-* **And**, if autocomplete behavior is desired, verify that the text input element of the combobox has the `aria-autocomplete` attribute.
+* Remove the `'aria-autocomplete'` attribute from combobox elements that are not text input elements;
+* **And**, if autocomplete behavior is desired, verify that the text input element of the combobox has the `'aria-autocomplete'` attribute.
 
 For example: 
 
