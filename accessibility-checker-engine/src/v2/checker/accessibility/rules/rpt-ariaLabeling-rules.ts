@@ -25,12 +25,16 @@ import { DOMWalker } from "../../../dom/DOMWalker";
 let a11yRulesLabeling: Rule[] = [
     {
         /**
-         * Description: https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13
-         * 1.3.1: Info and Relationships 
+         * Description: Triggers if a landmark element has the same parent-landmark, 
+         * AND the same role as another landmark, 
+         * AND is not differentiated by aria-label or aria-labelledby. 
+         * This causes it to be difficult for a keyboard user to know the difference between two landmarks
+         * Origin:  https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13 this is not directly part of the ARIA spec so this is only in the IBM rules as a Violation
          */
         id: "landmark_name_unique",
         context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
             const ruleContext = context["dom"].node as Element;
 
             let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
