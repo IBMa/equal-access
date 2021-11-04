@@ -1,0 +1,55 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_RequiredParent_Native_Host_Sematics"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+
+### The element with `role="{0}"` is not contained in or owned by an element with one of the following roles: `{1}`
+
+<div id="locLevel"></div>
+
+An element with an implicit or explicit role must be contained within a valid element
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+If an ARIA `'role'` attribute is specified for an element, the parent element that is required for that role must also be present in the accessibility tree. If the parent element's implicit role satisfies the requirement (e.g., `<ul>`), this role does not have to be explicitly set with ARIA. Without the required parent element, assistive technologies may not be able to accurately represent or interact with the element.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Add one of the required context role(s) to the appropriate parent of this element.
+
+For example, the following `<li>` element uses an `"option"` role. The `"option"` role requires a parent element with role `"listbox"`.
+
+<CodeSnippet type="multi" light={true}>&lt;ul role="listbox"&gt;
+    &lt;li role="option"&gt;list box option&lt;/li&gt;
+&lt;/ul&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA - Required Context Role](https://www.w3.org/TR/wai-aria/#scope)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

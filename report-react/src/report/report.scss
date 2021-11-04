@@ -47,7 +47,7 @@ $feature-flags: (
     }
 
     .itemDetail {
-        border-bottom: solid #DCDCDC 1px;
+        border-bottom: solid #888888 1px;
 
         > div div {
             padding: 10px 1rem;
@@ -71,9 +71,9 @@ $feature-flags: (
     }
 
     .helpLink {
-        color: #0062FF;
+        color: #000000;
         font-size: 12px;
-        text-decoration: none;
+        text-decoration: underline;
         svg {
             fill: #0062FF;
             height: 12px;
