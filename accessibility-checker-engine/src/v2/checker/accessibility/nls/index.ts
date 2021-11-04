@@ -1,4 +1,13 @@
 let a11yNls = {
+    "landmark_name_unique": {
+        0: "Default response TODO",
+        "Pass_0": "Pass_0 response TODO",
+        "Pass_1": "Pass_1 response TODO",
+        "Pass_2": "Pass_2 response TODO",
+        "Pass_3": "Pass_3 response TODO",
+        "Fail_0": "Fail_0 response TODO", // "" == ""
+        "Fail_1": "Fail_1 response TODO" //same aria-label/labeledby
+    },
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",

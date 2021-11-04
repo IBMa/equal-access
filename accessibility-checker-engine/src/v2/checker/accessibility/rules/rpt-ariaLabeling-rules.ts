@@ -20,8 +20,157 @@ import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
 import { DOMUtil } from "../../../dom/DOMUtil";
 import { ARIAMapper } from "../../../..";
+import { DOMWalker } from "../../../dom/DOMWalker";
 
 let a11yRulesLabeling: Rule[] = [
+    {
+        /**
+         * Description: https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13
+         * 1.3.1: Info and Relationships 
+         */
+        id: "landmark_name_unique",
+        context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+
+            let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
+            let formCache = RPTUtil.getCache(ruleContext.ownerDocument, "landmark_name_unique", null);
+
+            if (!formCache) {
+                // console.log("---------ENTERING FORM CACHE")
+                formCache = {
+                    navigationNodes: [],
+                    navigationNodesComputedLabels: [],
+                    navigationNodesParents: [],
+                    navigationNodesMatchFound: []
+                }
+                let navigationNodesTemp = ownerDocument.querySelectorAll('aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], section,[role="region"],[role="search"]');
+                let navigationNodes = Array.from(navigationNodesTemp);
+                let navigationNodesParents = [];
+                let navigationNodesMatchFound = [];
+
+                for (let i = 0; i < navigationNodes.length; i++) { // Loop over all the landmark nodes
+                    let els = [];
+                    let a = navigationNodes[i].parentElement
+                    while (a) {
+                        els.push(a);
+                        a = a.parentElement;
+                    }
+
+                    for (let j = 0; j < els.length; j++) { // Loop over all the parents of the landmark nodes
+                        // Find nearest landmark parent based on the tagName or the role attribute 
+                        let tagNameTrigger =
+                            (els[j].tagName == "ASIDE") ||
+                            (els[j].tagName == "FOOTER") ||
+                            (els[j].tagName == "FORM") ||
+                            (els[j].tagName == "HEADER") ||
+                            (els[j].tagName == "MAIN") ||
+                            (els[j].tagName == "NAV") ||
+                            (els[j].tagName == "SECTION") ||
+                            (els[j].tagName == "FORM");
+
+                        let roleNameTrigger = false;
+                        if (els[j].hasAttribute("role")) {
+                            roleNameTrigger =
+                                (els[j].getAttribute("role").includes("complementary")) ||
+                                (els[j].getAttribute("role").includes("contentinfo")) ||
+                                (els[j].getAttribute("role").includes("form")) ||
+                                (els[j].getAttribute("role").includes("banner")) ||
+                                (els[j].getAttribute("role").includes("main")) ||
+                                (els[j].getAttribute("role").includes("navigation")) ||
+                                (els[j].getAttribute("role").includes("region")) ||
+                                (els[j].getAttribute("role").includes("form")) ||
+                                (els[j].getAttribute("role").includes("search"));
+                        }
+                        if (tagNameTrigger || roleNameTrigger) {
+                            // Nearest parent-landmark found
+                            navigationNodesParents.push(els[j])
+                            break
+                        }
+                        if (j == els.length - 1) { // This node is at the head of the file so it does not have a parent
+                            navigationNodesParents.push(null) // TODO might want to change to NULL
+                            break
+                        }
+                    }
+                }
+
+                let navigationNodesComputedLabels = [];
+                for (let i = 0; i < navigationNodes.length; i++) { // Loop over all the landmark nodes
+                    navigationNodesComputedLabels.push(ARIAMapper.computeName(navigationNodes[i]))
+                }
+
+                for (let i = 0; i < navigationNodesParents.length; i++) { // Loop over all the parents of the landmark nodes to find duplicates
+                    let matchFound = false;
+                    for (let j = 0; j < navigationNodesParents.length; j++) {
+                        if ((navigationNodesParents[i] === null) || (navigationNodesParents[j] === null)) {
+                            // We are looking at root node
+                            continue
+                        }
+                        if ((navigationNodes[i] === null) || (navigationNodes[j] === null)) {
+                            // Strange case... should not happen
+                            continue
+                        }
+                        if (j == i) {
+                            // We do not want to compare against ourselfs
+                            continue
+                        }
+                        if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
+                            // We have the same parent-landmark AND  
+                            if (ARIAMapper.elemToRole(navigationNodes[i]) == ARIAMapper.elemToRole(navigationNodes[j])) {
+                                // Both nodes have the same role AND 
+                                if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
+                                    // both have the same (computed) aria-label/aria-labeledby
+                                    if (navigationNodesComputedLabels[i] === "") {
+                                        navigationNodesMatchFound.push("Fail_0");  // Fail 0
+                                        matchFound = true 
+                                        break
+                                    } else {
+                                        navigationNodesMatchFound.push("Fail_1");  // Fail 1
+                                        matchFound = true
+                                        break
+                                    }
+                                } else {
+                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labeledby // pass 3
+                                    // navigationNodesMatchFound.push("Pass_3");
+                                }
+                            } else {
+                                // Same parents but different node roles // pass 2
+                                // navigationNodesMatchFound.push("Pass_2");
+                            }
+                        } else {
+                            // Different parents // pass 1
+                            // navigationNodesMatchFound.push("Pass_1");
+                        }
+                    }
+                    if(!matchFound){
+                        navigationNodesMatchFound.push("Pass_0");
+                    }
+                }
+                formCache.navigationNodesComputedLabels = navigationNodesComputedLabels;
+                formCache.navigationNodes = navigationNodes;
+                formCache.navigationNodesParents = navigationNodesParents;
+                formCache.navigationNodesMatchFound = navigationNodesMatchFound;
+                RPTUtil.setCache(ruleContext.ownerDocument, "landmark_name_unique", formCache);
+
+                // TODO Add validation that all 3 arrays are the same lenght
+                // console.log("-------------End formCache")
+
+            } // End formCache
+            let indexToCheck = -1;
+            for (let i = 0; i < formCache.navigationNodes.length; i++) {
+
+                if (ruleContext.isSameNode(formCache.navigationNodes[i])) {
+                    indexToCheck = i;
+                }
+            }
+            if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass")) {
+                return RulePass(formCache.navigationNodesMatchFound[indexToCheck]);
+
+            } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail")) {
+                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck]);
+            }
+        }
+    },
     {
         /**
          * Description: Triggers if a region role is not labeled with an aria-label or aria-labelledby
@@ -45,7 +194,7 @@ let a11yRulesLabeling: Rule[] = [
             if (passed) {
                 return RulePass("Pass_0");
             } else {
-                
+
                 return RuleFail(tagName === "section" ? "Fail_1" : "Fail_2");
             }
         }
@@ -727,16 +876,15 @@ let a11yRulesLabeling: Rule[] = [
 
             let elemRole = ARIAMapper.nodeToRole(ruleContext);
             let tagName = ruleContext.nodeName.toLowerCase();
-            
+
             // Handled by WCAG20_Input_ExplicitLabel
-            let skipRoles = ["button", "checkbox", "combobox", 
-                "listbox", "menuitemcheckbox", "menuitemradio", "radio", "searchbox", 
+            let skipRoles = ["button", "checkbox", "combobox",
+                "listbox", "menuitemcheckbox", "menuitemradio", "radio", "searchbox",
                 "slider", "spinbutton", "switch", "textbox", "progressbar", "link"
             ]
             if (skipRoles.includes(elemRole)) return null;
-            if (tagName === "output" 
-                || tagName === "input" && ruleContext.getAttribute("type") === "file")
-            {
+            if (tagName === "output"
+                || tagName === "input" && ruleContext.getAttribute("type") === "file") {
 
             }
             if (!ruleContext.hasAttribute("role")) {
@@ -779,11 +927,10 @@ let a11yRulesLabeling: Rule[] = [
 
                 let pattern = designPatterns[roles[i]];
 
-                if (pattern 
-                    && pattern.nameRequired 
-                    && pattern.roleType 
-                    && interactiveRoleTypes.includes(pattern.roleType))
-                { 
+                if (pattern
+                    && pattern.nameRequired
+                    && pattern.roleType
+                    && interactiveRoleTypes.includes(pattern.roleType)) {
                     ++numWidgetsTested;
 
                     // All widgets may have an author supplied accessible name.
@@ -805,7 +952,7 @@ let a11yRulesLabeling: Rule[] = [
                     if (!passed && ruleContext.tagName.toLowerCase() === "img" && !ruleContext.hasAttribute("role") && ruleContext.hasAttribute("alt")) {
                         passed = DOMUtil.cleanWhitespace(ruleContext.getAttribute("alt")).trim().length > 0;
                     }
-                    
+
                     if (pattern.nameFrom.indexOf("prohibited") >= 0) {
                         prohibited = true;
                     }
@@ -818,11 +965,11 @@ let a11yRulesLabeling: Rule[] = [
                 return RuleFail("Fail_1", [elemRole]);
             } else {
                 //TODO
-//                if (prohibited) {
-//                    return RuleFail("Fail_2");
-//                } else {
-                    return RulePass("Pass_0");
-//                }
+                //                if (prohibited) {
+                //                    return RuleFail("Fail_2");
+                //                } else {
+                return RulePass("Pass_0");
+                //                }
             }
         }
     },
