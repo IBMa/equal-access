@@ -1,5 +1,5 @@
 ---
-title: "Accessibility Checker Rule Help: combobox_haspopup"
+title: "Accessibility Checker Rule Help: landmark_name_unique"
 ---
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The value of the combobox `aria-haspopup` attribute is invalid or does not have a valid reference to the related popup
+### Multiple landmark roles of 'ia-haspopup` attribute that are disambiguated with a unique label or parent
 
 <div id="locLevel"></div>
 
-The combobox attribute 'aria-haspopup' value must be appropriate for the role of the element referenced by `aria-controls` (ARIA 1.2) or `aria-owns` (ARIA 1.0)
+The landmark `<role=\"{0}\"` should have a unique `'aria-labeledby'` or `'aria-label'` or be nested in a unique parent
 
 </Column>
 </Row>
@@ -21,8 +21,8 @@ The combobox attribute 'aria-haspopup' value must be appropriate for the role of
 
 ### Why is this important?
 
-An element with `role="combobox"` may have a popup element with the role of "listbox", "tree", "grid", or "dialog".
-If the value for the `aria-haspopup` attribute does not match the value for the popup element's `role` 
+PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
+If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` 
 attribute, people who use assistive technologies may see unexpected behavior and will not know how 
 to interact with the content.
 
@@ -30,9 +30,9 @@ to interact with the content.
 
 ### What to do
 
- * Set the value of the `aria-haspopup` attribute of the combobox element to match the value of the `role` attribute of the implemented popup. Allowed popup element `role` attribute values are "listbox", "tree", "grid", or "dialog".
+ * PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER Set the value of the `'aria-haspopup'` attribute of the `<combobox>` element to match the value of the `'role'` attribute of the implemented popup. . . .  Allowed `<popup>` element `'role'` attribute values are `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
 
-Alert: The guidance for combobox is changing significantly in ARIA 1.2 due to problems with implementation of the ARIA 1.1 pattern. The recommended combobox pattern for ARIA 1.2 is:
+Alert: MORE TEST HERE IF APPROPRIATE. The recommended combobox code pattern for ARIA 1.2 is:
 
 <CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
   &lt;input type="text" id="tag_combo"
@@ -44,20 +44,24 @@ Alert: The guidance for combobox is changing significantly in ARIA 1.2 due to pr
       &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
    &lt;/ul&gt;</CodeSnippet>
 
-Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+Note: OPTIONAL TEXT GOES HERE ... derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
-* [ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox)
+ * [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+ * [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
+ * [WCAG technique ARIA17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17)
 
 ### Who does this affect?
-
- * People using screen readers
-
+// rare to use all of these types
+  
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People with low vision using screen magnification
+ * more people here 
+ 
 </Column>
 </Row>
 </div>
