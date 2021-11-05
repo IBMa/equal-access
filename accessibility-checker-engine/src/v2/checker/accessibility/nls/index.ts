@@ -1,4 +1,9 @@
+// No {tokens} in passive messages, such as 0: "a passive message..."
+// No back-ticks used in messages here in .ts file type, use <, ", '
+// Changes in messages usually require corresponding change in test cases
+//
 let a11yNls = {
+    // AU - DONE
     "landmark_name_unique": {
         0: "Default response TODO",
         "Pass_0": "Pass_0 response TODO",
@@ -8,10 +13,6 @@ let a11yNls = {
         "Fail_0": "Fail_0 response TODO", // "" == ""
         "Fail_1": "Fail_1 response TODO" //same aria-label/labeledby
     },
-    // No {tokens} in passive messages, such as 0: "a passive message..."
-    // No back-ticks used in messages here, only <, ", '
-    // Changes in messages will require corresponding change in test cases
-    //
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",
