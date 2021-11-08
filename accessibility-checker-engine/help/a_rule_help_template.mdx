@@ -1,0 +1,73 @@
+---
+title: "Accessibility Checker Rule Help: a_rule_help_template"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+<div className="toolHelp">
+
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### This is the place to have the rule title, it will show up in reports but the Checker does not display this message title, and tokens cannot be used in mdx
+
+<div id="locLevel"></div>
+
+This is the passive message the will show up in reports but the Checker does not display this message sub-title, and backticks can be used here in mdx
+
+</Column>
+</Row>
+
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as this example test with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
+If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` 
+attribute, people who use assistive technologies may see unexpected behavior and will not know how 
+to interact with the content.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as Set the value of the `'aria-haspopup'` attribute of the `<combobox>` element to match the value of the `'role'` attribute of the implemented popup.
+* Allowed `<popup>` element `'role'` attribute values are `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
+* **Or**, and another explanation of what to do.
+
+Alert: MORE TEST HERE IF APPROPRIATE. The recommended code example is:
+
+<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
+  &lt;input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
+   &lt;ul role="listbox" id="popup_listbox"&gt;
+      &lt;li role="option"&gt;Zebra&lt;/li&gt;
+      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
+   &lt;/ul&gt;</CodeSnippet>
+
+Note: OPTIONAL NOTE TEXT GOES HERE ... such as derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
+* [WCAG technique ARIA17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17)
+
+### Who does this affect?
+// rare to use all of these types
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairment using voice control
+ * MORE PEOPLE HERE 
+ 
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
