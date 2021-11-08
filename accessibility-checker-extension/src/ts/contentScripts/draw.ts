@@ -360,10 +360,10 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
     if (x1 >= -10 && x1 <= 6) {
-        x1 = 7;
+        x1 = 12;
     }
     if (y1 >= -10 && y1 <= 6) {
-        y1 = 7;
+        y1 = 12;
     }
 
     let circle = document.getElementsByClassName('tabCircle')[0]
