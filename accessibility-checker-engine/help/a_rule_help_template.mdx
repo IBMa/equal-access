@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### This is the place to have the rule title, it will show up in reports but the Checker does not display this message title, and tokens cannot be used in mdx
-
+### The active message goes here without tokens but with backtick for formating [this message title is not used by Checker, it uses messages the active Fail_ or Potential_ message in ...nls/index.ts file, and tokens cannot be used in mdx]
+  
 <div id="locLevel"></div>
 
-This is the passive message the will show up in reports but the Checker does not display this message sub-title, and backticks can be used here in mdx
+This is the passive message that will show up in reports [Checker does not display this message sub-title, it uses the 0: message in  ...nls/index.ts file, and backticks can be used here in mdx]
 
 </Column>
 </Row>
@@ -59,9 +59,13 @@ Note: OPTIONAL NOTE TEXT GOES HERE ... such as derived from [W3C, Accessible Ric
 * [WCAG technique ARIA17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17)
 
 ### Who does this affect?
-// only use a few of these that are applicable
-the `// text ...`  method for adding comments to mdx may npot work
-
+// only use a few of these that are applicable - NOTE: the `// text ...`  method for adding comments to mdx does NOT work
+<!-- trying this style of comment in this .mdx file -->
+<!-- also trying this style
+which is more than one line
+and ends with
+//-->
+  
 * People using a screen reader, including blind, low vision and neurodivergent people
 * People with low vision who use screen magnification
 * People with visual impairment using color contrast enhancement
