@@ -1,6 +1,7 @@
 ---
 title: "Accessibility Checker Rule Help: a_rule_help_template"
 ---
+<title>a_rule_help_template - Accessibility Checker Rule Help</title>
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
 <div className="toolHelp">
@@ -8,11 +9,13 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The active message goes here without tokens but with backtick for formating [this message title is not used by Checker, it uses messages the active Fail_ or Potential_ message in ...nls/index.ts file, and tokens cannot be used in mdx]
+### The active message goes here _without tokens_ but with `backticks for formating code` and tokens **cannot** be used in mdx [this message title is not used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead]
   
 <div id="locLevel"></div>
+<!-- the Checker browser extension includes the rule level, such as Violation, Needs Review, or Recommendation here -->  
 
-This is the passive message that will show up in reports [Checker does not display this message sub-title, it uses the 0: message in  ...nls/index.ts file, and backticks can be used here in mdx]
+This is the passive message that will show up in reports [Checker does not display this message sub-title, the browser extension uses the 0: message in  ...nls/index.ts file, and `backticks` _can_ be used here in mdx]
+ <!-- note that the messages used in the test files also come from the ...nls/index.ts file instead of here -->  
 
 </Column>
 </Row>
@@ -22,13 +25,14 @@ This is the passive message that will show up in reports [Checker does not displ
 
 ### Why is this important?
 
-PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as this example test with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
+PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as This example test with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
 If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` 
 attribute, people who use assistive technologies may see unexpected behavior and will not know how 
 to interact with the content.
 
 <div id="locSnippet"></div>
-
+<!-- used by Checker browser extension to display the element location/path detected with the error -->  
+  
 ### What to do
 
 * PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as Set the value of the `'aria-haspopup'` attribute of the `<combobox>` element to match the value of the `'role'` attribute of the implemented popup.
@@ -47,22 +51,24 @@ Alert: MORE TEXT HERE IF APPROPRIATE. The recommended code example is:
       &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
    &lt;/ul&gt;</CodeSnippet>
 
-Note: OPTIONAL NOTE TEXT GOES HERE ... such as derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+Note: OPTIONAL NOTE TEXT GOES HERE ... such as Derived from [W3C, Accessible Rich Internet Applications (ARIA) Best Practices latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
-
+<!-- should only include one requirement and one or more references to techniques and best practices -->
+  
 * [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
 * [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
-* [WCAG technique ARIA17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17)
+* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 ### Who does this affect?
-// only use a few of these that are applicable - NOTE: the `// text ...`  method for adding comments to mdx does NOT work
-<!-- trying this style of comment in this .mdx file -->
-<!-- also trying this style
-which is more than one line
+
+<!-- using this style of comment in this .mdx file.  NOTE: the `// text ...`  method for adding comments to mdx does NOT work -->
+<!-- also trying this multi-line style
+only use a few of these categories below that are applicable to people affected
+this comment is more than one line
 and ends with
 //-->
   
