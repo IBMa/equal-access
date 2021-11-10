@@ -1,21 +1,25 @@
 ---
 title: "Accessibility Checker Rule Help: a_rule_help_template"
 ---
+<!-- change the title to match the rule_ID -->
 <title>a_rule_help_template - Accessibility Checker Rule Help</title>
+
 import "../../../styles/ToolHelp.scss"
+
 import { CodeSnippet, Tag } from "carbon-components-react";
 <div className="toolHelp">
-
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The active message goes here _without tokens_ but with `backticks for formating code` and tokens **cannot** be used in mdx [this message title is not used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead]
+### The active message goes here _without tokens_ but with `backticks for formating code` and tokens **cannot** be used in mdx 
+<!-- this message title is not used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
   
 <div id="locLevel"></div>
-<!-- the Checker browser extension includes the rule level, such as Violation, Needs Review, or Recommendation here -->  
+<!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->  
 
-This is the passive message that will show up in reports [Checker does not display this message sub-title, the browser extension uses the 0: message in  ...nls/index.ts file, and `backticks` _can_ be used here in mdx]
- <!-- note that the messages used in the test files also come from the ...nls/index.ts file instead of here -->  
+This is the passive message that will show up in reports, with `backticks for formating code` but tokens **cannot** be used in mdx 
+<!-- Checker does not display this message sub-title, the browser extension displays the 0: message in  ...nls/index.ts file -->
+<!-- note that the messages the test files must also match the messages from the ...nls/index.ts file instead of here in mdx -->  
 
 </Column>
 </Row>
