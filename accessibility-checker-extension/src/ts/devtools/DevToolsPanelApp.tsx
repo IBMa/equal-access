@@ -59,7 +59,7 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
-    selectedIssue?: IReportItem,
+    selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
     learnMore: boolean,
@@ -115,7 +115,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabId: -1,
         tabTitle: "",
         selectedItem: undefined,
-        selectedIssue: undefined,
+        selectedIssue: null,
         rulesets: null,
         learnMore: false,
         learnItem: null,
@@ -747,8 +747,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
-        console.log("Function: selectItem item = ", item);
-        console.log("item xpath = ",item?.path.dom);
         if (this.state.report) {
             if (!item) {
                 for (const resultItem of this.state.report.results) {
@@ -1032,6 +1030,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     getItem={this.getItem.bind(this)}
                                     getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
@@ -1132,6 +1131,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     getItem={this.getItem.bind(this)}
                                     getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="element"
                                     tabs={[ "element", "checklist", "rule"]}

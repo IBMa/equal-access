@@ -46,7 +46,7 @@ interface IReportRowProps {
     group: IReportRowGroup;
     selectItem: (item: IReportItem, checkpoint: ICheckpoint | undefined) => void,
     selectedItem?: IReportItem,
-    selectedIssue?: IReportItem,
+    selectedIssue: IReportItem | null,
     getItem: (item: IReportItem) => void,
     getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
@@ -102,6 +102,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     }
 
     learnMoreRef(item: IReportItem) {
+        // console.log("learnMoreRef: item = ",item, "   this.props.learnItem = ", this.props.learnItem);
         var learnItem = this.props.learnItem;
         if(learnItem && item.path.dom === learnItem?.path.dom && item.ruleId==learnItem.ruleId) {
             return this.learnRef;
@@ -114,23 +115,25 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         console.log("item = ",item);
         e.preventDefault();
         // e.stopPropagation(); // JCH if present learn more clickhandler will not select row
-        // this.props.getSelectedItem(item);
+        this.props.getSelectedItem(item);
         console.log("print ref: ",this.selectedRef);
-        this.selectedRef.current?.classList.add("selectedItem");
         
         this.props.selectItem(item, this.props.group.checkpoint);
-        console.log("Done with selectItem");
+        
     }
 
     itemSelectedRef(item: IReportItem) {
+        
         // console.log("Function: itemSelectedRef item = ", item);
-        // var selectedIssue = this.props.selectedIssue;
+        var selectedIssue = this.props.selectedIssue;
         // console.log("selectedIssue = ", selectedIssue);
         // JCH do we need the ruleId match?
-        // if (selectedIssue && item.path.dom === selectedIssue?.path.dom) {
-        //     console.log("Function: itemSelectedRef this.selectedRef = ", this.selectedRef);
-        //     return this.selectedRef;
-        // } 
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom) {
+            console.log("itemSelectedRef: item = ",item, "   this.props.selectedIssue = ", this.props.selectedIssue);
+            console.log("Function: itemSelectedRef this.selectedRef = ", this.selectedRef);
+            this.selectedRef.current?.classList.add("selectedItem");
+            return this.selectedRef;
+        } 
         return this.selectedRef;
     }
 
