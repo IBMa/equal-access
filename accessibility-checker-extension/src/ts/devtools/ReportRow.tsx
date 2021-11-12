@@ -122,9 +122,16 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         console.log("Function: itemSelectedRef")
         var selectedIssue = this.props.selectedIssue;
         if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
-            if (this.selectedRef) {
+            if (this.selectedRef.current) {
                 // TODO Get rid of doubles  
                 this.selectedRef.current?.classList.add("selectedItem");
+                let mythis = this;
+                setTimeout(function() {
+                    //mythis.selectedRef.current?.scrollIntoView();
+                    mythis.selectedRef.current?.scrollIntoView({
+                        block: 'center'
+                    });
+                },0)
             }
             return this.selectedRef;
         } 

@@ -47,8 +47,6 @@ interface IPanelProps {
     layout: "main" | "sub"
 }
 
-
-
 interface IPanelState {
     listenerRegistered: boolean,
     numScanning: number,
