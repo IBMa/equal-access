@@ -381,7 +381,9 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
     (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
     (circleClone as HTMLElement).setAttribute('r', String(radius));
-    (circleClone as HTMLElement).onclick = () => {         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath })  };
+    (circleClone as HTMLElement).onclick = () => {
+        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber+1  })
+    };
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 

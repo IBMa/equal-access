@@ -212,7 +212,11 @@ BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (me
 
 BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
     console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
-    BackgroundMessaging.sendToTab(message.tabId, "TABSTOP_XPATH_ONCLICK", { xpath: message.xpath, tabURL: message.tabURL, tabId: message.tabId });
+    BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
+        xpath: message.xpath,
+        circleNumber: message.circleNumber
+    });
+
 
     return true;
 });
