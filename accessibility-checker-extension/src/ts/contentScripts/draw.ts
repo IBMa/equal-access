@@ -241,9 +241,14 @@ function redraw(tabStopsResults: any) {
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
+        let nodeXpaths = nodes;
+
         let offset = 3;
         nodes = convertXpathsToHtmlElements(nodes);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+            return el != null;
+        });
+        nodeXpaths = nodeXpaths.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
 
@@ -294,7 +299,7 @@ function redraw(tabStopsResults: any) {
             if (i == 32) {
                 console.log("x y :", x, " ", y)
             }
-            makeCircleSmall(x, y, i, 13);
+            makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
             makeTextSmall(x, y, (i + 1).toString());
 
             // Make box around active component
@@ -355,7 +360,7 @@ function makeIcon(x1: number, y1: number, iconName: string) {
 }
 
 
-function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number) {
+function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
@@ -376,7 +381,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
     (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
     (circleClone as HTMLElement).setAttribute('r', String(radius));
-    (circleClone as HTMLElement).onclick = () => { alert("You have found circle number: " + (circleNumber + 1)) };
+    (circleClone as HTMLElement).onclick = () => {         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath })  };
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -465,8 +470,6 @@ function getNodesXpaths(nodes: any) {
     return tabXpaths;
 }
 
-
-
 // function getXPathForElement(element: any) {
 //     const idx: any = (sib: any, name: any) => sib
 //         ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name)
@@ -474,6 +477,11 @@ function getNodesXpaths(nodes: any) {
 //     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1)
 //         ? ['']
 //         : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+
+
+// function getXPathForElement(element) { // same function as above but without typescript for use on chrome console
+//     const idx = (sib, name) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+//     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
 //     return segs(element).join('/');
 // }
 
