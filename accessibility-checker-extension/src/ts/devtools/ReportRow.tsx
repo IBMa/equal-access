@@ -102,39 +102,33 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     }
 
     learnMoreRef(item: IReportItem) {
-        // console.log("learnMoreRef: item = ",item, "   this.props.learnItem = ", this.props.learnItem);
         var learnItem = this.props.learnItem;
-        if(learnItem && item.path.dom === learnItem?.path.dom && item.ruleId==learnItem.ruleId) {
+        if (learnItem && item.path.dom === learnItem?.path.dom && item.ruleId == learnItem.ruleId) {
             return this.learnRef;
         } 
         return null;
     }
 
     itemSelectedClickHandler(e:any, item:IReportItem) { 
-        console.log("Function: itemSelectedClickHandler");
-        console.log("item = ",item);
+        console.log("Function: itemSelectedClickHandler START");
         e.preventDefault();
         // e.stopPropagation(); // JCH if present learn more clickhandler will not select row
         this.props.getSelectedItem(item);
-        console.log("print ref: ",this.selectedRef);
-        
         this.props.selectItem(item, this.props.group.checkpoint);
-        
+        console.log("Function: itemSelectedClickHandler DONE");
     }
 
     itemSelectedRef(item: IReportItem) {
-        
-        // console.log("Function: itemSelectedRef item = ", item);
+        console.log("Function: itemSelectedRef")
         var selectedIssue = this.props.selectedIssue;
-        // console.log("selectedIssue = ", selectedIssue);
-        // JCH do we need the ruleId match?
-        if (selectedIssue && item.path.dom === selectedIssue?.path.dom) {
-            console.log("itemSelectedRef: item = ",item, "   this.props.selectedIssue = ", this.props.selectedIssue);
-            console.log("Function: itemSelectedRef this.selectedRef = ", this.selectedRef);
-            this.selectedRef.current?.classList.add("selectedItem");
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+            if (this.selectedRef) {
+                // TODO Get rid of doubles  
+                this.selectedRef.current?.classList.add("selectedItem");
+            }
             return this.selectedRef;
         } 
-        return this.selectedRef;
+        return null;
     }
 
 
