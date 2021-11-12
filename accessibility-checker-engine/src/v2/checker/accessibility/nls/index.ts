@@ -5,13 +5,13 @@
 let a11yNls = {
     // AU - DONE
     "landmark_name_unique": {
-        0: "Default response TODO",
-        "Pass_0": "Pass_0 response TODO",
-        "Pass_1": "Pass_1 response TODO",
-        "Pass_2": "Pass_2 response TODO",
-        "Pass_3": "Pass_3 response TODO",
-        "Fail_0": "Fail_0 response TODO", // "" == ""
-        "Fail_1": "Fail_1 response TODO" //same aria-label/labeledby
+        0: "Multiple landmarks with same role=\"{0}\" should have a unique non-blank 'aria-labelledby' or 'aria-label' or be nested in a different parent",
+        "Pass_0": "Multiple landmarks with same role=\"{0}\" should have a unique non-blank 'aria-labelledby' or 'aria-label' or be nested in a different parent",
+        "Pass_1": "Multiple landmarks with same role=\"{0}\" are disambiguated by different parents",
+        "Pass_2": "Multiple landmarks are disambiguated by unique roles even though they have same parent",
+        "Pass_3": "Multiple landmarks with same role=\"{0}\" and same parent are disambiguate by unique 'aria-label' or 'aria-labelledby'"        ,
+        "Fail_0": "Multiple landmarks with same role=\"{0}\" are not disambiguated by a non-blank 'aria-labeledby' or 'aria-label' or by being nested in a different parent", // "" == ""
+        "Fail_1": "Multiple landmarks with same role=\"{0}\" are not disambiguated, either by a unique 'aria-labelledby' or 'aria-label' or by being nested in a different parent" //same aria-label/labeledby
     },
     // JCH - DONE
     "RPT_List_Misuse": {

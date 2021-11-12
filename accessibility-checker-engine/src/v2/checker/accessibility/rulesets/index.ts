@@ -262,6 +262,7 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
                     id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -1462,6 +1463,7 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.RECOMMENDATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
+                {
                     id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO

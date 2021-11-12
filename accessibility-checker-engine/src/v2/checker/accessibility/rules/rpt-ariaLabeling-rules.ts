@@ -168,10 +168,9 @@ let a11yRulesLabeling: Rule[] = [
                 }
             }
             if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass")) {
-                return RulePass(formCache.navigationNodesMatchFound[indexToCheck]);
-
+                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
             } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail")) {
-                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck]);
+                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
             }
         }
     },
