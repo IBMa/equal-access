@@ -47,8 +47,6 @@ interface IPanelProps {
     layout: "main" | "sub"
 }
 
-
-
 interface IPanelState {
     listenerRegistered: boolean,
     numScanning: number,
@@ -59,6 +57,7 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
+    selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
     learnMore: boolean,
@@ -113,6 +112,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
+        selectedItem: undefined,
+        selectedIssue: null,
         rulesets: null,
         learnMore: false,
         learnItem: null,
@@ -140,12 +141,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
+    leftPanelItemSelected: React.RefObject<HTMLDivElement>;
+    subPanelItemSelected: React.RefObject<HTMLDivElement>;
     ref: any;
 
     constructor(props: any) {
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
+        this.leftPanelItemSelected = React.createRef();
+        this.subPanelItemSelected = React.createRef();
         if (this.props.layout === "sub") {
             this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
         }
@@ -314,7 +319,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        console.log("startScan");
+        // console.log("startScan");
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
@@ -347,19 +352,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
-        console.log("onReport")
+        // console.log("onReport")
         try {
             if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                 let blob_url = message.blob_url;
                 let blob = await fetch(blob_url).then(r => r.blob());
                 message = JSON.parse(await blob.text());
             }
-            console.log("1");
             let report = message.report;
             let archives = await this.getArchives();
             
             if (!report) return;
-            console.log("2");
             let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
             // JCH add itemIdx to report (used to be in message.report)
@@ -367,7 +370,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 result["itemIdx"] = index;
             })
             let tabId = message.tabId;
-            console.log("3");
 
             if (this.state.tabId === tabId) {
                 report.timestamp = new Date().getTime();
@@ -383,7 +385,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             }
             // JCH before finish scan collect and order tab stops
             // Note: the collection is actually all issues that are tab stops
-            console.log("JCH DO TABBABLE");
+            // console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
             let tabbableErrors: IReportItem[] = [];
             report.results.map((result: any) => {
@@ -404,7 +406,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a:any,b:any) => b.apiArgs[0].tabindex-a.apiArgs[0].tabindex);
             }
             
-            console.log("tabbable =", tabbable);
+            // console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable});
             console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors});
@@ -743,8 +745,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
-        console.log("item: ", item);
-        console.log("checkpoint: ", checkpoint);
         if (this.state.report) {
             if (!item) {
                 for (const resultItem of this.state.report.results) {
@@ -862,9 +862,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    getXPathForElement(element: any) {
+        const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+        const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+        return segs(element).join('/');
+    }
+
     getCurrentSelectedElement() {
         // console.log("getCurrentSelectedElement");
         let mythis = this;
+
+        // Provide text name for focused view element for switch
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
                 if (isException) {
@@ -875,7 +883,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 // get current element after inspected Window script
                 setTimeout(() => {
-                    // console.log("result = ",result);
                     mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
                     // console.log("this.state.focusedViewText", this.state.focusedViewText);
                 }, 0);
@@ -900,7 +907,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getItem(item: IReportItem) {
+        console.log("Function: getItem item = ", item);
         this.setState({ learnMore: true, learnItem: item });
+    }
+
+    getSelectedItem(item: IReportItem) {
+        console.log("Function: getSelectedItem item = ", item);
+        this.setState({ selectedIssue: item });
     }
 
     learnHelp() {
@@ -1013,7 +1026,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     rulesets={this.state.rulesets}
                                     report={this.state.report}
                                     getItem={this.getItem.bind(this)}
+                                    getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
@@ -1112,7 +1127,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     rulesets={this.state.rulesets}
                                     report={this.state.report}
                                     getItem={this.getItem.bind(this)}
+                                    getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="element"
                                     tabs={[ "element", "checklist", "rule"]}
