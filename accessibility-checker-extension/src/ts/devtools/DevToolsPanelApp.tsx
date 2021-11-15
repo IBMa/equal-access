@@ -1081,7 +1081,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </div>
                         </div>
                     </div>
-                    {this.subPanelRef.current?.scrollTo(0, 0)}
+                    {/* Note the -72px is there to make sure that the help content starts under the header */}
+                    {this.subPanelRef.current?.scrollTo(0, -72)} 
                 </div>
                 <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height: "100%" }}>
                     <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
