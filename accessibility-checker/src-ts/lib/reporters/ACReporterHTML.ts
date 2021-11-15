@@ -65,11 +65,11 @@ export class ACReporterHTML {
     }
 
     // This emitter function is responsible for calling this function when the info event is detected
-    report(info) {
+    async report(info) {
         this.Config.DEBUG && console.log("START 'info' emitter function");
 
         // Save the results of a single scan to a HTML file based on the label provided
-        this.savePageResults(info);
+        await this.savePageResults(info);
 
         // Update the overall summary object count object to include the new scan that was performed
         this.addToSummaryCount(info.summary.counts);
@@ -192,7 +192,7 @@ export class ACReporterHTML {
      *
      * @memberOf this
      */
-    savePageResults(results) {
+    async savePageResults(results) {
         this.Config.DEBUG && console.log("START 'savePageResults' function");
 
         // Extract the outputFolder from the ACthis.Config (this is the user this.Config that they provid)
@@ -213,7 +213,7 @@ export class ACReporterHTML {
         ***************************************************************************************************************************************/
 
         // Write the results object as HTML to a file.
-        this.writeObjectToFileAsHTML(resultsFileName, results);
+        await this.writeObjectToFileAsHTML(resultsFileName, results);
 
         this.Config.DEBUG && console.log("END 'savePageResults' function");
     }
@@ -227,7 +227,7 @@ export class ACReporterHTML {
      *
      * @memberOf this
      */
-    writeObjectToFileAsHTML(fileName, content) {
+    async writeObjectToFileAsHTML(fileName, content) {
         const valueMap = {
             "VIOLATION": {
                 "POTENTIAL": "Needs review",
@@ -270,7 +270,7 @@ export class ACReporterHTML {
                     }
                 }
             },
-            rulesets: ACEngineManager.getRulesets(),
+            rulesets: await ACEngineManager.getRulesets(),
             tabURL: content.summary.URL
         }
         for (const item of content.results) {

@@ -117,7 +117,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         rulesets: null,
         learnMore: false,
         learnItem: null,
-        showIssueTypeFilter: [true, false, false, false],
+        showIssueTypeFilter: [true, true, true, true],
         scanning: false,
         storedScans: [],
         storedScanCount: 0,

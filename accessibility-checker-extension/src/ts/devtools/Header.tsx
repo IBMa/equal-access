@@ -511,7 +511,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             disabled={!this.props.counts}
                             // title="Filter violations" // used react tooltip so all tooltips the same
                             aria-label="Filter by violations"
-                            defaultChecked
+                            checked={this.props.dataFromParent[1]}
                             id="Violations"
                             indeterminate={false}
                             labelText={<React.Fragment><img src={Violation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Violations</span></span></React.Fragment>}
@@ -531,7 +531,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             disabled={!this.props.counts}
                             // title="Filter needs review"
                             aria-label="Filter by needs review"
-                            defaultChecked
+                            checked={this.props.dataFromParent[2]}
                             id="NeedsReview"
                             indeterminate={false}
                             labelText={<React.Fragment><img src={NeedsReview16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Needs review</span></span></React.Fragment>}
@@ -551,7 +551,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             disabled={!this.props.counts}
                             // title="Filter recommendations"
                             aria-label="Filter by recommendations"
-                            defaultChecked
+                            checked={this.props.dataFromParent[3]}
                             id="Recommendations"
                             indeterminate={false}
                             labelText={<React.Fragment><img src={Recommendation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Recommendations</span></span></React.Fragment>}

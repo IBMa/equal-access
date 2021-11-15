@@ -14,6 +14,7 @@
     "author": "IBM",
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",
     "devDependencies": {
+        "@types/node": "^16.10.2",
         "chai": "^4.2.0",
         "express": "^4.17.1",
         "istanbul-instrumenter-loader": "^3.0.1",
@@ -35,9 +36,9 @@
         "webpack-cli": "^3.3.11"
     },
     "dependencies": {
-        "@types/react": "^17.0.16",
+        "@types/react": "^17.0.27",
         "react": "^17.0.2",
-        "chromedriver": "^94.0.0"
+        "chromedriver": "*"
     },
     "repository": {
         "type": "git",

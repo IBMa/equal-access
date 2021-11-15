@@ -22,7 +22,9 @@
     },
     "author": "IBM",
     "license": "SEE LICENSE IN LICENSE file",
-    "dependencies": {},
+    "dependencies": {
+        "@types/react": "^17.0.27"
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com/IBMa/equal-access"
