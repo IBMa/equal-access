@@ -4,6 +4,8 @@ title: "Accessibility Checker Rule Help: HAAC_Aria_ImgAlt"
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
 
+<!-- comment test here -->
+
 <div className="toolHelp">
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
@@ -27,8 +29,8 @@ A component with a graphics role can contain important information as well as mu
 
 ### What to do
 
-* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label;
-* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`;
+* Add an `'aria-labelledby'` attribute to the element with a `role="graphics-..."`. It must point to visible text on the page that is meaningful as a label;
+* **Or**, add an `aria-label` attribute to the element with a `role="graphics-..."`;
 * **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
 Example:

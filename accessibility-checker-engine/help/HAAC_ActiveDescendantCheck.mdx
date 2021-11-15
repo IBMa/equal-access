@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `aria-activedescendant` property of the component does not reference the `id` of a valid child element.
+### The `aria-activedescendant` property of the component does not reference the `'id'` of a valid child element.
 
 <div id="locLevel"></div>
 
-The `aria-activedescendant` property must reference the `id` of a non-empty, non-hidden active child element.
+The `aria-activedescendant` property must reference the `'id'` of a non-empty, non-hidden active child element.
 
 </Column>
 </Row>
@@ -27,7 +27,7 @@ In a composite component where the child elements are not normally able to take 
 
 ### What to do
 
-* Verify that the `aria-activedescendant` attribute value is the `id` of the currently active child element;
+* Verify that the `aria-activedescendant` attribute value is the `'id'` of the currently active child element;
 * **And**, verify that the child element is not hidden;
 * **And**, verify that the child element is either a descendant of this element, or is owned by this element (indicated by using the aria-owns attribute on this element).
 

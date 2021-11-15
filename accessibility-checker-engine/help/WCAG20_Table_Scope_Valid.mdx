@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The `scope` attribute provided is invalid
+### The `'scope'` attribute provided is invalid
 
 <div id="locLevel"></div>
 
-Value for `scope` attribute must be "row", "col", "rowgroup", or "colgroup" and used only on header cells
+Value for `'scope'` attribute must be "row", "col", "rowgroup", or "colgroup" and used only on header cells
 
 </Column>
 </Row>
@@ -21,14 +21,14 @@ Value for `scope` attribute must be "row", "col", "rowgroup", or "colgroup" and 
 
 ### Why is this important?
 
-Complex data tables require valid programmatical association between data cells and header cell using the `scope` attribute. 
+Complex data tables require valid programmatical association between data cells and header cell using the `'scope'` attribute. 
 This data-to-header relationship is conveyed through assistive technology and helps the user understand the data presented in the table.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
- * If this table only has headers in the first row and/or column, the `scope` attribute is not needed;
+ * If this table only has headers in the first row and/or column, the `'scope'` attribute is not needed;
  * **Or**, to indicate a row header, use `<th scope="row">`;
  * **Or**, to indicate a header for a group of rows, use `<th scope="rowgroup">`;
  * **Or**, to indicate a column header, use `<th scope="column">`;

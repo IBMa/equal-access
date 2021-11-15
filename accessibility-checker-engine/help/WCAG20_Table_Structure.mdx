@@ -21,7 +21,7 @@ Table elements with `role=presentation` or `role=none` should not have structura
 
 ### Why is this important?
 
-Assistive technologies use structural elements (`<th>`, `<caption>`) and attributes (`summary`, `scope`, `header`) to help users navigate and understand data tables. Including these features in layout tables makes the purpose of the table unclear.
+Assistive technologies use structural elements (`<th>`, `<caption>`) and attributes (`summary`, `'scope'`, `header`) to help users navigate and understand data tables. Including these features in layout tables makes the purpose of the table unclear.
 
 <div id="locSnippet"></div>
 
@@ -29,7 +29,7 @@ Assistive technologies use structural elements (`<th>`, `<caption>`) and attribu
 
  * If the table is a data table, remove the `role` attribute;
  * **Or**, if a table is used for layout, use CSS-based layouts instead;
- * **Or**, if a layout table must be used, remove `<th>` elements, `<caption>` elements, `summary` attributes, and `scope` or `header` attributes on `<td>` elements.
+ * **Or**, if a layout table must be used, remove `<th>` elements, `<caption>` elements, `summary` attributes, and `'scope'` or `header` attributes on `<td>` elements.
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
