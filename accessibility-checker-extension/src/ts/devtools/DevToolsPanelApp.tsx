@@ -1072,17 +1072,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
                 <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
-                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                    <div style={{ overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
                                 </div>
                             </div>
-                        </div>
+                       </div>
                     </div>
-                    {/* Note the -72px is there to make sure that the help content starts under the header */}
-                    {this.subPanelRef.current?.scrollTo(0, -72)} 
                 </div>
                 <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height: "100%" }}>
                     <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
@@ -1095,7 +1093,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </div>
                         </div>
                     </div>
-                    {/* {this.subPanelRef.current?.scrollTo(0, 0)} */}
+                    {this.subPanelRef.current?.scrollTo(0, -72)}
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <Header
