@@ -1,0 +1,72 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ValidRole"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### An explicit ARIA 'role' is not valid for {0} element within a ARIA role '{1}' per the ARIA in HTML specification
+
+<div id="locLevel"></div>
+
+Table structure elements cannot specify an explicit 'role' within table containers
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The ARIA specification provides a collection of accessibility roles as the main indicator 
+of the type of control. This is used to support platform accessibility APIs. Using a valid 
+ARIA `role` on an element as defined in the ARIA specification allows assistive 
+technologies to use the role semantics to present and support consistent object interaction.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove any `role` definitions from table structure elements (`tr`, `th`, `td`) withing any 
+container with `role` of `table`, `grid`, or `treegrid`. The following example shows an element 
+with a valid `role="grid"` with appropriate table structures:
+
+<CodeSnippet type="multi" light={true}> 
+
+&lt;div id="caption" class="caption"&gt;Table caption&lt;/div&gt;
+&lt;table role="grid" aria-labelledby="caption" class="gridCls"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Head 1&lt;/th&gt;&lt;th&gt;Head 2&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Cell 1&lt;/td&gt;&lt;td&gt;Cell 2&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
+* [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

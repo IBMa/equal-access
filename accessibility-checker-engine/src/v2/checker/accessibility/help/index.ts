@@ -418,7 +418,8 @@ let a11yHelp = {
     "WCAG20_Table_Scope_Valid": {
         0: `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
-        "Fail_1": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`
+        "Fail_1": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`,
+        "Fail_2": `${Config.helpRoot}/WCAG20_Table_Scope_Valid`
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
@@ -1042,6 +1043,14 @@ let a11yHelp = {
         0: `${Config.helpRoot}/aria_hidden_focus_misuse`, 
         "Pass_0": `${Config.helpRoot}/aria_hidden_focus_misuse`,
         "Fail_1": `${Config.helpRoot}/aria_hidden_focus_misuse`
+    },
+    "table_headers_ref_valid": {
+        0: `${Config.helpRoot}/table_headers_ref_valid`, 
+        "Pass_0": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_1": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_2": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_3": `${Config.helpRoot}/table_headers_ref_valid`,
+        "Fail_4": `${Config.helpRoot}/table_headers_ref_valid`
     }
 }
 

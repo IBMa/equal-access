@@ -116,7 +116,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         rulesets: null,
         learnMore: false,
         learnItem: null,
-        showIssueTypeFilter: [true, false, false, false],
+        showIssueTypeFilter: [true, true, true, true],
         scanning: false,
         storedScans: [],
         storedScanCount: 0,
@@ -279,8 +279,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     self.selectElementInElements();
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                    tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true], 
-                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyName });
+                    tabId: tab.id, tabTitle: tab.title, error: null, archives, selectedArchive: archiveId, 
+                    selectedPolicy: policyName });
             }
         });
     }
