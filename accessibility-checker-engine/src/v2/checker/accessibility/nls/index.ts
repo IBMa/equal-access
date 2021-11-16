@@ -5,7 +5,7 @@
 let a11yNls = {
     // AU - DONE
     "landmark_name_unique": {
-        0: "Multiple landmarks with same role=\"{0}\" should have a unique non-blank 'aria-labelledby' or 'aria-label' or be nested in a different parent",
+        0: "Multiple landmarks with same 'role' should have a unique non-blank 'aria-labelledby' or 'aria-label' or be nested in a different parent",
         "Pass_0": "Multiple landmarks with same role=\"{0}\" should have a unique non-blank 'aria-labelledby' or 'aria-label' or be nested in a different parent",
         "Pass_1": "Multiple landmarks with same role=\"{0}\" are disambiguated by different parents",
         "Pass_2": "Multiple landmarks are disambiguated by unique roles even though they have same parent",
