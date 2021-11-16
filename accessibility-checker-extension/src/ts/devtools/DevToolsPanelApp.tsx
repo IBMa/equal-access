@@ -290,11 +290,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 if (self.props.layout === "sub") {
                     self.selectElementInElements();
                 }
-                self.setState({
-                    rulesets: rulesets, listenerRegistered: true, tabURL: tab.url,
-                    tabId: tab.id, tabTitle: tab.title, showIssueTypeFilter: [true, true, true, true],
-                    error: null, archives, selectedArchive: archiveId, selectedPolicy: policyName
-                });
+                self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
+                    tabId: tab.id, tabTitle: tab.title, error: null, archives, selectedArchive: archiveId, 
+                    selectedPolicy: policyName });
             }
         });
     }
