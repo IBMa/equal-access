@@ -281,6 +281,9 @@ $feature-flags: (
     .itemDetail.selectedChild {
         background-color: #E8DAFF;
     }
+    .itemDetail.selectedItem {
+        border: solid #000000 2px;
+    }
 }
 
 .scan-button {

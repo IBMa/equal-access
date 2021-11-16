@@ -40,7 +40,7 @@
         }
    
         render() {
-            console.log("start TabStopsHeader render");
+            // console.log("start TabStopsHeader render");
             let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
                 <div className="bx--row">
                     <div className="bx--col-sm-2">

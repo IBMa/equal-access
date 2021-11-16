@@ -95,7 +95,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
 
         .circleSmall{
-            font-size: 7px;
+            font-size: 12px;
         }
         `
     );
@@ -201,7 +201,7 @@ function redrawErrors(tabStopsErrors: any) {
             let y = nodes[i].getBoundingClientRect().y - offset;
             let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-            // makeCircleSmall(x, y, i);
+            // makeCircleSmall(x, y, i, 7);
             // makeTextSmall(x, y, (i + 1).toString());
 
 
@@ -241,9 +241,14 @@ function redraw(tabStopsResults: any) {
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
+        let nodeXpaths = nodes;
+
         let offset = 3;
         nodes = convertXpathsToHtmlElements(nodes);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+            return el != null;
+        });
+        nodeXpaths = nodeXpaths.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
 
@@ -294,7 +299,7 @@ function redraw(tabStopsResults: any) {
             if (i == 32) {
                 console.log("x y :", x, " ", y)
             }
-            makeCircleSmall(x, y, i);
+            makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
             makeTextSmall(x, y, (i + 1).toString());
 
             // Make box around active component
@@ -355,15 +360,15 @@ function makeIcon(x1: number, y1: number, iconName: string) {
 }
 
 
-function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
+function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
     if (x1 >= -10 && x1 <= 6) {
-        x1 = 7;
+        x1 = 12;
     }
     if (y1 >= -10 && y1 <= 6) {
-        y1 = 7;
+        y1 = 12;
     }
 
     let circle = document.getElementsByClassName('tabCircle')[0]
@@ -375,8 +380,10 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number) {
     (circleClone as HTMLElement).setAttribute('cx', String(x1));
     (circleClone as HTMLElement).setAttribute('cy', String(y1));
     (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
-    (circleClone as HTMLElement).setAttribute('r', String(7));
-    (circleClone as HTMLElement).onclick = () => { alert("You have found circle number: " + (circleNumber + 1)) };
+    (circleClone as HTMLElement).setAttribute('r', String(radius));
+    (circleClone as HTMLElement).onclick = () => {
+        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber+1  })
+    };
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -385,10 +392,10 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
     if (x1 >= -10 && x1 <= 6) {
-        x1 = 7;
+        x1 = 12;
     }
     if (y1 >= -10 && y1 <= 6) {
-        y1 = 7;
+        y1 = 12;
     }
 
     let text = document.getElementsByClassName('circleText')[0]
@@ -398,14 +405,14 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     (textClone as HTMLElement).classList.add("circleSmall");
 
     if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 6));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 10));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 4));
     } else if (n.length == 2) { // number has 2 digits
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 4));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 6));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 4));
     } else { // number has 1 digit
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 2));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 2));
+        (textClone as HTMLElement).setAttribute('x', String(x1 - 3));
+        (textClone as HTMLElement).setAttribute('y', String(y1 + 3));
     }
     (textClone as HTMLElement).innerHTML = n;
     document.getElementById('svgCircle')?.appendChild(textClone)
@@ -465,8 +472,6 @@ function getNodesXpaths(nodes: any) {
     return tabXpaths;
 }
 
-
-
 // function getXPathForElement(element: any) {
 //     const idx: any = (sib: any, name: any) => sib
 //         ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name)
@@ -474,6 +479,11 @@ function getNodesXpaths(nodes: any) {
 //     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1)
 //         ? ['']
 //         : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+
+
+// function getXPathForElement(element) { // same function as above but without typescript for use on chrome console
+//     const idx = (sib, name) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+//     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
 //     return segs(element).join('/');
 // }
 

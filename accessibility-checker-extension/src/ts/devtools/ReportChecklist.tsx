@@ -30,7 +30,9 @@ interface IReportChecklistProps {
     report: IReport,
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
+    selectedIssue: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
     focusedViewFilter: boolean
@@ -142,9 +144,11 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                             idx={thisIdx} 
                             report={this.props.report} 
                             group={group}
-                            getItem={this.props.getItem}
-                            learnItem={this.props.learnItem}
                             selectItem={this.props.selectItem}
+                            getItem={this.props.getItem}
+                            getSelectedItem={this.props.getSelectedItem}
+                            learnItem={this.props.learnItem}
+                            selectedIssue={this.props.selectedIssue}
                             layout={this.props.layout} 
                             dataFromParent={this.props.dataFromParent} 
                             focusedViewFilter={this.props.focusedViewFilter}

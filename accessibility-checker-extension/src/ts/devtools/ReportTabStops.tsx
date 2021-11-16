@@ -53,13 +53,13 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
     state: IReportTabStopsState = {};      
     
     componentDidMount() {
-        console.log("JCH - ReportTabStops");
+        // console.log("JCH - ReportTabStops");
     }
 
     printTabStops() {
-        console.log("printTabStops");
+        // console.log("printTabStops");
 
-        console.log("JCH make groups for tabs");
+        // console.log("JCH make groups for tabs");
         let itemIdx = 0;
         let groups : IGroup[] = []   
         let groupMap : {
@@ -129,7 +129,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
         let vCount = 1;
         let nrCount = 1;
         let rCount = 1;
-        console.log("Render Tab Stops");
+        // console.log("Render Tab Stops");
         if (this.props.tabStopsResults !== undefined) {
             this.props.tabStopsResults?.map((result: any, index:number) => {
                 temp.push(
@@ -157,14 +157,14 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                     </Row>
                 );
             });
-            console.log("temp = ", temp);
+            // console.log("temp = ", temp);
             return temp;
         }
         
     }
 
     render() {
-        console.log("start TabStops render");
+        // console.log("start TabStops render");
 
         return <div style={{height: "100%", width: "100%", paddingLeft: "0rem"}}>
             <Row style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
@@ -188,7 +188,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                     </div>
                 </div>
             </Row>
-            {console.log("call printTabStops")}
+            {/* {console.log("call printTabStops")} */}
             {this.printTabStops()}
         </div>
     }
