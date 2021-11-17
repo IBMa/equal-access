@@ -1,5 +1,5 @@
 ---
-title: "Accessibility Checker Rule Help: landmark_name_unique"
+title: "landmark_name_unique: Accessibility Checker Rule Help"
 ---
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Multiple landmarks with the same `'role'` attribute are not disambiguated with a unique label or parent
+### Multiple landmark roles with the same `'role'` attribute are not disambiguated with a unique label or different parent  
 
 <div id="locLevel"></div>
 
-The landmark `<role=\"{0}\"` should have a unique `'aria-labeledby'` or `'aria-label'` or be nested in a unique parent
+Multiple landmarks with the same `'role'` should have a unique `'aria-labeledby'` or `'aria-label'` or be nested in different parents
 
 </Column>
 </Row>
@@ -21,30 +21,31 @@ The landmark `<role=\"{0}\"` should have a unique `'aria-labeledby'` or `'aria-l
 
 ### Why is this important?
 
-PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
-If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` 
-attribute, people who use assistive technologies may see unexpected behavior and will not know how 
-to interact with the content.
+Regions (sections) on a page may contain headings, content, white space, and even nested regions for users to better consume the content. 
+Landmarks for the regions help assistive technology (AT) users orient themselves to the page and help them easily navigate to various regions of a page. 
+When multiple regions with the same role exist on the same page, people using screen readers, voice control, 
+and other ATs will have difficulty identifying or disambiguating between them 
+(e.g., where there are two or more `"navigation"` regions).
+
+Landmarks are inserted into the page using the `'role'` attribute on an element that marks the region. 
+The `'role'` values listed below are the names of the landmark types:
+* `"banner"`: A region that contains the prime heading or title of a page.
+* `"complementary"`: Any section of the page that supports the main content, yet is separate and meaningful on its own.
+* `"contentinfo"`: A region that contains information about the parent page such as copyrights and links to privacy statements.
+* `"form"`: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
+* `"main"`: Main content in a document. In almost all cases a page will have only one `role="main"`.
+* `"navigation"`: A collection of links suitable for use when navigating the page or related pages.
+* `"region"`: A section sufficiently important that users will likely want to be able to navigate to the section easily. Use of `'role="region"` should be limited to sections containing content with a purpose that is not accurately described by one of the other landmark roles. Each `'role="region"` **must**  have a brief label that describes the purpose of the content in the region.
+* `"search"`: A region for searching content.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
- * PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER Set the value of the `'aria-haspopup'` attribute of the `<combobox>` element to match the value of the `'role'` attribute of the implemented popup. . . .  Allowed `<popup>` element `'role'` attribute values are `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
-
-Alert: MORE TEST HERE IF APPROPRIATE. The recommended combobox code pattern for ARIA 1.2 is:
-
-<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
-  &lt;input type="text" id="tag_combo"
-      role="combobox" aria-autocomplete="list"
-      aria-haspopup="listbox" aria-expanded="true"
-      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
-   &lt;ul role="listbox" id="popup_listbox"&gt;
-      &lt;li role="option"&gt;Zebra&lt;/li&gt;
-      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
-   &lt;/ul&gt;</CodeSnippet>
-
-Note: OPTIONAL TEXT GOES HERE ... derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+If multiple landmarks have the same role, such as `role="contentinfo"` or `role="navigation"`, the landmarks should be disambiguated:  
+* Use unique `'aria-labeledby'` values to disambiguate landmarks with the same `'role'`
+* **Or**, use unique `'aria-label'` values to disambiguate landmarks with the same `'role'`
+* **Or**, nest landmarks in different parent regions to disambiguate those with the same `'role'`
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
@@ -58,9 +59,9 @@ Note: OPTIONAL TEXT GOES HERE ... derived from [W3C, Accessible Rich Internet Ap
 ### Who does this affect?
 // rare to use all of these types
   
- * People using a screen reader, including blind, low vision and neurodivergent people
- * People with low vision using screen magnification
- * more people here 
+ * People using a screen reader, including blind, low vision, and neurodivergent people
+ * People using text only, monochrome, or Braille displays
+ * People with dexterity impairment using voice control
  
 </Column>
 </Row>
