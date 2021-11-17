@@ -23,7 +23,7 @@
 </head>
 
 <body id="body">
-	<!-- FAIL Example 2 Nested Cases: Two navs not differentiated by name, have differnt locations. But the locations do not have unique aria-label/aria-labeledby (the are set to "") -->
+	<!-- FAIL Example 2 Nested Cases: Two navs not differentiated by name, have different locations. But the locations do not have unique aria-label/aria-labeledby (the are set to "") -->
 
 	<main id="MAIN_NODE">
 		<div id="leftnav" role="navigation">
@@ -61,8 +61,8 @@
 							"dom": "/html[1]/body[1]/main[1]",
 							"aria": "/document[1]/main[1]"
 						},
-						"reasonId": "Pass_0",
-						"message": "Pass_0 response TODO",
+						"reasonId": "Pass_2",
+						"message": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
 						"messageArgs": [],
 						"apiArgs": [],
 						"category": "Accessibility"
@@ -78,7 +78,7 @@
 							"aria": "/document[1]/main[1]/navigation[1]"
 						},
 						"reasonId": "Fail_0",
-						"message": "Fail_0 response TODO",
+						"message": "Multiple \"{0}\" landmarks are not disambiguated",
 						"messageArgs": [],
 						"apiArgs": [],
 						"category": "Accessibility"
@@ -94,7 +94,7 @@
 							"aria": "/document[1]/main[1]/application[1]/navigation[1]"
 						},
 						"reasonId": "Fail_0",
-						"message": "Fail_0 response TODO",
+						"message": "Multiple \"{0}\" landmarks are not disambiguated",
 						"messageArgs": [],
 						"apiArgs": [],
 						"category": "Accessibility"

@@ -10,7 +10,7 @@ let a11yNls = {
         "Pass_1": "Even though they have same parent, multiple landmarks are disambiguated by unique roles",
         "Pass_2": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
         "Fail_0": "Multiple \"{0}\" landmarks are not disambiguated" 
-        // by either "" == "" or same aria-label/labeledby
+        // by same parent, empty labels, "" == "", or same aria-label/labeledby
     },
     // JCH - DONE
     "RPT_List_Misuse": {
