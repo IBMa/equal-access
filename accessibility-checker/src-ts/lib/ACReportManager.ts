@@ -101,7 +101,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static sendResultsToReporter(unFilteredResults, results, profile) {
+    static async sendResultsToReporter(unFilteredResults, results, profile) {
         ACReportManager.config.DEBUG && console.log("sendResultsToReporter:", ACReportManager.config.outputFormat);
         if (ACReportManager.config.outputFormat.indexOf("json") != -1) {
             ACReportManager.reporters.json.report(results);
@@ -110,7 +110,7 @@ export class ACReportManager {
             ACReportManager.reporters.csv.report(results);
         }
         if (ACReportManager.config.outputFormat.indexOf("html") != -1) {
-            ACReportManager.reporters.html.report(unFilteredResults);
+            await ACReportManager.reporters.html.report(unFilteredResults);
         }
         // Only perform the profiling if profiling was not disabled on purpose
         if (!ACReportManager.config.label || ACReportManager.config.label.indexOf("IBMa-Node-TeSt") === -1) {
