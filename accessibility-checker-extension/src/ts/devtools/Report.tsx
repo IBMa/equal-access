@@ -24,6 +24,7 @@ import {
 import ReportElements from "./ReportElements";
 import ReportRules from "./ReportRules";
 import ReportChecklist from "./ReportChecklist";
+import ReportRow from "./ReportRow";
 
 export interface IReport {
     nls: {
@@ -77,6 +78,7 @@ export interface IRuleset {
 }
 
 interface IReportState {
+    selectedRefView: boolean    // used to center selected issue when change view;
 }
 
 interface IReportProps {
@@ -167,7 +169,14 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
 }
 
 export default class Report extends React.Component<IReportProps, IReportState> {
-    state: IReportState = {};
+    selectedReportRowRef: React.RefObject<ReportRow>;
+    constructor(props: any) {
+        super(props);
+        this.selectedReportRowRef = React.createRef();
+    }
+    state: IReportState = {
+        selectedRefView: false
+    };
     
     
     
@@ -209,7 +218,10 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 role="presentation"
                                 className={"tab-content-"+tabId}
                                 style={{paddingTop:"12px"}}
-                                onClick={() => {console.log("Pressed view tab: ",tabId);}}
+                                onClick={() => { this.setState({ selectedRefView: true});
+                                                 <ReportRow ref={this.selectedReportRowRef} />
+                                                 this.selectedReportRowRef.current?.itemSelectedRefSolo(this.props.selectedIssue)
+                                                }}
                             >
                                 <div>
                                     {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
