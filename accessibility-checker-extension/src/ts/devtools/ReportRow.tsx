@@ -140,10 +140,10 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         return null;
     }
 
-    itemSelectedRefSolo(item: IReportItem | null) {
+    itemSelectedRefSolo(item: IReportItem) {
         // this function runs many times per click
         var selectedIssue = this.props.selectedIssue;
-        if (selectedIssue && item?.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
             if (this.selectedRef.current) {
                 if (this.selectedRef.current) {
                     // TODO Get rid of doubles ?
