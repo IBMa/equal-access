@@ -56,7 +56,7 @@ interface IPanelState {
     prevTabURL: string | null,
     tabId: number,
     tabTitle: string,
-    selectedItem?: IReportItem,
+    selectedItem?: IReportItem | null,
     currentSelectedItem?: IReportItem,
     selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
