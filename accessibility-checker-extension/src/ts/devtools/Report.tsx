@@ -219,7 +219,9 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 className={"tab-content-"+tabId}
                                 style={{paddingTop:"12px"}}
                                 onClick={() => { this.setState({ selectedRefView: true});
+                                                 // @ts-ignore
                                                  <ReportRow ref={this.selectedReportRowRef} />
+                                                 // @ts-ignore
                                                  this.selectedReportRowRef.current?.itemSelectedRefSolo(this.props.selectedIssue)
                                                 }}
                             >
