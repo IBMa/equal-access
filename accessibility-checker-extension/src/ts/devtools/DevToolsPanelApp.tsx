@@ -223,6 +223,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async xpathFromTabstops(message: any) {
         console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
         // JCH take xpath and match to item with same item.path.dom
+        this.state.tabStopsResults.map((result: any) => {
+            if (message.xpath === result.path.dom) {
+                console.log("result xpath = ",result.path.dom);
+                this.getSelectedItem(result);
+                this.selectItem(result);
+            }
+        });
     }
 
     readOptionsData() {
