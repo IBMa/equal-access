@@ -60,11 +60,13 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     scrollRef : RefObject<HTMLDivElement> = React.createRef();
     learnRef : RefObject<HTMLAnchorElement> = React.createRef();
     selectedRef : RefObject<HTMLDivElement> = React.createRef();
+    lastSelectedRef: RefObject<HTMLDivElement> = React.createRef();
+    
 
     state: IReportRowState = {
         expanded: false,
         lastTimestamp: this.props.report.timestamp,
-        scrollTo: false
+        scrollTo: false,
     };
 
     componentDidMount(){
@@ -109,25 +111,46 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         return null;
     }
 
-    itemSelectedClickHandler(e:any, item:IReportItem) { 
-        console.log("Function: itemSelectedClickHandler START");
+    itemSelectedClickHandler(e:any, item:IReportItem) {
+        // this function runs once per click
         e.preventDefault();
         // e.stopPropagation(); // JCH if present learn more clickhandler will not select row
         this.props.getSelectedItem(item);
         this.props.selectItem(item, this.props.group.checkpoint);
-        console.log("Function: itemSelectedClickHandler DONE");
     }
 
     itemSelectedRef(item: IReportItem) {
-        console.log("Function: itemSelectedRef")
+        // this function runs many times per click
         var selectedIssue = this.props.selectedIssue;
         if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
             if (this.selectedRef.current) {
-                // TODO Get rid of doubles  
-                this.selectedRef.current?.classList.add("selectedItem");
+                if (this.selectedRef.current) {
+                    // TODO Get rid of doubles ?
+                    this.selectedRef.current?.classList.add("selectedItem");
+                }
                 let mythis = this;
                 setTimeout(function() {
-                    //mythis.selectedRef.current?.scrollIntoView();
+                    mythis.selectedRef.current?.scrollIntoView({
+                        block: 'center'
+                    });
+                },0)
+            }
+            return this.selectedRef;
+        } 
+        return null;
+    }
+
+    itemSelectedRefSolo(item: IReportItem) {
+        // this function runs many times per click
+        var selectedIssue = this.props.selectedIssue;
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+            if (this.selectedRef.current) {
+                if (this.selectedRef.current) {
+                    // TODO Get rid of doubles ?
+                    this.selectedRef.current?.classList.add("selectedItem");
+                }
+                let mythis = this;
+                setTimeout(function() {
                     mythis.selectedRef.current?.scrollIntoView({
                         block: 'center'
                     });
@@ -189,7 +212,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     }
                     if (parentPanel && parentPanel.getAttribute("aria-hidden") !== "true") {
                         element.scrollIntoView({
-                            behavior: 'smooth'
+                            behavior: 'smooth',
                         });
                     }
                 }

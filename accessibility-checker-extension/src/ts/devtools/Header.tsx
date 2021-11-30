@@ -506,7 +506,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             <div className={this.props.layout === "main" ? "countRow summary mainPanel" : "countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
-                        {console.log("In Header before <Checkbox>s dataFromParent = ",this.props.dataFromParent)}
                         <Checkbox 
                             className="checkboxLabel"
                             disabled={!this.props.counts}

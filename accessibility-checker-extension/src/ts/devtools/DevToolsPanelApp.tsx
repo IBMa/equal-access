@@ -57,6 +57,7 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
+    currentSelectedItem?: IReportItem,
     selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
@@ -220,7 +221,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async xpathFromTabstops(message: any) {
-        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber)
+        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+        // JCH take xpath and match to item with same item.path.dom
+        this.state.tabStopsResults.map((result: any) => {
+            if (message.xpath === result.path.dom) {
+                console.log("result xpath = ",result.path.dom);
+                this.getSelectedItem(result);
+                this.selectItem(result);
+            }
+        });
     }
 
     readOptionsData() {
@@ -1124,8 +1133,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabStopsResults={this.state.tabStopsResults}
                         tabStopsErrors={this.state.tabStopsErrors}
                     />
-                    <div style={{ overflowY: "scroll", height: "100%" }}>
-                        <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>
+                    <div style={{ paddingLeft:"1rem", overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "10em", position:"absolute"  }}>
+                        <div>
                             <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report
