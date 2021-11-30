@@ -14,6 +14,7 @@ console.log("Content Script for drawing tab stops has loaded")
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     console.log(message.tabStopsResults);
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     injectCSS(
         `
@@ -53,12 +54,13 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     );
     injectCSS(
         `#svgCircle{
-            position: absolute;
-            top: 0;
-            left: 0;
-            overflow: visible;
-            pointer-events: none;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            overflow: visible !important;
+            pointer-events: none !important;
             z-index: 2147483646 !important;
+            visibility: visible !important;
         }
         
         .highlightSVG{
@@ -77,25 +79,26 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
     injectCSS(
         `#svgLine{
-            position: absolute;
-            top: 0;
-            left: 0;
-            overflow: visible;
-            pointer-events: none;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            overflow: visible !important;
+            pointer-events: none !important;
             z-index: 2147483646 !important;
+            visibility: visible !important;
         }
         .svgIconTest{
-            position: absolute;
-            overflow: visible;
-            pointer-events: none;
+            position: absolute !important;
+            overflow: visible !important;
+            pointer-events: none !important;
             z-index: 2147483646 !important;
         }
         .circleText{
-            pointer-events: none;
+            pointer-events: none !important;
         }
 
         .circleSmall{
-            font-size: 12px;
+            font-size: 12px !important;
         }
         `
     );
@@ -167,13 +170,13 @@ function injectCSS(styleString: string) {
 
 function draw(tabStopsErrors: any) {
     console.log("Inside draw")
-    insertSVGIntoBody();
+    // insertSVGIntoBody(); DEPRECATED
     redraw(tabStopsErrors);
 }
 
 function drawErrors(tabStopsErrors: any) {
     console.log("Inside drawErrors")
-    // insertSVGIntoBody();
+    // insertSVGIntoBody(); DEPRECATED
     redrawErrors(tabStopsErrors);
 }
 
@@ -224,13 +227,8 @@ function redrawErrors(tabStopsErrors: any) {
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
 
             // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-            makeIcon(x, y, "test");
-
-
+            // makeIcon(x, y, "test");
         }
-
-
-
     }, 1)
 }
 
@@ -321,12 +319,10 @@ function redraw(tabStopsResults: any) {
             makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
         }
-
-
     }, 1)
 }
 
-// function makeIcons(x1: number, y1: number, arrayOfIcons: any) {
+// function makeIcons(x1: number, y1: number, arrayOfIcons: any) { 
 //     let numberOfIcons = 0; // TODO ALI Needs to be dynamically set, this the the array length of the icons that need to be shown should be set to arrayOfIcons.length
 //     let iconName = "" // TODO ALI Needs to be dynamically set, this is the name of the icon to draw  
 //     arrayOfIcons = arrayOfIcons // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
@@ -342,22 +338,22 @@ function redraw(tabStopsResults: any) {
 
 // }
 
-function makeIcon(x1: number, y1: number, iconName: string) {
-    iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-    let icon = document.getElementsByClassName('svgIcon1')[0]
-    var iconClone = icon.cloneNode(true);
-    (iconClone as HTMLElement).removeAttribute("display");
-    (iconClone as HTMLElement).classList.remove("svgIcon1");
-    (iconClone as HTMLElement).classList.add("svgIconTest");
-    (iconClone as HTMLElement).classList.add("deleteMe");
-    (iconClone as HTMLElement).style.position = "absolute";
-    (iconClone as HTMLElement).style.left = String(x1) + "px";
-    (iconClone as HTMLElement).style.top = String(y1) + "px";
-    // (iconClone as HTMLElement).style.fill = "red";
-    // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
+// function makeIcon(x1: number, y1: number, iconName: string) {
+//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
+//     let icon = document.getElementsByClassName('svgIcon1')[0]
+//     var iconClone = icon.cloneNode(true);
+//     (iconClone as HTMLElement).removeAttribute("display");
+//     (iconClone as HTMLElement).classList.remove("svgIcon1");
+//     (iconClone as HTMLElement).classList.add("svgIconTest");
+//     (iconClone as HTMLElement).classList.add("deleteMe");
+//     (iconClone as HTMLElement).style.position = "absolute";
+//     (iconClone as HTMLElement).style.left = String(x1) + "px";
+//     (iconClone as HTMLElement).style.top = String(y1) + "px";
+//     // (iconClone as HTMLElement).style.fill = "red";
+//     // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
 
-    document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-}
+//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+// }
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
@@ -370,18 +366,22 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     if (y1 >= -10 && y1 <= 6) {
         y1 = 12;
     }
-
-    let circle = document.getElementsByClassName('tabCircle')[0]
-    var circleClone = circle.cloneNode(true);
-    (circleClone as HTMLElement).removeAttribute("id");
-    // (circleClone as HTMLElement).id = "circle"+circleNumber;
-    (circleClone as HTMLElement).classList.add("deleteMe");
-    (circleClone as HTMLElement).classList.add("circleNumber" + circleNumber);
-    (circleClone as HTMLElement).setAttribute('cx', String(x1));
-    (circleClone as HTMLElement).setAttribute('cy', String(y1));
-    (circleClone as HTMLElement).setAttribute('pointer-events', "auto");
-    (circleClone as HTMLElement).setAttribute('r', String(radius));
-    (circleClone as HTMLElement).onclick = () => {         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath })  };
+    var circleClone = createSVGCircleTemplate();
+    circleClone.removeAttribute("id");
+    circleClone.classList.add("deleteMe");
+    circleClone.classList.add("circleNumber" + circleNumber);
+    circleClone.setAttribute('cx', String(x1));
+    circleClone.setAttribute('cy', String(y1));
+    circleClone.setAttribute('pointer-events', "auto");
+    circleClone.setAttribute('r', String(radius));
+    circleClone.onclick = () => {
+        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
+    };
+    if (document.getElementById("svgCircle") == null) {
+        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        elemSVG.setAttribute("id", "svgCircle");
+        document.body.appendChild(elemSVG);
+    }
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -396,63 +396,206 @@ function makeTextSmall(x1: number, y1: number, n: string) {
         y1 = 12;
     }
 
-    let text = document.getElementsByClassName('circleText')[0]
-    var textClone = text.cloneNode(true);
-    (textClone as HTMLElement).removeAttribute("id");
-    (textClone as HTMLElement).classList.add("deleteMe");
-    (textClone as HTMLElement).classList.add("circleSmall");
+    // let text = document.getElementsByClassName('circleText')[0]
+    var textClone = createSVGCircleTextTemplate();//text.cloneNode(true);
+    textClone.removeAttribute("id");
+    textClone.classList.add("deleteMe");
+    textClone.classList.add("circleSmall");
 
     if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 10));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 4));
+        textClone.setAttribute('x', String(x1 - 10));
+        textClone.setAttribute('y', String(y1 + 4));
     } else if (n.length == 2) { // number has 2 digits
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 6));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 4));
+        textClone.setAttribute('x', String(x1 - 6));
+        textClone.setAttribute('y', String(y1 + 4));
     } else { // number has 1 digit
-        (textClone as HTMLElement).setAttribute('x', String(x1 - 3));
-        (textClone as HTMLElement).setAttribute('y', String(y1 + 3));
+        textClone.setAttribute('x', String(x1 - 3));
+        textClone.setAttribute('y', String(y1 + 3));
     }
-    (textClone as HTMLElement).innerHTML = n;
+    textClone.innerHTML = n;
+    if (document.getElementById("svgCircle") == null) {
+        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        elemSVG.setAttribute("id", "svgCircle");
+        document.body.appendChild(elemSVG);
+    }
     document.getElementById('svgCircle')?.appendChild(textClone)
+
+
 }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
-    let line = document.getElementsByClassName('tabLine')[0]
-    var lineClone = line.cloneNode(true);
+    // let line = document.getElementsByClassName('tabLine')[0]
+    var lineClone = createSVGLineTemplate()//line.cloneNode(true);
     if (CSSclass) {
         for (let i = 0; i < CSSclass.length; i++) {
-            (lineClone as HTMLElement).classList.add(CSSclass[i]);
+            lineClone.classList.add(CSSclass[i]);
         }
     }
-    (lineClone as HTMLElement).removeAttribute("id");
-    (lineClone as HTMLElement).classList.add("deleteMe");
-    (lineClone as HTMLElement).setAttribute('x1', String(x1));
-    (lineClone as HTMLElement).setAttribute('y1', String(y1));
-    (lineClone as HTMLElement).setAttribute('x2', String(x2));
-    (lineClone as HTMLElement).setAttribute('y2', String(y2));
+    lineClone.removeAttribute("id");
+    lineClone.classList.add("deleteMe");
+    lineClone.setAttribute('x1', String(x1));
+    lineClone.setAttribute('y1', String(y1));
+    lineClone.setAttribute('x2', String(x2));
+    lineClone.setAttribute('y2', String(y2));
+    if (document.getElementById("svgLine") == null) {
+        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        elemSVG.setAttribute("id", "svgLine");
+        document.body.appendChild(elemSVG);
+    }
     document.getElementById('svgLine')?.appendChild(lineClone);
 }
 
-
-function insertSVGIntoBody() {
-    if (document.getElementById("svgLine") == null) {
-        document.body.innerHTML += '<svg id="svgLine"><line id="line" class="tabLine"/></svg>'
-    }
-
-    if (document.getElementById("svgCircle") == null) {
-        document.body.innerHTML += '<svg id="svgCircle"><circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/><text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/></svg>'
-    }
-
-    if (document.getElementById("svgIcon1") == null) {
-        document.body.innerHTML += '<svg class="svgIcon1" display="none" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32"> <defs> <style> .cls-1 { fill: none; } </style> </defs> <path  class="cls-1" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style="&#10;    fill: black;&#10;"/> <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style="&#10;    fill: yellow;&#10;"/> <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style="&#10;    fill: black;&#10;"/> <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/> </svg>'
-    }
-
-
-    if (document.getElementById("svgIcons") == null) {
-        document.body.innerHTML += '<div class="svgIcons"> </div>'
-    }
-
+function createSVGCircleTemplate() {
+    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    elemCircle.setAttribute("id", "circle");
+    elemCircle.setAttribute("class", "tabCircle");
+    elemCircle.setAttribute("stroke", "grey");
+    elemCircle.setAttribute("stroke-width", "1");
+    elemCircle.setAttribute("fill", "purple");
+    return elemCircle
 }
+
+function createSVGCircleTextTemplate() {
+    var elemText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    elemText.setAttribute("class", "circleText");
+    elemText.setAttribute("font-family", "helvetica");
+    elemText.setAttribute("font-size", "10");
+    elemText.setAttribute("font-weight", "normal");
+    elemText.setAttribute("fill", "white");
+    return elemText
+}
+
+function createSVGLineTemplate() {
+    var elemLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    elemLine.setAttribute("id", "line");
+    elemLine.setAttribute("class", "tabLine");
+    return elemLine
+}
+
+// function insertSVGIntoBody() {
+    // if (document.getElementById("svgLine") == null) {
+    //     document.body.innerHTML += '<svg id="svgLine"><line id="line" class="tabLine"/></svg>'
+    // }
+    // <svg id="svgLine">
+    //    <line id="line" class="tabLine"/>
+    // </svg>
+    // if (document.getElementById("svgLine") == null) {
+    //     var elemSVG = document.createElement('svg');
+    //     elemSVG.setAttribute("id", "svgLine");
+    //     var elemLine = document.createElement('line');
+    //     elemLine.setAttribute("id", "line");
+    //     elemLine.setAttribute("class", "tabLine");
+    //     elemSVG.appendChild(elemLine);
+    //     document.body.appendChild(elemSVG);
+    // }
+
+    // if (document.getElementById("svgCircle") == null) {
+    //     document.body.innerHTML += '<svg id="svgCircle"><circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/><text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/></svg>'
+    // }
+    // <svg id="svgCircle">
+    //    <circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/>
+    //    <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
+    // </svg>'
+    // if (document.getElementById("svgCircle") == null) {
+    //     var elemSVG = document.createElement('svg');
+    //     elemSVG.setAttribute("id", "svgCircle");
+    //     var elemCircle = document.createElement('circle');
+    //     elemCircle.setAttribute("id", "circle");
+    //     elemCircle.setAttribute("class", "tabCircle");
+    //     elemCircle.setAttribute("stroke", "grey");
+    //     elemCircle.setAttribute("stroke-width", "1");
+    //     elemCircle.setAttribute("fill", "purple");
+    //     var elemText = document.createElement('text');
+    //     elemText.setAttribute("class", "circleText");
+    //     elemText.setAttribute("font-family", "helvetica");
+    //     elemText.setAttribute("font-size", "10");
+    //     elemText.setAttribute("font-weight", "normal");
+    //     elemText.setAttribute("fill", "white");
+    //     elemSVG.appendChild(elemCircle);
+    //     elemSVG.appendChild(elemText);
+    //     document.body.appendChild(elemSVG);
+    // }
+
+    // if (document.getElementById("svgCircle") == null) {
+    //     var elemSVG = document.createElement('svg');
+    //     elemSVG.setAttribute("id", "svgCircle");
+    //     document.body.appendChild(elemSVG);
+    // }
+
+    // if (document.getElementById("svgIcon1") == null) {
+    //     document.body.innerHTML += '<svg class="svgIcon1" display="none" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32"> <defs> <style> .cls-1 { fill: none; } </style> </defs> <path  class="cls-1" d="M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style="&#10;    fill: black;&#10;"/> <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style="&#10;    fill: yellow;&#10;"/> <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style="&#10;    fill: black;&#10;"/> <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/> </svg>'
+    // }
+
+    // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
+    //     <defs>
+    //         <style> 
+    //            .cls-1 { fill: none; } 
+    //         </style>
+    //     </defs >
+    //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
+    //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
+    //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
+    //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
+    // </svg>
+
+
+    // if (document.getElementById("svgIcon1") == null) {
+
+    //     var elemSvg = document.createElement('svg');
+    //     elemSvg.setAttribute("class", "svgIcon1");
+    //     elemSvg.setAttribute("display", "none");
+    //     elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    //     elemSvg.setAttribute("width", "12px");
+    //     elemSvg.setAttribute("height", "12px");
+    //     elemSvg.setAttribute("viewBox", "0 0 32 32");
+
+    //     var elemDefs = document.createElement('defs');
+
+    //     var elemStyle = document.createElement('style');
+    //     elemStyle.innerText = ".cls-1 { fill: none; }"
+
+    //     var elemPath1 = document.createElement('path');
+    //     elemPath1.setAttribute("class", "cls-1");
+    //     elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
+    //     elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
+
+    //     var elemPath2 = document.createElement('path');
+    //     elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
+    //     elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
+
+    //     var elemPath3 = document.createElement('path');
+    //     elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
+    //     elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
+
+    //     var elemRect = document.createElement('rect');
+    //     elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
+    //     elemRect.setAttribute("class", "cls-1");
+    //     elemRect.setAttribute("width", "32");
+    //     elemRect.setAttribute("height", "32");
+
+    //     elemDefs.appendChild(elemStyle);
+    //     elemSvg.appendChild(elemDefs);
+    //     elemSvg.appendChild(elemPath1);
+    //     elemSvg.appendChild(elemPath2);
+    //     elemSvg.appendChild(elemPath3);
+    //     elemSvg.appendChild(elemRect);
+    //     document.body.appendChild(elemSvg);
+
+    // }
+
+
+    // if (document.getElementById("svgIcons") == null) {
+    //     document.body.innerHTML += '<div class="svgIcons"> </div>'
+    // }
+
+    // if (document.getElementById("svgIcons") == null) {
+    //     var elemDIV = document.createElement('div'); 
+    //     elemDIV.setAttribute("class", "svgIcons");
+    //     document.body.appendChild(elemDIV);
+    // }
+
+
+// }
 
 function convertXpathsToHtmlElements(nodes: any) {
     let results: any = [];
