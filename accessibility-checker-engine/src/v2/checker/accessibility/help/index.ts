@@ -17,11 +17,6 @@
 import { Config } from "../../../config/Config";
 
 let a11yHelp = {
-    "landmark_name_unique": {
-        0: `${Config.helpRoot}/landmark_name_unique`,
-        "Pass_0": `${Config.helpRoot}/landmark_name_unique`,
-        "Fail_0": `${Config.helpRoot}/landmark_name_unique`
-    },
     // JCH - DONE
     "RPT_List_Misuse": {
         0: `${Config.helpRoot}/RPT_List_Misuse`,

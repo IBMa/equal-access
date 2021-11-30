@@ -260,11 +260,6 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
                 {
-                    id: "landmark_name_unique",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -1460,11 +1455,6 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
-                {
-                    id: "landmark_name_unique",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
                 {
                     id: "table_headers_ref_valid",
                     level: eRulePolicy.VIOLATION,
