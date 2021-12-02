@@ -9,7 +9,7 @@ A web browser extensions that adds automated accessibility checking capabilities
 
 ### Install dependencies
 
-1. Under the root directory `equal-access` directory 
+1. Under the root `equal-access` directory 
 
     ```
     npm install
