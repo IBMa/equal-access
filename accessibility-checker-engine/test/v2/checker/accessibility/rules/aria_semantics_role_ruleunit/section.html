@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <section role="group">
+        Hello
+      </section>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_role"],
+        results: [
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/section[1]",
+              "aria": "/document[1]/main[1]/group[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "group",
+              "section"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
