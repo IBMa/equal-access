@@ -58,7 +58,7 @@ jobs:
     - run: google-chrome --version
     - run: npm install
       working-directory: accessibility-checker-engine
-    - run: npx karma start --single-run --watch=false
+    - run: npx karma start karmaaction.conf.js --single-run --watch=false
       working-directory: accessibility-checker-engine
 
 ###############################################################################
