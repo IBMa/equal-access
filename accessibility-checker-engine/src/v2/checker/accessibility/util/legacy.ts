@@ -388,7 +388,7 @@ export class RPTUtil {
     public static isDefinedAriaAttribute(ele, attrName) {
         let isDefinedAriaAttribute = false;
         if (attrName.substring(0, 5) === 'aria-') {
-            // User agents SHOULD treat state and property attributes with a value of "" the same as they treat an absent attribute.  
+            // User agents SHOULD treat state and property attributes with a value of "" the same as they treat an absent attribute.
             isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName) && ele.getAttribute(attrName).length > 0;
         }
         return isDefinedAriaAttribute;
@@ -1365,7 +1365,7 @@ export class RPTUtil {
                 if (formElements.includes(nw.node.nodeName.toLowerCase())) {
                     if (RPTUtil.isNodeDisabled(nw.node))
                        return true;
-                    return false;   
+                    return false;
                 }
             }
         }
@@ -1389,9 +1389,9 @@ export class RPTUtil {
                     return true;
                 }
             }
-    
+
         }
-    }    
+    }
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.
@@ -2060,7 +2060,7 @@ export class RPTUtil {
     }
 
     public static svgHasName(element: SVGElement) {
-        return RPTUtil.attributeNonEmpty(element, "aria-label") 
+        return RPTUtil.attributeNonEmpty(element, "aria-label")
             || RPTUtil.attributeNonEmpty(element, "aria-labelledby")
             || !!element.querySelector(":scope > title");
     }
@@ -2087,11 +2087,11 @@ export class RPTUtil {
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
                 hasContent = (
-                    node.nodeName.toLowerCase() === "img" 
+                    node.nodeName.toLowerCase() === "img"
                     && (RPTUtil.attributeNonEmpty(node, "alt") || RPTUtil.attributeNonEmpty(node, "title"))
                     && RPTUtil.isNodeVisible(node)
                 ) || (
-                    node.nodeName.toLowerCase() === "svg" 
+                    node.nodeName.toLowerCase() === "svg"
                     && RPTUtil.svgHasName(node as any)
                 );
 
@@ -2146,9 +2146,9 @@ export class RPTUtil {
             while (!hasContent && nw.nextNode() && nw.node != element) {
                 hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
                     RPTUtil.attributeNonEmpty(nw.node, "alt"));
-                if (!hasContent 
+                if (!hasContent
                     && (RPTUtil.hasRole(nw.node, "button", true) || RPTUtil.hasRole(nw.node, "textbox"))
-                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.elem(), true))) 
+                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.elem(), true)))
                 {
                     hasContent = true;
                 }
@@ -2416,15 +2416,15 @@ export class RPTUtil {
         // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
         if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
              let index = -1;
-             if ((index = allowedAttributes.indexOf("aria-level")) > -1) 
+             if ((index = allowedAttributes.indexOf("aria-level")) > -1)
                 allowedAttributes.splice(index, 1);
-             
-             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1) 
+
+             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
                 allowedAttributes.splice(index, 1);
-            
-             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1) 
+
+             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
                 allowedAttributes.splice(index, 1);
-             
+
         }
 
         return allowedAttributes;
@@ -2651,6 +2651,14 @@ export class RPTUtil {
 
         // Return true (node is visible)
         return true;
+    }
+
+    /**
+     * return true if the node is natively hidden or aria-hidden = 'true'
+     * @param node
+     */
+    public static isNodeHidden(node: Node) {
+        return (RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden"));
     }
 
     public static getControlOfLabel(node: Node) {
@@ -3427,7 +3435,7 @@ export class NodeWalker {
             let iframeNode = (this.node as HTMLIFrameElement);
             let elementNode = (this.node as HTMLElement);
             let slotElement = (this.node as HTMLSlotElement)
-            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && this.node.nodeName.toUpperCase() === "IFRAME"
                 && iframeNode.contentDocument
                 && iframeNode.contentDocument.documentElement)
@@ -3435,16 +3443,16 @@ export class NodeWalker {
                 let ownerElement = this.node;
                 this.node = iframeNode.contentDocument.documentElement;
                 (this.node as any).ownerElement = ownerElement;
-            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && elementNode.shadowRoot
                 && elementNode.shadowRoot.firstChild)
             {
                 let ownerElement = this.node;
                 this.node = elementNode.shadowRoot;
                 (this.node as any).ownerElement = ownerElement;
-            } else if (this.node.nodeType === 1 
+            } else if (this.node.nodeType === 1
                 && elementNode.nodeName.toLowerCase() === "slot"
-                && slotElement.assignedNodes().length > 0) 
+                && slotElement.assignedNodes().length > 0)
             {
                 let slotOwner = this.node;
                 this.node = slotElement.assignedNodes()[0];
@@ -3468,7 +3476,7 @@ export class NodeWalker {
                     let n = this.node.nextSibling;
                     while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
                         n = this.node.nextSibling;
-                    } 
+                    }
                     if (n) {
                         // We found another unnamed slot
                         let slotOwner = (this.node as any).slotOwner;
