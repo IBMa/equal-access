@@ -2654,11 +2654,14 @@ export class RPTUtil {
     }
 
     /**
-     * return true if the node is natively hidden or aria-hidden = 'true'
+     * return true if the node or its ancester is natively hidden or aria-hidden = 'true'
      * @param node
      */
     public static isNodeHidden(node: Element) {
-        return (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden"));
+        if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden")) return true;
+        let ancestor = RPTUtil.getAncestor(node, "aria-hidden");
+        if (ancestor) return true;
+        return false;
     }
 
     public static getControlOfLabel(node: Node) {
