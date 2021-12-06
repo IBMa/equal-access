@@ -27,8 +27,6 @@ let a11yRulesVideo: Rule[] = [
         context: "dom:video",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLVideoElement;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = false;
 
             // ignore decorative video if user uses aria-hidden

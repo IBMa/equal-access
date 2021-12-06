@@ -2660,7 +2660,7 @@ export class RPTUtil {
     public static isNodeHidden(node: Element) {
         if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden")) return true;
         let ancestor = RPTUtil.getAncestor(node, "aria-hidden");
-        if (ancestor) return true;
+        if (ancestor && ancestor.getAttribute("aria-hidden")) return true;
         return false;
     }
 
