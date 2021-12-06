@@ -2657,8 +2657,8 @@ export class RPTUtil {
      * return true if the node is natively hidden or aria-hidden = 'true'
      * @param node
      */
-    public static isNodeHidden(node: Node) {
-        return (RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden"));
+    public static isNodeHidden(node: Element) {
+        return (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden"));
     }
 
     public static getControlOfLabel(node: Node) {

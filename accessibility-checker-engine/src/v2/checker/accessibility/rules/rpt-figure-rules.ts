@@ -27,6 +27,8 @@ let a11yRulesFig: Rule[] = [
         context: "dom:figure",
         run: (context: RuleContext, options?: {}) : RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             // JCH - NO OUT OF SCOPE hidden in context
             let passed = false;
             let figures = ruleContext.getElementsByTagName("figcaption");

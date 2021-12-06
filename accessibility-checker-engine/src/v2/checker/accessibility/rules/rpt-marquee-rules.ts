@@ -28,6 +28,8 @@ let a11yRulesMarquee: Rule[] = [
         context: "dom:marquee",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             // JCH - NO OUT OF SCOPE hidden in context
             return RuleFail("Fail_1");
         }

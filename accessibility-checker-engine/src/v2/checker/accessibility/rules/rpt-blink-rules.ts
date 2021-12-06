@@ -28,6 +28,8 @@ let a11yRulesBlink: Rule[] = [
         context: "dom:blink",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             return RuleFail("Fail_1");
         }
     },
@@ -41,6 +43,8 @@ let a11yRulesBlink: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let textValue = RPTUtil.getInnerText(ruleContext);
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             if (ruleContext.hasAttribute('style')) {
                 textValue = ruleContext.getAttribute('style');
             }

@@ -42,9 +42,9 @@ let a11yRulesAnchor: Rule[] = [{
         if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
             return null;
         }
-        // Rule only passes if an element has inner content, 
+        // Rule only passes if an element has inner content,
         // in the case that there is only hidden content under the the element it is a violation
-        let passed = 
+        let passed =
             ARIAMapper.computeName(ruleContext).trim().length > 0
             || RPTUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
@@ -63,6 +63,8 @@ let a11yRulesAnchor: Rule[] = [{
     context: "dom:a[target],dom:area[target],dom:base[target]",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        //skip the rule
+        if (RPTUtil.isNodeHidden(ruleContext)) return null;
         const params = {
             paramWinText: {
                 value: ["new window", "new tab"],

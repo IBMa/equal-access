@@ -28,6 +28,8 @@ let a11yRulesEmbed: Rule[] = [
         context: "dom:embed",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = ruleContext.getElementsByTagName("noembed").length > 0;
             if (!passed) {
                 let walkNode = ruleContext.nextSibling;
@@ -55,6 +57,8 @@ let a11yRulesEmbed: Rule[] = [
         context: "dom:noembed",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = RPTUtil.hasInnerContentHidden(ruleContext);
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
@@ -70,6 +74,8 @@ let a11yRulesEmbed: Rule[] = [
         context: "dom:embed",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt");
             return passed ? RulePass("Pass_0") : RulePotential("Potential_1");
         }
@@ -85,6 +91,8 @@ let a11yRulesEmbed: Rule[] = [
             "dom:*[autostart=true], dom:*[autostart=1], dom:bgsound",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let nodeName = ruleContext.nodeName.toLowerCase();
             let passed;
             if (nodeName == "bgsound") {

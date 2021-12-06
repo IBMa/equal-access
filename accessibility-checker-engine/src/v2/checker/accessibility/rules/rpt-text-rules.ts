@@ -37,9 +37,11 @@ let a11yRulesText: Rule[] = [
                 }
             }
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             if (RPTUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
                 return null;
-            } 
+            }
 
             // Extract the nodeName of the context node
             let nodeName = ruleContext.nodeName.toLowerCase();
@@ -79,7 +81,7 @@ let a11yRulesText: Rule[] = [
                             let hash = {}, result = [];
                             let exemptWords = ["right-click", "left-click", "right-clicking", "right-clicks", "left-clicking", "left-clicks"];
 
-                            // Note: split(/[\n\r ]+/) will spread the string into group of words using space, 
+                            // Note: split(/[\n\r ]+/) will spread the string into group of words using space,
                             // carriage return or linefeed as separators.
                             let counts = txtVal.split(/[\n\r ]+/).reduce(function (map, word) {
                                 let sensoryTextArr = validateParams.sensoryText.value;
@@ -224,7 +226,7 @@ let a11yRulesText: Rule[] = [
     {
         /**
          * Description: Trigger for words that are spaced out (e.g., I B M).  CSS should be used instead for this
-         * Origin: WCAG 2.0 F32, C8 
+         * Origin: WCAG 2.0 F32, C8
          */
         id: "WCAG20_Text_LetterSpacing",
         context: "dom:*",
@@ -266,8 +268,8 @@ let a11yRulesText: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
 
-            // Fix for IDWB writers. Don't trigger if content is in a code element.  The code element is searched for 
-            // in various places because of the weird way various browsers render <code><pre></pre></code.  Firefox, 
+            // Fix for IDWB writers. Don't trigger if content is in a code element.  The code element is searched for
+            // in various places because of the weird way various browsers render <code><pre></pre></code.  Firefox,
             // HtmlUnit and Chrome all render differently.  Firefox: <code></code><pre></pre>  HtmlUnit: </code><pre><code></code></pre>
             // See unit test CodeElementAbovePreElement.html.  Don't know how RPT renders, so cover all the bases.
             if (ruleContext.nodeName.toLowerCase() == "pre") {
