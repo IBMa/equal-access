@@ -36,7 +36,6 @@ let a11yRulesLabeling: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
             const ruleContext = context["dom"].node as Element;
-
             let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
             let formCache = RPTUtil.getCache(ruleContext.ownerDocument, "landmark_name_unique", null);
 
@@ -103,8 +102,11 @@ let a11yRulesLabeling: Rule[] = [
                     navigationNodesComputedLabels.push(ARIAMapper.computeName(navigationNodes[i]))
                 }
 
+                console.log("navigationNodesComputedLabels: ", navigationNodesComputedLabels.toString())
+
                 for (let i = 0; i < navigationNodesParents.length; i++) { // Loop over all the parents of the landmark nodes to find duplicates
                     let matchFound = false;
+                    let pass_0_flag = false;
                     for (let j = 0; j < navigationNodesParents.length; j++) {
                         if ((navigationNodesParents[i] === null) || (navigationNodesParents[j] === null)) {
                             // We are looking at root node
@@ -121,33 +123,36 @@ let a11yRulesLabeling: Rule[] = [
                         if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
                             // We have the same parent-landmark AND  
                             if (ARIAMapper.elemToRole(navigationNodes[i]) == ARIAMapper.elemToRole(navigationNodes[j])) {
-                                // Both nodes have the same role AND 
+                                // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labeledby
                                     if (navigationNodesComputedLabels[i] === "") {
                                         navigationNodesMatchFound.push("Fail_0");  // Fail 0
-                                        matchFound = true 
+                                        matchFound = true
                                         break
                                     } else {
-                                        navigationNodesMatchFound.push("Fail_1");  // Fail 1
+                                        navigationNodesMatchFound.push("Fail_0");
                                         matchFound = true
                                         break
                                     }
                                 } else {
-                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labeledby // pass 3
-                                    // navigationNodesMatchFound.push("Pass_3");
+                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labeledby 
+                                    // We have atleast a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
+                                    pass_0_flag = true
                                 }
                             } else {
-                                // Same parents but different node roles // pass 2
-                                // navigationNodesMatchFound.push("Pass_2");
+                                // Same parents but different node roles // Not applicable
                             }
                         } else {
-                            // Different parents // pass 1
-                            // navigationNodesMatchFound.push("Pass_1");
+                            // Different parents // Not applicable
                         }
                     }
-                    if(!matchFound){
-                        navigationNodesMatchFound.push("Pass_0");
+                    if (!matchFound) {
+                        if (pass_0_flag) {
+                            navigationNodesMatchFound.push("Pass_0");
+                        } else {
+                            navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array to indexes match up.
+                        }
                     }
                 }
                 formCache.navigationNodesComputedLabels = navigationNodesComputedLabels;
@@ -160,6 +165,7 @@ let a11yRulesLabeling: Rule[] = [
                 // console.log("-------------End formCache")
 
             } // End formCache
+
             let indexToCheck = -1;
             for (let i = 0; i < formCache.navigationNodes.length; i++) {
 
@@ -167,11 +173,17 @@ let a11yRulesLabeling: Rule[] = [
                     indexToCheck = i;
                 }
             }
-            if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass")) {
-                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
-            } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail")) {
-                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
+            if (indexToCheck === -1) {
+                return null;
             }
+            if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass_0")) {
+                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
+            } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail_0")) {
+                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck]), formCache.navigationNodesComputedLabels[indexToCheck]]);
+            } else {
+                return null;
+            }
+
         }
     },
     {

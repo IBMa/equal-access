@@ -6,11 +6,10 @@ let a11yNls = {
     // AU - DONE
     "landmark_name_unique": {
         0: "Multiple landmarks of the same role should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent",
-        "Pass_0": "Multiple \"{0}\" landmarks are disambiguated by different parents",
-        "Pass_1": "Even though they have same parent, multiple landmarks are disambiguated by unique roles",
-        "Pass_2": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
-        "Fail_0": "Multiple \"{0}\" landmarks are not disambiguated" 
-        // by same parent, empty labels "" == "", or same aria-label/labeledby
+        "Pass_0": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
+        // Fail_0 occurs when we have: not disabmiguted by same parent, labels are blank: "" == "", or same aria-label/labeledby
+        "Fail_0": "Multiple \"{0}\" landmarks are not disambiguated, becasue they have the same \"{1}\" label" 
+
     },
     // JCH - DONE
     "RPT_List_Misuse": {
