@@ -67,35 +67,17 @@ let a11yRulesLabeling: Rule[] = [
 
                     for (let j = 0; j < els.length; j++) { // Loop over all the parents of the landmark nodes
                         // Find nearest landmark parent based on the tagName or the role attribute 
-                        let tagNameTrigger =
-                            (els[j].tagName == "ASIDE") ||
-                            (els[j].tagName == "FOOTER") ||
-                            (els[j].tagName == "FORM") ||
-                            (els[j].tagName == "HEADER") ||
-                            (els[j].tagName == "MAIN") ||
-                            (els[j].tagName == "NAV") ||
-                            (els[j].tagName == "SECTION") ||
-                            (els[j].tagName == "FORM");
-
+                        let tagNameTrigger = ["ASIDE","FOOTER","FORM","HEADER","MAIN","NAV","SECTION","FORM"].includes(els[j].tagName)
                         let roleNameTrigger = false;
                         if (els[j].hasAttribute("role")) {
-                            roleNameTrigger =
-                                (els[j].getAttribute("role").includes("complementary")) ||
-                                (els[j].getAttribute("role").includes("contentinfo")) ||
-                                (els[j].getAttribute("role").includes("form")) ||
-                                (els[j].getAttribute("role").includes("banner")) ||
-                                (els[j].getAttribute("role").includes("main")) ||
-                                (els[j].getAttribute("role").includes("navigation")) ||
-                                (els[j].getAttribute("role").includes("region")) ||
-                                (els[j].getAttribute("role").includes("form")) ||
-                                (els[j].getAttribute("role").includes("search"));
+                            roleNameTrigger = ["complementary","contentinfo","form","banner","main","navigation","region","form","search"].includes(els[j].getAttribute("role"))
                         }
                         if (tagNameTrigger || roleNameTrigger) {
                             // Nearest parent-landmark found
                             navigationNodesParents.push(els[j])
                             break
                         }
-                        if (j == els.length - 1) { // This node is at the head of the file so it does not have a parent
+                        if (j === els.length - 1) { // This node is at the head of the file so it does not have a parent
                             navigationNodesParents.push(null) // TODO might want to change to NULL
                             break
                         }
@@ -118,13 +100,13 @@ let a11yRulesLabeling: Rule[] = [
                             // Strange case... should not happen
                             continue
                         }
-                        if (j == i) {
+                        if (j === i) {
                             // We do not want to compare against ourselfs
                             continue
                         }
                         if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
                             // We have the same parent-landmark AND  
-                            if (ARIAMapper.elemToRole(navigationNodes[i]) == ARIAMapper.elemToRole(navigationNodes[j])) {
+                            if (ARIAMapper.elemToRole(navigationNodes[i]) === ARIAMapper.elemToRole(navigationNodes[j])) {
                                 // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labeledby
@@ -235,7 +217,7 @@ let a11yRulesLabeling: Rule[] = [
                 if (mains[i] === ruleContext) continue;
                 result = RulePass("Pass_0");
                 let thisParentDocRole = RPTUtil.getAncestorWithRole(mains[i], "document", true);
-                if (thisParentDocRole == parentDocRole) {
+                if (thisParentDocRole === parentDocRole) {
                     if (RPTUtil.getAriaLabel(mains[i]) === contextLabel) {
                         result = RuleFail("Fail_1");
                         break;
@@ -318,7 +300,7 @@ let a11yRulesLabeling: Rule[] = [
                 return null;
             }
 
-            let passed = RPTUtil.getSiblingWithRoleHidden(ruleContext, "banner", true, true) == null;
+            let passed = RPTUtil.getSiblingWithRoleHidden(ruleContext, "banner", true, true) === null;
             //return new ValidationResult(passed, [ruleContext], 'role', '', []);
             if (passed) {
                 return RulePass("Pass_0");
@@ -828,7 +810,7 @@ let a11yRulesLabeling: Rule[] = [
             retToken1.push(ruleContext.nodeName.toLowerCase());
             let retToken2 = new Array();
             retToken2.push(roleName);
-            //return new ValidationResult(passed, [ruleContext], 'role', '', passed == true ? [] : [retToken1, retToken2]);
+            //return new ValidationResult(passed, [ruleContext], 'role', '', passed === true ? [] : [retToken1, retToken2]);
             if (!passed) {
                 return RuleFail("Fail_1", [retToken1.toString(), retToken2.toString()]);
             } else {
