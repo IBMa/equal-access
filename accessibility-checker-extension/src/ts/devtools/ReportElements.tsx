@@ -28,7 +28,9 @@ interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
+    selectedIssue: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
     focusedViewFilter: boolean
@@ -57,7 +59,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
                 continue;
             }
             item.itemIdx = itemIdx++;
-
+            // group by element role === aria path
             let thisGroup = groupMap[item.path.aria];
             if (!thisGroup) {
                 thisGroup = {
@@ -120,7 +122,9 @@ export default class ReportElements extends React.Component<IReportElementsProps
                             report={this.props.report} 
                             group={group}
                             getItem={this.props.getItem}
+                            getSelectedItem={this.props.getSelectedItem}
                             learnItem={this.props.learnItem}
+                            selectedIssue={this.props.selectedIssue}
                             selectItem={this.props.selectItem} 
                             layout={this.props.layout}
                             dataFromParent={this.props.dataFromParent}

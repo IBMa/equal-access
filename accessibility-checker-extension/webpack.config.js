@@ -21,7 +21,7 @@ const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new
     reloadPage: true,
     entries: {
         background: 'background',
-        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel'],
+        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel', 'contentScripts'],
         contentScript: Object.keys(contentScripts),
     }
 }) : () => { this.apply = () => { } };
@@ -37,9 +37,10 @@ module.exports = {
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
         devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
         devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
+        draw: path.join(sourceRootPath, 'ts', 'contentScripts', 'index.ts'),
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
         usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
-        ...contentScripts,
+        // ...contentScripts,
     },
     output: {
         path: distRootPath,
@@ -110,6 +111,13 @@ module.exports = {
             title: 'Accessibility Checker Extension',
             chunks: ['devtoolsSubpanel']
         }),
+        // new HtmlWebpackPlugin({
+        //     template: path.join(sourceRootPath, 'html', 'draw.html'),
+        //     inject: 'body',
+        //     filename: 'draw.html',
+        //     title: 'Accessibility Checker Extension',
+        //     chunks: ['contentScripts']
+        // }),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'reports.html'),
             inject: 'body',
@@ -134,7 +142,12 @@ module.exports = {
                 from: path.join(sourceRootPath, 'manifest.json'),
                 to: path.join(distRootPath, 'manifest.json'),
                 toType: 'file',
-            }
+            },
+            // {
+            //     from: path.join(sourceRootPath, 'ts/contentScripts'),
+            //     to: path.join(distRootPath, ''),
+            // }
+
         ]),
        
         new webpack.DefinePlugin({

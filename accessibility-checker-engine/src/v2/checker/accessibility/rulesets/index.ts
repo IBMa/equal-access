@@ -33,9 +33,11 @@ let a11yRulesets: Ruleset[] = [
             id: "detector_tabbable",
             level: eRulePolicy.INFORMATION,
             toolkitLevel: eToolkitLevel.LEVEL_FOUR
+
         }]
     }]
 },
+
 {
     id: "IBM_Accessibility",
     name: "IBM Accessibility",

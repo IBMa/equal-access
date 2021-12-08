@@ -16,6 +16,9 @@
 
 import React from "react";
 import Header from "./Header";
+import TabStopsHeader from "./TabStopsHeader";
+// import TabStops from "./TabStops";
+import ReportTabStops from "./ReportTabStops";
 import ReportManagerHeader from "./ReportManagerHeader";
 import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
@@ -44,8 +47,6 @@ interface IPanelProps {
     layout: "main" | "sub"
 }
 
-
-
 interface IPanelState {
     listenerRegistered: boolean,
     numScanning: number,
@@ -56,6 +57,8 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
+    currentSelectedItem?: IReportItem,
+    selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
     learnMore: boolean,
@@ -93,7 +96,11 @@ interface IPanelState {
     selectedArchive: string | null,
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
-    focusedViewText: string
+    focusedViewText: string,
+    tabStops: [],
+    tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
+    tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[],
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -106,6 +113,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
+        selectedItem: undefined,
+        selectedIssue: null,
         rulesets: null,
         learnMore: false,
         learnItem: null,
@@ -123,22 +132,30 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         selectedArchive: null,
         selectedPolicy: null,
         focusedViewFilter: false,
-        focusedViewText: ""
+        focusedViewText: "",
+        tabStops: [], // array of xpaths of the tab stops
+        tabStopsPanel: false,
+        tabStopsResults: [],
+        tabStopsErrors: []
     }
 
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
+    leftPanelItemSelected: React.RefObject<HTMLDivElement>;
+    subPanelItemSelected: React.RefObject<HTMLDivElement>;
     ref: any;
 
     constructor(props: any) {
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
+        this.leftPanelItemSelected = React.createRef();
+        this.subPanelItemSelected = React.createRef();
         if (this.props.layout === "sub") {
             this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
         }
-        
+
         // Only listen to element events on the subpanel
         if (this.props.layout === "sub") {
             chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
@@ -200,8 +217,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
-        // console.log("componentDidMount");
         this.readOptionsData();
+    }
+
+    async xpathFromTabstops(message: any) {
+        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+        // JCH take xpath and match to item with same item.path.dom
+        this.state.tabStopsResults.map((result: any) => {
+            if (message.xpath === result.path.dom) {
+                console.log("result xpath = ",result.path.dom);
+                this.getSelectedItem(result);
+                this.selectItem(result);
+            }
+        });
     }
 
     readOptionsData() {
@@ -211,10 +239,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             //pick default archive id from env
             let archiveId = process.env.defaultArchiveId + "";
             const archives = await self.getArchives();
-            const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
-            
+            const validArchive = ((id: string) => id && archives.some((archive: any) => archive.id === id));
+
             //if default archive id is not good, pick 'latest'
-            if (!validArchive(archiveId)){ 
+            if (!validArchive(archiveId)) {
                 archiveId = "latest";
             }
 
@@ -223,13 +251,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 archiveId = result.OPTIONS.selected_archive.id;
             }
 
-            let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
+            let selectedArchive = archives.filter((archive: any) => archive.id === archiveId)[0];
 
             let policyId: string = selectedArchive.policies[0].id;
             let policyName: string = selectedArchive.policies[0].name;
-            const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy:any) => policy.id === id));
-            
-            if (!validPolicy(policyId)){ 
+            const validPolicy = ((id: string) => id && selectedArchive.policies.some((policy: any) => policy.id === id));
+
+            if (!validPolicy(policyId)) {
                 policyId = "IBM_Accessibility";
             }
 
@@ -260,10 +288,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             }
                         }
                     });
-                    
+
                     PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                     PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
+
+                    PanelMessaging.addListener("TABSTOP_XPATH_ONCLICK", async message => {self.xpathFromTabstops(message)} );
+
                 }
                 if (self.props.layout === "sub") {
                     self.selectElementInElements();
@@ -308,7 +339,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
         if (tabURL !== this.state.prevTabURL) {
-            this.setState({firstScan: true});
+            this.setState({ firstScan: true });
         }
         this.state.prevTabURL = tabURL;
 
@@ -320,7 +351,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         } else {
             this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
             try {
-                await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, tabURL:  tabURL, origin: this.props.layout})
+                await PanelMessaging.sendToBackground("DAP_SCAN", { tabId: tabId, tabURL: tabURL, origin: this.props.layout })
             } catch (err) {
                 console.error(err);
             }
@@ -332,31 +363,29 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         //     this.state.report.filterstamp = new Date().getTime();
         //     this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
         // }
-        this.setState({firstScan: true});
+        this.setState({ firstScan: true });
         this.startScan();
     }
 
     async onReport(message: any): Promise<any> {
+        // console.log("onReport")
         try {
-            if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
+            if (BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")) {
                 let blob_url = message.blob_url;
                 let blob = await fetch(blob_url).then(r => r.blob());
                 message = JSON.parse(await blob.text());
             }
-
             let report = message.report;
             let archives = await this.getArchives();
-            
-            if (!report) return;
 
-        let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
+            if (!report) return;
+            let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
 
             // JCH add itemIdx to report (used to be in message.report)
             report.results.map((result: any, index: any) => {
                 result["itemIdx"] = index;
             })
             let tabId = message.tabId;
-
 
             if (this.state.tabId === tabId) {
                 report.timestamp = new Date().getTime();
@@ -370,9 +399,41 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     selectedItem: undefined
                 });
             }
-            this.setState({ scanning: false }); // scan done
-            // console.log("SCAN DONE");
-            
+            // JCH before finish scan collect and order tab stops
+            // Note: the collection is actually all issues that are tab stops
+            // console.log("JCH DO TABBABLE");
+            let tabbable: IReportItem[] = [];
+            let tabbableErrors: IReportItem[] = [];
+            report.results.map((result: any) => {
+                if (result.ruleId === "detector_tabbable") {
+                    // there will always be at least one tab
+                    tabbable?.push(result);
+                } else if (result.value[1] !== "PASS" && (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" ||
+                    result.ruleId === "IBMA_Focus_Tabbable" ||
+                    result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
+                    result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
+                    result.ruleId === "IBMA_Focus_MultiTab" ||
+                    result.ruleId === "RPT_Elem_EventMouseAndKey" ||
+                    result.ruleId === "Rpt_Aria_ValidRole")) {
+                    tabbableErrors?.push(result);
+                }
+            });
+            if (tabbable !== null) {
+                tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
+            }
+
+            // console.log("tabbable =", tabbable);
+            this.setState({ tabStopsResults: tabbable });
+            console.log("tabStopsErrors = ", tabbableErrors);
+            this.setState({ tabStopsErrors: tabbableErrors });
+
+            // End of tab stops stored state
+
+
+
+            this.setState({ scanning: false }); // SCAN DONE
+            // ***** SCAN DONE *****
+
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
             // console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
@@ -391,27 +452,27 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 this.storeScan();
             } else if (this.state.storedScans.length == 1 && this.state.scanStorage === false) { // ONE stored scan and NOT storing scans
                 // console.log("choice 4");
-                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                if (this.state.storedScans[this.state.storedScans.length - 1].actualStoredScan === false) {
                     this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
                 }
                 this.storeScan(); // add current scan
-            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
+            } else if (this.state.storedScans.length > 1 && this.state.scanStorage === true) { // MULTIPLE stored scans and storing scans
                 // console.log("choice 5");
                 this.storeScan(); // add new current and stored scan
-            } else if (this.state.storedScans.length >  1 && this.state.scanStorage === false) { // MULTIPLE stored scans and NOT storing scans
+            } else if (this.state.storedScans.length > 1 && this.state.scanStorage === false) { // MULTIPLE stored scans and NOT storing scans
                 // console.log("choice 6");
-                if (this.state.storedScans[this.state.storedScans.length-1].actualStoredScan === false) {
+                if (this.state.storedScans[this.state.storedScans.length - 1].actualStoredScan === false) {
                     this.state.storedScans.pop(); // clears the current scan (that is not an actualStoredScan)
                 }
                 this.storeScan(); // add new current and stored scan
-            } 
-           
+            }
+
             if (this.props.layout === "sub") {
                 if (this.state.firstScan === true && message.origin === this.props.layout) {
                     this.selectElementInElements();
-                    this.setState({firstScan: false});
+                    this.setState({ firstScan: false });
                 }
-                
+
                 chrome.devtools.inspectedWindow.eval(`((node) => {
                     let countNode = (node) => { 
                         let count = 0;
@@ -488,15 +549,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
         // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
-            return {storedScanCount: prevState.storedScanCount + 1}
+            return { storedScanCount: prevState.storedScanCount + 1 }
         });
 
         // scan label of the current stored scan 
         // the current scan is always stored for the current scan report
-        this.setState({ currentStoredScan:  "scan" + this.state.storedScanCount });
+        this.setState({ currentStoredScan: "scan" + this.state.storedScanCount });
 
         // get only data needed for multi-scan report
-        const scanData = MultiScanData.issues_sheet_rows(xlsx_props); 
+        const scanData = MultiScanData.issues_sheet_rows(xlsx_props);
 
         // ***** NOT USING LOCAL STORAGE *****
         // console.log("scanData = ",scanData);
@@ -524,8 +585,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // });
 
         // capture screenshot
-        let canvas = await PanelMessaging.sendToBackground("DAP_SCREENSHOT", { });
-        
+        let canvas = await PanelMessaging.sendToBackground("DAP_SCREENSHOT", {});
+
         // let promise = new Promise((resolve, reject) => {
         //     //@ts-ignore
         //     chrome.tabs.captureVisibleTab(null, {}, function (image:string) {
@@ -536,7 +597,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
         // let result:any = await promise;
         // canvas = result;
-            
+
         // Data to store for the Scan other than the issues not much data so saved in state memory
         let currentScan = {
             actualStoredScan: this.state.scanStorage ? true : false,
@@ -565,33 +626,33 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }));
     }
 
-    storeScanLabel(event:any,i:number) {
+    storeScanLabel(event: any, i: number) {
         const value = event.target.value;
-        
+
         // let storedScansCopy = this.state.storedScans;
         let storedScansCopy = JSON.parse(JSON.stringify(this.state.storedScans));
         storedScansCopy[i].userScanLabel = value;
-        this.setState({storedScans: storedScansCopy});
+        this.setState({ storedScans: storedScansCopy });
     }
 
     setStoredScanCount = () => {
-        this.setState({ storedScanCount:  this.clearStoredScans.length });
+        this.setState({ storedScanCount: this.clearStoredScans.length });
     }
 
     clearStoredScans = (fromMenu: boolean) => {
         this.setState({ storedScanCount: 0 }); // reset scan counter
-        this.setState({storedScans: []});
+        this.setState({ storedScans: [] });
         if (fromMenu === true) {
-            this.setState({scanStorage: false});
+            this.setState({ scanStorage: false });
         }
     };
 
     clearSelectedStoredScans() {
         let storedScansCopy = this.state.storedScans;
-        for (let i=0; i<this.state.storedScans.length;i++) {
+        for (let i = 0; i < this.state.storedScans.length; i++) {
             storedScansCopy[i].isSelected = false;
         }
-        this.setState({storedScans: storedScansCopy});
+        this.setState({ storedScans: storedScansCopy });
     }
 
     actualStoredScansCount = () => {
@@ -603,7 +664,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
         return count;
     }
-    
+
     startStopScanStoring = () => {
         // flip scanStorage state each time function runs
         if (this.state.scanStorage === true) {
@@ -617,19 +678,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     getArchives = async () => {
         return await OptionMessaging.sendToBackground("OPTIONS", {
-          command: "getArchives",
+            command: "getArchives",
         });
     };
 
     getCheckOption = (archiveId: string, policyId: string, archives: any) => {
-        
-        var option = archives.find( (element: any) => element.id === archiveId);
-        
+
+        var option = archives.find((element: any) => element.id === archiveId);
+
         var policy = option.policies;
 
-        var guideline = policy.find( (element: any) => element.id === policyId);
+        var guideline = policy.find((element: any) => element.id === policyId);
 
-        var ret = {deployment: {id: archiveId, name: option.name}, guideline: {id: policyId, name: guideline.name}}; 
+        var ret = { deployment: { id: archiveId, name: option.name }, guideline: { id: policyId, name: guideline.name } };
 
         return ret;
     }
@@ -643,11 +704,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     reportManagerHandler = () => {
-        this.setState({ reportManager: true});
+        this.setState({ reportManager: true });
     }
-    
 
-    reportHandler = async (scanType:string) => { // parameter is scanType with value [current, all, selected]
+
+    reportHandler = async (scanType: string) => { // parameter is scanType with value [current, all, selected]
         if (scanType === "current") {
             if (this.state.report && this.state.rulesets) {
                 var reportObj: any = {
@@ -672,13 +733,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         snippet: result.snippet
                     });
                 }
-    
+
                 var tabTitle: string = this.state.tabTitle;
                 var tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
                 var filename = "Accessibility_Report-" + tabTitleSubString + ".html";
                 //replace illegal characters in file name
                 filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
-    
+
                 var fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
                 var a = document.createElement('a');
                 a.href = fileContent;
@@ -693,7 +754,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    xlsxReportHandler = (scanType:string) => {
+    xlsxReportHandler = (scanType: string) => {
         // console.log("xlsxReportHandler");
         //@ts-ignore
         MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
@@ -735,7 +796,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     }
 
                     var script =
-                    `function lookup(doc, xpath) {
+                        `function lookup(doc, xpath) {
                         if (doc.nodeType === 11) {
                             let selector = ":scope" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
                             let element = doc.querySelector(selector);
@@ -817,11 +878,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    getXPathForElement(element: any) {
+        const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+        const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+        return segs(element).join('/');
+    }
+
     getCurrentSelectedElement() {
         // console.log("getCurrentSelectedElement");
         let mythis = this;
-        chrome.devtools.inspectedWindow.eval("$0.tagName", 
-            (result:string, isException) => {
+
+        // Provide text name for focused view element for switch
+        chrome.devtools.inspectedWindow.eval("$0.tagName",
+            (result: string, isException) => {
                 if (isException) {
                     console.error(isException);
                 }
@@ -830,17 +899,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 // get current element after inspected Window script
                 setTimeout(() => {
-                    // console.log("result = ",result);
-                    mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
+                    mythis.setState({ focusedViewText: "<" + result.toLowerCase() + ">" });
                     // console.log("this.state.focusedViewText", this.state.focusedViewText);
                 }, 0);
             }
         );
     }
 
-    selectElementInElements () {
-        chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
-            (result:string, isException) => {
+    selectElementInElements() {
+        chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)",
+            (result: string, isException) => {
                 if (isException) {
                     console.error(isException);
                 }
@@ -855,7 +923,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getItem(item: IReportItem) {
+        console.log("Function: getItem item = ", item);
         this.setState({ learnMore: true, learnItem: item });
+    }
+
+    getSelectedItem(item: IReportItem) {
+        console.log("Function: getSelectedItem item = ", item);
+        this.setState({ selectedIssue: item });
     }
 
     learnHelp() {
@@ -867,7 +941,35 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ reportManager: false });
     }
 
-    showIssueTypeCheckBoxCallback (checked:boolean[]) {
+    tabStopsShow() {
+        console.log("tabStopsShow");
+        let mythis = this;
+
+        this.setState({ tabStopsPanel: true });
+        setTimeout(function () {
+            console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+        }, 1);
+    }
+
+    tabStopsHandler() {
+        console.log("tabStopsHandler");
+        let mythis = this;
+
+        PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
+        this.setState({ tabStopsPanel: false });
+        setTimeout(function () {
+            console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
+        }, 1);
+        this.selectElementInElements();
+    }
+
+    tabStopsHighlight(index: number, result: any) {
+        console.log("Highlight tab stop with index = ", index);
+        PanelMessaging.sendToBackground("HIGHLIGHT_TABSTOP_TO_BACKGROUND", { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopId: index });
+        this.selectItem(result, undefined);
+    }
+
+    showIssueTypeCheckBoxCallback(checked: boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
             this.setState({ showIssueTypeFilter: [true, checked[1], checked[2], checked[3]] });
@@ -881,11 +983,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // console.log("In showIssueTypeCheckBoxCallback",this.state.showIssueTypeFilter);
     }
 
-    focusedViewCallback (focus:boolean) {
-        this.setState({ focusedViewFilter: focus});
+    focusedViewCallback(focus: boolean) {
+        this.setState({ focusedViewFilter: focus });
     }
 
-    
+
     render() {
         let error = this.state.error;
 
@@ -894,8 +996,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
         else if (this.props.layout === "main") {
             return <React.Fragment>
-                <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
-                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
+                <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report ? "About IBM Accessibility Checker" : this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
+                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height: "100%", position: "fixed", left: "50%", maxWidth: "50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
                         {!this.state.report && <ReportSplash />}
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -910,22 +1012,27 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             startScan={this.startScan.bind(this)}
                             clearStoredScans={this.clearStoredScans.bind(this)}
                             reportHandler={this.reportHandler.bind(this)}
-                            xlsxReportHandler = {this.xlsxReportHandler}
-                            actualStoredScansCount = {this.actualStoredScansCount}
-                            startStopScanStoring = {this.startStopScanStoring}
-                            reportManagerHandler = {this.reportManagerHandler}
+                            xlsxReportHandler={this.xlsxReportHandler}
+                            actualStoredScansCount={this.actualStoredScansCount}
+                            startStopScanStoring={this.startStopScanStoring}
+                            reportManagerHandler={this.reportManagerHandler}
                             collapseAll={this.collapseAll.bind(this)}
                             showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
-                            dataFromParent = {this.state.showIssueTypeFilter}
+                            dataFromParent={this.state.showIssueTypeFilter}
                             scanning={this.state.scanning}
-                            archives = {this.state.archives}
-                            selectedArchive = {this.state.selectedArchive}
-                            selectedPolicy = {this.state.selectedPolicy}
+                            archives={this.state.archives}
+                            selectedArchive={this.state.selectedArchive}
+                            selectedPolicy={this.state.selectedPolicy}
                             focusedViewCallback={this.focusedViewCallback.bind(this)}
                             focusedViewFilter={this.state.focusedViewFilter}
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                             readOptionsData={this.readOptionsData.bind(this)}
+                            tabURL={this.state.tabURL}
+                            tabId={this.state.tabId}
+                            tabStopsShow={this.tabStopsShow.bind(this)}
+                            tabStopsResults={this.state.tabStopsResults}
+                            tabStopsErrors={this.state.tabStopsErrors}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -935,7 +1042,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     rulesets={this.state.rulesets}
                                     report={this.state.report}
                                     getItem={this.getItem.bind(this)}
+                                    getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
@@ -944,44 +1053,56 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                 />}
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </React.Fragment>
         } else if (this.props.layout === "sub") {
 
             return <React.Fragment>
                 {/* ok now need three way display for Report Manager so need reportManager state */}
-                <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
-                    <ReportManagerHeader 
-                        reportManagerHelp={this.reportManagerHelp.bind(this)} 
-                        actualStoredScansCount={this.actualStoredScansCount.bind(this)} 
+                <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
+                    <ReportManagerHeader
+                        reportManagerHelp={this.reportManagerHelp.bind(this)}
+                        actualStoredScansCount={this.actualStoredScansCount.bind(this)}
                         layout={this.props.layout}
                         scanStorage={this.state.scanStorage}>
                     </ReportManagerHeader>
                     {/* Report List and Details */}
                     <ReportManagerTable
-                        layout={this.props.layout} 
-                        storedScans={this.state.storedScans} 
-                        setStoredScanCount={this.setStoredScanCount.bind(this)} 
-                        clearSelectedStoredScans={this.clearSelectedStoredScans.bind(this)} 
-                        storeScanLabel={this.storeScanLabel.bind(this)} 
+                        layout={this.props.layout}
+                        storedScans={this.state.storedScans}
+                        setStoredScanCount={this.setStoredScanCount.bind(this)}
+                        clearSelectedStoredScans={this.clearSelectedStoredScans.bind(this)}
+                        storeScanLabel={this.storeScanLabel.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
                 </div>
-                <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
-                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                    <div style={{ overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
                                     {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
                                 </div>
                             </div>
+                       </div>
+                    </div>
+                </div>
+                <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height: "100%" }}>
+                    <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
+                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                            <div>
+                                <div className="subPanel">
+                                    <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    {this.subPanelRef.current?.scrollTo(0, 0)}
+                    {this.subPanelRef.current?.scrollTo(0, -72)}
                 </div>
-                <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <Header
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
@@ -990,25 +1111,30 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         startScan={this.startScan.bind(this)}
                         clearStoredScans={this.clearStoredScans.bind(this)}
                         reportHandler={this.reportHandler.bind(this)}
-                        xlsxReportHandler = {this.xlsxReportHandler}
-                        actualStoredScansCount = {this.actualStoredScansCount}
-                        startStopScanStoring = {this.startStopScanStoring}
-                        reportManagerHandler = {this.reportManagerHandler}
+                        xlsxReportHandler={this.xlsxReportHandler}
+                        actualStoredScansCount={this.actualStoredScansCount}
+                        startStopScanStoring={this.startStopScanStoring}
+                        reportManagerHandler={this.reportManagerHandler}
                         collapseAll={this.collapseAll.bind(this)}
                         showIssueTypeCheckBoxCallback={this.showIssueTypeCheckBoxCallback.bind(this)}
-                        dataFromParent = {this.state.showIssueTypeFilter}
+                        dataFromParent={this.state.showIssueTypeFilter}
                         scanning={this.state.scanning}
-                        archives = {this.state.archives}
-                        selectedArchive = {this.state.selectedArchive}
-                        selectedPolicy = {this.state.selectedPolicy}
+                        archives={this.state.archives}
+                        selectedArchive={this.state.selectedArchive}
+                        selectedPolicy={this.state.selectedPolicy}
                         focusedViewCallback={this.focusedViewCallback.bind(this)}
                         focusedViewFilter={this.state.focusedViewFilter}
                         focusedViewText={this.state.focusedViewText}
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
+                        tabURL={this.state.tabURL}
+                        tabId={this.state.tabId}
+                        tabStopsShow={this.tabStopsShow.bind(this)}
+                        tabStopsResults={this.state.tabStopsResults}
+                        tabStopsErrors={this.state.tabStopsErrors}
                     />
-                    <div style={{overflowY:"scroll", height:"100%"}}>
-                        <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
+                    <div style={{ paddingLeft:"1rem", overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "10em", position:"absolute"  }}>
+                        <div>
                             <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report
@@ -1016,10 +1142,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     rulesets={this.state.rulesets}
                                     report={this.state.report}
                                     getItem={this.getItem.bind(this)}
+                                    getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="element"
-                                    tabs={[ "element", "checklist", "rule"]}
+                                    tabs={["element", "checklist", "rule"]}
                                     dataFromParent={this.state.showIssueTypeFilter}
                                     focusedViewFilter={this.state.focusedViewFilter}
                                 />}

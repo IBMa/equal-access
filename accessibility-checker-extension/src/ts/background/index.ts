@@ -21,6 +21,12 @@ import { ACMetricsLogger } from "../util/ACMetricsLogger";
 
 let metrics = new ACMetricsLogger("ac-extension");
 
+// chrome.tabs.onActivated.addListener(tab =>{
+//     chrome.tabs.get(tab.tabId, current_tab_info => {
+//         console.log(current_tab_info.url)
+//     }
+// })
+
 async function initTab(tabId: number, archiveId: string) {
     // Determine if we've ever loaded any engine
     let isLoaded = await new Promise((resolve, reject) => {
@@ -70,6 +76,13 @@ async function initTab(tabId: number, archiveId: string) {
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
     await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
+    return true;
+});
+
+BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+    console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
+    await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, tabStopsErrors: message.tabStopsErrors});
+
     return true;
 });
 
@@ -183,3 +196,27 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     });
 });
 
+BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
+    console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
+    BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
+
+    return true;
+});
+
+BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS received in background")
+    BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
+
+    return true;
+});
+
+BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
+    console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
+    BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
+        xpath: message.xpath,
+        circleNumber: message.circleNumber
+    });
+
+
+    return true;
+});

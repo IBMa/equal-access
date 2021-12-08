@@ -36,7 +36,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         (window as any).aceReportCache = {
             archiveId: message.archiveId,
             policyId: message.policyId,
-            report: await checker.check(window.document, [message.policyId])
+            report: await checker.check(window.document, [message.policyId, "EXTENSIONS"])
         };
 
         TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 

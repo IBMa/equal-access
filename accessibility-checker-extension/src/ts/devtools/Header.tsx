@@ -16,6 +16,7 @@
 
 import React from "react";
 import ReactTooltip from "react-tooltip";
+import { IReportItem } from "./Report";
 
 import {
     Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
@@ -24,17 +25,21 @@ import { settings } from 'carbon-components';
 import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
+import PanelMessaging from '../util/panelMessaging';
+
 
 const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
+
 const { prefix } = settings;
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
- }
+    showHideTabStops: boolean
+}
 
 interface IHeaderProps {
     layout: "main" | "sub",
@@ -81,21 +86,27 @@ interface IHeaderProps {
     focusedViewFilter: boolean,
     focusedViewText: string,
     getCurrentSelectedElement: () => void,
-    readOptionsData: () => void
+    readOptionsData: () => void,
+    tabURL: string,
+    tabId: number,
+    tabStopsShow: () => void,
+    tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     infoButton1Ref: React.RefObject<HTMLButtonElement>;
     infoButton2Ref: React.RefObject<HTMLButtonElement>;
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
         this.infoButton1Ref = React.createRef();
         this.infoButton2Ref = React.createRef();
     }
-    
+
     state: IHeaderState = {
         deleteModal: false,
         modalRulsetInfo: false,
+        showHideTabStops: true
     };
 
     focusInfoButton1() {
@@ -169,10 +180,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             return false;
         }
     }
-    
+
     deleteModalHandler() {
-        this.setState({ 
-            deleteModal: true, 
+        this.setState({
+            deleteModal: true,
         });
     }
 
@@ -210,12 +221,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let focusText = this.props.focusedViewText;
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
-            {this.props.layout === "sub" ? 
-            <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-4">
-                    <h1>IBM Equal Access Accessibility Checker</h1>
-                </div>
-                {/* <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+            {this.props.layout === "sub" ?
+                <div className="bx--row" style={{ lineHeight: "1rem" }}>
+                    <div className="bx--col-sm-4">
+                        <h1>IBM Equal Access Accessibility Checker</h1>
+                    </div>
+                    {/* <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     <div>
                         <span>Status: </span>
@@ -223,197 +234,218 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                     </div>
                 </div> */}
-            </div>
-            : <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-3">
-                    <h1>IBM Equal Access Accessibility Checker</h1>
                 </div>
-                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
-                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
-                    {/* <div>
+                : <div className="bx--row" style={{ lineHeight: "1rem" }}>
+                    <div className="bx--col-sm-3">
+                        <h1>IBM Equal Access Accessibility Checker</h1>
+                    </div>
+                    <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right", paddingTop: "2px" }}>
+                        <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
+                        {/* <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                     </div> */}
+                    </div>
                 </div>
-            </div>
             }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <React.Fragment>
-                <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
-                        <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        <OverflowMenu 
-                            className="rendered-icon svg"
-                            style={{backgroundColor: "black", height:"32px", width:"32px"}} 
-                            iconDescription="Open and close report scan options"
-                            renderIcon={ChevronDown16}
-                            ariaLabel="Report menu" 
-                            // size="xl"
-                            id="reportMenu"
-                        >
-                            <OverflowMenuItem
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                disabled={this.props.storedScans.length == 0 ? true : false}
-                                itemText="Download current scan" 
-                                onClick={() => this.props.reportHandler("current")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                // if scanStorage false not storing scans, if true storing scans
-                                itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
-                                onClick={this.props.startStopScanStoring}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                disabled={this.props.actualStoredScansCount() == 0 ? true : false}
-                                itemText="Delete stored scans" 
-                                // onClick={() => this.props.clearStoredScans(true) }
-                                onClick={() => this.deleteModalHandler() }
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
-                                itemText="Download stored scans" 
-                                onClick={() => this.props.reportHandler("all")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
-                                itemText="View stored scans" 
-                                onClick={this.props.reportManagerHandler} // need to pass selected as scanType
-                            />
-                        </OverflowMenu>
-                        <Modal
-                            aria-label="Delete stored scans"
-                            modalHeading="Delete stored scans"
-                            open={this.state.deleteModal}
-                            shouldSubmitOnEnter={false}
-                            onRequestClose={(() => {
-                                this.setState({ deleteModal: false });
-                            }).bind(this)}
-                            onRequestSubmit={(() => {
-                                this.setState({ deleteModal: false });
-                                this.props.clearStoredScans(true);
-                            }).bind(this)}
-                            danger={true}
-                            size='sm'
-                            selectorPrimaryFocus=".bx--modal-footer .bx--btn--secondary"
-                            primaryButtonText="Delete"
-                            secondaryButtonText="Cancel"
-                            primaryButtonDisabled={false}
-                            preventCloseOnClickOutside={true}
-                        >
-                            <p style={{ marginBottom: '1rem' }}>
-                                Are you sure you want to delete stored scans?
-                                This action is irreversible.
-                            </p>
-                        </Modal>
-                        <Button 
-                            ref={this.infoButton1Ref}
-                            renderIcon={Information16} 
-                            kind="ghost"   
-                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
-                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
-                            onClick={(() => {
-                                this.props.readOptionsData();
-                                this.setState({ modalRulsetInfo: true });
-                            }).bind(this)}>
-                        </Button>
-                        <Modal
-                            aria-label="Rule set information"
-                            modalHeading="Rule set information"
-                            size='xs'
-                            passiveModal={true}
-                            open={this.state.modalRulsetInfo}
-                            onRequestClose={(() => {
-                                this.setState({ modalRulsetInfo: false });
-                                this.focusInfoButton1();
-                            }).bind(this)}
-                        >
-                            <p>
-                                You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
-                                <span>{<br/>}</span>
-                                The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
-                                <br/><br/>
-                                You are using the guidelines from {this.props.selectedPolicy}
-                            </p>
-                            <br></br>
-                            <div>
-                                <a
-                                    onClick={this.onLinkClick}
-                                    href={chrome.runtime.getURL("options.html")}
-                                    target="_blank"
-                                    className={`${prefix}--link`}
-                                >
-                                    Change rule set
-                                </a>
-                            </div>       
-                        </Modal>
-                    </div>
-                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
-
-                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}></div>
-
-                    <div className="bx--col-md-3 bx--col-sm-2">
-                        <ContentSwitcher data-tip data-for="focusViewTip"
-                            // title="Focus View"
-                            style={{height: "30px"}}
-                            selectionMode="manual"
-                            selectedIndex={1}
-                            onChange={((obj: any) => {
-                                // console.log("the index: ",obj.index);
-                                this.flipSwitch(obj.index);
-                            })}
-                        >
-                            <Switch
-                                disabled={!this.props.counts}
-                                text={focusText}
-                                onClick={() => {
-                                    //this.props.getCurrentSelectedElement();
+                    <div className="bx--row" style={{ marginTop: '10px' }}>
+                        <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
+                            <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                            <OverflowMenu
+                                className="rendered-icon svg"
+                                style={{ backgroundColor: "black", height: "32px", width: "32px" }}
+                                iconDescription="Open and close report scan options"
+                                renderIcon={ChevronDown16}
+                                ariaLabel="Report menu"
+                                // size="xl"
+                                id="reportMenu"
+                            >
+                                <OverflowMenuItem
+                                    style={{ maxWidth: "13rem", width: "13rem" }}
+                                    disabled={this.props.storedScans.length == 0 ? true : false}
+                                    itemText="Download current scan"
+                                    onClick={() => this.props.reportHandler("current")}
+                                />
+                                <OverflowMenuItem
+                                    style={{ maxWidth: "13rem", width: "13rem" }}
+                                    // if scanStorage false not storing scans, if true storing scans
+                                    itemText={this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
+                                    onClick={this.props.startStopScanStoring}
+                                />
+                                <OverflowMenuItem
+                                    style={{ maxWidth: "13rem", width: "13rem" }}
+                                    disabled={this.props.actualStoredScansCount() == 0 ? true : false}
+                                    itemText="Delete stored scans"
+                                    // onClick={() => this.props.clearStoredScans(true) }
+                                    onClick={() => this.deleteModalHandler()}
+                                />
+                                <OverflowMenuItem
+                                    style={{ maxWidth: "13rem", width: "13rem" }}
+                                    disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
+                                    itemText="Download stored scans"
+                                    onClick={() => this.props.reportHandler("all")}
+                                />
+                                <OverflowMenuItem
+                                    style={{ maxWidth: "13rem", width: "13rem" }}
+                                    disabled={this.props.actualStoredScansCount() == 0 ? true : false} // disabled when no stored scans or 1 stored scan
+                                    itemText="View stored scans"
+                                    onClick={this.props.reportManagerHandler} // need to pass selected as scanType
+                                />
+                            </OverflowMenu>
+                            <Modal
+                                aria-label="Delete stored scans"
+                                modalHeading="Delete stored scans"
+                                open={this.state.deleteModal}
+                                shouldSubmitOnEnter={false}
+                                onRequestClose={(() => {
+                                    this.setState({ deleteModal: false });
+                                }).bind(this)}
+                                onRequestSubmit={(() => {
+                                    this.setState({ deleteModal: false });
+                                    this.props.clearStoredScans(true);
+                                }).bind(this)}
+                                danger={true}
+                                size='sm'
+                                selectorPrimaryFocus=".bx--modal-footer .bx--btn--secondary"
+                                primaryButtonText="Delete"
+                                secondaryButtonText="Cancel"
+                                primaryButtonDisabled={false}
+                                preventCloseOnClickOutside={true}
+                            >
+                                <p style={{ marginBottom: '1rem' }}>
+                                    Are you sure you want to delete stored scans?
+                                    This action is irreversible.
+                                </p>
+                            </Modal>
+                            <Button
+                                ref={this.infoButton1Ref}
+                                renderIcon={Information16}
+                                kind="ghost"
+                                hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
+                                style={{
+                                    color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
+                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
                                 }}
-                                onKeyDown={this.onKeyDown.bind(this)}
-                            />
-                            <Switch
-                                disabled={!this.props.counts}
-                                text="All"
-                                onClick={() => {
-                                    // console.log('All click');
-                                }}
-                                onKeyDown={this.onKeyDown.bind(this)}
-                            />
-                        </ContentSwitcher>
+                                onClick={(() => {
+                                    this.props.readOptionsData();
+                                    this.setState({ modalRulsetInfo: true });
+                                }).bind(this)}>
+                            </Button>
+                            <Modal
+                                aria-label="Rule set information"
+                                modalHeading="Rule set information"
+                                size='xs'
+                                passiveModal={true}
+                                open={this.state.modalRulsetInfo}
+                                onRequestClose={(() => {
+                                    this.setState({ modalRulsetInfo: false });
+                                    this.focusInfoButton1();
+                                }).bind(this)}
+                            >
+                                <p>
+                                    You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
+                                    <span>{<br />}</span>
+                                    The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                    <br /><br />
+                                    You are using the guidelines from {this.props.selectedPolicy}
+                                </p>
+                                <br></br>
+                                <div>
+                                    <a
+                                        onClick={this.onLinkClick}
+                                        href={chrome.runtime.getURL("options.html")}
+                                        target="_blank"
+                                        className={`${prefix}--link`}
+                                    >
+                                        Change rule set
+                                    </a>
+                                </div>
+                            </Modal>
 
-                        <ReactTooltip id="focusViewTip" place="top" effect="solid">
-                            Focus view
-                        </ReactTooltip>
 
-                    </div>
-                </div>
-                <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-4">
-                        <div>
-                            <span>Status: </span>
-                            <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
-                            <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+
+
+                        </div>
+                        <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
+
+                        <div className="bx--col-md-0 bx--col-sm-0" style={{ paddingRight: 0 }}></div>
+
+                        <div className="bx--col-md-3 bx--col-sm-2">
+                            <ContentSwitcher data-tip data-for="focusViewTip"
+                                // title="Focus View"
+                                style={{ height: "30px" }}
+                                selectionMode="manual"
+                                selectedIndex={1}
+                                onChange={((obj: any) => {
+                                    // console.log("the index: ",obj.index);
+                                    this.flipSwitch(obj.index);
+                                })}
+                            >
+                                <Switch
+                                    disabled={!this.props.counts}
+                                    text={focusText}
+                                    onClick={() => {
+                                        //this.props.getCurrentSelectedElement();
+                                    }}
+                                    onKeyDown={this.onKeyDown.bind(this)}
+                                />
+                                <Switch
+                                    disabled={!this.props.counts}
+                                    text="All"
+                                    onClick={() => {
+                                        // console.log('All click');
+                                    }}
+                                    onKeyDown={this.onKeyDown.bind(this)}
+                                />
+                            </ContentSwitcher>
+
+                            <ReactTooltip id="focusViewTip" place="top" effect="solid">
+                                Focus view
+                            </ReactTooltip>
+
                         </div>
                     </div>
-                </div>
+                    <div className="bx--row" style={{ marginTop: '10px' }}>
+                        <div className="bx--col-sm-2">
+                            <div>
+                                <span>Status: </span>
+                                <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
+                                <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
+                            </div>
+                        </div >
+                        <div className="bx--col-sm-2">
+                            {this.state.showHideTabStops ? 
+                                <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
+                                    this.setState({ showHideTabStops: false });
+                                    PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
+                                    // this.props.tabStopsShow(); // old code that we should keep
+                                }}>Show tab stops</a>
+                            :   <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
+                                PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                    this.setState({ showHideTabStops: true });
+                                }}>Hide tab stops</a>
+                            }
+                        </div>
+                    </div>
                 </React.Fragment>
                 // Content for the Assessment Tab
                 :
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
-                        <Button 
+                        <Button
                             ref={this.infoButton2Ref}
-                            renderIcon={Information16} 
-                            kind="ghost"   
-                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
-                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                            renderIcon={Information16}
+                            kind="ghost"
+                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
+                            style={{
+                                color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
+                                paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
+                            }}
                             onClick={(() => {
                                 this.props.readOptionsData();
                                 this.setState({ modalRulsetInfo: true });
@@ -431,7 +463,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         >
                             <p>
                                 You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
-                                <span>{<br/>}</span>
+                                <span>{<br />}</span>
                                 The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
                             </p>
                             <br></br>
@@ -440,41 +472,40 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     href={chrome.runtime.getURL("options.html")}
                                     target="_blank"
                                     className={`${prefix}--link`}
-                                    
+
                                 >
                                     Change rule set
                                 </a>
-                            </div>       
+                            </div>
                         </Modal>
                     </div>
                     <div className="bx--col-sm-1" style={{ position: "relative" }}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>
-                            
+
                             <Button
                                 disabled={!this.props.counts}
                                 onClick={() => this.props.reportHandler("current")}
-                                className="settingsButtons" 
-                                size="small" 
-                                hasIconOnly 
-                                kind="ghost" 
-                                tooltipAlignment="center" 
+                                className="settingsButtons"
+                                size="small"
+                                hasIconOnly
+                                kind="ghost"
+                                tooltipAlignment="center"
                                 tooltipPosition="top"
-                                iconDescription="Reports" 
+                                iconDescription="Reports"
                                 type="button"
                             >
-                                <ReportData16/>
+                                <ReportData16 />
                             </Button>
                         </div>
                     </div>
                 </div>
             }
             {/* Counts row uses same code for both Assessment and Checker Tabs */}
-            <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
+            <div className={this.props.layout === "main" ? "countRow summary mainPanel" : "countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
                 <div className="countItem" style={{ paddingTop: "0", paddingLeft: "0", paddingBottom: "0", height: "34px", textAlign: "left", overflow: "visible" }}>
                     <span data-tip data-for="filterViolationsTip" style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px", paddingRight: "8px" }}>
-                        {console.log("In Header before <Checkbox>s dataFromParent = ",this.props.dataFromParent)}
                         <Checkbox 
                             className="checkboxLabel"
                             disabled={!this.props.counts}
@@ -546,7 +577,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 {headerContent}
             </div>
         } else { // Assessment Tab
-            return <div className="fixed-header" 
+            return <div className="fixed-header"
                 style={{ zIndex: 1000, backgroundColor: "rgba(255, 255, 255, 1)", width: "100%" }}>
                 {headerContent}
             </div>

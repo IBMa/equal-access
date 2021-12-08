@@ -44,8 +44,11 @@ interface IReportRowProps {
     idx: number,
     report: IReport,
     group: IReportRowGroup;
-    selectItem: (item: IReportItem) => void,
+    selectItem: (item: IReportItem, checkpoint: ICheckpoint | undefined) => void,
+    selectedItem?: IReportItem,
+    selectedIssue: IReportItem | null,
     getItem: (item: IReportItem) => void,
+    getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
@@ -56,11 +59,14 @@ interface IReportRowProps {
 export default class ReportRow extends React.Component<IReportRowProps, IReportRowState> {
     scrollRef : RefObject<HTMLDivElement> = React.createRef();
     learnRef : RefObject<HTMLAnchorElement> = React.createRef();
+    selectedRef : RefObject<HTMLDivElement> = React.createRef();
+    lastSelectedRef: RefObject<HTMLDivElement> = React.createRef();
+    
 
     state: IReportRowState = {
         expanded: false,
         lastTimestamp: this.props.report.timestamp,
-        scrollTo: false
+        scrollTo: false,
     };
 
     componentDidMount(){
@@ -83,13 +89,13 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
     }
 
-    learnMoreClickHandler(e:any, item:IReportItem){
+    learnMoreClickHandler(e:any, item:IReportItem) {
         e.preventDefault();
         // e.stopPropagation(); // if present learn more clickhandler will not select row
         this.props.getItem(item);
     }
 
-    learnMoreKeyDownHandler(e:any, item:IReportItem){
+    learnMoreKeyDownHandler(e:any, item:IReportItem) {
         if (e.keyCode === 13) {
             e.preventDefault();
             // e.stopPropagation(); // if present learn more keydown will not select row
@@ -97,13 +103,64 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         }
     }
 
-    learnMoreRef(item: IReportItem){
+    learnMoreRef(item: IReportItem) {
         var learnItem = this.props.learnItem;
-        if(learnItem && item.path.dom === learnItem?.path.dom && item.ruleId==learnItem.ruleId){
+        if (learnItem && item.path.dom === learnItem?.path.dom && item.ruleId == learnItem.ruleId) {
             return this.learnRef;
         } 
         return null;
     }
+
+    itemSelectedClickHandler(e:any, item:IReportItem) {
+        // this function runs once per click
+        e.preventDefault();
+        // e.stopPropagation(); // JCH if present learn more clickhandler will not select row
+        this.props.getSelectedItem(item);
+        this.props.selectItem(item, this.props.group.checkpoint);
+    }
+
+    itemSelectedRef(item: IReportItem) {
+        // this function runs many times per click
+        var selectedIssue = this.props.selectedIssue;
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+            if (this.selectedRef.current) {
+                if (this.selectedRef.current) {
+                    // TODO Get rid of doubles ?
+                    this.selectedRef.current?.classList.add("selectedItem");
+                }
+                let mythis = this;
+                setTimeout(function() {
+                    mythis.selectedRef.current?.scrollIntoView({
+                        block: 'center'
+                    });
+                },0)
+            }
+            return this.selectedRef;
+        } 
+        return null;
+    }
+
+    itemSelectedRefSolo(item: IReportItem) {
+        // this function runs many times per click
+        var selectedIssue = this.props.selectedIssue;
+        if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+            if (this.selectedRef.current) {
+                if (this.selectedRef.current) {
+                    // TODO Get rid of doubles ?
+                    this.selectedRef.current?.classList.add("selectedItem");
+                }
+                let mythis = this;
+                setTimeout(function() {
+                    mythis.selectedRef.current?.scrollIntoView({
+                        block: 'center'
+                    });
+                },0)
+            }
+            return this.selectedRef;
+        } 
+        return null;
+    }
+
 
     static getDerivedStateFromProps(props: IReportRowProps, state: IReportRowState) {
         if (props.report.timestamp > state.lastTimestamp) {
@@ -155,7 +212,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                     }
                     if (parentPanel && parentPanel.getAttribute("aria-hidden") !== "true") {
                         element.scrollIntoView({
-                            behavior: 'smooth'
+                            behavior: 'smooth',
                         });
                     }
                 }
@@ -203,9 +260,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                         return <React.Fragment>
                         {!this.props.focusedViewFilter || (focusedView && (item.selected || item.selectedChild)) ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
-                                // (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
-                                (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} onKeyDown={this.onKeyDown.bind(this)}>
-                                    {/* <div role="cell" className="bx--col-sm-1"> </div> */}
+                                (<div data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"bx--row itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} ref={this.itemSelectedRef(item)} onClick={(event) => this.itemSelectedClickHandler(event, item)}  onKeyDown={this.onKeyDown.bind(this)}>
                                     <div role="cell" className="bx--col-sm-4" style={{paddingLeft:"44px"}}>
                                         <div className="itemMessage" style={{paddingLeft:"4px"}}>
                                             { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 

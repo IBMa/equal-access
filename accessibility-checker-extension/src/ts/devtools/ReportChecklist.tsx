@@ -26,10 +26,13 @@ interface IReportChecklistState {
 }
 interface IReportChecklistProps {
     ruleset: IRuleset,
+    extRuleset: IRuleset,
     report: IReport,
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
+    selectedIssue: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
     focusedViewFilter: boolean
@@ -53,7 +56,7 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
         } = {};
         let groups : IGroup[] = [];
 
-        for (const checkpoint of this.props.ruleset.checkpoints) {
+        for (const checkpoint of this.props.ruleset.checkpoints) { // JCH - this does not include the Extenison Rules ruleset
             let cpGroup = {
                 // TODO: Change out for passive rule message
                 title: `${checkpoint.num} ${checkpoint.name}`,
@@ -64,8 +67,17 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
             groups.push(cpGroup);
             for (const rule of checkpoint.rules) {
-                ruleToGroups[rule.id] = ruleToGroups[rule.id] || []
+                ruleToGroups[rule.id] = ruleToGroups[rule.id] || [];
                 ruleToGroups[rule.id].push(cpGroup);
+            }
+            // JCH add the rules from EXTENSIONS ruleset
+            for (const extCheckpoint of this.props.extRuleset.checkpoints) {
+                if (extCheckpoint.name === checkpoint.name) {
+                    for (const rule of extCheckpoint.rules) {
+                        ruleToGroups[rule.id] = ruleToGroups[rule.id] || [];
+                        ruleToGroups[rule.id].push(cpGroup);
+                    }
+                }
             }
         }
 
@@ -132,9 +144,11 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                             idx={thisIdx} 
                             report={this.props.report} 
                             group={group}
-                            getItem={this.props.getItem}
-                            learnItem={this.props.learnItem}
                             selectItem={this.props.selectItem}
+                            getItem={this.props.getItem}
+                            getSelectedItem={this.props.getSelectedItem}
+                            learnItem={this.props.learnItem}
+                            selectedIssue={this.props.selectedIssue}
                             layout={this.props.layout} 
                             dataFromParent={this.props.dataFromParent} 
                             focusedViewFilter={this.props.focusedViewFilter}
