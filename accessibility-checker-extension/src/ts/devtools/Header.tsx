@@ -25,7 +25,7 @@ import { settings } from 'carbon-components';
 import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
-import PanelMessaging from '../util/panelMessaging';
+// import PanelMessaging from '../util/panelMessaging';
 
 
 const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
@@ -417,7 +417,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                             </div>
                         </div >
-                        <div className="bx--col-sm-2">
+                        {/* <div className="bx--col-sm-2">
                             {this.state.showHideTabStops ? 
                                 <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
                                     this.setState({ showHideTabStops: false });
@@ -429,7 +429,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     this.setState({ showHideTabStops: true });
                                 }}>Hide tab stops</a>
                             }
-                        </div>
+                        </div> */}
                     </div>
                 </React.Fragment>
                 // Content for the Assessment Tab
