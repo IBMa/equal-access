@@ -734,7 +734,8 @@ export class ARIAMapper extends CommonMapper {
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
                     let nodeName = parent.nodeName.toLowerCase();
-                    if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
                     parent = DOMUtil.parentNode(parent);
