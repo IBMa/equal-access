@@ -675,7 +675,15 @@ export class ARIAMapper extends CommonMapper {
             "article": true,
             "aside": true,
             "nav": true,
-            "section": true
+            "section": true,
+            "main": true
+        };
+        let sectioningRole = {
+            "article": true,
+            "complementary": true,
+            "navigation": true,
+            "region": true,
+            "main": true
         };
         let inputToRole = function(element) {
             return ARIAMapper.inputToRole(element);
@@ -705,7 +713,8 @@ export class ARIAMapper extends CommonMapper {
                 let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent) {
-                    if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
                     parent = DOMUtil.parentNode(parent);

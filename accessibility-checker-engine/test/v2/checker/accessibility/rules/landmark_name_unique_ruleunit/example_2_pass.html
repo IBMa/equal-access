@@ -23,27 +23,27 @@
 </head>
 
 <body id="body">
-<!-- PASS Example 1: This is two navs in different parts of the page with different labels. Passes everything, clearly differentiated. -->
-<!-- passes because one is: main/nav where the other is: main/aside/nav -->
-<main>
-	<div id="leftnav" role="navigation">
-		<h2 id="leftnavheading">Institutional Links</h2>
-		<ul>
-			<li>...a list of links here ...</li>
-		</ul>
-	</div>
-	<aside>
-		<div id="rightnav" role="navigation">
-			<h2 id="rightnavheading">Related topics</h2>
+	<!-- PASS Example 1: This is two navs in different parts of the page with different labels. Passes everything, clearly differentiated. -->
+	<!-- passes because one is: main/nav where the other is: main/aside/nav -->
+	<main>
+		<div id="leftnav" role="navigation">
+			<h2 id="leftnavheading">Institutional Links</h2>
 			<ul>
 				<li>...a list of links here ...</li>
 			</ul>
 		</div>
-	</aside>
-</main>
+		<aside>
+			<div id="rightnav" role="navigation">
+				<h2 id="rightnavheading">Related topics</h2>
+				<ul>
+					<li>...a list of links here ...</li>
+				</ul>
+			</div>
+		</aside>
+	</main>
 
-<!-- passes because one is: main/nav where the other is: main/footer/nav -->
-<!-- <main>
+	<!-- passes because one is: main/nav where the other is: main/footer/nav -->
+	<!-- <main>
 	<div id="leftnav" role="navigaton">
 		<h2 id="leftnavheading">Institutional Links</h2>
 		<ul>
@@ -60,8 +60,8 @@
 	</div>
 </footer> -->
 
-<!-- passes because one is: /nav where the other is: main/nav -->
-<!-- <nav>
+	<!-- passes because one is: /nav where the other is: main/nav -->
+	<!-- <nav>
 	<h2 id="rightnavheading">Related topics</h2>
 	<ul>
 		<li>...a list of links here ...</li>
@@ -76,8 +76,8 @@
 	</div>
 </main> -->
 
-<!-- passes because one is: header/nav where the other is: main/nav -->
-<!-- <header>
+	<!-- passes because one is: header/nav where the other is: main/nav -->
+	<!-- <header>
 	<div id="rightnav" role="navigation" aria-labelledby="topNav">
 	</div>
 </header>
@@ -88,80 +88,16 @@
 
 
 
-  
-  <script>
-    UnitTest = {
-      ruleIds: ["landmark_name_unique"],
-      results: 
-	  [
-	  {
-	    "ruleId": "landmark_name_unique",
-	    "value": [
-	      "INFORMATION",
-	      "PASS"
-	    ],
-	    "path": {
-	      "dom": "/html[1]/body[1]/main[1]",
-	      "aria": "/document[1]/main[1]"
-	    },
-	    "reasonId": "Pass_2",
-	    "message": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
-	    "messageArgs": [],
-	    "apiArgs": [],
-	    "category": "Accessibility"
-	  },
-	  {
-	    "ruleId": "landmark_name_unique",
-	    "value": [
-	      "INFORMATION",
-	      "PASS"
-	    ],
-	    "path": {
-	      "dom": "/html[1]/body[1]/main[1]/div[1]",
-	      "aria": "/document[1]/main[1]/navigation[1]"
-	    },
-	    "reasonId": "Pass_2",
-	    "message": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
-	    "messageArgs": [],
-	    "apiArgs": [],
-	    "category": "Accessibility"
-	  },
-	  {
-	    "ruleId": "landmark_name_unique",
-	    "value": [
-	      "INFORMATION",
-	      "PASS"
-	    ],
-	    "path": {
-	      "dom": "/html[1]/body[1]/main[1]/aside[1]",
-	      "aria": "/document[1]/main[1]/complementary[1]"
-	    },
-	    "reasonId": "Pass_2",
-	    "message": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
-	    "messageArgs": [],
-	    "apiArgs": [],
-	    "category": "Accessibility"
-	  },
-	  {
-	    "ruleId": "landmark_name_unique",
-	    "value": [
-	      "INFORMATION",
-	      "PASS"
-	    ],
-	    "path": {
-	      "dom": "/html[1]/body[1]/main[1]/aside[1]/div[1]",
-	      "aria": "/document[1]/main[1]/complementary[1]/navigation[1]"
-	    },
-	    "reasonId": "Pass_2",
-	    "message": "Multiple \"{0}\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
-	    "messageArgs": [],
-	    "apiArgs": [],
-	    "category": "Accessibility"
-	  }
-	]
-     
-    }
-  </script>
+
+	<script>
+		UnitTest = {
+			ruleIds: ["landmark_name_unique"],
+			results:
+				[
+				]
+
+		}
+	</script>
 </body>
 
 </html>

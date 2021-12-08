@@ -23,13 +23,7 @@
 </head>
 
 <body id="body">
-  <footer id="TEST_Footer0" aria-label="Footer">
-  </footer>
-
-  <div id="TEST_Footer1" role="contentinfo" aria-label="contentInfo0">
-  </div>
-
-  <main id="mainNode">
+  <main id="mainNode1">
     <!-- This nav trigger the rule but does not pass or fail. It is not applicable. -->
     <div id="TopLabel0" role="navigation" aria-label="TopLabel">
     </div>
@@ -89,12 +83,68 @@
             "PASS"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]",
-            "aria": "/document[1]/main[1]"
+            "dom": "/html[1]/body[1]/main[1]/div[2]",
+            "aria": "/document[1]/main[1]/region[1]"
           },
           "reasonId": "Pass_0",
-          "message": "Multiple \"{0}\" landmarks are disambiguated by different parents",
-          "messageArgs": [],
+          "message": "Multiple \"region\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "region"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[2]/div[1]",
+            "aria": "/document[1]/main[1]/region[1]/navigation[1]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"navigation\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "navigation"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]",
+            "aria": "/document[1]/main[1]/region[1]/navigation[2]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"navigation\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "navigation"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[3]",
+            "aria": "/document[1]/main[1]/region[2]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"region\" landmarks with the same parent are disambiguated by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "region"
+          ],
           "apiArgs": [],
           "category": "Accessibility"
         },
@@ -105,12 +155,15 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[1]",
-            "aria": "/document[1]/main[1]/navigation[1]"
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[1]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[1]"
           },
           "reasonId": "Fail_0",
-          "message": "Multiple \"{0}\" landmarks are not disambiguated",
-          "messageArgs": [],
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"TopLabel\" label",
+          "messageArgs": [
+            "navigation",
+            "TopLabel"
+          ],
           "apiArgs": [],
           "category": "Accessibility"
         },
@@ -121,12 +174,91 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[2]",
-            "aria": "/document[1]/main[1]/navigation[2]"
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[2]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[2]"
           },
           "reasonId": "Fail_0",
-          "message": "Multiple \"{0}\" landmarks are not disambiguated",
-          "messageArgs": [],
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"TopLabel\" label",
+          "messageArgs": [
+            "navigation",
+            "TopLabel"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[3]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[3]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"\" label",
+          "messageArgs": [
+            "navigation",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[4]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[4]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"\" label",
+          "messageArgs": [
+            "navigation",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[5]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[5]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"\" label",
+          "messageArgs": [
+            "navigation",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]/div[3]/div[6]",
+            "aria": "/document[1]/main[1]/region[2]/navigation[6]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"navigation\" landmarks are not disambiguated, becasue they have the same \"\" label",
+          "messageArgs": [
+            "navigation",
+            ""
+          ],
           "apiArgs": [],
           "category": "Accessibility"
         }

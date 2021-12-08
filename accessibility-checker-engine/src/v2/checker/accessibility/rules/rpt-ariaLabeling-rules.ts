@@ -30,6 +30,11 @@ let a11yRulesLabeling: Rule[] = [
          * AND is not differentiated by aria-label or aria-labelledby. 
          * This causes it to be difficult for a keyboard user to know the difference between two landmarks
          * Origin:  https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13 this is not directly part of the ARIA spec so this is only in the IBM rules as a Violation
+         * 
+         * NOTE: When we have two landmarks at the root level of the document this rule will not check for that. 
+         * For example if we have <body> <main id="main1"></main> <main id="main2"><main> </body> we do not fail this rule. 
+         * Althought this might be an accessibility error anyway. See:
+         * https://stackoverflow.com/questions/34896476/can-i-use-more-than-one-main-html-tag-in-the-same-page/34906037
          */
         id: "landmark_name_unique",
         context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
@@ -101,9 +106,6 @@ let a11yRulesLabeling: Rule[] = [
                 for (let i = 0; i < navigationNodes.length; i++) { // Loop over all the landmark nodes
                     navigationNodesComputedLabels.push(ARIAMapper.computeName(navigationNodes[i]))
                 }
-
-                console.log("navigationNodesComputedLabels: ", navigationNodesComputedLabels.toString())
-
                 for (let i = 0; i < navigationNodesParents.length; i++) { // Loop over all the parents of the landmark nodes to find duplicates
                     let matchFound = false;
                     let pass_0_flag = false;

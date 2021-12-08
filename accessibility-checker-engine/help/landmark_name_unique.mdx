@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Multiple landmark roles with the same `'role'` attribute are not disambiguated with a unique label or different parent  
+### Multiple landmark roles with the same `role` attribute are not disambiguated with a unique label or different parent  
 
 <div id="locLevel"></div>
 
-Multiple landmarks with the same `'role'` should have a unique `'aria-labeledby'` or `'aria-label'` or be nested in different parents
+Multiple landmarks with the same `role` should have a unique `aria-labeledby` or `aria-label` or be nested in different parents
 
 </Column>
 </Row>
@@ -27,15 +27,15 @@ When multiple regions with the same role exist on the same page, people using sc
 and other ATs will have difficulty identifying or disambiguating between them 
 (e.g., where there are two or more `"navigation"` regions).
 
-Landmarks are inserted into the page using the `'role'` attribute on an element that marks the region. 
-The `'role'` values listed below are the names of the landmark types:
+Landmarks are inserted into the page using the `role` attribute on an element that marks the region. 
+The `role` values listed below are the names of the landmark types:
 * `"banner"`: A region that contains the prime heading or title of a page.
 * `"complementary"`: Any section of the page that supports the main content, yet is separate and meaningful on its own.
 * `"contentinfo"`: A region that contains information about the parent page such as copyrights and links to privacy statements.
 * `"form"`: A region of the document that represents a collection of form-associated elements, some of which can represent editable values that can be submitted to a server for processing.
 * `"main"`: Main content in a document. In almost all cases a page will have only one `role="main"`.
 * `"navigation"`: A collection of links suitable for use when navigating the page or related pages.
-* `"region"`: A section sufficiently important that users will likely want to be able to navigate to the section easily. Use of `'role="region"` should be limited to sections containing content with a purpose that is not accurately described by one of the other landmark roles. Each `'role="region"` **must**  have a brief label that describes the purpose of the content in the region.
+* `"region"`: A section sufficiently important that users will likely want to be able to navigate to the section easily. Use of `role="region"` should be limited to sections containing content with a purpose that is not accurately described by one of the other landmark roles. Each `role="region"` **must**  have a brief label that describes the purpose of the content in the region.
 * `"search"`: A region for searching content.
 
 <div id="locSnippet"></div>
@@ -43,25 +43,24 @@ The `'role'` values listed below are the names of the landmark types:
 ### What to do
 
 If multiple landmarks have the same role, such as `role="contentinfo"` or `role="navigation"`, the landmarks should be disambiguated:  
-* Use unique `'aria-labeledby'` values to disambiguate landmarks with the same `'role'`
-* **Or**, use unique `'aria-label'` values to disambiguate landmarks with the same `'role'`
-* **Or**, nest landmarks in different parent regions to disambiguate those with the same `'role'`
+* Use unique `aria-labeledby` values to disambiguate landmarks with the same `role`
+* **Or**, use unique `aria-label` values to disambiguate landmarks with the same `role`
+* **Or**, nest landmarks in different parent regions to disambiguate those with the same `role`
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
 
- * [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
- * [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
- * [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+* [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
+* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
 
 ### Who does this affect?
-// rare to use all of these types
-  
- * People using a screen reader, including blind, low vision, and neurodivergent people
- * People using text only, monochrome, or Braille displays
- * People with dexterity impairment using voice control
+
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People using text only, monochrome, or Braille displays
+* People with dexterity impairment using voice control
  
 </Column>
 </Row>
