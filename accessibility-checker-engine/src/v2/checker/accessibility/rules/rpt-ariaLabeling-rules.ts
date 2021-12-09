@@ -120,8 +120,8 @@ let a11yRulesLabeling: Rule[] = [
                                         break
                                     }
                                 } else {
-                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labelledby 
-                                    // We have atleast a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
+                                    // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
+                                    // We have at least a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
                                     pass_0_flag = true
                                 }
                             } else {
@@ -135,7 +135,7 @@ let a11yRulesLabeling: Rule[] = [
                         if (pass_0_flag) {
                             navigationNodesMatchFound.push("Pass_0");
                         } else {
-                            navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array to indexes match up.
+                            navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array so indexes match up.
                         }
                     }
                 }
@@ -145,7 +145,7 @@ let a11yRulesLabeling: Rule[] = [
                 formCache.navigationNodesMatchFound = navigationNodesMatchFound;
                 RPTUtil.setCache(ruleContext.ownerDocument, "landmark_name_unique", formCache);
 
-                // TODO Add validation that all 3 arrays are the same lenght
+                // TODO Add validation that all 3 arrays are the same length
                 // console.log("-------------End formCache")
 
             } // End formCache
