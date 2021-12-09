@@ -106,7 +106,7 @@ let a11yRulesLabeling: Rule[] = [
                         }
                         if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
                             // We have the same parent-landmark AND  
-                            if (ARIAMapper.elemToRole(navigationNodes[i]) === ARIAMapper.elemToRole(navigationNodes[j])) {
+                            if (ARIAMapper.nodeToRole(navigationNodes[i]) === ARIAMapper.nodeToRole(navigationNodes[j])) {
                                 // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labelledby
@@ -161,9 +161,9 @@ let a11yRulesLabeling: Rule[] = [
                 return null;
             }
             if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass_0")) {
-                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck])]);
+                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.nodeToRole(formCache.navigationNodes[indexToCheck])]);
             } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail_0")) {
-                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.elemToRole(formCache.navigationNodes[indexToCheck]), formCache.navigationNodesComputedLabels[indexToCheck]]);
+                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.nodeToRole(formCache.navigationNodes[indexToCheck]), formCache.navigationNodesComputedLabels[indexToCheck]]);
             } else {
                 return null;
             }

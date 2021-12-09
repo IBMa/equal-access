@@ -569,28 +569,6 @@ export class ARIAMapper extends CommonMapper {
         }
     }
 
-    public static elemToRole(elem : Element) {
-        if (!elem) {
-            return null;
-        }
-        if (elem.hasAttribute("role") && elem.getAttribute("role").trim().length > 0) {
-            let roleStr = elem.getAttribute("role").trim();
-            let roles = roleStr.split(" ");
-            for (const role of roles) {
-                if (role === "presentation" || role === "none") {
-                    // If element is focusable, then presentation roles are to be ignored
-                    if (!RPTUtil.isFocusable(elem)) {
-                        return null;
-                    }
-                } else if (role in ARIADefinitions.designPatterns) {
-                    return role;
-                }    
-            }
-        }
-        return this.elemToImplicitRole(elem);
-    }
-
-
     public static hasParentRole(element, role) : boolean {
         let parent = DOMUtil.parentNode(element);
         // If link is in a menu, it's a menuitem
