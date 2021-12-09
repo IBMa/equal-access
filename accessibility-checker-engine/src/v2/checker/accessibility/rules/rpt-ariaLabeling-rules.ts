@@ -70,7 +70,7 @@ let a11yRulesLabeling: Rule[] = [
                         let tagNameTrigger = ["ASIDE","FOOTER","FORM","HEADER","MAIN","NAV","SECTION"].includes(els[j].tagName)
                         let roleNameTrigger = false;
                         if (els[j].hasAttribute("role")) {
-                            roleNameTrigger = ["complementary","contentinfo","form","banner","main","navigation","region","form","search"].includes(els[j].getAttribute("role"))
+                            roleNameTrigger = ["complementary","contentinfo","form","banner","main","navigation","region","form","search"].includes(els[j].getAttribute("role")) // TODO we are not covering the case were a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
                         }
                         if (tagNameTrigger || roleNameTrigger) {
                             // Nearest parent-landmark found
