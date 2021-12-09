@@ -52,7 +52,7 @@ let a11yRulesLabeling: Rule[] = [
                     navigationNodesParents: [],
                     navigationNodesMatchFound: []
                 }
-                let navigationNodesTemp = ownerDocument.querySelectorAll('aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], section,[role="region"],[role="search"]');
+                let navigationNodesTemp = ownerDocument.querySelectorAll('aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], form,[role="form"], section,[role="region"],[role="search"]');
                 let navigationNodes = Array.from(navigationNodesTemp);
                 let navigationNodesParents = [];
                 let navigationNodesMatchFound = [];
