@@ -109,7 +109,7 @@ let a11yRulesLabeling: Rule[] = [
                             if (ARIAMapper.elemToRole(navigationNodes[i]) === ARIAMapper.elemToRole(navigationNodes[j])) {
                                 // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
-                                    // both have the same (computed) aria-label/aria-labeledby
+                                    // both have the same (computed) aria-label/aria-labelledby
                                     if (navigationNodesComputedLabels[i] === "") {
                                         navigationNodesMatchFound.push("Fail_0");  // Fail 0
                                         matchFound = true
@@ -120,7 +120,7 @@ let a11yRulesLabeling: Rule[] = [
                                         break
                                     }
                                 } else {
-                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labeledby 
+                                    // Same parents && same node roles BUT differnt computed aria-label/aria-labelledby 
                                     // We have atleast a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
                                     pass_0_flag = true
                                 }
