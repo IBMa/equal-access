@@ -67,7 +67,7 @@ let a11yRulesLabeling: Rule[] = [
 
                     for (let j = 0; j < els.length; j++) { // Loop over all the parents of the landmark nodes
                         // Find nearest landmark parent based on the tagName or the role attribute 
-                        let tagNameTrigger = ["ASIDE","FOOTER","FORM","HEADER","MAIN","NAV","SECTION","FORM"].includes(els[j].tagName)
+                        let tagNameTrigger = ["ASIDE","FOOTER","FORM","HEADER","MAIN","NAV","SECTION"].includes(els[j].tagName)
                         let roleNameTrigger = false;
                         if (els[j].hasAttribute("role")) {
                             roleNameTrigger = ["complementary","contentinfo","form","banner","main","navigation","region","form","search"].includes(els[j].getAttribute("role"))
