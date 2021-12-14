@@ -230,7 +230,7 @@ let policies = ${JSON.stringify(Config.policies)};
 
 let checker = new window.ace.Checker();
 let customRulesets = ${JSON.stringify(ACEngineManager.customRulesets)};
-customRulesets.map((rs) => checker.addRuleset(rs));
+customRulesets.forEach((rs) => checker.addRuleset(rs));
 setTimeout(function() {
     checker.check(document, policies).then(function(report) {
         for (const result of report.results) {
@@ -256,7 +256,7 @@ cb(e);
         const getPolicies = "return new window.ace.Checker().rulesetIds;";
         if (curPol != null && !checkPolicy) {
             checkPolicy = true;
-            const valPolicies = ACEngineManager.customRulesets.concat(await browser.executeScript(getPolicies));
+            const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await browser.executeScript(getPolicies));
             areValidPolicy(valPolicies, curPol);
         }
 
@@ -331,7 +331,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         }, Config.policies, ACEngineManager.customRulesets);
         report = ACReportManager.setLevels(report);
         if (curPol != null && !checkPolicy) {
-            const valPolicies = ACEngineManager.customRulesets.concat(await page.evaluate("new window.ace.Checker().rulesetIds"));
+            const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.evaluate("new window.ace.Checker().rulesetIds"));
             checkPolicy = true;
             areValidPolicy(valPolicies, curPol);
         }
