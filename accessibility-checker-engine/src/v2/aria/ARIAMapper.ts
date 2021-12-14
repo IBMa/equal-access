@@ -372,6 +372,21 @@ export class ARIAMapper extends CommonMapper {
                 return accumulated.trim();
             }
         }
+
+        // Since nodeToRole calls back here for form and section, we need special casing here to handle those two cases
+        if (["section", "form"].includes(cur.nodeName.toLowerCase())) {
+            if (elem.hasAttribute("aria-label") && elem.getAttribute("aria-label").trim().length > 0) {
+                // If I'm not an embedded control or I'm not recursing, return the aria-label
+                if (!labelledbyTraverse && !walkTraverse) {
+                    return elem.getAttribute("aria-label").trim();
+                }
+            }
+            if (elem.hasAttribute("title")) {
+                return elem.getAttribute("title");
+            }
+            return "";
+        }
+
         // 2c. If label or walk, and this is a control, skip to the value, otherwise provide the label
         const role = ARIAMapper.nodeToRole(cur);
         let isEmbeddedControl = [
