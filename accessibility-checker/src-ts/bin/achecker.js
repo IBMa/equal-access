@@ -101,7 +101,7 @@ Flags:
                                 potentialviolation, recommendation,
                                 potentialrecommendation, manual, pass
     --outputFormat          : Comma separated list of output report formats.
-                                Valid values: json, csv
+                                Valid values: json, csv, or html
     --label                 : Comma separated list of labels to include in reports
     --outputFolder          : Folder to output results and reports
     --baselineFolder        : Folder that includes baseline files
