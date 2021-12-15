@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### Multiple landmark roles with the same `role` attribute are not disambiguated with a unique label or different parent  
+### Multiple landmarks with the same `role` are not distinguished from one another
 
 <div id="locLevel"></div>
 
-Multiple landmarks with the same `role` should have a unique `aria-labelledby` or `aria-label` or be nested in different parents
+Multiple landmarks with the same `role` attribute should have a unique `aria-labeledby` or `aria-label` or be nested in different parent regions
 
 </Column>
 </Row>
@@ -24,7 +24,7 @@ Multiple landmarks with the same `role` should have a unique `aria-labelledby` o
 Regions (sections) on a page may contain headings, content, white space, and even nested regions for users to better consume the content. 
 Landmarks for the regions help assistive technology (AT) users orient themselves to the page and help them easily navigate to various regions of a page. 
 When multiple regions with the same role exist on the same page, people using screen readers, voice control, 
-and other ATs will have difficulty identifying or disambiguating between them 
+and other ATs will have difficulty identifying or distinguishing between them 
 (e.g., where there are two or more `"navigation"` regions).
 
 Landmarks are inserted into the page using the `role` attribute on an element that marks the region. 
@@ -42,9 +42,10 @@ The `role` values listed below are the names of the landmark types:
 
 ### What to do
   
-* Use unique `aria-labelledby` values to disambiguate landmarks with the same `role`
-* **Or**, use unique `aria-label` values to disambiguate landmarks with the same `role`
-* **Or**, nest landmarks in different parent regions to disambiguate those with the same `role`
+* Use unique `aria-labelledby` values to distinguish landmarks with the same `role`
+* **Or**, use unique `aria-label` values to distinguish landmarks with the same `role`
+* **Or**, nest landmarks in different parent regions to distinguish those with the same `role`
+
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
@@ -58,7 +59,7 @@ The `role` values listed below are the names of the landmark types:
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision, and neurodivergent people
-* People using text only, monochrome, or Braille displays
+* People using text only browser with Braille display
 * People with dexterity impairment using voice control
  
 </Column>
