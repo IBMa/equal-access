@@ -372,6 +372,21 @@ export class ARIAMapper extends CommonMapper {
                 return accumulated.trim();
             }
         }
+
+        // Since nodeToRole calls back here for form and section, we need special casing here to handle those two cases
+        if (["section", "form"].includes(cur.nodeName.toLowerCase())) {
+            if (elem.hasAttribute("aria-label") && elem.getAttribute("aria-label").trim().length > 0) {
+                // If I'm not an embedded control or I'm not recursing, return the aria-label
+                if (!labelledbyTraverse && !walkTraverse) {
+                    return elem.getAttribute("aria-label").trim();
+                }
+            }
+            if (elem.hasAttribute("title")) {
+                return elem.getAttribute("title");
+            }
+            return "";
+        }
+
         // 2c. If label or walk, and this is a control, skip to the value, otherwise provide the label
         const role = ARIAMapper.nodeToRole(cur);
         let isEmbeddedControl = [
@@ -579,36 +594,33 @@ export class ARIAMapper extends CommonMapper {
         }
         return false;
     }
-
+    
     private static inputToRoleMap = (function() {
-        let menuButtonCheck = function(element) {
-            return ARIAMapper.hasParentRole(element, "menu") ? "menuitem" : "button";
-        };
-        let textSuggestions = function(element) {
+        let hasList = function(element) {
             if (element.hasAttribute("list")) {
                 let id = element.getAttribute("list");
                 let idRef = FragmentUtil.getById(element, id);
                 if (idRef && idRef.nodeName.toLowerCase() === "datalist") {
-                    return "combobox";
+                    return true;
                 }
             }
-            return "textbox";
+            return false;
+        };
+        let textSuggestions = function(element) {
+            return hasList(element) ? "combobox" : "textbox";
         }
         return {
-            "button": menuButtonCheck,
-            "image": menuButtonCheck,
-            "checkbox": function(element) {
-                return ARIAMapper.hasParentRole(element, "menu") ? "menuitemcheckbox" : "checkbox";
-            },
-            "radio": function(element) {
-                return ARIAMapper.hasParentRole(element, "menu") ? "menuitemradio" : "radio";
-            },
+            "button": "button",
+            "image": "button",
+            "checkbox": "checkbox",
+            "radio": "radio",
             "email": textSuggestions,
-            "search": textSuggestions,
+            "search": function(element) {
+                return hasList(element) ? "combobox" : "searchbox";
+            },
             "tel": textSuggestions,
             "text": textSuggestions,
             "url": textSuggestions,
-            "password": "textbox",
             "number": "spinbutton",
             "range": "slider",
             "reset": "button",
@@ -670,8 +682,7 @@ export class ARIAMapper extends CommonMapper {
             "a": function(element) {
                 // If it doesn't represent a hyperlink, no corresponding role
                 if (!element.hasAttribute("href")) return null;
-                // If link is in a menu, it's a menuitem, otherwise it's a link
-                return ARIAMapper.hasParentRole(element, "menu") ? "menuitem" : "link";
+                return "link";
             },
             "area": function(element) {
                 // If it doesn't represent a hyperlink, no corresponding role
@@ -680,27 +691,33 @@ export class ARIAMapper extends CommonMapper {
             },
             "article": "article",
             "aside": "complementary",
-            "body": "document",
             "button": "button",
             "datalist": "listbox",
             "dd": "definition",
             "details": "group",
+            "dfn": "term",
             "dialog": "dialog",
+            "dt": "term",
+            "fieldset": "group",
+            "figure": "figure",
             "footer": function(element) {
                 let parent = DOMUtil.parentNode(element);
-                let nodeName = parent.nodeName.toLowerCase();
                 // If nearest sectioningRoot or sectioningContent is body
-                while (parent) {
+                while (parent && parent.nodeType === 1) {
                     let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    let nodeName = parent.nodeName.toLowerCase();
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
                     parent = DOMUtil.parentNode(parent);
-                    nodeName = parent.nodeName.toLowerCase();
                 }
                 return null;
             },
-            "form": "form",
+            "form": function(element) {
+                let name = ARIAMapper.computeName(element);
+                return (name && name.trim().length > 0) ? "form" : null;
+            },
+            // TODO "form-associated custom element"
             "h1": "heading",
             "h2": "heading",
             "h3": "heading",
@@ -721,6 +738,7 @@ export class ARIAMapper extends CommonMapper {
                 return null;
             },
             "hr": "separator",
+            "html": "document",
             "img": function(element) {
                 if (element.hasAttribute("alt") && element.getAttribute("alt").length === 0) {
                     return "presentation";
@@ -729,53 +747,39 @@ export class ARIAMapper extends CommonMapper {
                 }
             },
             "input": inputToRole,
-            "keygen": "listbox",
+            "keygen": "listbox", // deprecated, but keep for backward compat
             "li": "listitem",
             "main": "main",
             "math": "math",
-            "menu": function(element) {
-                if (!element.hasAttribute("type")) return null;
-                let eType = element.getAttribute("type").toLowerCase();
-                if (eType === "context") return "menu";
-                if (eType === "toolbar") return "toolbar";
-                return null;
-            },
-            "menuitem": function(element) {
-                // Default type is command
-                if (!element.hasAttribute("type")) return "menuitem";
-                let eType = element.getAttribute("type").toLowerCase();
-                if (eType.trim().length === 0) return "menuitem";
-
-                if (eType === "command") return "menuitem";
-                if (eType === "checkbox") return "menuitemcheckbox";
-                if (eType === "radio") return "menuitemradio";
-                return null;
-            },
-            "meter": "progressbar",
+            "menu": "list",
             "nav": "navigation",
             "ol": "list",
             "optgroup": "group",
             "option": "option",
             "output": "status",
             "progress": "progressbar",
-            "section": "region",
+            "section": function(element) {
+                let name = ARIAMapper.computeName(element);
+                return (name && name.trim().length > 0) ? "region" : null;
+            },
             "select": function(element) {
-                if (element.hasAttribute("multiple") || (element.hasAttribute("size") && parseInt(element.getAttribute("size")) > 1)) {
+                if (element.hasAttribute("multiple") || (RPTUtil.attributeNonEmpty(element, "size") && parseInt(element.getAttribute("size")) > 1)) {
                     return "listbox";
                 } else {
                     return "combobox";
                 }
             },
+            "summary": "button",
+            "svg": "graphics-document",
             "table": "table",
-            "textarea": "textbox",
             "tbody": "rowgroup",
+            "textarea": "textbox",
             "td": function(element) {
                 let parent = DOMUtil.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
-                    if (role === "grid") return "gridcell";
-
+                    if (role === "grid" || role === "treegrid") return "gridcell";
                     parent = DOMUtil.parentNode(parent);
                 }
                 return null;
@@ -812,8 +816,8 @@ export class ARIAMapper extends CommonMapper {
                     
                     // scope is auto, default (without a scope) or invalid value.
                     // if all the sibling elements are th, then return "columnheader" 
-                    var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType == 1 && node.tagName != "TH");
-                    if (siblings == null || siblings.length == 0)
+                    var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType === 1 && node.tagName != "TH");
+                    if (siblings === null || siblings.length === 0)
                         return "columnheader"; 
                     else return "rowheader";
                     
