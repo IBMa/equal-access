@@ -1,5 +1,5 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+     Copyright:: 2021- IBM, Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -67,10 +67,10 @@ let a11yRulesLabeling: Rule[] = [
 
                     for (let j = 0; j < els.length; j++) { // Loop over all the parents of the landmark nodes
                         // Find nearest landmark parent based on the tagName or the role attribute 
-                        let tagNameTrigger = ["ASIDE","FOOTER","FORM","HEADER","MAIN","NAV","SECTION"].includes(els[j].tagName)
+                        let tagNameTrigger = ["ASIDE", "FOOTER", "FORM", "HEADER", "MAIN", "NAV", "SECTION"].includes(els[j].tagName)
                         let roleNameTrigger = false;
                         if (els[j].hasAttribute("role")) {
-                            roleNameTrigger = ["complementary","contentinfo","form","banner","main","navigation","region","search"].includes(els[j].getAttribute("role")) // TODO we are not covering the case were a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
+                            roleNameTrigger = ["complementary", "contentinfo", "form", "banner", "main", "navigation", "region", "search"].includes(els[j].getAttribute("role")) // TODO we are not covering the case where a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
                         }
                         if (tagNameTrigger || roleNameTrigger) {
                             // Nearest parent-landmark found
@@ -112,10 +112,6 @@ let a11yRulesLabeling: Rule[] = [
                                     // both have the same (computed) aria-label/aria-labelledby
                                     if (navigationNodesComputedLabels[i] === "") {
                                         navigationNodesMatchFound.push("Fail_0");  // Fail 0
-                                        matchFound = true
-                                        break
-                                    } else {
-                                        navigationNodesMatchFound.push("Fail_0");
                                         matchFound = true
                                         break
                                     }
