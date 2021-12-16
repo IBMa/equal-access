@@ -25,40 +25,32 @@
 </head>
 
 <body id="id-9" aria-atomic="true">
-  <p>How many circles are there?</p>
-<svg xmlns="https://www.w3.org/2000/svg">
-	<circle
-		role="graphics-symbol"
-		cx="50"
-		cy="50"
-		r="40"
-		stroke="green"
-		stroke-width="4"
-		fill="yellow"
-		aria-label="1 circle"
-	></circle>
-</svg>
+    <p>How many circles are there?</p>
+    <svg xmlns="https://www.w3.org/2000/svg">
+        <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow"
+            aria-label="1 circle"></circle>
+    </svg>
 
     <script type="text/javascript">
         UnitTest = {
             ruleIds: ["HAAC_Aria_SvgAlt"],
             results: [
-            {
-            "ruleId": "HAAC_Aria_SvgAlt",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/svg[1]/circle[1]",
-              "aria": "/document[1]/graphics-symbol[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+                {
+                    "ruleId": "HAAC_Aria_SvgAlt",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/svg[1]/circle[1]",
+                        "aria": "/document[1]/graphics-document[1]/graphics-symbol[1]"
+                    },
+                    "reasonId": "Pass_0",
+                    "message": "Rule Passed",
+                    "messageArgs": [],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                }
             ]
         }
     </script>

@@ -255,7 +255,7 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
                     // xpath
                     "dom": "/html[1]",
                     // path of ARIA roles
-                    "aria": ""
+                    "aria": "/document[1]"
                 },
                 "ruleTime": 0,
                 // Generated message

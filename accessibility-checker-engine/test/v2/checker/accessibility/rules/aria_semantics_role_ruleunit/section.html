@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="en-US">
-  <head></head>
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
 
   <body>
-    <title>Sandbox</title>
     <main>
-      <h1>ACT testcase</h1>
+      <h1>Test page</h1>
+      <section role="group">
+        Hello
+      </section>
     </main>
     <script>
       UnitTest = {
-        ruleIds: ["WCAG20_Doc_HasTitle"],
+        ruleIds: ["aria_semantics_role"],
         results: [
           {
-            "ruleId": "WCAG20_Doc_HasTitle",
+            "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]",
-              "aria": "/document[1]"
+              "dom": "/html[1]/body[1]/main[1]/section[1]",
+              "aria": "/document[1]/main[1]/group[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
-            "messageArgs": [],
+            "messageArgs": [
+              "group",
+              "section"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }

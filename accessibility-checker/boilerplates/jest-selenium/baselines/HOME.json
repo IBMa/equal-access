@@ -13,7 +13,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[1]"
             },
             "reasonId": "Potential_1",
@@ -39,7 +39,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[1]"
             },
             "reasonId": "Potential_1",
@@ -65,7 +65,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[2]"
             },
             "reasonId": "Potential_1",
@@ -91,7 +91,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[2]"
             },
             "reasonId": "Potential_1",
@@ -117,7 +117,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[3]"
             },
             "reasonId": "Potential_1",
@@ -143,7 +143,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[3]"
             },
             "reasonId": "Potential_1",
@@ -169,7 +169,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[4]"
             },
             "reasonId": "Potential_1",
@@ -195,7 +195,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[4]"
             },
             "reasonId": "Potential_1",
@@ -221,7 +221,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[5]"
             },
             "reasonId": "Potential_1",
@@ -247,7 +247,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[6]"
             },
             "reasonId": "Potential_1",
@@ -273,7 +273,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[7]"
             },
             "reasonId": "Potential_1",
@@ -299,7 +299,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[8]"
             },
             "reasonId": "Potential_1",
@@ -325,7 +325,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[9]"
             },
             "reasonId": "Potential_1",
@@ -351,7 +351,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[10]"
             },
             "reasonId": "Potential_1",
@@ -377,7 +377,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[11]"
             },
             "reasonId": "Potential_1",
@@ -403,7 +403,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[12]"
             },
             "reasonId": "Potential_1",
@@ -429,7 +429,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[13]"
             },
             "reasonId": "Potential_1",
@@ -455,7 +455,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[13]"
             },
             "reasonId": "Potential_1",
@@ -481,7 +481,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[14]"
             },
             "reasonId": "Potential_1",
@@ -507,7 +507,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[14]"
             },
             "reasonId": "Potential_1",
@@ -533,7 +533,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[15]"
             },
             "reasonId": "Potential_1",
@@ -559,7 +559,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[15]"
             },
             "reasonId": "Potential_1",
@@ -585,7 +585,7 @@
             "message": "Possible use of only color to convey information make sure the color is supported by descriptive markup .",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[16]"
             },
             "reasonId": "Potential_1",
@@ -611,7 +611,7 @@
             "message": "Default border or outline keyboard focus indicator is modified by CSS so ensure that indicator is visible.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[16]"
             },
             "reasonId": "Potential_1",
@@ -637,7 +637,7 @@
             "message": "Confirm Windows high contrast mode is supported for CSS background images.",
             "messageArgs": [],
             "path": {
-                "aria": "",
+                "aria": "/document[1]",
                 "dom": "/html[1]/head[1]/style[1]"
             },
             "reasonId": "Manual_1",

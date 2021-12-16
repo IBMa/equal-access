@@ -30,7 +30,8 @@ let a11yRulesInput: Rule[] = [
         id: "WCAG20_Input_ExplicitLabel",
         context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox"
             +",aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton"
-            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output",
+            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]", 
+
         // the datalist element do not require any explicit or implicit label, might need to exclude it from the scope of the rules
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
