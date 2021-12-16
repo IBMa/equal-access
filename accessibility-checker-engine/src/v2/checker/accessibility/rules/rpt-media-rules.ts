@@ -128,8 +128,6 @@ let a11yRulesMedia: Rule[] = [
         context: "dom:embed, dom:object",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = !RPTUtil.isVideoObjEmbedLink(ruleContext);
             if (passed) return null;
             if (!passed) return RuleManual("Manual_1");

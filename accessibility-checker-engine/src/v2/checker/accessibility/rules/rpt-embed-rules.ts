@@ -28,8 +28,6 @@ let a11yRulesEmbed: Rule[] = [
         context: "dom:embed",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let passed = ruleContext.getElementsByTagName("noembed").length > 0;
             if (!passed) {
                 let walkNode = ruleContext.nextSibling;

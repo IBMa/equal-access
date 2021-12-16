@@ -1227,6 +1227,16 @@ export class RPTUtil {
         return walkNode;
     }
 
+    public static getAncestorWithAttribute(element, attrName, attrValue) {
+        let walkNode = DOMUtil.parentNode(element);
+        while (walkNode != null) {
+            if (walkNode.nodeType === Node.ELEMENT_NODE && (<Element>walkNode).getAttribute(attrName) === attrValue) 
+                return walkNode;
+            walkNode = DOMUtil.parentNode(walkNode);
+        }
+        return null;
+    }
+
     /**
      * This function is responsible for finding a node which matches the role and is a sibling of the
      * provided element.
@@ -2658,9 +2668,9 @@ export class RPTUtil {
      * @param node
      */
     public static isNodeHidden(node: Element) {
-        if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden")) return true;
-        let ancestor = RPTUtil.getAncestor(node, "aria-hidden");
-        if (ancestor && ancestor.getAttribute("aria-hidden")) return true;
+        if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
+        let ancestor = RPTUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
+        if (ancestor) return true;
         return false;
     }
 

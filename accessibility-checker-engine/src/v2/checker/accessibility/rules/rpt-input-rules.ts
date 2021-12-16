@@ -163,8 +163,6 @@ let a11yRulesInput: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             // See https://www.w3.org/WAI/WCAG21/Techniques/failures/F65
             const ruleContext = context["dom"].node as Element;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             if (!ruleContext.hasAttribute("type") || ruleContext.getAttribute("type").toLowerCase() != "image") {
                 return null;
             }

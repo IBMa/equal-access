@@ -37,8 +37,6 @@ let a11yRulesText: Rule[] = [
                 }
             }
             const ruleContext = context["dom"].node as Element;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             if (RPTUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
                 return null;
             }
