@@ -21,15 +21,16 @@ Hi there! 👋 Hope everything is going okay using tools from the IBM Equal Acce
 ## What tool(s) are you using?
 
 <!--
-  Add an x in one of the options below, for example:
-- [x] package name
+  Please select one or more of the options below. Please delete the lines of options that you are not using.
 -->
 
-- [ ] `accessibility-checker-engine`
-- [ ] `accessibility-checker`
-- [ ] `karma-accessibility-checker`
-- [ ] `rule-server`
-- [ ] `boilerplates`
+- `accessibility-checker-engine`
+- `accessibility-checker`
+- `karma-accessibility-checker`
+- `rule-server`
+- `boilerplates`
+- `other`
+
 
 ## Summary
 
