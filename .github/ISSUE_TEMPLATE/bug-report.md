@@ -20,6 +20,7 @@ assignees: ''
 -->
 
 - `accessibility-checker-engine`
+- `accessibility-checker-extension (In the Browser)`
 - `accessibility-checker`
 - `karma-accessibility-checker`
 - `rule-server`
