@@ -63,6 +63,8 @@ let a11yRulesAnchor: Rule[] = [{
     context: "dom:a[target],dom:area[target],dom:base[target]",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        // skip the rule if it's AT hidden and not tabbable
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext) && !RPTUtil.isTabbable(ruleContext)) return;
         const params = {
             paramWinText: {
                 value: ["new window", "new tab"],
