@@ -31,7 +31,7 @@ let a11yRulesEmbed: Rule[] = [
             let passed = ruleContext.getElementsByTagName("noembed").length > 0;
             if (!passed) {
                 let walkNode = ruleContext.nextSibling;
-                while (!passed && walkNode != null) {
+                while (!passed && walkNode !== null) {
                     if (walkNode.nodeName.toLowerCase() == "noembed")
                         passed = true;
                     else if (walkNode.nodeName.toLowerCase() == "#text" && walkNode.nodeValue.trim().length > 0)
@@ -56,7 +56,7 @@ let a11yRulesEmbed: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = RPTUtil.hasInnerContentHidden(ruleContext);
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
@@ -73,7 +73,7 @@ let a11yRulesEmbed: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt");
             return passed ? RulePass("Pass_0") : RulePotential("Potential_1");
         }

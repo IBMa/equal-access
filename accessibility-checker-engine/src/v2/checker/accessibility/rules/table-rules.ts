@@ -282,7 +282,7 @@ let a11yRulesTable: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = !RPTUtil.isLayoutTable(ruleContext);
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
@@ -299,7 +299,7 @@ let a11yRulesTable: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             // JCH - OUT OF SCOPE hidden in context
             if (RPTUtil.isDataTable(ruleContext)) return null;
             if (RPTUtil.isNodeInGrid(ruleContext)) return null;

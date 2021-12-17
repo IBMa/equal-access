@@ -80,7 +80,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = true;
             if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none")) {
                 passed = ruleContext.getAttribute("alt").length == 0;
@@ -194,7 +194,7 @@ let a11yRulesImg: Rule[] = [
 
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             if (RPTUtil.hasRole(ruleContext, "presentation") || RPTUtil.hasRole(ruleContext, "none") || ruleContext.getAttribute("alt").length == 0) {
                 return RulePass(1);
             }
@@ -225,7 +225,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             if (ruleContext.getAttribute("alt").trim().length > 0) {
                 return null;
             }
@@ -248,7 +248,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = false;
             if (ruleContext.hasAttribute("usemap")) {
                 let usemap = ruleContext.getAttribute("usemap");
@@ -280,7 +280,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt") ||
                 (!ruleContext.hasAttribute("ismap") && !RPTUtil.attributeNonEmpty(ruleContext, "usemap"));
             if (!passed) {
@@ -306,7 +306,7 @@ let a11yRulesImg: Rule[] = [
             }
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let nodeName = ruleContext.nodeName.toLowerCase();
             let passed = true;
             // Alt text check are elsewhere (See 41, 240, 455)
@@ -345,7 +345,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let longdesc = ruleContext.getAttribute("longdesc");
             // if (longdesc is bad URL) passed = false;
 
@@ -371,7 +371,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let doc = ruleContext.ownerDocument;
             let style = doc.defaultView.getComputedStyle(ruleContext);
             if (style == null) {
@@ -404,7 +404,7 @@ let a11yRulesImg: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             if (!ruleContext.hasAttribute("role")) {
                 // If no role, this is implicit, and covered by WCAG20_Img_HasAlt
                 return null;
@@ -457,7 +457,7 @@ let a11yRulesImg: Rule[] = [
             const ruleContext = context["dom"].node as Element;
 
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
             if (!ruleContext.hasAttribute("role") || !ruleContext.getAttribute("role").includes("graphics-")) return null;
 

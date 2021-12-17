@@ -29,7 +29,7 @@ let a11yRulesApplet : Rule[] = [
     run: (context: RuleContext, options?: {}) : RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
-        if (RPTUtil.isNodeHidden(ruleContext)) return null;
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
         // JCH - NO OUT OF SCOPE hidden in context
         if (!RPTUtil.attributeNonEmpty(ruleContext, "alt")) {
             return RuleFail("Fail_1");
