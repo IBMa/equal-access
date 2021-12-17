@@ -89,8 +89,6 @@ let a11yRulesEmbed: Rule[] = [
             "dom:*[autostart=true], dom:*[autostart=1], dom:bgsound",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
             let nodeName = ruleContext.nodeName.toLowerCase();
             let passed;
             if (nodeName == "bgsound") {
