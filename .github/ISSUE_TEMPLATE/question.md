@@ -26,7 +26,7 @@ Hi there! 👋 Hope everything is going okay using tools from the IBM Equal Acce
 
 - `accessibility-checker-engine`
 - `accessibility-checker-extension (In the Browser)`
-- `accessibility-checker`
+- `accessibility-checker` (Node)
 - `karma-accessibility-checker`
 - `rule-server`
 - `boilerplates`
