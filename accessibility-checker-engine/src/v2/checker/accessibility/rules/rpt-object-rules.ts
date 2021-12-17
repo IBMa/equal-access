@@ -30,7 +30,7 @@ let a11yRulesObject: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             // JCH - NO OUT OF SCOPE hidden in context
 
             // Detect if this object is of type text, by checking the object type in the case it is text then do not trigger this rule

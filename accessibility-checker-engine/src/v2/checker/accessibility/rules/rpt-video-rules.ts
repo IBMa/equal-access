@@ -63,7 +63,7 @@ let a11yRulesVideo: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = true;
             let nodeName = ruleContext.nodeName.toLowerCase();
             if (nodeName == "audio" || nodeName === "video") {

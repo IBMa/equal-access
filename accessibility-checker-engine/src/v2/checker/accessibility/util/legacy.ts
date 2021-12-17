@@ -1164,7 +1164,7 @@ export class RPTUtil {
      */
     public static getAncestor(element, tagNames) {
         let walkNode = element;
-        while (walkNode != null) {
+        while (walkNode !== null) {
             let thisTag = walkNode.nodeName.toLowerCase();
             if (typeof (tagNames) === "string") {
                 if (thisTag === tagNames.toLowerCase()) {
@@ -1212,7 +1212,7 @@ export class RPTUtil {
      */
     public static getAncestorWithRole(element, roleName, considerImplicitRoles?) {
         let walkNode = DOMUtil.parentNode(element);
-        while (walkNode != null) {
+        while (walkNode !== null) {
             if (considerImplicitRoles) {
                 if (RPTUtil.hasRoleInSemantics(walkNode, roleName)) {
                     break;
@@ -1229,7 +1229,7 @@ export class RPTUtil {
 
     public static getAncestorWithAttribute(element, attrName, attrValue) {
         let walkNode = DOMUtil.parentNode(element);
-        while (walkNode != null) {
+        while (walkNode !== null) {
             if (walkNode.nodeType === Node.ELEMENT_NODE && (<Element>walkNode).getAttribute(attrName) === attrValue) 
                 return walkNode;
             walkNode = DOMUtil.parentNode(walkNode);
@@ -1287,7 +1287,7 @@ export class RPTUtil {
 
             // Keep looping over the next siblings to find element which matches
             // the provided role.
-            while (walkNode != null && !hasRole) {
+            while (walkNode !== null && !hasRole) {
 
                 // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
                 // or not.
@@ -1324,7 +1324,7 @@ export class RPTUtil {
 
                 // Keep looping over all the previous siblings to search for an element which
                 // matches the provided role.
-                while (walkNode != null && !hasRole) {
+                while (walkNode !== null && !hasRole) {
 
                     // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
                     // or not.
@@ -1881,7 +1881,7 @@ export class RPTUtil {
     public static nodeDepth(element) {
         let depth = 0;
         let walkNode = element;
-        while (walkNode != null) {
+        while (walkNode !== null) {
             walkNode = DOMUtil.parentNode(walkNode);
             depth = depth + 1;
         }
@@ -2667,7 +2667,7 @@ export class RPTUtil {
      * return true if the node or its ancester is natively hidden or aria-hidden = 'true'
      * @param node
      */
-    public static isNodeHidden(node: Element) {
+    public static isNodeHiddenFromAT(node: Element) {
         if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
         let ancestor = RPTUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
         if (ancestor) return true;

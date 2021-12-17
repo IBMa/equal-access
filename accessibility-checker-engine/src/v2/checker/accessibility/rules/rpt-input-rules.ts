@@ -206,7 +206,7 @@ let a11yRulesInput: Rule[] = [
                 // input nested in label
                 let passed = false;
                 let walkNode = ruleContext.previousSibling;
-                while (!passed && walkNode != null) {
+                while (!passed && walkNode !== null) {
                     passed = ((walkNode.nodeName.toLowerCase() == "#text" && walkNode.nodeValue.trim().length > 0)
                         || (walkNode.nodeName.toLowerCase() == "span" && walkNode.textContent.trim().length > 0));
                     walkNode = walkNode.previousSibling;

@@ -35,7 +35,7 @@ let a11yRulesMedia: Rule[] = [
             }
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let altLength = ruleContext.getAttribute("alt").trim().length;
             let passed = altLength <= validateParams.maxAlt.value;
             if (passed) return RulePass("Pass_0");
@@ -53,7 +53,7 @@ let a11yRulesMedia: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed;
             let thisNode = ruleContext.nodeName.toLowerCase();
             if (thisNode == "bgsound") {
@@ -76,7 +76,7 @@ let a11yRulesMedia: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let nodeName = ruleContext.nodeName.toLowerCase();
             let passed = true;
 
@@ -101,7 +101,7 @@ let a11yRulesMedia: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let uri = "";
             if (ruleContext.nodeName.toLowerCase() == "area") {
                 uri = ruleContext.getAttribute("href")
@@ -145,7 +145,7 @@ let a11yRulesMedia: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = false;
             // If there's style used, it fails anyway
             if (!ruleContext.hasAttribute("style")) {
@@ -194,7 +194,7 @@ let a11yRulesMedia: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             //skip the rule
-            if (RPTUtil.isNodeHidden(ruleContext)) return null;
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let href = ruleContext.getAttribute("href");
             let ext = RPTUtil.getFileExt(href);
             let passed = ![".docx", ".doc", ".pdf", ".odt"].includes(ext);
