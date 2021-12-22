@@ -96,18 +96,19 @@ let a11yRulesLabeling: Rule[] = [
                             // We do not want to compare against ourselfs
                             continue
                         }
-
+                        
+                        // This if statement focus on the case where the parent landmark is null
                         if ((navigationNodesParents[i] === null) && (navigationNodesParents[j] === null)) {
                             // We are looking at two root nodes, so we should compare them.
                             if (ARIAMapper.nodeToRole(navigationNodes[i]) === ARIAMapper.nodeToRole(navigationNodes[j])) {
                                 // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labelledby
-                                    if (navigationNodesComputedLabels[i] === "") {
+                                    // if (navigationNodesComputedLabels[i] === "") {
                                         navigationNodesMatchFound.push("Fail_0");  // Fail 0
                                         matchFound = true
                                         break
-                                    }
+                                    // }
                                 } else {
                                     // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
                                     // We have at least a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
@@ -121,22 +122,18 @@ let a11yRulesLabeling: Rule[] = [
                             continue
                         }
 
-                        // if ((navigationNodes[i] === null) || (navigationNodes[j] === null)) {
-                        //     // Strange case... should not happen
-                        //     continue
-                        // }
-                        
+                        // This if statement focus on the case where the parent landmark is NOT null
                         if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
                             // We have the same parent-landmark AND  
                             if (ARIAMapper.nodeToRole(navigationNodes[i]) === ARIAMapper.nodeToRole(navigationNodes[j])) {
                                 // Both nodes have the same role AND
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labelledby
-                                    if (navigationNodesComputedLabels[i] === "") {
+                                    // if (navigationNodesComputedLabels[i] === "") {
                                         navigationNodesMatchFound.push("Fail_0");  // Fail 0
                                         matchFound = true
                                         break
-                                    }
+                                    // }
                                 } else {
                                     // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
                                     // We have at least a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.

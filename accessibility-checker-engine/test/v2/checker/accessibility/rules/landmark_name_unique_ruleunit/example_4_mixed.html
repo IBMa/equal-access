@@ -23,8 +23,28 @@
 </head>
 
 <body id="body">
+
+  <!-- This aside triggers the rule and passes as there are two or moroe toplevel region landmarks with the differnt names: -->
+  <aside id="asidePass1" aria-label="aside pass 1"> </aside>
+  <!-- This aside triggers the rule and passes as there are two or moroe toplevel region landmarks with the differnt names: -->
+  <aside id="asidePass2" aria-label="aside pass 2"> </aside>
+  <!-- This aside triggers the rule and passes as there are two or moroe toplevel region landmarks with the differnt names: -->
+  <aside id="asidePass3" aria-label="aside pass 3"> </aside>
+
+  <!-- This region triggers the rule and fails as there are two or moroe toplevel region landmarks with the same name: -->
+  <div role="region" id="regionFail1" aria-label="region FAIL"> </div>
+  <!-- This region triggers the rule and fails as there are two or moroe toplevel region landmarks with the same name: -->
+  <div role="region" id="regionFail2" aria-label="region FAIL"> </div>
+  <!-- This region triggers the rule and fails as there are two or moroe toplevel region landmarks with the same name: -->
+  <div role="region" id="regionFail3" aria-label="region FAIL"> </div>
+
+  <!-- This main triggers the rule and FAILS as there are two toplevel main landmarks: -->
   <main id="mainNode1">
-    <!-- This nav trigger the rule but does not pass or fail. It is not applicable. -->
+  </main>
+
+  <!-- This main triggers the rule and FAILS as there are two toplevel main landmarks: -->
+  <main id="mainNode1">
+    <!-- This nav triggers the rule but does not pass or fail. It is not applicable. -->
     <div id="TopLabel0" role="navigation" aria-label="Top Label">
     </div>
 
@@ -83,8 +103,157 @@
             "PASS"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[2]",
-            "aria": "/document[1]/main[1]/region[1]"
+            "dom": "/html[1]/body[1]/aside[1]",
+            "aria": "/document[1]/complementary[1]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"complementary\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "complementary"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/aside[2]",
+            "aria": "/document[1]/complementary[2]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"complementary\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "complementary"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/aside[3]",
+            "aria": "/document[1]/complementary[3]"
+          },
+          "reasonId": "Pass_0",
+          "message": "Multiple \"complementary\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+          "messageArgs": [
+            "complementary"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/div[1]",
+            "aria": "/document[1]/region[1]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"region\" landmarks with the same parent region are not distinguished from one another because they have the same \"region FAIL\" label",
+          "messageArgs": [
+            "region",
+            "region FAIL"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/div[2]",
+            "aria": "/document[1]/region[2]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"region\" landmarks with the same parent region are not distinguished from one another because they have the same \"region FAIL\" label",
+          "messageArgs": [
+            "region",
+            "region FAIL"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/div[3]",
+            "aria": "/document[1]/region[3]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"region\" landmarks with the same parent region are not distinguished from one another because they have the same \"region FAIL\" label",
+          "messageArgs": [
+            "region",
+            "region FAIL"
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[1]",
+            "aria": "/document[1]/main[1]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"main\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
+          "messageArgs": [
+            "main",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[2]",
+            "aria": "/document[1]/main[2]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"main\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
+          "messageArgs": [
+            "main",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[2]/div[2]",
+            "aria": "/document[1]/main[2]/region[1]"
           },
           "reasonId": "Pass_0",
           "message": "Multiple \"region\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
@@ -101,8 +270,8 @@
             "PASS"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[2]/div[1]",
-            "aria": "/document[1]/main[1]/region[1]/navigation[1]"
+            "dom": "/html[1]/body[1]/main[2]/div[2]/div[1]",
+            "aria": "/document[1]/main[2]/region[1]/navigation[1]"
           },
           "reasonId": "Pass_0",
           "message": "Multiple \"navigation\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
@@ -119,8 +288,8 @@
             "PASS"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[2]/div[2]",
-            "aria": "/document[1]/main[1]/region[1]/navigation[2]"
+            "dom": "/html[1]/body[1]/main[2]/div[2]/div[2]",
+            "aria": "/document[1]/main[2]/region[1]/navigation[2]"
           },
           "reasonId": "Pass_0",
           "message": "Multiple \"navigation\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
@@ -137,8 +306,8 @@
             "PASS"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]",
-            "aria": "/document[1]/main[1]/region[2]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]",
+            "aria": "/document[1]/main[2]/region[2]"
           },
           "reasonId": "Pass_0",
           "message": "Multiple \"region\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
@@ -155,14 +324,14 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[1]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[1]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[1]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[1]"
           },
           "reasonId": "Fail_0",
-          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"TopLabel\" label",
+          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"Top Label\" label",
           "messageArgs": [
             "navigation",
-            "TopLabel"
+            "Top Label"
           ],
           "apiArgs": [],
           "category": "Accessibility"
@@ -174,14 +343,14 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[2]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[2]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[2]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[2]"
           },
           "reasonId": "Fail_0",
-          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"TopLabel\" label",
+          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"Top Label\" label",
           "messageArgs": [
             "navigation",
-            "TopLabel"
+            "Top Label"
           ],
           "apiArgs": [],
           "category": "Accessibility"
@@ -193,27 +362,8 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[3]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[3]"
-          },
-          "reasonId": "Fail_0",
-          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
-          "messageArgs": [
-            "navigation",
-            ""
-          ],
-          "apiArgs": [],
-          "category": "Accessibility"
-        },
-        {
-          "ruleId": "landmark_name_unique",
-          "value": [
-            "INFORMATION",
-            "FAIL"
-          ],
-          "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[4]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[4]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[3]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[3]"
           },
           "reasonId": "Fail_0",
           "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
@@ -231,8 +381,8 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[5]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[5]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[4]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[4]"
           },
           "reasonId": "Fail_0",
           "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
@@ -250,8 +400,27 @@
             "FAIL"
           ],
           "path": {
-            "dom": "/html[1]/body[1]/main[1]/div[3]/div[6]",
-            "aria": "/document[1]/main[1]/region[2]/navigation[6]"
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[5]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[5]"
+          },
+          "reasonId": "Fail_0",
+          "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
+          "messageArgs": [
+            "navigation",
+            ""
+          ],
+          "apiArgs": [],
+          "category": "Accessibility"
+        },
+        {
+          "ruleId": "landmark_name_unique",
+          "value": [
+            "INFORMATION",
+            "FAIL"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/main[2]/div[3]/div[6]",
+            "aria": "/document[1]/main[2]/region[2]/navigation[6]"
           },
           "reasonId": "Fail_0",
           "message": "Multiple \"navigation\" landmarks with the same parent region are not distinguished from one another because they have the same \"\" label",
