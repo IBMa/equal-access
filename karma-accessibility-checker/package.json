@@ -67,7 +67,7 @@
     "chai": "^4.3.4",
     "decache": "^4.6.1",
     "difflet": "^1.0.1",
-    "eslint": "^8.4.1",
+    "eslint": "^7.12.1",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-standard": "^4.1.0",
     "express": "^4.17.1",
