@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "setup": "npm-run-all startLocalRuleServer",
-    "installPlugin": "npm install package/karma-accessibility-checker",
+    "installPlugin": "npm install ./package/karma-accessibility-checker",
     "lint:src": "eslint src",
     "lint:test": "eslint test",
     "test": "npm-run-all build installPlugin test:client",

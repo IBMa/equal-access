@@ -39,7 +39,7 @@ export default class BackgroundMessaging {
                         }
                         resolve(res);
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }
             });
@@ -62,7 +62,7 @@ export default class BackgroundMessaging {
                         }
                         resolve(res);
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }
 			});
