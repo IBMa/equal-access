@@ -128,8 +128,7 @@ module.exports = {
             patterns: [
             {
                 from: path.join(sourceRootPath, 'assets'),
-                to: path.join(distRootPath, 'assets'),
-                test: /\.(jpg|jpeg|png|gif|svg)?$/,
+                to: path.join(distRootPath, 'assets')
             },
             {
                 from: path.join(sourceRootPath, 'manifest.json'),
