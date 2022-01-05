@@ -124,7 +124,8 @@ module.exports = {
             title: 'Accessibility Checker Extension - User Guide',
             chunks: ['usingAC']
         }),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin({
+            patterns: [
             {
                 from: path.join(sourceRootPath, 'assets'),
                 to: path.join(distRootPath, 'assets'),
@@ -135,7 +136,7 @@ module.exports = {
                 to: path.join(distRootPath, 'manifest.json'),
                 toType: 'file',
             }
-        ]),
+        ]}),
        
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(nodeEnv),
