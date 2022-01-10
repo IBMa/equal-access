@@ -553,8 +553,8 @@ let a11yNls = {
     "Rpt_Aria_ValidRole": {
         0: "Elements must have a valid 'role' per ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Some of the 'role's defined on the element are not valid per ARIA specification",
-        "Fail_2": "The 'role' defined on the element is not valid per ARIA specification"
+        "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification",
+        "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification"
     },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
