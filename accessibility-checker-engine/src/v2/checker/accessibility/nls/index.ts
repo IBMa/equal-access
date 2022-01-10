@@ -5,7 +5,7 @@
 let a11yNls = {
     // AU - DONE
     "landmark_name_unique": {
-        0: "Multiple \"{0}\" landmarks should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent regions",
+        0: "Multiple landmarks should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent regions",
         "Pass_0": "Multiple \"{0}\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
         // Fail_0 occurs when we have: not disambiguated by same parent, labels are blank: "" == "", or same aria-label/labelledby
         "Fail_0": "Multiple \"{0}\" landmarks with the same parent region are not distinguished from one another because they have the same \"{1}\" label" 
