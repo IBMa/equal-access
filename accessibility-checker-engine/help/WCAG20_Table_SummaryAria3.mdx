@@ -1,84 +1,72 @@
-commit 6c98a74dcdf48f3ad1365000b08b359358addee6
-Author: Tom Brunet <thbrunet@us.ibm.com>
-Date:   Fri Oct 1 14:33:35 2021 -0500
-
-    Remove WCAG20_Table_SummaryAria3
-
-diff --git a/accessibility-checker-engine/help/WCAG20_Table_SummaryAria3.mdx b/accessibility-checker-engine/help/WCAG20_Table_SummaryAria3.mdx
-deleted file mode 100644
-index c29fdf55..00000000
---- a/accessibility-checker-engine/help/WCAG20_Table_SummaryAria3.mdx
-+++ /dev/null
-@@ -1,72 +0,0 @@
 ----
--title: "Accessibility Checker Rule Help: WCAG20_Table_SummaryAria3"
+title: "Accessibility Checker Rule Help: WCAG20_Table_SummaryAria3"
 ----
--import "../../../styles/ToolHelp.scss"
--import { CodeSnippet, Tag } from "carbon-components-react";
--
--<div className="toolHelp">
--<Row>
--<Column colLg={16} colMd={8} colSm={4} className="toolHead">
--
--### The data table has no summary
--
--<div id="locLevel"></div>
--
--Data tables should have a summary that gives an overview of the table
--
--</Column>
--</Row>
--<Row>
--<Column colLg={11} colMd={5} colSm={4} className="toolMain">
--
--### Why is this important?
--
--A table summary provides a brief overview of how data has been organized into a data table and is specifically useful when the table is large with many rows and columns or when the table has a complex structure (multiple row or column headers). The table summary should not duplicate the caption.
--
--<div id="locSnippet"></div>
--
--### What to do
--
--* Add an `aria-labelledby` attribute to the `<table>` element. It must point to visible text on the page that is meaningful as its summary;
--* **Or**, add an `aria-describedby` attribute to provide a brief overview of the data table;
--* **Or**, add an `aria-label` attribute to provide a brief overview of the data table.
--
--Note: In HTML5 the `summary` attribute is obsolete and should be avoided.
--
--For example the following example uses the `aria-labelledby` to provide the table summary:
--
--<CodeSnippet type="multi" light={true}>  &lt;p id="tblSummary"&gt;The following table shows the number of boys and girls in each grade of an elementary school.&lt;/p&gt;
--    
--    &lt;table border="1" aria-labelledby="tblSummary"&gt;
--     &lt;tr&gt;
--       &lt;th id="class"&gt;Class&lt;/th&gt;
--       &lt;th id="teacher"&gt;Teacher&lt;/th&gt;
--       &lt;th id="boys"&gt;# of Boys&lt;/th&gt;
--       &lt;th id="girls"&gt;# of Girls&lt;/th&gt;
--     &lt;/tr&gt;
--     &lt;tr&gt;
--       &lt;th rowspan="2" id="1stgrade"&gt;1st Grade&lt;/th&gt;
--        &lt;th headers="1stgrade teacher" id="MrHenry"&gt;Mr. Henry&lt;/th&gt;
--        &lt;td headers="1stgrade MrHenry boys"&gt;5&lt;/td&gt;
--        &lt;td headers="1stgrade MrHenry girls"&gt;4&lt;/td&gt;
--     &lt;/tr&gt;
--    ...
--   &lt;/table&gt;</CodeSnippet>
--
--</Column>
--<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
--
--### About this requirement
--
--* [IBM 1.3.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_3_1)
--* [WCAG technique H73](https://www.w3.org/WAI/WCAG21/Techniques/html/H73.html)
--
--### Who does this affect?
--
--* People using a screen reader, including blind, low vision and neurodivergent people
--
--</Column>
--</Row>
--</div>
--
--export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The data table has no summary
+
+<div id="locLevel"></div>
+
+Data tables should have a summary that gives an overview of the table
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A table summary provides a brief overview of how data has been organized into a data table and is specifically useful when the table is large with many rows and columns or when the table has a complex structure (multiple row or column headers). The table summary should not duplicate the caption.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Add an `aria-labelledby` attribute to the `<table>` element. It must point to visible text on the page that is meaningful as its summary;
+* **Or**, add an `aria-describedby` attribute to provide a brief overview of the data table;
+* **Or**, add an `aria-label` attribute to provide a brief overview of the data table.
+
+Note: In HTML5 the `summary` attribute is obsolete and should be avoided.
+
+For example the following example uses the `aria-labelledby` to provide the table summary:
+
+<CodeSnippet type="multi" light={true}>  &lt;p id="tblSummary"&gt;The following table shows the number of boys and girls in each grade of an elementary school.&lt;/p&gt;
+    
+    &lt;table border="1" aria-labelledby="tblSummary"&gt;
+     &lt;tr&gt;
+       &lt;th id="class"&gt;Class&lt;/th&gt;
+       &lt;th id="teacher"&gt;Teacher&lt;/th&gt;
+       &lt;th id="boys"&gt;# of Boys&lt;/th&gt;
+       &lt;th id="girls"&gt;# of Girls&lt;/th&gt;
+     &lt;/tr&gt;
+     &lt;tr&gt;
+       &lt;th rowspan="2" id="1stgrade"&gt;1st Grade&lt;/th&gt;
+        &lt;th headers="1stgrade teacher" id="MrHenry"&gt;Mr. Henry&lt;/th&gt;
+        &lt;td headers="1stgrade MrHenry boys"&gt;5&lt;/td&gt;
+        &lt;td headers="1stgrade MrHenry girls"&gt;4&lt;/td&gt;
+     &lt;/tr&gt;
+    ...
+   &lt;/table&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.3.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [WCAG technique H73](https://www.w3.org/WAI/WCAG21/Techniques/html/H73.html)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
