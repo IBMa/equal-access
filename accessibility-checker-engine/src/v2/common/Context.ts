@@ -104,7 +104,7 @@ export class PartInfo {
         hierLevel: number) : boolean 
     {
         const rulePart = this;
-        let ruleRoleMatch = (rulePart.namespace in contextHier) 
+        let ruleRoleMatch = (rulePart.namespace in contextHier) && contextHier[rulePart.namespace][hierLevel]
             && (contextHier[rulePart.namespace][hierLevel].role === rulePart.role
                 || contextHier[rulePart.namespace][hierLevel].role !== "none" && rulePart.role === "*");
         if (ruleRoleMatch 

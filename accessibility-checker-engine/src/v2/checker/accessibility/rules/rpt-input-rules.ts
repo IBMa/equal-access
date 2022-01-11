@@ -30,7 +30,8 @@ let a11yRulesInput: Rule[] = [
         id: "WCAG20_Input_ExplicitLabel",
         context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox"
             +",aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton"
-            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output", 
+            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output,dom:meter,dom:input[type=password]", 
+
         // the datalist element do not require any explicit or implicit label, might need to exclude it from the scope of the rules
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
@@ -116,7 +117,7 @@ let a11yRulesInput: Rule[] = [
                     }
                 };
                 passed = RPTUtil.hasInnerContentHidden(ruleContext) || RPTUtil.hasAriaLabel(ruleContext) || bAlt || RPTUtil.attributeNonEmpty(ruleContext, "title");
-    
+
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 1;
             }
 
@@ -205,7 +206,7 @@ let a11yRulesInput: Rule[] = [
                 // input nested in label
                 let passed = false;
                 let walkNode = ruleContext.previousSibling;
-                while (!passed && walkNode != null) {
+                while (!passed && walkNode !== null) {
                     passed = ((walkNode.nodeName.toLowerCase() == "#text" && walkNode.nodeValue.trim().length > 0)
                         || (walkNode.nodeName.toLowerCase() == "span" && walkNode.textContent.trim().length > 0));
                     walkNode = walkNode.previousSibling;
@@ -317,10 +318,10 @@ let a11yRulesInput: Rule[] = [
     },
     {
         /**
-         * Description: Trigger if a radio/checkbox with same name is not grouped 
+         * Description: Trigger if a radio/checkbox with same name is not grouped
          * (e.g., in a fieldset, with role = "group", etc.)
          * Origin: WCAG 2.0 Technique H71, H91
-         * 
+         *
          * Failures:
          * 0a. radio not in fieldset, group or radiogroup - AND I find another radio or check with the same 'name' attribute- AND I'm not in a table
          * 0b. checkbox not in fieldset or group - AND I find another radio or check with the same 'name' attribute - AND I'm not in a table
@@ -356,11 +357,11 @@ let a11yRulesInput: Rule[] = [
             }
 
             // Determine which form we're in (if any) to determine our scope
-            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form") 
+            let ctxForm = RPTUtil.getAncestorWithRole(ruleContext, "form")
                 || RPTUtil.getAncestor(ruleContext, "html")
                 || ruleContext.ownerDocument.documentElement;
 
-            // Get data about all of the visible checkboxes and radios in the scope of this form 
+            // Get data about all of the visible checkboxes and radios in the scope of this form
             // and cache it for all of the other inputs in this scope
             let formCache = RPTUtil.getCache(ctxForm, "WCAG20_Input_RadioChkInFieldSet", null);
             if (!formCache) {
@@ -374,13 +375,13 @@ let a11yRulesInput: Rule[] = [
                     numRadios: 0
                 }
                 // Get all of the checkboxes in the form or body (but not nested in something else and not hidden)
-                // And get a mapping of these checkboxes to 
+                // And get a mapping of these checkboxes to
                 let cWalker = new DOMWalker(ctxForm, false, ctxForm);
                 let checkboxQ = [];
                 let radiosQ = [];
                 while (cWalker.nextNode()) {
                     if (!cWalker.bEndTag
-                        && cWalker.node.nodeType === 1 
+                        && cWalker.node.nodeType === 1
                         && cWalker.node.nodeName.toLowerCase() === "input"
                         && RPTUtil.isNodeVisible(cWalker.node))
                     {
@@ -395,10 +396,10 @@ let a11yRulesInput: Rule[] = [
                 // let checkboxQ = ctxForm.querySelectorAll("input[type=checkbox]");
                 for (let idx=0; idx<checkboxQ.length; ++idx) {
                     const cb = checkboxQ[idx];
-                    if ((RPTUtil.getAncestorWithRole(cb, "form") 
+                    if ((RPTUtil.getAncestorWithRole(cb, "form")
                         || RPTUtil.getAncestor(ruleContext, "html")
-                        || ruleContext.ownerDocument.documentElement) === ctxForm 
-                        && !RPTUtil.shouldNodeBeSkippedHidden(cb)) 
+                        || ruleContext.ownerDocument.documentElement) === ctxForm
+                        && !RPTUtil.shouldNodeBeSkippedHidden(cb))
                     {
                         const name = cb.getAttribute("name") || "";
                         (formCache.checkboxByName[name] = formCache.checkboxByName[name] || []).push(cb);
@@ -410,11 +411,11 @@ let a11yRulesInput: Rule[] = [
                 // let radiosQ = ctxForm.querySelectorAll("input[type=radio]");
                 for (let idx=0; idx<radiosQ.length; ++idx) {
                     const r = radiosQ[idx];
-                    const radCtx = (RPTUtil.getAncestorWithRole(r, "form") 
+                    const radCtx = (RPTUtil.getAncestorWithRole(r, "form")
                         || RPTUtil.getAncestor(ruleContext, "html")
                         || ruleContext.ownerDocument.documentElement);
                     if (radCtx === ctxForm
-                        && !RPTUtil.shouldNodeBeSkippedHidden(r)) 
+                        && !RPTUtil.shouldNodeBeSkippedHidden(r))
                     {
                         const name = r.getAttribute("name") || "";
                         (formCache.radiosByName[name] = formCache.radiosByName[name] || []).push(r);
@@ -460,8 +461,8 @@ let a11yRulesInput: Rule[] = [
                 if (numRadiosWithName > 0 && numCheckboxesWithName > 0) {
                     // We have a naming mismatch between different controls
                     return RuleFail("Fail_ControlNameMismatch", [ctxType, ctxType === "checkbox"?"radio":"checkbox", ctxName]);
-                } else if (ctxType === "Radio" && (formCache.numRadios === 1 || numRadiosWithName === 1) 
-                        || ctxType === "Checkbox" && formCache.numCheckboxes === 1) 
+                } else if (ctxType === "Radio" && (formCache.numRadios === 1 || numRadiosWithName === 1)
+                        || ctxType === "Checkbox" && formCache.numCheckboxes === 1)
                 {
                     // This is a lone control (either only control of this type on the page, or a radio button without any others by that name)
                     // We pass this control in all cases
@@ -471,7 +472,7 @@ let a11yRulesInput: Rule[] = [
                         return RulePass("Pass_Grouped", [ctxType]);
                     }
                 } else if (ctxType === "Checkbox" && formCache.numCheckboxes > 1 && numCheckboxesWithName === 1) {
-                    // We have only one checkbox with this name, but there are other checkboxes in the form. 
+                    // We have only one checkbox with this name, but there are other checkboxes in the form.
                     // If we're not grouped, ask them to examine it
                     if (ctxGroup === null) {
                         return RulePotential("Potential_LoneCheckbox", [ctxType]);
@@ -541,7 +542,7 @@ let a11yRulesInput: Rule[] = [
     {
         /**
          * Description: Triggers if placeholder is used as a replacement of label
-         * 
+         *
          * Origin:  HTML 5 - per Richard Schwerdtfeger's requirements. g1145
          */
         id: "HAAC_Input_Placeholder",
@@ -588,7 +589,7 @@ let a11yRulesInput: Rule[] = [
          *  - The element is an input element with a type property of hidden, button, submit or reset
          *  - The element has a disabled or aria-disabled="true" attribute
          *  - The element has tabindex="-1" and has a semantic role that is not a widget. (Disabled for now)
-    
+
          * Origin: WCAG 2.1 Success Criterion 1.3.5 (Identify Input Purpose)
          */
         id: "WCAG21_Input_Autocomplete",
@@ -848,13 +849,13 @@ let a11yRulesInput: Rule[] = [
 
     {
         /**
-         * Description: Trigger if an input does not have a visible label 
+         * Description: Trigger if an input does not have a visible label
          * Origin: WCAG 2.0 Success Criterion 3.3.2
          */
         id: "WCAG20_Input_VisibleLabel",
         context: "aria:button,aria:checkbox,aria:combobox,aria:listbox,aria:menuitemcheckbox"
             +",aria:menuitemradio,aria:radio,aria:searchbox,aria:slider,aria:spinbutton"
-            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output", 
+            +",aria:switch,aria:textbox,aria:progressbar,dom:input[type=file],dom:output",
         dependencies: ["WCAG20_Input_ExplicitLabel"],
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
@@ -966,7 +967,7 @@ let a11yRulesInput: Rule[] = [
                 if (ruleContext.ownerDocument.querySelector(`*[aria-controls='${id}'][role='combobox']`)) {
                     return null;
                 }
-            }        
+            }
 
             if (passed) {
                 return RulePass("Pass_0");

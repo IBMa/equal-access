@@ -27,17 +27,22 @@ let a11yRulesVideo: Rule[] = [
         context: "dom:video",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as HTMLVideoElement;
-            let passed = false; 
+            let passed = false;
+
+            // ignore decorative video if user uses aria-hidden
+            if (ruleContext.getAttribute("aria-hidden") === "true") {
+                return null;
+            }
 
             let tracks = ruleContext.getElementsByTagName("track");
 
             for (let i = 0; i < tracks.length; ++i) {
-                passed = passed || tracks[i].getAttribute("kind") == 'captions';
+                passed = passed || tracks[i].getAttribute("kind") === 'captions';
             }
             // checks for addition of dynamic tracks
             if (ruleContext.textTracks && ruleContext.textTracks.length > 0) {
                 for (let i=0; i < ruleContext.textTracks.length; i++)  {
-                    passed = passed || ruleContext.textTracks[i].kind  ==  'captions';
+                    passed = passed || ruleContext.textTracks[i].kind  ===  'captions';
                 }
             }
 
@@ -50,16 +55,18 @@ let a11yRulesVideo: Rule[] = [
     },
     {
         /**
-         * Description: Trigger if HTML5 <audio> or <video> elements are used 
+         * Description: Trigger if HTML5 <audio> or <video> elements are used
          * Origin: CI162-HTML 5, G1119
          */
         id: "HAAC_Audio_Video_Trigger",
         context: "dom:audio, dom:video",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = true;
             let nodeName = ruleContext.nodeName.toLowerCase();
-            if (nodeName == "audio" || nodeName == "video") {
+            if (nodeName == "audio" || nodeName === "video") {
                 passed = false;
             }
             return passed ? RulePass("Pass_0") : RuleManual("Manual_1");

@@ -34,3 +34,4 @@ jspm_packages
 .zip
 .gz
 .tar
+accessibility-checker-engine/karma.conf.js

@@ -65,7 +65,7 @@ ruleArchive: latest
 
 # optional - Specify one or many policies to scan.
 # i.e. For one policy use policies: IBM_Accessibility
-# i.e. Multiple policies: IBM_Accessibility,IBM_Accessibility_BETA
+# i.e. Multiple policies: IBM_Accessibility,WCAG_2_1
 # Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
 policies:
     - IBM_Accessibility
@@ -202,7 +202,7 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
     puppeteer: undefined,
     report: {
         scanID: "18504e0c-fcaa-4a78-a07c-4f96e433f3e7",
-        toolID: "accessibility-checker-v2.0.8",
+        toolID: "accessibility-checker-v3.0.0",
         // Label passed to getCompliance
         label: "MyTestLabel",
         // Number of rules executed
@@ -255,7 +255,7 @@ Using a callback mechanism (`callback`) to extract the results and perform asser
                     // xpath
                     "dom": "/html[1]",
                     // path of ARIA roles
-                    "aria": ""
+                    "aria": "/document[1]"
                 },
                 "ruleTime": 0,
                 // Generated message

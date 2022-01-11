@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The value \"{0}\" of the `<label>` `for` attribute is not the `id` of a valid `<input>` element
+### The value of the `for` attribute of the `<label>` element does not match the value of an `<input>` element's `id`
 
 <div id="locLevel"></div>
 
@@ -21,7 +21,9 @@ The `for` attribute must reference a non-empty, unique `id` attribute of an `<in
 
 ### Why is this important?
 
-A `label` element is attached to a specific `<input>` element through the use of the `for` attribute. When a `<label>` does not reference the corresponding unique `id` in a valid labelable `<input>` element, assistive technologies will not be able to associate the label with the element.
+A `<label>` element is attached to a specific `<input>` element through the use of the `for` attribute. 
+When a `<label>` does not reference the corresponding unique `id` in a valid labelable `<input>` element, 
+assistive technologies will not be able to associate the label with the element.
 
 <div id="locSnippet"></div>
 

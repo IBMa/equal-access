@@ -1,4 +1,8 @@
 let a11yNls = {
+    // No {tokens} in passive messages, such as 0: "a passive message..."
+    // No back-ticks used in messages here, only <, ", '
+    // Changes in messages will require corresponding change in test cases
+    //
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",
@@ -136,7 +140,7 @@ let a11yNls = {
     "RPT_Block_ShouldBeHeading": {
         0: "Heading text must use a heading element", 
         "Pass_0": "Rule Passed",
-        "Potential_1": `Check if this text should be marked up as a heading: {0}`
+        "Potential_1": "Check if this text should be marked up as a heading: {0}"
     },
     // JCH - DONE
     "WCAG20_Form_HasSubmit": {
@@ -380,7 +384,7 @@ let a11yNls = {
     "WCAG20_Input_LabelBefore": {
         0: "Text inputs and <select> elements must have a label before the input control",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Text input is nested in label, so label is not before the text input control",
+        "Fail_1": "Text input is nested in label such that input precedes the label text",
         "Fail_2": "Label text is located after its associated text input or <select> element"
     },
     // JCH - DONE
@@ -397,10 +401,12 @@ let a11yNls = {
         "Potential_1": "Verify that the <embed> element is immediately followed by a non-embedded element"
     },
     // JCH - DONE
+    //       "Fail_2" added per HTML 5 spec
     "WCAG20_Table_Scope_Valid": {
         0: "Value for 'scope' attribute must be \"row\", \"col\", \"rowgroup\", or \"colgroup\"",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Value provided is invalid for the 'scope' attribute"
+        "Fail_1": "Value provided is invalid for the 'scope' attribute",
+        "Fail_2": "The 'scope' attribute should only be used on a <th> element"
     },
     // JCH - DONE
     "WCAG20_Img_TitleEmptyWhenAltNull": {
@@ -547,8 +553,8 @@ let a11yNls = {
     "Rpt_Aria_ValidRole": {
         0: "Elements must have a valid 'role' per ARIA specification",
         "Pass_0": "Rule Passed",
-        "Fail_1": "Some of the 'role's defined on the element are not valid per ARIA specification",
-        "Fail_2": "The 'role' defined on the element is not valid per ARIA specification"
+        "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification",
+        "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification"
     },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
@@ -665,7 +671,7 @@ let a11yNls = {
         "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
     },
     "HAAC_Aria_SvgAlt": {
-        0: "An element with \"{0}\" graphics role must have a non-empty label",
+        0: "An element with a graphics role must have a non-empty label",
         "Pass_0": "Rule Passed",
         "Fail_1": "Element with \"{0}\" graphics role has no label",
         "Fail_2": "Element with \"{0}\" graphics role has no label or an empty label",
@@ -755,13 +761,13 @@ let a11yNls = {
     "Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
         0: "An element with a ARIA role must contain required children",
         "Pass_0": "Rule Passed",
-        "Potential_1": "The element with ARIA role of \"{0}\" does not contain or own at least one child element with each of the following ARIA roles: \"{1}\""
+        "Potential_1": "The element with role \"{0}\" does not contain or own at least one child element with each of the following roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": {
-        0: "An element with a ARIA role must be contained within a valid element",
+        0: "An element with an implicit or explicit role must be contained within a valid element",
         "Pass_0": "Rule Passed",
-        "Fail_1": "The element with \"{0}\" role is not contained in or owned by an element with one of the following ARIA roles: \"{1}\""
+        "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\""
     },
     // JCH - DONE
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": {
@@ -897,12 +903,6 @@ let a11yNls = {
         "Potential_1": "Component with \"{0}\" role has more than one tabbable element"
     },
     // JCH - DONE
-    "WCAG20_Table_SummaryAria3": {
-        0: "Complex data tables should have a 'summary' or an 'aria-describedby' that references an overview of the table",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "A complex data table should have a 'summary' or an 'aria-describedby' that references an overview of the table"
-    },
-    // JCH - DONE
     "RPT_Style_Trigger2": {
         0: "Windows high contrast mode must be supported when using CSS to include, position or alter non-decorative content",
         "Pass_0": "Rule Passed",
@@ -1027,9 +1027,17 @@ let a11yNls = {
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
     },
     "aria_hidden_focus_misuse": {
-        0: "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'", 
+        0: "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
         "Pass_0": "Rule Passed",
         "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
+    },
+    "table_headers_ref_valid": {
+        0: "The 'headers' attribute should refer to a valid cell in the same table", 
+        "Pass_0": "Rule Passed",
+        "Fail_1": "The 'headers' attribute value \"{0}\" does not reference a valid 'id' in this document",
+        "Fail_2": "The 'headers' attribute value \"{0}\" refers to itself",
+        "Fail_3": "The 'headers' attribute value \"{0}\" does not refer to a cell in the same table",
+        "Fail_4": "The 'headers' attribute value \"{0}\" does not refer to a cell indicated with <th> or a role of \"columnheader\" or \"rowheader\""
     }
 }
 export { a11yNls }

@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IEngine";
+import { DOMUtil } from "../../../dom/DOMUtil";
 import { FragmentUtil } from "../util/fragment";
 import { RPTUtil } from "../util/legacy";
 
@@ -37,13 +38,18 @@ let a11yRulesTable: Rule[] = [
                 sumStr = ruleContext.getAttribute("summary").trim().toLowerCase();
             } else if (ruleContext.hasAttribute("aria-describedby")) {
                 pofId = 1;
-                let summaryNodeId = ruleContext.getAttribute("aria-describedby");
-                if (summaryNodeId) {
-                    let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
-                    if (summaryNode) {
-                        sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
+                let summaryNodeIds = ruleContext.getAttribute("aria-describedby").split(" ");
+                let summaryNodeConcat = "";
+                for (let i=0; i<summaryNodeIds.length; i++) {
+                    let summaryNodeId = summaryNodeIds[i];
+                    if (summaryNodeId) {
+                        let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
+                        if (summaryNode) {
+                            summaryNodeConcat += " " + RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
+                        }
                     }
                 }
+                sumStr = summaryNodeConcat;
             }
             if (!sumStr) {
                 return null;
@@ -53,7 +59,7 @@ let a11yRulesTable: Rule[] = [
                     return null;
                 } else if (sumStr.length > 0) {
                     let capStr = RPTUtil.getInnerText(capElems[0]).trim().toLowerCase();
-                    if (sumStr != capStr) {
+                    if (!sumStr.includes(capStr)) {
                         return RulePass("Pass_0");
                     } else {
                         return RuleFail("Fail_1")
@@ -94,39 +100,6 @@ let a11yRulesTable: Rule[] = [
             } else {
                 return RulePass("Pass_0");
             }
-        }
-    },
-
-    {
-        /**
-         * Description: Trigger if role!="presentation" or role!="none", and missing a summary or summary does not correspond to aria-label or aria-labelledby
-         * Origin: WCAG 2.0 Technique H73
-         */
-        id: "WCAG20_Table_SummaryAria3",
-        context: "dom:table",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let passed = !RPTUtil.isComplexDataTable(ruleContext) || RPTUtil.attributeNonEmpty(ruleContext, "summary") || ruleContext.hasAttribute("aria-describedby");
-            // check if aria-describedby points to valid id or valid summary
-            let summaryNodeId = ruleContext.getAttribute("aria-describedby");
-            let sumStr;
-            if (summaryNodeId) {
-                let summaryNode = FragmentUtil.getById(ruleContext, summaryNodeId);
-                if (summaryNode) {
-                    sumStr = RPTUtil.getInnerText(summaryNode).trim().toLowerCase();
-                    if (sumStr) {
-                        passed = true;
-                    }
-                    else
-                        passed = false;
-                }
-                else
-                    passed = false;
-            }
-
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RulePotential("Potential_1");
-
         }
     },
 
@@ -284,6 +257,11 @@ let a11yRulesTable: Rule[] = [
         context: "dom:td[scope], dom:th[scope]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            const nodeName = ruleContext.nodeName.toLowerCase();
+            if (nodeName === 'td')
+                return RuleFail("Fail_2");
+
+            //only continue for 'th'
             let scopeVal = ruleContext.getAttribute("scope").trim().toLowerCase();
             let passed = /^(row|col|rowgroup|colgroup)$/.test(scopeVal);
             if (!passed) {
@@ -303,6 +281,8 @@ let a11yRulesTable: Rule[] = [
         context: "dom:table",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             let passed = !RPTUtil.isLayoutTable(ruleContext);
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
@@ -318,6 +298,8 @@ let a11yRulesTable: Rule[] = [
         context: "dom:table",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             // JCH - OUT OF SCOPE hidden in context
             if (RPTUtil.isDataTable(ruleContext)) return null;
             if (RPTUtil.isNodeInGrid(ruleContext)) return null;
@@ -331,7 +313,7 @@ let a11yRulesTable: Rule[] = [
                 if (RPTUtil.getAncestor(captionElems[i], "table") == ruleContext) {
 
                     // Check if the node should be skipped or not based on the Check Hidden Content setting and if the node isVisible or
-                    // not. 
+                    // not.
                     if (RPTUtil.shouldNodeBeSkippedHidden(captionElems[i])) {
                         continue;
                     }
@@ -449,6 +431,65 @@ let a11yRulesTable: Rule[] = [
              let parentRole = hierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
              return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
          }
+    },
+    {
+        /**
+         * See https://github.com/IBMa/equal-access/tree/syan-3138
+         */
+         id: "table_headers_ref_valid",
+         context: "dom:td[headers], dom:th[headers]",
+         run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+            // If this is a layout table or a simple table the rule does not apply.
+            if (parentTable == null || !RPTUtil.isNodeVisible(parentTable)  || !RPTUtil.isDataTable(parentTable))
+                return null;
+
+            let nodeName = ruleContext.nodeName.toLowerCase();
+            let doc = ruleContext.ownerDocument;
+            let value = ruleContext.getAttribute("headers");
+            if (!value) return null;
+            let ids = value.split(" ");
+            let invalidHeaderValues = [];
+            let sameNodeHeaderValues = [];
+            let sameTableHeaderValues = [];
+            let invalidElemHeaderValues = [];
+            for (let i=0; i < ids.length; i++ ) {
+                let id = ids[i];
+                if (id.trim() === '') continue;
+                const elem = doc.getElementById(id);
+                if (!elem)
+                    invalidHeaderValues.push(id);
+                else if (DOMUtil.sameNode(elem, ruleContext))
+                    sameNodeHeaderValues.push(id);
+                else if (!DOMUtil.isInSameTable(elem, ruleContext))
+                    sameTableHeaderValues.push(id);
+                else {
+                    let elemName = elem.nodeName.toLowerCase();
+                    if (elemName !== 'th') {
+                        const roles = RPTUtil.getRoles(elem, true);
+                        if (!roles.includes('columnheader') && !roles.includes('rowheader'))
+                            invalidElemHeaderValues.push(id);
+                    }
+                }
+            }
+
+            let results = [];
+            if (invalidHeaderValues.length != 0)
+                results.push(RuleFail("Fail_1", [invalidHeaderValues.toString()]));
+            if (sameNodeHeaderValues.length != 0)
+                results.push(RuleFail("Fail_2", [sameNodeHeaderValues.toString()]));
+            if (sameTableHeaderValues.length != 0)
+                results.push(RuleFail("Fail_3", [sameTableHeaderValues.toString()]));
+            if (invalidElemHeaderValues.length != 0)
+                results.push(RuleFail("Fail_4", [invalidElemHeaderValues.toString()]));
+
+            if (results.length == 0) {
+                return RulePass("Pass_0");
+            } else {
+                return results;
+            }
+        }
     }
 
 ]

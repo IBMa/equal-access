@@ -31,12 +31,13 @@
     },
     "devDependencies": {
         "@types/node": "^13.7.1",
+        "cross-env": "^7.0.3",
         "express-http-proxy": "^1.6.0",
         "gulp": "^4.0.2",
         "gulp-modify-file": "^1.0.1",
         "nano": "^8.1.0",
         "pem": "^1.14.4",
-        "shx": "^0.3.2",
+        "shx": "^0.3.3",
         "ts-node": "^8.6.2"
     },
     "engines": {

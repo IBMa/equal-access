@@ -123,7 +123,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
     }
 
     MyLink = ({children, title, href, ...rest}: { children: any, title: string, href: string}) => {
-        return <a href={href} target="_blank" rel="noopener noreferrer" title={title} {...rest}>{children}</a>
+        return <a href={href} style={{color:"#000000"}} target="_blank" rel="noopener noreferrer" title={title} {...rest}>{children}</a>
     }
 
     handleCodeCopy = (codeString: string) => {

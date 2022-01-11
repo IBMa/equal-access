@@ -1,0 +1,52 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Text_SensoryReference"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### If the word(s) {0} is part of an instruction, check it is still understandable without this location or shape information
+
+<div id="locLevel"></div>
+
+Instructions must be meaningful without shape or location words
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Instructions that use shape or location to describe elements (e.g. “select the button on the right”) can help many users understand content. However, sensory characteristics should not be the only means of conveying information when giving instructions. It is not meaningful to users who cannot see the object or the page layout. Adding a label to clarify sensory language will allow all users to better understand the instructions.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If this word is used in instructions to reference a page element or area, make sure there is also a visible text label for the element or area referenced in the instructions (e.g. "the ‘Delete’ button on the right");
+* **Or**, if the word if not used in instructions, or does not convey sensory meaning (e.g. "the moon above the clouds"), no action is needed.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM Checkpoint 1.3.3 Sensory Characteristics ](https://www.ibm.com/able/requirements/requirements/#1_3_3)
+* [WCAG technique G96](https://www.w3.org/WAI/WCAG21/Techniques/general/G96.html)
+* [WCAG technique F14](https://www.w3.org/WAI/WCAG21/Techniques/failures/F14)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with cognitive differences who view interfaces using an adapted layout
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

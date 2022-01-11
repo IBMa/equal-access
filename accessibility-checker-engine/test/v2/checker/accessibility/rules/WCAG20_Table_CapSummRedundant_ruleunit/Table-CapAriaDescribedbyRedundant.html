@@ -81,20 +81,28 @@
 
 
 <script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "1011",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-        "/html/body/table"
+  UnitTest = {
+      ruleIds: ["WCAG20_Table_CapSummRedundant"],
+      results: [
+      {
+            "ruleId": "WCAG20_Table_CapSummRedundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/table[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The table summary duplicates the caption",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
-    }
-  ];
-//]]>
-</script></body>
+  }
+</script>
+</body>
 
 </html>

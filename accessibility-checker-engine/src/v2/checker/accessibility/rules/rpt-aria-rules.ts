@@ -577,22 +577,27 @@ let a11yRulesAria: Rule[] = [{
     run: (context: RuleContext, options?: {}, hierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = true;
-        let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
         let containerRoles = new Array();
         let testedContainer = 0;
 
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        let parentRoles = hierarchies["aria"].map(info => info.role);
+        let ancestorRoles = hierarchies["aria"].map(info => info.role);
+        let parentRole = ancestorRoles[ancestorRoles.length-2];
+        let count = 2;
+        while (parentRole === 'none') {
+            count++;
+            parentRole = ancestorRoles[ancestorRoles.length-count];
 
+        }   
         for (let j = 0, length = roles.length; j < length; ++j) {
             if (designPatterns[roles[j]] && designPatterns[roles[j]].container != null) {
                 testedContainer++;
                 passed = false;
                 containerRoles = designPatterns[roles[j]].container;
                 for (let i = 0, containersLength = containerRoles.length; !passed && i < containersLength; i++) {
-                    passed = parentRoles.includes(containerRoles[i]);
+                    passed = parentRole === containerRoles[i];
                     if (passed) break;
                 }
                 if (passed == false) {

@@ -111,7 +111,7 @@ The accessibility report is in JSON format, and contains information about the i
                     // xpath
                     "dom": "/html[1]",
                     // path of ARIA roles
-                    "aria": ""
+                    "aria": "/document[1]"
                 },
                 "ruleTime": 0,
                 // Generated message
