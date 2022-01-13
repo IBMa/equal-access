@@ -26,7 +26,9 @@ let a11yRulesArea: Rule[] = [
         id: "WCAG20_Area_HasAlt",
         context: "dom:area",
         run: (context: RuleContext, options?: {}) : RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+            const ruleContext = context["dom"].node as Element;
+            //skip the rule
+            if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
             // JCH - NO OUT OF SCOPE hidden in context
             if (RPTUtil.attributeNonEmpty(ruleContext, "alt")) {
                 return RulePass("Pass_0");
