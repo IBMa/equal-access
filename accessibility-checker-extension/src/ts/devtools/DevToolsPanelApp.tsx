@@ -1028,7 +1028,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
                     />
-                     <div style={{ paddingLeft:"1rem", overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "10em", position:"absolute"  }}>
+                     <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">
                             {this.state.numScanning > 0 ? <Loading /> : <></>}
                             {this.state.report && <Report
