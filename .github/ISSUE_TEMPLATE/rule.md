@@ -55,7 +55,9 @@ _numbered text steps of rule logic. Example below_
 
 ### Further documentation
 
-<!-- A boxnote for investigation is normally located at https://ibm.box.com/s/eep2on2xxyumeollzi4u3z0ji9auqyzf -->
+<!-- A boxnote for investigation is normally located at https://ibm.box.com/s/eep2on2xxyumeollzi4u3z0ji9auqyzf 
+
+This [template](https://ibm.box.com/s/mii0m4jvpf5gruyukamxh4gi1xr40h8b) can be used to start documentation  -->
 
 ### Demonstration
 
