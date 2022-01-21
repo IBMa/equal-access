@@ -1,6 +1,6 @@
 name: Accessibility Issue
 description: Report an accessibility or usability issue.
-title: '[a11y]:'
+title: '[A11y_Bug]: '
 labels: 'type: A11y_Bug'
 body:
   - type: markdown
@@ -27,9 +27,9 @@ body:
         - 'karma accessibility checker'
         - 'rule-server'
         - 'other'
-   validations:
-    require: true
-   - type: dropdown
+    validations:
+      required: true
+  - type: dropdown
     id: browser
     attributes:
       label: Browser
@@ -73,7 +73,7 @@ body:
       placeholder: What did you expect to happen? What happened instead?
     validations:
       required: true
-   - type: textarea
+  - type: textarea
     id: reproduce
     attributes:
       label: Steps to reproduce
