@@ -62,7 +62,3 @@ This [template](https://ibm.box.com/s/mii0m4jvpf5gruyukamxh4gi1xr40h8b) can be u
 ### Demonstration
 
 _provide code samples, preferably including a link to a functional example_
-
-
-
-<!-- Provide as much useful information as you can -->
