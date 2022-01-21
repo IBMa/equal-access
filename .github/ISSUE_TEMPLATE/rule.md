@@ -37,11 +37,11 @@ _provide very high level summary of rule approach (e.g., “Detect any hover of 
 
 #### Proposed rule
 
-_In a short paragraph, summary the scope and approach of the rule._
+_In a short paragraph, summarize the scope and approach of the rule._
 
 ##### Possible iterations
 
-Any scoping constraints for this interation or future possible iterations can be mentioned briefly_
+_Any scoping constraints for this interation or future possible iterations can be mentioned briefly_
 
 #### Pseudo code
 
