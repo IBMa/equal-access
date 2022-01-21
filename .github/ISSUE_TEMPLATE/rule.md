@@ -18,16 +18,9 @@ Replace italicized text -->
 
 **Purpose and goal:** _one-line description of rule applicability (e.g., “This rule applies to any content that through CSS is displayed as a result of :hover”)_
 
-**Relevent requirement:** _Link to WCAG SC_
+**Relevant requirement:** _Link to WCAG SC_
 
-**Rule ID:** _type_property_test_
-<!--
-Use the above format, where:
-•	type is the distinguishing name of the rule file where this rule ID is located. e.g. for a rule in rpt-aria-rules.ts file, the type is 'aria'.
-•	property is the thing being tested, e.g. alt, label, structure, captions, on_click, color_use, summary, contrast, and
-•	test is the thing that is tested for, e.g. exists? valid? grouped? related? unique? consistent? misuse? or review? (often used in some of the more general 'needs review' rules). 
-•	See [Checker-New-Rules-IDs-final.xlsx](https://ibm.ent.box.com/file/717584034994?s=kldsplaifciighv1eh3o4fygjw59gk3f) for examples. Such as img_alt_exists, img_alt_misuse, figure_label_exists, etc.]
--->
+---
 
 ### Approach
 
@@ -38,6 +31,15 @@ _provide very high level summary of rule approach (e.g., “Detect any hover of 
 #### Proposed rule
 
 _In a short paragraph, summarize the scope and approach of the rule._
+
+**Suggested rule ID:** _type_property_test_
+<!--
+Use the above format, where:
+•	type is the distinguishing name of the rule file where this rule ID is located. e.g. for a rule in rpt-aria-rules.ts file, the type is 'aria'.
+•	property is the thing being tested, e.g. alt, label, structure, captions, on_click, color_use, summary, contrast, and
+•	test is the thing that is tested for, e.g. exists? valid? grouped? related? unique? consistent? misuse? or review? (often used in some of the more general 'needs review' rules). 
+•	See [Checker-New-Rules-IDs-final.xlsx](https://ibm.ent.box.com/file/717584034994?s=kldsplaifciighv1eh3o4fygjw59gk3f) for examples. Such as img_alt_exists, img_alt_misuse, figure_label_exists, etc.]
+-->
 
 ##### Possible iterations
 
