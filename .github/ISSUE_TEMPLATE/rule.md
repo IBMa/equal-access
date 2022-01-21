@@ -59,13 +59,12 @@ _numbered text steps of rule logic. Example below_
 <-- 1.	Is :hover used? No, pass; Yes, proceed -->
 <-- 2. Is display being altered in relation with hover? No, pass; Yes, proceed -->
 <-- 3.	Is the element affected by display a direct child of the trigger element (the one with hover) Yes, pass; No, PV -->
--->
 
 ### Further documentation
 
 _provide a link to documentation_
 
-<! -- A boxnote for investigation is normally located at https://ibm.box.com/s/eep2on2xxyumeollzi4u3z0ji9auqyzf -->
+<! -- A boxnote for investigation is normally located at https://ibm.box.com/s/eep2on2xxyumeollzi4u3z0ji9auqyzf  -->
 <! -- This [template](https://ibm.box.com/s/mii0m4jvpf5gruyukamxh4gi1xr40h8b) can be used to create an initial documentation file  -->
 
 ### Demonstration
