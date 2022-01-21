@@ -10,7 +10,8 @@ assignees: ''
 
 _briefly describe the rule applicability (e.g, This rule checks for the Persistent requirement of information displayed on hover. It applies to any content that through CSS is displayed as a result of :hover)_
 
-**Relevant requirement:** _Link to WCAG SC_
+#### Relevant requirement
+_Link to WCAG SC_
 
 <-- issue opener, optionally stop here and submit issue -->
 
@@ -28,7 +29,8 @@ _provide very high level summary of rule approach (e.g., “Detect any hover of 
 
 _In a short paragraph, summarize the scope and approach of the rule._
 
-**Suggested rule ID:** _type_property_test_
+#### Suggested rule ID
+_type_property_test_
 
 <-- Use the above format, where TYPE is the distinguishing name of the rule file, PROPERTY is the thing being tested, and TEST is the thing that is tested for. See [Checker-New-Rules-IDs-final.xlsx](https://ibm.ent.box.com/file/717584034994?s=kldsplaifciighv1eh3o4fygjw59gk3f) for examples. -->
 
