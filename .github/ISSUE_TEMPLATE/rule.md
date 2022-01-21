@@ -7,6 +7,7 @@ assignees: ''
 ---
 
 ### Rule description
+
 _briefly describe the rule applicability (e.g, This rule checks for the Persistent requirement of information displayed on hover. It applies to any content that through CSS is displayed as a result of :hover)_
 
 **Relevant requirement:** _Link to WCAG SC_
