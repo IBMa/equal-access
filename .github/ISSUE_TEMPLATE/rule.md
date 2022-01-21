@@ -13,6 +13,9 @@ _briefly describe the rule applicability (e.g, This rule checks for the Persiste
 #### Relevant requirement
 _Link to WCAG SC_
 
+#### Relevant ACT rules
+_Link to any relevant at https://act-rules.github.io/rules/_
+
 <-- issue opener, optionally stop here and submit issue -->
 
 ---
