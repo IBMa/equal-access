@@ -11,7 +11,7 @@ assignees: ''
 _briefly describe the rule applicability (e.g, This rule checks for the Persistent requirement of information displayed on hover. It applies to any content that through CSS is displayed as a result of :hover)_
 
 #### Relevant requirement
-_Link to WCAG SC_
+_Link to relevant [IBM requirement](https://www.ibm.com/able/requirements/requirements)_
 
 #### Relevant ACT rules
 _Link to any relevant at https://act-rules.github.io/rules/_
