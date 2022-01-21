@@ -7,7 +7,7 @@ assignees: ''
 ---
 
 
-<!-- Use this template if you want to create a new rule or add to an
+<!-- Use this template to create a new rule or add to an
 existing rule.
 
 If you are reporting a bug or problem, please use the bug template instead.
@@ -16,11 +16,15 @@ Replace italicized text -->
 
 ### Rule Description
 
-**Purpose and goal:** _one-line description of rule applicability (e.g., “This rule applies to any content that through CSS is displayed as a result of :hover”)_
+**Purpose and goal:** _brief description of rule applicability (e.g., “This rule checks for the Persistent requirement of information displayed on hover or focus. It applies to any content that through CSS is displayed as a result of :hover”)_
 
 **Relevant requirement:** _Link to WCAG SC_
 
+<-- issue opener, stop here and submit issue -->
+
 ---
+
+<-- the remaining information to be completed by Checker team -->
 
 ### Approach
 
