@@ -7,10 +7,6 @@ assignees: ''
 ---
 
 
-<-- Use this template to create a new rule or add to an existing rule. -->
-
-<-- If you are reporting a bug or problem, please use the bug template instead. -->
-
 <-- Replace italicized text -->
 
 ### Rule Description
@@ -56,15 +52,14 @@ _Any scoping constraints for this interation or future possible iterations can b
 
 _numbered text steps of rule logic. Example below_
 
-<-- 1.	Is :hover used? No, pass; Yes, proceed -->
-<-- 2. Is display being altered in relation with hover? No, pass; Yes, proceed -->
-<-- 3.	Is the element affected by display a direct child of the trigger element (the one with hover) Yes, pass; No, PV -->
+<! -- 1.	Is :hover used? No, pass; Yes, proceed  -->
+<!-- 2. Is display being altered in relation with hover? No, pass; Yes, proceed  -->
+<!-- 3.	Is the element affected by display a direct child of the trigger element (the one with hover) Yes, pass; No, PV  -->
 
 ### Further documentation
 
 _provide a link to documentation_
 
-<! -- A boxnote for investigation is normally located at https://ibm.box.com/s/eep2on2xxyumeollzi4u3z0ji9auqyzf  -->
 <! -- This [template](https://ibm.box.com/s/mii0m4jvpf5gruyukamxh4gi1xr40h8b) can be used to create an initial documentation file  -->
 
 ### Demonstration
