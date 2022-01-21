@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const { CheckerPlugin } = require('awesome-typescript-loader');
 const ExtensionReloader = require('webpack-extension-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
@@ -55,7 +54,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.(js|ts|tsx)?$/, loader: "awesome-typescript-loader", exclude: /node_modules/ },
+            { test: /\.(js|ts|tsx)?$/, loader: "ts-loader", exclude: /node_modules/ },
             {
                 test: /\.scss$/,
                 use: [
@@ -74,7 +73,6 @@ module.exports = {
         new Dotenv({
             path: dotenv_path
           }),
-        new CheckerPlugin(),
         new HtmlWebpackPlugin({
             template: path.join(sourceRootPath, 'html', 'options.html'),
             inject: 'body',
@@ -124,18 +122,18 @@ module.exports = {
             title: 'Accessibility Checker Extension - User Guide',
             chunks: ['usingAC']
         }),
-        new CopyWebpackPlugin([
+        new CopyWebpackPlugin({
+            patterns: [
             {
                 from: path.join(sourceRootPath, 'assets'),
-                to: path.join(distRootPath, 'assets'),
-                test: /\.(jpg|jpeg|png|gif|svg)?$/,
+                to: path.join(distRootPath, 'assets')
             },
             {
                 from: path.join(sourceRootPath, 'manifest.json'),
                 to: path.join(distRootPath, 'manifest.json'),
                 toType: 'file',
             }
-        ]),
+        ]}),
        
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(nodeEnv),

@@ -37,7 +37,7 @@ module.exports = {
     output: {
         filename: 'ace-node.js',
         path: path.resolve(__dirname, 'dist'),
-        library: 'ace',
+        // library: 'ace',
         libraryTarget: 'commonjs2'
     },
     watch: false
