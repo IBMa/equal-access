@@ -1616,22 +1616,21 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getLabelForElementHidden(element: Element, ignoreHidden) {
-
         // Check if the global RPTUtil_LABELS hash is available, as this will contain the label nodes based on
         // for attribute.
-        if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
+        //if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
+        let root = element.getRootNode();
+        if (!RPTUtil.setCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", null)) {
             // Variable Decleration
             let idToLabel = {}
 
             // Get all the label elements in the entire doc
             let labelNodes = RPTUtil.getDocElementsByTag(element, "label");
-
             // Loop over all the label nodes, in the case the label node has a for attribute,
             // extract that attribute and add this node to the hash if it is visible.
             for (let i = 0; i < labelNodes.length; ++i) {
 
                 if (labelNodes[i].hasAttribute("for")) {
-
                     // If ignore hidden is specified and the node is not visible we do not add it to the
                     // labelNodes hash.
                     if (ignoreHidden && !RPTUtil.isNodeVisible(labelNodes[i])) {
@@ -1643,21 +1642,21 @@ export class RPTUtil {
             }
 
             // Add the built hash to the ownerDocument (document), to be used later to fast retrival
-            RPTUtil.setCache(element.ownerDocument, "RPTUtil_LABELS", idToLabel);
+            //RPTUtil.setCache(element.ownerDocument, "RPTUtil_LABELS", idToLabel);
+            RPTUtil.setCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", idToLabel);
         }
 
         // If this element has an id attribute, get the corosponding label element
         if (element.hasAttribute("id")) {
             // Fetch the id attribute
             let ctrlId = element.getAttribute("id");
-
             // Return the corosponding label element.
             // Note: in the case that the the id is not found in the hash that means, it does not exists or is hidden
             if (ctrlId.trim().length > 0) {
-                return RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS",{})[ctrlId];
-            }
+                //return RPTUtil.getCache(element.getRootNode().ownerDocument,"RPTUtil_LABELS",{})[ctrlId];
+                return RPTUtil.getCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS",{})[ctrlId];
+            } 
         }
-
         return null;
     }
 
@@ -1936,7 +1935,7 @@ export class RPTUtil {
     /* Return a pointer to the given global variable
      * with its initial value as given */
     public static getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
-        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
 
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
@@ -1947,8 +1946,8 @@ export class RPTUtil {
         return cacheObj.aceCache[keyName]
     }
 
-    public static setCache(cacheSpot: Document | Element, globalName, value) : any {
-        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+    public static setCache(cacheSpot: Document | Element | ShadowRoot, globalName, value) : any {
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
         }
