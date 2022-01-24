@@ -1620,7 +1620,7 @@ export class RPTUtil {
         // for attribute.
         //if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
         let root = element.getRootNode();
-        if (!RPTUtil.setCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", null)) {
+        if (!RPTUtil.getCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", null)) {
             // Variable Decleration
             let idToLabel = {}
 
