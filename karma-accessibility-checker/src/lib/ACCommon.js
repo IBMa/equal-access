@@ -169,7 +169,7 @@ var ACCommon = {
 
                     try {
                         // Load in as yml or yaml file and return this object
-                        return YAML.safeLoad(fs.readFileSync(fileToCheck), 'utf8');
+                        return YAML.load(fs.readFileSync(fileToCheck), 'utf8');
                     } catch (e) {
                         ACCommon.log.error("[ERROR] LoadingConfigError: Unable to load yml/yaml config file due to the following error: \n" + e.message);
                         process.exit(-1);

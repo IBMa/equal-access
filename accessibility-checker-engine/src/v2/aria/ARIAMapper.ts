@@ -665,7 +665,15 @@ export class ARIAMapper extends CommonMapper {
             "article": true,
             "aside": true,
             "nav": true,
-            "section": true
+            "section": true,
+            "main": true
+        };
+        let sectioningRole = {
+            "article": true,
+            "complementary": true,
+            "navigation": true,
+            "region": true,
+            "main": true
         };
         let inputToRole = function(element) {
             return ARIAMapper.inputToRole(element);
@@ -696,8 +704,9 @@ export class ARIAMapper extends CommonMapper {
                 let parent = DOMUtil.parentNode(element);
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
                     let nodeName = parent.nodeName.toLowerCase();
-                    if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
                     parent = DOMUtil.parentNode(parent);
@@ -720,7 +729,8 @@ export class ARIAMapper extends CommonMapper {
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
                     let nodeName = parent.nodeName.toLowerCase();
-                    if (sectioningRoots[nodeName] || sectioningContent[nodeName]) {
+                    let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
+                    if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
                     parent = DOMUtil.parentNode(parent);

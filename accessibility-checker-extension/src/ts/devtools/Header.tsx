@@ -484,7 +484,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             indeterminate={false}
                             labelText={<React.Fragment><img src={Violation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Violations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Violation"] + "/" : "") + counts.total["Violation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Violations</span></span></React.Fragment>}
                             // hideLabel
-                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            onChange={(value: any, id: any) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                         <ReactTooltip id="filterViolationsTip" place="top" effect="solid">
@@ -504,7 +504,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             indeterminate={false}
                             labelText={<React.Fragment><img src={NeedsReview16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Needs review" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Needs review"] + "/" : "") + counts.total["Needs review"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Needs review</span></span></React.Fragment>}
                             // hideLabel
-                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            onChange={(value: any, id: any) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                         <ReactTooltip id="filterNeedsReviewTip" place="top" effect="solid">
@@ -524,7 +524,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             indeterminate={false}
                             labelText={<React.Fragment><img src={Recommendation16} style={{ verticalAlign: "middle", paddingTop: "0px", marginRight: "4px" }} alt="Recommendations" /><span className="summaryBarCounts" >{noScan ? ((bDiff ? counts.filtered["Recommendation"] + "/" : "") + counts.total["Recommendation"]) : " "}<span className="summaryBarLabels" style={{ marginLeft: "4px" }}>Recommendations</span></span></React.Fragment>}
                             // hideLabel
-                            onChange={(value, id) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
+                            onChange={(value: any, id: any) => this.processFilterCheckBoxes(value, id)} // Receives three arguments: true/false, the checkbox's id, and the dom event.
                             wrapperClassName="checkboxWrapper"
                         />
                         <ReactTooltip id="filterRecommendationTip" place="top" effect="solid">

@@ -72,7 +72,7 @@ if (userBrowser.toUpperCase() === "FIREFOX") {
                 .withCapabilities(webdriver.Capabilities.chrome())
                 .setChromeOptions(options)
                 .build();
-            browser.manage().window().setSize(1366,784)
+            browser.manage().window().setRect({x: 0, y:0, width: 13666, height: 784});
             expect(typeof browser).to.not.equal("undefined");
             done();
         } catch (e) {
