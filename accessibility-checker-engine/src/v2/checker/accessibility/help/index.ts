@@ -865,10 +865,9 @@ let a11yHelp = {
     // ALI - TODO
     "group_withInputs_hasName": {
         0: `${Config.helpRoot}/group_withInputs_hasName`,
-        "Pass_0": `${Config.helpRoot}/group_withInputs_hasName`,
         "Pass_1": `${Config.helpRoot}/group_withInputs_hasName`,
-        "Fail_0": `${Config.helpRoot}/group_withInputs_hasName`,
-        "Fail_1": `${Config.helpRoot}/group_withInputs_hasName`
+        "Fail_1": `${Config.helpRoot}/group_withInputs_hasName`,
+        "Fail_2": `${Config.helpRoot}/group_withInputs_hasName`
     },
     // JCH - DONE
     "Rpt_Aria_MultipleGroupRoles_Implicit": {
