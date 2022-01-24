@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2021- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+
+<head>
+</head>
+
+<body id="body">
+    <form>
+        <fieldset aria-labelledby="TESTING123">
+          <legend>Choose your favorite monster</legend>
+          <div id=TESTING123> SOME RANDOM TEXT </div>  
+          <input type="radio" id="kraken" name="monster">
+          <label for="kraken">Kraken</label><br/>
+      
+          <input type="radio" id="sasquatch" name="monster">
+          <label for="sasquatch">Sasquatch</label><br/>
+      
+          <input type="radio" id="mothman" name="monster">
+          <label for="mothman">Mothman</label>
+        </fieldset>
+      </form>
+      
+    <!-- <div role="group" id="roleID">
+        <label for="cheese" >Do you like cheese?</label>
+        <input type="checkbox" name="cheese" id="cheese">
+    </div> -->
+    <!-- <div role="group" id="roleID">
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" aria-label="testing123">
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1"> I have a bike</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+        <label for="vehicle2"> I have a car</label><br>
+        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+        <label for="vehicle3"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div> -->
+
+    <script>
+        UnitTest = {
+            ruleIds: ["group_withInputs_hasName"],
+            results: [
+                
+            ]
+
+        }
+    </script>
+</body>
+
+</html>

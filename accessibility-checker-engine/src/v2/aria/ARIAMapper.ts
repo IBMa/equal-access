@@ -409,9 +409,23 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    return this.computeNameHelp(walkId, label, false, false);
+                    if (label.hasAttribute("aria-label") || label.hasAttribute("aria-labelledby")) {
+                        return this.computeNameHelp(walkId, label, false, false);
+                    } else {
+                        return label.textContent;
+                    }
                 }
             }
+            if (cur.nodeName.toLowerCase() === "fieldset") {
+                if( (<Element>cur).querySelector("legend")){
+                    let legend = (<Element>cur).querySelector("legend");
+                    return legend.innerText;
+                }else{
+                    return this.computeNameHelp(walkId, cur, false, false);
+                }
+                            
+            }
+            
         }
 
         // 2e.

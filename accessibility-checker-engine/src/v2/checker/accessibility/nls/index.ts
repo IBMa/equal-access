@@ -855,6 +855,15 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Fail_1": "The element with \"article\" role does not have a label"
     },
+    
+    // ALI - TODO
+    "group_withInputs_hasName": {
+        0: "All groups with nested inputs must have aria-label or aria-labelledby", 
+        "Pass_0": "Input group with name {0} passes",
+        "Pass_1": "Fieldset with Legend {0} passes",
+        "Fail_0": "Group does not have an accessible name",
+        "Fail_1": "Fieldset does not have a legend"
+    },
     // JCH - DONE
     "Rpt_Aria_MultipleGroupRoles_Implicit": {
         0: "Each element with \"group\" role must have a unique label that describes its purpose",

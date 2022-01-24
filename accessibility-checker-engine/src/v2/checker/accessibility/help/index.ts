@@ -862,6 +862,14 @@ let a11yHelp = {
         "Pass_0": `${Config.helpRoot}/Rpt_Aria_ArticleRoleLabel_Implicit`,
         "Fail_1": `${Config.helpRoot}/Rpt_Aria_ArticleRoleLabel_Implicit`
     },
+    // ALI - TODO
+    "group_withInputs_hasName": {
+        0: `${Config.helpRoot}/group_withInputs_hasName`,
+        "Pass_0": `${Config.helpRoot}/group_withInputs_hasName`,
+        "Pass_1": `${Config.helpRoot}/group_withInputs_hasName`,
+        "Fail_0": `${Config.helpRoot}/group_withInputs_hasName`,
+        "Fail_1": `${Config.helpRoot}/group_withInputs_hasName`
+    },
     // JCH - DONE
     "Rpt_Aria_MultipleGroupRoles_Implicit": {
         0: `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,

@@ -757,6 +757,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -1946,6 +1951,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
                     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -3077,6 +3087,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_MultipleArticleRoles_Implicit",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
+                    id: "group_withInputs_hasName",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },

@@ -96,7 +96,7 @@ let a11yRulesLabeling: Rule[] = [
                             // We do not want to compare against ourselfs
                             continue
                         }
-                        
+
                         // This if statement focus on the case where the parent landmark is null
                         if ((navigationNodesParents[i] === null) && (navigationNodesParents[j] === null)) {
                             // We are looking at two root nodes, so we should compare them.
@@ -105,9 +105,9 @@ let a11yRulesLabeling: Rule[] = [
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labelledby
                                     // if (navigationNodesComputedLabels[i] === "") {
-                                        navigationNodesMatchFound.push("Fail_0");  // Fail 0
-                                        matchFound = true
-                                        break
+                                    navigationNodesMatchFound.push("Fail_0");  // Fail 0
+                                    matchFound = true
+                                    break
                                     // }
                                 } else {
                                     // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
@@ -117,7 +117,7 @@ let a11yRulesLabeling: Rule[] = [
                             } else {
                                 // Same parents but different node roles // Not applicable
                             }
-                        }else if ((navigationNodesParents[i] === null) || (navigationNodesParents[j] === null)) {
+                        } else if ((navigationNodesParents[i] === null) || (navigationNodesParents[j] === null)) {
                             // We are looking at a single root node
                             continue
                         }
@@ -130,9 +130,9 @@ let a11yRulesLabeling: Rule[] = [
                                 if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
                                     // both have the same (computed) aria-label/aria-labelledby
                                     // if (navigationNodesComputedLabels[i] === "") {
-                                        navigationNodesMatchFound.push("Fail_0");  // Fail 0
-                                        matchFound = true
-                                        break
+                                    navigationNodesMatchFound.push("Fail_0");  // Fail 0
+                                    matchFound = true
+                                    break
                                     // }
                                 } else {
                                     // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
@@ -831,6 +831,64 @@ let a11yRulesLabeling: Rule[] = [
             } else {
                 return RulePass("Pass_0");
             }
+        }
+    },
+
+    {
+        /**
+         * Description: Triggers if multiple group roles are present and they don't have unique labels
+         * Also, consider <details> element which has implicit 'group' role
+         * Origin:  CI162 Web checklist checkpoint 2.4a
+         */
+        id: "group_withInputs_hasName",
+        context: "aria:group",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            // console.log(ruleContext.tagName)
+
+            if (ruleContext.tagName == "FIELDSET") {
+                if(ruleContext.querySelector("legend")){
+                    // We have both a fieldset and a legend. 
+                    console.log("We have both a fieldset and a legend.")
+                    console.log(ARIAMapper.computeName(ruleContext))
+                }else{
+                    // We have a fieldset withouot a legend. Bad case??? TODO
+                    console.log("We have a fieldset withouot a legend.")
+                    console.log(ARIAMapper.computeName(ruleContext))
+                }
+            }
+            return RulePass("Pass_0");
+
+
+            // console.log(ruleContext)
+            // if(ruleContext.querySelector("input")){
+            // console.log(ARIAMapper.computeName(ruleContext.querySelector("input")))  
+            // }else{
+            //     return
+            // }
+            // return RulePass("Pass_0");
+
+            // // Consider the Check Hidden Content setting that is set by the rules
+            // // Also, consider Implicit role checking. 
+            // let landmarks = RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, "group", true, true);
+            // if (landmarks.length === 0 || landmarks.length === 1) {
+            //     return null;
+            // }
+
+            // let dupes = RPTUtil.getCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", null);
+            // if (!dupes) {
+            //     dupes = RPTUtil.findAriaLabelDupes(landmarks);
+            //     RPTUtil.setCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", dupes);
+            // }
+            // let myLabel = RPTUtil.getAriaLabel(ruleContext);
+            // let passed = myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
+
+            // //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
+            // if (!passed) {
+            //     return RuleFail("Fail_1", [myLabel]);
+            // } else {
+            //     return RulePass("Pass_0");
+            // }
         }
     },
 
