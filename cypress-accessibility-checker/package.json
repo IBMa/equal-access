@@ -33,13 +33,13 @@
     "cypress": "^3 || ^4 || ^5 || ^6 || ^7 || ^8"
   },
   "devDependencies": {
-    "cypress": "^5.2.0",
-    "eslint": "^7.0.0",
-    "eslint-plugin-cypress": "^2.10.3",
-    "http-server": "^0.12.3",
-    "prettier": "^2.0.5",
-    "shx": "^0.3.2",
-    "start-server-and-test": "^1.12.0"
+    "cypress": "^9.1.1",
+    "eslint": "^8.4.1",
+    "eslint-plugin-cypress": "^2.12.1",
+    "http-server": "^14.0.0",
+    "prettier": "^2.5.1",
+    "shx": "^0.3.3",
+    "start-server-and-test": "^1.14.0"
   },
   "dependencies": {
     "deep-diff": "^1.0.2",

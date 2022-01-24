@@ -43,7 +43,7 @@ export default class OptionMessaging {
                         }
                         resolve(res);
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }
             });
