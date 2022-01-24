@@ -1777,7 +1777,8 @@ export class RPTUtil {
             }
         }
         if (ele.nodeName.toLowerCase() === "input") {
-            const label = RPTUtil.getLabelForElement(ele);
+            //const label = RPTUtil.getLabelForElement(ele);
+            const label = RPTUtil.getLabelForElementHidden(ele, true);
             if (!label) return "";
             return (RPTUtil.getAriaLabel(label) || label.innerText || "").trim();
         }

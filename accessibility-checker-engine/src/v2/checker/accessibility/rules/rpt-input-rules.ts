@@ -96,7 +96,6 @@ let a11yRulesInput: Rule[] = [
                 passed = (!!labelElem && hasLabelElemContent) ||
                     (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
                     RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
-
                 if (!passed) POF = 2 + textTypes.indexOf(type);
             } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
                 if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
