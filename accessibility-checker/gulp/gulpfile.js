@@ -34,11 +34,11 @@ function notice(years) {
 const gulp = require("gulp"),
     ginsert = require("gulp-insert"),
     greplace = require("gulp-replace"),
-    uglify = require("gulp-uglify-es").default;
+    terser = require("gulp-terser");
 
 gulp.task("build-uglify", function () {
     return gulp.src(["../src/**/lib/**/*.js", "../src/index.js", "!../src/node_modules/**"])
-        .pipe(uglify())
+        .pipe(terser())
         .pipe(greplace('if(void 0===ace)', "if('undefined' === typeof(ace))"))
         .pipe(ginsert.prepend(notice("2016,2017,2018,2019")))
         .pipe(gulp.dest("../package"));

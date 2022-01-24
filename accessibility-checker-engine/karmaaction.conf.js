@@ -23,7 +23,7 @@ webpackConfig.module.rules.push({
     exclude: [path.resolve(__dirname, "test")],
     enforce: 'post',
     use: {
-        loader: 'istanbul-instrumenter-loader',
+        loader: 'coverage-istanbul-loader',
         options: { esModules: true }
     }
 })

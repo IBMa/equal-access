@@ -54,7 +54,7 @@ export default class TabMessaging {
                         }
                         resolve(res);
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }
             });

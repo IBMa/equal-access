@@ -1,5 +1,5 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+     Copyright:: 2021- IBM, Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,8 +20,171 @@ import { ARIADefinitions } from "../../../aria/ARIADefinitions";
 import { FragmentUtil } from "../util/fragment";
 import { DOMUtil } from "../../../dom/DOMUtil";
 import { ARIAMapper } from "../../../..";
+import { DOMWalker } from "../../../dom/DOMWalker";
 
 let a11yRulesLabeling: Rule[] = [
+    {
+        /**
+         * Description: Triggers if a landmark element has the same parent-landmark, 
+         * AND the same role as another landmark, 
+         * AND is not differentiated by aria-label or aria-labelledby. 
+         * This causes it to be difficult for a keyboard user to know the difference between two landmarks
+         * Origin:  https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13 this is not directly part of the ARIA spec so this is only in the IBM rules as a Violation
+         * 
+         * NOTE: When we have two landmarks at the root level of the document this rule will not check for that. 
+         * For example if we have <body> <main id="main1"></main> <main id="main2"><main> </body> we do not fail this rule. 
+         * Althought this might be an accessibility error anyway. See:
+         * https://stackoverflow.com/questions/34896476/can-i-use-more-than-one-main-html-tag-in-the-same-page/34906037
+         */
+        id: "landmark_name_unique",
+        context: "aria:complementary, aria:banner, aria:contentinfo, aria:main, aria:navigation, aria:region, aria:search, aria:form",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
+            const ruleContext = context["dom"].node as Element;
+            let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
+            let formCache = RPTUtil.getCache(ruleContext.ownerDocument, "landmark_name_unique", null);
+
+            if (!formCache) {
+                // console.log("---------ENTERING FORM CACHE")
+                formCache = {
+                    navigationNodes: [],
+                    navigationNodesComputedLabels: [],
+                    navigationNodesParents: [],
+                    navigationNodesMatchFound: []
+                }
+                let navigationNodesTemp = ownerDocument.querySelectorAll('aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], form,[role="form"], section,[role="region"],[role="search"]');
+                let navigationNodes = Array.from(navigationNodesTemp);
+                let navigationNodesParents = [];
+                let navigationNodesMatchFound = [];
+
+                for (let i = 0; i < navigationNodes.length; i++) { // Loop over all the landmark nodes
+                    let els = [];
+                    let a = navigationNodes[i].parentElement
+                    while (a) {
+                        els.push(a);
+                        a = a.parentElement;
+                    }
+
+                    for (let j = 0; j < els.length; j++) { // Loop over all the parents of the landmark nodes
+                        // Find nearest landmark parent based on the tagName or the role attribute 
+                        let tagNameTrigger = ["ASIDE", "FOOTER", "FORM", "HEADER", "MAIN", "NAV", "SECTION"].includes(els[j].tagName)
+                        let roleNameTrigger = false;
+                        if (els[j].hasAttribute("role")) {
+                            roleNameTrigger = ["complementary", "contentinfo", "form", "banner", "main", "navigation", "region", "search"].includes(els[j].getAttribute("role")) // TODO we are not covering the case where a elemenent with multiple roles. E.g. role = "form banner". This is a improvment we might want to add in the future.
+                        }
+                        if (tagNameTrigger || roleNameTrigger) {
+                            // Nearest parent-landmark found
+                            navigationNodesParents.push(els[j])
+                            break
+                        }
+                        if (j === els.length - 1) { // This node is at the head of the file so it does not have a parent
+                            navigationNodesParents.push(null) // TODO might want to change to NULL
+                            break
+                        }
+                    }
+                }
+
+                let navigationNodesComputedLabels = [];
+                for (let i = 0; i < navigationNodes.length; i++) { // Loop over all the landmark nodes
+                    navigationNodesComputedLabels.push(ARIAMapper.computeName(navigationNodes[i]))
+                }
+                for (let i = 0; i < navigationNodesParents.length; i++) { // Loop over all the parents of the landmark nodes to find duplicates
+                    let matchFound = false;
+                    let pass_0_flag = false;
+                    for (let j = 0; j < navigationNodesParents.length; j++) {
+                        if (j === i) {
+                            // We do not want to compare against ourselfs
+                            continue
+                        }
+                        
+                        // This if statement focus on the case where the parent landmark is null
+                        if ((navigationNodesParents[i] === null) && (navigationNodesParents[j] === null)) {
+                            // We are looking at two root nodes, so we should compare them.
+                            if (ARIAMapper.nodeToRole(navigationNodes[i]) === ARIAMapper.nodeToRole(navigationNodes[j])) {
+                                // Both nodes have the same role AND
+                                if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
+                                    // both have the same (computed) aria-label/aria-labelledby
+                                    // if (navigationNodesComputedLabels[i] === "") {
+                                        navigationNodesMatchFound.push("Fail_0");  // Fail 0
+                                        matchFound = true
+                                        break
+                                    // }
+                                } else {
+                                    // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
+                                    // We have at least a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
+                                    pass_0_flag = true
+                                }
+                            } else {
+                                // Same parents but different node roles // Not applicable
+                            }
+                        }else if ((navigationNodesParents[i] === null) || (navigationNodesParents[j] === null)) {
+                            // We are looking at a single root node
+                            continue
+                        }
+
+                        // This if statement focus on the case where the parent landmark is NOT null
+                        if (DOMUtil.sameNode(navigationNodesParents[i], navigationNodesParents[j])) {
+                            // We have the same parent-landmark AND  
+                            if (ARIAMapper.nodeToRole(navigationNodes[i]) === ARIAMapper.nodeToRole(navigationNodes[j])) {
+                                // Both nodes have the same role AND
+                                if ((navigationNodesComputedLabels[i] === navigationNodesComputedLabels[j])) {
+                                    // both have the same (computed) aria-label/aria-labelledby
+                                    // if (navigationNodesComputedLabels[i] === "") {
+                                        navigationNodesMatchFound.push("Fail_0");  // Fail 0
+                                        matchFound = true
+                                        break
+                                    // }
+                                } else {
+                                    // Same parents && same node roles BUT different computed aria-label/aria-labelledby 
+                                    // We have at least a Pass_0. But we need to check all nodes to see if another one fails. So set a flag.
+                                    pass_0_flag = true
+                                }
+                            } else {
+                                // Same parents but different node roles // Not applicable
+                            }
+                        } else {
+                            // Different parents // Not applicable
+                        }
+                    }
+                    if (!matchFound) {
+                        if (pass_0_flag) {
+                            navigationNodesMatchFound.push("Pass_0");
+                        } else {
+                            navigationNodesMatchFound.push("null"); // This is not the keyword null on purpose. It is a spaceholder in the array so indexes match up.
+                        }
+                    }
+                }
+                formCache.navigationNodesComputedLabels = navigationNodesComputedLabels;
+                formCache.navigationNodes = navigationNodes;
+                formCache.navigationNodesParents = navigationNodesParents;
+                formCache.navigationNodesMatchFound = navigationNodesMatchFound;
+                RPTUtil.setCache(ruleContext.ownerDocument, "landmark_name_unique", formCache);
+
+                // TODO Add validation that all 3 arrays are the same length
+                // console.log("-------------End formCache")
+
+            } // End formCache
+
+            let indexToCheck = -1;
+            for (let i = 0; i < formCache.navigationNodes.length; i++) {
+
+                if (ruleContext.isSameNode(formCache.navigationNodes[i])) {
+                    indexToCheck = i;
+                }
+            }
+            if (indexToCheck === -1) {
+                return null;
+            }
+            if (formCache.navigationNodesMatchFound[indexToCheck].includes("Pass_0")) {
+                return RulePass(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.nodeToRole(formCache.navigationNodes[indexToCheck])]);
+            } else if (formCache.navigationNodesMatchFound[indexToCheck].includes("Fail_0")) {
+                return RuleFail(formCache.navigationNodesMatchFound[indexToCheck], [ARIAMapper.nodeToRole(formCache.navigationNodes[indexToCheck]), formCache.navigationNodesComputedLabels[indexToCheck]]);
+            } else {
+                return null;
+            }
+
+        }
+    },
     {
         /**
          * Description: Triggers if a region role is not labeled with an aria-label or aria-labelledby
@@ -45,7 +208,7 @@ let a11yRulesLabeling: Rule[] = [
             if (passed) {
                 return RulePass("Pass_0");
             } else {
-                
+
                 return RuleFail(tagName === "section" ? "Fail_1" : "Fail_2");
             }
         }
@@ -69,7 +232,7 @@ let a11yRulesLabeling: Rule[] = [
                 if (mains[i] === ruleContext) continue;
                 result = RulePass("Pass_0");
                 let thisParentDocRole = RPTUtil.getAncestorWithRole(mains[i], "document", true);
-                if (thisParentDocRole == parentDocRole) {
+                if (thisParentDocRole === parentDocRole) {
                     if (RPTUtil.getAriaLabel(mains[i]) === contextLabel) {
                         result = RuleFail("Fail_1");
                         break;
@@ -152,7 +315,7 @@ let a11yRulesLabeling: Rule[] = [
                 return null;
             }
 
-            let passed = RPTUtil.getSiblingWithRoleHidden(ruleContext, "banner", true, true) == null;
+            let passed = RPTUtil.getSiblingWithRoleHidden(ruleContext, "banner", true, true) === null;
             //return new ValidationResult(passed, [ruleContext], 'role', '', []);
             if (passed) {
                 return RulePass("Pass_0");
@@ -662,7 +825,7 @@ let a11yRulesLabeling: Rule[] = [
             retToken1.push(ruleContext.nodeName.toLowerCase());
             let retToken2 = new Array();
             retToken2.push(roleName);
-            //return new ValidationResult(passed, [ruleContext], 'role', '', passed == true ? [] : [retToken1, retToken2]);
+            //return new ValidationResult(passed, [ruleContext], 'role', '', passed === true ? [] : [retToken1, retToken2]);
             if (!passed) {
                 return RuleFail("Fail_1", [retToken1.toString(), retToken2.toString()]);
             } else {
@@ -727,16 +890,15 @@ let a11yRulesLabeling: Rule[] = [
 
             let elemRole = ARIAMapper.nodeToRole(ruleContext);
             let tagName = ruleContext.nodeName.toLowerCase();
-            
+
             // Handled by WCAG20_Input_ExplicitLabel
-            let skipRoles = ["button", "checkbox", "combobox", 
-                "listbox", "menuitemcheckbox", "menuitemradio", "radio", "searchbox", 
+            let skipRoles = ["button", "checkbox", "combobox",
+                "listbox", "menuitemcheckbox", "menuitemradio", "radio", "searchbox",
                 "slider", "spinbutton", "switch", "textbox", "progressbar", "link"
             ]
             if (skipRoles.includes(elemRole)) return null;
-            if (tagName === "output" 
-                || tagName === "input" && ruleContext.getAttribute("type") === "file")
-            {
+            if (tagName === "output"
+                || tagName === "input" && ruleContext.getAttribute("type") === "file") {
 
             }
             if (!ruleContext.hasAttribute("role")) {
@@ -779,11 +941,10 @@ let a11yRulesLabeling: Rule[] = [
 
                 let pattern = designPatterns[roles[i]];
 
-                if (pattern 
-                    && pattern.nameRequired 
-                    && pattern.roleType 
-                    && interactiveRoleTypes.includes(pattern.roleType))
-                { 
+                if (pattern
+                    && pattern.nameRequired
+                    && pattern.roleType
+                    && interactiveRoleTypes.includes(pattern.roleType)) {
                     ++numWidgetsTested;
 
                     // All widgets may have an author supplied accessible name.
@@ -805,7 +966,7 @@ let a11yRulesLabeling: Rule[] = [
                     if (!passed && ruleContext.tagName.toLowerCase() === "img" && !ruleContext.hasAttribute("role") && ruleContext.hasAttribute("alt")) {
                         passed = DOMUtil.cleanWhitespace(ruleContext.getAttribute("alt")).trim().length > 0;
                     }
-                    
+
                     if (pattern.nameFrom.indexOf("prohibited") >= 0) {
                         prohibited = true;
                     }
@@ -818,11 +979,11 @@ let a11yRulesLabeling: Rule[] = [
                 return RuleFail("Fail_1", [elemRole]);
             } else {
                 //TODO
-//                if (prohibited) {
-//                    return RuleFail("Fail_2");
-//                } else {
-                    return RulePass("Pass_0");
-//                }
+                //                if (prohibited) {
+                //                    return RuleFail("Fail_2");
+                //                } else {
+                return RulePass("Pass_0");
+                //                }
             }
         }
     },
