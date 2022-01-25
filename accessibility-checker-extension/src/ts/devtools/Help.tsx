@@ -35,11 +35,7 @@ export default class Help extends React.Component<IHelpProps, IHelpState> {
     state: IHelpState = {};
 
     render() {
-        return <div style={{height: "100%", width: "100%", padding: "0rem"}}>
-            {/* {this.props.checkpoint && <div className="helpHeader">
-                <h2 className="helpCpTitle">{this.props.checkpoint.num} {this.props.checkpoint.name}</h2>
-                <div className="helpCpSumm">{this.props.checkpoint?.summary}</div>
-            </div>} */}
+        return <div id="help" style={{height: "100%", width: "100%", padding: "0rem"}}>
             {this.props.report && 
                 <HelpFileSwitcher report={this.props.report} item={this.props.item}/>
             }

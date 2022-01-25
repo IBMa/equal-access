@@ -44,8 +44,6 @@ interface IPanelProps {
     layout: "main" | "sub"
 }
 
-
-
 interface IPanelState {
     listenerRegistered: boolean,
     numScanning: number,
@@ -56,6 +54,7 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
+    selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
     learnMore: boolean,
@@ -106,6 +105,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
+        selectedItem: undefined,
+        selectedIssue: null,
         rulesets: null,
         learnMore: false,
         learnItem: null,
@@ -129,12 +130,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     ignoreNext = false;
     leftPanelRef: React.RefObject<HTMLDivElement>;
     subPanelRef: React.RefObject<HTMLDivElement>;
+    leftPanelItemSelected: React.RefObject<HTMLDivElement>;
+    subPanelItemSelected: React.RefObject<HTMLDivElement>;
     ref: any;
 
     constructor(props: any) {
         super(props);
         this.leftPanelRef = React.createRef();
         this.subPanelRef = React.createRef();
+        this.leftPanelItemSelected = React.createRef();
+        this.subPanelItemSelected = React.createRef();
         if (this.props.layout === "sub") {
             this.getCurrentSelectedElement(); // so selected element shows up in switch before first scan
         }
@@ -817,9 +822,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    getXPathForElement(element: any) {
+        const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+        const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+        return segs(element).join('/');
+    }
+
     getCurrentSelectedElement() {
         // console.log("getCurrentSelectedElement");
         let mythis = this;
+
+        // Provide text name for focused view element for switch
         chrome.devtools.inspectedWindow.eval("$0.tagName", 
             (result:string, isException) => {
                 if (isException) {
@@ -856,6 +869,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     getItem(item: IReportItem) {
         this.setState({ learnMore: true, learnItem: item });
+    }
+
+    getSelectedItem(item: IReportItem) {
+        console.log("Function: getSelectedItem item = ", item);
+        this.setState({ selectedIssue: item });
     }
 
     learnHelp() {
@@ -935,7 +953,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                                     rulesets={this.state.rulesets}
                                     report={this.state.report}
                                     getItem={this.getItem.bind(this)}
+                                    getSelectedItem={this.getSelectedItem.bind(this)}
                                     learnItem={this.state.learnItem}
+                                    selectedIssue={this.state.selectedIssue}
                                     layout={this.props.layout}
                                     selectedTab="checklist"
                                     tabs={["checklist", "element", "rule"]}
@@ -970,7 +990,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
-                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                    <div style={{ overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
                             <div>
                                 <div className="subPanel">
@@ -979,7 +999,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </div>
                         </div>
                     </div>
-                    {this.subPanelRef.current?.scrollTo(0, 0)}
+                    {/* Note the -72px is there to make sure that the help content starts under the header */}
+                    {this.subPanelRef.current?.scrollTo(0, -72)}
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
@@ -1007,23 +1028,23 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
                     />
-                    <div style={{overflowY:"scroll", height:"100%"}}>
-                        <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
-                            <div role="region" aria-label="issue list" className="issueList">
-                                {this.state.numScanning > 0 ? <Loading /> : <></>}
-                                {this.state.report && <Report
-                                    selectItem={this.selectItem.bind(this)}
-                                    rulesets={this.state.rulesets}
-                                    report={this.state.report}
-                                    getItem={this.getItem.bind(this)}
-                                    learnItem={this.state.learnItem}
-                                    layout={this.props.layout}
-                                    selectedTab="element"
-                                    tabs={[ "element", "checklist", "rule"]}
-                                    dataFromParent={this.state.showIssueTypeFilter}
-                                    focusedViewFilter={this.state.focusedViewFilter}
-                                />}
-                            </div>
+                     <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
+                        <div role="region" aria-label="issue list" className="issueList">
+                            {this.state.numScanning > 0 ? <Loading /> : <></>}
+                            {this.state.report && <Report
+                                selectItem={this.selectItem.bind(this)}
+                                rulesets={this.state.rulesets}
+                                report={this.state.report}
+                                getItem={this.getItem.bind(this)}
+                                getSelectedItem={this.getSelectedItem.bind(this)}
+                                learnItem={this.state.learnItem}
+                                selectedIssue={this.state.selectedIssue}
+                                layout={this.props.layout}
+                                selectedTab="element"
+                                tabs={[ "element", "checklist", "rule"]}
+                                dataFromParent={this.state.showIssueTypeFilter}
+                                focusedViewFilter={this.state.focusedViewFilter}
+                            />}
                         </div>
                     </div>
                 </div>
