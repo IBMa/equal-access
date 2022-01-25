@@ -23,6 +23,27 @@ let a11yRulesStyle: Rule[] = [
          * Description: Trigger if on hover any content displayed is not persistent
          * Origin: Requirement 1.4.13
          */
+        //
+        // Trigger logic:
+        // 
+        // First, Do we have an element with a hover selector,
+        //    e.g., a:hover, span:hover, etc...?
+        //
+        // Second, is the hover followed by one of the four css combinators?
+        //
+        //    We need to deal with four css combinators 
+        //        descendant selector (space)
+        //        child selector (>)
+        //        adjacent sibling selector (+)
+        //        general sibling selector (~)
+        //
+        // Third is the element after the css combinator followed by an element 
+        //    with a display attribute? e.g, 
+        //
+        //    span:hover + div {
+        //       display: block;
+        //
+        
         id: "style_hover_persistent",
         context: "dom:style, dom:*[style]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
