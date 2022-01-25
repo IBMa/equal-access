@@ -11,7 +11,7 @@ body:
       value:
         Thanks for taking the time to improve the rules that help accessibility checks. 
   - type: textarea
-    id: rule description
+    id: rule_description
     attributes:
       label: Rule description
       description:
@@ -127,7 +127,7 @@ body:
       value: '##The items below are optional and can be completed by the Checker team'
   
   - type: textarea
-    id: High level approach
+    id: High_level_approach
     attributes:
       label: High-level approach and rule scope
       description:
@@ -146,7 +146,7 @@ body:
         - WCAG 2.1
         - IBM
   - type: dropdown
-    id: failure level
+    id: failure_level
     attributes:
       label: Failure level
       description: Indicate the expected overall failure level
@@ -156,7 +156,7 @@ body:
         - Potential violations
         - Recommendation
   - type: textarea
-    id: Failure cases 
+    id: Failure_cases 
     attributes:
       label: Failure cases
       description:
