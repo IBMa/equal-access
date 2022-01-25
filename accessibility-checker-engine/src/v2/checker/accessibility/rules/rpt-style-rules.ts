@@ -20,6 +20,20 @@ import { RPTUtil, NodeWalker } from "../util/legacy";
 let a11yRulesStyle: Rule[] = [
     {
         /**
+         * Description: Trigger if on hover any content displayed is not persistent
+         * Origin: Requirement 1.4.13
+         */
+        id: "style_hover_persistent",
+        context: "dom:style, dom:*[style]",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            console.log("style_hover_persistent rule context: ", ruleContext);
+            return RulePass("Pass_0");
+
+        }
+    },
+    {
+        /**
          * Description: Trigger on all pages containing CSS (trigger once)
          * Origin: RPT 5.6
          */

@@ -201,6 +201,12 @@ let a11yNls = {
         "Potential_1": "Verify the CSS background image does not convey important information"
     },
     // JCH - DONE
+    "style_hover_persistent": {
+        0: "Images included by using CSS alone must not convey important information", 
+        "Pass_0": "Rule Passed",
+        "Potential_1": "Verify the CSS background image does not convey important information"
+    },
+    // JCH - DONE
     "RPT_Pre_ASCIIArt": {
         0: "ASCII art must have a text alternative",
         "Pass_0": "Rule Passed",
