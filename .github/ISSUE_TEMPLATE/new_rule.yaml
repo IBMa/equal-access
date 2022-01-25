@@ -127,7 +127,7 @@ body:
       value: '##The items below are optional and can be completed by the Checker team'
   
   - type: textarea
-    id: High-level approach
+    id: High level approach
     attributes:
       label: High-level approach and rule scope
       description:
