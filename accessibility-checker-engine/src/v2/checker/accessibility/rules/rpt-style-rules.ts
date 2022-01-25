@@ -43,7 +43,10 @@ let a11yRulesStyle: Rule[] = [
         //    span:hover + div {
         //       display: block;
         //
-        
+        // Fourth is the element2 referred to after the [element]:hover [element2]
+        //    has a margin attribute with a value > 0px then trigger
+        //
+
         id: "style_hover_persistent",
         context: "dom:style, dom:*[style]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
