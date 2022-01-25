@@ -844,51 +844,65 @@ let a11yRulesLabeling: Rule[] = [
         context: "aria:group",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            // console.log(ruleContext.tagName)
+            let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
+            let formCache = RPTUtil.getCache(ruleContext.ownerDocument, "landmark_name_unique", null);
 
-            if (ruleContext.tagName == "FIELDSET") {
-                if(ruleContext.querySelector("legend")){
-                    // We have both a fieldset and a legend. 
-                    console.log("We have both a fieldset and a legend.")
-                    console.log(ARIAMapper.computeName(ruleContext))
-                }else{
-                    // We have a fieldset withouot a legend. Bad case??? TODO
-                    console.log("We have a fieldset withouot a legend.")
-                    console.log(ARIAMapper.computeName(ruleContext))
+            if (!formCache) {
+                formCache = {
+                    groupsWithInputs: [],
+                    groupsWithInputsComputedLabels: [],
+                }
+                let allGroupsTemp = ownerDocument.querySelectorAll('fieldset,[role="group"]');
+                let allGroups = Array.from(allGroupsTemp);
+                let groupsWithInputs = [];
+                for (let i = 0; i < allGroups.length; i++) { // Loop over all the group nodes
+                    if(allGroups[i].querySelector("input")){
+                        groupsWithInputs.push(allGroups[i])
+                    }
+                }
+                let groupsWithInputsComputedLabels = [];
+                for (let i = 0; i < groupsWithInputs.length; i++) { // Loop over all the landmark nodes
+                    groupsWithInputsComputedLabels.push(ARIAMapper.computeName(groupsWithInputs[i]))
+                }
+                formCache.groupsWithInputs = groupsWithInputs;
+                formCache.groupsWithInputsComputedLabels = groupsWithInputsComputedLabels;
+            }
+            // formCache.groupsWithInputs.forEach(element => {
+            //     console.log("formCache.groupsWithInputs: " +element.id)
+            // });
+            console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels)
+            // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels.length)
+            
+            let ruleContextFoundIngroupsWithInputsFlag = false;
+            let computedName = "";
+            for (let i = 0; i < formCache.groupsWithInputs.length; i++) {
+                if (ruleContext.isSameNode(formCache.groupsWithInputs[i])) { // We have found our ruleContext in the cache
+                    ruleContextFoundIngroupsWithInputsFlag = true;
+                    if(formCache.groupsWithInputsComputedLabels[i] === "" || formCache.groupsWithInputsComputedLabels[i] === null){
+                        // console.log("Fail_1")
+                        return RuleFail("Fail_1");
+                    }
+                    let foundSameNameFlag = false;
+                    for(let j = 0; j < formCache.groupsWithInputsComputedLabels.length; j++){
+                        if(i == j){ continue } // We do not want to compare against ourselfs
+                        if(formCache.groupsWithInputsComputedLabels[i] === formCache.groupsWithInputsComputedLabels[j]){
+                            foundSameNameFlag = true; 
+                        }
+                    }
+                    if (foundSameNameFlag){
+                        // console.log("Fail_2")
+                        return RuleFail("Fail_2", formCache.groupsWithInputsComputedLabels[i] );
+                    }
+                    computedName = formCache.groupsWithInputsComputedLabels[i];
                 }
             }
-            return RulePass("Pass_0");
 
-
-            // console.log(ruleContext)
-            // if(ruleContext.querySelector("input")){
-            // console.log(ARIAMapper.computeName(ruleContext.querySelector("input")))  
-            // }else{
-            //     return
-            // }
-            // return RulePass("Pass_0");
-
-            // // Consider the Check Hidden Content setting that is set by the rules
-            // // Also, consider Implicit role checking. 
-            // let landmarks = RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, "group", true, true);
-            // if (landmarks.length === 0 || landmarks.length === 1) {
-            //     return null;
-            // }
-
-            // let dupes = RPTUtil.getCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", null);
-            // if (!dupes) {
-            //     dupes = RPTUtil.findAriaLabelDupes(landmarks);
-            //     RPTUtil.setCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", dupes);
-            // }
-            // let myLabel = RPTUtil.getAriaLabel(ruleContext);
-            // let passed = myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
-
-            // //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-            // if (!passed) {
-            //     return RuleFail("Fail_1", [myLabel]);
-            // } else {
-            //     return RulePass("Pass_0");
-            // }
+            if (!ruleContextFoundIngroupsWithInputsFlag) {
+                console.log("null return")
+                return null;
+            }
+            // console.log("Pass_1")
+            return RulePass("Pass_1", [computedName]);
         }
     },
 

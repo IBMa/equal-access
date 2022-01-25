@@ -23,27 +23,9 @@
 </head>
 
 <body id="body">
-    <form>
-        <fieldset aria-labelledby="TESTING123">
-          <legend>Choose your favorite monster</legend>
-          <div id=TESTING123> SOME RANDOM TEXT </div>  
-          <input type="radio" id="kraken" name="monster">
-          <label for="kraken">Kraken</label><br/>
-      
-          <input type="radio" id="sasquatch" name="monster">
-          <label for="sasquatch">Sasquatch</label><br/>
-      
-          <input type="radio" id="mothman" name="monster">
-          <label for="mothman">Mothman</label>
-        </fieldset>
-      </form>
-      
-    <!-- <div role="group" id="roleID">
-        <label for="cheese" >Do you like cheese?</label>
-        <input type="checkbox" name="cheese" id="cheese">
-    </div> -->
-    <!-- <div role="group" id="roleID">
-        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" aria-label="testing123">
+
+    <!-- FAIL - becase the role=group does not have a label  -->
+    <div role="group" id="test">
         <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
         <label for="vehicle1"> I have a bike</label><br>
         <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
@@ -51,13 +33,195 @@
         <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
         <label for="vehicle3"> I have a boat</label><br><br>
         <input type="submit" value="Submit">
-    </div> -->
+    </div>
+
+    <!-- PASS - each group is labeled and each group label is unique -->
+    <div role="group" aria-label="vehicle_123">
+        <div id="vehicle_123">testset123</div>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1"> I have a bike1</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+        <label for="vehicle2"> I have a car</label><br>
+        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+        <label for="vehicle3"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
+    <div role="group" aria-label="vehicle_456">
+        <div id="vehicle_456">testset456</div>
+        <input type="checkbox" id="vehicle4" name="vehicle4" value="Bike">
+        <label for="vehicle4"> I have a bike2</label><br>
+        <input type="checkbox" id="vehicle5" name="vehicle5" value="Car">
+        <label for="vehicle5"> I have a car</label><br>
+        <input type="checkbox" id="vehicle6" name="vehicle6" value="Boat">
+        <label for="vehicle6"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
+
+    <!-- Netural (No pass/fail) do not report anything since no input -->
+    <div role="group" aria-label="vehicle_789">
+        <div id="vehicle_789">testset789</div>
+    </div>
+
+    <!-- FAIL - becase the fieldset does not have a label  -->
+    <form>
+        <fieldset>
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+    </form>
+
+    <!-- PASS - becase the fieldset does have a legend  -->
+    <form>
+        <fieldset>
+            <legend>Choose your favorite monster</legend>
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+    </form>
+
+    <!-- PASS - becase the fieldset does have a accessibleName  -->
+    <form>
+        <fieldset aria-label="testing fieldsets">
+            <!-- <legend>Choose your favorite monster</legend> -->
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+    </form>
+
+    <!-- Netural/NO Pass/No Fail - becase the fieldset does not have a input  -->
+    <form>
+        <fieldset aria-label="testing fieldsets">
+            <!-- <legend>Choose your favorite monster</legend> -->
+            <div>Nothing to see here</div>
+        </fieldset>
+    </form>
 
     <script>
         UnitTest = {
-            ruleIds: [""],
+            ruleIds: ["group_withInputs_hasName"],
             results: [
-                
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]",
+                        "aria": "/document[1]/group[1]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "Group/Fieldset does not have an accessible name",
+                    "messageArgs": [],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[2]",
+                        "aria": "/document[1]/group[2]"
+                    },
+                    "reasonId": "Pass_1",
+                    "message": "Group/Fieldset \"vehicle_123\" with an input has a unique name",
+                    "messageArgs": [
+                        "vehicle_123"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[3]",
+                        "aria": "/document[1]/group[3]"
+                    },
+                    "reasonId": "Pass_1",
+                    "message": "Group/Fieldset \"vehicle_456\" with an input has a unique name",
+                    "messageArgs": [
+                        "vehicle_456"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[1]/fieldset[1]",
+                        "aria": "/document[1]/group[5]"
+                    },
+                    "reasonId": "Fail_1",
+                    "message": "Group/Fieldset does not have an accessible name",
+                    "messageArgs": [],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
+                        "aria": "/document[1]/group[6]"
+                    },
+                    "reasonId": "Pass_1",
+                    "message": "Group/Fieldset \"Choose your favorite monster\" with an input has a unique name",
+                    "messageArgs": [
+                        "Choose your favorite monster"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "PASS"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[3]/fieldset[1]",
+                        "aria": "/document[1]/group[7]"
+                    },
+                    "reasonId": "Pass_1",
+                    "message": "Group/Fieldset \"testing fieldsets\" with an input has a unique name",
+                    "messageArgs": [
+                        "testing fieldsets"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                }
             ]
 
         }

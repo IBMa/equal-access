@@ -859,9 +859,9 @@ let a11yNls = {
     // ALI - TODO
     "group_withInputs_hasName": {
         0: "Groups with nested inputs must have unique accessible name", 
-        "Pass_1": "Group/Fieldset {0} with an input has a unique name",
+        "Pass_1": "Group/Fieldset \"{0}\" with an input has a unique name",
         "Fail_1": "Group/Fieldset does not have an accessible name",
-        "Fail_2": "Group/Fieldset {0} has a duplicate name to another group"
+        "Fail_2": "Group/Fieldset \"{0}\" has a duplicate name to another group"
     },
     // JCH - DONE
     "Rpt_Aria_MultipleGroupRoles_Implicit": {
