@@ -38,7 +38,7 @@ export default class PanelMessaging {
                         }
                         resolve(res);
                     } else {
-                        resolve();
+                        resolve(null);
                     }
                 }
             });
