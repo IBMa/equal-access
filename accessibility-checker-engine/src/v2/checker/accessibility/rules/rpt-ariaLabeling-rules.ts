@@ -870,7 +870,7 @@ let a11yRulesLabeling: Rule[] = [
             // formCache.groupsWithInputs.forEach(element => {
             //     console.log("formCache.groupsWithInputs: " +element.id)
             // });
-            console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels)
+            // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels)
             // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels.length)
             
             let ruleContextFoundIngroupsWithInputsFlag = false;
@@ -898,7 +898,7 @@ let a11yRulesLabeling: Rule[] = [
             }
 
             if (!ruleContextFoundIngroupsWithInputsFlag) {
-                console.log("null return")
+                // console.log("null return")
                 return null;
             }
             // console.log("Pass_1")
