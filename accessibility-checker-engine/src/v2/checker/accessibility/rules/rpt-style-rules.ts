@@ -25,34 +25,114 @@ let a11yRulesStyle: Rule[] = [
          */
         //
         // Trigger logic:
+        //
+        // First, logic for the sibling failures
         // 
-        // First, Do we have an element with a hover selector,
+        // 1. Do we have an element with a hover selector,
         //    e.g., a:hover, span:hover, etc...?
         //
-        // Second, is the hover followed by one of the four css combinators?
+        // 2. is the hover followed by either the + or ~ css combinators?
         //
-        //    We need to deal with four css combinators 
-        //        descendant selector (space)
-        //        child selector (>)
-        //        adjacent sibling selector (+)
-        //        general sibling selector (~)
+        //    e.g., :hover+ or :hover~ (after triming spaces)
         //
-        // Third is the element after the css combinator followed by an element 
-        //    with a display attribute? e.g, 
+        // 3. is the element after the css combinator + or ~ followed by an element 
+        //    with a display attribute with any value but none? e.g, 
         //
-        //    span:hover + div {
+        //    [element1]:hover + [element2] {
         //       display: block;
         //
-        // Fourth is the element2 referred to after the [element]:hover [element2]
-        //    has a margin attribute with a value > 0px then trigger
+        //    [element1]:hover ~ [element2] {
+        //       display: block;
         //
+        // 4. if we found + and there is one sibling directly after [element1] in the body
+        //    of type [element2]. 
+        //    if 1-4 are true Trigger Failure 1
+        //
+        // 5. if we found ~ and there are two or more siblings directly after [element1] 
+        //    in the body of type [element2] - note there cannot be other elements inbetween 
+        //    the siblings. if 1-3 and 5 are true Trigger Failure 2
+        //
+        //
+        // Logic for margin failure (or more generally any space between the bottom of 
+        // [element1] and the top of [element2])
+        //
+        // 1. Do we have an element with a hover selector,
+        //    e.g., a:hover, span:hover, etc...?
+        //
+        // 2. is the hover followed by any of the four css combinators?
+        //
+        //    descendant selector (space)
+        //    child selector (>)
+        //    adjacent sibling selector (+)
+        //    general sibling selector (~)
+        //
+        //    e.g., [element1]:hover [element2], or [element1]:hover > [element2],
+        //          [element1]:hover + [element2], [element1]:hover ~ [element2]
+        //          Note: for the one with a space we cannot trim the space, the
+        //                others may have spaces trimmed
+        //
+        // 3. does the element after [elemnent1]:hover contain one of the four
+        //    css combinators followed by [element2] 
+        //    with a display attribute with any value but none?? e.g, 
+        //
+        //    [element1]:hover [element2] {
+        //       display: block;
+        //
+        //    [element1]:hover > [element2] {
+        //       display: block;
+        //
+        //    [element1]:hover + [element2] {
+        //       display: block;
+        //
+        //    [element1]:hover ~ [element2] {
+        //       display: block;
+        //
+        // 4. if we found space for the css combinator [element1] must have one descendent
+        //    of type [element2] in the body. 
+        //
+        // 5. if we found > for the css combinator [element1] must have one child
+        //    of type [element2] in the body. 
+        
+        // 7. if we found + is there at one sibling directly after [element1] of type
+        //    [element2] in the body. 
+        //
+        // 8. if we found ~ is there at two or more siblings directly after [element1] of type
+        //    [element2] in the body - note there cannot be other elements inbetween the siblings. 
+        //
+        // 8. if either [element 1] or [element 2], contains a margin attribute with a positive value
+        //    and 1-3 is true and one 1-4 is true then Trigger Failure 3.
 
         id: "style_hover_persistent",
         context: "dom:style, dom:*[style]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            console.log("style_hover_persistent rule context: ", ruleContext);
-            return RulePass("Pass_0");
+            let nodeName = ruleContext.nodeName.toLowerCase();
+            let passed = true;
+            console.log("Hello Joho");
+            if (nodeName == "link" && ruleContext.hasAttribute("rel") &&
+                ruleContext.getAttribute("rel").toLowerCase() == "stylesheet") {
+                // External stylesheet - trigger
+                passed = RPTUtil.triggerOnce(ruleContext, "style_hover_persistent", false);
+                console.log("stylesheet status: ", passed);
+            }
+            console.log("passed = ",passed);
+            console.log("nodeName = ",nodeName);
+            if (passed && nodeName == "style" || ruleContext.hasAttribute("style")) {
+                let styleText;
+                if (nodeName == "style") {
+                    styleText = RPTUtil.getInnerText(ruleContext);
+                    console.log("styleText", styleText);
+                } else
+                    styleText = ruleContext.getAttribute("style");
+                let hoverMatches = styleText.match(/:hover[^;]*/g);
+                if (hoverMatches != null) {
+                    for (let i = 0; passed && i < hoverMatches.length; ++i)
+                        // passed = hoverMatches[i].indexOf("url(") == -1;
+                        console.log("Found ",i+1," hovers");
+                }
+            }
+            if (passed) return RulePass("Pass_0");
+            if (!passed) return RulePotential("Potential_1");
 
         }
     },
