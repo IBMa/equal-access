@@ -37,7 +37,7 @@ A label associated with a group of inputs also serves as a common label for indi
 Assistive technologies can indicate the start and end of the group and the group’s label as the user navigates into and out of the group. 
 When there are multiple groups with the same inputs then the label of the group needs to be unique so it can be distinguished.  
 
-For example, two groups of inputs for _Name, Address, City, and Zip_ need to be distinquished from one another 
+For example, in a retail scenario where two groups of inputs for _Name, Address, City, and Zip_ need to be distinquished from one another 
 by labelling one group "_**Mailing address**_" and the other "_**Shipping address**_".   
 
 <div id="locSnippet"></div>
@@ -45,7 +45,7 @@ by labelling one group "_**Mailing address**_" and the other "_**Shipping addres
 
 ### What to do
 
-* Provide a unique label for groups of form controls using `<fieldset>` and `<legend>` elements
+* Provide a unique label for a group of form controls using `<fieldset>` and `<legend>` elements
 * Distinguish multiple `role="group"` elements with a unique 'aria-labelledby' or 'aria-label'
 * For a group of radio buttons, use `role="radiogroup"` instead of `role="group"`
 
