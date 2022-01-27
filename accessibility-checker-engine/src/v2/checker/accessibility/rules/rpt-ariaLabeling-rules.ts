@@ -834,40 +834,48 @@ let a11yRulesLabeling: Rule[] = [
         }
     },
 
-    {
-        /**
-         * Description: Triggers if multiple group roles are present and they don't have unique labels
-         * Also, consider <details> element which has implicit 'group' role
-         * Origin:  CI162 Web checklist checkpoint 2.4a
-         */
-        id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-        context: "aria:group",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
+    /** --------------------------------------------------------------------------------------------
+     * DEPRECATED: This rule is being deprecated and replaced by 2 separate rules that are more 
+     * targeted. 
+     * 1) landmark_name_unique
+     * 2) group_withInputs_hasName
+     * The reasoning for this was we were accidentally catching groups that were valid. Such as 
+     * groups that might have the same name but had structurally ways to reach them. So they were 
+     * disambiguated by structure nested parent hierarchy.
+     * --------------------------------------------------------------------------------------------
+     * Description: Triggers if multiple group roles are present and they don't have unique labels
+     * Also, consider <details> element which has implicit 'group' role
+     * Origin:  CI162 Web checklist checkpoint 2.4a
+     */
+    // {
+    //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+    //     context: "aria:group",
+    //     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+    //         const ruleContext = context["dom"].node as Element;
 
-            // Consider the Check Hidden Content setting that is set by the rules
-            // Also, consider Implicit role checking. 
-            let landmarks = RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, "group", true, true);
-            if (landmarks.length === 0 || landmarks.length === 1) {
-                return null;
-            }
+    //         // Consider the Check Hidden Content setting that is set by the rules
+    //         // Also, consider Implicit role checking. 
+    //         let landmarks = RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, "group", true, true);
+    //         if (landmarks.length === 0 || landmarks.length === 1) {
+    //             return null;
+    //         }
 
-            let dupes = RPTUtil.getCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", null);
-            if (!dupes) {
-                dupes = RPTUtil.findAriaLabelDupes(landmarks);
-                RPTUtil.setCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", dupes);
-            }
-            let myLabel = RPTUtil.getAriaLabel(ruleContext);
-            let passed = myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
+    //         let dupes = RPTUtil.getCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", null);
+    //         if (!dupes) {
+    //             dupes = RPTUtil.findAriaLabelDupes(landmarks);
+    //             RPTUtil.setCache(ruleContext.ownerDocument, "Rpt_Aria_MultipleGroupRoles_Implicit", dupes);
+    //         }
+    //         let myLabel = RPTUtil.getAriaLabel(ruleContext);
+    //         let passed = myLabel === "" || !(myLabel in dupes) || dupes[myLabel] <= 1;
 
-            //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
-            if (!passed) {
-                return RuleFail("Fail_1", [myLabel]);
-            } else {
-                return RulePass("Pass_0");
-            }
-        }
-    },
+    //         //return new ValidationResult(passed, ruleContext, '', '', [ myLabel ]);
+    //         if (!passed) {
+    //             return RuleFail("Fail_1", [myLabel]);
+    //         } else {
+    //             return RulePass("Pass_0");
+    //         }
+    //     }
+    // },
 
 
     {

@@ -863,11 +863,11 @@ let a11yHelp = {
         "Fail_1": `${Config.helpRoot}/Rpt_Aria_ArticleRoleLabel_Implicit`
     },
     // JCH - DONE
-    "Rpt_Aria_MultipleGroupRoles_Implicit": {
-        0: `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
-        "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
-        "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`
-    },
+    // "Rpt_Aria_MultipleGroupRoles_Implicit": {
+    //     0: `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
+    //     "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
+    //     "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`
+    // },
     // JCH - DONE
     "Rpt_Aria_GroupRoleLabel_Implicit": {
         0: `${Config.helpRoot}/Rpt_Aria_GroupRoleLabel_Implicit`,
@@ -1188,7 +1188,7 @@ let a11yHelpOld = {
     "Rpt_Aria_ComplementaryLandmarkLabel_Implicit": ["idhi_accessibility_check_g1165.html"],
     "Rpt_Aria_MultipleArticleRoles_Implicit": ["idhi_accessibility_check_g1166.html"],
     "Rpt_Aria_ArticleRoleLabel_Implicit": ["idhi_accessibility_check_g1167.html"],
-    "Rpt_Aria_MultipleGroupRoles_Implicit": ["idhi_accessibility_check_g1168.html"],
+    // "Rpt_Aria_MultipleGroupRoles_Implicit": ["idhi_accessibility_check_g1168.html"],
     "Rpt_Aria_GroupRoleLabel_Implicit": ["idhi_accessibility_check_g1169.html"],
     "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit": ["idhi_accessibility_check_g1170.html"],
     "Rpt_Aria_OneBannerInSiblingSet_Implicit": ["idhi_accessibility_check_g1172.html"],
