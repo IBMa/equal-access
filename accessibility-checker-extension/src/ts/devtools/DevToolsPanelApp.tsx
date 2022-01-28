@@ -25,7 +25,7 @@ import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset }
 import PanelMessaging from '../util/panelMessaging';
 import MultiScanReport from "../xlsxReport/multiScanReport/xlsx/multiScanReport";
 import MultiScanData from "./MultiScanData";
-import ReportSummaryUtil from '../util/reportSummaryUtil';
+// import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
 import BrowserDetection from "../util/browserDetection";
 // import html2canvas from "html2canvas"
@@ -483,13 +483,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
 
         var report: any = this.state.report;
-        var summaryNumbers = ReportSummaryUtil.calcSummary(report);
-        var element_no_failures = parseInt((((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0));
-        var element_no_violations = parseInt((((summaryNumbers[4] - summaryNumbers[0]) / summaryNumbers[4]) * 100).toFixed(0));
 
-        var violation = report?.counts.total.Violation;
+        var violation = report?.counts.total["Violation"];
         var needsReview = report?.counts.total["Needs review"];
-        var recommendation = report?.counts.total.Recommendation;
+        var recommendation = report?.counts.total["Recommendation"];
+        var all = report?.counts.total["All"];
+
+        // var summaryNumbers = ReportSummaryUtil.calcSummary(report);
+        var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
+        var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
+
+        var violation = report?.counts.total["Violation"];
+        var needsReview = report?.counts.total["Needs review"];
+        var recommendation = report?.counts.total["Recommendation"];
+        var all = report?.counts.total["All"];
 
         // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
