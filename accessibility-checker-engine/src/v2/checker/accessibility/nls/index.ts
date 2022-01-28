@@ -856,7 +856,7 @@ let a11yNls = {
         "Fail_1": "The element with \"article\" role does not have a label"
     },
     
-    // ALI - TODO
+    // ALI - DONE
     "group_withInputs_hasName": {
         0: "Groups with nested inputs must have unique accessible name", 
         "Pass_1": "Group/Fieldset \"{0}\" with an input has a unique name",
