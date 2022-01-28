@@ -143,6 +143,11 @@ let a11yRulesInput: Rule[] = [
                 passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
             }
+            if (!passed) {
+                // check aria role
+                //TODO: consider other aria roles relevant, other than menuitemcheckbox
+                passed = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") && RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
+            }
 
             if (passed) {
                 return RulePass("Pass_0");
