@@ -8,23 +8,22 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### The active message goes here _without tokens_ but with `'backticks for formating code'` and tokens __cannot__ be used in mdx
+### A `"group"` or `<fieldset>` does not have an accessible name or has a duplicate name
 
-<!-- This active message title is NOT used by the Checker, 
-the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
+<!-- This active message title is NOT used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
 
 
 <div id="locLevel"></div>
 
 <!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->
 
-This is the passive message that will show up in reports, with `backticks for formating code` but tokens **cannot** be used in mdx 
+  
+Multiple `<fieldset>` and `role="group"` with nested `<inputs>` elements must have unique accessible names (labels) 
 
-<!-- Checker does not display this message sub-title, 
-the browser extension displays the 0: message in  ...nls/index.ts file -->
+<!-- Checker does not display this passive message sub-title, the browser extension displays the 0: message in  ...nls/index.ts file -->
 
-<!-- Note that the messages in the test files must also match 
-the messages from the ...nls/index.ts file instead of message titles here in mdx -->
+<!-- Note that the messages in the test files must also match the messages from the ...nls/index.ts file instead of message titles here in mdx -->
+  
 
 </Column>
 </Row>
@@ -34,35 +33,23 @@ the messages from the ...nls/index.ts file instead of message titles here in mdx
 
 ### Why is this important?
 
-PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as This example text with `role="combobox"`, an `<element>` with values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
-If the value for the `'aria-haspopup'` attribute does not match the value for the popup element's `'role'` 
-attribute, people who use assistive technologies may see unexpected behavior and will not know how 
-to interact with the content.
+A label associated with a group of inputs also serves as a common label for individual inputs in the group. 
+Assistive technologies can indicate the start and end of the group and the group’s label as the user navigates into and out of the group. 
+When there are multiple groups with the same inputs then the label of the group needs to be unique so it can be distinguished.  
 
+For example, in a retail scenario where two groups of inputs for _Name, Address, City, and Zip_ need to be distinquished from one another 
+by labelling one group "_**Mailing address**_" and the other "_**Shipping address**_".   
 
 <div id="locSnippet"></div>
 
 
 ### What to do
 
-* PLACEHOLDER TEXT HERE SHOULD BE REPLACED BEFORE MERGE TO MASTER ... such as Set the value of the `'aria-haspopup'` attribute of the `<combobox>` element to match the value of the `'role'` attribute of the implemented popup.
-* Allowed `<SupportedElementNameHere>` element with `'role'` attribute values of `"listbox"`, `"tree"`, `"grid"`, or `"dialog"`.
-* **Or**, and another explanation of what to do.
+* Provide a unique label for a group of form controls using `<fieldset>` and `<legend>` elements
+* Distinguish multiple `role="group"` elements with a unique 'aria-labelledby' or 'aria-label'
+* For a group of radio buttons, use `role="radiogroup"` instead of `role="group"`
 
-Alert: MORE TEXT HERE IF APPROPRIATE. The recommended code example is:
-
-<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
-  &lt;input type="text" id="tag_combo"
-      role="combobox" aria-autocomplete="list"
-      aria-haspopup="listbox" aria-expanded="true"
-      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
-   &lt;ul role="listbox" id="popup_listbox"&gt;
-      &lt;li role="option"&gt;Zebra&lt;/li&gt;
-      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
-   &lt;/ul&gt;</CodeSnippet>
-
-Note: OPTIONAL NOTE TEXT GOES HERE ... such as Derived from [W3C, Accessible Rich Internet Applications (ARIA) Best Practices latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
-
+  
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
@@ -71,42 +58,20 @@ Note: OPTIONAL NOTE TEXT GOES HERE ... such as Derived from [W3C, Accessible Ric
 <!-- should only include one requirement and one or more references to techniques and best practices -->
   
 * [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
-* [WCAG technique ARIA11](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA11)
-* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+* [IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [WCAG technique ARIA 17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17.html) 
+* [WCAG technique H71](https://www.w3.org/TR/WCAG20-TECHS/H71.html)
+* [WCAG technique F82](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/F82)
+* [ARIA specification - Group Role]( https://www.w3.org/TR/wai-aria-1.2/#group)
+* [Carbon design system - Form accessibility](https://www.carbondesignsystem.com/components/form/accessibility/)  
+
 
 ### Who does this affect?
 
-<!-- using this style of comment in this .mdx file.
-also works for this multi-line style comment.
-Only use a few of these categories below that are applicable to people affected
--->
-
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision who use screen magnification
-* People with visual impairment using color contrast enhancement
-* People with moderately low vision who do not use a contrast-enhancing technology
-* People who cannot see color, have limited color vision or have color blindness
-* People who personalize their display colors for easier reading
-* People using text-based browsers (e.g., Lynx) or audio interfaces
-* People who use alternate backgrounds to increase legibility
-* People using text only, monochrome or braille displays
-* People who rely on keyboard control
-* People who are deaf or hard of hearing
-* People with physical disabilities
-* People with dexterity impairment
-* People with dexterity impairment using voice control
-* People who physically cannot use a pointing device
-* People with tremor or other movement disorders
-* People with flash-induced seizures
-* Many older adults
-* Neurodivergent people
-* People who turn off image-loading on their web browsers
-* People with reading disabilities
-* People with cognitive differences who view interfaces using an adapted layout
-* People with cognitive limitations
-* People with memory limitations
-* People with learning disabilities
-* People with attention deficit disorders
+* People with low vision using screen magnification
+* People using other assistive technologies that expose accessibility information
+  
    
 </Column>
 </Row>
