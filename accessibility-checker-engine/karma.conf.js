@@ -42,7 +42,7 @@ module.exports = (config) => {
 
             // { pattern: 'test/v2/checker/accessibility/rules/Rpt_Aria_RequiredParent_Native_Host_Sematics_ruleunit/ACT_ff89c9_pass4.html', watched: true },
 
-            { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/Sibling_hover_not_persistent.html', watched: true },
+            { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/adjacent_sibling_hover_not_persistent.html', watched: true },
 
 
 

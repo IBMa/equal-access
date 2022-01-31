@@ -28,14 +28,15 @@ let a11yRulesStyle: Rule[] = [
         //
         // First, logic for the sibling failures
         // 
-        // 1. Do we have an element with a hover selector,
+        // 1. Find all hover selectors, [element1]:hover
+        //    the hover selects and you can use it to style an element when you mouse over it
         //    e.g., a:hover, span:hover, etc...?
         //
-        // 2. is the hover followed by either the + or ~ css combinators?
+        // 2. Find if the hover followed by either the + or ~ css combinators?
         //
         //    e.g., :hover+ or :hover~ (after triming spaces)
         //
-        // 3. is the element after the css combinator + or ~ followed by an element 
+        // 3. Determine if the element after the css combinator + or ~ followed by an element 
         //    with a display attribute with any value but none? e.g, 
         //
         //    [element1]:hover + [element2] {
@@ -99,39 +100,43 @@ let a11yRulesStyle: Rule[] = [
         // 8. if we found ~ is there at two or more siblings directly after [element1] of type
         //    [element2] in the body - note there cannot be other elements inbetween the siblings. 
         //
-        // 8. if either [element 1] or [element 2], contains a margin attribute with a positive value
+        // 9. if either [element 1] or [element 2], contains a margin attribute with a positive value
         //    and 1-3 is true and one 1-4 is true then Trigger Failure 3.
 
         id: "style_hover_persistent",
-        context: "dom:style, dom:*[style]",
+        context: "dom:style, dom:*[style], dom:*",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let nodeName = ruleContext.nodeName.toLowerCase();
             let passed = true;
-            console.log("Hello Joho");
-            if (nodeName == "link" && ruleContext.hasAttribute("rel") &&
-                ruleContext.getAttribute("rel").toLowerCase() == "stylesheet") {
-                // External stylesheet - trigger
-                passed = RPTUtil.triggerOnce(ruleContext, "style_hover_persistent", false);
-                console.log("stylesheet status: ", passed);
-            }
-            console.log("passed = ",passed);
-            console.log("nodeName = ",nodeName);
+            // console.log("Hello Joho");
+            // if (nodeName == "link" && ruleContext.hasAttribute("rel") &&
+            //     ruleContext.getAttribute("rel").toLowerCase() == "stylesheet") {
+            //     // External stylesheet - trigger
+            //     passed = RPTUtil.triggerOnce(ruleContext, "style_hover_persistent", false);
+            //     console.log("stylesheet status: ", passed);
+            // }
             if (passed && nodeName == "style" || ruleContext.hasAttribute("style")) {
                 let styleText;
                 if (nodeName == "style") {
                     styleText = RPTUtil.getInnerText(ruleContext);
-                    console.log("styleText", styleText);
-                } else
+                    console.log("styleText ="+styleText);
+                    let hoverMatches = styleText.match(/.*:hover[^;]*/g);
+                    for (let i = 0; passed && i < hoverMatches.length; ++i) {
+                        console.log(":hover match["+i+"]= "+hoverMatches[i]);
+                        let hoverMatchesTrimmed = hoverMatches[i].trim();
+                        console.log("trim it = "+hoverMatchesTrimmed);
+                        console.log("1st two chars = "+hoverMatchesTrimmed.substring(0, 2));
+                        console.log("[Element 1] = "+substr(hoverMatchesTrimmed, 0, index(hoverMatchesTrimmed,':')))
+                    }
+                } else {
                     styleText = ruleContext.getAttribute("style");
-                let hoverMatches = styleText.match(/:hover[^;]*/g);
-                if (hoverMatches != null) {
-                    for (let i = 0; passed && i < hoverMatches.length; ++i)
-                        // passed = hoverMatches[i].indexOf("url(") == -1;
-                        console.log("Found ",i+1," hovers");
+                    // console.log("styleAttribute = "+styleText);
                 }
             }
             if (passed) return RulePass("Pass_0");
+
+    
             if (!passed) return RulePotential("Potential_1");
 
         }
