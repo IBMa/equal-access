@@ -23,6 +23,100 @@
 </head>
 
 <body id="body">
+    <!-- FAIL we have two fieldset with inputs that have the same label in this case: "Choose your favorite monster duplicate" -->
+    <form>
+        <fieldset>
+            <legend>Choose your favorite monster duplicate</legend>
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+        <fieldset>
+            <legend>Choose your favorite monster duplicate</legend>
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+    </form>
+
+    <!-- FAIL we have two fieldset with inputs that have the same label in this case: "testing fieldsets duplicate" -->
+    <form>
+        <fieldset aria-label="testing fieldsets duplicate">
+            <!-- <legend>Choose your favorite monster</legend> -->
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+        <fieldset aria-label="testing fieldsets duplicate">
+            <!-- <legend>Choose your favorite monster</legend> -->
+            <input type="radio" id="kraken" name="monster">
+            <label for="kraken">Kraken</label><br />
+
+            <input type="radio" id="sasquatch" name="monster">
+            <label for="sasquatch">Sasquatch</label><br />
+
+            <input type="radio" id="mothman" name="monster">
+            <label for="mothman">Mothman</label>
+        </fieldset>
+    </form>
+
+    <!-- FAIL we have two groups with inputs that have the same label in this case: "testset123" -->
+    <div role="group" aria-label="vehiclesThatIDontOwn">
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1"> I have a bike1</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+        <label for="vehicle2"> I have a car</label><br>
+        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+        <label for="vehicle3"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
+    <div role="group" aria-label="vehiclesThatIDontOwn">
+        <input type="checkbox" id="vehicle4" name="vehicle4" value="Bike">
+        <label for="vehicle4"> I have a bike2</label><br>
+        <input type="checkbox" id="vehicle5" name="vehicle5" value="Car">
+        <label for="vehicle5"> I have a car</label><br>
+        <input type="checkbox" id="vehicle6" name="vehicle6" value="Boat">
+        <label for="vehicle6"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
+
+
+    <!-- FAIL we have two groups with inputs that have the same label in this case: "testset123" -->
+    <div role="group" aria-labelledby="test_vehicle_123">
+        <div id="test_vehicle_123">testset123</div>
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
+        <label for="vehicle1"> I have a bike1</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+        <label for="vehicle2"> I have a car</label><br>
+        <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+        <label for="vehicle3"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
+    <div role="group" aria-labelledby="test_vehicle_456">
+        <div id="test_vehicle_456">testset123</div>
+        <input type="checkbox" id="vehicle4" name="vehicle4" value="Bike">
+        <label for="vehicle4"> I have a bike2</label><br>
+        <input type="checkbox" id="vehicle5" name="vehicle5" value="Car">
+        <label for="vehicle5"> I have a car</label><br>
+        <input type="checkbox" id="vehicle6" name="vehicle6" value="Boat">
+        <label for="vehicle6"> I have a boat</label><br><br>
+        <input type="submit" value="Submit">
+    </div>
 
     <!-- FAIL - becase the role=group does not have a label  -->
     <div role="group" id="test">
@@ -62,7 +156,7 @@
         <div id="vehicle_789">testset789</div>
     </div>
 
-    <!-- FAIL - becase the fieldset does not have a label  -->
+    <!-- FAIL - becase the fieldset does not have a label/legend  -->
     <form>
         <fieldset>
             <input type="radio" id="kraken" name="monster">
@@ -114,6 +208,7 @@
         </fieldset>
     </form>
 
+
     <script>
         UnitTest = {
             ruleIds: ["group_withInputs_hasName"],
@@ -125,8 +220,152 @@
                         "FAIL"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/div[1]",
+                        "dom": "/html[1]/body[1]/form[1]/fieldset[1]",
                         "aria": "/document[1]/group[1]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"Choose your favorite monster duplicate\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "Choose your favorite monster duplicate"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[1]/fieldset[2]",
+                        "aria": "/document[1]/group[2]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"Choose your favorite monster duplicate\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "Choose your favorite monster duplicate"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
+                        "aria": "/document[1]/group[3]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"testing fieldsets duplicate\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "testing fieldsets duplicate"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/form[2]/fieldset[2]",
+                        "aria": "/document[1]/group[4]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"testing fieldsets duplicate\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "testing fieldsets duplicate"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[1]",
+                        "aria": "/document[1]/group[5]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"vehiclesThatIDontOwn\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "vehiclesThatIDontOwn"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[2]",
+                        "aria": "/document[1]/group[6]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"vehiclesThatIDontOwn\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "vehiclesThatIDontOwn"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[3]",
+                        "aria": "/document[1]/group[7]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"testset123\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "testset123"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[4]",
+                        "aria": "/document[1]/group[8]"
+                    },
+                    "reasonId": "Fail_2",
+                    "message": "Group/Fieldset \"testset123\" has a duplicate name to another group",
+                    "messageArgs": [
+                        "testset123"
+                    ],
+                    "apiArgs": [],
+                    "category": "Accessibility"
+                },
+                {
+                    "ruleId": "group_withInputs_hasName",
+                    "value": [
+                        "INFORMATION",
+                        "FAIL"
+                    ],
+                    "path": {
+                        "dom": "/html[1]/body[1]/div[5]",
+                        "aria": "/document[1]/group[9]"
                     },
                     "reasonId": "Fail_1",
                     "message": "Group/Fieldset does not have an accessible name",
@@ -141,8 +380,8 @@
                         "PASS"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/div[2]",
-                        "aria": "/document[1]/group[2]"
+                        "dom": "/html[1]/body[1]/div[6]",
+                        "aria": "/document[1]/group[10]"
                     },
                     "reasonId": "Pass_1",
                     "message": "Group/Fieldset \"vehicle_123\" with an input has a unique name",
@@ -159,8 +398,8 @@
                         "PASS"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/div[3]",
-                        "aria": "/document[1]/group[3]"
+                        "dom": "/html[1]/body[1]/div[7]",
+                        "aria": "/document[1]/group[11]"
                     },
                     "reasonId": "Pass_1",
                     "message": "Group/Fieldset \"vehicle_456\" with an input has a unique name",
@@ -177,8 +416,8 @@
                         "FAIL"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/form[1]/fieldset[1]",
-                        "aria": "/document[1]/group[5]"
+                        "dom": "/html[1]/body[1]/form[3]/fieldset[1]",
+                        "aria": "/document[1]/group[13]"
                     },
                     "reasonId": "Fail_1",
                     "message": "Group/Fieldset does not have an accessible name",
@@ -193,8 +432,8 @@
                         "PASS"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
-                        "aria": "/document[1]/group[6]"
+                        "dom": "/html[1]/body[1]/form[4]/fieldset[1]",
+                        "aria": "/document[1]/group[14]"
                     },
                     "reasonId": "Pass_1",
                     "message": "Group/Fieldset \"Choose your favorite monster\" with an input has a unique name",
@@ -211,8 +450,8 @@
                         "PASS"
                     ],
                     "path": {
-                        "dom": "/html[1]/body[1]/form[3]/fieldset[1]",
-                        "aria": "/document[1]/group[7]"
+                        "dom": "/html[1]/body[1]/form[5]/fieldset[1]",
+                        "aria": "/document[1]/group[15]"
                     },
                     "reasonId": "Pass_1",
                     "message": "Group/Fieldset \"testing fieldsets\" with an input has a unique name",

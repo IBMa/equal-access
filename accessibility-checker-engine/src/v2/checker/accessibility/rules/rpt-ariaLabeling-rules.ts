@@ -891,12 +891,11 @@ let a11yRulesLabeling: Rule[] = [
                     }
                     if (foundSameNameFlag){
                         // console.log("Fail_2")
-                        return RuleFail("Fail_2", formCache.groupsWithInputsComputedLabels[i] );
+                        return RuleFail("Fail_2", [formCache.groupsWithInputsComputedLabels[i]] );
                     }
                     computedName = formCache.groupsWithInputsComputedLabels[i];
                 }
-            }
-
+            } 
             if (!ruleContextFoundIngroupsWithInputsFlag) {
                 // console.log("null return")
                 return null;
