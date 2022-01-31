@@ -854,16 +854,13 @@ let a11yRulesLabeling: Rule[] = [
                 }
                 let allGroupsTemp = ownerDocument.querySelectorAll('fieldset,[role="group"]');
                 let allGroups = Array.from(allGroupsTemp);
-                if(!allGroups) {return null;}
                 let groupsWithInputs = [];
-                if(!groupsWithInputs) {return null;}
                 for (let i = 0; i < allGroups.length; i++) { // Loop over all the group nodes
-                    if(allGroups[i].querySelector("input")){
+                    if (allGroups[i].querySelector("input")) {
                         groupsWithInputs.push(allGroups[i])
                     }
                 }
                 let groupsWithInputsComputedLabels = [];
-                if(!groupsWithInputsComputedLabels) {return null;}
                 for (let i = 0; i < groupsWithInputs.length; i++) { // Loop over all the landmark nodes
                     groupsWithInputsComputedLabels.push(ARIAMapper.computeName(groupsWithInputs[i]))
                 }
@@ -875,30 +872,34 @@ let a11yRulesLabeling: Rule[] = [
             // });
             // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels)
             // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels.length)
-            
+
             let ruleContextFoundIngroupsWithInputsFlag = false;
             let computedName = "";
+            if (!formCache.groupsWithInputs) { // We do not have any groups with inputs. Therefore we should skip this rule trigger.
+                return null; 
+            }
+
             for (let i = 0; i < formCache.groupsWithInputs.length; i++) {
                 if (ruleContext.isSameNode(formCache.groupsWithInputs[i])) { // We have found our ruleContext in the cache
                     ruleContextFoundIngroupsWithInputsFlag = true;
-                    if(formCache.groupsWithInputsComputedLabels[i] === "" || formCache.groupsWithInputsComputedLabels[i] === null){
+                    if (formCache.groupsWithInputsComputedLabels[i] === "" || formCache.groupsWithInputsComputedLabels[i] === null) {
                         // console.log("Fail_1")
                         return RuleFail("Fail_1");
                     }
                     let foundSameNameFlag = false;
-                    for(let j = 0; j < formCache.groupsWithInputsComputedLabels.length; j++){
-                        if(i == j){ continue } // We do not want to compare against ourselfs
-                        if(formCache.groupsWithInputsComputedLabels[i] === formCache.groupsWithInputsComputedLabels[j]){
-                            foundSameNameFlag = true; 
+                    for (let j = 0; j < formCache.groupsWithInputsComputedLabels.length; j++) {
+                        if (i == j) { continue } // We do not want to compare against ourselfs
+                        if (formCache.groupsWithInputsComputedLabels[i] === formCache.groupsWithInputsComputedLabels[j]) {
+                            foundSameNameFlag = true;
                         }
                     }
-                    if (foundSameNameFlag){
+                    if (foundSameNameFlag) {
                         // console.log("Fail_2")
-                        return RuleFail("Fail_2", [formCache.groupsWithInputsComputedLabels[i]] );
+                        return RuleFail("Fail_2", [formCache.groupsWithInputsComputedLabels[i]]);
                     }
                     computedName = formCache.groupsWithInputsComputedLabels[i];
                 }
-            } 
+            }
             if (!ruleContextFoundIngroupsWithInputsFlag) {
                 // console.log("null return")
                 return null;
