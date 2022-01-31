@@ -854,13 +854,16 @@ let a11yRulesLabeling: Rule[] = [
                 }
                 let allGroupsTemp = ownerDocument.querySelectorAll('fieldset,[role="group"]');
                 let allGroups = Array.from(allGroupsTemp);
+                if(!allGroups) {return null;}
                 let groupsWithInputs = [];
+                if(!groupsWithInputs) {return null;}
                 for (let i = 0; i < allGroups.length; i++) { // Loop over all the group nodes
                     if(allGroups[i].querySelector("input")){
                         groupsWithInputs.push(allGroups[i])
                     }
                 }
                 let groupsWithInputsComputedLabels = [];
+                if(!groupsWithInputsComputedLabels) {return null;}
                 for (let i = 0; i < groupsWithInputs.length; i++) { // Loop over all the landmark nodes
                     groupsWithInputsComputedLabels.push(ARIAMapper.computeName(groupsWithInputs[i]))
                 }
