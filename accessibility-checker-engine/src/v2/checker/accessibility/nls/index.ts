@@ -202,9 +202,13 @@ let a11yNls = {
     },
     // JCH - DONE
     "style_hover_persistent": {
-        0: "Images included by using CSS alone must not convey important information", 
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify the CSS background image does not convey important information"
+        0: "The pointer should be able to move over content displayed on hover", 
+        "Pass_0": "the `hover:` pseudo-class is not used to display content",
+        "Pass_1": "content displayed via the `:hover` pseudo-class is a direct child of the trigger element",
+        "Pass_2": "content displayed via the `:hover` pseudo-class is the adjacent sibling of the trigger element",
+        "Potential_1": "Verify the pointer can hover over the displayed element, not just the trigger",
+        "Potential_2": "Verify the pointer can hover over _all_ the information displayed on hover",
+        "Potential_3": "Verify the `'margin'` style attribute on the displayed element allows the pointer to hover over the displayed element, not just the trigger"
     },
     // JCH - DONE
     "RPT_Pre_ASCIIArt": {
