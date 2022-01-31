@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### A `"group"` or `<fieldset>` element does not have an accessible name or has a duplicate name
+### A `role="group"` or `<fieldset>` element does not have an accessible name or has a duplicate name
 
 <!-- This active message title is NOT used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
 
@@ -18,7 +18,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->
 
   
-Multiple `<fieldset>` or `role="group"` elements with similar nested `<input>` elements must have unique unique labels 
+Multiple `<fieldset>` or `role="group"` elements with similar nested `<input>` elements must have unique labels 
 
 <!-- Checker does not display this passive message sub-title, the browser extension displays the 0: message in  ...nls/index.ts file -->
 
@@ -40,7 +40,7 @@ AT needs to be able to present the group label with each input control to remind
 When there are multiple groups with the same input elements then the label of the group needs to be unique so it can be distinguished.  
 
 For example, in a retail scenario where two groups of input elements represent _Name, Address, City, and Zip_, 
-the groups need to be distinguished from one another by labelling one group "_**Mailing address**_" and the other "_**Shipping address**_".   
+the groups need to be distinguished from one another by labelling one group "_Mailing address_" and the other "_Shipping address_".   
 
 <div id="locSnippet"></div>
 
@@ -48,7 +48,7 @@ the groups need to be distinguished from one another by labelling one group "_**
 ### What to do
 
 * Provide a unique label for a group of form controls using `<fieldset>` and `<legend>` elements
-* Distinguish multiple `role="group"` elements with a unique 'aria-labelledby' or 'aria-label'
+* Distinguish multiple `role="group"` elements with a unique `aria-labelledby` or `aria-label`
 * For a group of radio buttons, use `role="radiogroup"` instead of `role="group"`
 
   
