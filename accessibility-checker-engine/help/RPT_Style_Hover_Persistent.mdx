@@ -43,12 +43,12 @@ When content displays on hover, the pointer should be able to move from the trig
 ### What to do
 
 * If using the css `'hover'` pseudo-class on one element in order to set a `'display'` style on another element, the displayed element must be a child of the trigger element;
-* **Or**, the displayed element must be the adjacent sibling of the target, with no `'margin'` property set on the displayed element (since the margin separates the two elements and prevents the hover display from persisting) 
+* **Or**, the displayed element must be the adjacent sibling of the target, with no `'margin'` property set on the displayed element (since the margin separates the two elements and prevents the hover display from persisting).
 
-Note: Use of the `'~'` selector with the `'display'` style attribute can allow many siblings of the target element to be displayed; however, only its adjacent sibling will persistently display when the pointer is moved from the target towards the displayed content. 
+Note: Use of the `'~'` selector with the `'display'` style attribute can allow many siblings of the target element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the target towards the displayed content. 
 
 
-Alert: JOSIAH WE NEED TO DECIDE IF APPROPRIATE CODE SAMPLE. The recommended code example is:
+Alert: JOSIAH WE NEED TO DECIDE ON/IF APPROPRIATE CODE SAMPLE. The recommended code example is:
 
 <CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
   &lt;input type="text" id="tag_combo"
