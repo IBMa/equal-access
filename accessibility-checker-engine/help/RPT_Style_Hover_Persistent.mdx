@@ -50,15 +50,21 @@ Note: Use of the `'~'` selector with the `'display'` style attribute can allow m
 
 Alert: JOSIAH WE NEED TO DECIDE ON/IF APPROPRIATE CODE SAMPLE. The recommended code example is:
 
-<CodeSnippet type="multi" light={true}> &lt;label for="tag_combo"&gt;Tag&lt;/label&gt;
-  &lt;input type="text" id="tag_combo"
-      role="combobox" aria-autocomplete="list"
-      aria-haspopup="listbox" aria-expanded="true"
-      aria-controls="popup_listbox" aria-activedescendant="selected_option"&gt;
-   &lt;ul role="listbox" id="popup_listbox"&gt;
-      &lt;li role="option"&gt;Zebra&lt;/li&gt;
-      &lt;li role="option" id="selected_option"&gt;Zoom&lt;/li&gt;
-   &lt;/ul&gt;</CodeSnippet>
+<CodeSnippet type="multi" light={true}>
+ &lt;style&gt;
+div {
+  background-color: yellow;
+  padding: 20px;
+  display: none;
+}
+span:hover div {
+  display: block;
+}
+&lt;/style&gt;
+
+&lt;span&gt;Hover over me2!&lt;div&gt;I will show on hover, and you can move the pointer over me&lt;/div&gt;
+&lt;/span&gt;
+</CodeSnippet>
 
 
 
