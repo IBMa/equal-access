@@ -148,8 +148,9 @@ let a11yRulesInput: Rule[] = [
                 // check aria role
                 //TODO: consider other aria roles relevant, other than menuitemcheckbox
                 const singleRole = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                                || RPTUtil.hasRoleInSemantics(ruleContext, "radio");
-                const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false);
+                                || RPTUtil.hasRole(ruleContext, "radio", false);
+                const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false) 
+                                || RPTUtil.hasRole(ruleContext, "searchbox", false);
                                 
                 if (singleRole)
                     passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;

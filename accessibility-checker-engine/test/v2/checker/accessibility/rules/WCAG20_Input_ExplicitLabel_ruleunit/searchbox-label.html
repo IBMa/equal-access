@@ -5,8 +5,7 @@
 </head>
 <body>
   <label for="siteSearch">Site search</label>
-    <input
-      type="text"
+    <div
       role="searchbox"
       id="siteSearch"
     />
@@ -19,15 +18,17 @@
             "ruleId": "WCAG20_Input_ExplicitLabel",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/input[1]",
+              "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/searchbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
+            "reasonId": "Fail_2",
+            "message": "Form control with \"searchbox\" role has no associated label",
+            "messageArgs": [
+              "searchbox"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }
