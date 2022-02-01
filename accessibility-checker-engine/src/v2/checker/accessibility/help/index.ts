@@ -216,7 +216,9 @@ let a11yHelp = {
     "style_hover_persistent": {
         0: `${Config.helpRoot}/style_hover_persistent`, 
         "Pass_0": `${Config.helpRoot}/style_hover_persistent`,
-        "Potential_1": `${Config.helpRoot}/style_hover_persistent`
+        "Potential_1": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_2": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_3": `${Config.helpRoot}/style_hover_persistent`
     },
     // JCH - DONE
     "RPT_Pre_ASCIIArt": {
