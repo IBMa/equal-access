@@ -2069,6 +2069,20 @@ export class RPTUtil {
         return RPTUtil.hasInnerContentHiddenHyperLink(element, false);
     }
 
+    /**
+     * This function is responsible for checking if an element has an no empty text node as its first child.
+     *
+     * @parm {element} node The node checked.
+     * @return {bool} true if the element has an no empty text node as its first child, false otherwise
+     *
+     * @memberOf RPTUtil
+     */
+     public static hasNonEmptyTextNode(element) {
+        if (element.childNodes[0] && element.childNodes[0].nodeType === Node.TEXT_NODE) 
+            return element.childNodes[0].nodeValue && element.childNodes[0].nodeValue.trim().length > 0;
+        return false;    
+    }
+
     public static svgHasName(element: SVGElement) {
         return RPTUtil.attributeNonEmpty(element, "aria-label")
             || RPTUtil.attributeNonEmpty(element, "aria-labelledby")

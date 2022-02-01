@@ -96,6 +96,7 @@ let a11yRulesInput: Rule[] = [
                     (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
                     RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
                 if (!passed) POF = 2 + textTypes.indexOf(type);
+
             } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
                 if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
                     // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
@@ -146,7 +147,18 @@ let a11yRulesInput: Rule[] = [
             if (!passed) {
                 // check aria role
                 //TODO: consider other aria roles relevant, other than menuitemcheckbox
-                passed = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") && RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
+                const singleRole = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
+                                || RPTUtil.hasRoleInSemantics(ruleContext, "radio");
+                const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false);
+                                
+                if (singleRole)
+                    passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
+                else if (otherRole) {
+                    passed = RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
+                             || RPTUtil.hasNonEmptyTextNode(ruleContext);
+                } else {
+                    // any other role?
+                }
             }
 
             if (passed) {
