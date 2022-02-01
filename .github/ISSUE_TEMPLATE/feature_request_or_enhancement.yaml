@@ -1,0 +1,38 @@
+name: 'Feature request or enhancement 💡'
+description: Suggest an idea for this project.
+title: '[Feature]: '
+labels: 'type: enhancement'
+body:
+  - type: markdown
+    attributes:
+      value: '## Welcome!'
+  - type: markdown
+    attributes:
+      value:
+        Thanks for taking the time to share your idea or enhancement. 
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: What project is this idea/enhancement for? 
+      multiple: true
+      options: 
+        - 'able site'
+        - 'a11y checker engine'
+        - 'a11y checker extension'
+        - 'a11y checker'
+        - 'cypress accessibility checker'
+        - 'karma accessibility checker'
+        - 'rule-server'
+        - 'other'
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description:
+        "Tell us more about your idea or enhancement"
+      placeholder: Provide as much details for this idea?
+    validations:
+      required: true
