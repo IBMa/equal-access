@@ -106,95 +106,93 @@ let a11yRulesStyle: Rule[] = [
         id: "style_hover_persistent",
         context: "dom:style, dom:*[style], dom:*",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            let passed = true;
+
             const ruleContext = context["dom"].node as Element;
             let nodeName = ruleContext.nodeName.toLowerCase();
-            let passed = true;
-            // console.log("Hello Joho");
-            // if (nodeName == "link" && ruleContext.hasAttribute("rel") &&
-            //     ruleContext.getAttribute("rel").toLowerCase() == "stylesheet") {
-            //     // External stylesheet - trigger
-            //     passed = RPTUtil.triggerOnce(ruleContext, "style_hover_persistent", false);
-            //     console.log("stylesheet status: ", passed);
-            // }
-            if (passed && nodeName == "style" || ruleContext.hasAttribute("style")) {
-                let styleText;
-                if (nodeName == "style") {
-                    styleText = RPTUtil.getInnerText(ruleContext);
-                    console.log("styleText ="+styleText);
-                    let hoverMatches = styleText.match(/.*:hover[^;]*/g);
-                    for (let i = 0; passed && i < hoverMatches.length; ++i) {
-                        console.log(":hover match["+i+"]= "+hoverMatches[i]);
-                        let hoverMatchesTrimmed = hoverMatches[i].trim();
-                        console.log("trim it = "+hoverMatchesTrimmed);
-                        console.log("1st two chars = "+hoverMatchesTrimmed.substring(0, 2));
-                        console.log("[Element 1] = "+substr(hoverMatchesTrimmed, 0, index(hoverMatchesTrimmed,':')))
+            let styleText = "";
+            if (nodeName == "style") {
+                styleText = RPTUtil.getInnerText(ruleContext).toLowerCase();
+                // check import
+                console.log("ruleContext.ownerDocument.styleSheets.length = "+ruleContext.ownerDocument.styleSheets.length);
+                for (let sIndex = 0; sIndex < ruleContext.ownerDocument.styleSheets.length; sIndex++) {
+                    let sheet = ruleContext.ownerDocument.styleSheets[sIndex] as CSSStyleSheet;
+                    if (sheet && sheet.ownerNode == ruleContext) {
+                        try {
+                            let styleRules = sheet.cssRules ? sheet.cssRules : sheet.rules;
+                            console.log("styleRules.length = "+styleRules.length);
+                            for (let styleRuleIndex = 0; styleRuleIndex < styleRules.length; styleRuleIndex++) {
+                                let foundHover = false;
+                                let hoverElement = "";
+                                let plusCombinator = false;
+                                let tildeCombinator = false;
+                                let afterCombinatorElement = "";
+                                let styleRule = styleRules[styleRuleIndex];
+                                let ruleText = styleRules[styleRuleIndex].cssText;
+                                console.log("styleRules["+styleRuleIndex+"] = "+ruleText);
+                                // Check for hover
+                                if (ruleText.match(":hover")) {
+                                    foundHover = true;
+                                    hoverElement = ruleText.split(":")[0];
+                                    console.log("hoverElement = "+hoverElement);
+;                                }
+                                // Check for css combinator +, adjacent sibling selector
+                                if (ruleText.match(":hover +") || ruleText.match(":hover+")) {
+                                    plusCombinator = true;
+                                    let plusTempStr = ruleText.substring(ruleText.indexOf('+') + 1);
+                                    plusTempStr = plusTempStr.trim();
+                                    afterCombinatorElement = plusTempStr.split(" ")[0];
+                                }
+                                // Check for css combinator ~, general sibling selector
+                                if (ruleText.match(":hover ~") || ruleText.match(":hover~")) {
+                                    tildeCombinator = true;
+                                    let plusTempStr = ruleText.substring(ruleText.indexOf('~') + 1);
+                                    plusTempStr = plusTempStr.trim();
+                                    afterCombinatorElement = plusTempStr.split(" ")[0];
+                                }
+                                // Get list of hover elements
+                                if (hoverElement !== "") {
+                                    console.log("hoverElement.toUpperCase() = "+hoverElement.toUpperCase());
+                                    let hoverElementList = document.getElementsByTagName(hoverElement.toUpperCase());
+                                    console.log("hoverElementList.length = "+hoverElementList.length);
+                                }
+                                
+
+
+                                // Check if css rule for afterCombinatorElement that contains display
+                                // attribute with any value but none
+
+                                // + trigger
+                                if (foundHover && plusCombinator) {
+                                    console.log("+ trigger");
+                                }
+                                // ~ trigger
+                                if (foundHover && tildeCombinator) {
+                                    console.log("~ trigger");
+                                }
+
+                                let styleImportRule: CSSImportRule;
+                                if (styleRule.type && styleRule.type === CSSRule.IMPORT_RULE && (styleImportRule = styleRule as CSSImportRule).styleSheet) {
+                                    let importRules = styleImportRule.styleSheet.cssRules ? styleImportRule.styleSheet.cssRules : styleImportRule.styleSheet.rules;
+                                    for (let rIndex = 0; rIndex < importRules.length; rIndex++) {
+                                        console.log("importRules["+rIndex+"].cssText = "+importRules[rIndex].cssText);
+                                        let iRule = importRules[rIndex];
+                                        styleText += iRule.cssText; 
+                                        // ok I have rule now see if it contains anything of interest
+                                        if (styleText.match(":hover")) {
+                                            console.log("Found hover");
+                                        }
+                                        console.log(styleText.split(" "));
+                                    }
+                                }
+                            }
+                        } catch (e) {
+                            // Silence css access issues
+                        }
                     }
-                } else {
-                    styleText = ruleContext.getAttribute("style");
-                    // console.log("styleAttribute = "+styleText);
                 }
             }
-            if (passed) return RulePass("Pass_0");
-
-    
-            if (!passed) return RulePotential("Potential_1");
-
-        }
-    },
-    {
-        /**
-         * Description: Trigger on all pages containing CSS (trigger once)
-         * Origin: RPT 5.6
-         */
-        id: "RPT_Style_Trigger2",
-        context: "dom:style, dom:link, dom:*[style]",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let nodeName = ruleContext.nodeName.toLowerCase();
-            if (nodeName === "link" &&
-                (!ruleContext.hasAttribute("rel") || ruleContext.getAttribute("rel").toLowerCase() != "stylesheet"))
-                return RulePass("Pass_0");
-            if (nodeName != "style" && nodeName != "link" &&
-                ruleContext.hasAttribute("style") && ruleContext.getAttribute("style").trim().length == 0)
-                return RulePass("Pass_0");
-            let triggered = RPTUtil.getCache(ruleContext.ownerDocument, "RPT_Style_Trigger2", false);
-            let passed = triggered;
-            //        Packages.java.lang.System.out.println(triggered);
-            RPTUtil.setCache(ruleContext.ownerDocument, "RPT_Style_Trigger2", true);
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RuleManual("Manual_1");
-
-        }
-    },
-
-    {
-        /**
-         * Description: Trigger for use of CSS background images
-         * Origin: RPT 5.6 G456
-         */
-        id: "RPT_Style_BackgroundImage",
-        context: "dom:style, dom:*[style]",
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let nodeName = ruleContext.nodeName.toLowerCase();
-            let passed = true;
-            if (nodeName == "link" && ruleContext.hasAttribute("rel") &&
-                ruleContext.getAttribute("rel").toLowerCase() == "stylesheet") {
-                // External stylesheet - trigger
-                passed = RPTUtil.triggerOnce(ruleContext, "RPT_Style_BackgroundImage", false);
-            }
-            if (passed && nodeName == "style" || ruleContext.hasAttribute("style")) {
-                let styleText;
-                if (nodeName == "style")
-                    styleText = RPTUtil.getInnerText(ruleContext);
-                else
-                    styleText = ruleContext.getAttribute("style");
-                let bgMatches = styleText.match(/background:[^;]*/g);
-                if (bgMatches != null) {
-                    for (let i = 0; passed && i < bgMatches.length; ++i)
-                        passed = bgMatches[i].indexOf("url(") == -1;
-                }
-            }
+            
             if (passed) return RulePass("Pass_0");
             if (!passed) return RulePotential("Potential_1");
 
