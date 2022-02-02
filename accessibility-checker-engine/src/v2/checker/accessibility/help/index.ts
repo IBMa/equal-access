@@ -1015,6 +1015,11 @@ let a11yHelp = {
         "Fail_1": `${Config.helpRoot}/combobox_autocomplete`,
         "Fail_inline": `${Config.helpRoot}/combobox_autocomplete`
     },
+    "aria_combobox_should_have_no_haspopup":{
+        0: `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
+        "Pass": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
+        "Fail_1": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
+    },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
         0: `${Config.helpRoot}/WCAG21_Style_Viewport`, 

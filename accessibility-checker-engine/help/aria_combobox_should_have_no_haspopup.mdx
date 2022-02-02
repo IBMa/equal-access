@@ -1,0 +1,74 @@
+---
+title: "Accessibility Checker Rule Help: aria_combobox_should_have_no_haspopup"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### A focusable element should not be within the subtree of an element with `aria-hidden` set to `"true"` 
+
+<div id="locLevel"></div>
+
+Element with `aria-hidden="true"` should not have focusable content
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Using either `role="presentation"` or `aria-hidden="true"` on a focusable element will result in some users focusing on "nothing".
+A focusable element with `aria-hidden="true"` is ignored as part of the reading order, 
+but still part of the focus order, 
+making its state of visible or hidden unclear.
+This rule checks that elements with an `aria-hidden` attribute do not contain focusable elements.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+When designers and developers want to hide parts of a web page that are pure decoration, 
+such as icon fonts - that are not meant to be read by assistive technologies:
+
+* ensure that assistive technologies will ignore the element by adding `aria-hidden="true"` to the element
+* enure none of the target elements are part of sequential focus navigation
+* ensure no descendants are part of sequential focus navigation 
+
+### Example
+
+* In the following example, the `button` element is focusable by default. 
+Therefore, using `aria-hidden="true"` violates the rule: 
+<CodeSnippet type="multi" light={true}>
+        &lt;div aria-hidden="true"&gt;
+            &lt;div aria-hidden="false"&gt;
+                &lt;button&gt;Some button&lt;/button&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+</CodeSnippet>
+
+Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element.
+Using `aria-hidden="true"` hides itself and all its content from assistive technologies.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [Fourth Rule of ARIA Use](https://www.w3.org/TR/using-aria/#fourth)
+* [ACT rule: Element with aria-hidden has no focusable content](https://act-rules.github.io/rules/6cfa84)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
