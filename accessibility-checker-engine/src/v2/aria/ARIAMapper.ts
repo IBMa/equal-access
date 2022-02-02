@@ -124,7 +124,7 @@ export class ARIAMapper extends CommonMapper {
                                 [role: string]: number
                             }
                         }> = JSON.parse(JSON.stringify(this.hierarchyPath));
-                        let hierarchyResults: IMapResult[] = JSON.parse(JSON.stringify(this.hierarchyResults));
+                        let hierarchyResults: IMapResult[] = DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults);
                         let attrValue = elem.getAttribute("aria-owns");
                         let ids = attrValue.trim().split(" ");
                         ids.forEach((id) => {
@@ -161,7 +161,7 @@ export class ARIAMapper extends CommonMapper {
                 hierarchyRole: JSON.parse(JSON.stringify(this.hierarchyRole)), 
                 hierarchyChildrenHaveRole: JSON.parse(JSON.stringify(this.hierarchyChildrenHaveRole)),
                 hierarchyPath: JSON.parse(JSON.stringify(this.hierarchyPath)),
-                hierarchyResults: JSON.parse(JSON.stringify(this.hierarchyResults))
+                hierarchyResults: DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults)
             };
 
             //rewrite parent hierarchy to the element with aria-owns
