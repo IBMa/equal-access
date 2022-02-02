@@ -112,6 +112,7 @@ let a11yRulesStyle: Rule[] = [
             let nodeName = ruleContext.nodeName.toLowerCase();
             let styleText = "";
             if (nodeName == "style") {
+                console.log("RULE RUN ******************");
                 styleText = RPTUtil.getInnerText(ruleContext).toLowerCase();
                 // check import
                 console.log("ruleContext.ownerDocument.styleSheets.length = "+ruleContext.ownerDocument.styleSheets.length);
@@ -127,47 +128,91 @@ let a11yRulesStyle: Rule[] = [
                                 let plusCombinator = false;
                                 let tildeCombinator = false;
                                 let afterCombinatorElement = "";
+                                let afterCombinatorElementHover = false;
+                                let adjacentSibling = false;
                                 let styleRule = styleRules[styleRuleIndex];
                                 let ruleText = styleRules[styleRuleIndex].cssText;
                                 console.log("styleRules["+styleRuleIndex+"] = "+ruleText);
                                 // Check for hover
-                                if (ruleText.match(":hover")) {
+                                if (ruleText.match(/:hover/g)) {
                                     foundHover = true;
+                                    console.log("FOUND HOVER = "+ foundHover);
                                     hoverElement = ruleText.split(":")[0];
                                     console.log("hoverElement = "+hoverElement);
-;                                }
+                                } else {
+                                    console.log("NO HOVER");
+                                    continue;
+                                }
+                                console.log("match = "+ruleText.match(/:hover \+/g));
                                 // Check for css combinator +, adjacent sibling selector
-                                if (ruleText.match(":hover +") || ruleText.match(":hover+")) {
+                                if (ruleText.match(/:hover \+/g) || ruleText.match(/:hover\+/g)) {
+                                    console.log("ruleText = "+ruleText);
+                                    console.log("match = "+ruleText.match(/:hover \\+/g));
                                     plusCombinator = true;
+                                    console.log("Found plusCombinator = "+ plusCombinator);
                                     let plusTempStr = ruleText.substring(ruleText.indexOf('+') + 1);
                                     plusTempStr = plusTempStr.trim();
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
                                 }
                                 // Check for css combinator ~, general sibling selector
-                                if (ruleText.match(":hover ~") || ruleText.match(":hover~")) {
+                                if (ruleText.match(/:hover \~/g) || ruleText.match(/:hover\~/g)) {
+                                    console.log("match = "+ruleText.match(":hover \~"));
                                     tildeCombinator = true;
+                                    console.log("Found tildeCombinator = "+ tildeCombinator);
                                     let plusTempStr = ruleText.substring(ruleText.indexOf('~') + 1);
                                     plusTempStr = plusTempStr.trim();
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
                                 }
-                                // Get list of hover elements
+
+                                // If we have afterCombinatorElement 
+                                //    then does it have a :hover
+                                //    then see if that element contains display property with any value but none 
+                                //    (it can't be persistent if there is 
+                                //    no display on hover)
+                                
+                                // First check the other css rules that start with a afterCombinatorElement
+                                if (sheet && sheet.ownerNode == ruleContext) {
+                                    try {
+                                        let styleRules2 = sheet.cssRules ? sheet.cssRules : sheet.rules;
+                                        console.log("styleRules2.length = "+styleRules2.length);
+                                        for (let styleRuleIndex2 = 0; styleRuleIndex2 < styleRules2.length; styleRuleIndex2++) {
+                                            // Check rule for afterCominatorElement:hover
+                                            // If fine afterCombinatorElement:hover see if rule has display: value where 
+                                            // value != none
+                                            let ruleText2 = styleRules[styleRuleIndex2].cssText;
+                                            console.log("ruleText2 = ", ruleText2);
+                                            console.log(ruleText2.match(afterCombinatorElement+":hover"));
+                                            if (ruleText2.match(afterCombinatorElement+":hover")) {
+                                                afterCombinatorElementHover = true;
+                                                console.log("Found afterCombinatorElementHover = "+ afterCombinatorElementHover);
+                                                console.log("afterCombinatorElementHover = "+afterCombinatorElementHover);
+                                            }
+                                        }
+                                    } catch (e) {
+                                        // Silence css access issues
+                                    }
+                                }
+
+                                // Get list of hover elements and next sibling for +
                                 if (hoverElement !== "") {
                                     console.log("hoverElement.toUpperCase() = "+hoverElement.toUpperCase());
-                                    let hoverElementList = document.getElementsByTagName(hoverElement.toUpperCase());
+                                    let hoverElementList = ruleContext.ownerDocument.getElementsByTagName(hoverElement.toUpperCase());
                                     console.log("hoverElementList.length = "+hoverElementList.length);
+                                    console.log("hoverElementList[0].tagName = "+hoverElementList[0].tagName);
+                                    // Get adjacent sibling
+                                    console.log("Adjacent sibling = "+hoverElementList[0].nextElementSibling.tagName);
+                                    if (afterCombinatorElement.toUpperCase() === hoverElementList[0].nextElementSibling.tagName) {
+                                        adjacentSibling = true;
+                                        console.log("adjacentSibling = ", adjacentSibling);
+                                    }
                                 }
-                                
-
-
-                                // Check if css rule for afterCombinatorElement that contains display
-                                // attribute with any value but none
 
                                 // + trigger
-                                if (foundHover && plusCombinator) {
+                                if (foundHover && plusCombinator && afterCombinatorElementHover && adjacentSibling) {
                                     console.log("+ trigger");
                                 }
                                 // ~ trigger
-                                if (foundHover && tildeCombinator) {
+                                if (foundHover && tildeCombinator && afterCombinatorElementHover) {
                                     console.log("~ trigger");
                                 }
 
@@ -178,8 +223,10 @@ let a11yRulesStyle: Rule[] = [
                                         console.log("importRules["+rIndex+"].cssText = "+importRules[rIndex].cssText);
                                         let iRule = importRules[rIndex];
                                         styleText += iRule.cssText; 
+                                        let ruleText = styleRules[styleRuleIndex].cssText;
+                                        console.log("styleRules["+styleRuleIndex+"].cssText = "+styleRules[styleRuleIndex].cssText);
                                         // ok I have rule now see if it contains anything of interest
-                                        if (styleText.match(":hover")) {
+                                        if (ruleText.match(":hover")) {
                                             console.log("Found hover");
                                         }
                                         console.log(styleText.split(" "));
