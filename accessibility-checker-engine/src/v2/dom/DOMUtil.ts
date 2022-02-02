@@ -126,7 +126,12 @@ export class DOMUtil {
     static objectCopyWithNodeRefs(rhs: any) {
         if (!rhs) return rhs;
         if (typeof rhs !== "object") {
-            return JSON.parse(JSON.stringify(rhs));
+            try {
+                return JSON.parse(JSON.stringify(rhs));
+            } catch (err) {
+                console.error(err);
+                throw err;
+            }
         } else if (rhs instanceof Node) {
             return rhs;
         } else {
