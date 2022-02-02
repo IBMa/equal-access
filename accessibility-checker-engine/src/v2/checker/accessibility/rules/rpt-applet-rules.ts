@@ -18,7 +18,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil } from "../util/legacy";
 
 let a11yRulesApplet : Rule[] = [
-            
+
 {
     /**
      * Description: Trigger if the applet alt text is poor
@@ -28,6 +28,8 @@ let a11yRulesApplet : Rule[] = [
     context: "dom:applet",
     run: (context: RuleContext, options?: {}) : RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        //skip the rule
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
         // JCH - NO OUT OF SCOPE hidden in context
         if (!RPTUtil.attributeNonEmpty(ruleContext, "alt")) {
             return RuleFail("Fail_1");

@@ -1,7 +1,9 @@
 const fs = require("fs");
 const gulp = require('gulp');
-var replace = require('gulp-replace');
-var ext_replace = require('gulp-ext-replace');
+const replace = require('gulp-replace');
+const ext_replace = require('gulp-ext-replace');
+const gRename = require("gulp-rename");
+const gSort = require('gulp-sort');
 
 const componentHeader = `import React, { ReactNode } from "react";
 import Markdown from 'markdown-to-jsx';
@@ -166,8 +168,20 @@ return(
     />);
 }
 }`;
+function helpFileName(s) {
+    return s.toLowerCase();
+}
 function copyFiles() {
     return gulp.src(["../../accessibility-checker-engine/help/*.mdx"])
+        .pipe(gRename(function (path) {
+            // Updates the object in-place
+            path.basename = helpFileName(path.basename);
+        }))
+        .pipe(gSort({
+            comparator: function(file1, file2) {
+                return (file1.path.localeCompare(file2.path));
+            }
+        }))
         .pipe(ext_replace('.tsx'))
         .pipe(replace(/`/g, "\\`"))
         .pipe(replace("export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)", ""))
@@ -189,14 +203,15 @@ function copyFiles() {
 }
 
 function fileSwitcher() {
-    let files = fs.readdirSync("../../accessibility-checker-engine/help/")
+    let files = fs.readdirSync("../../accessibility-checker-engine/help/");
+    files.sort((a,b) => a.localeCompare(b));
     let imports = "";
     let usage = "";
     for (const fileName of files) {
         let component = fileName.replace(".mdx", "");
         let reactName = component.substring(0,1).toUpperCase()+component.substring(1);
         
-        imports += `import ${reactName} from "./${component}";\n`;
+        imports += `import ${reactName} from "./${helpFileName(component)}";\n`;
         usage += `{this.props.item.ruleId === '${component}' && <${reactName} report={this.props.report} item={this.props.item} />}\n`;
     }
     return gulp.src("./helpSwitcher.template")

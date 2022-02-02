@@ -1,0 +1,38 @@
+name: 'Question ❓'
+description: Question or discussion about our tools.
+title: '[Question]: '
+labels: 'type: question'
+body:
+  - type: markdown
+    attributes:
+      value: '## Welcome!'
+  - type: markdown
+    attributes:
+      value:
+        'Hi there! 👋 It looks like you might have a question about our work.'
+  - type: dropdown
+    id: project
+    attributes:
+      label: Project
+      description: What project is your question related to? 
+      multiple: true
+      options: 
+        - 'able site'
+        - 'a11y checker engine'
+        - 'a11y checker extension'
+        - 'a11y checker'
+        - 'cypress accessibility checker'
+        - 'karma accessibility checker'
+        - 'rule-server'
+        - 'other'
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description:
+        "What's your question?"
+      placeholder: Please share the details of your question. 
+    validations:
+      required: true

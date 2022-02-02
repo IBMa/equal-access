@@ -1,8 +1,15 @@
+// No {tokens} in passive messages, such as 0: "a passive message..."
+// No back-ticks used in messages here in .ts file type, use <, ", '
+// Changes in messages usually require corresponding change in test cases
+//
 let a11yNls = {
-    // No {tokens} in passive messages, such as 0: "a passive message..."
-    // No back-ticks used in messages here, only <, ", '
-    // Changes in messages will require corresponding change in test cases
-    //
+    // AU - DONE
+    "landmark_name_unique": {
+        0: "Multiple landmarks should have a unique 'aria-labelledby' or 'aria-label' or be nested in a different parent regions",
+        "Pass_0": "Multiple \"{0}\" landmarks with the same parent region are distinguished by unique 'aria-label' or 'aria-labelledby'",
+        // Fail_0 occurs when we have: not disambiguated by same parent, labels are blank: "" == "", or same aria-label/labelledby
+        "Fail_0": "Multiple \"{0}\" landmarks with the same parent region are not distinguished from one another because they have the same \"{1}\" label" 
+    },
     // JCH - DONE
     "RPT_List_Misuse": {
         0: "List elements should only be used for lists of related items",

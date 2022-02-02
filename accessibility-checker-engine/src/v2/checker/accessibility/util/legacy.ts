@@ -388,7 +388,7 @@ export class RPTUtil {
     public static isDefinedAriaAttribute(ele, attrName) {
         let isDefinedAriaAttribute = false;
         if (attrName.substring(0, 5) === 'aria-') {
-            // User agents SHOULD treat state and property attributes with a value of "" the same as they treat an absent attribute.  
+            // User agents SHOULD treat state and property attributes with a value of "" the same as they treat an absent attribute.
             isDefinedAriaAttribute = ele.hasAttribute && ele.hasAttribute(attrName) && ele.getAttribute(attrName).length > 0;
         }
         return isDefinedAriaAttribute;
@@ -1164,7 +1164,7 @@ export class RPTUtil {
      */
     public static getAncestor(element, tagNames) {
         let walkNode = element;
-        while (walkNode != null) {
+        while (walkNode !== null) {
             let thisTag = walkNode.nodeName.toLowerCase();
             if (typeof (tagNames) === "string") {
                 if (thisTag === tagNames.toLowerCase()) {
@@ -1212,7 +1212,7 @@ export class RPTUtil {
      */
     public static getAncestorWithRole(element, roleName, considerImplicitRoles?) {
         let walkNode = DOMUtil.parentNode(element);
-        while (walkNode != null) {
+        while (walkNode !== null) {
             if (considerImplicitRoles) {
                 if (RPTUtil.hasRoleInSemantics(walkNode, roleName)) {
                     break;
@@ -1225,6 +1225,16 @@ export class RPTUtil {
             walkNode = DOMUtil.parentNode(walkNode);
         }
         return walkNode;
+    }
+
+    public static getAncestorWithAttribute(element, attrName, attrValue) {
+        let walkNode = DOMUtil.parentNode(element);
+        while (walkNode !== null) {
+            if (walkNode.nodeType === Node.ELEMENT_NODE && (<Element>walkNode).getAttribute(attrName) === attrValue) 
+                return walkNode;
+            walkNode = DOMUtil.parentNode(walkNode);
+        }
+        return null;
     }
 
     /**
@@ -1277,7 +1287,7 @@ export class RPTUtil {
 
             // Keep looping over the next siblings to find element which matches
             // the provided role.
-            while (walkNode != null && !hasRole) {
+            while (walkNode !== null && !hasRole) {
 
                 // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
                 // or not.
@@ -1314,7 +1324,7 @@ export class RPTUtil {
 
                 // Keep looping over all the previous siblings to search for an element which
                 // matches the provided role.
-                while (walkNode != null && !hasRole) {
+                while (walkNode !== null && !hasRole) {
 
                     // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
                     // or not.
@@ -1365,7 +1375,7 @@ export class RPTUtil {
                 if (formElements.includes(nw.node.nodeName.toLowerCase())) {
                     if (RPTUtil.isNodeDisabled(nw.node))
                        return true;
-                    return false;   
+                    return false;
                 }
             }
         }
@@ -1389,9 +1399,9 @@ export class RPTUtil {
                     return true;
                 }
             }
-    
+
         }
-    }    
+    }
     /**
      * This function is responsible for getting a descendant element with the specified role, under
      * the element that was provided.
@@ -1606,22 +1616,21 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
     public static getLabelForElementHidden(element: Element, ignoreHidden) {
-
         // Check if the global RPTUtil_LABELS hash is available, as this will contain the label nodes based on
         // for attribute.
-        if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
+        //if (!RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS", null)) {
+        let root = element.getRootNode();
+        if (!RPTUtil.getCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", null)) {
             // Variable Decleration
             let idToLabel = {}
 
             // Get all the label elements in the entire doc
             let labelNodes = RPTUtil.getDocElementsByTag(element, "label");
-
             // Loop over all the label nodes, in the case the label node has a for attribute,
             // extract that attribute and add this node to the hash if it is visible.
             for (let i = 0; i < labelNodes.length; ++i) {
 
                 if (labelNodes[i].hasAttribute("for")) {
-
                     // If ignore hidden is specified and the node is not visible we do not add it to the
                     // labelNodes hash.
                     if (ignoreHidden && !RPTUtil.isNodeVisible(labelNodes[i])) {
@@ -1633,21 +1642,21 @@ export class RPTUtil {
             }
 
             // Add the built hash to the ownerDocument (document), to be used later to fast retrival
-            RPTUtil.setCache(element.ownerDocument, "RPTUtil_LABELS", idToLabel);
+            //RPTUtil.setCache(element.ownerDocument, "RPTUtil_LABELS", idToLabel);
+            RPTUtil.setCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS", idToLabel);
         }
 
         // If this element has an id attribute, get the corosponding label element
         if (element.hasAttribute("id")) {
             // Fetch the id attribute
             let ctrlId = element.getAttribute("id");
-
             // Return the corosponding label element.
             // Note: in the case that the the id is not found in the hash that means, it does not exists or is hidden
             if (ctrlId.trim().length > 0) {
-                return RPTUtil.getCache(element.ownerDocument,"RPTUtil_LABELS",{})[ctrlId];
-            }
+                //return RPTUtil.getCache(element.getRootNode().ownerDocument,"RPTUtil_LABELS",{})[ctrlId];
+                return RPTUtil.getCache((root.nodeType === 11)? <ShadowRoot>root : <Document>root, "RPTUtil_LABELS",{})[ctrlId];
+            } 
         }
-
         return null;
     }
 
@@ -1768,7 +1777,8 @@ export class RPTUtil {
             }
         }
         if (ele.nodeName.toLowerCase() === "input") {
-            const label = RPTUtil.getLabelForElement(ele);
+            //const label = RPTUtil.getLabelForElement(ele);
+            const label = RPTUtil.getLabelForElementHidden(ele, true);
             if (!label) return "";
             return (RPTUtil.getAriaLabel(label) || label.innerText || "").trim();
         }
@@ -1871,7 +1881,7 @@ export class RPTUtil {
     public static nodeDepth(element) {
         let depth = 0;
         let walkNode = element;
-        while (walkNode != null) {
+        while (walkNode !== null) {
             walkNode = DOMUtil.parentNode(walkNode);
             depth = depth + 1;
         }
@@ -1926,7 +1936,7 @@ export class RPTUtil {
     /* Return a pointer to the given global variable
      * with its initial value as given */
     public static getCache(cacheSpot: Element | Document | DocumentFragment, keyName, initValue) {
-        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
 
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
@@ -1937,8 +1947,8 @@ export class RPTUtil {
         return cacheObj.aceCache[keyName]
     }
 
-    public static setCache(cacheSpot: Document | Element, globalName, value) : any {
-        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
+    public static setCache(cacheSpot: Document | Element | ShadowRoot, globalName, value) : any {
+        let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
         }
@@ -2060,7 +2070,7 @@ export class RPTUtil {
     }
 
     public static svgHasName(element: SVGElement) {
-        return RPTUtil.attributeNonEmpty(element, "aria-label") 
+        return RPTUtil.attributeNonEmpty(element, "aria-label")
             || RPTUtil.attributeNonEmpty(element, "aria-labelledby")
             || !!element.querySelector(":scope > title");
     }
@@ -2087,11 +2097,11 @@ export class RPTUtil {
                 // In the case an img element is present with alt then we can mark this as pass
                 // otherwise keep checking all the other elements. Make sure that this image element is not hidden.
                 hasContent = (
-                    node.nodeName.toLowerCase() === "img" 
+                    node.nodeName.toLowerCase() === "img"
                     && (RPTUtil.attributeNonEmpty(node, "alt") || RPTUtil.attributeNonEmpty(node, "title"))
                     && RPTUtil.isNodeVisible(node)
                 ) || (
-                    node.nodeName.toLowerCase() === "svg" 
+                    node.nodeName.toLowerCase() === "svg"
                     && RPTUtil.svgHasName(node as any)
                 );
 
@@ -2146,9 +2156,9 @@ export class RPTUtil {
             while (!hasContent && nw.nextNode() && nw.node != element) {
                 hasContent = (nw.node.nodeName.toLowerCase() === "img" &&
                     RPTUtil.attributeNonEmpty(nw.node, "alt"));
-                if (!hasContent 
+                if (!hasContent
                     && (RPTUtil.hasRole(nw.node, "button", true) || RPTUtil.hasRole(nw.node, "textbox"))
-                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.elem(), true))) 
+                    && (RPTUtil.hasAriaLabel(nw.node) || RPTUtil.attributeNonEmpty(nw.node, "title") || RPTUtil.getLabelForElementHidden(nw.elem(), true)))
                 {
                     hasContent = true;
                 }
@@ -2416,15 +2426,15 @@ export class RPTUtil {
         // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
         if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
              let index = -1;
-             if ((index = allowedAttributes.indexOf("aria-level")) > -1) 
+             if ((index = allowedAttributes.indexOf("aria-level")) > -1)
                 allowedAttributes.splice(index, 1);
-             
-             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1) 
+
+             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
                 allowedAttributes.splice(index, 1);
-            
-             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1) 
+
+             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
                 allowedAttributes.splice(index, 1);
-             
+
         }
 
         return allowedAttributes;
@@ -2651,6 +2661,17 @@ export class RPTUtil {
 
         // Return true (node is visible)
         return true;
+    }
+
+    /**
+     * return true if the node or its ancester is natively hidden or aria-hidden = 'true'
+     * @param node
+     */
+    public static isNodeHiddenFromAT(node: Element) {
+        if (!RPTUtil.isNodeVisible(node) || node.getAttribute("aria-hidden") === 'true') return true;
+        let ancestor = RPTUtil.getAncestorWithAttribute(node, "aria-hidden", "true");
+        if (ancestor) return true;
+        return false;
     }
 
     public static getControlOfLabel(node: Node) {
@@ -3427,7 +3448,7 @@ export class NodeWalker {
             let iframeNode = (this.node as HTMLIFrameElement);
             let elementNode = (this.node as HTMLElement);
             let slotElement = (this.node as HTMLSlotElement)
-            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+            if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && this.node.nodeName.toUpperCase() === "IFRAME"
                 && iframeNode.contentDocument
                 && iframeNode.contentDocument.documentElement)
@@ -3435,16 +3456,16 @@ export class NodeWalker {
                 let ownerElement = this.node;
                 this.node = iframeNode.contentDocument.documentElement;
                 (this.node as any).ownerElement = ownerElement;
-            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
+            } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && elementNode.shadowRoot
                 && elementNode.shadowRoot.firstChild)
             {
                 let ownerElement = this.node;
                 this.node = elementNode.shadowRoot;
                 (this.node as any).ownerElement = ownerElement;
-            } else if (this.node.nodeType === 1 
+            } else if (this.node.nodeType === 1
                 && elementNode.nodeName.toLowerCase() === "slot"
-                && slotElement.assignedNodes().length > 0) 
+                && slotElement.assignedNodes().length > 0)
             {
                 let slotOwner = this.node;
                 this.node = slotElement.assignedNodes()[0];
@@ -3468,7 +3489,7 @@ export class NodeWalker {
                     let n = this.node.nextSibling;
                     while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
                         n = this.node.nextSibling;
-                    } 
+                    }
                     if (n) {
                         // We found another unnamed slot
                         let slotOwner = (this.node as any).slotOwner;

@@ -28,7 +28,9 @@ interface IReportElementsProps {
     report: IReport;
     selectItem: (item: IReportItem) => void,
     getItem: (item: IReportItem) => void,
+    getSelectedItem: (item: IReportItem) => void,
     learnItem: IReportItem | null,
+    selectedIssue: IReportItem | null,
     layout: string,
     dataFromParent: boolean[],
     focusedViewFilter: boolean
@@ -120,6 +122,8 @@ export default class ReportElements extends React.Component<IReportElementsProps
                             report={this.props.report} 
                             group={group}
                             getItem={this.props.getItem}
+                            getSelectedItem={this.props.getSelectedItem}
+                            selectedIssue={this.props.selectedIssue}
                             learnItem={this.props.learnItem}
                             selectItem={this.props.selectItem} 
                             layout={this.props.layout}
