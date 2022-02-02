@@ -1019,6 +1019,8 @@ let a11yHelp = {
         0: `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
         "Pass": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
         "Fail_1": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
+        "Fail_2": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`,
+        "Fail_3": `${Config.helpRoot}/aria_combobox_should_have_no_haspopup`
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
