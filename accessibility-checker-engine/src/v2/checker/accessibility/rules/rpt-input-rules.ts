@@ -156,7 +156,7 @@ let a11yRulesInput: Rule[] = [
                     passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
                 else if (otherRole) {
                     passed = RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
-                             || RPTUtil.hasNonEmptyTextNode(ruleContext);
+                             || RPTUtil.attributeNonEmpty(ruleContext, "title");
                 } else {
                     // any other role?
                 }
