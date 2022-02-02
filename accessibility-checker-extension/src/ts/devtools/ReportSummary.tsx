@@ -18,7 +18,6 @@ import React from "react";
 
 import { IReport } from './Report';
 import { Tile } from 'carbon-components-react';
-import ReportSummaryUtil from '../util/reportSummaryUtil';
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -27,13 +26,26 @@ interface IReportSummaryState {
 }
 
 interface IReportSummaryProps {
-    report: IReport
-    tabURL: string
+    report: IReport,
+    tabURL: string,
+    counts?: {
+        "total": { [key: string]: number },
+        "filtered": { [key: string]: number }
+    } | null,
 }
 
 export default class ReportSummary extends React.Component<IReportSummaryProps, IReportSummaryState> {
     render() {
-        let summaryNumbers = ReportSummaryUtil.calcSummary(this.props.report);
+
+        let counts = this.props.counts;
+        counts= this.props.report && this.props.report.counts;
+
+        // let isLatestArchive = this.isLatestArchive(this.props.selectedArchive, this.props.archives);
+
+        counts.total["Violation"] = counts.total["Violation"] || 0;
+        counts.total["Needs review"] = counts.total["Needs review"] || 0;
+        counts.total["Recommendation"] = counts.total["Recommendation"] || 0;
+        counts.total["All"] = counts.total["Violation"] + counts.total["Needs review"] + counts.total["Recommendation"];
 
         let d = new Date();
         let options = {
@@ -50,7 +62,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
 
         let elementNoFailures: string = "";
         /** Calculate the score */
-        elementNoFailures = (((summaryNumbers[4] - summaryNumbers[3]) / summaryNumbers[4]) * 100).toFixed(0);
+        elementNoFailures = (((counts.total["All"] - counts.total["Recommendation"]) / counts.total["All"]) * 100).toFixed(0);
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
@@ -79,7 +91,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Violations</h3>
                                 <span><img src={Violation16} style={{ verticalAlign: "top", float: "right" }} alt="Violation" /></span>
                             </div>
-                            <div className="tile-score">{summaryNumbers[0]}</div>
+                            <div className="tile-score">{counts.total["Violation"]}</div>
                             <div className="tile-description">Accessibility failures that need to be corrected</div>
                         </Tile>
                     </div>
@@ -91,7 +103,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Needs review</h3>
                                 <span><img src={NeedsReview16} style={{ verticalAlign: "top", float: "right" }} alt="Needs review" /></span>
                             </div>
-                            <div className="tile-score">{summaryNumbers[1]}</div>
+                            <div className="tile-score">{counts.total["Needs review"]}</div>
                             <div className="tile-description2">Issues that may not be a violation; manual review is needed</div>
                         </Tile>
                     </div>
@@ -101,7 +113,7 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                                 <h3 className="tile-title" style={{ display: "inline" }}>Recommendations</h3>
                                 <span><img src={Recommendation16} style={{ verticalAlign: "top", float: "right" }} alt="Recommendation" /></span>
                             </div>
-                            <div className="tile-score">{summaryNumbers[2]}</div>
+                            <div className="tile-score">{counts.total["Recommendation"]}</div>
                             <div className="tile-description2">Opportunities to apply best practices to further improve accessibility</div>
                         </Tile>
                     </div>
