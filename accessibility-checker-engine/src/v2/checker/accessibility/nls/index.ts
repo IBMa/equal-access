@@ -208,7 +208,7 @@ let a11yNls = {
         "Pass_2": "content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element",
         "Potential_1": "Verify the pointer can hover over the displayed element, not just the trigger",
         "Potential_2": "Verify the pointer can hover over _all_ the information displayed on hover",
-        "Potential_3": "Verify the margin style attribute on the displayed element has not prevented the pointer from hover over the displayed element, not just the trigger"
+        "Potential_3": "Verify the margin style attribute on the displayed element has not prevented the pointer from hovering over the displayed element, not just the trigger"
     },
     // JCH - DONE
     "RPT_Pre_ASCIIArt": {
