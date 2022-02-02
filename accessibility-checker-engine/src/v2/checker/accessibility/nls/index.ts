@@ -206,8 +206,8 @@ let a11yNls = {
         "Pass_0": "the hover: pseudo-class is not used to display content",
         "Pass_1": "content displayed via the :hover pseudo-class is a direct child of the trigger element",
         "Pass_2": "content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element",
-        "Potential_1": "Verify the pointer can hover over the displayed element, not just the trigger",
-        "Potential_2": "Verify the pointer can hover over _all_ the information displayed on hover",
+        "Potential_1": "Verify the pointer can be positioned over the displayed element, not just the trigger",
+        "Potential_2": "Verify the pointer can be positioned over _all_ the information displayed on hover",
         "Potential_3": "Verify the margin style attribute on the displayed element has not prevented the pointer from hovering over the displayed element, not just the trigger"
     },
     // JCH - DONE
