@@ -34,7 +34,7 @@ the messages from the ...nls/index.ts file instead of message titles here in mdx
 
 ### Why is this important?
 
-When content displays on hover, the pointer should be able to move from the trigger to the new content. If the new content disappears when the pointer leaves the target element, users who significantly magnify their screen will never be able to bring the new content into view to read.
+When content displays on hover, the pointer should be able to move from the trigger to the new content. If the new content disappears when the pointer leaves the trigger element, users who significantly magnify their screen will never be able to bring the new content into view to read.
 
 
 <div id="locSnippet"></div>
@@ -43,12 +43,12 @@ When content displays on hover, the pointer should be able to move from the trig
 ### What to do
 
 * If using the css `'hover'` pseudo-class on one element in order to set a `'display'` style on another element, the displayed element must be a child of the trigger element;
-* **Or**, the displayed element must be the adjacent sibling of the target, with no `'margin'` property set on the displayed element (since the margin separates the two elements and prevents the hover display from persisting).
+* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with no `margin` property set on the displayed element (since the margin separates the two elements and prevents the hover display from persisting).
 
-Note: Use of the `'~'` selector with the `'display'` style attribute can allow many siblings of the target element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the target towards the displayed content. 
+Note: Use of the `~` selector with the `display` style attribute can allow many siblings of the trigger element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the trigger towards the displayed content. 
 
 
-Alert: JOSIAH WE NEED TO DECIDE ON/IF APPROPRIATE CODE SAMPLE. The recommended code example is:
+The recommended code example is:
 
 <CodeSnippet type="multi" light={true}>
  &lt;style&gt;
@@ -77,7 +77,7 @@ span:hover div {
   
 * [IBM 1.4.13 Content on Hover or Focus](https://www.ibm.com/able/requirements/requirements/#1_4_13)
 * [WCAG technique SCR39](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR39)
-* [WCAG failure technique F95](https://www.w3.org/WAI/WCAG21/Techniques/failures/F95)
+* [WCAG technique F95](https://www.w3.org/WAI/WCAG21/Techniques/failures/F95)
 
 ### Who does this affect?
 
