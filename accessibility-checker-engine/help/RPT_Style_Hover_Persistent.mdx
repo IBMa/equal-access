@@ -42,8 +42,8 @@ When content displays on hover, the pointer should be able to move from the trig
 
 ### What to do
 
-* If using the css `'hover'` pseudo-class on one element in order to set a `'display'` style on another element, the displayed element must be a child of the trigger element;
-* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with no `margin` property set on the displayed element (since the margin separates the two elements and prevents the hover display from persisting).
+* If using the css `hover` pseudo-class on one element in order to set a `display` style on another element, the displayed element must be a child of the trigger element;
+* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with its own `hover` set to `display`, and with no `margin` property set (since the margin separates the two elements and prevents the hover display from persisting).
 
 Note: Use of the `~` selector with the `display` style attribute can allow many siblings of the trigger element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the trigger towards the displayed content. 
 
