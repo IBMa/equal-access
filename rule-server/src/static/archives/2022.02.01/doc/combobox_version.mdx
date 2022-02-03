@@ -1,0 +1,53 @@
+---
+title: "Accessibility Checker Rule Help: combobox_version"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The combobox design pattern is detected as ARIA 1.1, which is not allowed by ARIA 1.2
+
+<div id="locLevel"></div>
+
+The combobox design pattern must be valid for ARIA 1.2.
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A combobox combines a text input element and a popup element that helps the user set the value of the
+input. The text input element must be a single line text field with an appropriate role, otherwise 
+assistive technologies may not be able to present and control the content correctly. 
+
+The ARIA 1.1 combobox pattern was not supported by browsers. The ARIA 1.2 pattern is best
+supported by browsers and assistive technologies.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Code the combobox as in the [ARIA practices - Examples](https://w3c.github.io/aria-practices/#examples-1)
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
+* [ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

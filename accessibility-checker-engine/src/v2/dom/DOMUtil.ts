@@ -117,6 +117,36 @@ export class DOMUtil {
         while (nd != null && nd.nodeType !== Node.DOCUMENT_FRAGMENT_NODE)
             nd = nd.parentNode;
         return nd;
+    }
 
+    /**
+     * Copies objects, but retains Node attributes as references
+     * @param rhs 
+     */
+    static objectCopyWithNodeRefs(rhs: any) {
+        if (!rhs) return rhs;
+        if (typeof rhs !== "object") {
+            if (typeof rhs === "function") {
+                return rhs;
+            } else {
+                return JSON.parse(JSON.stringify(rhs));
+            }
+        } else if (rhs instanceof Node || !!rhs.nodeType) {
+            return rhs;
+        } else {
+            let retVal;
+            if (rhs.constructor.name === "Array") {
+                retVal = [];
+                for (const item of rhs) {
+                    retVal.push(this.objectCopyWithNodeRefs(item));
+                }                
+            } else {
+                retVal = {};
+                for (const key in rhs) {
+                    retVal[key] = this.objectCopyWithNodeRefs(rhs[key]);
+                }
+            }
+            return retVal;
+        }
     }
 }
