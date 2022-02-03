@@ -864,11 +864,11 @@ let a11yNls = {
         "Fail_2": "Group/Fieldset \"{0}\" has a duplicate name to another group"
     },
     // JCH - DONE
-    "Rpt_Aria_MultipleGroupRoles_Implicit": {
-        0: "Each element with \"group\" role must have a unique label that describes its purpose",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with \"group\" role do not have unique labels"
-    },
+    // "Rpt_Aria_MultipleGroupRoles_Implicit": {
+    //     0: "Each element with \"group\" role must have a unique label that describes its purpose",
+    //     "Pass_0": "Rule Passed",
+    //     "Fail_1": "Multiple elements with \"group\" role do not have unique labels"
+    // },
     // JCH - DONE
     "Rpt_Aria_GroupRoleLabel_Implicit": {
         0: "An element with \"group\" role should have a unique label that describes its purpose",

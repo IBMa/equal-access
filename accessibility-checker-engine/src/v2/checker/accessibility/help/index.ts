@@ -870,11 +870,11 @@ let a11yHelp = {
         "Fail_2": `${Config.helpRoot}/group_withInputs_hasName`
     },
     // JCH - DONE
-    "Rpt_Aria_MultipleGroupRoles_Implicit": {
-        0: `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
-        "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
-        "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`
-    },
+    // "Rpt_Aria_MultipleGroupRoles_Implicit": {
+    //     0: `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
+    //     "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`,
+    //     "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleGroupRoles_Implicit`
+    // },
     // JCH - DONE
     "Rpt_Aria_GroupRoleLabel_Implicit": {
         0: `${Config.helpRoot}/Rpt_Aria_GroupRoleLabel_Implicit`,

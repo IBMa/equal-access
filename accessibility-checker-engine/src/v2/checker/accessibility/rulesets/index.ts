@@ -761,11 +761,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
@@ -1960,11 +1961,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
@@ -3105,11 +3107,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
