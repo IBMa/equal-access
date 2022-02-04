@@ -128,64 +128,146 @@ let a11yRulesStyle: Rule[] = [
                                 let plusCombinator = false;
                                 let tildeCombinator = false;
                                 let afterCombinatorElement = "";
+                                let afterCombinatorElementDisplay = false;
+                                let afterCombinatorElementDisplayValue = false;
                                 let afterCombinatorElementHover = false;
+                                let supportingElement = false;
+                                let supportingHover = false;
+                                let supportingHoverElementDisplayProperty = false;
+                                let supportingHoverElementDisplayValue = false;
+
                                 let adjacentSibling = false;
                                 let styleRule = styleRules[styleRuleIndex];
                                 let ruleText = styleRules[styleRuleIndex].cssText;
                                 console.log("styleRules["+styleRuleIndex+"] = "+ruleText);
-                                // Check for hover
+                                // 1. Check for :hover
                                 if (ruleText.match(/:hover/g)) {
                                     foundHover = true;
-                                    console.log("FOUND HOVER = "+ foundHover);
+                                    console.log("1. found :hover = "+ foundHover);
+                                // 2. Get hover element
                                     hoverElement = ruleText.split(":")[0];
-                                    console.log("hoverElement = "+hoverElement);
+                                    console.log("2. found element that goes with :hover = "+hoverElement);
                                 } else {
-                                    console.log("NO HOVER");
-                                    continue;
+                                    console.log("1. No hover so skip this rule");
+                                    continue; // if no :hover skip this rule
                                 }
-                                console.log("match = "+ruleText.match(/:hover \+/g));
-                                // Check for css combinator +, adjacent sibling selector
-                                if (ruleText.match(/:hover \+/g) || ruleText.match(/:hover\+/g)) {
-                                    console.log("ruleText = "+ruleText);
-                                    console.log("match = "+ruleText.match(/:hover \\+/g));
-                                    plusCombinator = true;
-                                    console.log("Found plusCombinator = "+ plusCombinator);
-                                    let plusTempStr = ruleText.substring(ruleText.indexOf('+') + 1);
+                                // 3a. Check for css combinator + 
+                                // 4a. if so do we have an after combinator element
+                                // 5. Check if the after combinator element has display: property
+                                // 6. Check if display property is not none
+                                // This concludes the checks for the a main hover rule
+                                let plusTempStr = ruleText.substring(ruleText.indexOf('+') + 1);
                                     plusTempStr = plusTempStr.trim();
+                                if (ruleText.match(/:hover \+/g) || ruleText.match(/:hover\+/g)) {
+                                    plusCombinator = true;
+                                    console.log("3a. Found plusCombinator = "+ plusCombinator);
+                                    console.log("plusTempStr = "+plusTempStr);
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
+                                    console.log("4a. Found plus afterCombinatorElement = "+afterCombinatorElement);
                                 }
-                                // Check for css combinator ~, general sibling selector
+
+                                // 3b. Check for css combinator + 
+                                // 4b. if so do we have an after combinator element
                                 if (ruleText.match(/:hover \~/g) || ruleText.match(/:hover\~/g)) {
                                     console.log("match = "+ruleText.match(":hover \~"));
                                     tildeCombinator = true;
-                                    console.log("Found tildeCombinator = "+ tildeCombinator);
+                                    console.log("3b. Found tildeCombinator = "+ tildeCombinator);
                                     let plusTempStr = ruleText.substring(ruleText.indexOf('~') + 1);
                                     plusTempStr = plusTempStr.trim();
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
+                                    console.log("4b. Found tilde afterCombinatorElement = "+afterCombinatorElement);
                                 }
 
-                                // If we have afterCombinatorElement 
-                                //    then does it have a :hover
-                                //    then see if that element contains display property with any value but none 
-                                //    (it can't be persistent if there is 
-                                //    no display on hover)
+                                if (!plusCombinator && !tildeCombinator) {
+                                    console.log("If NO plusCombinator or tildeCombinator MOVE ON");
+                                    continue;
+                                }
+                                    
+
+                                // 5. Check if the after combinator element has display: property
+                                // 6. Check if display property is not none
+                                if (afterCombinatorElement) {
+                                    // get index of display:
+                                    console.log("plusTempStr = "+plusTempStr);
+                                    let index = plusTempStr.indexOf("display:");
+                                    if (index) {
+                                        afterCombinatorElementDisplay = true;
+                                        console.log("5. Found afterCombinatorElementDisplay = "+afterCombinatorElementDisplay);
+                                        if (plusTempStr.slice(index+8).trim().split(" ")[0] !== "none;") {
+                                            afterCombinatorElementDisplayValue = true;
+                                            console.log("6. Found afterCombinatorElementDisplayValue not none = "+afterCombinatorElementDisplayValue);
+                                        } else {
+                                            console.log("If afterCombinatorElementDisplayValue === none MOVE ON");
+                                            continue;
+                                        }
+                                    } else {
+                                        console.log("If NO afterCombinatorElementDisplay MOVE ON");
+                                        continue;
+                                    }
+                                } else {
+                                    console.log("If NO afterCombinatorElement MOVE ON");
+                                    continue;
+                                }
                                 
-                                // First check the other css rules that start with a afterCombinatorElement
+                                if (afterCombinatorElementDisplayValue)
+                                    console.log("**** At this point we have verified that we have a css element with a hover of the format span:hover + div { display: block; } with all the proper properties and values");
+                                // NOTE: At this point we have verified that we have a css element with a hover
+                                //       of the format span:hover + div { display: block; }
+                                //       with all the proper properties and values
+                                
+                                //  7. check the other css rules that start with a afterCombinatorElement
+                                //     e.g., since we have verified "span:hover + div { display: block; }"
+                                //     we are looking for a supporting div:hover { display: block }
+                                //     so we can use the code from above for finding hover and display and its value
+                                //  8. so we n get div { display: block; }
+                                //  9. is there a "display:"
+                                // 10. is there a value after display other than "none"
+                                // 11. if all these are true then we have full examined the element:hover with
+                                //     combinator rule
                                 if (sheet && sheet.ownerNode == ruleContext) {
                                     try {
                                         let styleRules2 = sheet.cssRules ? sheet.cssRules : sheet.rules;
                                         console.log("styleRules2.length = "+styleRules2.length);
                                         for (let styleRuleIndex2 = 0; styleRuleIndex2 < styleRules2.length; styleRuleIndex2++) {
                                             // Check rule for afterCominatorElement:hover
-                                            // If fine afterCombinatorElement:hover see if rule has display: value where 
+                                            // If fine afterCombinatorElement:hover see if rule has property display: value where 
                                             // value != none
                                             let ruleText2 = styleRules[styleRuleIndex2].cssText;
                                             console.log("ruleText2 = ", ruleText2);
-                                            console.log(ruleText2.match(afterCombinatorElement+":hover"));
-                                            if (ruleText2.match(afterCombinatorElement+":hover")) {
-                                                afterCombinatorElementHover = true;
-                                                console.log("Found afterCombinatorElementHover = "+ afterCombinatorElementHover);
-                                                console.log("afterCombinatorElementHover = "+afterCombinatorElementHover);
+                                            console.log("afterCombinatorElement = "+afterCombinatorElement);
+                                            // get supporting hover element 
+                                            let supportingHoverElement = ruleText2.split(":")[0];
+                                            if (supportingHoverElement === afterCombinatorElement) {
+                                                console.log("7. Found supporting hover element same as afterCombinatorElement")
+                                                supportingElement = true;
+                                                // does supporting element have hover
+                                                if (ruleText2.match(/:hover/g)) {
+                                                    supportingHover = true;
+                                                    console.log("8. found :hover = "+ foundHover);
+                                                    let index = ruleText2.indexOf("display:");
+                                                    if (index) {
+                                                        supportingHoverElementDisplayProperty = true;
+                                                        console.log("9. Found supportingHoverElementDisplayProperty = "+supportingHoverElementDisplayProperty);
+                                                        if (plusTempStr.slice(index+8).trim().split(" ")[0] !== "none;") {
+                                                            supportingHoverElementDisplayValue = true;
+                                                            console.log("10. Found supportingHoverElementDisplayValue not none = "+supportingHoverElementDisplayValue);
+                                                            console.log("**** At this point we have verified a supporting afterCombinatorElement css rule that contains hover and display property that is not equal to none")
+                                                        } else {
+                                                            console.log("If NO supportingHoverElementDisplayValue MOVE ON");
+                                                            continue;
+                                                        }
+                                                    } else {
+                                                        console.log("If NO supportingHoverElementDisplayProperty MOVE ON");
+                                                        continue;
+                                                    }
+                                                } else {
+                                                    console.log("If NO supportingHover MOVE ON");
+                                                    continue;
+                                                }
+
+                                            } else {
+                                                console.log("If NO supportingHoverElement MOVE ON");
+                                                continue;
                                             }
                                         }
                                     } catch (e) {
