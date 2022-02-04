@@ -1230,6 +1230,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "combobox_should_have_no_popup",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE

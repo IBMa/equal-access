@@ -360,60 +360,26 @@ let a11yRulesCombobox: Rule[] = [
         }
     },
     {
-        id: "aria_combobox_should_have_no_haspopup",
-        context: "aria:combobox",
+        id: "combobox_should_have_no_popup",
+        context: "dom:input[list][aria-haspopup]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-
-            //combobox should be only implicitly applied for input element 
-            if (ruleContext.nodeName.toLowerCase() !== "input" )
-                return;
-            const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
-            const cacheKey = context["dom"].rolePath;
-            const cachedElem = cache[cacheKey];
-            if (!cachedElem) return null;
-            const { pattern, expanded } = cachedElem;
-
-            let popupId;
-            let popupElement;
-            if (pattern === "1.0") {
-                if (!ruleContext.hasAttribute("aria-owns")) {
-                    // If the combobox isn't expanded, this attribute isn't required
-                    return !expanded ? null : RuleFail("Fail_1.0_missing_owns");
-                }
-                popupId = ruleContext.getAttribute("aria-owns");
-                popupElement = FragmentUtil.getById(ruleContext, popupId);
-                if (!popupElement) {
-                    // If the combobox isn't expanded, this attribute isn't required
-                    return !expanded ? null : RuleFail("Fail_1.0_popup_reference_missing", [popupId]);
-                }
-            } else if (pattern === "1.2") {
-                if (!ruleContext.hasAttribute("aria-controls")) {
-                    // If the combobox isn't expanded, this attribute isn't required
-                    return !expanded ? null: RuleFail("Fail_1.2_missing_controls");
-                }
-                popupId = ruleContext.getAttribute("aria-controls");
-                popupElement = FragmentUtil.getById(ruleContext, popupId);
-                if (!popupElement) {
-                    // If the combobox isn't expanded, this attribute isn't required
-                    return !expanded ? null : RuleFail("Fail_1.2_popup_reference_missing", [popupId]);
-                }
-            } else {
-                return null;
-            }
-
-            // We have an element, stick it in the cache and then check its role
-            cachedElem.popupId = popupId;
-            cachedElem.popupElement = popupElement;
-
-
-            if (expanded && !RPTUtil.isNodeVisible(popupElement)) {
-                return RuleFail("Fail_combobox_expanded_hidden");
-            } else if (!expanded && RPTUtil.isNodeVisible(popupElement)) {
-                return RuleFail("Fail_combobox_collapsed_visible");
-            }
-
-            return RulePass(expanded ? "Pass_expanded" : "Pass_collapsed");
+            console.log("ruleContext=" + context);
+            //only trigger if input type is text, search, tel, url, email, or missing or invalid 
+            let textTypes = ["file", "password", "checkbox", "radio",
+                             "date", "number", "range", "time", "color",
+                             "month", "week", "datetime-local"
+                            ];
+            
+            if (ruleContext.hasAttribute("type") && textTypes.includes(ruleContext.getAttribute("type").toLowerCase()))
+                return; 
+            
+            const listId = ruleContext.getAttribute("list");
+            let attrValue = ruleContext.getAttribute("type"); 
+            if (!attrValue)  attrValue = 'none'  
+            
+            return RuleFail("Potential_1", [listId, attrValue]);
+                
         }
     }
     // end of rules
