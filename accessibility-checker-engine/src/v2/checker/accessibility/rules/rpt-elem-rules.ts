@@ -73,7 +73,94 @@ let a11yRulesElem: Rule[] = [
             ", dom:*[noshade], dom:*[nowrap], dom:*[object], dom:*[prompt], dom:*[start]" +
             ", dom:*[text], dom:*[version], dom:*[vlink], dom:*[vspace], dom:img[border]" +
             ", dom:object[border], dom:td[height], dom:th[height], dom:li[type], dom:ol[type]" +
-            ", dom:ul[type], dom:li[value], dom:pre[width], dom:hr[width], dom:td[width], dom:th[width]",
+            ", dom:ul[type], dom:li[value], dom:pre[width], dom:hr[width], dom:td[width], dom:th[width]" +
+            
+            ", aria:directory, aria:*[aria-grabbed], aria:*[aria-dropeffect], " +
+            ", aria:alert[aria-disabled], aria:alert[aria-errormessage], aria:alert[aria-haspopup], aria:alert[aria-invalid], " +
+            ", aria:alertdialog[aria-disabled], aria:alertdialog[aria-errormessage], aria:alertdialog[aria-haspopup], aria:alertdialog[aria-invalid], " +
+            ", aria:article[aria-disabled], aria:article[aria-errormessage], aria:article[aria-haspopup], aria:article[aria-invalid], " +
+            ", aria:banner[aria-disabled], aria:banner[aria-errormessage], aria:banner[aria-haspopup], aria:banner[aria-invalid], " +
+            ", aria:blockquote[aria-disabled], aria:blockquote[aria-errormessage], aria:blockquote[aria-haspopup], aria:blockquote[aria-invalid], " +
+            ", aria:button[aria-errormessage], aria:button[aria-invalid], " +
+            ", aria:caption[aria-disabled], aria:caption[aria-errormessage], aria:caption[aria-haspopup], aria:caption[aria-invalid], " +
+            ", aria:cell[aria-disabled], aria:cell[aria-errormessage], aria:cell[aria-haspopup], aria:cell[aria-invalid], " +
+            ", aria:checkbox[aria-haspopup] " +
+            ", aria:code[aria-disabled], aria:code[aria-errormessage], aria:code[aria-haspopup], aria:code[aria-invalid], " +
+            ", aria:command[aria-disabled], aria:command[aria-errormessage], aria:command[aria-haspopup], aria:command[aria-invalid], " +
+            ", aria:complementary[aria-disabled], aria:complementary[aria-errormessage], aria:complementary[aria-haspopup], aria:complementary[aria-invalid], " +
+            ", aria:composite[aria-errormessage], aria:composite[aria-haspopup], aria:composite[aria-invalid], " +
+            ", aria:contentinfo[aria-disabled], aria:contentinfo[aria-errormessage], aria:contentinfo[aria-haspopup], aria:contentinfo[aria-invalid], " +
+            ", aria:definition[aria-disabled], aria:definition[aria-errormessage], aria:definition[aria-haspopup], aria:definition[aria-invalid], " +
+            ", aria:deletion[aria-disabled], aria:deletion[aria-errormessage], aria:deletion[aria-haspopup], aria:deletion[aria-invalid], " +
+            ", aria:dialog[aria-disabled], aria:dialog[aria-errormessage], aria:dialog[aria-haspopup], aria:dialog[aria-invalid], " +
+            ", aria:document[aria-disabled], aria:document[aria-errormessage], aria:document[aria-haspopup], aria:document[aria-invalid], " +
+            ", aria:emphasis[aria-disabled], aria:emphasis[aria-errormessage], aria:emphasis[aria-haspopup], aria:emphasis[aria-invalid], " +
+            ", aria:feed[aria-disabled], aria:feed[aria-errormessage], aria:feed[aria-haspopup], aria:feed[aria-invalid], " +
+            ", aria:figure[aria-disabled], aria:figure[aria-errormessage], aria:figure[aria-haspopup], aria:figure[aria-invalid], " +
+            ", aria:form[aria-disabled], aria:form[aria-errormessage], aria:form[aria-haspopup], aria:form[aria-invalid], " +
+            ", aria:generic[aria-disabled], aria:generic[aria-errormessage], aria:generic[aria-haspopup], aria:generic[aria-invalid], " +
+            ", aria:grid[aria-errormessage], aria:grid[aria-haspopup], aria:grid[aria-invalid], " +
+            ", aria:group[aria-errormessage], aria:group[aria-haspopup], aria:group[aria-invalid], " +
+            ", aria:heading[aria-disabled], aria:heading[aria-errormessage], aria:heading[aria-haspopup], aria:heading[aria-invalid], " +
+            ", aria:img[aria-disabled], aria:img[aria-errormessage], aria:img[aria-haspopup], aria:img[aria-invalid], " +
+            ", aria:img[aria-disabled], aria:img[aria-errormessage], aria:img[aria-haspopup], aria:img[aria-invalid], " +
+            ", aria:input[aria-errormessage], aria:input[aria-haspopup], aria:input[aria-invalid], " +
+            ", aria:landmark[aria-disabled], aria:landmark[aria-errormessage], aria:landmark[aria-haspopup], aria:landmark[aria-invalid], " +
+            ", aria:insertion[aria-disabled], aria:insertion[aria-errormessage], aria:insertion[aria-haspopup], aria:insertion[aria-invalid], " +
+            ", aria:link[aria-errormessage], aria:link[aria-invalid], " +
+            ", aria:list[aria-disabled], aria:list[aria-errormessage], aria:list[aria-haspopup], aria:list[aria-invalid], " +
+            ", aria:listbox[aria-haspopup], " +
+            ", aria:listitem[aria-disabled], aria:listitem[aria-errormessage], aria:listitem[aria-haspopup], aria:listitem[aria-invalid], " +
+            ", aria:log[aria-disabled], aria:log[aria-errormessage], aria:log[aria-haspopup], aria:log[aria-invalid], " +
+            ", aria:main[aria-disabled], aria:main[aria-errormessage], aria:main[aria-haspopup], aria:main[aria-invalid], " +
+            ", aria:marquee[aria-disabled], aria:marquee[aria-errormessage], aria:marquee[aria-haspopup], aria:marquee[aria-invalid], " +
+            ", aria:math[aria-disabled], aria:math[aria-errormessage], aria:math[aria-haspopup], aria:math[aria-invalid], " +
+            ", aria:meter[aria-disabled], aria:meter[aria-errormessage], aria:meter[aria-haspopup], aria:meter[aria-invalid], " +
+            ", aria:menu[aria-errormessage], aria:menu[aria-haspopup], aria:menu[aria-invalid], " +
+            ", aria:menubar[aria-errormessage], aria:menubar[aria-haspopup], aria:menubar[aria-invalid], " +
+            ", aria:menuitem[aria-errormessage], aria:menuitem[aria-invalid], " +
+            ", aria:menuitemcheckbox[aria-errormessage], aria:menuitemcheckbox[aria-invalid], " +
+            ", aria:menuitemradio[aria-errormessage], aria:menuitemradio[aria-invalid], " +
+            ", aria:navigation[aria-disabled], aria:navigation[aria-errormessage], aria:navigation[aria-haspopup], aria:navigation[aria-invalid], " +
+            ", aria:note[aria-disabled], aria:note[aria-errormessage], aria:note[aria-haspopup], aria:note[aria-invalid], " +
+            ", aria:option[aria-errormessage], aria:option[aria-haspopup], aria:option[aria-invalid], " +
+            ", aria:paragraph[aria-disabled], aria:paragraph[aria-errormessage], aria:paragraph[aria-haspopup], aria:paragraph[aria-invalid], " +
+            ", aria:presentation[aria-disabled], aria:presentation[aria-errormessage], aria:presentation[aria-haspopup], aria:presentation[aria-invalid], " +
+            ", aria:progressbar[aria-disabled], aria:progressbar[aria-errormessage], aria:progressbar[aria-haspopup], aria:progressbar[aria-invalid], " +
+            ", aria:radio[aria-errormessage], aria:radio[aria-haspopup], aria:radio[aria-invalid], " +
+            ", aria:radiogroup[aria-haspopup], " +
+            ", aria:range[aria-disabled], aria:range[aria-errormessage], aria:range[aria-haspopup], aria:range[aria-invalid], " +
+            ", aria:region[aria-disabled], aria:region[aria-errormessage], aria:region[aria-haspopup], aria:region[aria-invalid], " +
+            ", aria:row[aria-errormessage], aria:row[aria-haspopup], aria:row[aria-invalid], " +
+            ", aria:rowgroup[aria-disabled], aria:rowgroup[aria-errormessage], aria:rowgroup[aria-haspopup], aria:rowgroup[aria-invalid], " +
+            ", aria:scrollbar[aria-errormessage], aria:scrollbar[aria-haspopup], aria:scrollbar[aria-invalid], " +
+            ", aria:search[aria-disabled], aria:search[aria-errormessage], aria:search[aria-haspopup], aria:search[aria-invalid], " +
+            ", aria:section[aria-disabled], aria:section[aria-errormessage], aria:section[aria-haspopup], aria:section[aria-invalid], " +
+            ", aria:sectionhead[aria-disabled], aria:sectionhead[aria-errormessage], aria:sectionhead[aria-haspopup], aria:sectionhead[aria-invalid], " +
+            ", aria:select[aria-errormessage], aria:select[aria-haspopup], aria:select[aria-invalid], " +
+            ", aria:separator[aria-errormessage], aria:separator[aria-haspopup], aria:separator[aria-invalid], " +
+            ", aria:spinbutton[aria-haspopup], " +
+            ", aria:status[aria-disabled], aria:status[aria-errormessage], aria:status[aria-haspopup], aria:status[aria-invalid], " +
+            ", aria:strong[aria-disabled], aria:strong[aria-errormessage], aria:strong[aria-haspopup], aria:strong[aria-invalid], " +
+            ", aria:structure[aria-disabled], aria:structure[aria-errormessage], aria:structure[aria-haspopup], aria:structure[aria-invalid], " +
+            ", aria:subscript[aria-disabled], aria:subscript[aria-errormessage], aria:subscript[aria-haspopup], aria:subscript[aria-invalid], " +
+            ", aria:superscript[aria-disabled], aria:superscript[aria-errormessage], aria:superscript[aria-haspopup], aria:superscript[aria-invalid], " +
+            ", aria:switch[aria-haspopup], " +
+            ", aria:tab[aria-errormessage], aria:tab[aria-invalid], " +
+            ", aria:table[aria-disabled], aria:table[aria-errormessage], aria:table[aria-haspopup], aria:table[aria-invalid], " +
+            ", aria:tablist[aria-errormessage], aria:tablist[aria-haspopup], aria:tablist[aria-invalid], " +
+            ", aria:tabpanel[aria-disabled], aria:tabpanel[aria-errormessage], aria:tabpanel[aria-haspopup], aria:tabpanel[aria-invalid], " +
+            ", aria:term[aria-disabled], aria:term[aria-errormessage], aria:term[aria-haspopup], aria:term[aria-invalid], " +
+            ", aria:time[aria-disabled], aria:time[aria-errormessage], aria:time[aria-haspopup], aria:time[aria-invalid], " +
+            ", aria:timer[aria-disabled], aria:timer[aria-errormessage], aria:timer[aria-haspopup], aria:timer[aria-invalid], " +
+            ", aria:toolbar[aria-errormessage], aria:toolbar[aria-haspopup], aria:toolbar[aria-invalid], " +
+            ", aria:tooltip[aria-disabled], aria:tooltip[aria-errormessage], aria:tooltip[aria-haspopup], aria:tooltip[aria-invalid], " +
+            ", aria:tree[aria-haspopup], " +
+            ", aria:treegrid[aria-haspopup], " +
+            ", aria:treeitem[aria-errormessage], aria:treeitem[aria-invalid], " +
+            ", aria:widget[aria-disabled], aria:widget[aria-errormessage], aria:widget[aria-haspopup], aria:widget[aria-invalid], " +
+            ", aria:window[aria-disabled], aria:window[aria-errormessage], aria:window[aria-haspopup], aria:window[aria-invalid], " +
+            ", aria:*[aria-errormessage], aria:*[aria-haspopup], aria:*[aria-invalid],",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let passed = false;
