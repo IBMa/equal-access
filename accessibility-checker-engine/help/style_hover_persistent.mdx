@@ -39,18 +39,20 @@ Note: Use of the `~` selector with the `display` style attribute can allow many 
 The recommended code example is:
 
 <CodeSnippet type="multi" light={true}>
- &lt;style&gt;
-div {
+&lt;style&gt;
+div 
+&lbrace;
   background-color: yellow;
   padding: 20px;
   display: none;
-}
-span:hover div {
+&rbrace;
+span:hover div &lbrace;
   display: block;
-}
+&rbrace;
 &lt;/style&gt;
 
-&lt;span&gt;Hover over me2!&lt;div&gt;I will show on hover, and you can move the pointer over me&lt;/div&gt;
+&lt;span&gt;Hover over me!
+  &lt;div&gt;I will show on hover, and you can move the pointer over me&lt;/div&gt;
 &lt;/span&gt;
 </CodeSnippet>
 
