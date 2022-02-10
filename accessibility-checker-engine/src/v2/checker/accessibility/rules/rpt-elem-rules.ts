@@ -159,8 +159,7 @@ let a11yRulesElem: Rule[] = [
             ", aria:treegrid[aria-haspopup], " +
             ", aria:treeitem[aria-errormessage], aria:treeitem[aria-invalid], " +
             ", aria:widget[aria-disabled], aria:widget[aria-errormessage], aria:widget[aria-haspopup], aria:widget[aria-invalid], " +
-            ", aria:window[aria-disabled], aria:window[aria-errormessage], aria:window[aria-haspopup], aria:window[aria-invalid], " +
-            ", aria:*[aria-errormessage], aria:*[aria-haspopup], aria:*[aria-invalid],",
+            ", aria:window[aria-disabled], aria:window[aria-errormessage], aria:window[aria-haspopup], aria:window[aria-invalid] ",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let passed = false;
