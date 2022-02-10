@@ -26,7 +26,7 @@
 
 <body>
     <main>
-        <!-- fail case 1-->
+        <!-- fail case 1, no type specified-->
         <input list="listbox1" id="browser1" aria-haspopup="listbox">
         <datalist role="listbox" id="listbox1">
             <option value="Zebra">Zebra</option>
@@ -34,7 +34,7 @@
         </datalist>
 
         
-      <!-- fail case 2 -->
+      <!-- fail case 2 with type='text' -->
       <input list="listbox2" type='text' id="browser2" aria-haspopup="listbox">
       <datalist role="listbox" id="listbox2">
           <option value="English">English</option>
@@ -58,10 +58,10 @@
 
     <script>
         UnitTest = {
-            ruleIds: ["combobox_should_have_no_popup"],
+            ruleIds: ["input_haspopup_invalid"],
             results: [
             {
-            "ruleId": "combobox_should_have_no_popup",
+            "ruleId": "input_haspopup_invalid",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -70,17 +70,14 @@
               "dom": "/html[1]/body[1]/main[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
-            "reasonId": "Potential_1",
-            "message": "The input element with a list attribute \"listbox1\" and type \"none\" shouldn't have a popup",
-            "messageArgs": [
-              "listbox1",
-              "none"
-            ],
+            "reasonId": "Potential_2",
+            "message": "input_haspopup_invalid_Potential_2",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "combobox_should_have_no_popup",
+            "ruleId": "input_haspopup_invalid",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -90,9 +87,8 @@
               "aria": "/document[1]/main[1]/combobox[2]"
             },
             "reasonId": "Potential_1",
-            "message": "The input element with a list attribute \"listbox2\" and type \"text\" shouldn't have a popup",
+            "message": "input_haspopup_invalid_Potential_1",
             "messageArgs": [
-              "listbox2",
               "text"
             ],
             "apiArgs": [],

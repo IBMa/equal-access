@@ -1230,7 +1230,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "combobox_should_have_no_popup",
+                    id: "input_haspopup_invalid",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },

@@ -1004,10 +1004,11 @@ let a11yNls = {
         "Fail_1": "The combobox has the 'aria-autocomplete' attribute incorrectly set on an element within the popup referenced by \"{0}\"",
         "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute value set to '\"inline\"' "
     },
-    "combobox_should_have_no_popup": {
-        0: "An input element with a list attribute and with a type of text, search, tel, url, email, or a missing or invalid type shouldn't have a popup",
-        "Pass": "An input element with a list attribute and with a proper type doesn't have a popup",
-        "Potential_1": "The input element with a list attribute \"{0}\" and type \"{1}\" shouldn't have a popup"
+    "input_haspopup_invalid": {
+        0: "Input element with list attribute should not use aria-haspopup attribute on indicated inputs",
+        "Pass_0": "Input element with list attribute does not use aria-haspopup attribute on indicated inputs",
+        "Failure_1": "input element with list attribute uses aria-haspopup attribute on type=\"{0}\"",
+        "Failure_2": "input element with list attribute uses aria-haspopup attribute on missing or invalid input type"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {

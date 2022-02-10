@@ -360,7 +360,7 @@ let a11yRulesCombobox: Rule[] = [
         }
     },
     {
-        id: "combobox_should_have_no_popup",
+        id: "input_haspopup_invalid",
         context: "dom:input[list][aria-haspopup]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
@@ -376,9 +376,10 @@ let a11yRulesCombobox: Rule[] = [
             
             const listId = ruleContext.getAttribute("list");
             let attrValue = ruleContext.getAttribute("type"); 
-            if (!attrValue)  attrValue = 'none'  
-            
-            return RuleFail("Potential_1", [listId, attrValue]);
+            if (!attrValue)    
+                return RuleFail("Potential_2");
+                
+            return RuleFail("Potential_1", [attrValue]);    
                 
         }
     }
