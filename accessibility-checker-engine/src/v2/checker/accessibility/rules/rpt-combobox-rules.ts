@@ -364,23 +364,31 @@ let a11yRulesCombobox: Rule[] = [
         context: "dom:input[list][aria-haspopup]",
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            console.log("ruleContext=" + context);
-            //only trigger if input type is text, search, tel, url, email, or missing or invalid 
-            let textTypes = ["file", "password", "checkbox", "radio",
-                             "date", "number", "range", "time", "color",
-                             "month", "week", "datetime-local"
-                            ];
             
-            if (ruleContext.hasAttribute("type") && textTypes.includes(ruleContext.getAttribute("type").toLowerCase()))
-                return; 
+            //triggering input types: text, search, tel, url, email, or missing or invalid 
+            let yesTypes= [ "text", "search", "tel", "url", "email"];
+            let noTypes = ["file", "password", "checkbox", "radio", "submit", "reset",
+                             "date", "number", "range", "time", "color", "image", 
+                             "month", "week", "datetime-local", "hidden", "button"
+                          ];
             
-            const listId = ruleContext.getAttribute("list");
             let attrValue = ruleContext.getAttribute("type"); 
+            //missing input type
             if (!attrValue)    
-                return RuleFail("Potential_2");
-                
-            return RuleFail("Potential_1", [attrValue]);    
-                
+                return RuleFail("Failure_2");
+
+            attrValue = attrValue.toLowerCase();  
+            // ignore for no triggering input types 
+            if (noTypes.includes(ruleContext.getAttribute("type").toLowerCase()))
+                return;   
+
+            // failure_1 if any triggering input types    
+            if (yesTypes.includes(attrValue))
+                return RuleFail("Failure_1", [attrValue]); 
+            
+            //invalid input type
+            return RuleFail("Failure_2");  
+              
         }
     }
     // end of rules
