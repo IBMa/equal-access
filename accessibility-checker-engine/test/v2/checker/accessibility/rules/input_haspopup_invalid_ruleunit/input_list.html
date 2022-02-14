@@ -27,7 +27,7 @@
 <body>
     <main>
         <!-- fail case 1, no type specified-->
-        <input list="listbox1" id="browser1" aria-haspopup="listbox">
+        <input list="listbox1" id="browser1" role='combobox' aria-haspopup="listbox">
         <datalist role="listbox" id="listbox1">
             <option value="Zebra">Zebra</option>
             <option value="Zoom" id="selected_option3">Zoom</option>
@@ -42,7 +42,7 @@
       </datalist>
 
         <!-- not triggerred, no failure/pass case -->
-        <input list="function-types" type='text' id="browser3" />
+        <input list="function-types" type='text' role='combobox' id="browser3" />
         
 
         <!-- not triggerred, no failure/pass case -->
