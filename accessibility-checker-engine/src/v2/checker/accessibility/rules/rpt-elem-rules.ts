@@ -78,14 +78,14 @@ let a11yRulesElem: Rule[] = [
             ", dom:ul[type], dom:li[value], dom:pre[width], dom:hr[width], dom:td[width], dom:th[width]" +
             
             /**  add deprecated html tags: https://dev.w3.org/html5/pf-summary/obsolete.html */
-            ", dom:meta['http-equiv], dom:acronym, dom:frame, dom:frameset, dom:noframes, dom:noembed" +
+            ", dom:meta[http-equiv], dom:acronym, dom:frame, dom:frameset, dom:noframes, dom:noembed" +
             ", dom:big, dom:blink, dom:marquee, dom:tt " +
             ", dom:a[charset], dom:a[coords], dom:a[shape], dom:a[rev], dom:link[rev], dom:link[charset] " +
             ", dom:img[name], dom:area[nohref], dom:head[profile], dom:html[version], dom:input[usemap] " +
             ", dom:iframe[longdesc], dom:img[longdesc], dom:link[target], dom:meta[scheme], dom:object[archive] " +
             ", dom:object[code], dom:object[codebase], dom:object[codetype], dom:object[declare], dom:object[standby] " +
             ", dom:param[type], dom:param[valuetype], dom:script[language], dom:th[abbr], dom:td[abbr], dom:th[axis], dom:td[axis] " +
-            ", dom:body[alink ],dom:body[background], dom:body[bgcolor], dom:body[link], dom:body[text] " +
+            ", dom:body[alink],dom:body[background], dom:body[bgcolor], dom:body[link], dom:body[text] " +
             ", dom:body[vlink], dom:br[clear], dom:caption[align], dom:col[align], dom:col[char], dom:col[charoff], dom:col[valign], dom:col[width] " +
             ", dom:div[align], dom:dl[compact], dom:hr[align], dom:hr[noshade], dom:hr[size], dom:hr[width] " +
             ", dom:h1[align], dom:h2[align],  dom:h3[align],  dom:h4[align],  dom:h5[align],  dom:h6[align] " +
@@ -93,15 +93,15 @@ let a11yRulesElem: Rule[] = [
             ", dom:iframe[scrolling], dom:input[align], dom:img[align], dom:img[hspace], dom:img[vspace],dom:legend[align], dom:li[type], dom:menu[compact] " +
             ", dom:object[align], dom:object[hspace], dom:object[vspace], dom:ol[compact], dom:ol[type], dom:p[align], dom:pre[width], dom:table[align] " +
             ", dom:table[bgcolor], dom:table[cellpadding], dom:table[cellspacing], dom:table[frame] " + 
-            ", dom:table[rules], dom:table[width], dom:tbody[align], dom:thead[align], dom:tfoot[align] " +
-            ", dom:tbody[char], thead[char], dom:tfoot[char], dom:tbody[charoff], dom:thead[charoff], dom:tfoot[charoff] " +
-            ", dom:tbody[valign], thead[valign], dom:tfoot[valign], dom:td[align], dom:th[align], dom:td[bgcolor], dom:th[bgcolor] " +
-            ", dom:td[char], dom:th[char], dom:td[charoff], dom:th[charoff], dom:td[height], dom:th[height], dom:td[nowrap], dom:th[nowrap] " +
+            ", dom:table[rules], dom:table[width], dom:tbody[align], dom:thead[align], dom:tfoot[align] " +
+            ", dom:tbody[char], thead[char], dom:tfoot[char], dom:tbody[charoff], dom:thead[charoff], dom:tfoot[charoff] " +
+            ", dom:tbody[valign], thead[valign], dom:tfoot[valign], dom:td[align], dom:th[align], dom:td[bgcolor], dom:th[bgcolor] " +
+            ", dom:td[char], dom:th[char], dom:td[charoff], dom:th[charoff], dom:td[height], dom:th[height], dom:td[nowrap], dom:th[nowrap] " +
             ", dom:td[valign], dom:th[valign], dom:td[width], dom:th[width], dom:tr[align], dom:tr[bgcolor] " +
             ", dom:tr[char], dom:tr[charoff], dom:tr[valign], dom:ul[compact] " +
             
             /**  add deprecated aria roles and attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-            ", aria:directory, aria:*[aria-grabbed], aria:*[aria-dropeffect]" +
+            ", aria:directory, aria:*[aria-grabbed], aria:*[aria-dropeffect] " +
             ", aria:alert[aria-disabled], aria:alert[aria-errormessage], aria:alert[aria-haspopup], aria:alert[aria-invalid] " +
             ", aria:alertdialog[aria-disabled], aria:alertdialog[aria-errormessage], aria:alertdialog[aria-haspopup], aria:alertdialog[aria-invalid] " +
             ", aria:article[aria-disabled], aria:article[aria-errormessage], aria:article[aria-haspopup], aria:article[aria-invalid]" +
@@ -186,6 +186,7 @@ let a11yRulesElem: Rule[] = [
             ", aria:treeitem[aria-errormessage], aria:treeitem[aria-invalid] " +
             ", aria:widget[aria-disabled], aria:widget[aria-errormessage], aria:widget[aria-haspopup], aria:widget[aria-invalid] " +
             ", aria:window[aria-disabled], aria:window[aria-errormessage], aria:window[aria-haspopup], aria:window[aria-invalid] ",
+            
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let passed = false;
