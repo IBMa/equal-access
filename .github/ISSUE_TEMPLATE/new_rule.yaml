@@ -11,18 +11,18 @@ body:
       value:
         Thanks for taking the time to improve the rules that help accessibility checks. 
   - type: textarea
-    id: rule description
+    id: rule_description
     attributes:
       label: Rule description
       description:
         "Briefly describe the rule applicability"
-      placeholder: e.g, This rule checks for the Persistent requirement of information displayed on hover. It applies to any content that through CSS is displayed as a result of :hover.
+      placeholder: 'Example: This rule checks for the Persistent requirement of information displayed on hover. It applies to any content that through CSS is displayed as a result of :hover.'
     validations:
       required: true 
   - type: dropdown
     id: requirement
     attributes:
-      label: Relevant requirement
+      label: Relevant requirement(s)
       description: Select the relevant requirement. [IBM requirements](https://www.ibm.com/able/requirements/requirements)
       multiple: true
       options: 
@@ -122,23 +122,23 @@ body:
         - 10.6 Audio Description Timing
         - 11.5.2.3 Use of Accessibility Services
         - 11.8.4 Repair Assistance
+    validations:
+      required: true  
   - type: markdown
     attributes:
-      value: '##The items below are optional and can be completed by the Checker team'
+      value: '## The items below are optional and can be completed by the Checker team'
   
   - type: textarea
-    id: High-level approach
+    id: High_level_approach
     attributes:
       label: High-level approach and rule scope
       description:
-        "Provide very high level summary of rule approach and summary of the scope"
-      placeholder: e.g., “Detect any hover of a target and flag a Needs Review (PV) to the Accessibility Checker user”
-    validations:
-      required: true  
+        "Provide a very high level summary of the rule approach and summary of the scope"
+      placeholder: 'Example: Detect any hover of a target and flag a Needs Review potential violation to the Accessibility Checker user'  
   - type: dropdown
     id: ruleste 
     attributes:
-      label: Ruleset
+      label: Ruleset and failure level
       description: Please select a ruleset version?
       multiple: true
       options:
@@ -146,7 +146,7 @@ body:
         - WCAG 2.1
         - IBM
   - type: dropdown
-    id: failure level
+    id: failure_level
     attributes:
       label: Failure level
       description: Indicate the expected overall failure level
@@ -156,7 +156,12 @@ body:
         - Potential violations
         - Recommendation
   - type: textarea
-    id: Failure cases 
+    id: failure2nd
+    attributes:
+      label: Different failure level
+      placeholder: If different rulesets result in different failure levels, note here.
+  - type: textarea
+    id: Failure_cases 
     attributes:
       label: Failure cases
       description:

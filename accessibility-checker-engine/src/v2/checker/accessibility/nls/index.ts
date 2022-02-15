@@ -865,12 +865,20 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Fail_1": "The element with \"article\" role does not have a label"
     },
-    // JCH - DONE
-    "Rpt_Aria_MultipleGroupRoles_Implicit": {
-        0: "Each element with \"group\" role must have a unique label that describes its purpose",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Multiple elements with \"group\" role do not have unique labels"
+    
+    // ALI - DONE
+    "group_withInputs_hasName": {
+        0: "Groups with nested inputs must have unique accessible name", 
+        "Pass_1": "Group/Fieldset \"{0}\" with an input has a unique name",
+        "Fail_1": "Group/Fieldset does not have an accessible name",
+        "Fail_2": "Group/Fieldset \"{0}\" has a duplicate name to another group"
     },
+    // JCH - DONE
+    // "Rpt_Aria_MultipleGroupRoles_Implicit": {
+    //     0: "Each element with \"group\" role must have a unique label that describes its purpose",
+    //     "Pass_0": "Rule Passed",
+    //     "Fail_1": "Multiple elements with \"group\" role do not have unique labels"
+    // },
     // JCH - DONE
     "Rpt_Aria_GroupRoleLabel_Implicit": {
         0: "An element with \"group\" role should have a unique label that describes its purpose",

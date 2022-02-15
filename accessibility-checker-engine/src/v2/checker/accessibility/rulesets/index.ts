@@ -263,6 +263,11 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
                     id: "landmark_name_unique",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -761,11 +766,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
@@ -1029,6 +1035,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Labels or instructions are provided when content requires user input.",
             "rules": [
+                {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
                 {
                     id: "WCAG20_Input_LabelBefore",
                     level: eRulePolicy.VIOLATION,
@@ -1468,6 +1479,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
+                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
                 {
                     id: "landmark_name_unique",
                     level: eRulePolicy.RECOMMENDATION,
@@ -1955,11 +1971,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
@@ -2223,6 +2240,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Labels or instructions are provided when content requires user input.",
             "rules": [
+                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
                 {
                     id: "WCAG20_Input_LabelBefore",
                     level: eRulePolicy.VIOLATION,
@@ -2657,6 +2679,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Information, structure, and relationships conveyed through presentation can be programmatically determined or are available in text.",
             "rules": [
+                 {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
                 {
                     id: "landmark_name_unique",
                     level: eRulePolicy.RECOMMENDATION,
@@ -3090,11 +3117,12 @@ let a11yRulesets: Ruleset[] = [
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
-                {
-                    id: "Rpt_Aria_MultipleGroupRoles_Implicit",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
+                // DEPRECATED
+                // {
+                //     id: "Rpt_Aria_MultipleGroupRoles_Implicit",
+                //     level: eRulePolicy.VIOLATION,
+                //     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                // },
                 {
                     id: "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit",
                     level: eRulePolicy.VIOLATION,
@@ -3324,6 +3352,11 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Labels or instructions are provided when content requires user input.",
             "rules": [
+                {
+                    id: "group_withInputs_hasName",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
                 {
                     id: "WCAG20_Input_LabelBefore",
                     level: eRulePolicy.VIOLATION,

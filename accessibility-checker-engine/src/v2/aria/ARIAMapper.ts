@@ -124,7 +124,7 @@ export class ARIAMapper extends CommonMapper {
                                 [role: string]: number
                             }
                         }> = JSON.parse(JSON.stringify(this.hierarchyPath));
-                        let hierarchyResults: IMapResult[] = JSON.parse(JSON.stringify(this.hierarchyResults));
+                        let hierarchyResults: IMapResult[] = DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults);
                         let attrValue = elem.getAttribute("aria-owns");
                         let ids = attrValue.trim().split(" ");
                         ids.forEach((id) => {
@@ -161,7 +161,7 @@ export class ARIAMapper extends CommonMapper {
                 hierarchyRole: JSON.parse(JSON.stringify(this.hierarchyRole)), 
                 hierarchyChildrenHaveRole: JSON.parse(JSON.stringify(this.hierarchyChildrenHaveRole)),
                 hierarchyPath: JSON.parse(JSON.stringify(this.hierarchyPath)),
-                hierarchyResults: JSON.parse(JSON.stringify(this.hierarchyResults))
+                hierarchyResults: DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults)
             };
 
             //rewrite parent hierarchy to the element with aria-owns
@@ -409,9 +409,23 @@ export class ARIAMapper extends CommonMapper {
             if (cur.nodeName.toLowerCase() === "input" && elem.hasAttribute("id") && elem.getAttribute("id").length > 0) {
                 let label = elem.ownerDocument.querySelector("label[for='"+elem.getAttribute("id")+"']");
                 if (label) {
-                    return this.computeNameHelp(walkId, label, false, false);
+                    if (label.hasAttribute("aria-label") || label.hasAttribute("aria-labelledby")) {
+                        return this.computeNameHelp(walkId, label, false, false);
+                    } else {
+                        return label.textContent;
+                    }
                 }
             }
+            if (cur.nodeName.toLowerCase() === "fieldset") {
+                if( (<Element>cur).querySelector("legend")){
+                    let legend = (<Element>cur).querySelector("legend");
+                    return legend.innerText;
+                }else{
+                    return this.computeNameHelp(walkId, cur, false, false);
+                }
+                            
+            }
+            
         }
 
         // 2e.
