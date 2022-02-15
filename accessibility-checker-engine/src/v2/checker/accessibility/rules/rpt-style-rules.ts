@@ -29,7 +29,7 @@ let a11yRulesStyle: Rule[] = [
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             let pass0 = false;
             let pass1 = false;
-            let pass2 = false;
+            let pass2 = false; // never happen
             let potential1 = false;
             let potential2 = false;
             let potential3 = false;
@@ -38,19 +38,19 @@ let a11yRulesStyle: Rule[] = [
             let nodeName = ruleContext.nodeName.toLowerCase();
             let styleText = "";
             if (nodeName == "style") {
-                console.log("RULE RUN ******************");
+                // console.log("RULE RUN ******************");
                 styleText = RPTUtil.getInnerText(ruleContext).toLowerCase();
                 // check import
-                console.log("ruleContext.ownerDocument.styleSheets.length = "+ruleContext.ownerDocument.styleSheets.length);
+                // console.log("ruleContext.ownerDocument.styleSheets.length = "+ruleContext.ownerDocument.styleSheets.length);
                 for (let sIndex = 0; sIndex < ruleContext.ownerDocument.styleSheets.length; sIndex++) {
                     let sheet = ruleContext.ownerDocument.styleSheets[sIndex] as CSSStyleSheet;
                     if (sheet && sheet.ownerNode == ruleContext) {
                         try {
                             let styleRules = sheet.cssRules ? sheet.cssRules : sheet.rules;
-                            console.log("styleRules.length = "+styleRules.length);
+                            // console.log("styleRules.length = "+styleRules.length);
                             for (let styleRuleIndex = 0; styleRuleIndex < styleRules.length; styleRuleIndex++) {
-                                console.log("**********");
-                                console.log("********** FOR LOOP styleRuleIndex = "+styleRuleIndex);
+                                // console.log("**********");
+                                // console.log("********** FOR LOOP styleRuleIndex = "+styleRuleIndex);
                                 let foundHover = false;
                                 let hoverElement = "";
                                 let plusCombinator = false;
@@ -67,17 +67,16 @@ let a11yRulesStyle: Rule[] = [
                                 let adjacentTildeMultipleSibling = false;
                                 let styleRule = styleRules[styleRuleIndex];
                                 let ruleText = styleRules[styleRuleIndex].cssText;
-                                console.log("styleRules["+styleRuleIndex+"] = "+ruleText);
+                                // console.log("styleRules["+styleRuleIndex+"] = "+ruleText);
                                 // 1. Check for :hover
                                 if (ruleText.match(/:hover/g)) {
                                     foundHover = true;
-                                    console.log("1. found :hover = "+ foundHover);
+                                    // console.log("1. found :hover = "+ foundHover);
                                 // 2. Get hover element
                                     hoverElement = ruleText.split(":")[0];
-                                    console.log("2. found element that goes with :hover = "+hoverElement);
-                                    // If we don't find element to go with :hover should produce error
+                                    // console.log("2. found element that goes with :hover = "+hoverElement);
                                 } else {
-                                    console.log("1. No hover on css element so skip this rule");
+                                    // console.log("1. No hover on css element so skip this rule");
                                     continue; // if no :hover skip this rule
                                 }
                                 // 3a. Check for css combinator + 
@@ -86,28 +85,28 @@ let a11yRulesStyle: Rule[] = [
                                     plusTempStr = plusTempStr.trim();
                                 if (ruleText.match(/:hover \+/g) || ruleText.match(/:hover\+/g)) {
                                     plusCombinator = true;
-                                    console.log("3a. Found plusCombinator = "+ plusCombinator);
-                                    console.log("plusTempStr = "+plusTempStr);
+                                    // console.log("3a. Found plusCombinator = "+ plusCombinator);
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
-                                    console.log("4a. Found plus afterCombinatorElement = "+afterCombinatorElement);
+                                    // console.log("4a. Found plus afterCombinatorElement = "+afterCombinatorElement);
                                 }
 
                                 // 3b. Check for css combinator + 
                                 // 4b. if so do we have an after combinator element
                                 if (ruleText.match(/:hover \~/g) || ruleText.match(/:hover\~/g)) {
-                                    console.log("match = "+ruleText.match(":hover \~"));
+                                    // console.log("match = "+ruleText.match(":hover \~"));
                                     tildeCombinator = true;
-                                    console.log("3b. Found tildeCombinator = "+ tildeCombinator);
+                                    // console.log("3b. Found tildeCombinator = "+ tildeCombinator);
                                     let plusTempStr = ruleText.substring(ruleText.indexOf('~') + 1);
                                     plusTempStr = plusTempStr.trim();
                                     afterCombinatorElement = plusTempStr.split(" ")[0];
-                                    console.log("4b. Found tilde afterCombinatorElement = "+afterCombinatorElement);
+                                    // console.log("4b. Found tilde afterCombinatorElement = "+afterCombinatorElement);
                                 }
 
                                 if (!plusCombinator && !tildeCombinator) {
                                     // NO plusCombinator or tildeCombinator so skip this rule
-                                    console.log("NO plusCombinator or tildeCombinator so skip this rule");
-                                    continue;
+                                    // console.log("NO plusCombinator or tildeCombinator so PASS");
+                                    // console.log("**** REPORT PASS 0 HERE");
+                                    return RulePass("Pass_0"); // JCH: should we have a N/A pass
                                 }
 
                                 // So now we have a css element with hover - element:hover so we have problems
@@ -118,32 +117,32 @@ let a11yRulesStyle: Rule[] = [
                                 // 6. Check if display property is not none
                                 if (afterCombinatorElement) {
                                     // get index of display:
-                                    console.log("plusTempStr = "+plusTempStr);
+                                    // console.log("plusTempStr = "+plusTempStr);
                                     let index = plusTempStr.indexOf("display:");
                                     if (index) {
                                         afterCombinatorElementDisplay = true;
-                                        console.log("5. Found afterCombinatorElementDisplay = "+afterCombinatorElementDisplay);
+                                        // console.log("5. Found afterCombinatorElementDisplay = "+afterCombinatorElementDisplay);
                                         if (plusTempStr.slice(index+8).trim().split(" ")[0] !== "none;") {
                                             afterCombinatorElementDisplayValue = true;
-                                            console.log("6. Found afterCombinatorElementDisplayValue not none = "+afterCombinatorElementDisplayValue);
+                                            // console.log("6. Found afterCombinatorElementDisplayValue not none = "+afterCombinatorElementDisplayValue);
                                         } else {
-                                            console.log("afterCombinatorElementDisplayValue === none");
-                                            console.log("**** PUT POTENTIAL 0 HERE");
+                                            // console.log("afterCombinatorElementDisplayValue === none");
+                                            // console.log("**** PUT POTENTIAL 0 HERE");
                                             continue;
                                         }
                                     } else {
                                         // this is bad css so it won't happen
-                                        console.log("NO afterCombinatorElementDisplay so skip this rule");
+                                        // console.log("NO afterCombinatorElementDisplay so skip this rule");
                                         continue;
                                     }
                                 } else {
                                      // this is bad css so it won't happen
-                                    console.log("NO afterCombinatorElement so skip this rule");
+                                    // console.log("NO afterCombinatorElement so skip this rule");
                                     continue;
                                 }
                                 
                                 if (afterCombinatorElementDisplayValue)
-                                    console.log("**** At this point we have verified that we have a css element with a hover of the format span:hover + div { display: block; } with all the proper properties and values");
+                                    // console.log("**** At this point we have verified that we have a css element with a hover of the format span:hover + div { display: block; } with all the proper properties and values");
                                 // NOTE: At this point we have verified that we have a css element with a hover
                                 //       of the format span:hover + div { display: block; }
                                 //       with all the proper properties and values
@@ -152,16 +151,16 @@ let a11yRulesStyle: Rule[] = [
                                     try {
                                         
                                         let styleRules2 = sheet.cssRules ? sheet.cssRules : sheet.rules;
-                                        console.log("styleRules2.length = "+styleRules2.length);
+                                        // console.log("styleRules2.length = "+styleRules2.length);
                                         for (let styleRuleIndex2 = 0; styleRuleIndex2 < styleRules2.length; styleRuleIndex2++) {
                                             // Check rule for afterCominatorElement:hover
                                             // If find afterCombinatorElement:hover see if rule has property display: value where 
                                             // value != none
-                                            console.log("**********");
-                                            console.log("********** 2nd FOR styleRuleIndex2 = "+styleRuleIndex2);
+                                            // console.log("**********");
+                                            // console.log("********** 2nd FOR styleRuleIndex2 = "+styleRuleIndex2);
                                             let ruleText2 = styleRules[styleRuleIndex2].cssText;
-                                            console.log("ruleText2 = ", ruleText2);
-                                            console.log("afterCombinatorElement = "+afterCombinatorElement);
+                                            // console.log("ruleText2 = ", ruleText2);
+                                            // console.log("afterCombinatorElement = "+afterCombinatorElement);
                                             // Check all supporting elements for margin property
                                             // If find margin STOP and REPORT ERROR
                                             let regExString = afterCombinatorElement + " {";
@@ -171,57 +170,56 @@ let a11yRulesStyle: Rule[] = [
 
                                             
                                             if (!afterCombinatorElementProperties.match(/margin/g)) {
-                                                console.log("No margin problem so continue on...");
+                                                // console.log("No margin problem so continue on...");
                                                 // do we have a supporting element css definitions
                                                 let supportingHoverElement = ruleText2.split(":")[0];
                                                 supportingHoverElement = supportingHoverElement.split(" ")[0];
-                                                console.log("supportingHoverElement = "+supportingHoverElement);
-                                                console.log("afterCombinatorElement = "+afterCombinatorElement);
+                                                // console.log("supportingHoverElement = "+supportingHoverElement);
+                                                // console.log("afterCombinatorElement = "+afterCombinatorElement);
 
                                                 // NEED TO CHECK FOR afterCominatorElement:hover in ONE STEP
 
-
                                                 if (supportingHoverElement === afterCombinatorElement && ruleText2.match(/:hover/g)) {
-                                                    console.log("7. Found supporting hover element same as afterCombinatorElement")
+                                                    // console.log("7. Found supporting hover element same as afterCombinatorElement")
                                                     // 7. Found supporting hover element same as afterCombinatorElement
                                                     supportingElement = true;
                                                     // does supporting element have hover
-                                                    console.log("8. Supporting element has hover also = "+ foundHover);
+                                                    // console.log("8. Supporting element has hover also = "+ foundHover);
                                                     // 8. Supporting element has hover also
                                                     supportingHover = true;
                                                     let index = ruleText2.indexOf("display:");
-                                                    console.log("index = "+index);
+                                                    // console.log("index = "+index);
                                                     if (index) {
                                                         // 9. Found supportingHoverElementDisplayProperty
                                                         supportingHoverElementDisplayProperty = true;
-                                                        console.log("9. Found supportingHoverElementDisplayProperty = "+supportingHoverElementDisplayProperty);
+                                                        // console.log("9. Found supportingHoverElementDisplayProperty = "+supportingHoverElementDisplayProperty);
                                                         if (plusTempStr.slice(index+8).trim().split(" ")[0] !== "none;") {
                                                             // 10. Found supportingHoverElementDisplayValue not none
                                                             supportingHoverElementDisplayValue = true;
-                                                            console.log("10. Found supportingHoverElementDisplayValue not none = "+supportingHoverElementDisplayValue);
+                                                            // console.log("10. Found supportingHoverElementDisplayValue not none = "+supportingHoverElementDisplayValue);
                                                             // Get list of hover elements and next sibling for +
                                                             // For + there must be at least one ADJACENT sibling
                                                             if (hoverElement !== "" && plusCombinator) {
                                                                 let hoverElementList = ruleContext.ownerDocument.getElementsByTagName(hoverElement.toUpperCase());
-                                                                console.log("hoverElementList.length = "+hoverElementList.length);
-                                                                console.log("hoverElementList[0].tagName = "+hoverElementList[0].tagName);
+                                                                // console.log("hoverElementList.length = "+hoverElementList.length);
+                                                                // console.log("hoverElementList[0].tagName = "+hoverElementList[0].tagName);
                                                                 // Get adjacent sibling
-                                                                console.log("Adjacent sibling = "+hoverElementList[0].nextElementSibling.tagName);
-                                                                console.log("afterCombinatorElement.toUpperCase() = "+afterCombinatorElement.toUpperCase());
+                                                                // console.log("Adjacent sibling = "+hoverElementList[0].nextElementSibling.tagName);
+                                                                // console.log("afterCombinatorElement.toUpperCase() = "+afterCombinatorElement.toUpperCase());
                                                                 
                                                                 if (afterCombinatorElement.toUpperCase() === hoverElementList[0].nextElementSibling.tagName) {
-                                                                    console.log("11a. Hover with plus has adjacent sibling.")
+                                                                    // console.log("11a. Hover with plus has adjacent sibling.")
                                                                 // 11a. Hover with plus has adjacent sibling.
                                                                     adjacentPlusSibling = true;
                                                                 // At this point we have verified a supporting afterCombinatorElement css rule that contains hover and display property that is not equal to none and has a hover element in the body with an adjacent sibling
-                                                                    console.log("**** REPORT PASS 1 HERE");
+                                                                    // console.log("**** REPORT PASS 1 HERE");
                                                                     pass0 = true;
                                                                     continue;
                                                                 }
                                                             } else if (plusCombinator) {
-                                                                console.log("11a. Main hover with + combinator has no adjacent sibling");
+                                                                // console.log("11a. Main hover with + combinator has no adjacent sibling");
                                                                 if (!potential1) {
-                                                                    console.log("**** PUT POTENTIAL 1 HERE");
+                                                                    // console.log("**** PUT POTENTIAL 1 HERE");
                                                                     potential1 = true;
                                                                     break;
                                                                 }
@@ -230,9 +228,9 @@ let a11yRulesStyle: Rule[] = [
                                                             // Get list of hover elements and determine if there are 2 or more adjacent siblings for ~
                                                             // For ~ there must be at least one ADJACENT sibling
                                                             if (hoverElement !== "" && tildeCombinator) {
-                                                                console.log("hoverElement.toUpperCase() = "+hoverElement.toUpperCase());
+                                                                // console.log("hoverElement.toUpperCase() = "+hoverElement.toUpperCase());
                                                                 let hoverElementList = ruleContext.ownerDocument.getElementsByTagName(hoverElement.toUpperCase());
-                                                                console.log("hoverElementList.length = "+hoverElementList.length);
+                                                                // console.log("hoverElementList.length = "+hoverElementList.length);
                                                                 // Check for two or more adjacent siblings
                                                                 let siblings = [];
                                                                 let sibling = hoverElementList[0].nextElementSibling;
@@ -245,17 +243,17 @@ let a11yRulesStyle: Rule[] = [
                                                                     }
                                                                 } while (sibling = sibling.nextElementSibling);
                                                                 let siblingCount = siblings.length;
-                                                                console.log("siblingCount = "+siblingCount);
+                                                                // console.log("siblingCount = "+siblingCount);
                                                                 // JCH TODO: what if sibling count 0
                                                                 if (siblingCount == 1) {
-                                                                    console.log("11b. Hover with tilde and one adjacent sibling");
+                                                                    // console.log("11b. Hover with tilde and one adjacent sibling");
                                                                     adjacentTildeMultipleSibling = true;
-                                                                    console.log("**** REPORT PASS 2 HERE");
+                                                                    // console.log("**** REPORT PASS 2 HERE");
                                                                     return RulePass("Pass_2");
                                                                 } else if (siblingCount > 1) {
-                                                                    console.log("Main hover with ~ combinator has two or more siblings");
+                                                                    // console.log("Main hover with ~ combinator has two or more siblings");
                                                                     if (!potential2) {
-                                                                        console.log("**** PUT POTENTIAL 2 HERE");
+                                                                        // console.log("**** PUT POTENTIAL 2 HERE");
                                                                         return RulePotential("Potential_2");
                                                                     }
                                                                 }
@@ -263,20 +261,18 @@ let a11yRulesStyle: Rule[] = [
                                                         } else if (plusCombinator) { // supportingHoverElementDisplayValue
                                                             // if we make it to the last rule and supportingHoverElementDisplayValue is still false => potential1
                                                             if (styleRuleIndex2 == styleRules2.length - 1 && supportingHoverElementDisplayValue === false) {
-                                                                console.log("NO plus supportingHoverElementDisplayProperty");
-                                                                console.log("**** PUT POTENTIAL 1 HERE");
-                                                                potential1 = true;
-                                                                break;
+                                                                // console.log("NO plus supportingHoverElementDisplayProperty");
+                                                                // console.log("**** PUT POTENTIAL 1 HERE");
+                                                                return RulePotential("Potential_1");
                                                             } else {
                                                                 continue;
                                                             }
                                                         } else if (tildeCombinator) {
                                                             // if we make it to the last rule and supportingHoverElementDisplayValue is still false => potential2
                                                             if (styleRuleIndex2 == styleRules2.length - 1 && supportingHoverElementDisplayValue === false) {
-                                                                console.log("NO plus supportingHoverElementDisplayProperty");
-                                                                console.log("**** PUT POTENTIAL 2 HERE");
-                                                                potential2 = true;
-                                                                break;
+                                                                // console.log("NO plus supportingHoverElementDisplayProperty");
+                                                                // console.log("**** PUT POTENTIAL 2 HERE");
+                                                                return RulePotential("Potential_1");
                                                             } else {
                                                                 continue;
                                                             }
@@ -286,20 +282,18 @@ let a11yRulesStyle: Rule[] = [
                                                     } else if (plusCombinator) {
                                                         // if we make it to the last rule and supportingHoverElementDisplayProperty is still false => potential1
                                                         if (styleRuleIndex2 == styleRules2.length - 1 && supportingHoverElementDisplayProperty === false) {
-                                                            console.log("NO plus supportingHoverElementDisplayProperty");
-                                                            console.log("**** PUT POTENTIAL 1 HERE");
-                                                            potential1 = true;
-                                                            break;
+                                                            // console.log("NO plus supportingHoverElementDisplayProperty");
+                                                            // console.log("**** PUT POTENTIAL 1 HERE");
+                                                            return RulePotential("Potential_1");
                                                         } else {
                                                             continue;
                                                         }
                                                     } else if (tildeCombinator) {
                                                         // if we make it to the last rule and supportingHoverElementDisplayProperty is still false => potential2
                                                         if (styleRuleIndex2 == styleRules2.length - 1 && supportingHoverElementDisplayProperty === false) {
-                                                            console.log("NO tilde supportingHoverElementDisplayProperty");
-                                                            console.log("**** PUT POTENTIAL 2 HERE");
-                                                            potential2 = true;
-                                                            break;
+                                                            // console.log("NO tilde supportingHoverElementDisplayProperty");
+                                                            // console.log("**** PUT POTENTIAL 2 HERE");
+                                                            return RulePotential("Potential_1");
                                                         } else {
                                                             continue;
                                                         }
@@ -308,34 +302,33 @@ let a11yRulesStyle: Rule[] = [
                                                 // note at least one of the rules must have a supportingElement:hover   
                                                 } else if (plusCombinator) {
                                                     // if we make it to the last rule and supportingElement is still false => potential1
-                                                    console.log("styleRuleIndex2 = "+styleRuleIndex2);
-                                                    console.log("styleRules2.length = "+styleRules2.length);
-                                                    console.log("supportingElement = "+supportingHover);
+                                                    // console.log("styleRuleIndex2 = "+styleRuleIndex2);
+                                                    // console.log("styleRules2.length = "+styleRules2.length);
+                                                    // console.log("supportingElement = "+supportingHover);
                                                     if (styleRuleIndex2 == styleRules2.length - 1 && supportingHover === false) {
-                                                        console.log("NO plus supportingElement:hover");
-                                                        console.log("**** PUT POTENTIAL 1 HERE");
+                                                        // console.log("NO plus supportingElement:hover");
+                                                        // console.log("**** PUT POTENTIAL 1 HERE");
                                                         return RulePotential("Potential_1");
                                                     } else {
-                                                        console.log("CONTINUE");
                                                         continue;
                                                     }
                                                 } else if (tildeCombinator) {
                                                     // if we make it to the last rule and supportingElement is still false => potential2
-                                                    console.log("styleRuleIndex2 = "+styleRuleIndex2);
-                                                    console.log("styleRules2.length = "+styleRules2.length);
-                                                    console.log("supportingElement = "+supportingHover);
+                                                    // console.log("styleRuleIndex2 = "+styleRuleIndex2);
+                                                    // console.log("styleRules2.length = "+styleRules2.length);
+                                                    // console.log("supportingElement = "+supportingHover);
                                                     if (styleRuleIndex2 == styleRules2.length - 1 && supportingHover === false) {
-                                                        console.log("NO tilde supportingElement:hover");
-                                                        console.log("**** PUT POTENTIAL 2 HERE");
+                                                        // console.log("NO tilde supportingElement:hover");
+                                                        // console.log("**** PUT POTENTIAL 2 HERE");
                                                         return RulePotential("Potential_2");
                                                     } else {
                                                         continue;
                                                     }
                                                 }
                                             } else {
-                                                console.log("There is a margin in the supporting element");
+                                                // console.log("There is a margin in the supporting element");
                                                 if (!potential3) {
-                                                    console.log("**** PUT POTENTIAL 3 HERE");
+                                                    // console.log("**** PUT POTENTIAL 3 HERE");
                                                     potential3 = true;
                                                     return RulePotential("Potential_3");
                                                 }

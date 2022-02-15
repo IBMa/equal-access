@@ -45,9 +45,10 @@ module.exports = (config) => {
             // { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/adjacent_sibling_hover_not_persistent.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/general_adjacent_sibling_hover_persistent.html', watched: true },
             // { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/general_adjacent_sibling_hover_not_persistent.html', watched: true },
-             
             // { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/margin_hover_not_persistent.html', watched: true },
-            { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/margin_hover_persistent.html', watched: true },
+            // { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/margin_hover_persistent.html', watched: true },
+
+            { pattern: 'test/v2/checker/accessibility/rules/style_hover_persistent_ruleunit/child_hover_persistent.html', watched: true },
 
 
 
