@@ -20,6 +20,183 @@ import { FragmentUtil } from "../util/fragment";
 import { LangUtil } from "../util/lang";
 import { DOMUtil } from "../../../dom/DOMUtil";
 
+let DEPRECATED_ELEMENTS = [
+    /** original */
+    "applet", "basefont", "center", "dir", "font", "isindex", "listing", "menu", 
+    "plaintext", "spacer", "s", "strike", "u", "xmp",
+    /** added from https://dev.w3.org/html5/pf-summary/obsolete.html */ 
+    "acronym", "frame", "frameset", "noframes", "noembed", "big", "blink", "marquee", "tt",
+
+]
+
+let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
+    /** original */
+    "align", "link", "archive", "background", "bgcolor", "clear", "code", "color", 
+    "compact", "face", "hspace", "language", "link", "noshade", "nowrap", "object",
+     "prompt", "start", "text", "version", "vlink", "vspace"   
+]
+ 
+ let DEPRECATED_ELEMENT_ATTRIBUTES = {
+    /** original */
+    "td" : ["height",  "width", "abbr", "axis", "char", "charoff", "height", "nowrap", "valign", "width", "align", "bgcolor" ], 
+    "th" : ["height", "width", "abbr", "axis", "charoff", "height", "bgcolor", "align", "nowrap", "char", "valign", "width"], 
+    "li" : ["type", "value", "type" ], "ul" : ["type", "compact"], "pre" : "width", 
+    
+    /** added from https://dev.w3.org/html5/pf-summary/obsolete.html */ 
+    "meta" : "http-equiv",  "a" : ["charset", "coords" , "shape", "rev", "scheme"], 
+    "link" : ["rev", "charset","target"],
+    "img" : ["name", "longdesc", "align", "hspace", "vspace", "border" ], 
+    "area" : "nohref" , "head" : "profile" , "html" : "version" , 
+    "iframe" : ["longdesc", "align", "frameborder", "marginheight", "marginwidth", "scrolling"], 
+    "object" : ["archive", "code", "codebase", "codetype", "declare", "standby", "align", "hspace", "vspace", "border"],
+    "param" : ["type", "valuetype"] , "script" : "language",
+    "body" : ["alink", "background", "bgcolor", "link", "text", "vlink"], "br" : "clear" , "caption" : "align", 
+    "col" : ["align", "char", "charoff", "valign", "width"],
+    "div" : "align" , "dl" : "compact" , 
+    "hr" : ["align", "noshade", "size", "width", "align"], 
+    "h2" : "align" ,  "h3" : "align" ,  "h4" : "align" ,  "h5" : "align" ,  "h6" : "align",
+    "input" : ["align", "usemap"], "legend" : "align" , "menu" : "compact",
+    "ol" : ["compact", "type",  "type"], "p" : "align",
+    "table" : ["bgcolor", "cellpadding", "cellspacing", "frame", "rules", "width", "align"] , 
+    "tbody" : ["align", "char", "valign", "charoff"],
+    "tfoot" : ["align", "charoff", "char", "valign" ],
+    "thead" : ["char" , "charoff", "valign", "align" ],  
+    "tr" : ["align", "bgcolor", "char", "charoff", "valign"]
+ }
+ 
+ let DEPRECATED_ROLES = [
+    /**  deprecated aria roles: https://www.w3.org/TR/wai-aria-1.2/ */ 
+    "directory"
+ ]
+
+ let DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
+    /**  add deprecated aria global attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
+    "aria-grabbed", "aria-dropeffect"
+ ]
+
+ let DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
+    /**  add deprecated aria role and attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
+    "alert" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "alertdialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "article" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "banner" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "blockquote" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "button" : ["aria-errormessage", "aria-invalid"],
+    "caption" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "cell" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "checkbox" : "aria-haspopup",
+    "code" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "command" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "complementary" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "composite" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "contentinfo" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "definition" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "deletion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "dialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "document" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "emphasis" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "feed" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "figure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "form" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "generic" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "grid" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "group" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "heading" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "img" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "input" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "landmark" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "insertion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "link" : ["aria-errormessage", "aria-invalid"],
+    "list" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "listbox" : "aria-haspopup",
+    "listitem" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "log" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "main" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "marquee" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "math" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "meter" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "menu" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "menubar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "menuitem" : ["aria-errormessage", "aria-invalid"],
+    "menuitemcheckbox" : ["aria-errormessage", "aria-invalid"],
+    "menuitemradio" : ["aria-errormessage", "aria-invalid"],
+    "navigation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "note" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "option" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "paragraph" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "presentation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "progressbar" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "radio" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "radiogroup" : "aria-haspopup",
+    "range" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "region" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "row" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "rowgroup" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "scrollbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "search" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "section" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "sectionhead" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "select" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "separator" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "spinbutton" : "aria-haspopup",
+    "status" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "strong" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "structure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "subscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "superscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "switch" : "aria-haspopup",
+    "tab" : ["aria-errormessage", "aria-invalid"],
+    "table" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "tablist" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "tabpanel" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "term" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "time" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "timer" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "toolbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "tooltip" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "tree" : "aria-haspopup",
+    "treegrid" : "aria-haspopup",
+    "treeitem" : ["aria-errormessage", "aria-invalid"],
+    "widget" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
+    "window" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"]
+            
+ }
+
+ function toContextStr (obj, type) {
+    let str = "";
+    for (const prop of obj) { // This will throw an error
+        if (str !== "") str += ", ";
+        if (type === 'DEPRECATED_ELEMENTS')
+            str += 'dom:' + prop;
+        else if (type === 'DEPRECATED_HTML_GLOBAL_ATTRIBUTES')
+            str += 'dom:*[' + prop + "]";
+        else if (type === 'DEPRECATED_ELEMENT_ATTRIBUTES')
+            if (prop instanceof Array) {
+                if (!str.endsWith(", "))
+                    str += ", ";
+                for (const item in prop) {
+                    str += 'dom:' + prop + '[' + item + ']';
+                }
+            } else     
+                str += 'dom:' + prop + '[' + obj[prop] + ']';
+        else if (type === 'DEPRECATED_ROLES')
+            str += 'aria:' + prop;
+        else if (type === 'DEPRECATED_ARIA_GLOBAL_ATTRIBUTES')
+            str += 'aria:*[' + prop + "]";
+        else if (type === 'DEPRECATED_ARIA_ROLE_ATTRIBUTES')
+            if (prop instanceof Array) {
+                if (!str.endsWith(", "))
+                    str += ", ";
+                for (const item in prop) {
+                    str += 'aria:' + prop + '[' + item + ']';
+                }
+            } else     
+                str += 'aria:' + prop + '[' + obj[prop] + ']';
+    } 
+    console.log("str=" + str);
+    return str;
+} 
+ 
 let a11yRulesElem: Rule[] = [
     {
         /**
@@ -68,125 +245,12 @@ let a11yRulesElem: Rule[] = [
          *      html tags: https://dev.w3.org/html5/pf-summary/obsolete.html
          */
         id: "RPT_Elem_Deprecated",
-        context: "dom:applet, dom:basefont, dom:center, dom:dir, dom:font, dom:isindex, dom:listing, dom:menu" +
-            ", dom:plaintext, dom:spacer, dom:s, dom:strike, dom:u, dom:xmp, dom:*[align], dom:*[link], dom:*[archive]" +
-            ", dom:*[background], dom:*[bgcolor], dom:*[clear], dom:*[code], dom:*[color]" +
-            ", dom:*[compact], dom:*[face], dom:*[hspace], dom:*[language], dom:*[link]" +
-            ", dom:*[noshade], dom:*[nowrap], dom:*[object], dom:*[prompt], dom:*[start]" +
-            ", dom:*[text], dom:*[version], dom:*[vlink], dom:*[vspace], dom:img[border]" +
-            ", dom:object[border], dom:td[height], dom:th[height], dom:li[type], dom:ol[type]" +
-            ", dom:ul[type], dom:li[value], dom:pre[width], dom:hr[width], dom:td[width], dom:th[width]" +
-            
-            /**  add deprecated html tags: https://dev.w3.org/html5/pf-summary/obsolete.html */
-            ", dom:meta[http-equiv], dom:acronym, dom:frame, dom:frameset, dom:noframes, dom:noembed" +
-            ", dom:big, dom:blink, dom:marquee, dom:tt " +
-            ", dom:a[charset], dom:a[coords], dom:a[shape], dom:a[rev], dom:link[rev], dom:link[charset] " +
-            ", dom:img[name], dom:area[nohref], dom:head[profile], dom:html[version], dom:input[usemap] " +
-            ", dom:iframe[longdesc], dom:img[longdesc], dom:link[target], dom:meta[scheme], dom:object[archive] " +
-            ", dom:object[code], dom:object[codebase], dom:object[codetype], dom:object[declare], dom:object[standby] " +
-            ", dom:param[type], dom:param[valuetype], dom:script[language], dom:th[abbr], dom:td[abbr], dom:th[axis], dom:td[axis] " +
-            ", dom:body[alink],dom:body[background], dom:body[bgcolor], dom:body[link], dom:body[text] " +
-            ", dom:body[vlink], dom:br[clear], dom:caption[align], dom:col[align], dom:col[char], dom:col[charoff], dom:col[valign], dom:col[width] " +
-            ", dom:div[align], dom:dl[compact], dom:hr[align], dom:hr[noshade], dom:hr[size], dom:hr[width] " +
-            ", dom:h1[align], dom:h2[align],  dom:h3[align],  dom:h4[align],  dom:h5[align],  dom:h6[align] " +
-            ", dom:iframe[align], dom:iframe[frameborder], dom:iframe[marginheight], dom:iframe[marginwidth] " +
-            ", dom:iframe[scrolling], dom:input[align], dom:img[align], dom:img[hspace], dom:img[vspace],dom:legend[align], dom:li[type], dom:menu[compact] " +
-            ", dom:object[align], dom:object[hspace], dom:object[vspace], dom:ol[compact], dom:ol[type], dom:p[align], dom:pre[width], dom:table[align] " +
-            ", dom:table[bgcolor], dom:table[cellpadding], dom:table[cellspacing], dom:table[frame] " + 
-            ", dom:table[rules], dom:table[width], dom:tbody[align], dom:thead[align], dom:tfoot[align] " +
-            ", dom:tbody[char], thead[char], dom:tfoot[char], dom:tbody[charoff], dom:thead[charoff], dom:tfoot[charoff] " +
-            ", dom:tbody[valign], thead[valign], dom:tfoot[valign], dom:td[align], dom:th[align], dom:td[bgcolor], dom:th[bgcolor] " +
-            ", dom:td[char], dom:th[char], dom:td[charoff], dom:th[charoff], dom:td[height], dom:th[height], dom:td[nowrap], dom:th[nowrap] " +
-            ", dom:td[valign], dom:th[valign], dom:td[width], dom:th[width], dom:tr[align], dom:tr[bgcolor] " +
-            ", dom:tr[char], dom:tr[charoff], dom:tr[valign], dom:ul[compact] " +
-            
-            /**  add deprecated aria roles and attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-            ", aria:directory, aria:*[aria-grabbed], aria:*[aria-dropeffect] " +
-            ", aria:alert[aria-disabled], aria:alert[aria-errormessage], aria:alert[aria-haspopup], aria:alert[aria-invalid] " +
-            ", aria:alertdialog[aria-disabled], aria:alertdialog[aria-errormessage], aria:alertdialog[aria-haspopup], aria:alertdialog[aria-invalid] " +
-            ", aria:article[aria-disabled], aria:article[aria-errormessage], aria:article[aria-haspopup], aria:article[aria-invalid]" +
-            ", aria:banner[aria-disabled], aria:banner[aria-errormessage], aria:banner[aria-haspopup], aria:banner[aria-invalid]" +
-            ", aria:blockquote[aria-disabled], aria:blockquote[aria-errormessage], aria:blockquote[aria-haspopup], aria:blockquote[aria-invalid]" +
-            ", aria:button[aria-errormessage], aria:button[aria-invalid]" +
-            ", aria:caption[aria-disabled], aria:caption[aria-errormessage], aria:caption[aria-haspopup], aria:caption[aria-invalid]" +
-            ", aria:cell[aria-disabled], aria:cell[aria-errormessage], aria:cell[aria-haspopup], aria:cell[aria-invalid]" +
-            ", aria:checkbox[aria-haspopup] " +
-            ", aria:code[aria-disabled], aria:code[aria-errormessage], aria:code[aria-haspopup], aria:code[aria-invalid]" +
-            ", aria:command[aria-disabled], aria:command[aria-errormessage], aria:command[aria-haspopup], aria:command[aria-invalid]" +
-            ", aria:complementary[aria-disabled], aria:complementary[aria-errormessage], aria:complementary[aria-haspopup], aria:complementary[aria-invalid]" +
-            ", aria:composite[aria-errormessage], aria:composite[aria-haspopup], aria:composite[aria-invalid] " +
-            ", aria:contentinfo[aria-disabled], aria:contentinfo[aria-errormessage], aria:contentinfo[aria-haspopup], aria:contentinfo[aria-invalid] " +
-            ", aria:definition[aria-disabled], aria:definition[aria-errormessage], aria:definition[aria-haspopup], aria:definition[aria-invalid] " +
-            ", aria:deletion[aria-disabled], aria:deletion[aria-errormessage], aria:deletion[aria-haspopup], aria:deletion[aria-invalid] " +
-            ", aria:dialog[aria-disabled], aria:dialog[aria-errormessage], aria:dialog[aria-haspopup], aria:dialog[aria-invalid] " +
-            ", aria:document[aria-disabled], aria:document[aria-errormessage], aria:document[aria-haspopup], aria:document[aria-invalid] " +
-            ", aria:emphasis[aria-disabled], aria:emphasis[aria-errormessage], aria:emphasis[aria-haspopup], aria:emphasis[aria-invalid] " +
-            ", aria:feed[aria-disabled], aria:feed[aria-errormessage], aria:feed[aria-haspopup], aria:feed[aria-invalid] " +
-            ", aria:figure[aria-disabled], aria:figure[aria-errormessage], aria:figure[aria-haspopup], aria:figure[aria-invalid] " +
-            ", aria:form[aria-disabled], aria:form[aria-errormessage], aria:form[aria-haspopup], aria:form[aria-invalid] " +
-            ", aria:generic[aria-disabled], aria:generic[aria-errormessage], aria:generic[aria-haspopup], aria:generic[aria-invalid] " +
-            ", aria:grid[aria-errormessage], aria:grid[aria-haspopup], aria:grid[aria-invalid] " +
-            ", aria:group[aria-errormessage], aria:group[aria-haspopup], aria:group[aria-invalid] " +
-            ", aria:heading[aria-disabled], aria:heading[aria-errormessage], aria:heading[aria-haspopup], aria:heading[aria-invalid] " +
-            ", aria:img[aria-disabled], aria:img[aria-errormessage], aria:img[aria-haspopup], aria:img[aria-invalid] " +
-            ", aria:img[aria-disabled], aria:img[aria-errormessage], aria:img[aria-haspopup], aria:img[aria-invalid] " +
-            ", aria:input[aria-errormessage], aria:input[aria-haspopup], aria:input[aria-invalid] " +
-            ", aria:landmark[aria-disabled], aria:landmark[aria-errormessage], aria:landmark[aria-haspopup], aria:landmark[aria-invalid] " +
-            ", aria:insertion[aria-disabled], aria:insertion[aria-errormessage], aria:insertion[aria-haspopup], aria:insertion[aria-invalid] " +
-            ", aria:link[aria-errormessage], aria:link[aria-invalid] " +
-            ", aria:list[aria-disabled], aria:list[aria-errormessage], aria:list[aria-haspopup], aria:list[aria-invalid] " +
-            ", aria:listbox[aria-haspopup] " +
-            ", aria:listitem[aria-disabled], aria:listitem[aria-errormessage], aria:listitem[aria-haspopup], aria:listitem[aria-invalid] " +
-            ", aria:log[aria-disabled], aria:log[aria-errormessage], aria:log[aria-haspopup], aria:log[aria-invalid] " +
-            ", aria:main[aria-disabled], aria:main[aria-errormessage], aria:main[aria-haspopup], aria:main[aria-invalid] " +
-            ", aria:marquee[aria-disabled], aria:marquee[aria-errormessage], aria:marquee[aria-haspopup], aria:marquee[aria-invalid] " +
-            ", aria:math[aria-disabled], aria:math[aria-errormessage], aria:math[aria-haspopup], aria:math[aria-invalid] " +
-            ", aria:meter[aria-disabled], aria:meter[aria-errormessage], aria:meter[aria-haspopup], aria:meter[aria-invalid] " +
-            ", aria:menu[aria-errormessage], aria:menu[aria-haspopup], aria:menu[aria-invalid] " +
-            ", aria:menubar[aria-errormessage], aria:menubar[aria-haspopup], aria:menubar[aria-invalid] " +
-            ", aria:menuitem[aria-errormessage], aria:menuitem[aria-invalid] " +
-            ", aria:menuitemcheckbox[aria-errormessage], aria:menuitemcheckbox[aria-invalid] " +
-            ", aria:menuitemradio[aria-errormessage], aria:menuitemradio[aria-invalid] " +
-            ", aria:navigation[aria-disabled], aria:navigation[aria-errormessage], aria:navigation[aria-haspopup], aria:navigation[aria-invalid] " +
-            ", aria:note[aria-disabled], aria:note[aria-errormessage], aria:note[aria-haspopup], aria:note[aria-invalid] " +
-            ", aria:option[aria-errormessage], aria:option[aria-haspopup], aria:option[aria-invalid] " +
-            ", aria:paragraph[aria-disabled], aria:paragraph[aria-errormessage], aria:paragraph[aria-haspopup], aria:paragraph[aria-invalid] " +
-            ", aria:presentation[aria-disabled], aria:presentation[aria-errormessage], aria:presentation[aria-haspopup], aria:presentation[aria-invalid] " +
-            ", aria:progressbar[aria-disabled], aria:progressbar[aria-errormessage], aria:progressbar[aria-haspopup], aria:progressbar[aria-invalid] " +
-            ", aria:radio[aria-errormessage], aria:radio[aria-haspopup], aria:radio[aria-invalid] " +
-            ", aria:radiogroup[aria-haspopup] " +
-            ", aria:range[aria-disabled], aria:range[aria-errormessage], aria:range[aria-haspopup], aria:range[aria-invalid] " +
-            ", aria:region[aria-disabled], aria:region[aria-errormessage], aria:region[aria-haspopup], aria:region[aria-invalid] " +
-            ", aria:row[aria-errormessage], aria:row[aria-haspopup], aria:row[aria-invalid] " +
-            ", aria:rowgroup[aria-disabled], aria:rowgroup[aria-errormessage], aria:rowgroup[aria-haspopup], aria:rowgroup[aria-invalid] " +
-            ", aria:scrollbar[aria-errormessage], aria:scrollbar[aria-haspopup], aria:scrollbar[aria-invalid] " +
-            ", aria:search[aria-disabled], aria:search[aria-errormessage], aria:search[aria-haspopup], aria:search[aria-invalid] " +
-            ", aria:section[aria-disabled], aria:section[aria-errormessage], aria:section[aria-haspopup], aria:section[aria-invalid] " +
-            ", aria:sectionhead[aria-disabled], aria:sectionhead[aria-errormessage], aria:sectionhead[aria-haspopup], aria:sectionhead[aria-invalid] " +
-            ", aria:select[aria-errormessage], aria:select[aria-haspopup], aria:select[aria-invalid] " +
-            ", aria:separator[aria-errormessage], aria:separator[aria-haspopup], aria:separator[aria-invalid] " +
-            ", aria:spinbutton[aria-haspopup] " +
-            ", aria:status[aria-disabled], aria:status[aria-errormessage], aria:status[aria-haspopup], aria:status[aria-invalid] " +
-            ", aria:strong[aria-disabled], aria:strong[aria-errormessage], aria:strong[aria-haspopup], aria:strong[aria-invalid] " +
-            ", aria:structure[aria-disabled], aria:structure[aria-errormessage], aria:structure[aria-haspopup], aria:structure[aria-invalid] " +
-            ", aria:subscript[aria-disabled], aria:subscript[aria-errormessage], aria:subscript[aria-haspopup], aria:subscript[aria-invalid] " +
-            ", aria:superscript[aria-disabled], aria:superscript[aria-errormessage], aria:superscript[aria-haspopup], aria:superscript[aria-invalid] " +
-            ", aria:switch[aria-haspopup] " +
-            ", aria:tab[aria-errormessage], aria:tab[aria-invalid] " +
-            ", aria:table[aria-disabled], aria:table[aria-errormessage], aria:table[aria-haspopup], aria:table[aria-invalid] " +
-            ", aria:tablist[aria-errormessage], aria:tablist[aria-haspopup], aria:tablist[aria-invalid] " +
-            ", aria:tabpanel[aria-disabled], aria:tabpanel[aria-errormessage], aria:tabpanel[aria-haspopup], aria:tabpanel[aria-invalid] " +
-            ", aria:term[aria-disabled], aria:term[aria-errormessage], aria:term[aria-haspopup], aria:term[aria-invalid] " +
-            ", aria:time[aria-disabled], aria:time[aria-errormessage], aria:time[aria-haspopup], aria:time[aria-invalid] " +
-            ", aria:timer[aria-disabled], aria:timer[aria-errormessage], aria:timer[aria-haspopup], aria:timer[aria-invalid] " +
-            ", aria:toolbar[aria-errormessage], aria:toolbar[aria-haspopup], aria:toolbar[aria-invalid] " +
-            ", aria:tooltip[aria-disabled], aria:tooltip[aria-errormessage], aria:tooltip[aria-haspopup], aria:tooltip[aria-invalid] " +
-            ", aria:tree[aria-haspopup] " +
-            ", aria:treegrid[aria-haspopup] " +
-            ", aria:treeitem[aria-errormessage], aria:treeitem[aria-invalid] " +
-            ", aria:widget[aria-disabled], aria:widget[aria-errormessage], aria:widget[aria-haspopup], aria:widget[aria-invalid] " +
-            ", aria:window[aria-disabled], aria:window[aria-errormessage], aria:window[aria-haspopup], aria:window[aria-invalid] ",
-            
+        context: toContextStr(DEPRECATED_ELEMENTS, "DEPRECATED_ELEMENTS") +
+                 toContextStr(DEPRECATED_HTML_GLOBAL_ATTRIBUTES, "DEPRECATED_HTML_GLOBAL_ATTRIBUTES") +
+                 toContextStr(DEPRECATED_ELEMENT_ATTRIBUTES, "DEPRECATED_ELEMENT_ATTRIBUTES") +
+                 toContextStr(DEPRECATED_ROLES, "DEPRECATED_ROLES") +
+                 toContextStr(DEPRECATED_ARIA_GLOBAL_ATTRIBUTES, "DEPRECATED_ARIA_GLOBAL_ATTRIBUTES") +
+                 toContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "DEPRECATED_ARIA_ROLE_ATTRIBUTES"),
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let passed = false;
