@@ -379,7 +379,7 @@ let a11yRulesCombobox: Rule[] = [
 
             attrValue = attrValue.toLowerCase();  
             // ignore for no triggering input types 
-            if (noTypes.includes(ruleContext.getAttribute("type").toLowerCase()))
+            if (noTypes.includes(attrValue))
                 return;   
 
             // failure_1 if any triggering input types    
