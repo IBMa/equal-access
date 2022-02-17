@@ -52,7 +52,7 @@ module.exports = (config) => {
             // each file acts as entry point for the webpack configuration
         ],
         exclude: [
-            //Disable  - due to a defect that needs to be addressed regarding visibility
+            //Disable  - due to a defect that needs to be addressed regarding visibility.
             'test/v2/checker/accessibility/rules/WCAG20_A_HasText_ruleunit/A-hasTextEmbedded.html'
         ],
 
