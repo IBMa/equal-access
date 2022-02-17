@@ -212,6 +212,14 @@ let a11yHelp = {
         "Pass_0": `${Config.helpRoot}/RPT_Style_BackgroundImage`,
         "Potential_1": `${Config.helpRoot}/RPT_Style_BackgroundImage`
     },
+    // JCH
+    "style_hover_persistent": {
+        0: `${Config.helpRoot}/style_hover_persistent`, 
+        "Pass_0": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_1": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_2": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_3": `${Config.helpRoot}/style_hover_persistent`
+    },
     // JCH - DONE
     "RPT_Pre_ASCIIArt": {
         0: `${Config.helpRoot}/RPT_Pre_ASCIIArt`,
