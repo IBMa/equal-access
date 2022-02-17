@@ -38,22 +38,21 @@ Note: Use of the `~` selector with the `display` style attribute can allow many 
 
 The recommended code example is:
 
-<CodeSnippet type="multi" light={true}>
-{`<html lang="en-US">
-  <head>
-      <style>
-          div {background-color: yellow;padding: 20px;display: none;}
-          span:hover div {display: block;} 
-      </style>
-  </head>
-  <body>
-      <span>Hover over me2!
-        <div>I will show on hover</div>
-      </span>
-  </body>
-</html>`}
+<CodeSnippet type="multi" light={true}> 
+&lt;html lang="en-US"&gt;
+&lt;head&gt;
+    &lt;style&gt;
+        div {background-color: yellow;padding: 20px;display: none;}
+            span:hover div {display: block;}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;span&gt;Hover over me2!
+        &lt;div&gt;I will show on hover&lt;/div&gt;
+    &lt;/span&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 </CodeSnippet>
-
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
