@@ -96,6 +96,7 @@ let a11yRulesInput: Rule[] = [
                     (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
                     RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
                 if (!passed) POF = 2 + textTypes.indexOf(type);
+
             } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
                 if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
                     // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
@@ -142,6 +143,23 @@ let a11yRulesInput: Rule[] = [
                 // Is a non-empty value attribute also enough for an option element?
                 passed = RPTUtil.attributeNonEmpty(ruleContext, "label") || ruleContext.innerHTML.trim().length > 0;
                 if (!passed) POF = 2 + textTypes.length + buttonTypes.length + 3;
+            }
+            if (!passed) {
+                // check aria role
+                //TODO: consider other aria roles relevant, other than menuitemcheckbox
+                const singleRole = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
+                                || RPTUtil.hasRole(ruleContext, "radio", false);
+                const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false) 
+                                || RPTUtil.hasRole(ruleContext, "searchbox", false);
+                                
+                if (singleRole)
+                    passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
+                else if (otherRole) {
+                    passed = RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
+                             || RPTUtil.attributeNonEmpty(ruleContext, "title");
+                } else {
+                    // any other role?
+                }
             }
 
             if (passed) {

@@ -46,7 +46,8 @@ module.exports = {
     },
     optimization: nodeEnv.includes("watch") ? undefined : {
         splitChunks: {
-            maxSize: 3500000
+            maxSize: 3500000,
+            chunks: "all"
         }
     },
     resolve: {

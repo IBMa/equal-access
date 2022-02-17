@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Aria_ImgAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### ARIA widget with an `"img"` role has no label or an empty label
+
+<div id="locLevel"></div>
+
+Element with an `"img"` role must have a non-empty label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+A component with an `"img"` role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Add an `aria-labelledby` attribute to the element with a `role="img"`. It must point to visible text on the page that is meaningful as a label;
+* **Or**, add an `aria-label` attribute to the element with a `role="img"`;
+* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
+
+Example:
+
+<CodeSnippet type="single" light={true}>&lt;div role="img" aria-labelledby="image1"&gt; ... &lt;p id="image1"&gt;Text that describes the group of images.&lt;/p&gt;&lt;/div&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [WCAG technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+* [WCAG technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
