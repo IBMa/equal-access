@@ -20,7 +20,7 @@ import { FragmentUtil } from "../util/fragment";
 import { LangUtil } from "../util/lang";
 import { DOMUtil } from "../../../dom/DOMUtil";
 
-let DEPRECATED_ELEMENTS = [
+const DEPRECATED_ELEMENTS = [
     /** original */
     "applet", "basefont", "center", "dir", "font", "isindex", "listing", "menu", 
     "plaintext", "spacer", "s", "strike", "u", "xmp",
@@ -29,34 +29,50 @@ let DEPRECATED_ELEMENTS = [
 
 ]
 
-let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
+const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     /** original */
     "align", "link", "archive", "background", "bgcolor", "clear", "code", "color", 
     "compact", "face", "hspace", "language", "link", "noshade", "nowrap", "object",
      "prompt", "start", "text", "version", "vlink", "vspace"   
 ]
  
- let DEPRECATED_ELEMENT_ATTRIBUTES = {
+ const DEPRECATED_ELEMENT_ATTRIBUTES = {
     /** original */
     "td" : ["height",  "width", "abbr", "axis", "char", "charoff", "height", "nowrap", "valign", "width", "align", "bgcolor" ], 
     "th" : ["height", "width", "abbr", "axis", "charoff", "height", "bgcolor", "align", "nowrap", "char", "valign", "width"], 
-    "li" : ["type", "value", "type" ], "ul" : ["type", "compact"], "pre" : "width", 
+    "li" : ["type", "value", "type" ], 
+    "ul" : ["type", "compact"], 
+    "pre" :["width"], 
     
     /** added from https://dev.w3.org/html5/pf-summary/obsolete.html */ 
-    "meta" : "http-equiv",  "a" : ["charset", "coords" , "shape", "rev", "scheme"], 
+    "meta" : ["http-equiv"],  
+    "a" : ["charset", "coords" , "shape", "rev", "scheme"], 
     "link" : ["rev", "charset","target"],
     "img" : ["name", "longdesc", "align", "hspace", "vspace", "border" ], 
-    "area" : "nohref" , "head" : "profile" , "html" : "version" , 
+    "area" : ["nohref"] , 
+    "head" : ["profile"] , 
+    "html" : ["version"] , 
     "iframe" : ["longdesc", "align", "frameborder", "marginheight", "marginwidth", "scrolling"], 
     "object" : ["archive", "code", "codebase", "codetype", "declare", "standby", "align", "hspace", "vspace", "border"],
-    "param" : ["type", "valuetype"] , "script" : "language",
-    "body" : ["alink", "background", "bgcolor", "link", "text", "vlink"], "br" : "clear" , "caption" : "align", 
+    "param" : ["type", "valuetype"] , 
+    "script" : ["language"],
+    "body" : ["alink", "background", "bgcolor", "link", "text", "vlink"], 
+    "br" : ["clear"] , 
+    "caption" : ["align"], 
     "col" : ["align", "char", "charoff", "valign", "width"],
-    "div" : "align" , "dl" : "compact" , 
+    "div" : ["align"] , 
+    "dl" : ["compact"] , 
     "hr" : ["align", "noshade", "size", "width", "align"], 
-    "h2" : "align" ,  "h3" : "align" ,  "h4" : "align" ,  "h5" : "align" ,  "h6" : "align",
-    "input" : ["align", "usemap"], "legend" : "align" , "menu" : "compact",
-    "ol" : ["compact", "type",  "type"], "p" : "align",
+    "h2" : ["align"] ,  
+    "h3" : ["align"] ,  
+    "h4" : ["align"] ,  
+    "h5" : ["align"] ,  
+    "h6" : ["align"],
+    "input" : ["align", "usemap"], 
+    "legend" : ["align"] , 
+    "menu" : ["compact"],
+    "ol" : ["compact", "type",  "type"], 
+    "p" : ["align"],
     "table" : ["bgcolor", "cellpadding", "cellspacing", "frame", "rules", "width", "align"] , 
     "tbody" : ["align", "char", "valign", "charoff"],
     "tfoot" : ["align", "charoff", "char", "valign" ],
@@ -64,17 +80,17 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "tr" : ["align", "bgcolor", "char", "charoff", "valign"]
  }
  
- let DEPRECATED_ROLES = [
+ const DEPRECATED_ROLES = [
     /**  deprecated aria roles: https://www.w3.org/TR/wai-aria-1.2/ */ 
     "directory"
  ]
 
- let DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
+ const DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
     /**  add deprecated aria global attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
     "aria-grabbed", "aria-dropeffect"
  ]
 
- let DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
+ const DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
     /**  add deprecated aria role and attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
     "alert" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "alertdialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -84,7 +100,7 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "button" : ["aria-errormessage", "aria-invalid"],
     "caption" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "cell" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "checkbox" : "aria-haspopup",
+    "checkbox" : ["aria-haspopup"],
     "code" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "command" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "complementary" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -108,7 +124,7 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "insertion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "link" : ["aria-errormessage", "aria-invalid"],
     "list" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "listbox" : "aria-haspopup",
+    "listbox" : ["aria-haspopup"],
     "listitem" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "log" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "main" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -127,7 +143,7 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "presentation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "progressbar" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "radio" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "radiogroup" : "aria-haspopup",
+    "radiogroup" : ["aria-haspopup"],
     "range" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "region" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "row" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -138,13 +154,13 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "sectionhead" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "select" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
     "separator" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "spinbutton" : "aria-haspopup",
+    "spinbutton" : ["aria-haspopup"],
     "status" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "strong" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "structure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "subscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "superscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "switch" : "aria-haspopup",
+    "switch" : ["aria-haspopup"],
     "tab" : ["aria-errormessage", "aria-invalid"],
     "table" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "tablist" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -154,49 +170,49 @@ let DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "timer" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "toolbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
     "tooltip" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "tree" : "aria-haspopup",
-    "treegrid" : "aria-haspopup",
+    "tree" : ["aria-haspopup"],
+    "treegrid" : ["aria-haspopup"],
     "treeitem" : ["aria-errormessage", "aria-invalid"],
     "widget" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "window" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"]
             
  }
 
- function toContextStr (obj, type) {
-    let str = "";
-    for (const prop of obj) { // This will throw an error
-        if (str !== "") str += ", ";
-        if (type === 'DEPRECATED_ELEMENTS')
+ function arrayToContextStr(obj, type) {
+    let str = ""; 
+    for (const prop of obj) {
+        if (str !=='' && !str.endsWith(', ')) str += ", ";
+        if (type === 'HTML_ELEMENTS')
             str += 'dom:' + prop;
-        else if (type === 'DEPRECATED_HTML_GLOBAL_ATTRIBUTES')
+        else if (type === 'HTML_ATTRIBUTES')
             str += 'dom:*[' + prop + "]";
-        else if (type === 'DEPRECATED_ELEMENT_ATTRIBUTES')
-            if (prop instanceof Array) {
-                if (!str.endsWith(", "))
-                    str += ", ";
-                for (const item in prop) {
-                    str += 'dom:' + prop + '[' + item + ']';
-                }
-            } else     
-                str += 'dom:' + prop + '[' + obj[prop] + ']';
-        else if (type === 'DEPRECATED_ROLES')
+        else if (type === 'ARIA_ROLES')
             str += 'aria:' + prop;
-        else if (type === 'DEPRECATED_ARIA_GLOBAL_ATTRIBUTES')
-            str += 'aria:*[' + prop + "]";
-        else if (type === 'DEPRECATED_ARIA_ROLE_ATTRIBUTES')
-            if (prop instanceof Array) {
-                if (!str.endsWith(", "))
-                    str += ", ";
-                for (const item in prop) {
-                    str += 'aria:' + prop + '[' + item + ']';
-                }
-            } else     
-                str += 'aria:' + prop + '[' + obj[prop] + ']';
-    } 
-    console.log("str=" + str);
+        else if (type === 'ARIA_ATTRIBUTES')
+            str += 'aria:*[' + prop + "]";        
+    } console.log(str);
     return str;
 } 
- 
+
+function objToContextStr(obj, type:string) {
+    let str = ""; 
+    for (const prop in obj) {
+        if (str !=='' && !str.endsWith(', ')) str += ", ";
+        if (type === 'HTML_ELEMENT_ATTRIBUTES') {
+            for (const item of obj[prop] as String[]) {
+                if (str !=='' && !str.endsWith(", ")) str += ", ";
+                str += 'dom:' + prop + '[' + item + ']';
+            }        
+        } else if (type === 'ARIA_ROLE_ATTRIBUTES') { 
+            for (const item of obj[prop] as String[]) {
+                if (str !=='' && !str.endsWith(", ")) str += ", ";
+                str += 'aria:' + prop + '[' + item + ']';
+            }    
+        }        
+    } console.log(str);
+    return str;
+} 
+
 let a11yRulesElem: Rule[] = [
     {
         /**
@@ -244,19 +260,51 @@ let a11yRulesElem: Rule[] = [
          * source: 
          *      html tags: https://dev.w3.org/html5/pf-summary/obsolete.html
          */
-        id: "RPT_Elem_Deprecated",
-        context: toContextStr(DEPRECATED_ELEMENTS, "DEPRECATED_ELEMENTS") +
-                 toContextStr(DEPRECATED_HTML_GLOBAL_ATTRIBUTES, "DEPRECATED_HTML_GLOBAL_ATTRIBUTES") +
-                 toContextStr(DEPRECATED_ELEMENT_ATTRIBUTES, "DEPRECATED_ELEMENT_ATTRIBUTES") +
-                 toContextStr(DEPRECATED_ROLES, "DEPRECATED_ROLES") +
-                 toContextStr(DEPRECATED_ARIA_GLOBAL_ATTRIBUTES, "DEPRECATED_ARIA_GLOBAL_ATTRIBUTES") +
-                 toContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "DEPRECATED_ARIA_ROLE_ATTRIBUTES"),
+        id: "element_attribute_deprecated",
+        context: arrayToContextStr(DEPRECATED_ELEMENTS, "HTML_ELEMENTS") + ", " +
+                 arrayToContextStr(DEPRECATED_HTML_GLOBAL_ATTRIBUTES, "HTML_ATTRIBUTES") + ", " +
+                 objToContextStr(DEPRECATED_ELEMENT_ATTRIBUTES, "HTML_ELEMENT_ATTRIBUTES") + ", " +
+                 arrayToContextStr(DEPRECATED_ROLES, "ARIA_ROLES") + ", " +
+                 arrayToContextStr(DEPRECATED_ARIA_GLOBAL_ATTRIBUTES, "ARIA_ATTRIBUTES") + ", " +
+                 objToContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "ARIA_ROLE_ATTRIBUTES"),
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             let passed = false;
             // HTMLUnit auto adds a tbody[align=left] to tables if tbody is missing!
             if (ruleContext.nodeName.toLowerCase() == "tbody" && ruleContext.hasAttribute("align"))
                 passed = true;
+
+            const nodeName = ruleContext.nodeName.toLowerCase();    
+            // check if it's a deprecated element
+            if (DEPRECATED_ELEMENTS.includes(nodeName))
+                return RuleFail("Fail_1", [nodeName]);
+
+            // check if it's a deprecated HTML global attribute
+            const attrs = ruleContext.getAttributeNames();
+            let violations = '';
+            for (const attr of attrs) {
+                if (DEPRECATED_HTML_GLOBAL_ATTRIBUTES.includes(attr)) {
+                    if (violations !== '') violations += ', ';
+                    violations += attr;
+                }
+            }    
+            if (violations !== '')
+                return RuleFail("Fail_2", [violations]);
+            
+
+            // check if it's a deprecated HTML element & attribute
+            violations = '';
+            if (nodeName in DEPRECATED_ELEMENT_ATTRIBUTES) {
+                for (const attr of attrs) {
+                    if (DEPRECATED_HTML_GLOBAL_ATTRIBUTES[nodeName].includes(attr)) {
+                        if (violations !== '') violations += ', ';
+                        violations += attr;
+                    }
+                }    
+                if (violations !== '')
+                    return RuleFail("Fail_3", [violations, nodeName]);
+            }
+
 
             //        if (!passed)
             //            Packages.java.lang.System.err.println(""+ruleContext.nodeName);

@@ -130,10 +130,15 @@ let a11yHelp = {
         "Fail_1": `${Config.helpRoot}/WCAG20_Meta_RedirectZero`
     },
     // JCH - DONE
-    "RPT_Elem_Deprecated": {
-        0: `${Config.helpRoot}/RPT_Elem_Deprecated`,
-        "Pass_0": `${Config.helpRoot}/RPT_Elem_Deprecated`,
-        "Potential_1": `${Config.helpRoot}/RPT_Elem_Deprecated`
+    "element_attribute_deprecated": {
+        0: `${Config.helpRoot}/element_attribute_deprecated`,
+        "Pass_0":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "Fail_1":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "Fail_2":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "Fail_3":  `${Config.helpRoot}/element_attribute_deprecated`, 
+        "Fail_4":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "Fail_5":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "Fail_6":  `${Config.helpRoot}/element_attribute_deprecated`,
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
@@ -1084,7 +1089,7 @@ let a11yHelpOld = {
     "WCAG20_Area_HasAlt": ["idhi_accessibility_check_g240.html"],
     "RPT_Media_ImgColorUsage": ["idhi_accessibility_check_g245.html"],
     "WCAG20_Meta_RedirectZero": ["idhi_accessibility_check_g254.html"],
-    "RPT_Elem_Deprecated": ["idhi_accessibility_check_g256.html"],
+    "element_attribute_deprecated": ["idhi_accessibility_check_g256.html"],
     "RPT_Blockquote_WrapsTextQuote": ["idhi_accessibility_check_g263.html"],
     "RPT_Elem_EventMouseAndKey": ["idhi_accessibility_check_g269.html"],
     "WCAG20_Doc_HasTitle": ["idhi_accessibility_check_g273.html"],
