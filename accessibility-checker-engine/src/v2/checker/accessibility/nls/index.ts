@@ -201,6 +201,16 @@ let a11yNls = {
         "Potential_1": "Verify the CSS background image does not convey important information"
     },
     // JCH - DONE
+    "style_hover_persistent": {
+        0: "The pointer should be able to move over content displayed on hover", 
+        "Pass_0": "the hover: pseudo-class is not used to display content",
+        "Pass_1": "content displayed via the :hover pseudo-class is a direct child of the trigger element",
+        "Pass_2": "content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element",
+        "Potential_1": "Confirm the pointer can be positioned over the displayed element, not just the trigger",
+        "Potential_2": "Confirm the pointer can be positioned over all the information displayed on hover",
+        "Potential_3": "Confirm the margin style attribute has not prevented the pointer from hovering over the displayed element, not just the trigger"
+    },
+    // JCH - DONE
     "RPT_Pre_ASCIIArt": {
         0: "ASCII art must have a text alternative",
         "Pass_0": "Rule Passed",
