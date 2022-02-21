@@ -188,9 +188,10 @@ const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
             str += 'dom:*[' + prop + "]";
         else if (type === 'ARIA_ROLES')
             str += 'aria:' + prop;
-        else if (type === 'ARIA_ATTRIBUTES')
-            str += 'aria:*[' + prop + "]";        
-    } 
+        else if (type === 'ARIA_ATTRIBUTES') {
+            str += 'dom:*[' + prop + "]";     
+        }       
+    }console.log(str);
     return str;
 } 
 
@@ -204,12 +205,13 @@ function objToContextStr(obj, type:string) {
                 str += 'dom:' + prop + '[' + item + ']';
             }        
         } else if (type === 'ARIA_ROLE_ATTRIBUTES') { 
-            for (const item of obj[prop] as String[]) {
+            for (let item of obj[prop] as String[]) {
                 if (str !=='' && !str.endsWith(", ")) str += ", ";
+                if (item.startsWith("aria-")) item = item.substring(5);
                 str += 'aria:' + prop + '[' + item + ']';
             }    
         }        
-    } 
+    } console.log(str);
     return str;
 } 
 
