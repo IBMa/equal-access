@@ -190,7 +190,7 @@ const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
             str += 'aria:' + prop;
         else if (type === 'ARIA_ATTRIBUTES')
             str += 'aria:*[' + prop + "]";        
-    } console.log(str);
+    } 
     return str;
 } 
 
@@ -209,7 +209,7 @@ function objToContextStr(obj, type:string) {
                 str += 'aria:' + prop + '[' + item + ']';
             }    
         }        
-    } console.log(str);
+    } 
     return str;
 } 
 
@@ -269,10 +269,10 @@ let a11yRulesElem: Rule[] = [
                  objToContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "ARIA_ROLE_ATTRIBUTES"),
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
-            let passed = false;
+            
             // HTMLUnit auto adds a tbody[align=left] to tables if tbody is missing!
             if (ruleContext.nodeName.toLowerCase() == "tbody" && ruleContext.hasAttribute("align"))
-                passed = true;
+                return RulePass("Pass_0");
 
             const nodeName = ruleContext.nodeName.toLowerCase();    
             // check if it's a deprecated element
@@ -291,12 +291,11 @@ let a11yRulesElem: Rule[] = [
             if (violations !== '')
                 return RuleFail("Fail_2", [violations]);
             
-
             // check if it's a deprecated HTML element & attribute
             violations = '';
             if (nodeName in DEPRECATED_ELEMENT_ATTRIBUTES) {
                 for (const attr of attrs) {
-                    if (DEPRECATED_HTML_GLOBAL_ATTRIBUTES[nodeName].includes(attr)) {
+                    if (DEPRECATED_ELEMENT_ATTRIBUTES[nodeName] && DEPRECATED_ELEMENT_ATTRIBUTES[nodeName].includes(attr)) {
                         if (violations !== '') violations += ', ';
                         violations += attr;
                     }
@@ -305,13 +304,44 @@ let a11yRulesElem: Rule[] = [
                     return RuleFail("Fail_3", [violations, nodeName]);
             }
 
+            
+            const roles = RPTUtil.getRoles(ruleContext, false);
+            // check if it's a deprecated global aria role
+            for (const role of roles) {
+                if (DEPRECATED_ROLES.includes(role))
+                    return RuleFail("Fail_4", [role]);
 
-            //        if (!passed)
-            //            Packages.java.lang.System.err.println(""+ruleContext.nodeName);
-            //        Packages.java.lang.System.err.println(""+ruleContext.getAttribute("align"));
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RulePotential("Potential_1");
+            } 
 
+            // check if it's a deprecated aria global attribute
+            violations = '';
+            for (const attr of attrs) {
+                if (DEPRECATED_ARIA_GLOBAL_ATTRIBUTES.includes(attr)) {
+                    if (violations !== '') violations += ', ';
+                    violations += attr;
+                }
+            }    
+            if (violations !== '')
+                return RuleFail("Fail_5", [violations]);
+            
+            // check if it's a deprecated ARIA role & attribute    
+            for (const role of roles) {
+                violations = '';
+                if (role in DEPRECATED_ARIA_ROLE_ATTRIBUTES) {
+                    for (const attr of attrs) {
+                        if (attr.startsWith('aria-') && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role] 
+                            && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role].includes(attr)) {
+                            if (violations !== '') violations += ', ';
+                            violations += attr;
+                        }
+                    }    
+                    if (violations !== '')
+                        return RuleFail("Fail_6", [violations, nodeName]);
+                }
+            }
+
+            return RulePass("Pass_0");
+            
         }
     },
     {
