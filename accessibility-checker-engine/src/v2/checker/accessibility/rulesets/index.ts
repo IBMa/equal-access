@@ -1101,6 +1101,11 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Elem_UniqueAccessKey",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
+                },
+                {
+                    id: "element_attribute_deprecated",
+                    level: eRulePolicy.RECOMMENDATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         },
