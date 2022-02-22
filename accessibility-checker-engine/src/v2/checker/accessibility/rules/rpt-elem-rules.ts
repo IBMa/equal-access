@@ -191,7 +191,7 @@ const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
         else if (type === 'ARIA_ATTRIBUTES') {
             str += 'dom:*[' + prop + "]";     
         }       
-    }console.log(str);
+    }
     return str;
 } 
 
@@ -211,7 +211,7 @@ function objToContextStr(obj, type:string) {
                 str += 'aria:' + prop + '[' + item + ']';
             }    
         }        
-    } console.log(str);
+    }
     return str;
 } 
 
@@ -338,7 +338,7 @@ let a11yRulesElem: Rule[] = [
                         }
                     }    
                     if (violations !== '')
-                        return RuleFail("Fail_6", [violations, nodeName]);
+                        return RuleFail("Fail_6", [violations, role]);
                 }
             }
 

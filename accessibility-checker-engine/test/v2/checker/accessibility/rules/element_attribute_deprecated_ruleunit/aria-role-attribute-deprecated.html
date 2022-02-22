@@ -30,9 +30,38 @@
 
 <h3>deprecated aria attributes tests</h3>
 
-
-  <div role="widget" aria-disabled="true"></div>
-  <!--div role="select" aria-errormessage="An error occurred"></div-->
+  <!-- with errors -->
+  <div role="alert" aria-disabled="true"></div>
+  <div role="banner" aria-errormessage="An error occurred"></div>
+  <div role="definition" aria-haspopup="true"></div>
+  <div role="form" aria-invalid="false"></div>
+  <div role="grid" aria-errormessage="An error occurred"></div>
+  <div role="img" aria-haspopup="true"></div>
+  <div role="insertion" aria-invalid="true"></div>
+  <div role="list" aria-errormessage="true"></div>
+  <div role="menuitem" aria-errormessage="An error occurred"></div>
+  <div role="navigation" aria-haspopup="true"></div>
+  <div role="option" aria-invalid="true"></div>
+  <div role="radio" aria-haspopup="true"></div>
+  <div role="region" aria-errormessage="hi"></div>
+  <div role="search" aria-haspopup="true"></div>
+  <div role="tab" aria-invalid="true"></div>
+  <div role="term" aria-haspopup="true"></div>
+  <div role="toolbar" aria-invalid="true"></div>
+  
+  <!-- without error -->  
+  <div role="listbox" aria-errormessage="true"></div>
+  <div role="menuitem" aria-haspopup="true"></div>
+  <div role="radiogroup" aria-errormessage="true"></div>
+  <div role="tree" aria-invalid="true"></div>
+  <div role="slide" aria-invalid="true"></div>
+  <div role="textbox" aria-errormessage="true"></div>
+  <div role="searchbox" aria-invalid="true"></div>
+  <div role="rowheader" aria-invalid="true"></div>
+  <div role="gridcell" aria-disabled="true"></div>
+  <div role="combobox" aria-invalid="true"></div>
+     
+     
 
 <script>
   UnitTest = {
@@ -49,10 +78,314 @@
               "aria": "/document[1]/alert[1]"
             },
             "reasonId": "Fail_6",
-            "message": "The ARIA attributes \"aria-disabled\" are deprecated for the role \"div\"",
+            "message": "The ARIA attributes \"aria-disabled\" are deprecated for the role \"alert\"",
             "messageArgs": [
               "aria-disabled",
-              "div"
+              "alert"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]/banner[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-errormessage\" are deprecated for the role \"banner\"",
+            "messageArgs": [
+              "aria-errormessage",
+              "banner"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/definition[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"definition\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "definition"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/form[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-invalid\" are deprecated for the role \"form\"",
+            "messageArgs": [
+              "aria-invalid",
+              "form"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]",
+              "aria": "/document[1]/grid[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-errormessage\" are deprecated for the role \"grid\"",
+            "messageArgs": [
+              "aria-errormessage",
+              "grid"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[6]",
+              "aria": "/document[1]/img[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"img\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[7]",
+              "aria": "/document[1]/insertion[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-invalid\" are deprecated for the role \"insertion\"",
+            "messageArgs": [
+              "aria-invalid",
+              "insertion"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[8]",
+              "aria": "/document[1]/list[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-errormessage\" are deprecated for the role \"list\"",
+            "messageArgs": [
+              "aria-errormessage",
+              "list"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[9]",
+              "aria": "/document[1]/menuitem[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-errormessage\" are deprecated for the role \"menuitem\"",
+            "messageArgs": [
+              "aria-errormessage",
+              "menuitem"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[10]",
+              "aria": "/document[1]/navigation[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"navigation\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "navigation"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[11]",
+              "aria": "/document[1]/option[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-invalid\" are deprecated for the role \"option\"",
+            "messageArgs": [
+              "aria-invalid",
+              "option"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[12]",
+              "aria": "/document[1]/radio[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"radio\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[13]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-errormessage\" are deprecated for the role \"region\"",
+            "messageArgs": [
+              "aria-errormessage",
+              "region"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[14]",
+              "aria": "/document[1]/search[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"search\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "search"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[15]",
+              "aria": "/document[1]/tab[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-invalid\" are deprecated for the role \"tab\"",
+            "messageArgs": [
+              "aria-invalid",
+              "tab"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[16]",
+              "aria": "/document[1]/term[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-haspopup\" are deprecated for the role \"term\"",
+            "messageArgs": [
+              "aria-haspopup",
+              "term"
+            ],
+            "apiArgs": [],
+            "category": "Other"
+          },
+          {
+            "ruleId": "element_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[17]",
+              "aria": "/document[1]/toolbar[1]"
+            },
+            "reasonId": "Fail_6",
+            "message": "The ARIA attributes \"aria-invalid\" are deprecated for the role \"toolbar\"",
+            "messageArgs": [
+              "aria-invalid",
+              "toolbar"
             ],
             "apiArgs": [],
             "category": "Other"
