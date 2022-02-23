@@ -4,7 +4,6 @@ const replace = require('gulp-replace');
 const ext_replace = require('gulp-ext-replace');
 const gRename = require("gulp-rename");
 const gSort = require('gulp-sort');
-const tap = require('gulp-tap');
 
 const componentHeader = `import React, { ReactNode } from "react";
 import Markdown from 'markdown-to-jsx';
