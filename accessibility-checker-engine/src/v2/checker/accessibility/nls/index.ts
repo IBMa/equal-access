@@ -122,7 +122,7 @@ let a11yNls = {
     0: "Avoid use of obsolete language features if possible",
     "Pass_0": "Rule Passed",
     "Fail_1": "The <{0}> element is deprecated in HTML 5",
-    "Fail_2": "HTML attributes \"{0}\"are deprecated in HTML 5",
+    "Fail_2": "The HTML attributes \"{0}\"are deprecated in HTML 5",
     "Fail_3": "The HTML attributes \"{0}\" are deprecated for the <{1}> element in HTML 5", 
     "Fail_4": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
     "Fail_5": "The ARIA attributes \"{0}\" are deprecated in ARIA 1.2",
