@@ -95,6 +95,14 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         </React.Fragment>
     }
 
+    RuleName = () => {
+        return <React.Fragment>
+            <p style={{fontSize: "12px", fontWeight:"400", paddingLeft: "16px", paddingTop: "10px", paddingBottom: "10px", backgroundColor:"#f4f4f4"}}>
+                {this.props.item.ruleId}
+            </p>
+        </React.Fragment>
+    }
+
     MyCodeSnippet = ({children, ...rest}: { children: any}) => {
         
         var snippet = '';
@@ -163,6 +171,9 @@ return(
                 },
                 ItemSnippet: {
                     component: this.ItemSnippet
+                },
+                RuleName: {
+                    component: this.RuleName
                 }
             }
         }}
@@ -198,9 +209,17 @@ function copyFiles() {
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
         .pipe(replace("<div id=\"locLevel\"></div>", "<ItemLevel item={this.props.item} />"))
         .pipe(replace(/^[^<]*/, componentHeader))
-        .pipe(tap(function (file) {
-            file.contents = Buffer.from(addFileNameToMDX(file.contents.toString(),file.path))
-          }))
+        // .pipe(tap(function (file) {
+        //     file.contents = Buffer.from(addFileNameToMDX(file.contents.toString(),file.path))
+        //   }))
+//         .pipe(replace(/(\<\/Column\>[ \r\n]*\<Column[^\>]*className="toolLeft")/, `
+// Rule Id: {this.props.item.ruleId}
+// $1`))
+
+.pipe(replace(/(\<\/Column\>[ \r\n]*\<Column[^\>]*className="toolLeft")/, `
+<RuleName item={this.props.item} />
+$1`))
+
         .pipe(replace(/$/, componentFooter))
         .pipe(gulp.dest("../src/ts/help/"));
 }
