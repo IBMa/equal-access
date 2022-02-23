@@ -4,6 +4,7 @@ const replace = require('gulp-replace');
 const ext_replace = require('gulp-ext-replace');
 const gRename = require("gulp-rename");
 const gSort = require('gulp-sort');
+const tap = require('gulp-tap');
 
 const componentHeader = `import React, { ReactNode } from "react";
 import Markdown from 'markdown-to-jsx';
@@ -174,7 +175,6 @@ function helpFileName(s) {
 function copyFiles() {
     return gulp.src(["../../accessibility-checker-engine/help/*.mdx"])
         .pipe(gRename(function (path) {
-            // Updates the object in-place
             path.basename = helpFileName(path.basename);
         }))
         .pipe(gSort({
@@ -198,9 +198,18 @@ function copyFiles() {
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
         .pipe(replace("<div id=\"locLevel\"></div>", "<ItemLevel item={this.props.item} />"))
         .pipe(replace(/^[^<]*/, componentHeader))
+        .pipe(tap(function (file) {
+            file.contents = Buffer.from(addFileNameToMDX(file.contents.toString(),file.path))
+          }))
         .pipe(replace(/$/, componentFooter))
         .pipe(gulp.dest("../src/ts/help/"));
 }
+
+function addFileNameToMDX (input, fileName) {
+    let myfilename = fileName.split("/").pop();
+    myfilename = myfilename.split(".")[0]
+    return input.replace(/$/, '<p style="font-size: 12px;font-weight:400;padding-left: 16px;padding-top: 10px;padding-bottom: 10px;background-color: #f4f4f4;">'+"Rule ID: "+myfilename+"</p>")
+  }
 
 function fileSwitcher() {
     let files = fs.readdirSync("../../accessibility-checker-engine/help/");
