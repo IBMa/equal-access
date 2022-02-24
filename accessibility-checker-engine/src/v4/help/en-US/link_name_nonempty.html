@@ -1,0 +1,85 @@
+<html lang="en-US">
+<head>
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+
+    <script>
+        RULE_MESSAGES = {
+            "en-US": {
+                "group": "Hyperlinks must have a text description of their purpose",
+                "pass": "Hyperlink has a description of its purpose",
+                "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
+            }
+        }
+    </script>
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <h3 id="groupLabel"></h3>
+                <div id="locLevel"></div>
+                <p id="ruleMessage"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<mark-down>
+
+### Why is this important?
+
+When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
+* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+
+### Example
+
+```
+<h2 id="topic1">Breaking News</h2>
+<p>
+    The central bank cut interest rates by half a
+    percentage to protect economy.
+    <a
+        id="p1"
+        href="news.html"
+        aria-labelledby="p1 topic1"
+        >Read more...</a
+    >
+</p>
+```
+
+</mark-down>
+
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<mark-down>
+
+### About this requirement
+
+* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
+* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
+* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+
+</mark-down>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

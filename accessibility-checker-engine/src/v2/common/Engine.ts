@@ -125,6 +125,14 @@ class WrappedRule {
 }
 
 export class Engine implements IEngine {
+    public static getLanguages() {
+        const env = typeof process !== "undefined" && process.env;
+        let nodeLang = env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES;
+        if (nodeLang) {
+            nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
+        }
+        return navigator && navigator.languages || [nodeLang];
+    }
     mappers : { [namespace: string] : IMapper } = {};
     ruleMap : { [id: string]: Rule } = {};
     wrappedRuleMap : { [id: string]: WrappedRule } = {};
