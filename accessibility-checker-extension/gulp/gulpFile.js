@@ -96,7 +96,7 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
 
     RuleID = () => {
         return <React.Fragment>
-            <div style={{fontSize: "12px", fontWeight:"400", paddingLeft: "16px", paddingTop: "10px", paddingBottom: "10px", backgroundColor:"#f4f4f4"}}>
+        <div style={{fontSize: "12px", fontWeight:"400", paddingBottom: "10px"}}>
             Rule ID: {this.props.item.ruleId}
             </div>
         </React.Fragment>
