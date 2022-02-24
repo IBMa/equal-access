@@ -104,6 +104,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
                 {
+                    id: "style_hover_persistent",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                },
+                {
                     id: "RPT_Style_BackgroundImage",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1241,6 +1246,11 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
+                    id: "input_haspopup_invalid",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_ONE
+                },
+                {
                     id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1313,6 +1323,11 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "RPT_Media_AudioVideoAltFilename",
+                    level: eRulePolicy.VIOLATION,
+                    toolkitLevel: eToolkitLevel.LEVEL_TWO
+                },
+                {
+                    id: "style_hover_persistent",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
                 },
