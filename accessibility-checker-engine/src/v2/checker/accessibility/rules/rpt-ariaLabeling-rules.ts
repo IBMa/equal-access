@@ -35,7 +35,8 @@ let a11yRulesLabeling: Rule[] = [
         /**
          * Description: Triggers if a landmark element has the same parent-landmark,
          * AND the same role as another landmark,
-         * AND is not differentiated by aria-label or aria-labelledby.
+         * AND is not differentiated by aria-label or aria-labelledby,
+         * AND if the landmark is not nested under a dialog node.
          * This causes it to be difficult for a keyboard user to know the difference between two landmarks
          * Origin:  https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13 this is not directly part of the ARIA spec so this is only in the IBM rules as a Violation
          *
@@ -53,13 +54,29 @@ let a11yRulesLabeling: Rule[] = [
         ): RuleResult | RuleResult[] => {
             // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
             const ruleContext = context["dom"].node as Element;
+
+            // Checking if this landmark is inside a dialog element. If it is we are going to skip checking it. 
+            var copyOfRuleContext = ruleContext;
+            var parnetNodesOfRuleContext = [];
+            while (copyOfRuleContext) {
+                parnetNodesOfRuleContext.unshift(copyOfRuleContext);
+                copyOfRuleContext = copyOfRuleContext.parentElement;
+            }
+            parnetNodesOfRuleContext.forEach(elem => {
+                if (elem !== null) {
+                    if (elem.tagName == "DIALOG" || elem.getAttribute('role') == "dialog") {
+                        return null // Skipping checking landmarks that happen to be inside dialog elements
+                    }
+                }
+            })
+
+            // Begining formCache work
             let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
             let formCache = RPTUtil.getCache(
                 ruleContext.ownerDocument,
                 "landmark_name_unique",
                 null
             );
-
             if (!formCache) {
                 // console.log("---------ENTERING FORM CACHE")
                 formCache = {
@@ -74,6 +91,26 @@ let a11yRulesLabeling: Rule[] = [
                 let navigationNodes = Array.from(navigationNodesTemp);
                 let navigationNodesParents = [];
                 let navigationNodesMatchFound = [];
+
+                // This block of code filters out any nav elements that are under an dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.    
+                let navigationNodesWithoutDialogs = [];
+                for (let i = 0; i < navigationNodes.length; i++) {
+                    let a = navigationNodes[i];
+                    let dialogNodeFoundFlag = false;
+                    while (a) {
+                        a = a.parentElement;
+                        if (a !== null) {
+                            if (a.tagName == "DIALOG" || a.getAttribute('role') == "dialog") {
+                                dialogNodeFoundFlag = true;
+                            }
+                        }
+                    }
+                    if(!dialogNodeFoundFlag){
+                        navigationNodesWithoutDialogs.push(navigationNodes[i])
+                    }
+                }
+                navigationNodes = navigationNodesWithoutDialogs;
+                
 
                 for (let i = 0; i < navigationNodes.length; i++) {
                     // Loop over all the landmark nodes
@@ -116,7 +153,7 @@ let a11yRulesLabeling: Rule[] = [
                         }
                         if (j === els.length - 1) {
                             // This node is at the head of the file so it does not have a parent
-                            navigationNodesParents.push(null); // TODO might want to change to NULL
+                            navigationNodesParents.push(null);
                             break;
                         }
                     }
