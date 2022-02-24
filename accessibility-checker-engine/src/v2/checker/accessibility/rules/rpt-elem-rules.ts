@@ -273,13 +273,15 @@ let a11yRulesElem: Rule[] = [
             const ruleContext = context["dom"].node as Element;
             
             // HTMLUnit auto adds a tbody[align=left] to tables if tbody is missing!
-            if (ruleContext.nodeName.toLowerCase() == "tbody" && ruleContext.hasAttribute("align"))
-                return RulePass("Pass_0");
+            if (ruleContext.nodeName.toLowerCase() === "tbody" && ruleContext.hasAttribute("align")) {
+                return RulePass("pass");
+            }
 
             const nodeName = ruleContext.nodeName.toLowerCase();    
             // check if it's a deprecated element
-            if (DEPRECATED_ELEMENTS.includes(nodeName))
-                return RuleFail("Fail_1", [nodeName]);
+            if (DEPRECATED_ELEMENTS.includes(nodeName)) {
+                return RuleFail("fail_elem", [nodeName]);
+            }
 
             // check if it's a deprecated HTML global attribute
             const attrs = ruleContext.getAttributeNames();
@@ -290,8 +292,9 @@ let a11yRulesElem: Rule[] = [
                     violations += attr;
                 }
             }    
-            if (violations !== '')
-                return RuleFail("Fail_2", [violations]);
+            if (violations !== '') {
+                return RuleFail("fail_attr", [violations]);
+            }
             
             // check if it's a deprecated HTML element & attribute
             violations = '';
@@ -302,17 +305,18 @@ let a11yRulesElem: Rule[] = [
                         violations += attr;
                     }
                 }    
-                if (violations !== '')
-                    return RuleFail("Fail_3", [violations, nodeName]);
+                if (violations !== '') {
+                    return RuleFail("fail_elem_attr", [violations, nodeName]);
+                }
             }
 
             
             const roles = RPTUtil.getRoles(ruleContext, false);
             // check if it's a deprecated global aria role
             for (const role of roles) {
-                if (DEPRECATED_ROLES.includes(role))
-                    return RuleFail("Fail_4", [role]);
-
+                if (DEPRECATED_ROLES.includes(role)) {
+                    return RuleFail("fail_aria_role", [role]);
+                }
             } 
 
             // check if it's a deprecated aria global attribute
@@ -323,8 +327,9 @@ let a11yRulesElem: Rule[] = [
                     violations += attr;
                 }
             }    
-            if (violations !== '')
-                return RuleFail("Fail_5", [violations]);
+            if (violations !== '') {
+                return RuleFail("fail_aria_attr", [violations]);
+            }
             
             // check if it's a deprecated ARIA role & attribute    
             for (const role of roles) {
@@ -332,18 +337,19 @@ let a11yRulesElem: Rule[] = [
                 if (role in DEPRECATED_ARIA_ROLE_ATTRIBUTES) {
                     for (const attr of attrs) {
                         if (attr.startsWith('aria-') && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role] 
-                            && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role].includes(attr)) {
+                            && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role].includes(attr)) 
+                        {
                             if (violations !== '') violations += ', ';
                             violations += attr;
                         }
                     }    
-                    if (violations !== '')
-                        return RuleFail("Fail_6", [violations, role]);
+                    if (violations !== '') {
+                        return RuleFail("fail_role_attr", [violations, role]);
+                    }
                 }
             }
 
-            return RulePass("Pass_0");
-            
+            return RulePass("pass");
         }
     },
     {

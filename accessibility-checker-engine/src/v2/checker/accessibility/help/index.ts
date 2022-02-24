@@ -132,13 +132,13 @@ let a11yHelp = {
     // JCH - DONE
     "element_attribute_deprecated": {
         0: `${Config.helpRoot}/element_attribute_deprecated`,
-        "Pass_0":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "Fail_1":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "Fail_2":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "Fail_3":  `${Config.helpRoot}/element_attribute_deprecated`, 
-        "Fail_4":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "Fail_5":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "Fail_6":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "pass":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "fail_elem":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "fail_attr":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "fail_elem_attr":  `${Config.helpRoot}/element_attribute_deprecated`, 
+        "fail_aria_role":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "fail_aria_attr":  `${Config.helpRoot}/element_attribute_deprecated`,
+        "fail_role_attr":  `${Config.helpRoot}/element_attribute_deprecated`,
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
