@@ -24,7 +24,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: rule-server
-    - run: npm run build:nohelp
+    - run: npm run build
       working-directory: rule-server
     - run: node main.js &
       working-directory: rule-server/dist
@@ -55,7 +55,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: rule-server
-      - run: npm run build:nohelp
+      - run: npm run build
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -99,7 +99,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: rule-server
-      - run: npm run build:nohelp
+      - run: npm run build
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -137,7 +137,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: rule-server
-      - run: npm run build:nohelp
+      - run: npm run build
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -175,7 +175,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: rule-server
-      - run: npm run build:nohelp
+      - run: npm run build
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
@@ -218,7 +218,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: rule-server
-      - run: npm run build:nohelp
+      - run: npm run build
         working-directory: rule-server
       - run: node main.js &
         working-directory: rule-server/dist
