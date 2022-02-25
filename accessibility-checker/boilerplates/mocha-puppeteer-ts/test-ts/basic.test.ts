@@ -1,17 +1,18 @@
 'use strict';
-import { Browser, Page, launch } from "puppeteer";
+import * as Puppeteer from "puppeteer";
+// import { Browser, Page, launch } from "puppeteer";
 import { assertCompliance, getCompliance, stringifyResults } from "accessibility-checker";
 import * as path from "path";
 import { expect } from "chai";
 import { before, after, describe, it } from "mocha";
 import { ICheckerReport } from "accessibility-checker/lib/api/IChecker";
 
-let browser: Browser;
-let page: Page;
+let browser: Puppeteer.Browser;
+let page: Puppeteer.Page;
 
 before(async () => {
     try {
-        browser = await launch();
+        browser = await Puppeteer.launch();
         page = await browser.newPage();  
     } catch (e) {
         console.log(e);
