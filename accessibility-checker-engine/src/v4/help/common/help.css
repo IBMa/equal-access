@@ -115,3 +115,7 @@ body {
 bx-code-snippet[type="multi"]::after {
     height: 0px;
 }
+
+#ruleInfo {
+    margin-top: 1rem;
+}

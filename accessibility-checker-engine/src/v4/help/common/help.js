@@ -111,8 +111,8 @@ window.addEventListener("load", (evt) => {
             if (val === "Recommendation") icon = `<img src="../assets/Recommendation16.svg" alt="" />`;
             document.querySelector("#locLevel").innerHTML = `<div class="issueLevel">${icon}&nbsp;${val}</div>`;
         }
-        if (ruleInfo.ruleId && ruleInfo.ruleId.match(/^[a-zA-Z0-9_]*$/)) {
-            document.title = `${ruleInfo.ruleId} - Accessibility Checker Rule Help`
+        if (RULE_ID) {
+            document.querySelector("#ruleInfo").innerHTML = `<p>Rule ID: ${RULE_ID}${ruleInfo.reasonId ? `<br />Reason ID: ${ruleInfo.reasonId}</p>` : ""}`;
         }
     }
 })

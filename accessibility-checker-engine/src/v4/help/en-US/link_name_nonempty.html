@@ -1,18 +1,9 @@
 <html lang="en-US">
 <head>
+    <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../common/help.css" />
-
-    <script>
-        RULE_MESSAGES = {
-            "en-US": {
-                "group": "Hyperlinks must have a text description of their purpose",
-                "pass": "Hyperlink has a description of its purpose",
-                "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
-            }
-        }
-    </script>
     <script type="module">
         import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
         import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
@@ -24,19 +15,24 @@
     <div class="bx--grid toolHelp">
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
                 <h3 id="groupLabel"></h3>
+                <!-- Severity level injected here -->
                 <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
                 <p id="ruleMessage"></p>
             </div>
         </div>
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
 <mark-down>
 
 ### Why is this important?
 
 When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
 
+<!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
@@ -61,9 +57,12 @@ When the purpose of a link is clear users can easily navigate links on the page 
 ```
 
 </mark-down>
-
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
             </div>
             <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
 <mark-down>
 
 ### About this requirement
@@ -78,6 +77,7 @@ When the purpose of a link is clear users can easily navigate links on the page 
 * People with low vision using screen magnification
 
 </mark-down>
+<!-- End side panel -->
             </div>
         </div>
     </div>
