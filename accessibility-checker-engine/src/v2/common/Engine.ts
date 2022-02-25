@@ -131,7 +131,7 @@ export class Engine implements IEngine {
         if (nodeLang) {
             nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
         }
-        return navigator && navigator.languages || [nodeLang];
+        return typeof navigator !== "undefined" && navigator.languages || [nodeLang];
     }
     mappers : { [namespace: string] : IMapper } = {};
     ruleMap : { [id: string]: Rule } = {};

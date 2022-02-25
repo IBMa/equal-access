@@ -11,7 +11,7 @@
         "test": "karma start",
         "serve": "serve .",
         "build:help": "ts-node src/genHelp.ts",
-        "build:all": "npm run build && npm run build-node && npm run build-debug && npm run build-node-debug && npm run build:help"
+        "build:all": "npm run build && npm run build-node && npm run build-debug && npm run build-node-debug && npm run build:help && shx cp ./src/package.json ./dist/ && shx cp ./README.md ./dist/"
     },
     "author": "IBM",
     "license": "SEE LICENSE IN LICENSE from the 'equal-access' repository",

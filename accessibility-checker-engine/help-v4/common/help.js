@@ -84,9 +84,14 @@ const valueMap = {
 };
 
 window.addEventListener("load", (evt) => {
-    const searchParams = new URLSearchParams(window.location.search);
-    let ruleInfo = JSON.parse(decodeURIComponent(searchParams.get("issue")));
-    document.querySelector("#groupLabel").innerHTML = RULE_MESSAGES["en-US"].group;
+    document.querySelector("#groupLabel").innerHTML = RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0];
+    let ruleInfo;
+    if (window.location.search && window.location.search.length > 0) {
+        const searchParams = new URLSearchParams(window.location.search);
+        ruleInfo = JSON.parse(decodeURIComponent(searchParams.get("issue")));
+    } else if (window.location.hash && window.location.hash.length > 0) {
+        ruleInfo = JSON.parse(decodeURIComponent(window.location.hash.substring(1)));
+    }
     if (ruleInfo) {
         if (ruleInfo.message) {
             document.querySelector("#ruleMessage").innerHTML = ruleInfo.message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
