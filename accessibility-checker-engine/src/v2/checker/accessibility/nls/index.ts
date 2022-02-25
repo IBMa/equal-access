@@ -201,6 +201,16 @@ let a11yNls = {
         "Potential_1": "Verify the CSS background image does not convey important information"
     },
     // JCH - DONE
+    "style_hover_persistent": {
+        0: "The pointer should be able to move over content displayed on hover", 
+        "Pass_0": "the hover: pseudo-class is not used to display content",
+        "Pass_1": "content displayed via the :hover pseudo-class is a direct child of the trigger element",
+        "Pass_2": "content displayed via the :hover pseudo-class is the adjacent sibling of the trigger element",
+        "Potential_1": "Confirm the pointer can be positioned over the displayed element, not just the trigger",
+        "Potential_2": "Confirm the pointer can be positioned over all the information displayed on hover",
+        "Potential_3": "Confirm the margin style attribute has not prevented the pointer from hovering over the displayed element, not just the trigger"
+    },
+    // JCH - DONE
     "RPT_Pre_ASCIIArt": {
         0: "ASCII art must have a text alternative",
         "Pass_0": "Rule Passed",
@@ -1011,6 +1021,12 @@ let a11yNls = {
         "Pass": "The combobox does not use 'aria-autocomplete' value '\"inline\"' nor does it have 'aria-autocomplete' defined within the popup",
         "Fail_1": "The combobox has the 'aria-autocomplete' attribute incorrectly set on an element within the popup referenced by \"{0}\"",
         "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute value set to '\"inline\"' "
+    },
+    "input_haspopup_invalid": {
+        0: "<input> element with list attribute should not use aria-haspopup attribute on indicated inputs",
+        "Pass_0": "<input> element with list attribute does not use aria-haspopup attribute on indicated inputs",
+        "Failure_1": "<input> element with list attribute uses aria-haspopup attribute on type=\"{0}\"",
+        "Failure_2": "<input> element with list attribute uses aria-haspopup attribute on missing or invalid input type"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
