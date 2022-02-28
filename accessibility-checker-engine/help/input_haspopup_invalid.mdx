@@ -1,5 +1,5 @@
 ---
-title: "Accessibility Checker Rule Help: input_haspopup_invalid"
+title: "input_haspopup_invalid: Accessibility Checker Rule Help"
 ---
 import "../../../styles/ToolHelp.scss"
 import { CodeSnippet, Tag } from "carbon-components-react";
@@ -8,11 +8,11 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### A focusable element should not be within the subtree of an element with `aria-hidden` set to `"true"` 
+### `<input>` element with `list` attribute also uses `aria-haspopup` attribute on certain input types
 
 <div id="locLevel"></div>
 
-Element with `aria-hidden="true"` should not have focusable content
+An `<input>` element with `list` attribute should not also use `aria-haspopup` attribute
 
 </Column>
 </Row>
@@ -21,51 +21,59 @@ Element with `aria-hidden="true"` should not have focusable content
 
 ### Why is this important?
 
-Using either `role="presentation"` or `aria-hidden="true"` on a focusable element will result in some users focusing on "nothing".
-A focusable element with `aria-hidden="true"` is ignored as part of the reading order, 
-but still part of the focus order, 
-making its state of visible or hidden unclear.
-This rule checks that elements with an `aria-hidden` attribute do not contain focusable elements.
+Input types of [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+[search](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+[tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)), 
+[url](https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)), 
+and [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)) 
+(or inputs with a missing or invalid type) that also have a 
+[list](https://html.spec.whatwg.org/multipage/input.html#attr-input-list) attribute have an implicit role of combobox 
+(which in turn has an implicit aria-haspopup="listbox"); 
+therefore, developers should not explicitly assign the aria-haspopup attribute, 
+which will be either redundant or possibly conflicting. 
+When HTML elements use both `aria-*` attributes and their HTML implied equivalents, 
+browsers **_must_** ignore the explicit (redundant or conflicting) ARIA attribute – the native HTML attribute with their 
+[implied ARIA semantics](https://www.w3.org/TR/wai-aria-1.1/#implicit_semantics) take precedence. 
+
+To ensure that Assistive Technologies (AT) can gather information, 
+proper coding is required so that the end users can understand and interact with the content. 
+If standard HTML controls are created according to specification, 
+the conditions of this provision will be met. 
+For this reason, to avoid unintended consequences, 
+developers **_should not_** specify both the native HTML attribute and an equivalent (redundant or conflicting) `aria-*` attribute.
 
 <div id="locSnippet"></div>
 
 ### What to do
 
-When designers and developers want to hide parts of a web page that are pure decoration, 
-such as icon fonts - that are not meant to be read by assistive technologies:
+* Remove the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute with input `type=`
+    * [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+    * [search](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+    * [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)),  
+    * [url](https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)), 
+    * [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email))
+* **And/Or**, add input type if missing or correct the invalid input type.
 
-* ensure that assistive technologies will ignore the element by adding `aria-hidden="true"` to the element
-* enure none of the target elements are part of sequential focus navigation
-* ensure no descendants are part of sequential focus navigation 
 
-### Example
 
-* In the following example, the `button` element is focusable by default. 
-Therefore, using `aria-hidden="true"` violates the rule: 
-<CodeSnippet type="multi" light={true}>
-        &lt;div aria-hidden="true"&gt;
-            &lt;div aria-hidden="false"&gt;
-                &lt;button&gt;Some button&lt;/button&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-</CodeSnippet>
 
-Note: Using `aria-hidden="false"` on a descendant of an element with `aria-hidden="true"` does not expose that element.
-Using `aria-hidden="true"` hides itself and all its content from assistive technologies.
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
 
 ### About this requirement
 
-* [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [Fourth Rule of ARIA Use](https://www.w3.org/TR/using-aria/#fourth)
-* [ACT rule: Element with aria-hidden has no focusable content](https://act-rules.github.io/rules/6cfa84)
+* [ARIA in HTML specification](https://www.w3.org/TR/html-aria/#el-input-text-list)
+* [WCAG technique ARIA5](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA5)
+* [WCAG technique G108](https://www.w3.org/WAI/WCAG21/Techniques/general/G108)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairment using voice control
+* People who physically cannot use a pointing device
 
 </Column>
 </Row>
