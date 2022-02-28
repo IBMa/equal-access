@@ -1025,8 +1025,8 @@ let a11yNls = {
     "input_haspopup_invalid": {
         0: "<input> element with 'list' attribute should not also use 'aria-haspopup' attribute",
         "Pass_0": "<input> element with 'list' attribute does not use 'aria-haspopup' attribute",
-        "Potential_1": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute on type=\"{0}\"",
-        "Potential_2": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute on missing or invalid input type"
+        "Potential_1": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"{0}\"",
+        "Potential_2": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with missing or invalid input type"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
