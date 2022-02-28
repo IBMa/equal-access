@@ -94,6 +94,14 @@ export default class HelpFile extends React.Component<IHelpFileProps> {
         </React.Fragment>
     }
 
+    RuleID = () => {
+        return <React.Fragment>
+        <div style={{fontSize: "12px", fontWeight:"400", paddingBottom: "10px"}}>
+            Rule ID: {this.props.item.ruleId}
+            </div>
+        </React.Fragment>
+    }
+
     MyCodeSnippet = ({children, ...rest}: { children: any}) => {
         
         var snippet = '';
@@ -162,6 +170,9 @@ return(
                 },
                 ItemSnippet: {
                     component: this.ItemSnippet
+                },
+                RuleID: {
+                    component: this.RuleID
                 }
             }
         }}
@@ -174,7 +185,6 @@ function helpFileName(s) {
 function copyFiles() {
     return gulp.src(["../../accessibility-checker-engine/help/*.mdx"])
         .pipe(gRename(function (path) {
-            // Updates the object in-place
             path.basename = helpFileName(path.basename);
         }))
         .pipe(gSort({
@@ -198,6 +208,9 @@ function copyFiles() {
         .pipe(replace("<div id=\"locSnippet\"></div>", "<ItemSnippet item={this.props.item} />"))
         .pipe(replace("<div id=\"locLevel\"></div>", "<ItemLevel item={this.props.item} />"))
         .pipe(replace(/^[^<]*/, componentHeader))
+        .pipe(replace(/(\<\/Column\>[ \r\n]*\<Column[^\>]*className="toolLeft")/, `
+<RuleID item={this.props.item} />
+$1`))
         .pipe(replace(/$/, componentFooter))
         .pipe(gulp.dest("../src/ts/help/"));
 }
