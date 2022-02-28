@@ -8,7 +8,7 @@ import { CodeSnippet, Tag } from "carbon-components-react";
 <Row>
 <Column colLg={16} colMd={8} colSm={4} className="toolHead">
 
-### `<input>` element with `list` attribute also uses `aria-haspopup` attribute on certain input types
+### `<input>` element with `list` attribute also uses `aria-haspopup` attribute
 
 <div id="locLevel"></div>
 
@@ -21,7 +21,7 @@ An `<input>` element with `list` attribute should not also use `aria-haspopup` a
 
 ### Why is this important?
 
-Input types of [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+* Input types of [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
 [search](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
 [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)), 
 [url](https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)), 
@@ -35,7 +35,7 @@ When HTML elements use both `aria-*` attributes and their HTML implied equivalen
 browsers **_must_** ignore the explicit (redundant or conflicting) ARIA attribute – the native HTML attribute with their 
 [implied ARIA semantics](https://www.w3.org/TR/wai-aria-1.1/#implicit_semantics) take precedence. 
 
-To ensure that Assistive Technologies (AT) can gather information, 
+* To ensure that Assistive Technologies (AT) can gather information, 
 proper coding is required so that the end users can understand and interact with the content. 
 If standard HTML controls are created according to specification, 
 the conditions of this provision will be met. 
@@ -46,17 +46,12 @@ developers **_should not_** specify both the native HTML attribute and an equiva
 
 ### What to do
 
-* Remove the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute with input `type=`
-    * [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
-    * [search](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
-    * [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)),  
-    * [url](https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)), 
-    * [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email))
+* Remove the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute with input `type=` [text](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+[search](https://html.spec.whatwg.org/multipage/input.html#text-(type=text)-state-and-search-state-(type=search)), 
+[tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)), 
+[url](https://html.spec.whatwg.org/multipage/input.html#url-state-(type=url)), 
+or [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email))
 * **And/Or**, add input type if missing or correct the invalid input type.
-
-
-
-
 
 </Column>
 <Column colLg={5} colMd={3} colSm={4} className="toolLeft">
