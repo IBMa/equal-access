@@ -122,11 +122,11 @@ let a11yNls = {
     0: "Avoid use of obsolete features if possible",
     "pass": "Rule Passed",
     "fail_elem": "The <{0}> element is deprecated in HTML 5",
-    "fail_attr": "The HTML attribute \"{0}\" is deprecated in HTML 5",
-    "fail_elem_attr": "The HTML attribute \"{0}\" is deprecated for the <{1}> element in HTML 5", 
+    "fail_attr": "The HTML attribute(s) \"{0}\" is deprecated in HTML 5",
+    "fail_elem_attr": "The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5", 
     "fail_aria_role": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
-    "fail_aria_attr": "The ARIA attribute \"{0}\" is deprecated in ARIA 1.2",
-    "fail_role_attr": "The ARIA attribute \"{0}\" is deprecated for the role \"{1}\""
+    "fail_aria_attr": "The ARIA attribute(s) \"{0}\" is deprecated in ARIA 1.2",
+    "fail_role_attr": "The ARIA attribute(s) \"{0}\" is deprecated for the role \"{1}\""
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
