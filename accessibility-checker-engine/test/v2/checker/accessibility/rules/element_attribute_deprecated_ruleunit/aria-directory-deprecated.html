@@ -33,16 +33,6 @@
     <div role="listitem">an item in the directory</div>
   </div>
 
-  <ul role="directory">
-    <li>an item in the directory, no explicit role</li>
-    <li role="listitem">an item in the directory with role=listitem</li>
-  </ul>
-
-  <ol role="directory">
-    <li>an item in the directory, no explicit role</li>
-    <li role="listitem">an item in the directory with role=listitem</li>
-  </ol>
-
   <menu role="directory">
     <li>an item in the directory, no explicit role</li>
     <li role="listitem">an item in the directory with role=listitem</li>
@@ -59,62 +49,8 @@
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]",
-              "aria": "/document[1]/directory[1]"
-            },
-            "reasonId": "fail_aria_role",
-            "message": "The ARIA role \"directory\" is deprecated in ARIA 1.2",
-            "messageArgs": [
-              "directory"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_attribute_deprecated",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/ul[1]",
-              "aria": "/document[1]/directory[2]"
-            },
-            "reasonId": "fail_aria_role",
-            "message": "The ARIA role \"directory\" is deprecated in ARIA 1.2",
-            "messageArgs": [
-              "directory"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_attribute_deprecated",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/ol[1]",
-              "aria": "/document[1]/directory[3]"
-            },
-            "reasonId": "fail_aria_role",
-            "message": "The ARIA role \"directory\" is deprecated in ARIA 1.2",
-            "messageArgs": [
-              "directory"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_attribute_deprecated",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
               "dom": "/html[1]/body[1]/div[1]/menu[1]",
-              "aria": "/document[1]/directory[4]"
+              "aria": "/document[1]/directory[2]"
             },
             "reasonId": "fail_elem",
             "message": "The <menu> element is deprecated in HTML 5",

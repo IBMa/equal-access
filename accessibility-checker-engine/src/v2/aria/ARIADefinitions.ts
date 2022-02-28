@@ -21,7 +21,9 @@
 export interface IDocumentConformanceRequirement {
     implicitRole: string[],
     validRoles: string[],
-    globalAriaAttributesValid: boolean
+    globalAriaAttributesValid: boolean,
+    allowedOtherAriaAttributes?: string[], 
+    disallowedOtherAriaAttributes?: string[] 
 }
 
 export class ARIADefinitions {
@@ -1606,18 +1608,19 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "body": {
-            implicitRole: ["document"],
+            implicitRole: null,
             validRoles: null,
             globalAriaAttributesValid: true
         },
         "br": {
             implicitRole: null,
             validRoles: ["none", "presentation"],
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: false,
+            allowedOtherAriaAttributes: ["aria-hidden"]
         },
         "button": {
             implicitRole: ["button"],
-            validRoles: ["checkbox", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
+            validRoles: ["checkbox", "combobox", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab"],
             globalAriaAttributesValid: true
         },
         "canvas": {
@@ -1725,6 +1728,11 @@ export class ARIADefinitions {
             validRoles: null,
             globalAriaAttributesValid: false
         },
+        "hgroup": {
+            implicitRole: null,
+            validRoles: ["any"],
+            globalAriaAttributesValid: true
+        },
         "h1": {
             implicitRole: ["heading"],
             validRoles: ["doc-subtitle", "none", "presentation", "tab"],
@@ -1753,11 +1761,6 @@ export class ARIADefinitions {
         "h6": {
             implicitRole: ["heading"],
             validRoles: ["doc-subtitle", "none", "presentation", "tab"],
-            globalAriaAttributesValid: true
-        },
-        "hgroup": {
-            implicitRole: null,
-            validRoles: ["any"],
             globalAriaAttributesValid: true
         },
         "hr": {
@@ -1893,7 +1896,8 @@ export class ARIADefinitions {
         "picture": {
             implicitRole: null,
             validRoles: null,
-            globalAriaAttributesValid: false
+            globalAriaAttributesValid: false,
+            /** otherAriaAttributes: [aria-hidden] */
         },
         "pre": {
             implicitRole: null,
@@ -1903,7 +1907,8 @@ export class ARIADefinitions {
         "progress": {
             implicitRole: ["progressbar"],
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            /** otherAriaAttributes: [aria-valuemax] */
         },
         "q": {
             implicitRole: null,
@@ -2072,7 +2077,8 @@ export class ARIADefinitions {
                 implicitRole: ["link"],
                 //roleCondition: " when non-empty href attribute is present",
                 validRoles: ["button", "checkbox", "doc-backlink", "doc-biblioref", "doc-glossref", "doc-noteref", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab", "treeitem"],
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                disallowedOtherAriaAttributes: ["aria-diabled='true'"]
             },
             "without-href": {
                 implicitRole: null,
@@ -2091,7 +2097,7 @@ export class ARIADefinitions {
             "without-href": {
                 implicitRole: null,
                 //roleCondition: " when href attribute is not present",
-                validRoles: null,
+                validRoles: ["button", "link"],
                 globalAriaAttributesValid: true
             }
         },
@@ -2115,7 +2121,13 @@ export class ARIADefinitions {
             }
         },
         "footer": {
-            "des-section-article": {
+            "des-section-article-aside-main-nav": {
+                implicitRole: null,
+                //roleCondition: " when descendant of an article, aside, main, nav or section element",
+                validRoles: ["doc-footnote", "group", "none", "presentation"],
+                globalAriaAttributesValid: true
+            },
+            "role-complementary-article-main-navigation-region": {
                 implicitRole: null,
                 //roleCondition: " when descendant of an article, aside, main, nav or section element",
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
@@ -2150,7 +2162,13 @@ export class ARIADefinitions {
 //        },
 
         "header": {
-            "des-section-article": {
+            "des-section-article-aside-main-nav": {
+                implicitRole: null,
+                //roleCondition: " when descendant of an article, aside, main, nav or section element",
+                validRoles: ["group", "none", "presentation"],
+                globalAriaAttributesValid: true
+            },
+            "role-complementary-article-main-navigation-region": {
                 implicitRole: null,
                 //roleCondition: " when descendant of an article, aside, main, nav or section element",
                 validRoles: ["group", "none", "presentation"],
@@ -2168,7 +2186,7 @@ export class ARIADefinitions {
             "img-with-alt-text": {
                 implicitRole: ["img"],
                 //roleCondition: " when alt attribute has text (is not empty)",
-                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
+                validRoles: ["button", "checkbox", "doc-cover", "link", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "progressbar", "radio", "scrollbar", "separator", "slider", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true
             },
             "img-with-empty-alt": {

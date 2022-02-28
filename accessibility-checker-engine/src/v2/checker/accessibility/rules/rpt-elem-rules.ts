@@ -82,16 +82,24 @@ const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
  
  const DEPRECATED_ROLES = [
     /**  deprecated aria roles: https://www.w3.org/TR/wai-aria-1.2/ */ 
-    "directory"
+    /** 
+     *  the aria deprecation will be better handled in ARIADefinition.ts
+     *  "directory" 
+    */
  ]
 
  const DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
     /**  add deprecated aria global attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
-    "aria-grabbed", "aria-dropeffect"
+    /** 
+     *  the aria deprecation will be better handled in ARIADefinition.ts
+     *  "aria-grabbed", "aria-dropeffect" 
+    */
  ]
 
  const DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
     /**  add deprecated aria role and attributes: https://www.w3.org/TR/wai-aria-1.2/ */ 
+    /** 
+     *  the aria deprecation will be better handled in ARIADefinition.ts
     "alert" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "alertdialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "article" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
@@ -175,7 +183,7 @@ const DEPRECATED_HTML_GLOBAL_ATTRIBUTES = [
     "treeitem" : ["aria-errormessage", "aria-invalid"],
     "widget" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
     "window" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"]
-            
+     */       
  }
 
  function arrayToContextStr(obj, type) {
@@ -263,12 +271,12 @@ let a11yRulesElem: Rule[] = [
          *      html tags: https://dev.w3.org/html5/pf-summary/obsolete.html
          */
         id: "element_attribute_deprecated",
-        context: arrayToContextStr(DEPRECATED_ELEMENTS, "HTML_ELEMENTS") + ", " +
-                 arrayToContextStr(DEPRECATED_HTML_GLOBAL_ATTRIBUTES, "HTML_ATTRIBUTES") + ", " +
-                 objToContextStr(DEPRECATED_ELEMENT_ATTRIBUTES, "HTML_ELEMENT_ATTRIBUTES") + ", " +
-                 arrayToContextStr(DEPRECATED_ROLES, "ARIA_ROLES") + ", " +
-                 arrayToContextStr(DEPRECATED_ARIA_GLOBAL_ATTRIBUTES, "ARIA_ATTRIBUTES") + ", " +
-                 objToContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "ARIA_ROLE_ATTRIBUTES"),
+        context: arrayToContextStr(DEPRECATED_ELEMENTS, "HTML_ELEMENTS")  +
+                + ", " + arrayToContextStr(DEPRECATED_HTML_GLOBAL_ATTRIBUTES, "HTML_ATTRIBUTES") +
+                + ", " + objToContextStr(DEPRECATED_ELEMENT_ATTRIBUTES, "HTML_ELEMENT_ATTRIBUTES") +
+                (DEPRECATED_ROLES.length > 0 ? ", " + arrayToContextStr(DEPRECATED_ROLES, "ARIA_ROLES") : "") +
+                (DEPRECATED_ARIA_GLOBAL_ATTRIBUTES.length > 0 ? ", " + arrayToContextStr(DEPRECATED_ARIA_GLOBAL_ATTRIBUTES, "ARIA_ATTRIBUTES") : "") +
+                (Object.keys(DEPRECATED_ARIA_ROLE_ATTRIBUTES).length > 0 ? ", " + objToContextStr(DEPRECATED_ARIA_ROLE_ATTRIBUTES, "ARIA_ROLE_ATTRIBUTES") : ""),
         run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
             const ruleContext = context["dom"].node as Element;
             
