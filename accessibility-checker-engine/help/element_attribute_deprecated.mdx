@@ -1,0 +1,96 @@
+---
+title: "element_attribute_deprecated - Accessibility Checker Rule Help"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Attributes or elements are deprecated
+
+<!-- This active message title is NOT used by the Checker, 
+the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
+
+
+<div id="locLevel"></div>
+
+<!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->
+
+Avoid use of obsolete features if possible
+
+<!-- Checker does not display this message sub-title, 
+the browser extension displays the 0: message in  ...nls/index.ts file -->
+
+<!-- Note that the messages in the test files must also match 
+the messages from the ...nls/index.ts file instead of message titles here in mdx -->
+
+</Column>
+</Row>
+
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When specifications are updated, some elements and attributes become outdated. These deprecated features may become obsolete and be removed in future versions, and should not be used in new projects. As well, a deprecated feature is usually replaced by an improvement in the newer specification, so it wise to update code to avoid deprecated features. Existing projects that use deprecated features should work, since browsers should continue to support them.
+
+
+<div id="locSnippet"></div>
+
+
+### What to do
+
+Replace deprecated elements and attributes with those preferred in the current version of the specification.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+<!-- should only include one requirement and one or more references to techniques and best practices -->
+  
+* [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
+* [HTML5 obsolete features](https://developer.mozilla.org/en-US/docs/Web/HTML/Element#obsolete_and_deprecated_elements)
+* [Deprecated requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
+
+### Who does this affect?
+
+<!-- using this style of comment in this .mdx file.
+also works for this multi-line style comment.
+Only use a few of these categories below that are applicable to people affected
+-->
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision who use screen magnification
+* People with visual impairment using color contrast enhancement
+* People with moderately low vision who do not use a contrast-enhancing technology
+* People who cannot see color, have limited color vision or have color blindness
+* People who personalize their display colors for easier reading
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+* People who use alternate backgrounds to increase legibility
+* People using text only, monochrome or braille displays
+* People who rely on keyboard control
+* People who are deaf or hard of hearing
+* People with physical disabilities
+* People with dexterity impairment
+* People with dexterity impairment using voice control
+* People who physically cannot use a pointing device
+* People with tremor or other movement disorders
+* People with flash-induced seizures
+* Many older adults
+* Neurodivergent people
+* People who turn off image-loading on their web browsers
+* People with reading disabilities
+* People with cognitive differences who view interfaces using an adapted layout
+* People with cognitive limitations
+* People with memory limitations
+* People with learning disabilities
+* People with attention deficit disorders
+   
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
