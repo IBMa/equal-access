@@ -118,3 +118,7 @@ bx-code-snippet[type="multi"]::after {
 #ruleInfo {
     margin-top: 1rem;
 }
+
+#ruleInfo p {
+    font-size: 14px;
+}

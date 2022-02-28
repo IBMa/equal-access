@@ -83,8 +83,8 @@ const valueMap = {
     }
 };
 
-window.addEventListener("load", (evt) => {
-    document.querySelector("#groupLabel").innerHTML = RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0];
+window.addEventListener("DOMContentLoaded", (evt) => {
+    document.querySelector("#groupLabel").innerHTML = typeof RULE_MESSAGES !== "undefined" && (RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0]) || "";
     let ruleInfo;
     if (window.location.search && window.location.search.length > 0) {
         const searchParams = new URLSearchParams(window.location.search);

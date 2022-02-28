@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ExtensionReloader = require('webpack-extension-reloader');
+const ExtensionReloader = require('webpack-ext-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
 
