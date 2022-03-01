@@ -1087,7 +1087,7 @@ export class ACReportManager {
                     "\n  Level: " + issue.level +
                     "\n  XPath: " + issue.path.dom +
                     "\n  Snippet: " + issue.snippet +
-                    "\n  Help: " + ACEngineManager.getHelpURL(issue.ruleId) +
+                    "\n  Help: " + ACEngineManager.getHelpURL(issue) +
                     "\n";
             }
         });

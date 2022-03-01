@@ -160,8 +160,23 @@ try {
      *
      * @memberOf this
      */
-    static getHelpURL(ruleId) {
-        return checker.engine.getHelp(ruleId);
+    static getHelpURL(issue) {
+        let config = ACConfigManager.getConfigNow();
+        let engineHelp = checker.engine.getHelp(issue.ruleId, issue.reasonId);
+        let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
+        if (engineHelpId) {
+            engineHelpId = engineHelpId[1]+".html";
+        } else {
+            engineHelpId = engineHelp;
+        }
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId
+        };
+        return `${config.ruleServer}/archives/${config.ruleArchive}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     static addRuleset = (ruleset) => {

@@ -1543,7 +1543,7 @@ let aChecker = {
                     "\n  Level: " + issue.level +
                     "\n  XPath: " + issue.path.dom +
                     "\n  Snippet: " + issue.snippet +
-                    "\n  Help: " + aChecker.getHelpURL(issue.ruleId) +
+                    "\n  Help: " + aChecker.getHelpURL(issue) +
                     "\n";
             }
         });
@@ -1562,8 +1562,22 @@ let aChecker = {
      *
      * @memberOf this
      */
-    aChecker.getHelpURL = function (ruleId) {
-        return new ace.Checker().engine.getHelp(ruleId);
+    aChecker.getHelpURL = function (issue) {
+        let engineHelp = new ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId);
+        let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
+        if (engineHelpId) {
+            engineHelpId = engineHelpId[1]+".html";
+        } else {
+            engineHelpId = engineHelp;
+        }
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId
+        };
+        return `${aChecker.Config.rulePack}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     aChecker.ruleIdToLegacyId = {

@@ -681,7 +681,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         path: result.path,
                         value: result.value,
                         message: result.message,
-                        snippet: result.snippet
+                        snippet: result.snippet,
+                        help: result.help
                     });
                 }
     

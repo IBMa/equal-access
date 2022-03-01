@@ -277,6 +277,7 @@ export class ACReporterHTML {
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             outReport.report.counts.total[val] = (outReport.report.counts.total[val] || 0) + 1;    
             ++outReport.report.counts.total.All;
+            item.help = ACEngineManager.getHelpURL(item);
         }
 
         // Convert the Object into HTML string and write that to the file
