@@ -37,7 +37,7 @@ export default class Help extends React.Component<IHelpProps, IHelpState> {
     render() {
         return <div id="help" style={{position: "relative", height: "100%", width: "100%", padding: "0rem"}}>
             {this.props.report && 
-                <iframe style={{position: "absolute", width: "100%", height: "100%"}} src={this.props.item.help} />
+                <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "100%", height: "100%"}} src={this.props.item.help} />
             }
         </div>
     }
