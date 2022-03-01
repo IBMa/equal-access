@@ -6,13 +6,13 @@ import { eRulePolicy, eToolkitLevel } from "../../api/IRule";
 /**
  * Old ID: WCAG20_A_HasText
  */
-export let link_name_nonempty: Rule = {
-    id: "link_name_nonempty",
+export let WCAG20_A_HasText: Rule = {
+    id: "WCAG20_A_HasText",
     context: "aria:link",
     help: {
         "en-US": {
-            "pass": `link_name_nonempty.html`,
-            "fail": `link_name_nonempty.html`
+            "pass": `WCAG20_A_HasText.html`,
+            "fail": `WCAG20_A_HasText.html`
         }
     },
     messages: {

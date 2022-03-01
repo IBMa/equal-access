@@ -329,12 +329,6 @@ let a11yHelp = {
         "Potential_1": `${Config.helpRoot}/WCAG20_Form_TargetAndText`
     },
     // JCH - DONE
-    "WCAG20_A_HasText": {
-        0: `${Config.helpRoot}/WCAG20_A_HasText`,
-        "Pass_0": `${Config.helpRoot}/WCAG20_A_HasText`,
-        "Fail_1": `${Config.helpRoot}/WCAG20_A_HasText`
-    },
-    // JCH - DONE
     "WCAG20_Fieldset_HasLegend": {
         0: `${Config.helpRoot}/WCAG20_Fieldset_HasLegend`,
         "Pass_0": `${Config.helpRoot}/WCAG20_Fieldset_HasLegend`,
@@ -1127,7 +1121,6 @@ let a11yHelpOld = {
     "RPT_Header_HasContent": ["idhi_accessibility_check_g488.html"],
     "WCAG20_Html_HasLang": ["idhi_accessibility_check_g490.html"],
     "WCAG20_Form_TargetAndText": ["idhi_accessibility_check_g491.html"],
-    "WCAG20_A_HasText": ["idhi_accessibility_check_g495.html"],
     "WCAG20_Fieldset_HasLegend": ["idhi_accessibility_check_g497.html"],
     "RPT_Media_VideoObjectTrigger": ["idhi_accessibility_check_g501.html"],
     "RPT_Text_SensoryReference": ["idhi_accessibility_check_g502.html"],

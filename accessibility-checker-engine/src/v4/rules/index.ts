@@ -1,1 +1,1 @@
-export * from "./hyperlink/link_name_nonempty";
+export * from "./hyperlink/WCAG20_A_HasText";
