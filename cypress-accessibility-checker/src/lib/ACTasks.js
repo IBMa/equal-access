@@ -372,7 +372,8 @@ let ACTasks = module.exports = {
             snippet: issue.snippet,
             value: issue.value,
             reasonId: issue.reasonId,
-            ruleId: issue.ruleId
+            ruleId: issue.ruleId,
+            msgArgs: issue.msgArgs
         };
         return `${ACTasks.Config.rulePack}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`;
     },

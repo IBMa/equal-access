@@ -53,7 +53,8 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
                     snippet: result.snippet,
                     value: result.value,
                     reasonId: result.reasonId,
-                    ruleId: result.ruleId
+                    ruleId: result.ruleId,
+                    msgArgs: result.msgArgs
                 };
                 result.help = `${process.env.engineEndpoint}/archives/${message.archiveId}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
             }

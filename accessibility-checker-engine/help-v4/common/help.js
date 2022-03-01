@@ -39,15 +39,27 @@ class HTMLBaseElement extends HTMLElement {
 customElements.define(
     "mark-down",
     class extends HTMLBaseElement {
-        childrenAvailableCallback() {
-            let converted = marked.parse(this.innerHTML);
-            this.innerHTML = converted
-                .replace(/<(\/?)ul>/g, "<$1bx-unordered-list>")
-                .replace(/<(\/?)li>/g, "<$1bx-list-item>")
-                .replace(/<a href/g, "<a target='_blank' rel='noopener noreferrer' href")
-                .replace(/<pre>[ \r\n]*<code>/g, "<code-snippet>")
-                .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
+        constructor() {
+            super();
+            setTimeout(() => {
+                let converted = marked.parse(this.textContent);
+                this.innerHTML = converted
+                    .replace(/<(\/?)ul>/g, "<$1bx-unordered-list>")
+                    .replace(/<(\/?)li>/g, "<$1bx-list-item>")
+                    .replace(/<a href/g, "<a target='_blank' rel='noopener noreferrer' href")
+                    .replace(/<pre>[ \r\n]*<code>/g, "<code-snippet>")
+                    .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
+                }, 0)
         }
+        // childrenAvailableCallback() {
+            // let converted = marked.parse(this.innerHTML);
+            // this.innerHTML = converted
+            //     .replace(/<(\/?)ul>/g, "<$1bx-unordered-list>")
+            //     .replace(/<(\/?)li>/g, "<$1bx-list-item>")
+            //     .replace(/<a href/g, "<a target='_blank' rel='noopener noreferrer' href")
+            //     .replace(/<pre>[ \r\n]*<code>/g, "<code-snippet>")
+            //     .replace(/<\/code>[ \r\n]*<\/pre>/g, "</code-snippet>");
+        // }
     }
 );
 
@@ -84,7 +96,9 @@ const valueMap = {
 };
 
 window.addEventListener("DOMContentLoaded", (evt) => {
-    document.querySelector("#groupLabel").innerHTML = typeof RULE_MESSAGES !== "undefined" && (RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0]) || "";
+    let groupMsg = typeof RULE_MESSAGES !== "undefined" && (RULE_MESSAGES["en-US"].group || RULE_MESSAGES["en-US"][0]) || "";
+    groupMsg = groupMsg.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    document.querySelector("#groupLabel").innerHTML = groupMsg;
     let ruleInfo;
     if (window.location.search && window.location.search.length > 0) {
         const searchParams = new URLSearchParams(window.location.search);
@@ -94,7 +108,8 @@ window.addEventListener("DOMContentLoaded", (evt) => {
     }
     if (ruleInfo) {
         if (ruleInfo.message) {
-            document.querySelector("#ruleMessage").innerHTML = ruleInfo.message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => msgArgs[matchedNum]);
+            document.querySelector("#ruleMessage").innerHTML = ruleMessage.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         }
         if (ruleInfo.snippet) {
             let snip = ruleInfo.snippet;

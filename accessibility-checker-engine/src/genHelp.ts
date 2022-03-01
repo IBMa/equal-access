@@ -103,18 +103,18 @@ async function buildV2() {
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
 <!-- Start main panel -->
-<mark-down>
+<mark-down><script type="text/plain">
 
 `+outputFile;
-                outputFile = outputFile.replace(/\<\/Column\>[^\>]*\>/, `</mark-down>
+                outputFile = outputFile.replace(/\<\/Column\>[^\>]*\>/, `</script></mark-down>
 <!-- End main panel -->
                 <!-- This is where the rule id is injected -->
                 <div id="ruleInfo"></div>
             </div>
             <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
 <!-- Start side panel -->
-<mark-down>`)
-                outputFile = outputFile.replace(/\<\/Column\>(.|\r|\n)*$/, `</mark-down>
+<mark-down><script type="text/plain">`)
+                outputFile = outputFile.replace(/\<\/Column\>(.|\r|\n)*$/, `</script></mark-down>
 <!-- End side panel -->
             </div>
         </div>
