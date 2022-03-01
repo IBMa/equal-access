@@ -3,23 +3,20 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { RPTUtil } from "../../../v2/checker/accessibility/util/legacy";
 import { eRulePolicy, eToolkitLevel } from "../../api/IRule";
 
-/**
- * Old ID: WCAG20_A_HasText
- */
 export let WCAG20_A_HasText: Rule = {
     id: "WCAG20_A_HasText",
     context: "aria:link",
     help: {
         "en-US": {
-            "pass": `WCAG20_A_HasText.html`,
-            "fail": `WCAG20_A_HasText.html`
+            "Pass_0": `WCAG20_A_HasText.html`,
+            "Fail_1": `WCAG20_A_HasText.html`
         }
     },
     messages: {
         "en-US": {
             "group": "Hyperlinks must have a text description of their purpose",
-            "pass": "Hyperlink has a description of its purpose",
-            "fail": "Hyperlink has no link text, label or image with a text alternative"
+            "Pass_0": "Hyperlink has a description of its purpose",
+            "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
         }
     },
     rulesets: [{
@@ -39,9 +36,9 @@ export let WCAG20_A_HasText: Rule = {
             ARIAMapper.computeName(ruleContext).trim().length > 0
             || RPTUtil.nonTabableChildCheck(ruleContext);
         if (!passed) {
-            return RuleFail("fail");
+            return RuleFail("Fail_1");
         } else {
-            return RulePass("pass");
+            return RulePass("Pass_0");
         }
     }
 }
