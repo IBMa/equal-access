@@ -12,6 +12,25 @@
  *****************************************************************************/
 @import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
 
+bx-list-item>code, p>code, td>code {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    bottom: 0.0625em;
+    color: #161616;
+    display: inline;
+    font-size: .75rem;
+    font-size: .875em;
+    font-weight: 400;
+    letter-spacing: .32px;
+    line-height: 1.33333;
+    padding: 0 0.5em;
+    position: relative;
+}
+
+.toolHelp .toolMain p ~ p {
+    margin-top: .5rem;
+}
+
 /* productive-heading-04 */
 .toolHelp .toolHead h3 {
     font-size: 28px;
