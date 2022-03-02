@@ -124,17 +124,19 @@ window.addEventListener("DOMContentLoaded", (evt) => {
             let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => msgArgs[matchedNum]);
             document.querySelector("#ruleMessage").innerHTML = ruleMessage.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         }
-        if (ruleInfo.snippet) {
-            let snip = ruleInfo.snippet;
-            snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1");
-            let snipElem = document.createElement("code-snippet");
-            for (let line of snip.split("\n")) {
-                snipElem.appendChild(document.createTextNode(line+"\n"));
+        setTimeout(() => {
+            if (ruleInfo.snippet) {
+                let snip = ruleInfo.snippet;
+                snip = snip.replace(/( [a-zA-Z-]+="[^"]*")/g, "\n   $1");
+                let snipElem = document.createElement("code-snippet");
+                for (let line of snip.split("\n")) {
+                    snipElem.appendChild(document.createTextNode(line+"\n"));
+                }
+                let locSnippet = document.querySelector("#locSnippet");
+                locSnippet.innerHTML = `<h3>Element location</h3>`;
+                locSnippet.appendChild(snipElem);
             }
-            let locSnippet = document.querySelector("#locSnippet");
-            locSnippet.innerHTML = `<h3>Element location</h3>`;
-            locSnippet.appendChild(snipElem);
-        }
+        }, 0);
         if (ruleInfo.value) {
             let value = ruleInfo.value;
             const val = valueMap[value[0]][value[1]];
