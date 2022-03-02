@@ -369,6 +369,9 @@ let aChecker = {
 
                 let origReport = JSON.parse(JSON.stringify(report));
                 origReport = aChecker.buildReport(origReport, URL, label, startScan);
+                origReport.results.forEach(item => {
+                    item.help = aChecker.getHelpURL(item);
+                })
 
                 // Filter the violations based on the reporLevels
                 report = aChecker.filterViolations(report);
@@ -1578,7 +1581,7 @@ let aChecker = {
             ruleId: issue.ruleId,
             msgArgs: issue.msgArgs
         };
-        return `${aChecker.Config.rulePack}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
+        return `${aChecker.Config.rulePack.replace(/\/js$/,"")}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     aChecker.ruleIdToLegacyId = {

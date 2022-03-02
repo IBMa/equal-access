@@ -156,7 +156,7 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
             >
                 <ModalHeader />
                 <ModalBody aria-label="This modal has scrolling content">
-                    {this.state.selectedItem && <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "100%", height: "100%"}} src={this.state.selectedItem.help} />}
+                    {this.state.selectedItem && <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "calc(100% - 1rem)", height: "100%"}} src={this.state.selectedItem.help} />}
                 </ModalBody>
             </ComposedModal>
         </div>
