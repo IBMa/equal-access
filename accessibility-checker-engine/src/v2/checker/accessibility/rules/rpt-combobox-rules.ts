@@ -375,7 +375,7 @@ let a11yRulesCombobox: Rule[] = [
             let attrValue = ruleContext.getAttribute("type"); 
             //missing input type
             if (!attrValue)    
-                return RuleFail("Failure_2");
+                return RulePotential("Potential_2");
 
             attrValue = attrValue.toLowerCase();  
             // ignore for no triggering input types 
@@ -384,10 +384,10 @@ let a11yRulesCombobox: Rule[] = [
 
             // failure_1 if any triggering input types    
             if (yesTypes.includes(attrValue))
-                return RuleFail("Failure_1", [attrValue]); 
+                return RulePotential("Potential_1", [attrValue]); 
             
             //invalid input type
-            return RuleFail("Failure_2");  
+            return RulePotential("Potential_2");  
               
         }
     }

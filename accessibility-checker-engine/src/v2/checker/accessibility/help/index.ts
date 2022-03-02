@@ -1033,8 +1033,8 @@ let a11yHelp = {
     "input_haspopup_invalid":{
         0: `${Config.helpRoot}/`,
         "Pass": `${Config.helpRoot}/input_haspopup_invalid`,
-        "Failure_1": `${Config.helpRoot}/input_haspopup_invalid`,
-        "Failure_2": `${Config.helpRoot}/input_haspopup_invalid`
+        "Potential_1": `${Config.helpRoot}/input_haspopup_invalid`,
+        "Potential_2": `${Config.helpRoot}/input_haspopup_invalid`
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
