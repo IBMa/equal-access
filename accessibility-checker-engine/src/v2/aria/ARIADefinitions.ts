@@ -2141,12 +2141,6 @@ export class ARIADefinitions {
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
-            "role-complementary-article-main-navigation-region": {
-                implicitRole: null,
-                //roleCondition: " when descendant of an article, aside, main, nav or section element",
-                validRoles: ["doc-footnote", "group", "none", "presentation"],
-                globalAriaAttributesValid: true
-            },
             "not-des-section-article": {
                 implicitRole: ["contentinfo"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
@@ -2177,12 +2171,6 @@ export class ARIADefinitions {
 
         "header": {
             "des-section-article-aside-main-nav": {
-                implicitRole: null,
-                //roleCondition: " when descendant of an article, aside, main, nav or section element",
-                validRoles: ["group", "none", "presentation"],
-                globalAriaAttributesValid: true
-            },
-            "role-complementary-article-main-navigation-region": {
                 implicitRole: null,
                 //roleCondition: " when descendant of an article, aside, main, nav or section element",
                 validRoles: ["group", "none", "presentation"],
