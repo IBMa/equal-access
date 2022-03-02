@@ -375,7 +375,7 @@ let ACTasks = module.exports = {
             ruleId: issue.ruleId,
             msgArgs: issue.msgArgs
         };
-        return `${ACTasks.Config.rulePack}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`;
+        return `${ACTasks.Config.rulePack.replace(/\/js$/,"")}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`;
     },
 
     /**
