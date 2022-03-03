@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Embed_HasAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Verify that the `<embed>` element has alternative content
+
+<div id="locLevel"></div>
+
+Provide alternative content for `<embed>` elements
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+This is important for users of assistive technologies to provide information about the `<embed>` object if they are unable to understand or perceive the object.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Provide a short alternative text description that represents the function of the `<embed>` element's content. Use a functional label based on the context in which the object is used, rather than a visual description. Alternative content can be provided with the `alt` attribute.
+
+For example:
+
+<CodeSnippet type="single" light={true}>&lt;embed src="speech.au" alt="Last week's speech"&gt;&lt;/embed&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People who turn off image-loading on their web browsers
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

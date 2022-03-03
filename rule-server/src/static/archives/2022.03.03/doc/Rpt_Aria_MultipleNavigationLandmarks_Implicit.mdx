@@ -1,0 +1,63 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_MultipleNavigationLandmarks_Implicit"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Multiple elements with `"nav"` role do not have unique labels
+
+<div id="locLevel"></div>
+
+Multiple elements with `"nav"` role must have unique labels
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When there multiple elements with role `"nav"` on a page, they must have unique labels that clearly describe their purpose. This helps people who use assistive technologies to quickly understand and navigate to each navigation region.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* For each element with a `"nav"` role, either set the value of the `aria-labelledby` attribute to the `id` value of any visible text that appropriately and uniquely describes that navigation region;
+* **Or**, use the `aria-label` attribute to add an invisible, unique, non-empty label to an element with the `"nav"` role.
+
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;h2 id="weather"&gt;Weather portlet&lt;/h2&gt;
+&lt;nav aria-labelledby="weather"&gt;
+	...
+&lt;/nav&gt;
+    
+&lt;nav aria-label="Stock ticker portlet"&gt;
+		...
+&lt;/nav&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
+* [WCAG technique ARIA6](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA6)
+* [WCAG technique ARIA13](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA13)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
