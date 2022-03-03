@@ -2338,6 +2338,7 @@ export class RPTUtil {
     public static getAllowedAriaAttributes(ruleContext, permittedRoles, properties) {
         let tagName = ruleContext.tagName.toLowerCase();
         let allowedAttributes = [];
+        let prohibitedAttributes = [];
         /*These needs to be handled first since its applicable to all elements*/
         if (ruleContext.hasAttribute("disabled") && ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) === -1) {
             /*Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
@@ -2387,6 +2388,9 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        let prohibitedProps = roleProperty.prohibitedProps;
+                        if (prohibitedProps)
+                            RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                             RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2408,6 +2412,10 @@ export class RPTUtil {
             }
         }
 
+        // adding the other role to the allowed roles for the attributes
+        if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);
+
         // adding the specified role properties to the allowed attribute list
         for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
@@ -2416,6 +2424,9 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                let prohibitedProps = roleProperties.prohibitedProps;
+                if (prohibitedProps)
+                    RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                     RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2435,6 +2446,21 @@ export class RPTUtil {
              if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
                 allowedAttributes.splice(index, 1);
 
+        }
+
+        // add the other allowed attributes for the element
+        if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherAllowedAriaAttributes, allowedAttributes);
+        }
+        // add the other prohibitted attributes for the element
+        if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherDisallowedAriaAttributes, prohibitedAttributes);
+        }
+        //exclude the prohibitedAttributes from the allowedAttributes
+        if (prohibitedAttributes.length > 0) {
+            allowedAttributes = allowedAttributes.filter((value) =>  {
+                return !prohibitedAttributes.includes(value);
+            });
         }
 
         return allowedAttributes;
