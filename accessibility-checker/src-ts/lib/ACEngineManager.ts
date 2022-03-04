@@ -162,13 +162,7 @@ try {
      */
     static getHelpURL(issue) {
         let config = ACConfigManager.getConfigNow();
-        let engineHelp = checker.engine.getHelp(issue.ruleId, issue.reasonId);
-        let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
-        if (engineHelpId) {
-            engineHelpId = engineHelpId[1]+".html";
-        } else {
-            engineHelpId = engineHelp;
-        }
+        let helpUrl = checker.engine.getHelp(issue.ruleId, issue.reasonId, config.ruleArchive);
         let minIssue = {
             message: issue.message,
             snippet: issue.snippet,
@@ -177,7 +171,7 @@ try {
             ruleId: issue.ruleId,
             msgArgs: issue.msgArgs
         };
-        return `${config.ruleServer}/archives/${config.ruleArchive}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
+        return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     static addRuleset = (ruleset) => {

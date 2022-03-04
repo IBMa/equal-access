@@ -1566,13 +1566,7 @@ let aChecker = {
      * @memberOf this
      */
     aChecker.getHelpURL = function (issue) {
-        let engineHelp = new ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId);
-        let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
-        if (engineHelpId) {
-            engineHelpId = engineHelpId[1]+".html";
-        } else {
-            engineHelpId = engineHelp;
-        }
+        let engineHelp = new ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, aChecker.Config.ruleArchive);
         let minIssue = {
             message: issue.message,
             snippet: issue.snippet,
@@ -1581,7 +1575,7 @@ let aChecker = {
             ruleId: issue.ruleId,
             msgArgs: issue.msgArgs
         };
-        return `${aChecker.Config.rulePack.replace(/\/js$/,"")}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
+        return `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     aChecker.ruleIdToLegacyId = {

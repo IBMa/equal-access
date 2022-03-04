@@ -41,12 +41,9 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         };
         if (report) {
             for (let result of report.results) {
-                let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId);
-                let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
-                if (engineHelpId) {
-                    engineHelpId = engineHelpId[1]+".html";
-                } else {
-                    engineHelpId = engineHelp;
+                let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
+                if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                    engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
                 }
                 let minIssue = {
                     message: result.message,
@@ -56,7 +53,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
                     ruleId: result.ruleId,
                     msgArgs: result.msgArgs
                 };
-                result.help = `${process.env.engineEndpoint}/archives/${message.archiveId}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`
+                result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
             }
         }
 

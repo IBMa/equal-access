@@ -39,13 +39,22 @@ function _initialize() {
         };
         checkRules.push(v2Rule);
         // Convert NLS / Help
+        for (const ruleId in checkHelp) {
+            for (const reasonId in checkHelp[ruleId]) {
+                checkHelp[ruleId][reasonId] = `/en-US/${checkHelp[ruleId][reasonId]}.html`;
+            }
+        }
         for (const langId of langs) {
             if (langId in v4Rule.messages) {
                 checkNls[v4Rule.id] = v4Rule.messages[langId];
                 checkNls[v4Rule.id][0] = checkNls[v4Rule.id].group;
             }
             if (langId in v4Rule.help) {
-                checkHelp[v4Rule.id] = v4Rule.help[langId];
+                checkHelp[v4Rule.id] = {};
+                for (const reasonId in v4Rule.help[langId]) {
+                    checkHelp[v4Rule.id][reasonId] = `/${langId}/${v4Rule.help[langId]}`;
+                }
+                checkNls[v4Rule.id][0] = checkNls[v4Rule.id].group;
             }
         }
         // Convert RS

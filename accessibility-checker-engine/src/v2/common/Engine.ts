@@ -340,7 +340,15 @@ export class Engine implements IEngine {
         );
     }
 
-    getHelp(ruleId: string, ruleIdx: number | string): string {
+    getHelp(ruleId: string, reasonId: number | string, archiveId?: string): string {
+        if (!archiveId) {
+            // Set to the latest
+            archiveId = "latest";
+        }
+        return `${Config.helpRoot}/${archiveId}/doc${this.getHelpRel(ruleId, reasonId)}`;
+    }
+
+    getHelpRel(ruleId: string, ruleIdx: number | string): string {
         let splitter = ruleId.indexOf("$$");
         if (splitter >= 0) {
             ruleId = ruleId.substring(0,splitter);

@@ -360,13 +360,8 @@ let ACTasks = module.exports = {
     },
 
     getHelpURL: function (issue) {
-        let engineHelp = new ACTasks.ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId);
-        let engineHelpId = engineHelp.match(/\/help\/([^/]*)/);
-        if (engineHelpId) {
-            engineHelpId = engineHelpId[1]+".html";
-        } else {
-            engineHelpId = engineHelp;
-        }
+        let archiveId = ACTasks.Config.ruleArchive;
+        let engineHelp = new ACTasks.ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, archiveId);
         let minIssue = {
             message: issue.message,
             snippet: issue.snippet,
@@ -375,7 +370,7 @@ let ACTasks = module.exports = {
             ruleId: issue.ruleId,
             msgArgs: issue.msgArgs
         };
-        return `${ACTasks.Config.rulePack.replace(/\/js$/,"")}/doc/en-US/${engineHelpId}#${encodeURIComponent(JSON.stringify(minIssue))}`;
+        return `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
     },
 
     /**

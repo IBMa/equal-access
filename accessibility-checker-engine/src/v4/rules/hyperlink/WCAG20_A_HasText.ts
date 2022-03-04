@@ -21,6 +21,7 @@ export let WCAG20_A_HasText: Rule = {
     context: "aria:link",
     help: {
         "en-US": {
+            "group": `WCAG20_A_HasText.html`,
             "Pass_0": `WCAG20_A_HasText.html`,
             "Fail_1": `WCAG20_A_HasText.html`
         }

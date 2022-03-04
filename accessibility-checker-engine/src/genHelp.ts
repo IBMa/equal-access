@@ -76,8 +76,8 @@ async function buildV2() {
         }
 
         if (helpInfo) {
-            let helpToken = helpInfo[0].replace("https://able.ibm.com/rules/tools/help/", "");
-            let helpFile = "../help/"+helpToken+".mdx";
+            let helpToken = helpInfo[0].replace("https://able.ibm.com/rules/tools/help/", "").replace("/en-US","").replace(".html","");
+            let helpFile = "../help"+helpToken+".mdx";
             if (existsSync(path.join(__dirname, helpFile))) {
                 let inputFile = readFileSync(path.join(__dirname, helpFile));
                 let outputFile = inputFile.toString();
