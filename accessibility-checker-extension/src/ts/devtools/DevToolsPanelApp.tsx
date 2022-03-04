@@ -248,7 +248,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // and get url using chrome.tabs.get via message "TAB_INFO"
             let thisTabId = chrome.devtools.inspectedWindow.tabId;
             let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
+            
             if (tab.id && tab.url && tab.id && tab.title) {
+                // @ts-ignore
+                let canScan = await new Promise((resolve, reject) => {
+                    if (thisTabId < 0) return resolve(false);
+                    chrome.tabs.executeScript(thisTabId, {
+                        code: "typeof window.ace",
+                        frameId: 0,
+                        matchAboutBlank: true
+                    }, function (res) {
+                        resolve(!!res);
+                    })
+                });
+                if (!canScan) return;
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
 
                 if (rulesets.error) {
@@ -310,8 +323,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async startScan() {
         // console.log("startScan");
-        let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
+        let tabId = this.state.tabId;
+        let chromeTabId = chrome.devtools.inspectedWindow.tabId;
+        // @ts-ignore
+        let canScan = await new Promise((resolve, reject) => {
+            if (chromeTabId < 0) return resolve(false);
+            chrome.tabs.executeScript(chromeTabId, {
+                code: "typeof window.ace",
+                frameId: 0,
+                matchAboutBlank: true
+            }, function (res) {
+                resolve(!!res);
+            })
+        });
+        if (!canScan) return;
         if (tabURL !== this.state.prevTabURL) {
             this.setState({firstScan: true});
         }
