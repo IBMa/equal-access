@@ -1,0 +1,61 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Applet_HasAlt"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### An `<applet>` element does not have a short text alternative
+
+<div id="locLevel"></div>
+
+`<applet>` elements must provide `alt` text and an alternative description
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Alternative text on `<applet>` elements is important for users who do not have a Java-capable browser or have disabled Java™. In addition, providing a text alternative makes the same information accessible through audio or other channels.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the `<applet>` element is missing an alternative description, add an `alt` attribute
+* **And**, add HTML-based content (i.e., inner text) that describes the function of the `<applet>` element, if possible.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;applet CODE="banner.class" ALT="Scrolling news banner" WIDTH="200" HEIGHT="200"&gt;
+Banner showing three things:
+ &lt;ol&gt;
+  &lt;li&gt;The Dow Jones Industrial Average climbed 300 points today in heavy trading.&lt;/li&gt;
+  &lt;li&gt;G8 Summit to start in Washington tomorrow.&lt;/li&gt;
+  &lt;li&gt;Global nuclear non-proliferation treaty signed by all nations today.&lt;/li&gt;
+ &lt;/ol&gt;
+&lt;/applet&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
+* [WCAG technique H35](https://www.w3.org/WAI/WCAG21/Techniques/html/H35)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
