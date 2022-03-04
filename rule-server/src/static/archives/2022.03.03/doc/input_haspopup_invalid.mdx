@@ -1,0 +1,64 @@
+---
+title: "input_haspopup_invalid: Accessibility Checker Rule Help"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### An `<input>` element with `list` attribute also uses `aria-haspopup` attribute
+
+<div id="locLevel"></div>
+
+The `<input>` element with a `list` attribute **_should not_** also use a `aria-haspopup` attribute
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+* Input types of 
+[text](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [search](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-%28type=tel%29), [url](https://html.spec.whatwg.org/multipage/input.html#url-state-%28type=url%29), and [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29) 
+(or inputs with a missing or invalid type) that also have a [list](https://html.spec.whatwg.org/multipage/input.html#attr-input-list) attribute have an implicit role of combobox, which in turn has an implicit `aria-haspopup="listbox"`;
+therefore, developers should not explicitly assign the `aria-haspopup` attribute, which will be either redundant or possibly conflicting.
+When HTML elements use both `aria-*` attributes and their HTML implied equivalents, browsers **_must_** ignore the explicit (redundant or conflicting) ARIA attribute – the native HTML attribute with their [implied ARIA semantics](https://www.w3.org/TR/wai-aria-1.1/#implicit_semantics) take precedence.
+
+* To ensure that Assistive Technologies (AT) can gather information, proper coding is required so that the end users can understand and interact with the content.
+If standard HTML controls are created according to specification, the conditions of this provision will be met.
+For this reason, to avoid unintended consequences, developers **_should not_** specify both the native HTML attribute and an equivalent (redundant or conflicting) `aria-haspopup` attribute on the indicated inputs with a `list` attribute.
+Otherwise, any global `aria-*` attributes and any other `aria-*` attributes applicable to the combobox role **_may_** be used.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove the `aria-haspopup` attribute from the `<input>` element that has a `list` attribute with input `type=` 
+[text](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [search](https://html.spec.whatwg.org/multipage/input.html#text-%28type=text%29-state-and-search-state-%28type=search%29), [tel](https://html.spec.whatwg.org/multipage/input.html#telephone-state-%28type=tel%29), [url](https://html.spec.whatwg.org/multipage/input.html#url-state-%28type=url%29), or [email](https://html.spec.whatwg.org/multipage/input.html#e-mail-state-%28type=email%29).
+* **And/Or**, add an input type if missing or correct the invalid input type.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA in HTML specification](https://www.w3.org/TR/html-aria/#el-input-text-list)
+* [WCAG technique ARIA5](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA5)
+* [WCAG technique G108](https://www.w3.org/WAI/WCAG21/Techniques/general/G108)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision using screen magnification
+* People with dexterity impairment using voice control
+* People who physically cannot use a pointing device
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

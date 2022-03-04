@@ -212,6 +212,14 @@ let a11yHelp = {
         "Pass_0": `${Config.helpRoot}/RPT_Style_BackgroundImage`,
         "Potential_1": `${Config.helpRoot}/RPT_Style_BackgroundImage`
     },
+    // JCH
+    "style_hover_persistent": {
+        0: `${Config.helpRoot}/style_hover_persistent`, 
+        "Pass_0": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_1": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_2": `${Config.helpRoot}/style_hover_persistent`,
+        "Potential_3": `${Config.helpRoot}/style_hover_persistent`
+    },
     // JCH - DONE
     "RPT_Pre_ASCIIArt": {
         0: `${Config.helpRoot}/RPT_Pre_ASCIIArt`,
@@ -1021,6 +1029,12 @@ let a11yHelp = {
         "Pass": `${Config.helpRoot}/combobox_autocomplete`,
         "Fail_1": `${Config.helpRoot}/combobox_autocomplete`,
         "Fail_inline": `${Config.helpRoot}/combobox_autocomplete`
+    },
+    "input_haspopup_invalid":{
+        0: `${Config.helpRoot}/`,
+        "Pass": `${Config.helpRoot}/input_haspopup_invalid`,
+        "Potential_1": `${Config.helpRoot}/input_haspopup_invalid`,
+        "Potential_2": `${Config.helpRoot}/input_haspopup_invalid`
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {

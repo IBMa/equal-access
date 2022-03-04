@@ -358,6 +358,38 @@ let a11yRulesCombobox: Rule[] = [
                 return RulePass("Pass");
             }
         }
+    },
+    {
+        id: "input_haspopup_invalid",
+        context: "dom:input[list][aria-haspopup]",
+        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+            const ruleContext = context["dom"].node as Element;
+            
+            //triggering input types: text, search, tel, url, email, or missing or invalid 
+            let yesTypes= [ "text", "search", "tel", "url", "email"];
+            let noTypes = ["file", "password", "checkbox", "radio", "submit", "reset",
+                             "date", "number", "range", "time", "color", "image", 
+                             "month", "week", "datetime-local", "hidden", "button"
+                          ];
+            
+            let attrValue = ruleContext.getAttribute("type"); 
+            //missing input type
+            if (!attrValue)    
+                return RulePotential("Potential_2");
+
+            attrValue = attrValue.toLowerCase();  
+            // ignore for no triggering input types 
+            if (noTypes.includes(attrValue))
+                return;   
+
+            // failure_1 if any triggering input types    
+            if (yesTypes.includes(attrValue))
+                return RulePotential("Potential_1", [attrValue]); 
+            
+            //invalid input type
+            return RulePotential("Potential_2");  
+              
+        }
     }
     // end of rules
 ]

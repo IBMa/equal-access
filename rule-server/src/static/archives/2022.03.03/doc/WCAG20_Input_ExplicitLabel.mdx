@@ -1,0 +1,54 @@
+---
+title: "Accessibility Checker Rule Help: WCAG20_Input_ExplicitLabel"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The UI control has no label
+
+<div id="locLevel"></div>
+
+Each UI control must have an associated label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Associating a meaningful label with every UI control allows the browser and assistive technology to expose and announce the control to a user. Associating a visible label also provides a larger clickable area.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If the control is a [labelable](https://html.spec.whatwg.org/multipage/forms.html#category-label) element, add a `for` attribute to a visible label with the `id` of this control (e.g. `<label for="controlID">`);
+* **Or**, if the  control is a labelable element, put the control inside a visible `<label>` element;
+* **Or**, add an `aria-labelledby` attribute to the control. It must point to visible text on the page that is meaningful as a label;
+* **Or**, if the design cannot have a visible label, provide a label using the `aria-label` attribute (e.g. `aria-label="Activities"`);
+* **Or**, if the design cannot have a visible label, use the `title` attribute to provide a label.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [WCAG technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
+* [WCAG technique ARIA16](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA16)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
