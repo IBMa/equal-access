@@ -52,7 +52,7 @@ function _initialize() {
             if (langId in v4Rule.help) {
                 checkHelp[v4Rule.id] = {};
                 for (const reasonId in v4Rule.help[langId]) {
-                    checkHelp[v4Rule.id][reasonId] = `/${langId}/${v4Rule.help[langId]}`;
+                    checkHelp[v4Rule.id][reasonId] = `/${langId}/${v4Rule.help[langId][reasonId]}`;
                 }
                 checkNls[v4Rule.id][0] = checkNls[v4Rule.id].group;
             }
