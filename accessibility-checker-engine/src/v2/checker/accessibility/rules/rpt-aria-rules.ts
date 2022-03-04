@@ -1267,6 +1267,13 @@ let a11yRulesAria: Rule[] = [{
         if (ruleContext.getAttribute("role") !== null) {
             domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
         }
+
+        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        let designPatterns = ARIADefinitions.designPatterns;
+        for (const role of domRoles) 
+            if (!(role.toLowerCase() in designPatterns)) 
+                return null;
+        
         let tagName = ruleContext.tagName.toLowerCase();
         // Roles allowed on this node
         let allowedRoles = [];
