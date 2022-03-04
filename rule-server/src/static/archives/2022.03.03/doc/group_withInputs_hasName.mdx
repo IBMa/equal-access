@@ -1,0 +1,80 @@
+---
+title: "group_withInputs_hasName - Accessibility Checker Rule Help"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### A `role="group"` or `<fieldset>` element does not have an accessible name or has a duplicate name
+
+<!-- This active message title is NOT used by the Checker, the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
+
+
+<div id="locLevel"></div>
+
+<!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->
+
+  
+Multiple `<fieldset>` or `role="group"` elements with similar nested `<input>` elements must have unique labels 
+
+<!-- Checker does not display this passive message sub-title, the browser extension displays the 0: message in  ...nls/index.ts file -->
+
+<!-- Note that the messages in the test files must also match the messages from the ...nls/index.ts file instead of message titles here in mdx -->
+  
+
+</Column>
+</Row>
+
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+  
+### Why is this important?
+
+A label associated with a group of related input elements also serves as a common label for individual inputs in the group. 
+Assistive technologies (AT) can indicate the start and end of the group and the group’s label as the user navigates into and out of the group.
+AT needs to be able to present the group label with each input control to remind users with which group they are part.
+When there are multiple groups with the same input elements then the label of the group needs to be unique so it can be distinguished.
+
+For example, in a retail scenario where two groups of input elements represent _Name, Address, City, and Zip_, 
+the groups need to be distinguished from one another by labelling one group "_Mailing address_" and the other "_Shipping address_".   
+
+<div id="locSnippet"></div>
+
+
+### What to do
+
+* Provide a unique label for a group of form controls using `<fieldset>` and `<legend>` elements  
+* **Or**, distinguish multiple `role="group"` elements with a unique `aria-labelledby` or `aria-label`  
+* **Or**, for a group of radio buttons, use `role="radiogroup"` instead of `role="group"`  
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+<!-- should only include one requirement and one or more references to techniques and best practices -->
+  
+* [IBM 1.3.1 Info and relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [IBM 3.3.2 Labels or Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [WCAG technique ARIA 17](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA17.html) 
+* [WCAG technique H71](https://www.w3.org/TR/WCAG20-TECHS/H71.html)
+* [WCAG technique F82](https://www.w3.org/TR/2016/NOTE-WCAG20-TECHS-20161007/F82)
+* [ARIA specification - Group Role]( https://www.w3.org/TR/wai-aria-1.2/#group)
+* [Carbon design system - Form accessibility](https://www.carbondesignsystem.com/components/form/accessibility/)  
+
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people  
+* People with low vision using screen magnification  
+* People using other assistive technologies that expose accessibility information  
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

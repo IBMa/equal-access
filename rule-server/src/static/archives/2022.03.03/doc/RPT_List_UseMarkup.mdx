@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: RPT_List_UseMarkup"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Verify whether this is a list that should use HTML list elements
+
+<div id="locLevel"></div>
+
+Use proper HTML list elements to create lists
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When markup is used to visually format text as a list, but does not indicate the list relationship, users might have difficulty understanding and navigating the information.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Verify that the content is not a list;
+ * **Or**, if this is a list, use HTML list elements (e.g. `<ol>`, `<ul>`, `<li>`) to create the list and CSS to style the list as desired.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+
+### Who does this affect?
+
+ * People using a screen reader, including blind, low vision and neurodivergent people
+ * People using text only, monochrome or braille displays
+ * People using text-based browsers (e.g., Lynx) or audio interfaces
+ * People with cognitive differences who view interfaces using an adapted layout
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

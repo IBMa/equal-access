@@ -1,0 +1,51 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Font_ColorInForm"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Check color is not used as the only visual means to convey the fields are required
+
+<div id="locLevel"></div>
+
+Combine color and descriptive markup to convey fields are required
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Using descriptive markup and visual differences together with color enables users who cannot see color to understand the meaning conveyed through color differences.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* If color is used to indicate required fields, also use the `required` attribute and an asterisk ('*') with text (e.g.  “required fields are red") to indicate required fields both programmatically and visually without color;
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.4.1 Use of Color](https://www.ibm.com/able/requirements/requirements/#1_4_1)
+* [WCAG technique G14](https://www.w3.org/WAI/WCAG21/Techniques/general/G14)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with visual impairment using color contrast enhancement
+* People who cannot see color, have limited color vision or have color blindness
+* People using text-based browsers (e.g., Lynx) or audio interfaces
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
