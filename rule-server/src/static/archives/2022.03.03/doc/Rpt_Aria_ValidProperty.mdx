@@ -1,0 +1,57 @@
+---
+title: "Accessibility Checker Rule Help: Rpt_Aria_ValidProperty"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### The attribute referenced by the element is not a valid ARIA state or property
+
+<div id="locLevel"></div>
+
+ARIA attributes must be valid for the element's role
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When elements are assigned a ARIA `role`, ARIA specifies which attributes are valid for that role. If invalid ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove ARIA state or property attributes that are not valid for the element role;
+* **Or**, change the `role` value to a role that supports the intended behavior of the element, using the ARIA specification as a guide.
+In the following example the element references only valid ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
+
+For example:
+
+<CodeSnippet type="multi" light={true}>&lt;ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1"&gt;
+    
+&lt;li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"&gt;&lt;span&gt;Fruits&lt;/span&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

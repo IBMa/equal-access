@@ -1,0 +1,66 @@
+---
+title: "Accessibility Checker Rule Help: HAAC_Input_Placeholder"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### HTML5 `<placeholder>` attribute is the only visible label
+
+<div id="locLevel"></div>
+
+HTML5 `<placeholder>` attribute must not be used as a visible label replacement
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+The `<placeholder>` attribute when used as the only visible label, reduces the accessibility for a wide range of users for the following reasons:
+ * it is not persistent; the placeholder value disappears when the user starts typing in the input field;
+ * it can be mistaken for a pre-filled value;
+ * the text color commonly fails a minimum contrast ratio;
+ * the lack of a label reduces the hit region for setting focus to the input field.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+
+ * Use the `placeholder` attribute for a short hint (a word or short phrase) to aid the user with data entry
+
+ * **And**, use a valid label method that is both visible and programmatically determined;
+
+* **Or**, if a visible label can not be added, verify the input field label is understood within the context;
+
+For example:
+
+<CodeSnippet type="single" light={true}>&lt;label&gt;Email Address: &lt;input type="email" name="address1" placeholder="john@example.net"&gt;&lt;/label&gt;</CodeSnippet>
+
+<CodeSnippet type="single" light={true}>&lt;label for="address2"&gt;Address&lt;/label&gt;</CodeSnippet>
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 3.3.2 Labels and Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [W3C Placeholder Research](https://www.w3.org/WAI/GL/low-vision-a11y-tf/wiki/Placeholder_Research)
+
+### Who does this affect?
+
+* People with low vision using screen magnification
+* People with visual impairment using color contrast enhancement
+* People with tremor or other movement disorders
+* Many older adults
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)

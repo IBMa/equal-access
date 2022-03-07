@@ -1,0 +1,50 @@
+---
+title: "Accessibility Checker Rule Help: RPT_Label_UniqueFor"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Element has more than one label
+
+<div id="locLevel"></div>
+
+Form controls should have exactly one label
+
+</Column>
+</Row>
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+Assistive technologies use labels to identify form controls. Providing more than one label for the same form control causes confusion, and may be handled differently by different browsers.
+
+<div id="locSnippet"></div>
+
+### What to do
+
+ * If the `for` attribute references a form control, find all `<label>` elements with this `for` attribute value. Decide which is the intended label and remove or change the others;
+ * **Or**, if the `for` attribute does not reference a form control, remove the label or the `for` attribute.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+* [IBM 1.3.1 Info and Relationships](https://www.ibm.com/able/requirements/requirements/#1_3_1)
+* [WCAG technique H44](https://www.w3.org/WAI/WCAG21/Techniques/html/H44)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with dexterity impairment using voice control
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
