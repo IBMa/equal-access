@@ -85,7 +85,6 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
                     if (item.selected || item.selectedChild) {
                         group.fvCounts[val] = (group.fvCounts[val] || 0) + 1;
                     }
-                    
                 }
             }
         }

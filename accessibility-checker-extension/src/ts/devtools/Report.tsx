@@ -157,6 +157,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
     state: IReportState = {};
     
     render() {
+        console.log("Report: render");
         const tabLabels : { [key: string] : string }= {
             element: "Element roles",
             rule: "Rules",

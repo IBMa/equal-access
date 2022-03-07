@@ -41,10 +41,11 @@ import HelpHeader from './HelpHeader';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 
 interface IPanelProps {
-    layout: "main" | "sub"
+    layout: "main" | "sub",
 }
 
 interface IPanelState {
+    badURL: boolean,
     listenerRegistered: boolean,
     numScanning: number,
     report: IReport | null,
@@ -97,6 +98,7 @@ interface IPanelState {
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
     state: IPanelState = {
+        badURL: false,
         listenerRegistered: false,
         numScanning: 0,
         report: null,
@@ -209,6 +211,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.readOptionsData();
     }
 
+    changeBadURL() {
+        if (this.state.badURL === false) {
+            this.setState({ badURL: true });
+        } else if (this.state.badURL === true) {
+            this.setState({ badURL: false });
+        }
+    }
+
     readOptionsData() {
         // console.log("readOptionsData");
         var self = this;
@@ -261,7 +271,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         resolve(!!res);
                     })
                 });
-                if (!canScan) return;
+                if (!canScan) {
+                    if (self.state.badURL === false) {
+                        self.setState({ badURL: true });
+                    } 
+                    return;
+                } else {
+                    if (self.state.badURL === true) {
+                        self.setState({ badURL: false });
+                    } 
+                }
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
 
                 if (rulesets.error) {
@@ -337,7 +356,17 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 resolve(!!res);
             })
         });
-        if (!canScan) return;
+        if (!canScan) {
+            if (this.state.badURL === false) {
+                this.setState({ badURL: true });
+            }
+            return;
+        } else {
+            if (this.state.badURL === true) {
+                this.setState({ badURL: false });
+            } 
+        }
+       
         if (tabURL !== this.state.prevTabURL) {
             this.setState({firstScan: true});
         }
@@ -938,11 +967,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
+        console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
             return this.errorHandler(error);
         }
+
         else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
@@ -954,6 +985,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     {this.leftPanelRef.current?.scrollTo(0, 0)}
                     <div style={{ flex: "1 1 50%" }} className="mainPanelRight" role="main" aria-label="IBM Accessibility Assessment">
                         <Header
+                            badURL={this.state.badURL}
                             layout={this.props.layout}
                             counts={this.state.report && this.state.report.counts}
                             scanStorage={this.state.scanStorage}
@@ -1037,6 +1069,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
+                        badURL={this.state.badURL}
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
                         scanStorage={this.state.scanStorage}
