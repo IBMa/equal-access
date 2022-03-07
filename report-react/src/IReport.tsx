@@ -41,7 +41,8 @@ export interface IReportItem {
     },
     value: string[],
     message: string,
-    snippet: string
+    snippet: string,
+    help: string
 }
 
 export interface ICheckpoint {

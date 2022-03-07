@@ -8,7 +8,7 @@ All bugs or issues related to the cypress-accessibility-checker code can be crea
 
 ## Requirements
 
-* [Node Version 12](https://nodejs.org/en/download/)
+* [Node Version 16](https://nodejs.org/en/download/)
 
 ## Installation
 

@@ -33,16 +33,34 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
 
         console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
 
+        let report = await checker.check(window.document, [message.policyId]);
         (window as any).aceReportCache = {
             archiveId: message.archiveId,
             policyId: message.policyId,
-            report: await checker.check(window.document, [message.policyId])
+            report: report
         };
+        if (report) {
+            for (let result of report.results) {
+                let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
+                if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                    engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                }
+                let minIssue = {
+                    message: result.message,
+                    snippet: result.snippet,
+                    value: result.value,
+                    reasonId: result.reasonId,
+                    ruleId: result.ruleId,
+                    msgArgs: result.msgArgs
+                };
+                result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
+            }
+        }
 
         TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { 
             tabId: message.tabId,
             tabURL: message.tabURL,
-            report: (window as any).aceReportCache.report,
+            report: report,
             archiveId: message.archiveId,
             policyId: message.policyId,
             origin: message.origin

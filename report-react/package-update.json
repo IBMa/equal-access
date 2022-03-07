@@ -70,10 +70,9 @@
       "workbox-webpack-plugin": "6.4.2"
     },
     "scripts": {
-      "start": "npm run build:help && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/start.js",
-      "build:help": "gulp --gulpfile ./gulp/gulpFile.js",
+      "start": "cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/start.js",
       "build": "npm i && npm run build:react && node build.js",
-      "build:react": "npm run build:help && cross-env CI=false NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/build.js",
+      "build:react": "cross-env CI=false NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor node scripts/build.js",
       "test": "node scripts/test.js",
       "prod": "PORT=8080 HOST=http://localhost: node ./server.js",
       "analyze": "analyzeChunks=true node scripts/build.js"
@@ -160,9 +159,6 @@
       "@types/react": "^17.0.37",
       "@types/react-dom": "^17.0.11",
       "cross-env": "^7.0.3",
-      "gulp": "^4.0.2",
-      "gulp-ext-replace": "^0.3.0",
-      "gulp-replace": "^1.1.3",
       "node-sass": "^7.0.0",
       "source-map-loader": "^3.0.0",
       "ts-loader": "^9.2.6",

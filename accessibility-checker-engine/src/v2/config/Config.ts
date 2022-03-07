@@ -16,5 +16,5 @@
 
 export class Config {
     static DEBUG = false;
-    static helpRoot = "https://able.ibm.com/rules/tools/help";
+    static helpRoot = "https://able.ibm.com/rules/archives";
 }

@@ -361,4 +361,8 @@ export class ACConfigManager {
         }
         return config;
     }
+
+    static getConfigNow() : IConfigUnsupported {
+        return config;
+    }
 }
