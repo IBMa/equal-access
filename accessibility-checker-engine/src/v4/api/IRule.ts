@@ -152,6 +152,13 @@ export type Rule = {
         }
     };
 
+    // How this rule maps to ACT rules, if any (https://act-rules.github.io/rules/)
+    act?: {
+        [actRuleId: string]: {
+            [reasonId: string]: "pass" | "fail" | "cantTell" | "inapplicable"
+        }
+    }
+
     // See src/v2/common/Context.ts for valid contexts
     context: string;
 
