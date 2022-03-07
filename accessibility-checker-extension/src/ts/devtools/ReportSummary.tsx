@@ -113,11 +113,8 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         let summaryNumbers:any = [];
         summaryNumbers = calcSummary(this.props.report);
         
+        // Calculate score
         let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
-
-        let elementNoFailures: string = "";
-        /** Calculate the score */
-        elementNoFailures = (((counts.total["All"] - counts.total["Recommendation"]) / counts.total["All"]) * 100).toFixed(0);
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
