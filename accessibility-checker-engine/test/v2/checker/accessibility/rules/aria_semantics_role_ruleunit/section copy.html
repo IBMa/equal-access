@@ -8,30 +8,29 @@
   <body>
     <main>
       <h1>Test page</h1>
-      <picture aria-hidden="true">
-            <img src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="200">
-      </picture>
+      <section role="group">
+        Hello
+      </section>
     </main>
     <script>
       UnitTest = {
-        ruleIds: ["aria_semantics_attribute"],
+        ruleIds: ["aria_semantics_role"],
         results: [
-        {
-            "ruleId": "aria_semantics_attribute",
+          {
+            "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/picture[1]",
-              "aria": "/document[1]/main[1]"
+              "dom": "/html[1]/body[1]/main[1]/section[1]",
+              "aria": "/document[1]/main[1]/group[1]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
             "messageArgs": [
-              "aria-hidden",
-              "picture",
-              "none"
+              "group",
+              "section"
             ],
             "apiArgs": [],
             "category": "Accessibility"

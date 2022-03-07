@@ -2389,8 +2389,9 @@ export class RPTUtil {
                         properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         let prohibitedProps = roleProperty.prohibitedProps;
-                        if (prohibitedProps)
+                        if (prohibitedProps && prohibitedProps.length > 0) 
                             RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
+                           
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                             RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2425,7 +2426,7 @@ export class RPTUtil {
                 properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 let prohibitedProps = roleProperties.prohibitedProps;
-                if (prohibitedProps)
+                if (prohibitedProps && prohibitedProps.length>0)
                     RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
@@ -2450,11 +2451,35 @@ export class RPTUtil {
 
         // add the other allowed attributes for the element
         if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
-            RPTUtil.concatUniqueArrayItemList(tagProperty.otherAllowedAriaAttributes, allowedAttributes);
+            // check attribute-value pair if exists
+            let allowed = [];
+            for (let p=0; p < tagProperty.otherAllowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherAllowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("=");
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        allowed.push(pair[0]);
+                } else
+                    allowed.push(attr);
+            } 
+            if (allowed.length > 0)    
+                RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
         }
         // add the other prohibitted attributes for the element
         if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
-            RPTUtil.concatUniqueArrayItemList(tagProperty.otherDisallowedAriaAttributes, prohibitedAttributes);
+            // check attribute-value pair if exists
+            let disallowed = [];
+            for (let p=0; p < tagProperty.otherDisallowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherDisallowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("="); 
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        disallowed.push(pair[0]);
+                } else
+                    disallowed.push(attr);
+            }
+            if (disallowed.length > 0)
+                RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
         }
         //exclude the prohibitedAttributes from the allowedAttributes
         if (prohibitedAttributes.length > 0) {
@@ -2462,7 +2487,6 @@ export class RPTUtil {
                 return !prohibitedAttributes.includes(value);
             });
         }
-
         return allowedAttributes;
     }
 

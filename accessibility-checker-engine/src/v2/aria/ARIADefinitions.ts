@@ -2092,7 +2092,7 @@ export class ARIADefinitions {
                 //roleCondition: " when non-empty href attribute is present",
                 validRoles: ["button", "checkbox", "doc-backlink", "doc-biblioref", "doc-glossref", "doc-noteref", "menuitem", "menuitemcheckbox", "menuitemradio", "option", "radio", "switch", "tab", "treeitem"],
                 globalAriaAttributesValid: true,
-                otherDisallowedAriaAttributes: ["aria-diabled='true'"]
+                otherDisallowedAriaAttributes: ["aria-disabled=true"]
             },
             "without-href": {
                 implicitRole: null,
@@ -2196,14 +2196,14 @@ export class ARIADefinitions {
                 //roleCondition: " when alt attribute is empty",
                 validRoles: null,
                 globalAriaAttributesValid: false, 
-                otherAllowedAriaAttributes: ["aria-hidden='true'"]
+                otherAllowedAriaAttributes: ["aria-hidden=true"]
             },
             "img-without-alt": {
                 implicitRole: ["img"],
                 //roleCondition: " when alt attribute, aria-label, or aria-labelledby are not present",
                 validRoles: null,
                 globalAriaAttributesValid: false, 
-                otherAllowedAriaAttributes: ["aria-hidden='true'"]
+                otherAllowedAriaAttributes: ["aria-hidden=true"]
             }
         },
         "input": {
