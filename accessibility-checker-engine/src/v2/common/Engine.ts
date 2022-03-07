@@ -281,11 +281,12 @@ export class Engine implements IEngine {
 
     addRules(rules: Rule[]) {
         for (const rule of rules) {
-            this.addRule(rule);
+            this.addRule(rule, true);
         }
+        this._sortRules();
     }
 
-    addRule(rule: Rule) {
+    addRule(rule: Rule, skipSort?: boolean) {
         let ctxs :Context[] = Context.parse(rule.context);
         let idx = 0;
         const ruleId = rule.id;
@@ -312,6 +313,36 @@ export class Engine implements IEngine {
                 this.exclRules[triggerRole] = this.exclRules[triggerRole] || [];
                 this.exclRules[triggerRole].push(wrappedRule);
             }
+        }
+        if (!skipSort) {
+            this._sortRules();
+        }
+    }
+
+    _sortRules() {
+        for (const role in this.inclRules) {
+            this.inclRules[role].sort((ruleA: WrappedRule, ruleB: WrappedRule) => {
+                const hasDepA = ruleA.rule.dependencies && ruleA.rule.dependencies.length > 0;
+                const hasDepB = ruleB.rule.dependencies && ruleB.rule.dependencies.length > 0;
+                // If B depends on A, sort A before B
+                if (hasDepB && ruleB.rule.dependencies.includes(ruleA.rule.id)) return -1;
+                // If A depends on B, sort B before A
+                if (hasDepA && ruleA.rule.dependencies.includes(ruleB.rule.id)) return 1;
+                // Otherwise, doesn't matter
+                return 0;
+            });
+        }
+        for (const role in this.exclRules) {
+            this.exclRules[role].sort((ruleA: WrappedRule, ruleB: WrappedRule) => {
+                const hasDepA = ruleA.rule.dependencies && ruleA.rule.dependencies.length > 0;
+                const hasDepB = ruleB.rule.dependencies && ruleB.rule.dependencies.length > 0;
+                // If B depends on A, sort A before B
+                if (hasDepB && ruleB.rule.dependencies.includes(ruleA.rule.id)) return -1;
+                // If A depends on B, sort B before A
+                if (hasDepA && ruleA.rule.dependencies.includes(ruleB.rule.id)) return 1;
+                // Otherwise, doesn't matter
+                return 0;
+            });
         }
     }
 
