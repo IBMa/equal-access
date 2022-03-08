@@ -934,7 +934,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getSelectedItem(item: IReportItem) {
-        console.log("Function: getSelectedItem item = ", item);
+        // console.log("Function: getSelectedItem item = ", item);
         this.setState({ selectedIssue: item });
     }
 
@@ -967,7 +967,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
-        console.log("DevToolsPanelApp: render");
+        // console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {

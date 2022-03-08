@@ -68,9 +68,6 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
 
     render() {
         let summaryNumbers = this.calcSummary(this.props.report);
-        let elementNoFailures:string = "";
-        /** Calculate the score */
-        elementNoFailures = (((summaryNumbers[4]-summaryNumbers[3])/summaryNumbers[4])*100).toFixed(0);
 
          // Calculate score
          let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
