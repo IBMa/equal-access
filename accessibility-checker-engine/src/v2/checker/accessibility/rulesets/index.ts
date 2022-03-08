@@ -845,13 +845,7 @@ let a11yRulesets: Ruleset[] = [
             "name": "Link Purpose (In Context)",
             "wcagLevel": "A",
             "summary": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
-            "rules": [
-                {
-                    id: "WCAG20_A_HasText",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                }
-            ]
+            "rules": []
         },
         {
             "num": "2.4.5",
@@ -2060,13 +2054,7 @@ let a11yRulesets: Ruleset[] = [
             "name": "Link Purpose (In Context)",
             "wcagLevel": "A",
             "summary": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
-            "rules": [
-                {
-                    id: "WCAG20_A_HasText",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                }
-            ]
+            "rules": []
         },
         {
             "num": "2.4.5",
@@ -3211,13 +3199,7 @@ let a11yRulesets: Ruleset[] = [
             "name": "Link Purpose (In Context)",
             "wcagLevel": "A",
             "summary": "The purpose of each link can be determined from the link text alone or from the link text together with its programmatically determined link content.",
-            "rules": [
-                {
-                    id: "WCAG20_A_HasText",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                }
-            ]
+            "rules": []
         },
         {
             "num": "2.4.5",

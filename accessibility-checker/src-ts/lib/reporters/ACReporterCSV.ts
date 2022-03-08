@@ -120,7 +120,7 @@ export class ACReporterCSV {
         this.Config.DEBUG && console.log("START 'savePageResults' function");
 
         for (const result of report.results) {
-            this.resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(ACEngineManager.getHelpURL(result.ruleId))}\n`
+            this.resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(ACEngineManager.getHelpURL(result))}\n`
         }
 
         this.Config.DEBUG && console.log("END 'savePageResults' function");

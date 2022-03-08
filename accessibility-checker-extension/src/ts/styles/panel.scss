@@ -611,6 +611,24 @@ $feature-flags: (
         .fixed-header .bee-logo {
             right: 2rem;
         }
+
+        .issueList {
+            .bx--row {
+                margin-left: 0px;
+                margin-right: 0px;
+                .bx--col-sm-4 {
+                    padding-left: 0px;
+                    padding-right: 0px;
+                    .tabpanel, .bx--tab-content {
+                        padding-left: 0px;
+                        padding-right: 1rem;
+                        .reportContainer {
+                            margin-left: -1rem;
+                        }            
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -823,6 +841,10 @@ main {
 
     >div {
         padding-right: 1rem;
+    }
+
+    .reportContainer {
+        margin-left:-2rem;
     }
 }
 

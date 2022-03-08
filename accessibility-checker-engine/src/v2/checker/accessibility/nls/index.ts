@@ -324,12 +324,6 @@ let a11yNls = {
         "Potential_1": "Verify that interacting with content will not open pop-up windows or change the active window without informing the user"
     },
     // JCH - DONE
-    "WCAG20_A_HasText": {
-        0: "Hyperlinks must have a text description of their purpose",
-        "Pass_0": "Hyperlink has a description of its purpose",
-        "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
-    },
-    // JCH - DONE
     "WCAG20_Fieldset_HasLegend": {
         0: " <fieldset> elements must have a single, non-empty <legend> as a label",
         "Pass_0": "Rule Passed",
