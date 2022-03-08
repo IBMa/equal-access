@@ -136,14 +136,8 @@ let a11yHelp = {
         "fail_elem_attr":  `${Config.helpRoot}/element_attribute_deprecated`, 
         "fail_aria_role":  `${Config.helpRoot}/element_attribute_deprecated`,
         "fail_aria_attr":  `${Config.helpRoot}/element_attribute_deprecated`,
-        "fail_role_attr":  `${Config.helpRoot}/element_attribute_deprecated`,
-     },
-    // ER 
-    "RPT_Elem_Deprecated": {
-        0: `RPT_Elem_Deprecated`,
-        "Pass_0": `RPT_Elem_Deprecated`,
-        "Potential_1": `RPT_Elem_Deprecated`
-      
+        "fail_role_attr":  `${Config.helpRoot}/element_attribute_deprecated`
+
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
