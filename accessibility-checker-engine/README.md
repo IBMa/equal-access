@@ -155,7 +155,7 @@ You can use the wrapper method `checkDemo` in `ace` object, which is specificall
 * Open the developer tool in Chrome browser: click `Customize and Control Google Chrome` button, select `More Tools`, then select `Developer Tool`
 * Select `Console` tab to show command prompt
 * Open the `ace.js` you built in the build step in a text editor, select and copy all the content
-* Past the content you copied to the command prompt in the developer tool, then press `Enter`
+* Paste the content you copied to the command prompt in the developer tool, then press `Enter`
 * Type in the command prompt: `ace.checkDemo()`, then `Enter`
 
 You can view the accessibility report for the page:  

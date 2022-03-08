@@ -6,4 +6,6 @@
         "module": "commonjs",
         "allowJs": true
     },
+    "include": ["./**/*"],
+    "exclude": ["./static"]
 }

@@ -16,7 +16,7 @@ This README covers topics for developers. For non-developer usage, see the follo
 
 ## Getting started
 
-* [Node Version 12](https://nodejs.org/en/download/).
+* [Node Version 16](https://nodejs.org/en/download/).
 
 ### Clone Repository
 
