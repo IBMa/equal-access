@@ -1557,8 +1557,8 @@ export class ARIADefinitions {
     // copied from https://html.spec.whatwg.org/multipage/semantics-other.html#disabled-elements
     // https://html.spec.whatwg.org/multipage/input.html#input-type-attr-summary
     static elementsAllowedDisabled = ["button", "input", "select", "textarea", "optgroup", "option", "fieldset"]; // also form-associated custom element
-    static elementsAllowedRequired = ["input", "select", "textarea"]; // required is not supported on input@type="range", "color", "hidden" or any button types
-    static elementsAllowedReadOnly = ["input", "textarea"]; // readonly is not supported on input@type="checkbox", "radio", "range", "color", "file", hidden" or any button types
+    static elementsAllowedRequired = ["select", "textarea"]; // remove 'input' and add to the individual element, becuase required is not supported on input@type="range", "color", "hidden" or any button types
+    static elementsAllowedReadOnly = ["textarea"]; // remove 'input' and add to the individual element, because readonly is not supported on input@type="checkbox", "radio", "range", "color", "file", hidden" or any button types
 
 
     /* https://www.w3.org/TR/html-aria/#docconformance
@@ -1816,7 +1816,7 @@ export class ARIADefinitions {
         },
         "li": {
             implicitRole: ["listitem"],
-            validRoles: ["doc-biblioentry", "doc-endnote", "menuitem", "menuitemcheckbox", "menuitemradio", "none", "option", "presentation", "radio", "separator", "tab", "treeitem"],
+            validRoles: ["menuitem", "menuitemcheckbox", "menuitemradio", "none", "option", "presentation", "radio", "separator", "tab", "treeitem"],
             globalAriaAttributesValid: true
         },
         "link": {
@@ -2217,6 +2217,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=checkbox and aria-pressed attribute is present",
                 validRoles: ["button"],
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required"],
                 otherDisallowedAriaAttributes: ["aria-checked"]
             },
             "checkbox-without-aria-pressed": {
@@ -2224,6 +2225,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=checkbox and aria-pressed attribute is not present",
                 validRoles: ["menuitemcheckbox", "option", "switch"],
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required"],
                 otherDisallowedAriaAttributes: ["aria-checked"]
             },
             "color": {
@@ -2237,6 +2239,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=date",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "datetime-local": {
@@ -2244,6 +2247,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=datetime",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "email-no-list": {
@@ -2251,6 +2255,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=email and no list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "email-with-list": {
@@ -2263,7 +2268,8 @@ export class ARIADefinitions {
                 implicitRole: null,
                 //roleCondition: " with type=file",
                 validRoles: null,
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required"],
             },
             "hidden": {
                 implicitRole: null,
@@ -2288,13 +2294,15 @@ export class ARIADefinitions {
                 implicitRole: ["spinbutton"],
                 //roleCondition: " with type=number",
                 validRoles: null,
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
             },
             "password": {
                 implicitRole: null,
                 //roleCondition: " with type=password",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "radio": {
@@ -2302,6 +2310,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=radio",
                 validRoles: ["menuitemradio"],
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-required"],
                 otherDisallowedAriaAttributes: ["aria-checked"]
             },
             "range": {
@@ -2321,7 +2330,8 @@ export class ARIADefinitions {
                 implicitRole: ["searchbox"],
                 //roleCondition: " with type=search and no list attribute is present",
                 validRoles: null,
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "search-with-list": {
                 implicitRole: ["combobox"],
@@ -2339,7 +2349,8 @@ export class ARIADefinitions {
                 implicitRole: ["textbox"],
                 //roleCondition: " with type=tel and no list attribute is present",
                 validRoles: null,
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "tel-with-list": {
                 implicitRole: ["combobox"],
@@ -2351,7 +2362,8 @@ export class ARIADefinitions {
                 implicitRole: ["textbox"],
                 //roleCondition: " with type=text and no list attribute is present",
                 validRoles: ["combobox", "searchbox", "spinbutton"],
-                globalAriaAttributesValid: true
+                globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "text-with-list": {
                 implicitRole: ["combobox"],
@@ -2365,6 +2377,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=time",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "url-no-list": {
@@ -2372,7 +2385,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=url and no list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true,
-                otherRolesForAttributes: ["textbox"]
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "url-with-list": {
                 implicitRole: ["combobox"],
