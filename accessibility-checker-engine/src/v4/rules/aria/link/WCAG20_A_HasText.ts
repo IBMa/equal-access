@@ -11,10 +11,10 @@
     limitations under the License.
  *****************************************************************************/
 
-import { ARIAMapper } from "../../../v2/aria/ARIAMapper";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../api/IRule";
-import { RPTUtil } from "../../../v2/checker/accessibility/util/legacy";
-import { eRulePolicy, eToolkitLevel } from "../../api/IRule";
+import { ARIAMapper } from "../../../../v2/aria/ARIAMapper";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IRule";
+import { RPTUtil } from "../../../../v2/checker/accessibility/util/legacy";
+import { eRulePolicy, eToolkitLevel } from "../../../api/IRule";
 
 export let WCAG20_A_HasText: Rule = {
     id: "WCAG20_A_HasText",

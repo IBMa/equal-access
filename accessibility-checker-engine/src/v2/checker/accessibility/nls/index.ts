@@ -49,14 +49,6 @@ let a11yNls = {
         "Fail_1": "An <object> element does not have a text alternative"
     },
     // JCH - DONE
-    "WCAG20_Applet_HasAlt": {
-        0: "<applet> elements must provide an 'alt' attribute and an alternative description",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "An <applet> element does not have an 'alt' attribute that provides a short text alternative",
-        "Fail_2": "The 'alt' attribute value for an <applet> element duplicates the 'code' attribute",
-        "Fail_3": "An <applet> element provides alternative text, but does not provide inner content"
-    },
-    // JCH - DONE
     "RPT_Media_AudioTrigger": {
         0: "Audio information should also be available in text form",
         "Pass_0": "Rule Passed",
@@ -92,18 +84,6 @@ let a11yNls = {
         0: "Alternative text in 'alt' attribute should be brief (<150 characters)",
         "Pass_0": "Rule Passed",
         "Potential_1": "Text alternative is more than 150 characters"
-    },
-    // JCH - DONE
-    "WCAG20_A_TargetAndText": {
-        0: "Users should be warned in advance if their input action will open a new window or otherwise change their context",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Inform the user when their input action will open a new window or otherwise change their context"
-    },
-    // JCH - DONE
-    "WCAG20_Area_HasAlt": {
-        0: "<area> elements in an image map must have a text alternative",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "<area> element in an image map has no text alternative"
     },
     // JCH - DONE
     "RPT_Media_ImgColorUsage": {
@@ -962,12 +942,6 @@ let a11yNls = {
         "Fail_4": "Element is a combobox, and the referenced active-descendant element is not controlled by this component"
     },
     // JCH - DONE
-    "HAAC_Application_Role_Text": {
-        0: "Non-decorative static text and image content within an element with \"application\" role must be accessible",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the non-decorative static text and image content within an element with \"application\" role are accessible"
-    },
-    // JCH - DONE
     "Rpt_Aria_MultipleToolbarUniqueLabel": {
         0: "All toolbar components on a page must have unique labels specified",
         "Pass_0": "Rule Passed",
@@ -1050,11 +1024,6 @@ let a11yNls = {
         0: "The 'meta[name=viewport]' should not prevent the browser zooming the content", 
         "Pass_0": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
-    },
-    "aria_hidden_focus_misuse": {
-        0: "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
     "table_headers_ref_valid": {
         0: "The 'headers' attribute should refer to a valid cell in the same table", 
