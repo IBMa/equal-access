@@ -12,6 +12,27 @@ jobs:
 ###############################################################################
 # NPM Node
 ####
+  accessibility-checker-engine-publish:
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [16.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm run build:all
+        working-directory: accessibility-checker-engine
+      - run: gitactions/publish/achecker-engine.sh
+        env: 
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
   accessibility-checker-publish:
       runs-on: ubuntu-latest
 

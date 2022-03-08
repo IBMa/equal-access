@@ -736,7 +736,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         path: result.path,
                         value: result.value,
                         message: result.message,
-                        snippet: result.snippet
+                        snippet: result.snippet,
+                        help: result.help
                     });
                 }
     
@@ -977,7 +978,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
-                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
+                    <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", width: "100%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
                         {!this.state.report && <ReportSplash />}
                         {this.state.report && !this.state.selectedItem && <ReportSummary tabURL={this.state.tabURL} report={this.state.report} />}
                         {this.state.report && this.state.selectedItem && <Help report={this.state.report!} item={this.state.selectedItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -1055,11 +1056,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
-                    <div style={{ overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
+                    <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
-                            <div>
-                                <div className="subPanel">
-                                    {this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
+                            <div style={{ height: "100%" }}>
+                                <div className="subPanel" style={{ height: "100%"  }}>
+                                    {this.state.learnMore && this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
                                 </div>
                             </div>
                         </div>

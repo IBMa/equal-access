@@ -110,7 +110,7 @@ var ACReporter = function (aChecker) {
         Config.DEBUG && console.log("START 'savePageResults' function");
 
         for (const result of report.results) {
-            resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(aChecker.getHelpURL(result.ruleId))}\n`
+            resultStr += `${toCSV(report.label)},${toCSV(result.level)},${toCSV(result.ruleId)},${toCSV(result.message)},${toCSV(result.path.dom)},${toCSV(aChecker.getHelpURL(result))}\n`
         }
 
         Config.DEBUG && console.log("END 'savePageResults' function");

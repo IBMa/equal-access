@@ -16,7 +16,7 @@
 
 import { Context } from "./v2/common/Context"
 // import { Simulator } from "./v2/simulator"
-import { Checker } from "./v2/checker"
+import { Checker } from "./v4/checker/Checker"
 import { ARIAMapper } from "./v2/aria/ARIAMapper";
 import { Config } from "./v2/config/Config";
 import { DOMWalker } from "./v2/dom/DOMWalker";

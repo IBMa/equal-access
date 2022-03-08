@@ -125,6 +125,14 @@ class WrappedRule {
 }
 
 export class Engine implements IEngine {
+    public static getLanguages() {
+        const env = typeof process !== "undefined" && process.env;
+        let nodeLang = env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES;
+        if (nodeLang) {
+            nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
+        }
+        return typeof navigator !== "undefined" && navigator.languages || [nodeLang];
+    }
     mappers : { [namespace: string] : IMapper } = {};
     ruleMap : { [id: string]: Rule } = {};
     wrappedRuleMap : { [id: string]: WrappedRule } = {};
@@ -273,11 +281,12 @@ export class Engine implements IEngine {
 
     addRules(rules: Rule[]) {
         for (const rule of rules) {
-            this.addRule(rule);
+            this.addRule(rule, true);
         }
+        this._sortRules();
     }
 
-    addRule(rule: Rule) {
+    addRule(rule: Rule, skipSort?: boolean) {
         let ctxs :Context[] = Context.parse(rule.context);
         let idx = 0;
         const ruleId = rule.id;
@@ -304,6 +313,36 @@ export class Engine implements IEngine {
                 this.exclRules[triggerRole] = this.exclRules[triggerRole] || [];
                 this.exclRules[triggerRole].push(wrappedRule);
             }
+        }
+        if (!skipSort) {
+            this._sortRules();
+        }
+    }
+
+    _sortRules() {
+        for (const role in this.inclRules) {
+            this.inclRules[role].sort((ruleA: WrappedRule, ruleB: WrappedRule) => {
+                const hasDepA = ruleA.rule.dependencies && ruleA.rule.dependencies.length > 0;
+                const hasDepB = ruleB.rule.dependencies && ruleB.rule.dependencies.length > 0;
+                // If B depends on A, sort A before B
+                if (hasDepB && ruleB.rule.dependencies.includes(ruleA.rule.id)) return -1;
+                // If A depends on B, sort B before A
+                if (hasDepA && ruleA.rule.dependencies.includes(ruleB.rule.id)) return 1;
+                // Otherwise, doesn't matter
+                return 0;
+            });
+        }
+        for (const role in this.exclRules) {
+            this.exclRules[role].sort((ruleA: WrappedRule, ruleB: WrappedRule) => {
+                const hasDepA = ruleA.rule.dependencies && ruleA.rule.dependencies.length > 0;
+                const hasDepB = ruleB.rule.dependencies && ruleB.rule.dependencies.length > 0;
+                // If B depends on A, sort A before B
+                if (hasDepB && ruleB.rule.dependencies.includes(ruleA.rule.id)) return -1;
+                // If A depends on B, sort B before A
+                if (hasDepA && ruleA.rule.dependencies.includes(ruleB.rule.id)) return 1;
+                // Otherwise, doesn't matter
+                return 0;
+            });
         }
     }
 
@@ -332,7 +371,15 @@ export class Engine implements IEngine {
         );
     }
 
-    getHelp(ruleId: string, ruleIdx: number | string): string {
+    getHelp(ruleId: string, reasonId: number | string, archiveId?: string): string {
+        if (!archiveId) {
+            // Set to the latest
+            archiveId = "latest";
+        }
+        return `${Config.helpRoot}/${archiveId}/doc${this.getHelpRel(ruleId, reasonId)}`;
+    }
+
+    getHelpRel(ruleId: string, ruleIdx: number | string): string {
         let splitter = ruleId.indexOf("$$");
         if (splitter >= 0) {
             ruleId = ruleId.substring(0,splitter);

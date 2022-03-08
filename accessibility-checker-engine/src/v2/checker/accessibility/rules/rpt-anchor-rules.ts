@@ -33,26 +33,6 @@ let a11yRulesAnchor: Rule[] = [{
             tabindex: parseInt(ruleContext.getAttribute("tabindex") || "0")
         }]);
     }
-},
-{
-    id: "WCAG20_A_HasText",
-    context: "aria:link",
-    run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
-        if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
-            return null;
-        }
-        // Rule only passes if an element has inner content,
-        // in the case that there is only hidden content under the the element it is a violation
-        let passed =
-            ARIAMapper.computeName(ruleContext).trim().length > 0
-            || RPTUtil.nonTabableChildCheck(ruleContext);
-        if (!passed) {
-            return RuleFail("Fail_1");
-        } else {
-            return RulePass("Pass_0");
-        }
-    }
 }
     , {
     /**

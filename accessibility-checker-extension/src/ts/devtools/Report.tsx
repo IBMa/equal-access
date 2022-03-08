@@ -54,7 +54,8 @@ export interface IReportItem {
     selected: boolean,
     selectedChild: boolean,
     scrollTo: boolean,
-    snippet: string
+    snippet: string,
+    help?: string
 }
 
 export interface ICheckpoint {
@@ -191,13 +192,13 @@ export default class Report extends React.Component<IReportProps, IReportState> 
                                 style={{paddingTop:"6px"}}
                             >
                                 <div>
-                                    {tabId === 'element' && <div style={{marginLeft: "-2rem"}}>
+                                    {tabId === 'element' && <div className="reportContainer">
                                         <ReportElements layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'rule' && <div style={{marginLeft: "-2rem"}}>
+                                    {tabId === 'rule' && <div className="reportContainer">
                                         <ReportRules layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
-                                    {tabId === 'checklist' && ruleset && <div style={{marginLeft: "-2rem"}}>
+                                    {tabId === 'checklist' && ruleset && <div className="reportContainer">
                                     <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
                                     </div>}
                                 </div>

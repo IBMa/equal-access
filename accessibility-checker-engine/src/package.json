@@ -1,0 +1,30 @@
+{
+  "name": "accessibility-checker-engine",
+  "version": "1.0.0",
+  "description": "An automated accessibility checking engine for use by other tools",
+  "main": "ace.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "a11y",
+    "accessibility",
+    "IBMa",
+    "ci",
+    "integration",
+    "continuous"
+  ],
+  "author": "IBM Accessibility",
+  "license": "Apache-2.0",
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IBMa/equal-access.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IBMa/equal-access/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
