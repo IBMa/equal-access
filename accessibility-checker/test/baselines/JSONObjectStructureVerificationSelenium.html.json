@@ -1,9 +1,5 @@
 {
     "nls": {
-        "HAAC_Application_Role_Text": {
-            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
-            "Pass_0": "Rule Passed"
-        },
         "HAAC_BackgroundImg_HasTextOrTitle": {
             "0": "Background images that convey important information must have a text alternative that describes the image",
             "Pass_0": "Rule Passed"
@@ -3184,58 +3180,6 @@
             "snippet": "<html lang=\"en\">",
             "value": [
                 "RECOMMENDATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 74,
-                "left": 16,
-                "top": 95,
-                "width": 2700
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/main[1]",
-                "dom": "/html[1]/body[1]/div[2]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "HAAC_Application_Role_Text",
-            "ruleTime": 0,
-            "snippet": "<div role=\"main\">",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "apiArgs": [],
-            "bounds": {
-                "height": 36,
-                "left": 16,
-                "top": 16,
-                "width": 2700
-            },
-            "category": "Accessibility",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "path": {
-                "aria": "/document[1]/navigation[1]",
-                "dom": "/html[1]/body[1]/div[1]"
-            },
-            "reasonId": "Pass_0",
-            "ruleId": "HAAC_Application_Role_Text",
-            "ruleTime": 0,
-            "snippet": "<div role=\"navigation\">",
-            "value": [
-                "VIOLATION",
                 "PASS"
             ],
             "ignored": false,
