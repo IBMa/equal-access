@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>table_aria_descendants - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"Table structure elements cannot specify an explicit 'role' within table containers","explicit_role":"An explicit ARIA 'role' is not valid for <{0}> element within a ARIA role '{1}' per the ARIA in HTML specification","group":"Table structure elements cannot specify an explicit 'role' within table containers"}};
+        RULE_ID = "table_aria_descendants";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,30 +36,34 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+The ARIA specification provides a collection of accessibility roles as the main indicator 
+of the type of control. This is used to support platform accessibility APIs. Using a valid 
+ARIA role on an element, as defined in the ARIA specification, allows assistive 
+technologies to use the role semantics to present and support consistent object interaction.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
+* Remove any `role` definitions from table structure elements (`<tr>`, `<th>`, `<td>`) within any 
+container with a role of `"table"`, `"grid"`, or `"treegrid"`. The following example shows an element 
+with a valid `role="grid"` with appropriate table structures:
 
 ```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
+<div id="caption" class="caption">Table caption</div>
+<table role="grid" aria-labelledby="caption" class="gridCls">
+  <thead>
+    <tr>
+      <th>Head 1</th><th>Head 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cell 1</td><td>Cell 2</td>
+    </tr>
+  </tbody>
+</table>
 ```
 
 </script></mark-down>
@@ -81,14 +77,13 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
+* [ARIA specification](https://www.w3.org/TR/wai-aria-1.2/)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People with dexterity impairment using voice control
 
 </script></mark-down>
 <!-- End side panel -->

@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>HAAC_Aria_SvgAlt - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"An element with a graphics role must have a non-empty label","Pass_0":"Rule Passed","Fail_1":"Element with \"{0}\" graphics role has no label","Fail_2":"Element with \"{0}\" graphics role has no label or an empty label","Fail_3":"Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'","group":"An element with a graphics role must have a non-empty label"}};
+        RULE_ID = "HAAC_Aria_SvgAlt";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,30 +36,21 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+A component with a graphics role can contain important information as well as multiple image files. When viewed together, these elements give the impression of a single image. Providing a text alternative makes the same information accessible through audio or other channels.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+* Add an `aria-labelledby` attribute to the element with a `role="graphics-*"`. It must point to visible text on the page that is meaningful as a label;
+* **Or**, add an `aria-label` attribute to the element with a `role="graphics-*"`;
+* **Or**, only if the design cannot have a visible label, use the `title` attribute to provide a label
 
-### Example
+Example:
 
 ```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
+<svg xmlns="http://www.w3.org/2000/svg"> ... <circle role="graphics-symbol" cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow"></circle></svg>
 ```
 
 </script></mark-down>
@@ -81,14 +64,14 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA Graphics Module](https://www.w3.org/TR/graphics-aria/)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People who turn off image-loading on their web browsers
+* People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>
 <!-- End side panel -->

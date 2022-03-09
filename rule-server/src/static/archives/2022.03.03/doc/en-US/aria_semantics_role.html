@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>aria_semantics_role - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"ARIA roles must be valid for the element to which they are assigned","Pass_0":"Rule Passed","Fail_1":"The ARIA role '{0}' is not valid for the element <{1}>","Fail_2":"The ARIA role '{0}' is not valid for the element <{1}> and may be ignored by the browser since the element is focusable","group":"ARIA roles must be valid for the element to which they are assigned"}};
+        RULE_ID = "aria_semantics_role";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,31 +36,17 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+Some HTML elements or attributes have native semantics that map, by default, to implied ARIA semantics. 
+For predictable interaction and behavior of UI controls, these implicit semantics should only be overridden 
+as defined in the [ARIA in HTML Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) specification.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+* If a native HTML element fits the intended behavior, use that instead of adding ARIA markup;
+* **Or**, update the role on the element using the guidance in the [Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) section of the ARIA in HTML specification. This reference provides details of valid ARIA markup on native HTML elements.
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +59,12 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
+* [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
 
 </script></mark-down>
 <!-- End side panel -->

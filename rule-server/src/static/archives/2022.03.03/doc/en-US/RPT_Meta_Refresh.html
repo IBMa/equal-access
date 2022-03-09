@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>RPT_Meta_Refresh - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"Pages should not refresh automatically","Pass_0":"Rule Passed","Potential_1":"Verify page is not being caused to refresh automatically","group":"Pages should not refresh automatically"}};
+        RULE_ID = "RPT_Meta_Refresh";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,31 +36,16 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+Some individuals might need more time to read or interact with a page than the author expects. If the page auto-refreshes while they are still reading/working, it might prevent access to content by resetting their location on the page.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+ * Remove the `<META>` tag that causes an automatic page refresh (e.g. `<META HTTP-EQUIV="Refresh" CONTENT="10">`) and use a different method to update information on the page;
+ * **Or**, provide an option to turn off, extend, or adjust the timing of the page refresh;
+ * **Or**, at the top of the page, provide a single line of explanation and link to a non-refreshing page. For example "This page automatically reloads every 10 seconds. A `<a href="..."> non-updating equivalent page </a>` with a refresh button is available."
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +58,17 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 2.2.1 Timing Adjustable](https://www.ibm.com/able/requirements/requirements/#2_2_1)
+* [WCAG technique F41](https://www.w3.org/WAI/WCAG21/Techniques/failures/F41)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
 * People with low vision using screen magnification
+* People with dexterity impairment
+* People who physically cannot use a pointing device
+* People with reading disabilities
+* Many older adults
 
 </script></mark-down>
 <!-- End side panel -->

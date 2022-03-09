@@ -44,31 +44,16 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+The text inside a `blink` element can blink at a predetermined rate as there is no way to interrupt or disable blinking. Although blinking draws attention to content, it can be a problem for some users if it persists and may make it difficult or impossible to interact with the rest of the page. The use of the `blink` element has been deprecated.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+* If there is a need to include blinking content, use a technology that stops blinking in 5 seconds or less;
+* **Or**, provide an option to turn off blinking;
+* **Or**, provide a link to an alternative page without the blinking content.
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +66,15 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 2.2.2 Pause, Stop, Hide](https://www.ibm.com/able/requirements/requirements/#2_2_2)
+* [WCAG technique F47](https://www.w3.org/WAI/WCAG21/Techniques/failures/F47)
 
 ### Who does this affect?
 
-* People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People with attention deficit disorders
+* People with reading disabilities
+* People with intellectual disabilities
+* People with low vision
 
 </script></mark-down>
 <!-- End side panel -->

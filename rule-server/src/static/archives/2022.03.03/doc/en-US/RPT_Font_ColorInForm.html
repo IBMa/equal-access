@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>RPT_Font_ColorInForm - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"Combine color and descriptive markup to indicate required form fields","Pass_0":"Rule Passed","Potential_1":"Check color is not used as the only visual means to convey which fields are required","group":"Combine color and descriptive markup to indicate required form fields"}};
+        RULE_ID = "RPT_Font_ColorInForm";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,31 +36,14 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+Using descriptive markup and visual differences together with color enables users who cannot see color to understand the meaning conveyed through color differences.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+* If color is used to indicate required fields, also use the `required` attribute and an asterisk ('*') with text (e.g.  “required fields are red") to indicate required fields both programmatically and visually without color;
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +56,15 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 1.4.1 Use of Color](https://www.ibm.com/able/requirements/requirements/#1_4_1)
+* [WCAG technique G14](https://www.w3.org/WAI/WCAG21/Techniques/general/G14)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People with visual impairment using color contrast enhancement
+* People who cannot see color, have limited color vision or have color blindness
+* People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>
 <!-- End side panel -->

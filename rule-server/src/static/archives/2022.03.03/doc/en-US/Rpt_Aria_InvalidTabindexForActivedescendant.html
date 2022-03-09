@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>Rpt_Aria_InvalidTabindexForActivedescendant - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"Element using 'aria-activedescendant' property must have its 'tabindex' attribute value set to 0 or -1 to be keyboard accessible","Pass_0":"Rule Passed","Fail_1":"The <{0}> element using 'aria-activedescendant' set to \"{1}\" does not have its 'tabindex' attribute value set to 0 or -1","group":"Element using 'aria-activedescendant' property must have its 'tabindex' attribute value set to 0 or -1 to be keyboard accessible"}};
+        RULE_ID = "Rpt_Aria_InvalidTabindexForActivedescendant";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,30 +36,24 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+Elements use `aria-activedescendant` property to manage the focus of their active descendants. 
+Setting the `tabindex` value to `"0"` or `"-1"`  ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access. 
+Using values greater than 0 should be avoided as it can break the logical tab order.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+ * Set the value of the `tabindex` attribute equal to `"0"` or `"-1"` on the element using `aria-activedescendant` property to include the element in the tab sequence. 
 
-### Example
+ The following example shows a toolbar element using the `aria-activedescendant` property with a `tabindex` attribute set to zero:
 
 ```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
+<div role="toolbar" aria-label="Toolbar Widget" tabindex="0" aria-activedescendant="button2" id="tb3" onkeypress="keyEvent();">
+    <div id="button1" role="button1">tool 1</div>
+    <div id="button2" role="button2">tool 2</div>
+</div>
 ```
 
 </script></mark-down>
@@ -81,14 +67,13 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)  
+* [ARIA practices - Managing focus with aria-activedescendant](https://w3c.github.io/aria-practices/#kbd_focus_activedescendant)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People who physically cannot use a pointing device
 
 </script></mark-down>
 <!-- End side panel -->

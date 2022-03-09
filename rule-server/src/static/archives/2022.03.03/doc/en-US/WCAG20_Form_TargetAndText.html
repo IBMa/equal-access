@@ -1,19 +1,11 @@
 <html lang="en-US">
 <head>
-    <!--
-/******************************************************************************
-    Copyright:: 2022- IBM, Inc
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
- *****************************************************************************/
-    -->
+    <title>WCAG20_Form_TargetAndText - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"0":"User should be informed in advance when interacting with content causes a change of context","Pass_0":"Rule Passed","Potential_1":"Verify that interacting with content will not open pop-up windows or change the active window without informing the user","group":"User should be informed in advance when interacting with content causes a change of context"}};
+        RULE_ID = "WCAG20_Form_TargetAndText";
+    </script>
+
     <!-- Title and messages generated at build time -->
     <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
     <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
@@ -44,31 +36,15 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+If entering data in a form or selecting a form control causes be a change in context, users need to be informed. Interactive components with unpredictable behavior might change the user's context before they are ready, causing frustration or confusion.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+* Provide a submit button using an `<input>` element with a `type="submit"` attribute to initiate a change in context;
+* **Or**, describe what will happen when interacting with content, before the change happens (see [WCAG technique 13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13).)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +57,15 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 3.2.2 On Input](https://www.ibm.com/able/requirements/requirements/#3_2_2)
+* [WCAG technique G13](https://www.w3.org/WAI/WCAG21/Techniques/general/G13)
+* [WCAG technique G80](https://www.w3.org/WAI/WCAG21/Techniques/general/G80)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People with cognitive limitations
+* Many older adults
 
 </script></mark-down>
 <!-- End side panel -->

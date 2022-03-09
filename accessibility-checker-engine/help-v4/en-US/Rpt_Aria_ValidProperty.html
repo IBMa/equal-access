@@ -44,30 +44,23 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+When elements are assigned a ARIA `role`, ARIA specifies which attributes are valid for that role. If invalid ARIA attributes are used, assistive technologies may not be able to interpret and operate the element accurately for users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
+* Remove ARIA state or property attributes that are not valid for the element role;
+* **Or**, change the `role` value to a role that supports the intended behavior of the element, using the ARIA specification as a guide.
+In the following example the element references only valid ARIA attributes for an element with the role of `"tree"`: a global `aria-labelledby` property and an `aria-expanded` state.
 
-### Example
+For example:
 
 ```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
+<ul id="tree1" class="tree root-level" role="tree" aria-labelledby="label_1">
+    
+<li id="fruits" class="tree-parent" role="treeitem" tabindex="0" aria-expanded="true"><span>Fruits</span>
 ```
 
 </script></mark-down>
@@ -81,14 +74,13 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA - States and Properties](https://www.w3.org/TR/wai-aria-1.2/#introstates)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People with dexterity impairment using voice control
 
 </script></mark-down>
 <!-- End side panel -->

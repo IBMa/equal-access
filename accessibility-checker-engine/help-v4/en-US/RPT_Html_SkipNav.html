@@ -44,31 +44,17 @@
 
 ### Why is this important?
 
-When the purpose of a link is clear users can easily navigate links on the page without having to see the surrounding information for context.
+People with disabilities often navigate content without a mouse, using the tab key or other key commands to move around the page. When there is repeating information between related pages, it is tedious to tab through these to get to other areas of the page. When repeated content is organized into logical groups that can be easily skipped, navigation becomes much more efficient.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Ideally, add unique link text as the content of the hyperlink that describes the purpose of the hyperlink;
-* **Or**, if it’s not possible to use unique link text (e.g. multiple ‘Read more..’ links for different topics), use the `aria-labelledby` attribute to point to text visible on the page that identifies the link purpose.  The following example shows how the `aria-labelledby` provides additional context by adding the text 'Breaking News' from the header to the link text 'Read more..':
-
-### Example
-
-```
-<h2 id="topic1">Breaking News</h2>
-<p>
-    The central bank cut interest rates by half a
-    percentage to protect economy.
-    <a
-        id="p1"
-        href="news.html"
-        aria-labelledby="p1 topic1"
-        >Read more...</a
-    >
-</p>
-```
+* Provide headings for each content section using `<h1>` ... `<h6>`;
+* **And/or** provide landmarks to identify blocks of content on the page;
+* **And/or** use links to skip blocks of repeated content by linking from the top of the page to the main content, or from the start of the repeated content to the end of the block;
+* **And/or** group blocks of repeated content using structural elements (e.g. `<map>`, `<ul>` or `<ol>`), or `<frame>` elements with a `"title"` attribute, or an expandable and collapsible menu.
 
 </script></mark-down>
 <!-- End main panel -->
@@ -81,14 +67,13 @@ When the purpose of a link is clear users can easily navigate links on the page 
 
 ### About this requirement
 
-* [IBM 2.4.4 Link Purpose (in Context)](https://www.ibm.com/able/requirements/requirements/#2_4_4)
-* [WCAG technique H30](https://www.w3.org/WAI/WCAG21/Techniques/html/H30)
-* [WCAG technique ARIA7](https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA7)
+* [IBM 2.4.1 Bypass Blocks](https://www.ibm.com/able/requirements/requirements/#2_4_1)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People with low vision using screen magnification
+* People who physically cannot use a pointing device
+* People with dexterity impairment who navigate web pages with a keyboard
 
 </script></mark-down>
 <!-- End side panel -->
