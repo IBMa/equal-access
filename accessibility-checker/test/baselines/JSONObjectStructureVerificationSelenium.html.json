@@ -110,7 +110,7 @@
             "Pass_0": "Rule Passed"
         }
     },
-    "numExecuted": 121,
+    "numExecuted": 119,
     "results": [
         {
             "apiArgs": [],
@@ -3251,7 +3251,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 120,
+            "pass": 118,
             "ignored": 0
         },
         "scanTime": 33,

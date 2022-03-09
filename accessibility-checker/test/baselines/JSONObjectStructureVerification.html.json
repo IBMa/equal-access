@@ -3132,7 +3132,7 @@
             "level": "pass"
         }
     ],
-    "numExecuted": 121,
+    "numExecuted": 119,
     "nls": {
         "WCAG20_Html_HasLang": {
             "0": "Page must identify the default language of the document with a 'lang' attribute",
@@ -3251,7 +3251,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 120,
+            "pass": 118,
             "ignored": 0
         },
         "scanTime": 36,
