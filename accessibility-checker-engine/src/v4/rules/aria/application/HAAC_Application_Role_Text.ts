@@ -20,9 +20,9 @@ export let HAAC_Application_Role_Text: Rule = {
     context: "aria:application",
     help: {
         "en-US": {
-            0: `HAAC_Application_Role_Text`,
-            "Pass_0": `HAAC_Application_Role_Text`,
-            "Potential_1": `HAAC_Application_Role_Text`
+            0: `HAAC_Application_Role_Text.html`,
+            "Pass_0": `HAAC_Application_Role_Text.html`,
+            "Potential_1": `HAAC_Application_Role_Text.html`
         }
     },
     messages: {

@@ -20,8 +20,8 @@ export let detector_tabbable: Rule = {
     context: "dom:*",
     help: {
         "en-US": {
-            "group": `detector_tabbable.html`,
-            "Pass_0": `detector_tabbable.html`
+            "group": ``,
+            "Pass_0": ``
         }
     },
     messages: {

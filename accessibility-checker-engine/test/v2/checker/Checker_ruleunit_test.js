@@ -74,7 +74,7 @@ const mapRuleToG = {
     "WCAG20_Elem_Lang_Valid": "507",
     "WCAG20_Img_LinkTextNotRedundant": "1000",
     "RPT_Style_ExternalStyleSheet": "1073",
-    "RPT_Header_Trigger": "1002",
+    // "RPT_Header_Trigger": "1002",
     "RPT_Script_OnclickHTML2": "1007",
     "WCAG20_Table_CapSummRedundant": "1011",
     "WCAG20_Input_LabelBefore": "1017",

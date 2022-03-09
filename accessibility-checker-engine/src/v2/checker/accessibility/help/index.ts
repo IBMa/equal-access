@@ -331,12 +331,12 @@ let a11yHelp = {
         "Pass_0": `RPT_Style_ExternalStyleSheet`,
         "Potential_1": `RPT_Style_ExternalStyleSheet`
     },
-    // JCH - DONE
-    "RPT_Header_Trigger": {
-        0: `RPT_Header_Trigger`, 
-        "Pass_0": `RPT_Header_Trigger`,
-        "Potential_1": `RPT_Header_Trigger`
-    },
+    // // JCH - DONE
+    // "RPT_Header_Trigger": {
+    //     0: `RPT_Header_Trigger`, 
+    //     "Pass_0": `RPT_Header_Trigger`,
+    //     "Potential_1": `RPT_Header_Trigger`
+    // },
     // JCH - DONE
     "RPT_Script_OnclickHTML2": {
         0: `RPT_Script_OnclickHTML2`,

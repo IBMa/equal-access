@@ -323,12 +323,12 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Potential_1": "External style sheets detected ensure that CSS does not add images that convey important information in the content."
     },
-    // JCH - DONE
-    "RPT_Header_Trigger": {
-        0: "Heading text should correctly describe the subject of the web page sections", 
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that heading text correctly describes the subject of each web page section"
-    },
+    // // JCH - DONE
+    // "RPT_Header_Trigger": {
+    //     0: "Heading text should correctly describe the subject of the web page sections", 
+    //     "Pass_0": "Rule Passed",
+    //     "Potential_1": "Verify that heading text correctly describes the subject of each web page section"
+    // },
     // JCH - DONE
     "RPT_Script_OnclickHTML2": {
         0: "Scripts should not be used to emulate links",
