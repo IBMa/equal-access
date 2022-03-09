@@ -213,16 +213,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.readOptionsData();
     }
 
-    changeBadURL() {
-        if (this.state.badURL === false) {
-            this.setState({ badURL: true });
-        } else if (this.state.badURL === true) {
-            this.setState({ badURL: false });
-        }
-    }
-
     readOptionsData() {
-        // console.log("readOptionsData");
+        console.log("readOptionsData");
         var self = this;
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //pick default archive id from env
@@ -260,15 +252,23 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // and get url using chrome.tabs.get via message "TAB_INFO"
             let thisTabId = chrome.devtools.inspectedWindow.tabId;
             let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
-            
+            console.log("tab.id = ", tab.id);
+            console.log("tab.url = ", tab.url);
+            console.log("tab.title = ", tab.title);
+            console.log("tab.canScan = ",tab.canScan);
             if (tab.id && tab.url && tab.id && tab.title) {
 
                 if (!tab.canScan) {
+                    console.log("Found BAD url: ",tab.url);
+                    console.log("badURL = ",self.state.badURL);
                     if (self.state.badURL === false) {
                         self.setState({ badURL: true });
                     } 
+                    self.setState({ tabURL: tab.url, tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan });
                     return;
                 } else {
+                    console.log("Found GOOD url: ",tab.url);
+                    console.log("badURL = ",self.state.badURL);
                     if (self.state.badURL === true) {
                         self.setState({ badURL: false });
                     } 
@@ -333,28 +333,54 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        // console.log("startScan");
+        console.log("startScan");
         let tabURL = this.state.tabURL;
         let tabId = this.state.tabId;
-        // let chromeTabId = chrome.devtools.inspectedWindow.tabId;
-        
-        if (!this.state.tabCanScan) {
+        console.log("tabURL = ",tabURL);
+        console.log("tabId = ",tabId);
+
+        this.readOptionsData();
+
+        let thisTabId = chrome.devtools.inspectedWindow.tabId;
+        let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
+
+        console.log("this.state.tabCanScan = ",this.state.tabCanScan);
+
+        if (!tab.canScan) {
+            console.log("Found BAD url: ",tab.url);
+            console.log("badURL = ",this.state.badURL);
             if (this.state.badURL === false) {
                 this.setState({ badURL: true });
-            }
+            } 
+            this.setState({ tabURL: tab.url, tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan });
             return;
         } else {
+            console.log("Found GOOD url: ",tab.url);
+            console.log("badURL = ",this.state.badURL);
             if (this.state.badURL === true) {
                 this.setState({ badURL: false });
             } 
         }
+        
+        // if (!this.state.tabCanScan) {
+        //     if (this.state.badURL === false) {
+        //         this.setState({ badURL: true });
+        //     }
+        //     return;
+        // } else {
+        //     if (this.state.badURL === true) {
+        //         this.setState({ badURL: false });
+        //     } 
+        // }
        
-        if (tabURL !== this.state.prevTabURL) {
-            this.setState({firstScan: true});
-        }
+        // if (tabURL !== this.state.prevTabURL) {
+        //     this.setState({firstScan: true});
+        // }
+
+
         this.state.prevTabURL = tabURL;
 
-        this.readOptionsData();
+       
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -950,7 +976,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
-        // console.log("DevToolsPanelApp: render");
+        console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
