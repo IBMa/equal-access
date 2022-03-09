@@ -64,11 +64,15 @@ The recommended code example is:
 ```
 <html lang="en-US">
   <head>
-      <style>
-          div { background-color: yellow; padding: 20px; display: none;}
-          span:hover div { display: block; }
-        <div>I will show on hover</div>
-      </span>
+    <style>
+      .toggledText { background-color: yellow; padding: 20px; display: none; }
+      .hoverTarget:hover .toggledText { display: block; } 
+    </style>
+  </head>
+  <body>
+    <div class="hoverTarget">Hover over me2!
+      <div class="toggledText">I will show on hover</div>
+    </div>
   </body>
 </html>
 ```
