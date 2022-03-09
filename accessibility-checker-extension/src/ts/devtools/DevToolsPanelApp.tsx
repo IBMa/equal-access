@@ -51,6 +51,7 @@ interface IPanelState {
     report: IReport | null,
     filter: string | null,
     tabURL: string,
+    tabCanScan: boolean,
     prevTabURL: string | null,
     tabId: number,
     tabTitle: string,
@@ -104,6 +105,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         report: null,
         filter: null,
         tabURL: "",
+        tabCanScan: false,
         prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
@@ -260,18 +262,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
             
             if (tab.id && tab.url && tab.id && tab.title) {
-                // @ts-ignore
-                let canScan = await new Promise((resolve, reject) => {
-                    if (thisTabId < 0) return resolve(false);
-                    chrome.tabs.executeScript(thisTabId, {
-                        code: "typeof window.ace",
-                        frameId: 0,
-                        matchAboutBlank: true
-                    }, function (res) {
-                        resolve(!!res);
-                    })
-                });
-                if (!canScan) {
+
+                if (!tab.canScan) {
                     if (self.state.badURL === false) {
                         self.setState({ badURL: true });
                     } 
@@ -306,7 +298,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     self.selectElementInElements();
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                    tabId: tab.id, tabTitle: tab.title, error: null, archives, selectedArchive: archiveId, 
+                    tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, selectedArchive: archiveId, 
                     selectedPolicy: policyName });
             }
         });
@@ -344,19 +336,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // console.log("startScan");
         let tabURL = this.state.tabURL;
         let tabId = this.state.tabId;
-        let chromeTabId = chrome.devtools.inspectedWindow.tabId;
-        // @ts-ignore
-        let canScan = await new Promise((resolve, reject) => {
-            if (chromeTabId < 0) return resolve(false);
-            chrome.tabs.executeScript(chromeTabId, {
-                code: "typeof window.ace",
-                frameId: 0,
-                matchAboutBlank: true
-            }, function (res) {
-                resolve(!!res);
-            })
-        });
-        if (!canScan) {
+        // let chromeTabId = chrome.devtools.inspectedWindow.tabId;
+        
+        if (!this.state.tabCanScan) {
             if (this.state.badURL === false) {
                 this.setState({ badURL: true });
             }
