@@ -108,10 +108,15 @@ let a11yHelp = {
         "Fail_1": `WCAG20_Meta_RedirectZero`
     },
     // JCH - DONE
-    "RPT_Elem_Deprecated": {
-        0: `RPT_Elem_Deprecated`,
-        "Pass_0": `RPT_Elem_Deprecated`,
-        "Potential_1": `RPT_Elem_Deprecated`
+    "element_attribute_deprecated": {
+        0: `element_attribute_deprecated`,
+        "pass":  `element_attribute_deprecated`,
+        "fail_elem":  `element_attribute_deprecated`,
+        "fail_attr":  `element_attribute_deprecated`,
+        "fail_elem_attr":  `element_attribute_deprecated`, 
+        "fail_aria_role":  `element_attribute_deprecated`,
+        "fail_aria_attr":  `element_attribute_deprecated`,
+        "fail_role_attr":  `element_attribute_deprecated`
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
