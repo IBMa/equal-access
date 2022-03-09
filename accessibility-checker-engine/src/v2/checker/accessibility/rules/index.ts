@@ -24,7 +24,6 @@ import { a11yRulesCombobox } from "./rpt-combobox-rules";
 import { a11yRulesHier } from "./rpt-hierarchy-rules";
 import { a11yRulesObject } from "./rpt-object-rules";
 import { a11yRulesElem } from "./rpt-elem-rules";
-import { a11yRulesHtml } from "./rpt-html-rules";
 import { a11yRulesScript } from "./rpt-script-rules";
 import { a11yRulesEmbed } from "./rpt-embed-rules";
 import { a11yRulesImg } from "./rpt-img-rules";
@@ -37,7 +36,6 @@ import { a11yRulesLabeling } from "./rpt-ariaLabeling-rules";
 import { a11yRulesFig } from "./rpt-figure-rules";
 import { a11yRulesLabel } from "./rpt-label-rules";
 import { a11yRulesTable } from "./table-rules";
-import { a11yRulesBlink } from "./rpt-blink-rules";
 import { a11yRulesFocus } from "./rpt-focus-rules";
 import { a11yRulesList } from "./rpt-list-rules";
 import { a11yRulesText } from "./rpt-text-rules";
@@ -60,7 +58,6 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesHier
     , a11yRulesObject
     , a11yRulesElem
-    , a11yRulesHtml
     , a11yRulesScript
     , a11yRulesEmbed
     , a11yRulesImg
@@ -73,7 +70,6 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesFig
     , a11yRulesLabel
     , a11yRulesTable
-    , a11yRulesBlink
     , a11yRulesFocus
     , a11yRulesList
     , a11yRulesText

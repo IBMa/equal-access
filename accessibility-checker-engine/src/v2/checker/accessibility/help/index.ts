@@ -253,24 +253,6 @@ let a11yHelp = {
         "Potential_1": `WCAG20_Img_AltTriggerNonDecorative`
     },
     // JCH - DONE
-    "WCAG20_Blink_AlwaysTrigger": {
-        0: `WCAG20_Blink_AlwaysTrigger`,
-        "Pass_0": `WCAG20_Blink_AlwaysTrigger`,
-        "Fail_1": `WCAG20_Blink_AlwaysTrigger`
-    },
-    // JCH - DONE
-    "RPT_Blink_CSSTrigger1": {
-        0: `RPT_Blink_CSSTrigger1`,
-        "Pass_0": `RPT_Blink_CSSTrigger1`,
-        "Potential_1": `RPT_Blink_CSSTrigger1`
-    },
-    // JCH - DONE
-    "RPT_Html_SkipNav": {
-        0: `RPT_Html_SkipNav`,
-        "Pass_0": `RPT_Html_SkipNav`,
-        "Potential_1": `RPT_Html_SkipNav`
-    },
-    // JCH - DONE
     "RPT_Title_Valid": {
         0: `RPT_Title_Valid`,
         "Pass_0": `RPT_Title_Valid`,
@@ -282,23 +264,6 @@ let a11yHelp = {
         0: `RPT_Header_HasContent`,
         "Pass_0": `RPT_Header_HasContent`,
         "Fail_1": `RPT_Header_HasContent`
-    },
-    // JCH - DONE
-    // JCH - 0: provides the general DAP message for the rule
-    //       "Pass_i" ???
-    //       "Fail_j" descriptive message for specific failure
-    //       "Potential_k" descriptive message describing case when it is not a failure 
-    //                     but needs other checking to confirm pass or
-    "WCAG20_Html_HasLang": {
-        0: `WCAG20_Html_HasLang`, 
-        "Pass_0": `WCAG20_Html_HasLang`,
-        "Fail_1": `WCAG20_Html_HasLang`,
-        "Fail_2": `WCAG20_Html_HasLang`,
-        "Fail_3": `WCAG20_Html_HasLang`,
-        "Fail_4": `WCAG20_Html_HasLang`,
-        "Fail_5": `WCAG20_Html_HasLang`,
-        "Potential_5": `WCAG20_Html_HasLang`,
-        "Potential_6": `WCAG20_Html_HasLang`
     },
     // JCH - DONE
     "WCAG20_Form_TargetAndText": {
@@ -548,13 +513,6 @@ let a11yHelp = {
         "Potential_1": `WCAG20_Text_LetterSpacing`
     },
     // JCH - DONE
-    "Rpt_Aria_ValidRole": {
-        0: `Rpt_Aria_ValidRole`,
-        "Pass_0": `Rpt_Aria_ValidRole`,
-        "Fail_1": `Rpt_Aria_ValidRole`,
-        "Fail_2": `Rpt_Aria_ValidRole`
-    },
-    // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
         0: `Rpt_Aria_ValidPropertyValue`,
         "Pass_0": `Rpt_Aria_ValidPropertyValue`,
@@ -567,22 +525,10 @@ let a11yHelp = {
         "Fail_1": `Rpt_Aria_ValidIdRef`
     },
     // JCH - DONE
-    "Rpt_Aria_RequiredProperties": {
-        0: `Rpt_Aria_RequiredProperties`,
-        "Pass_0": `Rpt_Aria_RequiredProperties`,
-        "Fail_1": `Rpt_Aria_RequiredProperties`
-    },
-    // JCH - DONE
     "Rpt_Aria_EmptyPropertyValue": {
         0: `Rpt_Aria_EmptyPropertyValue`,
         "Pass_0": `Rpt_Aria_EmptyPropertyValue`,
         "Fail_1": `Rpt_Aria_EmptyPropertyValue`
-    },
-    // JCH - DONE
-    "Rpt_Aria_ValidProperty": {
-        0: `Rpt_Aria_ValidProperty`,
-        "Pass_0": `Rpt_Aria_ValidProperty`,
-        "Fail_1": `Rpt_Aria_ValidProperty`
     },
     // JCH - DONE
     "Rpt_Aria_InvalidTabindexForActivedescendant": {

@@ -623,11 +623,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
                     id: "RPT_Blink_CSSTrigger1",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -649,11 +644,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -1091,11 +1081,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1107,11 +1092,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidIdRef",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_RequiredProperties",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -1797,11 +1777,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
                     id: "RPT_Blink_CSSTrigger1",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -1823,11 +1798,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -2265,11 +2235,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -2285,17 +2250,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_RequiredProperties",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "Rpt_Aria_EmptyPropertyValue",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_ValidProperty",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -2910,16 +2865,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Marquee_Trigger",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "RPT_Blink_CSSTrigger1",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -2938,11 +2883,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -3155,13 +3095,7 @@ let a11yRulesets: Ruleset[] = [
             "name": "Language of Page",
             "wcagLevel": "A",
             "summary": "The default human language of Web pages, non-Web documents, or software can be programmatically determined.",
-            "rules": [
-                {
-                    id: "WCAG20_Html_HasLang",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-            ]
+            "rules": []
         },
         {
             "num": "3.1.2",
@@ -3346,11 +3280,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -3362,11 +3291,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidIdRef",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_RequiredProperties",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
