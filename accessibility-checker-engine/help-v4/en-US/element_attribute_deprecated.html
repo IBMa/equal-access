@@ -44,34 +44,18 @@
 
 ### Why is this important?
 
-When content displays on hover, the pointer should be able to move from the trigger to the new content. If the new content disappears when the pointer leaves the trigger element, users who significantly magnify their screen will never be able to bring the new content into view to read.
-
+When specifications are updated, some elements and attributes become outdated. These deprecated 
+features may become obsolete and be removed in future versions, and should not be used in new projects. 
+As well, a deprecated feature is usually replaced by an improvement in the newer specification, 
+so it is prudent to update code to avoid deprecated features. Finally, although existing projects using 
+deprecated features should work, browsers may not continue to support them.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
-
 ### What to do
 
-* If using the css `hover` pseudo-class on one element in order to set a `display` style on another element, the displayed element must be a child of the trigger element;
-* **Or**, the newly displayed element must be the adjacent sibling of the trigger, with its own `hover` set to `display`, and with no `margin` property set (since the margin separates the two elements and prevents the hover display from persisting).
-
-Note: Use of the `~` selector with the `display` style attribute can allow many siblings of the trigger element to be displayed on hover; however, only its adjacent sibling will persistently display when the pointer is moved from the trigger towards the displayed content. 
-
-
-The recommended code example is:
-
-```
-<html lang="en-US">
-  <head>
-      <style>
-          div { background-color: yellow; padding: 20px; display: none;}
-          span:hover div { display: block; }
-        <div>I will show on hover</div>
-      </span>
-  </body>
-</html>
-```
+Replace deprecated elements and attributes with those preferred in the current version of the specification.
 
 </script></mark-down>
 <!-- End main panel -->
@@ -83,17 +67,11 @@ The recommended code example is:
 <mark-down><script type="text/plain">
 
 ### About this requirement
-  
-* [IBM 1.4.13 Content on Hover or Focus](https://www.ibm.com/able/requirements/requirements/#1_4_13)
-* [WCAG technique SCR39](https://www.w3.org/WAI/WCAG21/Techniques/client-side-script/SCR39)
-* [WCAG technique F95](https://www.w3.org/WAI/WCAG21/Techniques/failures/F95)
 
-### Who does this affect?
+* [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
+* [HTML5 obsolete features](https://dev.w3.org/html5/pf-summary/obsolete.html)
+* [ARIA deprecated requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
 
-* People with low vision who use screen magnification
-* People with attention deficit disorders
-* People with tremor or other movement disorders
-   
 </script></mark-down>
 <!-- End side panel -->
             </div>

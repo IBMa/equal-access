@@ -948,7 +948,7 @@ let a11yHelp = {
         "Fail_inline": `combobox_autocomplete`
     },
     "input_haspopup_invalid":{
-        0: ``,
+        0: `input_haspopup_invalid`,
         "Pass": `input_haspopup_invalid`,
         "Potential_1": `input_haspopup_invalid`,
         "Potential_2": `input_haspopup_invalid`
