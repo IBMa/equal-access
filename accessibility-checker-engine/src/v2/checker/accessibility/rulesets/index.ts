@@ -29,11 +29,7 @@ let a11yRulesets: Ruleset[] = [
         name: "Extension CP 1",
         wcagLevel: "A",
         summary: "Rules for Extension",
-        rules: [{
-            id: "detector_tabbable",
-            level: eRulePolicy.INFORMATION,
-            toolkitLevel: eToolkitLevel.LEVEL_FOUR
-        }]
+        rules: []
     }]
 },
 {
@@ -64,17 +60,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "WCAG20_Applet_HasAlt",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "WCAG20_Input_ExplicitLabel",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "WCAG20_Area_HasAlt",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -391,11 +377,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
 
             ]
@@ -589,11 +570,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "HAAC_Audio_Video_Trigger",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "HAAC_Application_Role_Text",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         },
@@ -647,11 +623,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
                     id: "RPT_Blink_CSSTrigger1",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -673,11 +644,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -970,11 +936,6 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Changing the setting of any user interface component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
             "rules": [
                 {
-                    id: "WCAG20_A_TargetAndText",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "WCAG20_Form_HasSubmit",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -1125,11 +1086,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -1141,11 +1097,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidIdRef",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_RequiredProperties",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -1248,11 +1199,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         }
@@ -1286,17 +1232,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "WCAG20_Applet_HasAlt",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "WCAG20_Input_ExplicitLabel",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "WCAG20_Area_HasAlt",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -1612,11 +1548,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         },
@@ -1798,11 +1729,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "HAAC_Audio_Video_Trigger",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "HAAC_Application_Role_Text",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         },
@@ -1856,11 +1782,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
                 {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
                     id: "RPT_Blink_CSSTrigger1",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -1882,11 +1803,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -2179,11 +2095,6 @@ let a11yRulesets: Ruleset[] = [
             "summary": "Changing the setting of any user interface component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
             "rules": [
                 {
-                    id: "WCAG20_A_TargetAndText",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
                     id: "WCAG20_Form_HasSubmit",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
@@ -2329,11 +2240,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -2349,17 +2255,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_RequiredProperties",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "Rpt_Aria_EmptyPropertyValue",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_ValidProperty",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -2452,11 +2348,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "combobox_autocomplete",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         }
@@ -2490,17 +2381,7 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "WCAG20_Applet_HasAlt",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "WCAG20_Input_ExplicitLabel",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "WCAG20_Area_HasAlt",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -2811,11 +2692,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "WCAG20_Table_Structure",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
 
             ]
@@ -2950,11 +2826,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "HAAC_Audio_Video_Trigger",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "HAAC_Application_Role_Text",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }
             ]
         },
@@ -2999,16 +2870,6 @@ let a11yRulesets: Ruleset[] = [
                     id: "RPT_Marquee_Trigger",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "WCAG20_Blink_AlwaysTrigger",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
-                },
-                {
-                    id: "RPT_Blink_CSSTrigger1",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_TWO
                 }
             ]
         },
@@ -3027,11 +2888,6 @@ let a11yRulesets: Ruleset[] = [
             "rules": [
                 {
                     id: "WCAG20_Frame_HasTitle",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
-                {
-                    id: "RPT_Html_SkipNav",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_THREE
                 },
@@ -3244,13 +3100,7 @@ let a11yRulesets: Ruleset[] = [
             "name": "Language of Page",
             "wcagLevel": "A",
             "summary": "The default human language of Web pages, non-Web documents, or software can be programmatically determined.",
-            "rules": [
-                {
-                    id: "WCAG20_Html_HasLang",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                }
-            ]
+            "rules": []
         },
         {
             "num": "3.1.2",
@@ -3289,11 +3139,6 @@ let a11yRulesets: Ruleset[] = [
             "wcagLevel": "A",
             "summary": "Changing the setting of any user interface component does not automatically cause a change of context unless the user has been advised of the behavior before using the component.",
             "rules": [
-                {
-                    id: "WCAG20_A_TargetAndText",
-                    level: eRulePolicy.RECOMMENDATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_THREE
-                },
                 {
                     id: "WCAG20_Form_HasSubmit",
                     level: eRulePolicy.VIOLATION,
@@ -3440,11 +3285,6 @@ let a11yRulesets: Ruleset[] = [
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
                 {
-                    id: "Rpt_Aria_ValidRole",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
                     id: "table_aria_descendants",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
@@ -3456,11 +3296,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "Rpt_Aria_ValidIdRef",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "Rpt_Aria_RequiredProperties",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 },
@@ -3561,11 +3396,6 @@ let a11yRulesets: Ruleset[] = [
                 },
                 {
                     id: "combobox_autocomplete",
-                    level: eRulePolicy.VIOLATION,
-                    toolkitLevel: eToolkitLevel.LEVEL_ONE
-                },
-                {
-                    id: "aria_hidden_focus_misuse",
                     level: eRulePolicy.VIOLATION,
                     toolkitLevel: eToolkitLevel.LEVEL_ONE
                 }

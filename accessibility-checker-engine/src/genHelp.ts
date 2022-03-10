@@ -50,7 +50,13 @@ async function buildV4() {
         const rule : RuleV4 = rulesV4[ruleId];
         for (const locale in rule.help) {
             for (const reasonId in rule.help[locale]) {
-                let helpFile = readFileSync(path.join(__dirname, '..', 'help-v4', locale, rule.help[locale][reasonId])).toString();
+                if (!rule.help[locale][reasonId] || rule.help[locale][reasonId].length === 0) continue;
+                let helpPath = path.join(__dirname, '..', 'help-v4', locale, rule.help[locale][reasonId]);
+                if (!existsSync(helpPath)) {
+                    console.log("MISSING:",helpPath);
+                    continue;
+                }
+                let helpFile = readFileSync(helpPath).toString();
                 helpFile = helpFile.replace(/\<head\>/, `<head>
     <title>${rule.id} - Accessibility Checker Help</title>
     <script>
@@ -65,8 +71,6 @@ async function buildV4() {
 }
 
 async function buildV2() {
-    // console.log(helpMap);
-    let helpFiles = {};
     for (const rule of rulesV2.a11yRules as RuleV2[]) {
         const ruleId = rule.id;
         let helpInfo = helpMap[ruleId];
@@ -76,78 +80,21 @@ async function buildV2() {
         }
 
         if (helpInfo) {
-            let helpToken = helpInfo[0].replace("https://able.ibm.com/rules/tools/help/", "").replace("/en-US","").replace(".html","");
-            let helpFile = "../help"+helpToken+".mdx";
-            if (existsSync(path.join(__dirname, helpFile))) {
-                let inputFile = readFileSync(path.join(__dirname, helpFile));
-                let outputFile = inputFile.toString();
-                outputFile = outputFile.substring(outputFile.indexOf(`"toolMain">`)+11).trim();
-                outputFile = `<html lang="en-US">
-<head>
-    <title>${ruleId} - Accessibility Checker Help</title>
-    <script>
-        RULE_MESSAGES = {"en-US":${JSON.stringify(msgInfo)}};
-        RULE_ID = "${ruleId}";
-    </script>
-
-    <!-- Title and messages generated at build time -->
-    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
-    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="../common/help.css" />
-    <script type="module">
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
-        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="../common/help.js"></script>
-</head>
-<body>
-    <div class="bx--grid toolHelp">
-        <div class="bx--row">
-            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
-                <!-- Group message injected here -->
-                <h3 id="groupLabel"></h3>
-                <!-- Severity level injected here -->
-                <div id="locLevel"></div>
-                <!-- Rule specific message injected here -->
-                <p id="ruleMessage"></p>
-            </div>
-        </div>
-        <div class="bx--row">
-            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
-<!-- Start main panel -->
-<mark-down><script type="text/plain">
-
-`+outputFile;
-                outputFile = outputFile.replace(/\<\/Column\>[^\>]*\>/, `</script></mark-down>
-<!-- End main panel -->
-                <!-- This is where the rule id is injected -->
-                <div id="ruleInfo"></div>
-            </div>
-            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
-<!-- Start side panel -->
-<mark-down><script type="text/plain">`)
-                outputFile = outputFile.replace(/\<\/Column\>(.|\r|\n)*$/, `</script></mark-down>
-<!-- End side panel -->
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-`);
-                outputFile = outputFile.replace(/\<div id="locSnippet"\>\<\/div\>/, `<!-- This is where the code snippet is injected -->
-<div id="locSnippet"></div>`);
-
-                outputFile = outputFile.replace(/&gt;/g, ">");
-                outputFile = outputFile.replace(/&lt;/g, "<");
-                outputFile = outputFile.replace(/&amp;/g, "&");
-                outputFile = outputFile.replace(/\<CodeSnippet[^>]*\> *[\r\n]*/g, "```\n");
-                outputFile = outputFile.replace(/[\r\n]* *\<\/CodeSnippet[^>]*\>/g, "\n```");
-
-                writeFileSync(path.join(__dirname, '..', 'dist', 'help', "en-US", helpToken+".html"), outputFile);
-            } else {
-                console.log("MISSING:", helpFile);
+            let helpToken = helpInfo[0];
+            let helpPath = path.join(__dirname, '..', 'help-v4', helpToken);
+            if (!existsSync(helpPath)) {
+                console.log("MISSING:",helpPath);
+                continue;
             }
+            let helpFile = readFileSync(helpPath).toString();
+            helpFile = helpFile.replace(/\<head\>/, `<head>
+<title>${rule.id} - Accessibility Checker Help</title>
+<script>
+    RULE_MESSAGES = {"en-US":${JSON.stringify(msgInfo)}};
+    RULE_ID = "${ruleId}";
+</script>
+`)
+            writeFileSync(path.join(__dirname, '..', 'dist', 'help', helpToken), helpFile);
         }
     }
 }

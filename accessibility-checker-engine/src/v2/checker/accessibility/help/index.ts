@@ -59,14 +59,6 @@ let a11yHelp = {
         "Fail_1": `WCAG20_Object_HasText`
     },
     // JCH - DONE
-    "WCAG20_Applet_HasAlt": {
-        0: `WCAG20_Applet_HasAlt`,
-        "Pass_0": `WCAG20_Applet_HasAlt`,
-        "Fail_1": `WCAG20_Applet_HasAlt`,
-        "Fail_2": `WCAG20_Applet_HasAlt`,
-        "Fail_3": `WCAG20_Applet_HasAlt`
-    },
-    // JCH - DONE
     "RPT_Media_AudioTrigger": {
         0: `RPT_Media_AudioTrigger`,
         "Pass_0": `RPT_Media_AudioTrigger`,
@@ -102,18 +94,6 @@ let a11yHelp = {
         0: `RPT_Media_AltBrief`,
         "Pass_0": `RPT_Media_AltBrief`,
         "Potential_1": `RPT_Media_AltBrief`
-    },
-    // JCH - DONE
-    "WCAG20_A_TargetAndText": {
-        0: `WCAG20_A_TargetAndText`,
-        "Pass_0": `WCAG20_A_TargetAndText`,
-        "Potential_1": `WCAG20_A_TargetAndText`
-    },
-    // JCH - DONE
-    "WCAG20_Area_HasAlt": {
-        0: `WCAG20_Area_HasAlt`,
-        "Pass_0": `WCAG20_Area_HasAlt`,
-        "Fail_1": `WCAG20_Area_HasAlt`
     },
     // JCH - DONE
     "RPT_Media_ImgColorUsage": {
@@ -278,24 +258,6 @@ let a11yHelp = {
         "Potential_1": `WCAG20_Img_AltTriggerNonDecorative`
     },
     // JCH - DONE
-    "WCAG20_Blink_AlwaysTrigger": {
-        0: `WCAG20_Blink_AlwaysTrigger`,
-        "Pass_0": `WCAG20_Blink_AlwaysTrigger`,
-        "Fail_1": `WCAG20_Blink_AlwaysTrigger`
-    },
-    // JCH - DONE
-    "RPT_Blink_CSSTrigger1": {
-        0: `RPT_Blink_CSSTrigger1`,
-        "Pass_0": `RPT_Blink_CSSTrigger1`,
-        "Potential_1": `RPT_Blink_CSSTrigger1`
-    },
-    // JCH - DONE
-    "RPT_Html_SkipNav": {
-        0: `RPT_Html_SkipNav`,
-        "Pass_0": `RPT_Html_SkipNav`,
-        "Potential_1": `RPT_Html_SkipNav`
-    },
-    // JCH - DONE
     "RPT_Title_Valid": {
         0: `RPT_Title_Valid`,
         "Pass_0": `RPT_Title_Valid`,
@@ -307,23 +269,6 @@ let a11yHelp = {
         0: `RPT_Header_HasContent`,
         "Pass_0": `RPT_Header_HasContent`,
         "Fail_1": `RPT_Header_HasContent`
-    },
-    // JCH - DONE
-    // JCH - 0: provides the general DAP message for the rule
-    //       "Pass_i" ???
-    //       "Fail_j" descriptive message for specific failure
-    //       "Potential_k" descriptive message describing case when it is not a failure 
-    //                     but needs other checking to confirm pass or
-    "WCAG20_Html_HasLang": {
-        0: `WCAG20_Html_HasLang`, 
-        "Pass_0": `WCAG20_Html_HasLang`,
-        "Fail_1": `WCAG20_Html_HasLang`,
-        "Fail_2": `WCAG20_Html_HasLang`,
-        "Fail_3": `WCAG20_Html_HasLang`,
-        "Fail_4": `WCAG20_Html_HasLang`,
-        "Fail_5": `WCAG20_Html_HasLang`,
-        "Potential_5": `WCAG20_Html_HasLang`,
-        "Potential_6": `WCAG20_Html_HasLang`
     },
     // JCH - DONE
     "WCAG20_Form_TargetAndText": {
@@ -386,12 +331,12 @@ let a11yHelp = {
         "Pass_0": `RPT_Style_ExternalStyleSheet`,
         "Potential_1": `RPT_Style_ExternalStyleSheet`
     },
-    // JCH - DONE
-    "RPT_Header_Trigger": {
-        0: `RPT_Header_Trigger`, 
-        "Pass_0": `RPT_Header_Trigger`,
-        "Potential_1": `RPT_Header_Trigger`
-    },
+    // // JCH - DONE
+    // "RPT_Header_Trigger": {
+    //     0: `RPT_Header_Trigger`, 
+    //     "Pass_0": `RPT_Header_Trigger`,
+    //     "Potential_1": `RPT_Header_Trigger`
+    // },
     // JCH - DONE
     "RPT_Script_OnclickHTML2": {
         0: `RPT_Script_OnclickHTML2`,
@@ -573,13 +518,6 @@ let a11yHelp = {
         "Potential_1": `WCAG20_Text_LetterSpacing`
     },
     // JCH - DONE
-    "Rpt_Aria_ValidRole": {
-        0: `Rpt_Aria_ValidRole`,
-        "Pass_0": `Rpt_Aria_ValidRole`,
-        "Fail_1": `Rpt_Aria_ValidRole`,
-        "Fail_2": `Rpt_Aria_ValidRole`
-    },
-    // JCH - DONE
     "Rpt_Aria_ValidPropertyValue": {
         0: `Rpt_Aria_ValidPropertyValue`,
         "Pass_0": `Rpt_Aria_ValidPropertyValue`,
@@ -592,22 +530,10 @@ let a11yHelp = {
         "Fail_1": `Rpt_Aria_ValidIdRef`
     },
     // JCH - DONE
-    "Rpt_Aria_RequiredProperties": {
-        0: `Rpt_Aria_RequiredProperties`,
-        "Pass_0": `Rpt_Aria_RequiredProperties`,
-        "Fail_1": `Rpt_Aria_RequiredProperties`
-    },
-    // JCH - DONE
     "Rpt_Aria_EmptyPropertyValue": {
         0: `Rpt_Aria_EmptyPropertyValue`,
         "Pass_0": `Rpt_Aria_EmptyPropertyValue`,
         "Fail_1": `Rpt_Aria_EmptyPropertyValue`
-    },
-    // JCH - DONE
-    "Rpt_Aria_ValidProperty": {
-        0: `Rpt_Aria_ValidProperty`,
-        "Pass_0": `Rpt_Aria_ValidProperty`,
-        "Fail_1": `Rpt_Aria_ValidProperty`
     },
     // JCH - DONE
     "Rpt_Aria_InvalidTabindexForActivedescendant": {
@@ -969,12 +895,6 @@ let a11yHelp = {
         "Fail_4": `HAAC_ActiveDescendantCheck`
     },
     // JCH - DONE
-    "HAAC_Application_Role_Text": {
-        0: `HAAC_Application_Role_Text`,
-        "Pass_0": `HAAC_Application_Role_Text`,
-        "Potential_1": `HAAC_Application_Role_Text`
-    },
-    // JCH - DONE
     "Rpt_Aria_MultipleToolbarUniqueLabel": {
         0: `Rpt_Aria_MultipleToolbarUniqueLabel`,
         "Pass_0": `Rpt_Aria_MultipleToolbarUniqueLabel`,
@@ -1028,7 +948,7 @@ let a11yHelp = {
         "Fail_inline": `combobox_autocomplete`
     },
     "input_haspopup_invalid":{
-        0: ``,
+        0: `input_haspopup_invalid`,
         "Pass": `input_haspopup_invalid`,
         "Potential_1": `input_haspopup_invalid`,
         "Potential_2": `input_haspopup_invalid`
@@ -1062,11 +982,6 @@ let a11yHelp = {
         "Pass_0": `meta_viewport_zoom`,
         "Potential_1": `meta_viewport_zoom`
     },
-    "aria_hidden_focus_misuse": {
-        0: `aria_hidden_focus_misuse`, 
-        "Pass_0": `aria_hidden_focus_misuse`,
-        "Fail_1": `aria_hidden_focus_misuse`
-    },
     "table_headers_ref_valid": {
         0: `table_headers_ref_valid`, 
         "Pass_0": `table_headers_ref_valid`,
@@ -1076,163 +991,5 @@ let a11yHelp = {
         "Fail_4": `table_headers_ref_valid`
     }
 }
-
-let a11yHelpOld = {
-    "RPT_List_Misuse": ["idhi_accessibility_check_g3.html"],
-    "RPT_Marquee_Trigger": ["idhi_accessibility_check_g5.html"],
-    "RPT_Headers_FewWords": ["idhi_accessibility_check_g7.html"],
-    "WCAG20_Input_ExplicitLabelImage": ["idhi_accessibility_check_g10.html"],
-    "RPT_Img_UsemapValid": ["idhi_accessibility_check_g11.html"],
-    "WCAG20_Object_HasText": ["idhi_accessibility_check_g20.html"],
-    "WCAG20_Applet_HasAlt": ["idhi_accessibility_check_g21.html"],
-    "RPT_Media_AudioTrigger": ["idhi_accessibility_check_g24.html"],
-    "RPT_Blockquote_HasCite": ["idhi_accessibility_check_g25.html"],
-    "RPT_Meta_Refresh": ["idhi_accessibility_check_g33.html"],
-    "WCAG20_Frame_HasTitle": ["idhi_accessibility_check_g39.html"],
-    "WCAG20_Input_ExplicitLabel": ["idhi_accessibility_check_g41.html"],
-    "RPT_Media_AltBrief": ["idhi_accessibility_check_g99.html"],
-    "WCAG20_A_TargetAndText": ["idhi_accessibility_check_g112.html"],
-    "WCAG20_Area_HasAlt": ["idhi_accessibility_check_g240.html"],
-    "RPT_Media_ImgColorUsage": ["idhi_accessibility_check_g245.html"],
-    "WCAG20_Meta_RedirectZero": ["idhi_accessibility_check_g254.html"],
-    "element_attribute_deprecated": ["idhi_accessibility_check_g256.html"],
-    "RPT_Blockquote_WrapsTextQuote": ["idhi_accessibility_check_g263.html"],
-    "RPT_Elem_EventMouseAndKey": ["idhi_accessibility_check_g269.html"],
-    "WCAG20_Doc_HasTitle": ["idhi_accessibility_check_g273.html"],
-    "RPT_Block_ShouldBeHeading": ["idhi_accessibility_check_g322.html"],
-    "WCAG20_Form_HasSubmit": ["idhi_accessibility_check_g324.html"],
-    "RPT_Elem_UniqueId": ["idhi_accessibility_check_g377.html"],
-    "RPT_Font_ColorInForm": ["idhi_accessibility_check_g394.html"],
-    "RPT_Label_UniqueFor": ["idhi_accessibility_check_g398.html"],
-    "RPT_Img_AltCommonMisuse": ["idhi_accessibility_check_g453.html"],
-    "RPT_Img_LongDescription2": ["idhi_accessibility_check_g454.html"],
-    "WCAG20_Img_HasAlt": ["idhi_accessibility_check_g455.html"],
-    "RPT_Style_BackgroundImage": ["idhi_accessibility_check_g456.html"],
-    "RPT_Pre_ASCIIArt": ["idhi_accessibility_check_g458.html"],
-    "RPT_Media_VideoReferenceTrigger": ["idhi_accessibility_check_g511.html"],
-    "RPT_Media_AudioVideoAltFilename": ["idhi_accessibility_check_g460.html"],
-    "RPT_Style_ColorSemantics1": ["idhi_accessibility_check_g466.html"],
-    "WCAG20_Select_HasOptGroup": ["idhi_accessibility_check_g467.html"],
-    "RPT_List_UseMarkup": ["idhi_accessibility_check_g468.html"],
-    "RPT_Script_OnclickHTML1": ["idhi_accessibility_check_g470.html"],
-    "WCAG20_Table_Structure": ["idhi_accessibility_check_g471.html"],
-    "WCAG20_Img_AltTriggerNonDecorative": ["idhi_accessibility_check_g473.html"],
-    "WCAG20_Blink_AlwaysTrigger": ["idhi_accessibility_check_g478.html"],
-    "RPT_Blink_CSSTrigger1": ["idhi_accessibility_check_g479.html"],
-    "RPT_Html_SkipNav": ["idhi_accessibility_check_g481.html"],
-    "RPT_Title_Valid": ["idhi_accessibility_check_g484.html"],
-    "RPT_Header_HasContent": ["idhi_accessibility_check_g488.html"],
-    "WCAG20_Html_HasLang": ["idhi_accessibility_check_g490.html"],
-    "WCAG20_Form_TargetAndText": ["idhi_accessibility_check_g491.html"],
-    "WCAG20_Fieldset_HasLegend": ["idhi_accessibility_check_g497.html"],
-    "RPT_Media_VideoObjectTrigger": ["idhi_accessibility_check_g501.html"],
-    "RPT_Text_SensoryReference": ["idhi_accessibility_check_g502.html"],
-    "RPT_Embed_AutoStart": ["idhi_accessibility_check_g503.html"],
-    "RPT_Style_HinderFocus1": ["idhi_accessibility_check_g506.html"],
-    "WCAG20_Elem_Lang_Valid": ["idhi_accessibility_check_g507.html"],
-    "WCAG20_Img_LinkTextNotRedundant": ["idhi_accessibility_check_g1000.html"],
-    "RPT_Style_ExternalStyleSheet": ["idhi_accessibility_check_g1073.html"],
-    "RPT_Header_Trigger": ["idhi_accessibility_check_g1002.html"],
-    "RPT_Script_OnclickHTML2": ["idhi_accessibility_check_g1007.html"],
-    "WCAG20_Table_CapSummRedundant": ["idhi_accessibility_check_g1011.html"],
-    "WCAG20_Input_LabelBefore": ["idhi_accessibility_check_g1017.html"],
-    "WCAG20_Input_LabelAfter": ["idhi_accessibility_check_g1018.html"],
-    "WCAG20_Embed_HasNoEmbed": ["idhi_accessibility_check_g1020.html"],
-    "WCAG20_Table_Scope_Valid": ["idhi_accessibility_check_g1025.html"],
-    "WCAG20_Img_TitleEmptyWhenAltNull": ["idhi_accessibility_check_g1027.html"],
-    "WCAG20_Input_InFieldSet": ["idhi_accessibility_check_g1028.html"],
-    "WCAG20_Input_RadioChkInFieldSet": ["idhi_accessibility_check_g1029.html"],
-    "WCAG20_Select_NoChangeAction": ["idhi_accessibility_check_g1035.html"],
-    "WCAG20_Input_HasOnchange": ["idhi_accessibility_check_g1050.html"],
-    "RPT_Embed_HasAlt": ["idhi_accessibility_check_g1051.html"],
-    "Valerie_Noembed_HasContent": ["idhi_accessibility_check_g1052.html"],
-    "Valerie_Caption_HasContent": ["idhi_accessibility_check_g1053.html"],
-    "Valerie_Caption_InTable": ["idhi_accessibility_check_g1054.html"],
-    "Valerie_Label_HasContent": ["idhi_accessibility_check_g1055.html"],
-    "Valerie_Elem_DirValid": ["idhi_accessibility_check_g1056.html"],
-    "Valerie_Frame_SrcHtml": ["idhi_accessibility_check_g1057.html"],
-    "Valerie_Table_DataCellRelationships": ["idhi_accessibility_check_g1059.html"],
-    "RPT_Table_LayoutTrigger": ["idhi_accessibility_check_g1060.html"],
-    "RPT_Table_DataHeadingsAria": ["idhi_accessibility_check_g1061.html"],
-    "WCAG20_Label_RefValid": ["idhi_accessibility_check_g1062.html"],
-    "WCAG20_Elem_UniqueAccessKey": ["idhi_accessibility_check_g1063.html"],
-    "WCAG20_Script_FocusBlurs": ["idhi_accessibility_check_g1064.html"],
-    "HAAC_Img_UsemapAlt": ["idhi_accessibility_check_g1067.html"],
-    "WCAG20_Text_Emoticons": ["idhi_accessibility_check_g1068.html"],
-    "WCAG20_Style_BeforeAfter": ["idhi_accessibility_check_g1069.html"],
-    "WCAG20_Text_LetterSpacing": ["idhi_accessibility_check_g1070.html"],
-    "Rpt_Aria_ValidRole": ["idhi_accessibility_check_g1074.html"],
-    "Rpt_Aria_ValidPropertyValue": ["idhi_accessibility_check_g1076.html"],
-    "Rpt_Aria_ValidIdRef": ["idhi_accessibility_check_g1077.html"],
-    "Rpt_Aria_RequiredProperties": ["idhi_accessibility_check_g1079.html"],
-    "Rpt_Aria_EmptyPropertyValue": ["idhi_accessibility_check_g1082.html"],
-    "Rpt_Aria_ValidProperty": ["idhi_accessibility_check_g1083.html"],
-    "Rpt_Aria_InvalidTabindexForActivedescendant": ["idhi_accessibility_check_g1084.html"],
-    "Rpt_Aria_MissingFocusableChild": ["idhi_accessibility_check_g1086.html"],
-    "Rpt_Aria_MissingKeyboardHandler": ["idhi_accessibility_check_g1087.html"],
-    "WCAG20_Img_PresentationImgHasNonNullAlt": ["idhi_accessibility_check_g1090.html"],
-    "Rpt_Aria_MultipleSearchLandmarks": ["idhi_accessibility_check_g1097.html"],
-    "Rpt_Aria_MultipleApplicationLandmarks": ["idhi_accessibility_check_g1099.html"],
-    "Rpt_Aria_ApplicationLandmarkLabel": ["idhi_accessibility_check_g1100.html"],
-    "Rpt_Aria_MultipleDocumentRoles": ["idhi_accessibility_check_g1101.html"],
-    "WCAG20_Label_TargetInvisible": ["idhi_accessibility_check_g1112.html"],
-    "HAAC_Video_HasNoTrack": ["idhi_accessibility_check_g1117.html"],
-    "HAAC_Audio_Video_Trigger": ["idhi_accessibility_check_g1119.html"],
-    "HAAC_Aria_ImgAlt": ["idhi_accessibility_check_g1128.html"],
-    "HAAC_BackgroundImg_HasTextOrTitle": ["idhi_accessibility_check_g1132.html"],
-    "HAAC_Accesskey_NeedLabel": ["idhi_accessibility_check_g1140.html"],
-    "HAAC_Aria_Or_HTML5_Attr": ["idhi_accessibility_check_g1141.html"],
-    "HAAC_Canvas": ["idhi_accessibility_check_g1143.html"],
-    "HAAC_Figure_label": ["idhi_accessibility_check_g1144.html"],
-    "HAAC_Input_Placeholder": ["idhi_accessibility_check_g1145.html"],
-    "RPT_Form_ChangeEmpty": ["idhi_accessibility_check_g1147.html"],
-    "IBMA_Color_Contrast_WCAG2AA": ["idhi_accessibility_check_g1148.html"],
-    "IBMA_Color_Contrast_WCAG2AA_PV": ["idhi_accessibility_check_g1149.html"],
-    "WCAG20_Body_FirstASkips_Native_Host_Sematics": ["idhi_accessibility_check_g1150.html"],
-    "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": ["idhi_accessibility_check_g1151.html"],
-    "Rpt_Aria_RequiredChildren_Native_Host_Sematics": ["idhi_accessibility_check_g1152.html"],
-    "Rpt_Aria_RequiredParent_Native_Host_Sematics": ["idhi_accessibility_check_g1153.html"],
-    "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": ["idhi_accessibility_check_g1154.html"],
-    "Rpt_Aria_WidgetLabels_Implicit": ["idhi_accessibility_check_g1156.html"],
-    "Rpt_Aria_OrphanedContent_Native_Host_Sematics": ["idhi_accessibility_check_g1157.html"],
-    "Rpt_Aria_RegionLabel_Implicit": ["idhi_accessibility_check_g1158.html"],
-    "Rpt_Aria_MultipleMainsVisibleLabel_Implicit": ["idhi_accessibility_check_g1159.html"],
-    "Rpt_Aria_MultipleBannerLandmarks_Implicit": ["idhi_accessibility_check_g1160.html"],
-    "Rpt_Aria_MultipleComplementaryLandmarks_Implicit": ["idhi_accessibility_check_g1161.html"],
-    "Rpt_Aria_MultipleContentinfoLandmarks_Implicit": ["idhi_accessibility_check_g1162.html"],
-    "Rpt_Aria_MultipleFormLandmarks_Implicit": ["idhi_accessibility_check_g1163.html"],
-    "Rpt_Aria_MultipleNavigationLandmarks_Implicit": ["idhi_accessibility_check_g1164.html"],
-    "Rpt_Aria_ComplementaryLandmarkLabel_Implicit": ["idhi_accessibility_check_g1165.html"],
-    "Rpt_Aria_MultipleArticleRoles_Implicit": ["idhi_accessibility_check_g1166.html"],
-    "Rpt_Aria_ArticleRoleLabel_Implicit": ["idhi_accessibility_check_g1167.html"],
-    "Rpt_Aria_MultipleGroupRoles_Implicit": ["idhi_accessibility_check_g1168.html"],
-    "Rpt_Aria_GroupRoleLabel_Implicit": ["idhi_accessibility_check_g1169.html"],
-    "Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit": ["idhi_accessibility_check_g1170.html"],
-    "Rpt_Aria_OneBannerInSiblingSet_Implicit": ["idhi_accessibility_check_g1172.html"],
-    "Rpt_Aria_ContentinfoWithNoMain_Implicit": ["idhi_accessibility_check_g1173.html"],
-    "Rpt_Aria_ComplementaryRequiredLabel_Implicit": ["idhi_accessibility_check_g1174.html"],
-    "Rpt_Aria_MultipleRegionsUniqueLabel_Implicit": ["idhi_accessibility_check_g1176.html"],
-    "IBMA_Focus_Tabbable": ["idhi_accessibility_check_g1177.html"],
-    "IBMA_Focus_MultiTab": ["idhi_accessibility_check_g1178.html"],
-    "RPT_Style_Trigger2": ["idhi_accessibility_check_g1180.html"],
-    "Rpt_Aria_MultipleMainsRequireLabel_Implicit_2": ["idhi_accessibility_check_g1182.html"],
-    "HAAC_Media_DocumentTrigger2": ["idhi_accessibility_check_g1183.html"],
-    "HAAC_Aria_ErrorMessage": ["idhi_accessibility_check_g1184.html"],
-    "HAAC_List_Group_ListItem": ["idhi_accessibility_check_g1185.html"],
-    "HAAC_ActiveDescendantCheck": ["idhi_accessibility_check_g1186.html"],
-    "HAAC_Application_Role_Text": ["idhi_accessibility_check_g1187.html"],
-    "Rpt_Aria_MultipleToolbarUniqueLabel": ["idhi_accessibility_check_g1188.html"],
-    "HAAC_Combobox_Must_Have_Text_Input": ["idhi_accessibility_check_g1194.html"],
-    "HAAC_Combobox_DOM_Focus": ["idhi_accessibility_check_g1195.html"],
-    "HAAC_Combobox_Autocomplete": ["idhi_accessibility_check_g1196.html"],
-    "HAAC_Combobox_Autocomplete_Invalid": ["idhi_accessibility_check_g1197.html"],
-    "HAAC_Combobox_Expanded": ["idhi_accessibility_check_g1198.html"],
-    "HAAC_Combobox_Popup": ["idhi_accessibility_check_g1199.html"],
-    "WCAG21_Style_Viewport": ["idhi_accessibility_check_g1200.html"],
-    "WCAG21_Label_Accessible": ["idhi_accessibility_check_g1202.html"],
-    "WCAG21_Input_Autocomplete": ["idhi_accessibility_check_g1203.html"],
-    "WCAG20_Input_VisibleLabel": ["idhi_accessibility_check_g1204.html"]
-}
-
 
 export { a11yHelp }

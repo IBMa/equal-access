@@ -27,6 +27,12 @@ import * as checkRulesV4 from "../rules";
 
 function _initialize() {
     const langs = Engine.getLanguages();
+    // Convert NLS / Help
+    for (const ruleId in checkHelp) {
+        for (const reasonId in checkHelp[ruleId]) {
+            checkHelp[ruleId][reasonId] = `/en-US/${checkHelp[ruleId][reasonId]}.html`;
+        }
+    }
     // Process V4 rules into the V2 format
     for (let rulename in checkRulesV4) {
         // Convert rule
@@ -38,12 +44,6 @@ function _initialize() {
             run: v4Rule.run
         };
         checkRules.push(v2Rule);
-        // Convert NLS / Help
-        for (const ruleId in checkHelp) {
-            for (const reasonId in checkHelp[ruleId]) {
-                checkHelp[ruleId][reasonId] = `/en-US/${checkHelp[ruleId][reasonId]}.html`;
-            }
-        }
         for (const langId of langs) {
             if (langId in v4Rule.messages) {
                 checkNls[v4Rule.id] = v4Rule.messages[langId];
