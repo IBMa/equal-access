@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+<!-- ################################################################### -->
+
+
+<h3>deprecated aria attributes tests</h3>
+
+  <!-- with errors -->
+  <div role="alert" aria-disabled="true"></div>
+  <div role="banner" aria-errormessage="An error occurred"></div>
+  <div role="definition" aria-haspopup="true"></div>
+  <div role="form" aria-invalid="false"></div>
+  <div role="grid" aria-errormessage="An error occurred"></div>
+  <div role="img" aria-haspopup="true"></div>
+  <div role="insertion" aria-invalid="true"></div>
+  <div role="list" aria-errormessage="true"></div>
+  <div role="menuitem" aria-errormessage="An error occurred"></div>
+  <div role="navigation" aria-haspopup="true"></div>
+  <div role="option" aria-invalid="true"></div>
+  <div role="radio" aria-haspopup="true"></div>
+  <div role="region" aria-errormessage="hi"></div>
+  <div role="search" aria-haspopup="true"></div>
+  <div role="tab" aria-invalid="true"></div>
+  <div role="term" aria-haspopup="true"></div>
+  <div role="toolbar" aria-invalid="true"></div>
+  
+  <!-- without error -->  
+  <div role="listbox" aria-errormessage="true"></div>
+  <div role="menuitem" aria-haspopup="true"></div>
+  <div role="radiogroup" aria-errormessage="true"></div>
+  <div role="tree" aria-invalid="true"></div>
+  <div role="slide" aria-invalid="true"></div>
+  <div role="textbox" aria-errormessage="true"></div>
+  <div role="searchbox" aria-invalid="true"></div>
+  <div role="rowheader" aria-invalid="true"></div>
+  <div role="gridcell" aria-disabled="true"></div>
+  <div role="combobox" aria-invalid="true"></div>
+     
+     
+
+<script>
+  UnitTest = {
+      ruleIds: ["element_attribute_deprecated"],
+      results: []
+  }
+</script>
+</body>
+
+</html>

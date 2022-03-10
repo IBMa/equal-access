@@ -118,10 +118,15 @@ let a11yNls = {
         "Fail_1": "Check page does not automatically refresh without warning or options"
     },
     // JCH - DONE
-    "RPT_Elem_Deprecated": {
-        0: "Avoid use of obsolete language features if possible",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Obsolete language features are being used"
+    "element_attribute_deprecated": {
+    0: "Avoid use of obsolete features if possible",
+    "pass": "Rule Passed",
+    "fail_elem": "The <{0}> element is deprecated in HTML 5",
+    "fail_attr": "The HTML attribute(s) \"{0}\" is deprecated in HTML 5",
+    "fail_elem_attr": "The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5", 
+    "fail_aria_role": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
+    "fail_aria_attr": "The ARIA attribute(s) \"{0}\" is deprecated in ARIA 1.2",
+    "fail_role_attr": "The ARIA attribute(s) \"{0}\" is deprecated for the role \"{1}\""
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {

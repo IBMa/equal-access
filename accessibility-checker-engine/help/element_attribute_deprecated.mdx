@@ -1,0 +1,62 @@
+---
+title: "element_attribute_deprecated - Accessibility Checker Rule Help"
+---
+import "../../../styles/ToolHelp.scss"
+import { CodeSnippet, Tag } from "carbon-components-react";
+
+<div className="toolHelp">
+<Row>
+<Column colLg={16} colMd={8} colSm={4} className="toolHead">
+
+### Attributes or elements are deprecated
+
+<!-- This active message title is NOT used by the Checker, 
+the browser extension uses the active messages: Fail_ or Potential_ message in ...nls/index.ts file instead -->
+
+
+<div id="locLevel"></div>
+
+<!-- the Checker browser extension displays the rule level, such as Violation, Needs Review, or Recommendation here -->
+
+Avoid use of obsolete features if possible
+
+<!-- Checker does not display this message sub-title, 
+the browser extension displays the 0: message in  ...nls/index.ts file -->
+
+<!-- Note that the messages in the test files must also match 
+the messages from the ...nls/index.ts file instead of message titles here in mdx -->
+
+</Column>
+</Row>
+
+<Row>
+<Column colLg={11} colMd={5} colSm={4} className="toolMain">
+
+### Why is this important?
+
+When specifications are updated, some elements and attributes become outdated. These deprecated features may become obsolete and be removed in future versions, and should not be used in new projects. As well, a deprecated feature is usually replaced by an improvement in the newer specification, so it is prudent to update code to avoid deprecated features. Finally, although existing projects using deprecated features should work, browsers may not continue to support them.
+
+
+<div id="locSnippet"></div>
+
+
+### What to do
+
+Replace deprecated elements and attributes with those preferred in the current version of the specification.
+
+</Column>
+<Column colLg={5} colMd={3} colSm={4} className="toolLeft">
+
+### About this requirement
+
+<!-- should only include one requirement and one or more references to techniques and best practices -->
+  
+* [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
+* [HTML5 obsolete features](https://dev.w3.org/html5/pf-summary/obsolete.html)
+* [ARIA deprecated requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
+
+</Column>
+</Row>
+</div>
+
+export default ({ children, _frontmatter }) => (<React.Fragment>{children}</React.Fragment>)
