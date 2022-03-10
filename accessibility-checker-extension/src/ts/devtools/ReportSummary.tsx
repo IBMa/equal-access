@@ -34,6 +34,57 @@ interface IReportSummaryProps {
     } | null,
 }
 
+function calcSummary(report: IReport) {
+
+    let summaryResults:any = [];
+    let results = report.results.filter((result: any) => {
+        return result.value[1] !== "PASS";
+    })
+    // console.log("report.results.length = "+report.results.length);
+    // console.log("all issues = "+results.length);
+
+    let violations = results.filter((result: any) => {
+        return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
+    })
+    summaryResults.push(violations.length);
+    // console.log("Violations = "+summaryResults[0]);
+
+    let potentials = results.filter((result: any) => {
+        return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
+    })
+    summaryResults.push(potentials.length);
+    // console.log("summaryPotential = "+summaryResults[1]);
+
+    let recommendations = results.filter((result: any) => {
+        return result.value[0] === "RECOMMENDATION";
+    })
+    summaryResults.push(recommendations.length);
+    // console.log("summaryRecommendation = "+summaryResults[2]);
+
+    let failXpaths: string[] = [];
+    results.map((result:any) => {
+        failXpaths.push(result.path.dom);
+    })
+    let failUniqueElements = Array.from(new Set(failXpaths));
+    summaryResults.push(failUniqueElements.length);
+    // console.log("elementsWithIssues = "+summaryResults[3]);
+
+    let passXpaths: any = [];
+    let passResults = report.results.filter((result: any) => {
+        return result.value[1] === "PASS";
+    })
+    
+    passResults.map((result:any) => {
+        passXpaths.push(result.path.dom);
+    })
+    
+    let passUniqueElements = Array.from(new Set(passXpaths));
+    summaryResults[4] = passUniqueElements.length;
+    // console.log("totalElements = "+summaryResults[4]);
+    // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
+    return summaryResults;
+}
+
 export default class ReportSummary extends React.Component<IReportSummaryProps, IReportSummaryState> {
     render() {
 
@@ -59,16 +110,18 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         let time = d.toLocaleString('en-us', options);
 
         // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
-
-        let elementNoFailures: string = "";
-        /** Calculate the score */
-        elementNoFailures = (((counts.total["All"] - counts.total["Recommendation"]) / counts.total["All"]) * 100).toFixed(0);
+        let summaryNumbers:any = [];
+        summaryNumbers = calcSummary(this.props.report);
+        
+        // Calculate score
+        let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
                 <div className="bx--row">
                     <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
                         <h2 id="summaryTitle" className="summaryTitle">Scan summary</h2>
+                        
                         <div className="summaryTitleDetail">{time}</div>
                         <div className="summaryTitleDetail"><span style={{ fontWeight: 600 }}>Scanned page:</span> {this.props.tabURL}</div>
                     </div>
@@ -77,12 +130,14 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                 </div>
                 <div className="bx--row">
                     <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
-                        <Tile className="tile score-tile">
+                        <Tile className="tile status-score-tile">
                             <div>
                                 <h3 className="tile-title" >Current Status</h3>
                             </div>
-                            <div className="tile-score">{elementNoFailures}%</div>
-                            <div className="tile-description">Percentage of elements with no detected violations or items to review</div>
+                            <div className="tile-score">{currentStatus}%</div>
+                            <div className="tile-description" style={{ marginBottom: "16px" }}>Percentage of elements with no detected violations or items to review</div>
+                            <div className="tile-description">Web page Total HTML Elements: {summaryNumbers[4]}</div>
+                            <div className="tile-description">Elements with Violations or Needs review: {summaryNumbers[3]} </div>
                         </Tile>
                     </div>
                     <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">

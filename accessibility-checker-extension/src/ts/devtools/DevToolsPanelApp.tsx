@@ -41,15 +41,17 @@ import HelpHeader from './HelpHeader';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 
 interface IPanelProps {
-    layout: "main" | "sub"
+    layout: "main" | "sub",
 }
 
 interface IPanelState {
+    badURL: boolean,
     listenerRegistered: boolean,
     numScanning: number,
     report: IReport | null,
     filter: string | null,
     tabURL: string,
+    tabCanScan: boolean,
     prevTabURL: string | null,
     tabId: number,
     tabTitle: string,
@@ -97,11 +99,13 @@ interface IPanelState {
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
     state: IPanelState = {
+        badURL: false,
         listenerRegistered: false,
         numScanning: 0,
         report: null,
         filter: null,
         tabURL: "",
+        tabCanScan: false,
         prevTabURL: "",  // to determine when change url
         tabId: -1,
         tabTitle: "",
@@ -248,7 +252,27 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // and get url using chrome.tabs.get via message "TAB_INFO"
             let thisTabId = chrome.devtools.inspectedWindow.tabId;
             let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
+            // console.log("tab.id = ", tab.id);
+            // console.log("tab.url = ", tab.url);
+            // console.log("tab.title = ", tab.title);
+            // console.log("tab.canScan = ",tab.canScan);
             if (tab.id && tab.url && tab.id && tab.title) {
+
+                if (!tab.canScan) {
+                    // console.log("Found BAD url: ",tab.url);
+                    // console.log("badURL = ",self.state.badURL);
+                    if (self.state.badURL === false) {
+                        self.setState({ badURL: true });
+                    } 
+                    self.setState({ tabURL: tab.url, tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan });
+                    return;
+                } else {
+                    // console.log("Found GOOD url: ",tab.url);
+                    // console.log("badURL = ",self.state.badURL);
+                    if (self.state.badURL === true) {
+                        self.setState({ badURL: false });
+                    } 
+                }
                 let rulesets = await PanelMessaging.sendToBackground("DAP_Rulesets", { tabId: tab.id })
 
                 if (rulesets.error) {
@@ -274,7 +298,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     self.selectElementInElements();
                 }
                 self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                    tabId: tab.id, tabTitle: tab.title, error: null, archives, selectedArchive: archiveId, 
+                    tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, selectedArchive: archiveId, 
                     selectedPolicy: policyName });
             }
         });
@@ -310,14 +334,53 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async startScan() {
         // console.log("startScan");
-        let tabId = this.state.tabId;
         let tabURL = this.state.tabURL;
-        if (tabURL !== this.state.prevTabURL) {
-            this.setState({firstScan: true});
-        }
-        this.state.prevTabURL = tabURL;
+        let tabId = this.state.tabId;
+        // console.log("tabURL = ",tabURL);
+        // console.log("tabId = ",tabId);
 
         this.readOptionsData();
+
+        let thisTabId = chrome.devtools.inspectedWindow.tabId;
+        let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
+
+        console.log("this.state.tabCanScan = ",this.state.tabCanScan);
+
+        if (!tab.canScan) {
+            // console.log("Found BAD url: ",tab.url);
+            // console.log("badURL = ",this.state.badURL);
+            if (this.state.badURL === false) {
+                this.setState({ badURL: true });
+            } 
+            this.setState({ tabURL: tab.url, tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan });
+            return;
+        } else {
+            // console.log("Found GOOD url: ",tab.url);
+            // console.log("badURL = ",this.state.badURL);
+            if (this.state.badURL === true) {
+                this.setState({ badURL: false });
+            } 
+        }
+        
+        // if (!this.state.tabCanScan) {
+        //     if (this.state.badURL === false) {
+        //         this.setState({ badURL: true });
+        //     }
+        //     return;
+        // } else {
+        //     if (this.state.badURL === true) {
+        //         this.setState({ badURL: false });
+        //     } 
+        // }
+       
+        // if (tabURL !== this.state.prevTabURL) {
+        //     this.setState({firstScan: true});
+        // }
+
+
+        this.state.prevTabURL = tabURL;
+
+       
 
         if (tabId === -1) {
             // componentDidMount is not done initializing yet
@@ -880,7 +943,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getSelectedItem(item: IReportItem) {
-        console.log("Function: getSelectedItem item = ", item);
+        // console.log("Function: getSelectedItem item = ", item);
         this.setState({ selectedIssue: item });
     }
 
@@ -913,11 +976,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
+        console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
             return this.errorHandler(error);
         }
+
         else if (this.props.layout === "main") {
             return <React.Fragment>
                 <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
@@ -929,6 +994,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     {this.leftPanelRef.current?.scrollTo(0, 0)}
                     <div style={{ flex: "1 1 50%" }} className="mainPanelRight" role="main" aria-label="IBM Accessibility Assessment">
                         <Header
+                            badURL={this.state.badURL}
                             layout={this.props.layout}
                             counts={this.state.report && this.state.report.counts}
                             scanStorage={this.state.scanStorage}
@@ -1012,6 +1078,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <Header
+                        badURL={this.state.badURL}
                         layout={this.props.layout}
                         counts={this.state.report && this.state.report.counts}
                         scanStorage={this.state.scanStorage}

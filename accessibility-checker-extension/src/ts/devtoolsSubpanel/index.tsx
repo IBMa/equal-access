@@ -5,5 +5,5 @@ import DevToolsPanelApp from '../devtools/DevToolsPanelApp';
 import "../styles/index.scss";
 import "../styles/panel.scss";
 
-ReactDOM.render(<DevToolsPanelApp layout="sub" />
+ReactDOM.render(<DevToolsPanelApp layout="sub"  />
 	, document.getElementById('devtoolsPanel-root'));

@@ -549,6 +549,15 @@ $feature-flags: (
             margin-top: 18px;
             height: 154px
         }
+
+        .status-score-tile {
+            box-sizing: border-box;
+            border: solid #8A3FFC 1px;
+            background-color: #E8DAFF;
+            margin-top: 18px;
+            height: 190px
+        }
+
         .count-tile {
             box-sizing: border-box;
             background-color: #FFFFFF;
