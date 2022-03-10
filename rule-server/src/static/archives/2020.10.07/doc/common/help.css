@@ -66,7 +66,7 @@ html, body, .toolHelp .bx--row:nth-child(2) {
 }
 
 body {
-    font-family: IBMPlexSans;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .toolHelp {
