@@ -12,11 +12,10 @@
  *****************************************************************************/
 @import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
 
-/* productive-heading-04 */
 .toolHelp .toolHead h3 {
-    font-size: 28px;
-    line-height: 36px;
-    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
 }
 
 .toolHelp .toolHead .issueLevel {
