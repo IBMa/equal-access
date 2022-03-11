@@ -44,7 +44,7 @@ export class ACReporterJSON {
     scanSummary: IScanSummary;
     constructor(Config: IConfigUnsupported, scanSummary: IScanSummary) {
         this.Config = Config;
-        this.scanSummary = scanSummary;
+        this.scanSummary = JSON.parse(JSON.stringify(scanSummary));
         this.Config.DEBUG && console.log("START ACReporter Constructor");
 
         let myThis = this;
