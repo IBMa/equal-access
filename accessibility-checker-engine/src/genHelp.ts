@@ -19,8 +19,6 @@ import { Rule as RuleV2 } from "./v2/api/IEngine";
 //requiring path and fs modules
 const path = require('path');
 const rulesV4 = require("./v4/rules");
-const helpMap = require("./v2/checker/accessibility/help").a11yHelp;
-const helpNls = require("./v2/checker/accessibility/nls").a11yNls;
 
 function myExec(cmd: string) : Promise<string> {
     return new Promise((resolve, reject) => {
