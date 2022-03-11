@@ -23,7 +23,7 @@ export let RPT_Elem_UniqueId: Rule = {
         "en-US": {
             "Pass_0": "RPT_Elem_UniqueId.html",
             "Fail_1": "RPT_Elem_UniqueId.html",
-            "Fail_2": "XXX.html",
+            "Fail_2": "RPT_Elem_UniqueId.html",
             "group": "RPT_Elem_UniqueId.html"
         }
     },
