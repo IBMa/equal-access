@@ -19,7 +19,6 @@ import { Rule as RuleV2 } from "./v2/api/IEngine";
 //requiring path and fs modules
 const path = require('path');
 const rulesV4 = require("./v4/rules");
-const rulesV2 = require("./v2/checker/accessibility/rules");
 const helpMap = require("./v2/checker/accessibility/help").a11yHelp;
 const helpNls = require("./v2/checker/accessibility/nls").a11yNls;
 
@@ -70,36 +69,6 @@ async function buildV4() {
     }
 }
 
-async function buildV2() {
-    for (const rule of rulesV2.a11yRules as RuleV2[]) {
-        const ruleId = rule.id;
-        let helpInfo = helpMap[ruleId];
-        let msgInfo = helpNls[ruleId];
-        if (msgInfo) {
-            msgInfo.group = msgInfo.group || msgInfo[0];
-        }
-
-        if (helpInfo) {
-            let helpToken = helpInfo[0];
-            let helpPath = path.join(__dirname, '..', 'help-v4', helpToken);
-            if (!existsSync(helpPath)) {
-                console.log("MISSING:",helpPath);
-                continue;
-            }
-            let helpFile = readFileSync(helpPath).toString();
-            helpFile = helpFile.replace(/\<head\>/, `<head>
-<title>${rule.id} - Accessibility Checker Help</title>
-<script>
-    RULE_MESSAGES = {"en-US":${JSON.stringify(msgInfo)}};
-    RULE_ID = "${ruleId}";
-</script>
-`)
-            writeFileSync(path.join(__dirname, '..', 'dist', 'help', helpToken), helpFile);
-        }
-    }
-}
-
 (async () => {
     await buildV4();
-    await buildV2();
 })();
