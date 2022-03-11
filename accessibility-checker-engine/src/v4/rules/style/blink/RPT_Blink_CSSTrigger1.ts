@@ -33,7 +33,7 @@ export let RPT_Blink_CSSTrigger1: Rule = {
         }
     },
     rulesets: [{
-        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        id: ["IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
         num: "2.2.2", // num: [ "2.4.4", "x.y.z" ] also allowed
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
@@ -51,4 +51,3 @@ export let RPT_Blink_CSSTrigger1: Rule = {
         if (!passed) return RulePotential("Potential_1");
     }
 }
-    
