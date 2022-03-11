@@ -37,22 +37,22 @@ let a11yRulesHeading: Rule[] = [
             }
         }
     },
-    { // Warning
-        /**
-         * Description: Trigger for all heading elements
-         * Origin: RPT 5.6 489
-         */
-        id: "RPT_Header_Trigger",
-        context: "dom:h1, dom:h2, dom:h3, dom:h4, dom:h5, dom:h6",
-        dependencies: ["RPT_Header_HasContent"],
-        run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
-            const ruleContext = context["dom"].node as Element;
-            let passed = RPTUtil.triggerOnce(ruleContext.ownerDocument, "RPT_Header_Trigger", false);
-            if (passed) return RulePass("Pass_0");
-            if (!passed) return RulePotential("Potential_1");
+    // { // Warning
+    //     /**
+    //      * Description: Trigger for all heading elements
+    //      * Origin: RPT 5.6 489
+    //      */
+    //     id: "RPT_Header_Trigger",
+    //     context: "dom:h1, dom:h2, dom:h3, dom:h4, dom:h5, dom:h6",
+    //     dependencies: ["RPT_Header_HasContent"],
+    //     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
+    //         const ruleContext = context["dom"].node as Element;
+    //         let passed = RPTUtil.triggerOnce(ruleContext.ownerDocument, "RPT_Header_Trigger", false);
+    //         if (passed) return RulePass("Pass_0");
+    //         if (!passed) return RulePotential("Potential_1");
 
-        }
-    },
+    //     }
+    // },
     {
         /**
          * Description: Trigger on headers (<h1>, <h2>, <h3>, <h4>,<h5>, <h6>) that have more than N words.

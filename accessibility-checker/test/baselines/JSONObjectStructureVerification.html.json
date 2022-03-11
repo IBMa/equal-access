@@ -3074,58 +3074,6 @@
             "level": "pass"
         },
         {
-            "ruleId": "HAAC_Application_Role_Text",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[2]",
-                "aria": "/document[1]/main[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 48,
-                "height": 74,
-                "width": 784
-            },
-            "snippet": "<div role=\"main\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
-            "ruleId": "HAAC_Application_Role_Text",
-            "value": [
-                "VIOLATION",
-                "PASS"
-            ],
-            "path": {
-                "dom": "/html[1]/body[1]/div[1]",
-                "aria": "/document[1]/navigation[1]"
-            },
-            "ruleTime": 0,
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "bounds": {
-                "left": 8,
-                "top": 8,
-                "height": 18,
-                "width": 784
-            },
-            "snippet": "<div role=\"navigation\">",
-            "category": "Accessibility",
-            "ignored": false,
-            "level": "pass"
-        },
-        {
             "ruleId": "aria_semantics_role",
             "value": [
                 "VIOLATION",
@@ -3184,7 +3132,7 @@
             "level": "pass"
         }
     ],
-    "numExecuted": 121,
+    "numExecuted": 119,
     "nls": {
         "WCAG20_Html_HasLang": {
             "0": "Page must identify the default language of the document with a 'lang' attribute",
@@ -3250,10 +3198,6 @@
             "0": "Heading text must use a heading element",
             "Pass_0": "Rule Passed"
         },
-        "HAAC_Application_Role_Text": {
-            "0": "Non-decorative static text and image content within an element with \"application\" role must be accessible",
-            "Pass_0": "Rule Passed"
-        },
         "Rpt_Aria_ValidRole": {
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
@@ -3307,7 +3251,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 120,
+            "pass": 118,
             "ignored": 0
         },
         "scanTime": 36,

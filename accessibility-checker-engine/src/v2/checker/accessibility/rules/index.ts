@@ -15,21 +15,16 @@
  *****************************************************************************/
 
 import { Rule, RuleDetails, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual } from "../../../api/IEngine";
-import { a11yRulesAnchor } from "./rpt-anchor-rules";
 import { a11yRulesCanvas } from "./rpt-canvas-rules";
 import { a11yRulesFrame } from "./rpt-frame-rules";
 import { a11yRulesMeta } from "./rpt-meta-rules";
 import { a11yRulesColor } from "./rpt-color-rules";
 import { a11yRulesHeading } from "./rpt-heading-rules";
-import { a11yRulesApplet } from "./rpt-applet-rules";
 import { a11yRulesCombobox } from "./rpt-combobox-rules";
 import { a11yRulesHier } from "./rpt-hierarchy-rules";
 import { a11yRulesObject } from "./rpt-object-rules";
-import { a11yRulesApp } from "./rpt-application-rules";
 import { a11yRulesElem } from "./rpt-elem-rules";
-import { a11yRulesHtml } from "./rpt-html-rules";
 import { a11yRulesScript } from "./rpt-script-rules";
-import { a11yRulesArea } from "./rpt-area-rules";
 import { a11yRulesEmbed } from "./rpt-embed-rules";
 import { a11yRulesImg } from "./rpt-img-rules";
 import { a11yRulesSelect } from "./rpt-select-rules";
@@ -41,7 +36,6 @@ import { a11yRulesLabeling } from "./rpt-ariaLabeling-rules";
 import { a11yRulesFig } from "./rpt-figure-rules";
 import { a11yRulesLabel } from "./rpt-label-rules";
 import { a11yRulesTable } from "./table-rules";
-import { a11yRulesBlink } from "./rpt-blink-rules";
 import { a11yRulesFocus } from "./rpt-focus-rules";
 import { a11yRulesList } from "./rpt-list-rules";
 import { a11yRulesText } from "./rpt-text-rules";
@@ -53,24 +47,18 @@ import { a11yRulesBody } from "./rpt-body-rules";
 import { a11yRulesForm } from "./rpt-form-rules";
 import { a11yRulesMedia } from "./rpt-media-rules";
 import { a11yRulesVideo } from "./rpt-video-rules";
-import { ariaHiddenRule } from "./aria_hidden_focus_misuse";
 
 let a11yRules: Rule[] = [].concat(
-    a11yRulesAnchor
-    , a11yRulesCanvas
+    a11yRulesCanvas
     , a11yRulesFrame
     , a11yRulesMeta
     , a11yRulesColor
     , a11yRulesHeading
-    , a11yRulesApplet
     , a11yRulesCombobox
     , a11yRulesHier
     , a11yRulesObject
-    , a11yRulesApp
     , a11yRulesElem
-    , a11yRulesHtml
     , a11yRulesScript
-    , a11yRulesArea
     , a11yRulesEmbed
     , a11yRulesImg
     , a11yRulesSelect
@@ -82,7 +70,6 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesFig
     , a11yRulesLabel
     , a11yRulesTable
-    , a11yRulesBlink
     , a11yRulesFocus
     , a11yRulesList
     , a11yRulesText
@@ -94,7 +81,6 @@ let a11yRules: Rule[] = [].concat(
     , a11yRulesForm
     , a11yRulesMedia
     , a11yRulesVideo
-    , ariaHiddenRule
 );
 
 export { a11yRules }

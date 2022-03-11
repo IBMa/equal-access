@@ -21,7 +21,6 @@ import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
 import { ComposedModal, ModalHeader, ModalBody } from 'carbon-components-react';
-import HelpSwitcher from './help/helpSwitcher';
 
 const Violation16 = <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16">
     <rect style={{ fill: "none" }} width="16" height="16" />
@@ -157,7 +156,7 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
             >
                 <ModalHeader />
                 <ModalBody aria-label="This modal has scrolling content">
-                    {this.state.selectedItem && <HelpSwitcher report={this.props.reportData.report} item={this.state.selectedItem} />}
+                    {this.state.selectedItem && <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "calc(100% - 1rem)", height: "100%"}} src={this.state.selectedItem.help} />}
                 </ModalBody>
             </ComposedModal>
         </div>

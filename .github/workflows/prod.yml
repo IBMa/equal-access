@@ -27,8 +27,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: rule-server
-    - run: npm install
-      working-directory: rule-server/src-gatsby
     - run: npm run build
       working-directory: rule-server
     - run: gitactions/publish/rules.sh

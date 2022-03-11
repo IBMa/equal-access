@@ -68,16 +68,16 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
 
     render() {
         let summaryNumbers = this.calcSummary(this.props.report);
-        let elementNoFailures:string = "";
-        /** Calculate the score */
-        elementNoFailures = (((summaryNumbers[4]-summaryNumbers[3])/summaryNumbers[4])*100).toFixed(0);
+
+         // Calculate score
+         let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
 
         return <div className="scoreCard" style={{border: "1px solid #9E63FB", backgroundColor:'#E8DAFF'}}>
             
             <div className="bx--row">
                 <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4 scLeft">
                     <h2 className="title">{this.props.title}</h2>
-                    <div className="score">{elementNoFailures}%</div>
+                    <div className="score">{currentStatus}%</div>
                     <div>Percentage of elements with no detected violations or items to review</div>
                 </div>
                 <div className="bx--col-sm-4 bx--col-md-4 bx--col-lg-10" style={{paddingLeft:"6.5rem"}}>

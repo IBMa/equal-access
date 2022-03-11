@@ -37,6 +37,7 @@ interface IHeaderState {
  }
 
 interface IHeaderProps {
+    badURL: boolean,
     layout: "main" | "sub",
     startScan: () => void,
     collapseAll: () => void,
@@ -241,6 +242,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <React.Fragment>
+                    
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
@@ -404,6 +406,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 </React.Fragment>
                 // Content for the Assessment Tab
                 :
+                <React.Fragment>
+                
+                    
                 <div className="bx--row" style={{ marginTop: '10px' }}>
                     <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
@@ -469,6 +474,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div>
                     </div>
                 </div>
+                </React.Fragment>
             }
             {/* Counts row uses same code for both Assessment and Checker Tabs */}
             <div className={this.props.layout === "main"?"countRow summary mainPanel":"countRow summary subPanel"} role="region" aria-label='Issue count' style={{ marginTop: "14px" }}>
@@ -537,6 +543,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     <span className="summaryBarCounts" style={{ fontWeight: 400, lineHeight: "32px" }}>{!noScan ? "Not Scanned" : (this.props.scanning ? "Scanning..." : ((bDiff ? counts.filtered["All"] + "/" : "") + counts.total["All"] + " Issues " + (bDiff ? "selected" : "found")))}</span>
                 </div>
             </div>
+            {this.props.badURL ? 
+                    <React.Fragment>
+                    <div style={{marginTop: 16, marginLeft: 16}}>IBM Equal Access Accesibility Check cannot run on this URL.
+                        Please go to a different page.</div>
+                            </React.Fragment>
+                    : ""
+                    }
         </div>); // end of headerContent
 
         if (this.props.layout === "main") { // Checker Tab

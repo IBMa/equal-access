@@ -49,14 +49,6 @@ let a11yNls = {
         "Fail_1": "An <object> element does not have a text alternative"
     },
     // JCH - DONE
-    "WCAG20_Applet_HasAlt": {
-        0: "<applet> elements must provide an 'alt' attribute and an alternative description",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "An <applet> element does not have an 'alt' attribute that provides a short text alternative",
-        "Fail_2": "The 'alt' attribute value for an <applet> element duplicates the 'code' attribute",
-        "Fail_3": "An <applet> element provides alternative text, but does not provide inner content"
-    },
-    // JCH - DONE
     "RPT_Media_AudioTrigger": {
         0: "Audio information should also be available in text form",
         "Pass_0": "Rule Passed",
@@ -94,18 +86,6 @@ let a11yNls = {
         "Potential_1": "Text alternative is more than 150 characters"
     },
     // JCH - DONE
-    "WCAG20_A_TargetAndText": {
-        0: "Users should be warned in advance if their input action will open a new window or otherwise change their context",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Inform the user when their input action will open a new window or otherwise change their context"
-    },
-    // JCH - DONE
-    "WCAG20_Area_HasAlt": {
-        0: "<area> elements in an image map must have a text alternative",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "<area> element in an image map has no text alternative"
-    },
-    // JCH - DONE
     "RPT_Media_ImgColorUsage": {
         0: "Do not use color as the only means to convey information, provide an additional non-color cue",
         "Pass_0": "Rule Passed",
@@ -118,10 +98,15 @@ let a11yNls = {
         "Fail_1": "Check page does not automatically refresh without warning or options"
     },
     // JCH - DONE
-    "RPT_Elem_Deprecated": {
-        0: "Avoid use of obsolete language features if possible",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Obsolete language features are being used"
+    "element_attribute_deprecated": {
+    0: "Avoid use of obsolete features if possible",
+    "pass": "Rule Passed",
+    "fail_elem": "The <{0}> element is deprecated in HTML 5",
+    "fail_attr": "The HTML attribute(s) \"{0}\" is deprecated in HTML 5",
+    "fail_elem_attr": "The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5", 
+    "fail_aria_role": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
+    "fail_aria_attr": "The ARIA attribute(s) \"{0}\" is deprecated in ARIA 1.2",
+    "fail_role_attr": "The ARIA attribute(s) \"{0}\" is deprecated for the role \"{1}\""
     },
     // JCH - DONE
     "RPT_Blockquote_WrapsTextQuote": {
@@ -265,24 +250,6 @@ let a11yNls = {
         "Potential_1": "Verify that images of text are not used to convey information"
     },
     // JCH - DONE
-    "WCAG20_Blink_AlwaysTrigger": {
-        0: "Content that blinks persistently must not be used",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Content found that blinks persistently"
-    },
-    // JCH - DONE
-    "RPT_Blink_CSSTrigger1": {
-        0: "Do not use the \"blink\" value of the 'text-decoration' property for longer than five seconds",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Check the \"blink\" value of the CSS 'text-decoration' property is not used for more than than five seconds"
-    },
-    // JCH - DONE
-    "RPT_Html_SkipNav": {
-        0: "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages"
-    },
-    // JCH - DONE
     "RPT_Title_Valid": {
         0: "Page <title> should be a descriptive title, rather than a filename",
         "Pass_0": "Rule Passed",
@@ -296,33 +263,10 @@ let a11yNls = {
         "Fail_1": "Heading element has no descriptive content"
     },
     // JCH - DONE
-    // JCH - 0: provides the general DAP message for the rule
-    //       "Pass_i" ???
-    //       "Fail_j" descriptive message for specific failure
-    //       "Potential_k" descriptive message describing case when it is not a failure 
-    //                     but needs other checking to confirm pass or
-    "WCAG20_Html_HasLang": {
-        0: "Page must identify the default language of the document with a 'lang' attribute", 
-        "Pass_0": "Page language detected as \"{0}\"",
-        "Fail_1": "Page detected as XHTML 1.0, but has neither 'lang' nor 'xml:lang' attributes",
-        "Fail_2": "Page detected as XHTML, but does not have an 'xml:lang' attribute",
-        "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute",
-        "Fail_4": "Page detected with 'lang' and 'xml:lang' attributes and primary languages do not match: \"{0}\", \"{1}\"",
-        "Fail_5": "Page detected with 'lang' and 'xml:lang' attributes that do not match: \"{0}\", \"{1}\"",
-        "Potential_5": "Page detected as XHTML 1.0 with only a 'lang' attribute. Confirm that page is only delivered via text/html mime type",
-        "Potential_6": "Page detected as XHTML 1.0 with only an 'xml:lang' attribute. Confirm that page is only delivered via xml mime type"
-    },
-    // JCH - DONE
     "WCAG20_Form_TargetAndText": {
         0: "User should be informed in advance when interacting with content causes a change of context",
         "Pass_0": "Rule Passed",
         "Potential_1": "Verify that interacting with content will not open pop-up windows or change the active window without informing the user"
-    },
-    // JCH - DONE
-    "WCAG20_A_HasText": {
-        0: "Hyperlinks must have a text description of their purpose",
-        "Pass_0": "Hyperlink has a description of its purpose",
-        "Fail_1": "Hyperlink has no link text, label or image with a text alternative"
     },
     // JCH - DONE
     "WCAG20_Fieldset_HasLegend": {
@@ -379,12 +323,12 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Potential_1": "External style sheets detected ensure that CSS does not add images that convey important information in the content."
     },
-    // JCH - DONE
-    "RPT_Header_Trigger": {
-        0: "Heading text should correctly describe the subject of the web page sections", 
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that heading text correctly describes the subject of each web page section"
-    },
+    // // JCH - DONE
+    // "RPT_Header_Trigger": {
+    //     0: "Heading text should correctly describe the subject of the web page sections", 
+    //     "Pass_0": "Rule Passed",
+    //     "Potential_1": "Verify that heading text correctly describes the subject of each web page section"
+    // },
     // JCH - DONE
     "RPT_Script_OnclickHTML2": {
         0: "Scripts should not be used to emulate links",
@@ -566,13 +510,6 @@ let a11yNls = {
         "Pass_0": "Rule Passed",
         "Potential_1": "Verify space characters are not being used to create space between the letters of a word"
     },
-    // JCH - DONE
-    "Rpt_Aria_ValidRole": {
-        0: "Elements must have a valid 'role' per ARIA specification",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification",
-        "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification"
-    },
     "table_aria_descendants": {
         0: "Table structure elements cannot specify an explicit 'role' within table containers",
         "explicit_role": "An explicit ARIA 'role' is not valid for <{0}> element within a ARIA role '{1}' per the ARIA in HTML specification"
@@ -590,22 +527,10 @@ let a11yNls = {
         "Fail_1": "The 'id' \"{0}\" specified for the ARIA property '{1}' value is not valid"
     },
     // JCH - DONE
-    "Rpt_Aria_RequiredProperties": {
-        0: "When using a ARIA role on an element, the required attributes for that role must be defined",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "An element with ARIA role '{0}' does not have the required ARIA attribute(s): '{1}'"
-    },
-    // JCH - DONE
     "Rpt_Aria_EmptyPropertyValue": {
         0: "When specifying a required ARIA attribute, the value must not be empty",
         "Pass_0": "Rule Passed",
         "Fail_1": "The element attribute(s): '{0}' value is empty"
-    },
-    // JCH - DONE
-    "Rpt_Aria_ValidProperty": {
-        0: "ARIA attributes must be valid for the element's role",
-        "Pass_0": "Rule Passed",
-        "Fail_1": "The attribute(s) '{0}' referenced by the element <{1}> is not a valid ARIA state or property"
     },
     // JCH - DONE
     "Rpt_Aria_InvalidTabindexForActivedescendant": {
@@ -968,12 +893,6 @@ let a11yNls = {
         "Fail_4": "Element is a combobox, and the referenced active-descendant element is not controlled by this component"
     },
     // JCH - DONE
-    "HAAC_Application_Role_Text": {
-        0: "Non-decorative static text and image content within an element with \"application\" role must be accessible",
-        "Pass_0": "Rule Passed",
-        "Potential_1": "Verify that the non-decorative static text and image content within an element with \"application\" role are accessible"
-    },
-    // JCH - DONE
     "Rpt_Aria_MultipleToolbarUniqueLabel": {
         0: "All toolbar components on a page must have unique labels specified",
         "Pass_0": "Rule Passed",
@@ -1023,10 +942,10 @@ let a11yNls = {
         "Fail_inline": "The combobox does not support an 'aria-autocomplete' attribute value set to '\"inline\"' "
     },
     "input_haspopup_invalid": {
-        0: "<input> element with list attribute should not use aria-haspopup attribute on indicated inputs",
-        "Pass_0": "<input> element with list attribute does not use aria-haspopup attribute on indicated inputs",
-        "Failure_1": "<input> element with list attribute uses aria-haspopup attribute on type=\"{0}\"",
-        "Failure_2": "<input> element with list attribute uses aria-haspopup attribute on missing or invalid input type"
+        0: "<input> element with 'list' attribute should not also use 'aria-haspopup' attribute",
+        "Pass_0": "<input> element with 'list' attribute does not use 'aria-haspopup' attribute",
+        "Potential_1": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with type=\"{0}\"",
+        "Potential_2": "<input> element with 'list' attribute also uses 'aria-haspopup' attribute with missing or invalid input type"
     },
     // JCH - DONE
     "WCAG21_Style_Viewport": {
@@ -1056,11 +975,6 @@ let a11yNls = {
         0: "The 'meta[name=viewport]' should not prevent the browser zooming the content", 
         "Pass_0": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
         "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
-    },
-    "aria_hidden_focus_misuse": {
-        0: "A focusable element should not be within the subtree of an element with 'aria-hidden' set to \"true\"", 
-        "Pass_0": "Rule Passed",
-        "Fail_1": "Element \"{0}\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'"
     },
     "table_headers_ref_valid": {
         0: "The 'headers' attribute should refer to a valid cell in the same table", 
