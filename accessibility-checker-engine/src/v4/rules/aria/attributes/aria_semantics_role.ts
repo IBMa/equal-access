@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../../../api/IRule";
 import { RPTUtil } from "../../../../v2/checker/accessibility/util/legacy";
+import { ARIADefinitions } from "../../../../v2/aria/ARIADefinitions";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -45,10 +46,17 @@ export let aria_semantics_role: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
-        let domRoles: string[] = [];
+        let domRoles : string[] = [];
         if (ruleContext.getAttribute("role") !== null) {
             domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
         }
+
+        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        let designPatterns = ARIADefinitions.designPatterns;
+        for (const role of domRoles) 
+            if (!(role.toLowerCase() in designPatterns)) 
+                return null;
+        
         let tagName = ruleContext.tagName.toLowerCase();
         // Roles allowed on this node
         let allowedRoles = [];

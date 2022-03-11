@@ -59,18 +59,19 @@ export let aria_semantics_attribute: Rule = {
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
         let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
-
+        
         // input type="password" has no role but it can take an aria-required. This is the only case like this.
         // So we add it in the code instead of adding new mechanism to the aria-definition.js
-        if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
+        // covered in aria definition
+        /**if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
             allowedAttributes.push("aria-required");
-        }
+        }*/
 
         let domAttributes = ruleContext.attributes;
-
+        
         if (domAttributes) {
             for (let i = 0; i < domAttributes.length; i++) {
-                let attrName = domAttributes[i].name.trim().toLowerCase();
+                let attrName = domAttributes[i].name.trim().toLowerCase(); 
                 let isAria = attrName.substring(0, 5) === 'aria-';
                 if (isAria) {
                     if (!allowedAttributes.includes(attrName)) {
@@ -82,7 +83,7 @@ export let aria_semantics_attribute: Rule = {
                 }
             }
         }
-
+        
         //		if(!passed){
         //			  if(roleTokens.length !== 0){ // Rule failure is present
         //		   			allowedRoleTokens = allowedRoleTokens.concat(allowedRoles); // This can be concatenating empty list
