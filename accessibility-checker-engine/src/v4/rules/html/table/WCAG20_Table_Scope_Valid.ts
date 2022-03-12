@@ -13,7 +13,6 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../../../api/IRule";
-import { RPTUtil } from "../../../../v2/checker/accessibility/util/legacy";
 
 export let WCAG20_Table_Scope_Valid: Rule = {
     id: "WCAG20_Table_Scope_Valid",

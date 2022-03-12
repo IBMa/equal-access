@@ -22,7 +22,7 @@ export let WCAG20_A_TargetAndText: Rule = {
         "en-US": {
             "group": `WCAG20_A_TargetAndText.html`,
             "Pass_0": `WCAG20_A_TargetAndText.html`,
-            "Fail_1": `WCAG20_A_TargetAndText.html`
+            "Potential_1": `WCAG20_A_TargetAndText.html`
         }
     },
     messages: {
