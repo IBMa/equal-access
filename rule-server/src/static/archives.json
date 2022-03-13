@@ -7,8 +7,13 @@
     {
         "id": "03March2022",
         "name": "03 March 2022 Deployment",
-        "path": "/archives/2022.03.03",
+        "path": "/archives/2022.03.12",
         "latest": true
+    },
+    {
+        "id": "03March2022",
+        "name": "03 March 2022 Deployment",
+        "path": "/archives/2022.03.03"
     },
     {
         "id": "01February2022",
