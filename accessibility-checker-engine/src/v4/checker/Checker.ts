@@ -19,20 +19,15 @@ import { Rule as RuleV4 } from "../api/IRule";
 import { Engine } from "../../v2/common/Engine";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { StyleMapper } from "../../v2/style/StyleMapper";
-import { checkRules } from "../../v2/checker/rules";
-import { checkNls } from "../../v2/checker/nls";
-import { checkHelp } from "../../v2/checker/help";
-import { checkRulesets } from "../../v2/checker/rulesets";
+import { a11yRulesets } from "../rulesets";
 import * as checkRulesV4 from "../rules";
+
+let checkRules = [];
+let checkNls = {};
+let checkHelp = {};
 
 function _initialize() {
     const langs = Engine.getLanguages();
-    // Convert NLS / Help
-    for (const ruleId in checkHelp) {
-        for (const reasonId in checkHelp[ruleId]) {
-            checkHelp[ruleId][reasonId] = `/en-US/${checkHelp[ruleId][reasonId]}.html`;
-        }
-    }
     // Process V4 rules into the V2 format
     for (let rulename in checkRulesV4) {
         // Convert rule
@@ -59,12 +54,13 @@ function _initialize() {
         }
         // Convert RS
         for (const rsSection of v4Rule.rulesets) {
-            for (const rs of checkRulesets as Ruleset[]) {
+            for (const rs of a11yRulesets as Ruleset[]) {
                 let checkRsIds : string[] = typeof rsSection.id === "string" ? [rsSection.id] : rsSection.id;
                 if (checkRsIds.includes(rs.id)) {
                     for (const cp of rs.checkpoints) {
                         let checkCPIds : string[] = typeof rsSection.num === "string" ? [rsSection.num] : rsSection.num;
                         if (checkCPIds.includes(cp.num)) {
+                            cp.rules = cp.rules || []
                             cp.rules.push({
                                 id: v4Rule.id,
                                 level: rsSection.level,
@@ -91,7 +87,7 @@ export type Ruleset = {
         name: string,
         wcagLevel: string,
         summary: string,
-        rules: Array<{id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel}>
+        rules?: Array<{id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel}>
     }>
 }
 
@@ -113,7 +109,7 @@ export class Checker {
         engine.addNlsMap(checkNls);
         engine.addHelpMap(checkHelp);
 
-        for (const rs of checkRulesets) {
+        for (const rs of a11yRulesets) {
             this.addRuleset(rs);
         }
     }
@@ -123,6 +119,7 @@ export class Checker {
         this.rulesetIds.push(rs.id);
         const ruleIds = [];
         for (const cp of rs.checkpoints) {
+            cp.rules = cp.rules || [];
             for (const rule of cp.rules) {
                 ruleIds.push(rule.id);
                 this.ruleLevels[rule.id] = this.ruleLevels[rule.id] || {};
