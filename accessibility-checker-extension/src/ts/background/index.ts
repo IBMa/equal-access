@@ -129,6 +129,17 @@ BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
     return await new Promise((resolve, _reject) => {
         chrome.tabs.get(message.tabId, async function (tab: any) {
             //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+            let canScan = await new Promise((resolve, _reject) => {
+                if (tab.id < 0) return resolve(false);
+                chrome.tabs.executeScript(tab.id, {
+                    code: "typeof window.ace",
+                    frameId: 0,
+                    matchAboutBlank: true
+                }, function (res) {
+                    resolve(!!res);
+                })
+            });
+            tab.canScan = canScan;
             resolve(tab);
         });
     });

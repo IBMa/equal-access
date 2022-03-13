@@ -155,7 +155,7 @@ You can use the wrapper method `checkDemo` in `ace` object, which is specificall
 * Open the developer tool in Chrome browser: click `Customize and Control Google Chrome` button, select `More Tools`, then select `Developer Tool`
 * Select `Console` tab to show command prompt
 * Open the `ace.js` you built in the build step in a text editor, select and copy all the content
-* Past the content you copied to the command prompt in the developer tool, then press `Enter`
+* Paste the content you copied to the command prompt in the developer tool, then press `Enter`
 * Type in the command prompt: `ace.checkDemo()`, then `Enter`
 
 You can view the accessibility report for the page:  
@@ -214,3 +214,5 @@ You can use the [karma-accessibility-checker](../karma-accessibility-checker) to
 ### Reporting bugs
 
 If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+
+This software includes material copied from or derived from the open ACT-Rules Community. Copyright © 2022 W3C® (MIT, ERCIM, Keio, Beihang).

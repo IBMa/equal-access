@@ -359,8 +359,18 @@ let ACTasks = module.exports = {
         });
     },
 
-    getHelpURL: function (ruleId) {
-        return new ACTasks.ace.Checker().engine.getHelp(ruleId);
+    getHelpURL: function (issue) {
+        let archiveId = ACTasks.Config.ruleArchive;
+        let engineHelp = new ACTasks.ace.Checker().engine.getHelp(issue.ruleId, issue.reasonId, archiveId);
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId,
+            msgArgs: issue.msgArgs
+        };
+        return `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
     },
 
     /**

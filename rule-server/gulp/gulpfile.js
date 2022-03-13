@@ -25,17 +25,17 @@ const distFiles = () => {
 }
 
 const staticFiles = () => {
-    return gulp.src(["../src/static/**/archives/**", "../src/static/index.html", "../src-gatsby/public/**"])
+    return gulp.src(["../src/static/**/archives/**", "../src/static/index.html"])
         .pipe(gulp.dest("../dist/static/"));
 }
 
 const acePreview = () => {
-    return gulp.src(["../../accessibility-checker-engine/dist/**"])
+    return gulp.src(["../../accessibility-checker-engine/dist/*.js", "../../accessibility-checker-engine/dist/*.txt"])
         .pipe(gulp.dest("../dist/static/archives/preview/js/"))
 }
 
 const aceDocs = () => {
-    return gulp.src(["../../accessibility-checker-engine/help/**"])
+    return gulp.src(["../../accessibility-checker-engine/dist/help/**"])
         .pipe(gulp.dest("../dist/static/archives/preview/doc/"))
 }
 

@@ -160,8 +160,18 @@ try {
      *
      * @memberOf this
      */
-    static getHelpURL(ruleId) {
-        return checker.engine.getHelp(ruleId);
+    static getHelpURL(issue) {
+        let config = ACConfigManager.getConfigNow();
+        let helpUrl = checker.engine.getHelp(issue.ruleId, issue.reasonId, config.ruleArchive);
+        let minIssue = {
+            message: issue.message,
+            snippet: issue.snippet,
+            value: issue.value,
+            reasonId: issue.reasonId,
+            ruleId: issue.ruleId,
+            msgArgs: issue.msgArgs
+        };
+        return `${helpUrl}#${encodeURIComponent(JSON.stringify(minIssue))}`
     };
 
     static addRuleset = (ruleset) => {
