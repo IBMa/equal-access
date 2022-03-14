@@ -21,6 +21,8 @@ export let style_hover_persistent: Rule = {
     help: {
         "en-US": {
             "Pass_0": "style_hover_persistent.html",
+            "Pass_1": "style_hover_persistent.html",
+            "Pass_2": "style_hover_persistent.html",
             "Potential_1": "style_hover_persistent.html",
             "Potential_2": "style_hover_persistent.html",
             "Potential_3": "style_hover_persistent.html",

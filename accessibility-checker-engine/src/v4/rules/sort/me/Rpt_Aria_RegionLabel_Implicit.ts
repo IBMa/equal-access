@@ -62,7 +62,7 @@ export let Rpt_Aria_RegionLabel_Implicit: Rule = {
         if (passed) {
             return RulePass("Pass_0");
         } else {
-            return RuleFail(tagName === "section" ? "Fail_1" : "Fail_2");
+            return tagName === "section" ? RuleFail("Fail_1") : RuleFail("Fail_2");
         }
     }
 }
