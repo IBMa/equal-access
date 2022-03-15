@@ -122,8 +122,14 @@ jobs:
     - run: cp -f ./manifest_Chrome.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: |
-        if [[ -n "${GITHUB_REF:10}" ]]; then 
-          RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
+        if [ -n "${GITHUB_REF:10}" ]; then
+          NPM_VERSION="${GITHUB_REF:10}";
+          if [[ "${GITHUB_REF}" =~ "-rc" ]]; then
+            EXT_VERSION="${NPM_VERSION/-rc/}"
+          else
+            EXT_VERSION="${NPM_VERSION}.9999"
+          fi;
+          sed -i'.old' -e 's/"version": "3.0.0",/"version": "'"${EXT_VERSION}"'","version_name": "'"${NPM_VERSION}"'",/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old
@@ -138,8 +144,14 @@ jobs:
     - run: cp -f ./manifest_Firefox.json ./src/manifest.json
       working-directory: accessibility-checker-extension
     - run: |
-        if [[ -n "${GITHUB_REF:10}" ]]; then 
-          RELEASE_VERSION=${GITHUB_REF#refs/*/} && sed -i'.old' -e 's/"version": "3.0.0"/"version": "'"${RELEASE_VERSION}"'"/g' ./manifest.json
+        if [ -n "${GITHUB_REF:10}" ]; then
+          NPM_VERSION="${GITHUB_REF:10}";
+          if [[ "${GITHUB_REF}" =~ "-rc" ]]; then
+            EXT_VERSION="${NPM_VERSION/-rc/}"
+          else
+            EXT_VERSION="${NPM_VERSION}.9999"
+          fi;
+          sed -i'.old' -e 's/"version": "3.0.0",/"version": "'"${EXT_VERSION}"'","version_name": "'"${NPM_VERSION}"'",/g' ./manifest.json
         fi;
       working-directory: accessibility-checker-extension/src
     - run: rm manifest.json.old
@@ -151,3 +163,26 @@ jobs:
       with:
         name: accessibility-checker-extension for Firefox
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
+
+  rule-deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: rule-server
+    - run: npm run build
+      working-directory: rule-server
+    - run: gitactions/publish/rules.sh
+      env: 
+        BLUEMIX_USERID: apikey
+        BLUEMIX_PASS: ${{ secrets.BLUEMIX_PASS }}
+        TRAVIS_BRANCH: prod
