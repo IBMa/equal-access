@@ -84,8 +84,14 @@ export class Server {
 
             const archives = require("./static/archives");
             let latest = "2020FebDeploy";
+            let latestVersion;
             for (const archive of archives) {
-                if (archive.latest) {
+                if (archive.id === "latest") {
+                    latestVersion = archive.version;
+                }
+            }
+            for (const archive of archives) {
+                if (archive.version === latestVersion) {
                     latest = archive.path;
                 }
             }
