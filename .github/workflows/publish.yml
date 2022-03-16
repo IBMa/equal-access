@@ -29,6 +29,10 @@ jobs:
         working-directory: accessibility-checker-engine
       - run: npm run build:all
         working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: rule-server
+      - run: npm run build
+        working-directory: rule-server
       - run: gitactions/publish/achecker-engine.sh
         env: 
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,5 +1,6 @@
 if [ -n "${GITHUB_REF:10}" ]; then
     cd ./accessibility-checker-engine/dist;
+    cp ../rule-server/dist/static/archives.json
     echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >.npmrc;
     NPM_VERSION="${GITHUB_REF:10}";
     echo "Deploy accessibility-checker-engine version ${NPM_VERSION}...";
@@ -8,5 +9,6 @@ if [ -n "${GITHUB_REF:10}" ]; then
         npm publish --tag next;
     else
         npm publish;
+        npm dist-tag add accessibility-checker-engine@${NPM_VERSION} next
     fi;
 fi
