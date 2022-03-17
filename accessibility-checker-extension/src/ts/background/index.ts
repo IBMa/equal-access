@@ -100,6 +100,7 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
                 tabId: message.tabId,
                 tabURL: message.tabURL,
                 archiveId: archiveId,
+                archiveVersion: selectedArchive.version,
                 policyId: policyId,
                 origin: message.origin
             });
