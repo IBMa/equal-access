@@ -1374,7 +1374,7 @@ export class RPTUtil {
             while (nw.nextNode()) {
                 if (formElements.includes(nw.node.nodeName.toLowerCase())) {
                     if (RPTUtil.isNodeDisabled(nw.node))
-                       return true;
+                        return true;
                     return false;
                 }
             }
@@ -2425,14 +2425,14 @@ export class RPTUtil {
 
         // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
         if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
-             let index = -1;
-             if ((index = allowedAttributes.indexOf("aria-level")) > -1)
+            let index = -1;
+            if ((index = allowedAttributes.indexOf("aria-level")) > -1)
                 allowedAttributes.splice(index, 1);
 
-             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
+            if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
                 allowedAttributes.splice(index, 1);
 
-             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
+            if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
                 allowedAttributes.splice(index, 1);
 
         }
@@ -3455,22 +3455,22 @@ export class NodeWalker {
             {
                 let ownerElement = this.node;
                 this.node = iframeNode.contentDocument.documentElement;
-                (this.node as any).ownerElement = ownerElement;
+                (this.node as any).nwOwnerElement = ownerElement;
             } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && elementNode.shadowRoot
                 && elementNode.shadowRoot.firstChild)
             {
                 let ownerElement = this.node;
                 this.node = elementNode.shadowRoot;
-                (this.node as any).ownerElement = ownerElement;
+                (this.node as any).nwOwnerElement = ownerElement;
             } else if (this.node.nodeType === 1
                 && elementNode.nodeName.toLowerCase() === "slot"
                 && slotElement.assignedNodes().length > 0)
             {
                 let slotOwner = this.node;
                 this.node = slotElement.assignedNodes()[0];
-                (this.node as any).slotOwner = slotOwner;
-                (this.node as any).slotIndex = 0;
+                (this.node as any).nwSlotOwner = slotOwner;
+                (this.node as any).nwSlotIndex = 0;
             } else if (this.node.firstChild) {
                 this.node = this.node.firstChild;
             } else {
@@ -3478,22 +3478,22 @@ export class NodeWalker {
                 return this.nextNode();
             }
         } else {
-            if ((this.node as any).slotOwner) {
-                let slotOwner = (this.node as any).slotOwner;
-                let nextSlotIndex = (this.node as any).slotIndex+1;
-                delete (this.node as any).slotOwner;
-                delete (this.node as any).slotIndex;
+            if ((this.node as any).nwSlotOwner) {
+                let slotOwner = (this.node as any).nwSlotOwner;
+                let nextSlotIndex = (this.node as any).nwSlotIndex+1;
+                delete (this.node as any).nwSlotOwner;
+                delete (this.node as any).nwSlotIndex;
                 if (nextSlotIndex < slotOwner.assignedNodes().length) {
                     this.node = slotOwner.assignedNodes()[nextSlotIndex];
-                    (this.node as any).slotOwner = slotOwner;
-                    (this.node as any).slotIndex = nextSlotIndex;    
+                    (this.node as any).nwSlotOwner = slotOwner;
+                    (this.node as any).nwSlotIndex = nextSlotIndex;    
                     this.bEndTag = false;
                 } else {
                     this.node = slotOwner;
                     this.bEndTag = true;
                 }
-            } else if ((this.node as any).ownerElement) {
-                this.node = (this.node as any).ownerElement;
+            } else if ((this.node as any).nwOwnerElement) {
+                this.node = (this.node as any).nwOwnerElement;
                 this.bEndTag = true;
             } else if (this.node.nextSibling) {
                 this.node = this.node.nextSibling;
