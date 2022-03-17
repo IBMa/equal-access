@@ -84,6 +84,8 @@ export class DOMWalker {
                 } else if ((this.node as any).slotOwner) {
                     let slotOwner = (this.node as any).slotOwner;
                     let nextSlotIndex = (this.node as any).slotIndex+1;
+                    delete (this.node as any).slotOwner;
+                    delete (this.node as any).slotIndex;
                     if (nextSlotIndex < slotOwner.assignedNodes().length) {
                         this.node = slotOwner.assignedNodes()[nextSlotIndex];
                         (this.node as any).slotOwner = slotOwner;

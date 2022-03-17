@@ -3470,6 +3470,7 @@ export class NodeWalker {
                 let slotOwner = this.node;
                 this.node = slotElement.assignedNodes()[0];
                 (this.node as any).slotOwner = slotOwner;
+                (this.node as any).slotIndex = 0;
             } else if (this.node.firstChild) {
                 this.node = this.node.firstChild;
             } else {
@@ -3477,33 +3478,26 @@ export class NodeWalker {
                 return this.nextNode();
             }
         } else {
-            if (this.node.nextSibling) {
-                this.node = this.node.nextSibling;
-                this.bEndTag = false;
+            if ((this.node as any).slotOwner) {
+                let slotOwner = (this.node as any).slotOwner;
+                let nextSlotIndex = (this.node as any).slotIndex+1;
+                delete (this.node as any).slotOwner;
+                delete (this.node as any).slotIndex;
+                if (nextSlotIndex < slotOwner.assignedNodes().length) {
+                    this.node = slotOwner.assignedNodes()[nextSlotIndex];
+                    (this.node as any).slotOwner = slotOwner;
+                    (this.node as any).slotIndex = nextSlotIndex;    
+                    this.bEndTag = false;
+                } else {
+                    this.node = slotOwner;
+                    this.bEndTag = true;
+                }
             } else if ((this.node as any).ownerElement) {
                 this.node = (this.node as any).ownerElement;
                 this.bEndTag = true;
-            } else if ((this.node as any).slotOwner) {
-                if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("slot")) {
-                    // If this wasn't a named slot, look for the next unnamed node to put in the slot
-                    let n = this.node.nextSibling;
-                    while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
-                        n = this.node.nextSibling;
-                    }
-                    if (n) {
-                        // We found another unnamed slot
-                        let slotOwner = (this.node as any).slotOwner;
-                        this.node = n;
-                        (this.node as any).slotOwner = slotOwner;
-                        this.bEndTag = false;
-                    } else {
-                        this.node = (this.node as any).slotOwner;
-                        this.bEndTag = true;
-                    }
-                } else {
-                    this.node = (this.node as any).slotOwner;
-                    this.bEndTag = true;
-                }
+            } else if (this.node.nextSibling) {
+                this.node = this.node.nextSibling;
+                this.bEndTag = false;
             } else if (this.node.parentNode) {
                 this.node = this.node.parentNode;
                 this.bEndTag = true;

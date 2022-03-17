@@ -109,6 +109,7 @@ const archivePolicies = () => {
                 latestArchive.policies = latestPol;
                 latestArchive.rulesets = latestRS;
                 latestArchive.version = latestVersion;
+                latestArchive.latest = true;
             }
             if (latestVersion !== releaseTag) {
                 previewArchive.version = releaseTag;
