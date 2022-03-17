@@ -48,7 +48,7 @@ export default class EngineCache {
             if (Config.engineEndpoint?.includes("localhost")) {
                 EngineCache.archives = <IArchiveDefinition[]>await Fetch.json(Config.engineEndpoint+"/archives.json");
             } else {
-                EngineCache.archives = <IArchiveDefinition[]>await Fetch.json("https://unpkg.com/accessibility-checker-engine@next/archives.json");
+                EngineCache.archives = <IArchiveDefinition[]>await Fetch.json("https://cdn.jsdelivr.net/npm/accessibility-checker-engine@next/archives.json");
             }
         }
 
@@ -67,7 +67,7 @@ export default class EngineCache {
                         let engineURL = `${Config.engineEndpoint}${archiveDef.path}/js/ace.js`;
                         return EngineCache.engines[archiveId] = <string>await Fetch.content(engineURL);
                     } else {
-                        let engineURL = `https://unpkg.com/accessibility-checker-engine@${archiveDef.version}/ace.js`;
+                        let engineURL = `https://cdn.jsdelivr.net/npm/accessibility-checker-engine@${archiveDef.version}/ace.js`;
                         return EngineCache.engines[archiveId] = <string>await Fetch.content(engineURL);
                     }
                 }
