@@ -42,7 +42,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         if (report) {
             for (let result of report.results) {
                 let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
-                let version = message.version || "latest";
+                let version = message.archiveVersion || "latest";
                 if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
                     engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
                 } else {
