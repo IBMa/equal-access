@@ -187,7 +187,7 @@ The following code snippet demonstrates how to use ACE to test a web page for ac
   const [page] = await browser.pages();
 
   // inject the ace.js into the page when domcontentloaded event is fired, assuming the ace.js is in the same folder
-  await page.goto('http://localhost:3000', { waitUtil: 'domcontentloaded' };
+  await page.goto('http://localhost:3000', { waitUtil: 'domcontentloaded' });
   await page.addScriptTag({ path: path.join(__dirname, 'ace.js') });
 
   //invoke the ace to evaluate the page for accessibility
