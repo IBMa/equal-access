@@ -13,23 +13,22 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../../../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../../../api/IRule";
-import { RPTUtil } from "../../../../v2/checker/accessibility/util/legacy";
 
 export let RPT_Meta_Refresh: Rule = {
     id: "RPT_Meta_Refresh",
     context: "dom:meta[http-equiv][content]",
     help: {
         "en-US": {
+            "group": "RPT_Meta_Refresh.html",
             "Pass_0": "RPT_Meta_Refresh.html",
-            "Potential_1": "RPT_Meta_Refresh.html",
-            "group": "RPT_Meta_Refresh.html"
+            "Potential_1": "RPT_Meta_Refresh.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Pages should not refresh automatically",
             "Pass_0": "Rule Passed",
             "Potential_1": "Verify page is not being caused to refresh automatically",
-            "group": "Pages should not refresh automatically"
         }
     },
     rulesets: [{
@@ -38,7 +37,7 @@ export let RPT_Meta_Refresh: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [ "bisz58", "bc659a" ],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (ruleContext.getAttribute("http-equiv").toLowerCase() !== 'refresh')

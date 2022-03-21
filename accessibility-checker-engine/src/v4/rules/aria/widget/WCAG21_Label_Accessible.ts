@@ -40,7 +40,8 @@ export let WCAG21_Label_Accessible: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    // TODO: ACT: Review https://github.com/act-rules/act-rules.github.io/issues/1618
+    act: "2ee8b8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (!RPTUtil.isNodeVisible(ruleContext) ||

@@ -40,7 +40,8 @@ export let Rpt_Aria_ValidIdRef: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    // TODO: ACT: Verify https://github.com/act-rules/act-rules.github.io/issues/1617
+    act: ["59796f", "6a7281"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let pass = true;

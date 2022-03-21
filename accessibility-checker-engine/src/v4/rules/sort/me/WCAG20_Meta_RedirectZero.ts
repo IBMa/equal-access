@@ -20,16 +20,16 @@ export let WCAG20_Meta_RedirectZero: Rule = {
     context: "dom:meta[http-equiv][content]",
     help: {
         "en-US": {
+            "group": "WCAG20_Meta_RedirectZero.html",
             "Pass_0": "WCAG20_Meta_RedirectZero.html",
             "Fail_1": "WCAG20_Meta_RedirectZero.html",
-            "group": "WCAG20_Meta_RedirectZero.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Page should not automatically refresh without warning or option to turn it off or adjust the time limit",
             "Pass_0": "Rule Passed",
-            "Fail_1": "Check page does not automatically refresh without warning or options",
-            "group": "Page should not automatically refresh without warning or option to turn it off or adjust the time limit"
+            "Fail_1": "Check page does not automatically refresh without warning or options"
         }
     },
     rulesets: [{
@@ -38,7 +38,7 @@ export let WCAG20_Meta_RedirectZero: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [ "bisz58", "bc659a" ],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context

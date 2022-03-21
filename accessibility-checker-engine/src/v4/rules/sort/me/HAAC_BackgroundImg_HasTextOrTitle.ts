@@ -38,7 +38,7 @@ export let HAAC_BackgroundImg_HasTextOrTitle: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule

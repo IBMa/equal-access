@@ -22,16 +22,16 @@ export let aria_semantics_attribute: Rule = {
     dependencies: [],
     help: {
         "en-US": {
+            "group": "aria_semantics_attribute.html",
             "Pass_0": "aria_semantics_attribute.html",
-            "Fail_1": "aria_semantics_attribute.html",
-            "group": "aria_semantics_attribute.html"
+            "Fail_1": "aria_semantics_attribute.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The ARIA attribute '{0}' is not valid for the element <{1}> with ARIA role '{2}'",
-            "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned"
+            "Fail_1": "The ARIA attribute '{0}' is not valid for the element <{1}> with ARIA role '{2}'"
         }
     },
     rulesets: [{
@@ -40,7 +40,7 @@ export let aria_semantics_attribute: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "5c01ea",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // The the ARIA role is completely invalid, skip this check

@@ -38,7 +38,7 @@ export let aria_hidden_focus_misuse: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    act: "6cfa84",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
             

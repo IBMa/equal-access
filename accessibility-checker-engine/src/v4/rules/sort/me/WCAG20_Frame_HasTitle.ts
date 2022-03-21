@@ -21,16 +21,16 @@ export let WCAG20_Frame_HasTitle: Rule = {
     context: "dom:frame, dom:iframe",
     help: {
         "en-US": {
+            "group": "WCAG20_Frame_HasTitle.html",
             "Pass_0": "WCAG20_Frame_HasTitle.html",
-            "Fail_1": "WCAG20_Frame_HasTitle.html",
-            "group": "WCAG20_Frame_HasTitle.html"
+            "Fail_1": "WCAG20_Frame_HasTitle.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Inline frames must have a unique, non-empty 'title' attribute",
             "Pass_0": "Rule Passed",
             "Fail_1": "Inline frame does not have a 'title' attribute",
-            "group": "Inline frames must have a unique, non-empty 'title' attribute"
         }
     },
     rulesets: [{
@@ -39,7 +39,7 @@ export let WCAG20_Frame_HasTitle: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: "cae760",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context

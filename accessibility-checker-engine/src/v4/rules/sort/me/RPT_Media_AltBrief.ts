@@ -38,7 +38,7 @@ export let RPT_Media_AltBrief: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const validateParams = {
             maxAlt: {

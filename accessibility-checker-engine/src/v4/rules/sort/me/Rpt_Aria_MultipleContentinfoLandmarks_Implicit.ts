@@ -38,7 +38,7 @@ export let Rpt_Aria_MultipleContentinfoLandmarks_Implicit: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // Consider the Check Hidden Content setting that is set by the rules

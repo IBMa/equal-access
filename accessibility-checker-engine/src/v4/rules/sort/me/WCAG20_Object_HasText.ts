@@ -21,16 +21,16 @@ export let WCAG20_Object_HasText: Rule = {
     context: "dom:object",
     help: {
         "en-US": {
+            "group": "WCAG20_Object_HasText.html",
             "Pass_0": "WCAG20_Object_HasText.html",
-            "Fail_1": "WCAG20_Object_HasText.html",
-            "group": "WCAG20_Object_HasText.html"
+            "Fail_1": "WCAG20_Object_HasText.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "<object> elements must have a text alternative for the content rendered by the object",
             "Pass_0": "Rule Passed",
-            "Fail_1": "An <object> element does not have a text alternative",
-            "group": "<object> elements must have a text alternative for the content rendered by the object"
+            "Fail_1": "An <object> element does not have a text alternative"
         }
     },
     rulesets: [{
@@ -39,7 +39,7 @@ export let WCAG20_Object_HasText: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "8fc3b6",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule

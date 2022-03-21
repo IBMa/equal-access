@@ -45,7 +45,7 @@ export let Rpt_Aria_OrphanedContent_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         let params = RPTUtil.getCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", null);
         if (!params) {

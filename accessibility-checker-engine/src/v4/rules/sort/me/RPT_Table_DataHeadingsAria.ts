@@ -38,7 +38,7 @@ export let RPT_Table_DataHeadingsAria: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLTableElement;
         // If this is a layout table or there are no rows, the rule does not apply.

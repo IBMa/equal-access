@@ -38,7 +38,7 @@ export let WCAG20_Embed_HasNoEmbed: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_FOUR
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = ruleContext.getElementsByTagName("noembed").length > 0;

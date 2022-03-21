@@ -42,7 +42,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: ["97a4e1", "e086e5"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context

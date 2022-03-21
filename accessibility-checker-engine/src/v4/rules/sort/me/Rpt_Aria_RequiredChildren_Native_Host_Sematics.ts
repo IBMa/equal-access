@@ -22,16 +22,16 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
+            "group": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
             "Pass_0": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
             "Potential_1": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
-            "group": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "An element with a ARIA role must contain required children",
             "Pass_0": "Rule Passed",
-            "Potential_1": "The element with role \"{0}\" does not contain or own at least one child element with each of the following roles: \"{1}\"",
-            "group": "An element with a ARIA role must contain required children"
+            "Potential_1": "The element with role \"{0}\" does not contain or own at least one child element with each of the following roles: \"{1}\""
         }
     },
     rulesets: [{
@@ -40,7 +40,13 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    // TODO: ACT: Verify mapping
+    act: [{
+        "bc4a75": {
+            "Pass_0": "pass",
+            "Potential_1": "fail"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 

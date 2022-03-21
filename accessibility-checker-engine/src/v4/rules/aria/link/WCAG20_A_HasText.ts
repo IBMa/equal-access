@@ -39,12 +39,7 @@ export let WCAG20_A_HasText: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
     }],
-    act: {
-        "c487ae": {
-            "Pass_0": "pass",
-            "Fail_1": "fail"
-        }
-    },
+    act: "c487ae",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {

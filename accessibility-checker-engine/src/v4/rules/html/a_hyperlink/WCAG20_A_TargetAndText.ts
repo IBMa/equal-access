@@ -38,7 +38,7 @@ export let WCAG20_A_TargetAndText: Rule = {
         level: eRulePolicy.RECOMMENDATION,
         toolkitLevel: eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // skip the rule if it's AT hidden and not tabbable

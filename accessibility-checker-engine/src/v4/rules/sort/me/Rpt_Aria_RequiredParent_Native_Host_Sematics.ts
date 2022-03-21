@@ -22,16 +22,16 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
+            "group": "Rpt_Aria_RequiredParent_Native_Host_Sematics.html",
             "Pass_0": "Rpt_Aria_RequiredParent_Native_Host_Sematics.html",
-            "Fail_1": "Rpt_Aria_RequiredParent_Native_Host_Sematics.html",
-            "group": "Rpt_Aria_RequiredParent_Native_Host_Sematics.html"
+            "Fail_1": "Rpt_Aria_RequiredParent_Native_Host_Sematics.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "An element with an implicit or explicit role must be contained within a valid element",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\"",
-            "group": "An element with an implicit or explicit role must be contained within a valid element"
+            "Fail_1": "The element with role \"{0}\" is not contained in or owned by an element with one of the following roles: \"{1}\""
         }
     },
     rulesets: [{
@@ -40,7 +40,8 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    // TODO: ACT: Verify https://github.ibm.com/ibma/e2e/issues/3142
+    act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = true;

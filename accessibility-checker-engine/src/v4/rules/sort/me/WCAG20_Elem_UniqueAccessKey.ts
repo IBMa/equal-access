@@ -38,7 +38,7 @@ export let WCAG20_Elem_UniqueAccessKey: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let map = RPTUtil.getCache(ruleContext.ownerDocument, "WCAG20_Elem_UniqueAccessKey", {});

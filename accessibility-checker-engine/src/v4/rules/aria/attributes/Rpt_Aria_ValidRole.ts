@@ -40,7 +40,8 @@ export let Rpt_Aria_ValidRole: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    // TODO: ACT: Recheck
+    act: "674b10",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let roleStr = ruleContext.getAttribute("role").trim().toLowerCase();

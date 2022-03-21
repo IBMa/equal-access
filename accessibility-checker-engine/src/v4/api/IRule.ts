@@ -152,12 +152,17 @@ export type Rule = {
         }
     };
 
-    // How this rule maps to ACT rules, if any (https://act-rules.github.io/rules/)
-    act?: {
+    /** 
+     * How this rule maps to ACT rules, if any (https://act-rules.github.io/rules/)
+     * 
+     * string: For a single rule mapping that matches exactly to the rule (Pass -> pass, Potential -> cantTell, Fail -> fail, unlisted => inapplicable)
+     * Array<>: Custom mapping of rule to ACT results
+     */
+    act?: string | string[] | Array<string | {
         [actRuleId: string]: {
             [reasonId: string]: "pass" | "fail" | "cantTell" | "inapplicable"
         }
-    }
+    }>
 
     // See src/v2/common/Context.ts for valid contexts
     context: string;
