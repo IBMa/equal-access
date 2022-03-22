@@ -40,7 +40,7 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    // TODO: ACT: Verify https://github.ibm.com/ibma/e2e/issues/3142
+    // TODO: ACT: Check Fail 3
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;

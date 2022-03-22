@@ -18,7 +18,8 @@ import { eRulePolicy, eToolkitLevel } from "../../../api/IRule";
 
 export let WCAG20_A_HasText: Rule = {
     id: "WCAG20_A_HasText",
-    context: "aria:link",
+    // doc-biblioref is a link
+    context: "aria:link,aria:doc-biblioref",
     help: {
         "en-US": {
             "group": `WCAG20_A_HasText.html`,

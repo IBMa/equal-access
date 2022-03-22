@@ -41,12 +41,7 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     // TODO: ACT: Verify mapping
-    act: [{
-        "bc4a75": {
-            "Pass_0": "pass",
-            "Potential_1": "fail"
-        }
-    }],
+    act: ["bc4a75"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 

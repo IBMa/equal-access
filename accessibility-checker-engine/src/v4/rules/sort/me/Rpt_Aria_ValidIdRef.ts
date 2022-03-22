@@ -40,7 +40,9 @@ export let Rpt_Aria_ValidIdRef: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    // TODO: ACT: Verify https://github.com/act-rules/act-rules.github.io/issues/1617
+    // TODO: ACT: 6a7281 - Need a separate reason code when the property is not required. ACT says it's okay to be
+    // invalid when not required. I think we should still fail, but flag it as a different reason so that we can have a subset
+    // aligns with ACT.
     act: ["59796f", "6a7281"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;

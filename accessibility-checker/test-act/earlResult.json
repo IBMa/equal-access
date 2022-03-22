@@ -8,7 +8,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -23,7 +23,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -38,7 +38,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -53,7 +53,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -68,7 +68,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -83,7 +83,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -98,7 +98,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidProperty:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidProperty:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -113,7 +113,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -128,7 +128,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -143,7 +143,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -158,7 +158,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -173,7 +173,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -188,7 +188,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -203,7 +203,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -218,7 +218,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -233,7 +233,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -248,7 +248,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -263,7 +263,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -278,7 +278,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -293,7 +293,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_hidden_focus_misuse:0,group,Pass_0,Fail_1"
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -308,7 +308,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -323,7 +323,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -338,7 +338,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -353,7 +353,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -368,7 +368,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -383,7 +383,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -398,7 +398,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -413,7 +413,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -428,7 +428,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -443,7 +443,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -458,7 +458,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -473,7 +473,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -488,7 +488,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -503,7 +503,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -518,7 +518,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_RequiredParent_Native_Host_Sematics:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -566,7 +566,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -641,7 +641,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -656,7 +656,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -686,7 +686,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -701,7 +701,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -716,7 +716,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -746,7 +746,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -791,7 +791,7 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:cantTell"
           }
         }
       ]
@@ -818,7 +818,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -833,7 +833,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -848,7 +848,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -863,7 +863,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -878,7 +878,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -893,7 +893,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -908,7 +908,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -923,7 +923,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -938,7 +938,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -953,7 +953,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -968,7 +968,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -983,7 +983,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -998,7 +998,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1013,7 +1013,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1028,7 +1028,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "aria_semantics_attribute:0,group,Pass_0,Fail_1"
+            "title": "aria_semantics_attribute:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1043,7 +1043,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1058,7 +1058,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1073,7 +1073,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1088,7 +1088,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1103,7 +1103,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1118,7 +1118,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1133,7 +1133,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1148,7 +1148,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1163,7 +1163,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1178,7 +1178,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1193,7 +1193,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1208,7 +1208,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1223,7 +1223,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1238,7 +1238,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1253,7 +1253,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1268,7 +1268,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1283,7 +1283,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1298,7 +1298,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1313,7 +1313,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1328,7 +1328,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1343,7 +1343,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1358,7 +1358,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1373,7 +1373,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:0,group,Pass_0,Fail_1|Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group"
+            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1388,7 +1388,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1403,7 +1403,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1418,7 +1418,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1433,7 +1433,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1448,7 +1448,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1463,7 +1463,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1478,7 +1478,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1493,7 +1493,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1508,7 +1508,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1523,7 +1523,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1538,7 +1538,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1553,7 +1553,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1568,7 +1568,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1583,7 +1583,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1598,7 +1598,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1613,7 +1613,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1628,7 +1628,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1643,7 +1643,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1658,7 +1658,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1673,7 +1673,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Input_Autocomplete:0,group,Pass_0,Fail_1"
+            "title": "WCAG21_Input_Autocomplete:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1688,7 +1688,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1703,7 +1703,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1718,7 +1718,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1733,7 +1733,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1748,7 +1748,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1763,7 +1763,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1778,7 +1778,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1793,7 +1793,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1808,7 +1808,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1823,7 +1823,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1838,7 +1838,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1853,7 +1853,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1868,7 +1868,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1883,7 +1883,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1898,7 +1898,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1913,7 +1913,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1928,7 +1928,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -2378,7 +2378,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2393,7 +2393,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2408,7 +2408,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2423,7 +2423,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2438,7 +2438,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2453,7 +2453,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2468,7 +2468,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2483,7 +2483,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2498,7 +2498,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2513,7 +2513,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2528,7 +2528,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2543,7 +2543,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2558,7 +2558,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2573,7 +2573,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2588,7 +2588,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -2603,7 +2603,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -2618,7 +2618,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Input_ExplicitLabel:0,Pass_0,Fail_1,Fail_2,group"
+            "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -2801,7 +2801,7 @@
             "title": "WCAG20_Html_HasLang:Pass_0,Fail_4,Fail_5"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -3233,7 +3233,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3248,7 +3248,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3263,7 +3263,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3278,7 +3278,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3293,7 +3293,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3308,7 +3308,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3323,7 +3323,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3338,7 +3338,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3353,7 +3353,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3368,7 +3368,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Frame_HasTitle:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Frame_HasTitle:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3383,7 +3383,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3398,7 +3398,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3413,7 +3413,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3428,7 +3428,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3443,7 +3443,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3458,7 +3458,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3473,7 +3473,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3488,7 +3488,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3503,7 +3503,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3518,7 +3518,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3533,7 +3533,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3548,7 +3548,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidIdRef:0,Pass_0,Fail_1,group|WCAG20_Input_ExplicitLabelImage:0,Pass_0,Pass_1,Pass_2,Fail,group"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|WCAG20_Input_ExplicitLabelImage:Pass_0,Pass_1,Pass_2,Fail"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3563,7 +3563,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3578,7 +3578,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3593,7 +3593,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3608,7 +3608,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3623,7 +3623,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3638,7 +3638,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3653,7 +3653,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3668,7 +3668,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3683,7 +3683,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3698,7 +3698,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3713,7 +3713,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3728,7 +3728,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3743,7 +3743,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3758,7 +3758,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3773,7 +3773,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3788,7 +3788,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3803,7 +3803,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3818,7 +3818,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:0,Pass_0,Fail_1,Fail_2,Fail_3,group|HAAC_Aria_ImgAlt:0,group,Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3833,7 +3833,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3848,7 +3848,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3863,7 +3863,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3878,7 +3878,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3893,7 +3893,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3908,7 +3908,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3923,7 +3923,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3938,7 +3938,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3953,7 +3953,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3968,7 +3968,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3983,10 +3983,10 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
-            "outcome": "earl:inapplicable"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -3998,7 +3998,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4013,7 +4013,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4028,7 +4028,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4043,7 +4043,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4058,7 +4058,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4073,7 +4073,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4088,7 +4088,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4103,7 +4103,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4118,7 +4118,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4133,7 +4133,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4148,10 +4148,10 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
-            "outcome": "earl:inapplicable"
+            "outcome": "earl:failed"
           }
         }
       ]
@@ -4163,7 +4163,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4178,7 +4178,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4193,7 +4193,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4208,7 +4208,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4223,7 +4223,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4238,7 +4238,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_A_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_A_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4253,7 +4253,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4268,7 +4268,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4283,7 +4283,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4298,7 +4298,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4313,7 +4313,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4328,7 +4328,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4343,7 +4343,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4358,7 +4358,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_WidgetLabels_Implicit:0,group,Pass_0,Fail_1"
+            "title": "Rpt_Aria_WidgetLabels_Implicit:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4373,7 +4373,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4388,7 +4388,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4403,7 +4403,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -4418,7 +4418,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4433,7 +4433,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4448,7 +4448,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4463,7 +4463,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4478,7 +4478,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4493,7 +4493,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4508,7 +4508,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4523,7 +4523,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4538,7 +4538,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4553,7 +4553,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4568,7 +4568,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4583,7 +4583,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4598,7 +4598,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4613,7 +4613,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -4628,7 +4628,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4643,7 +4643,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4658,7 +4658,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4673,7 +4673,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4688,7 +4688,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4703,7 +4703,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4718,7 +4718,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4733,7 +4733,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4748,7 +4748,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4763,7 +4763,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4778,7 +4778,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:0,group,Pass_0,Fail_1|RPT_Meta_Refresh:0,group,Pass_0,Potential_1"
+            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4958,7 +4958,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4973,7 +4973,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -4988,7 +4988,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5003,7 +5003,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5018,7 +5018,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5033,7 +5033,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5048,7 +5048,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5063,7 +5063,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5078,7 +5078,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5093,7 +5093,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5108,7 +5108,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5123,7 +5123,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5138,7 +5138,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5153,7 +5153,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Object_HasText:0,group,Pass_0,Fail_1"
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5168,7 +5168,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5183,7 +5183,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5198,7 +5198,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -5213,7 +5213,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5228,7 +5228,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5243,7 +5243,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5258,7 +5258,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5273,7 +5273,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5288,7 +5288,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5303,7 +5303,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:0,group,Pass_0,Fail_1,Fail_2"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_1,Fail_2"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5318,7 +5318,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5333,7 +5333,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5348,7 +5348,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5363,7 +5363,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5378,7 +5378,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5393,7 +5393,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5408,7 +5408,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5423,7 +5423,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:0,group,Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5438,7 +5438,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5453,7 +5453,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5468,7 +5468,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5483,7 +5483,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5498,7 +5498,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5513,7 +5513,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5528,7 +5528,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5543,7 +5543,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5558,7 +5558,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5573,7 +5573,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5588,7 +5588,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5603,7 +5603,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5618,7 +5618,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG21_Label_Accessible:0,Pass_0,Fail_1,group"
+            "title": "WCAG21_Label_Accessible:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"

@@ -38,6 +38,7 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
+    // TODO: ACT: Pass example 8
     act: "73f2c2",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const cache = {

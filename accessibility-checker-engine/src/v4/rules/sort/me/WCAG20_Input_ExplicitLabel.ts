@@ -42,6 +42,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
+    // TODO: ACT: https://github.com/IBMa/equal-access/issues/756
     act: ["97a4e1", "e086e5"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;

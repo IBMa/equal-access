@@ -17,7 +17,9 @@ async function getAceMapping() {
         if (rule.act) {
             let reasonIds = [];
             for (const reasonId in rule.messages["en-US"]) {
-                reasonIds.push(reasonId);
+                if ((reasonId+"") !== "0" && reasonId !== "group") {
+                    reasonIds.push(reasonId);
+                }
             }
             if (typeof rule.act === "string") {
                 retVal[rule.act] = retVal[rule.act] || [];
