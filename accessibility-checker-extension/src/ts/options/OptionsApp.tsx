@@ -187,6 +187,14 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     };
 
     const manifest = chrome.runtime.getManifest();
+    function displayVersion() {
+        let extVersion = manifest.version;
+        if (extVersion.endsWith(".9999")) {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+        } else {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
+        }
+    }
     if (archives && rulesets) {
       return (
         <div className="bx--grid bx--grid--full-width">
@@ -202,7 +210,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
               </div>
               <aside aria-label="About Accessibility Checker Options">
                 <div className="op_version" style={{ marginTop: "8px" }}>
-                  Version {manifest.version}
+                  Version {displayVersion()}
                 </div>
                 <p>
                   By default, the Accessibility Checker uses a set of rules that
