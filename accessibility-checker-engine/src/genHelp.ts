@@ -137,7 +137,8 @@ function processRules() {
             name: ruleset.name,
             checkpoints: []
         }
-        for (const cp of ruleset.checkponts) {
+        for (let idx=0; idx<ruleset.checkpoints.length; ++idx) {
+            const cp = ruleset.checkpoints[idx];
             let cpInfo = {
                 num: cp.num,
                 name: cp.name,
@@ -159,19 +160,54 @@ function processRules() {
                     }
                 }
                 if (includeRule) {
-                    cpInfo.rules.push({
+                    let ruleInfo = {
                         level: rsLevel,
                         toolkitLevel: toolkitLevel,
-                        rule: rule
-                    });
+                        rule: rule,
+                        reasons: []
+                    }
+                    for (const msgCode in rule.messages["en-US"]) {
+                        if (msgCode === "group") continue;
+                        let re = new RegExp(`\\.Rule([^()) ]+)[ ()]+["']${msgCode}["']`);
+                        let reMatch = re.exec(rule.run.toString());
+                        if (reMatch && reMatch[1] !== "Pass") {
+                            ruleInfo.reasons.push({
+                                message: rule.messages["en-US"][msgCode],
+                                help: rule.help["en-US"][msgCode],
+                                type: reMatch[1]
+                            })
+                        }
+                    }
+                    ruleInfo.reasons.sort((a,b) => {
+                        if (a.type === b.type) return 0;
+                        if (a.level === "Fail") return -1;
+                        if (b.level === "Fail") return 1;
+                        if (a.level === "Potential") return -1;
+                        if (b.level === "Potential") return 1;
+                        if (a.level === "Manual") return -1;
+                        if (b.level === "Manual") return 1;
+                        return 0;
+                    })
+                    cpInfo.rules.push(ruleInfo);
                 }
             }
-            // cpInfo.rules.sort((a,b) => {
-            //     if (a.level === b.level) return 0;
-            //     if (a.level === "VIOLATION") return -1;
-            //     if (b.level === "VIOLATION") return 1;
-            //     if (a.level === ""
-            // }})
+            cpInfo.rules.sort((a,b) => {
+                if (a.level === b.level) {
+                    let retVal = b.reasons.filter(reasonInfo => (reasonInfo.type === "Fail")).length - a.reasons.filter(reasonInfo => (reasonInfo.type === "Fail")).length;
+                    if (retVal === 0) {
+                        retVal = b.reasons.filter(reasonInfo => (reasonInfo.type === "Potential")).length - a.reasons.filter(reasonInfo => (reasonInfo.type === "Potential")).length;
+                    }
+                    if (retVal === 0) {
+                        retVal = b.reasons.filter(reasonInfo => (reasonInfo.type === "Manual")).length - a.reasons.filter(reasonInfo => (reasonInfo.type === "Manual")).length;
+                    }
+                    return retVal;
+                }
+                if (a.level === "VIOLATION") return -1;
+                if (b.level === "VIOLATION") return 1;
+                if (a.level === "RECOMMENDATION") return -1;
+                if (b.level === "RECOMMENDATION") return 1;
+                return 0;
+            });
             rsInfo.checkpoints.push(cpInfo);
         }
         retVal.push(rsInfo);
@@ -180,48 +216,27 @@ function processRules() {
 }
 
 function buildRuleViewer() {
+    let rsInfo = processRules();
     let switcherItems = "";
-    let firstRS;
     let rsSections = "";
-    for (const ruleset of rulesets.a11yRulesets) {
+    for (const ruleset of rsInfo) {
         if (ruleset.type === "extension") continue;
-        firstRS = firstRS || ruleset.id;
         switcherItems += `<bx-content-switcher-item value="${ruleset.id}">${ruleset.name}</bx-content-switcher-item>`;
 
         let cpSections = "";
         for (const cp of ruleset.checkpoints) {
             let cpRules = "";
-            for (const ruleId in rulesV4) {
-                let includeRule = false;
-                let rule = rulesV4[ruleId];
-                let rsLevel = "";
-                for (const rsInfo of rule.rulesets) {
-                    if ((rsInfo.id === ruleset.id || rsInfo.id.includes(ruleset.id)) && (rsInfo.num === cp.num || rsInfo.num.includes(cp.num))) {
-                        includeRule = true;
-                        rsLevel = rsInfo.level;
-                        break;
-                    }
+            for (const ruleInfo of cp.rules) {
+                let reasonSection = "";
+                for (const reasonInfo of ruleInfo.reasons) {
+                    reasonSection += `<bx-list-item>${getSVG(ruleInfo.level,reasonInfo.type)} &mdash; ${reasonInfo.message.replace(/</g, "&lt;").replace(/>/, "&gt;")}
+                        <a target="_blank" rel="noopener noreferrer" href="./en-US/${reasonInfo.help}">Learn More</a></bx-list-item>`
                 }
-                if (includeRule) {
-                    let reasonSection = "";
-                    let src = rule.run.toString();
-                    for (const msgCode in rule.messages["en-US"]) {
-                        if (msgCode === "group") continue;
-                        let re = new RegExp(`\\.Rule([^()) ]+)[ ()]+["']${msgCode}["']`);
-                        let reMatch = re.exec(src);
-                        if (reMatch && reMatch[1] !== "Pass") {
-                            reasonSection += `<bx-list-item>${getSVG(rsLevel,reMatch[1])} ${rule.messages["en-US"][msgCode].replace(/</g, "&lt;").replace(/>/, "&gt;")}
-                            <a target="_blank" rel="noopener noreferrer" href="./en-US/${rule.help["en-US"][msgCode]}">Learn More</a></bx-list-item>`
-                        } else {
-                            // console.log(rule.id, msgCode);
-                        }
-                    }
-                    cpRules += `<bx-list-item><strong>${rule.id}</strong>: ${rule.messages["en-US"].group.replace(/</g, "&lt;").replace(/>/, "&gt;")}
-                        <bx-unordered-list nested>
-                        ${reasonSection}
-                        </bx-unordered-list>
-                    </bx-list-item>`
-                }
+                cpRules += `<bx-list-item><strong>${ruleInfo.rule.id}</strong>: ${ruleInfo.rule.messages["en-US"].group.replace(/</g, "&lt;").replace(/>/, "&gt;")}
+                    <bx-unordered-list nested>
+                    ${reasonSection}
+                    </bx-unordered-list>
+                </bx-list-item>`
             }
             cpSections += `<div>
     <h2>${cp.num} ${cp.name} [${cp.wcagLevel}]</h2>
@@ -229,7 +244,7 @@ function buildRuleViewer() {
     ${cpRules.length > 0 ? `<bx-unordered-list style="margin-top: .5rem">${cpRules}</bx-unordered-list>` : ""}
 </div>`;
         }
-        rsSections += `<div id="${ruleset.id}" style="padding: 1rem; display:${ruleset.id === firstRS ? "block": "none"}">
+        rsSections += `<div id="${ruleset.id}" style="padding: 1rem; display:${ruleset.id === rsInfo[0].id ? "block": "none"}">
 ${cpSections}
     </div>`
     }
@@ -249,7 +264,7 @@ ${cpSections}
             function hookEvents() {
                 let mainSwitcher = document.getElementById("rsSwitcher");
                 mainSwitcher.addEventListener("bx-content-switcher-selected", (evt) => {
-                    let oldValue = mainSwitcher.getAttribute("value") || "${firstRS}";
+                    let oldValue = mainSwitcher.getAttribute("value") || "${rsInfo[0].id}";
                     let newValue = mainSwitcher.value;
                     document.getElementById(oldValue).style.display="none";
                     document.getElementById(newValue).style.display="block";
@@ -259,7 +274,7 @@ ${cpSections}
     <head>
     <body onload="hookEvents();">
         <main>
-            <bx-content-switcher value="${firstRS}" id="rsSwitcher">
+            <bx-content-switcher value="${rsInfo[0].id}" id="rsSwitcher">
             ${switcherItems}
             </bx-content-switcher>
             ${rsSections}
