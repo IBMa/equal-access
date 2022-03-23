@@ -20,16 +20,16 @@ export let WCAG21_Input_Autocomplete: Rule = {
     context: "dom:input[autocomplete], dom:textarea[autocomplete], dom:select[autocomplete]",
     help: {
         "en-US": {
+            "group": "WCAG21_Input_Autocomplete.html",
             "Pass_0": "WCAG21_Input_Autocomplete.html",
-            "Fail_1": "WCAG21_Input_Autocomplete.html",
-            "group": "WCAG21_Input_Autocomplete.html"
+            "Fail_1": "WCAG21_Input_Autocomplete.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
-            "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field"
+            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field"
         }
     },
     rulesets: [{
@@ -38,7 +38,8 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    // TODO: ACT: Pass example 8
+    act: "73f2c2",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const cache = {
             "tokensOnOff": ["on", "off"],

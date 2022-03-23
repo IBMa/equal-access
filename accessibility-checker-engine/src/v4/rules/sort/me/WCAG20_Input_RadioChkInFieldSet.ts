@@ -21,30 +21,30 @@ export let WCAG20_Input_RadioChkInFieldSet: Rule = {
     context: "dom:input",
     help: {
         "en-US": {
+            "group": "WCAG20_Input_RadioChkInFieldSet.html",
             "Pass_LoneNogroup": "WCAG20_Input_RadioChkInFieldSet.html",
             "Pass_Grouped": "WCAG20_Input_RadioChkInFieldSet.html",
             "Pass_RadioNoName": "WCAG20_Input_RadioChkInFieldSet.html",
             "Fail_ControlNameMismatch": "WCAG20_Input_RadioChkInFieldSet.html",
-            "Potential_LoneCheckbox": "WCAG20_Input_RadioChkInFieldSet.html",
-            "Potential_UnnamedCheckbox": "WCAG20_Input_RadioChkInFieldSet.html",
             "Fail_NotGroupedOtherGrouped": "WCAG20_Input_RadioChkInFieldSet.html",
             "Fail_NotGroupedOtherNotGrouped": "WCAG20_Input_RadioChkInFieldSet.html",
             "Fail_NotSameGroup": "WCAG20_Input_RadioChkInFieldSet.html",
-            "group": "WCAG20_Input_RadioChkInFieldSet.html"
+            "Potential_LoneCheckbox": "WCAG20_Input_RadioChkInFieldSet.html",
+            "Potential_UnnamedCheckbox": "WCAG20_Input_RadioChkInFieldSet.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Related sets of radio buttons or checkboxes should be programmatically grouped",
             "Pass_LoneNogroup": "{0} grouping not required for a control of this type",
             "Pass_Grouped": "{0} input is grouped with other related controls with the same name",
             "Pass_RadioNoName": "Radio input is not grouped, but passes because it has no name to group with other radio inputs",
             "Fail_ControlNameMismatch": "{0} input found that has the same name, \"{2}\" as a {1} input",
-            "Potential_LoneCheckbox": "Verify that this ungrouped checkbox input is not related to other checkboxes",
-            "Potential_UnnamedCheckbox": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes",
             "Fail_NotGroupedOtherGrouped": "{0} input is not in the group with another {0} with the name \"{1}\"",
             "Fail_NotGroupedOtherNotGrouped": "{0} input and others with the name \"{1}\" are not grouped together",
             "Fail_NotSameGroup": "{0} input is in a different group than another {0} with the name \"{1}\"",
-            "group": "Related sets of radio buttons or checkboxes should be programmatically grouped"
+            "Potential_LoneCheckbox": "Verify that this ungrouped checkbox input is not related to other checkboxes",
+            "Potential_UnnamedCheckbox": "Verify that this un-named, ungrouped checkbox input is not related to other checkboxes"
         }
     },
     rulesets: [{
@@ -53,7 +53,7 @@ export let WCAG20_Input_RadioChkInFieldSet: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (context["aria"].role === 'none' || context["aria"].role === 'presentation') return null;

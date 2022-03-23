@@ -39,7 +39,7 @@ export let RPT_Script_OnclickHTML2: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_FOUR
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // Don't trigger this for SVG element for now until a determination is made (by Rich)

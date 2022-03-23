@@ -39,7 +39,7 @@ export let HAAC_Accesskey_NeedLabel: Rule = {
         "level": eRulePolicy.RECOMMENDATION, 
         "toolkitLevel": eToolkitLevel.LEVEL_ONE 
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = false;

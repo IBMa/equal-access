@@ -39,7 +39,7 @@ export let Rpt_Aria_ValidProperty: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "5f99a7",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let contextAttributes = ruleContext.attributes;

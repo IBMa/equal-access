@@ -30,7 +30,7 @@ export let WCAG20_Html_HasLang: Rule = {
             "Fail_5": `WCAG20_Html_HasLang.html`,
             "Potential_5": `WCAG20_Html_HasLang.html`,
             "Potential_6": `WCAG20_Html_HasLang.html`
-            }
+        }
     },
     messages: {
         "en-US": {
@@ -51,7 +51,28 @@ export let WCAG20_Html_HasLang: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [{
+        "b5c3f8": {
+            "Pass_0": "pass",
+            "Fail_1": "inapplicable",
+            "Fail_2": "inapplicable",
+            "Fail_3": "fail",
+            "Fail_4": "inapplicable",
+            "Fail_5": "inapplicable",
+            "Potential_5": "inapplicable",
+            "Potential_6": "inapplicable"
+        },
+        "5b7ae0": {
+            "Pass_0": "pass",
+            "Fail_1": "inapplicable",
+            "Fail_2": "inapplicable",
+            "Fail_3": "inapplicable",
+            "Fail_4": "fail",
+            "Fail_5": "pass",
+            "Potential_5": "inapplicable",
+            "Potential_6": "inapplicable"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // This rule does not apply inside a presentational frame
         if (AncestorUtil.isPresentationFrame(contextHierarchies)) {

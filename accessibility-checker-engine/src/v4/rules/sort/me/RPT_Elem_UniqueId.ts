@@ -21,18 +21,18 @@ export let RPT_Elem_UniqueId: Rule = {
     context: "dom:*[id]",
     help: {
         "en-US": {
+            "group": "RPT_Elem_UniqueId.html",
             "Pass_0": "RPT_Elem_UniqueId.html",
             "Fail_1": "RPT_Elem_UniqueId.html",
-            "Fail_2": "RPT_Elem_UniqueId.html",
-            "group": "RPT_Elem_UniqueId.html"
+            "Fail_2": "RPT_Elem_UniqueId.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Element 'id' attribute values must be unique within a document",
             "Pass_0": "Rule Passed",
             "Fail_1": "The <{0}> element has the id \"{1}\" that is empty",
-            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use",
-            "group": "Element 'id' attribute values must be unique within a document"
+            "Fail_2": "The <{0}> element has the id \"{1}\" that is already in use"
         }
     },
     rulesets: [{
@@ -41,7 +41,13 @@ export let RPT_Elem_UniqueId: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [{
+        "3ea0c8": {
+            "Pass_0": "pass",
+            "Fail_1": "pass",
+            "Fail_2": "fail"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context

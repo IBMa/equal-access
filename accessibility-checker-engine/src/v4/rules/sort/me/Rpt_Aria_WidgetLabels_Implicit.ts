@@ -24,16 +24,16 @@ export let Rpt_Aria_WidgetLabels_Implicit: Rule = {
     context: "dom:*",
     help: {
         "en-US": {
+            "group": "Rpt_Aria_WidgetLabels_Implicit.html",
             "Pass_0": "Rpt_Aria_WidgetLabels_Implicit.html",
-            "Fail_1": "Rpt_Aria_WidgetLabels_Implicit.html",
-            "group": "Rpt_Aria_WidgetLabels_Implicit.html"
+            "Fail_1": "Rpt_Aria_WidgetLabels_Implicit.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "Interactive component must have a programmatically associated name",
             "Pass_0": "Rule Passed",
-            "Fail_1": "Interactive component with ARIA role '{0}' does not have a programmatically associated name",
-            "group": "Interactive component must have a programmatically associated name"
+            "Fail_1": "Interactive component with ARIA role '{0}' does not have a programmatically associated name"
         }
     },
     rulesets: [{
@@ -42,7 +42,7 @@ export let Rpt_Aria_WidgetLabels_Implicit: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "m6b1q3",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         /* removed the role check role= presentation and role=none since these 2 roles are not in the list of widget type roles */

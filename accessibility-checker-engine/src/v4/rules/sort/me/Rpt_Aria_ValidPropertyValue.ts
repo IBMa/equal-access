@@ -21,16 +21,16 @@ export let Rpt_Aria_ValidPropertyValue: Rule = {
     context: "dom:*",
     help: {
         "en-US": {
+            "group": "Rpt_Aria_ValidPropertyValue.html",
             "Pass_0": "Rpt_Aria_ValidPropertyValue.html",
-            "Fail_1": "Rpt_Aria_ValidPropertyValue.html",
-            "group": "Rpt_Aria_ValidPropertyValue.html"
+            "Fail_1": "Rpt_Aria_ValidPropertyValue.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "ARIA property values must be valid",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The value \"{0}\" specified for attribute '{1}' on element <{2}> is not valid",
-            "group": "ARIA property values must be valid"
+            "Fail_1": "The value \"{0}\" specified for attribute '{1}' on element <{2}> is not valid"
         }
     },
     rulesets: [{
@@ -39,7 +39,7 @@ export let Rpt_Aria_ValidPropertyValue: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "6a7281",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let valueArr = new Array();

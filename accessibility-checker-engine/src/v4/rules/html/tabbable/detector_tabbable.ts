@@ -36,7 +36,7 @@ export let detector_tabbable: Rule = {
         level: eRulePolicy.INFORMATION,
         toolkitLevel: eToolkitLevel.LEVEL_FOUR
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         if (!RPTUtil.isTabbable(ruleContext)) {

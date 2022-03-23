@@ -37,7 +37,7 @@ export let WCAG20_Blink_AlwaysTrigger: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_TWO
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // const ruleContext = context["dom"].node as Element;
         return RuleFail("Fail_1");

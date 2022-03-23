@@ -111,7 +111,7 @@ const valueMap = {
 function updateWithRuleInfo(ruleInfo) {
     if (ruleInfo) {
         if (ruleInfo.message) {
-            let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => msgArgs[matchedNum]);
+            let ruleMessage = ruleInfo.message.replace(/\{(\d+)\}/g, (matchedStr, matchedNum, matchedIndex) => ruleInfo.msgArgs[matchedNum]);
             document.querySelector("#ruleMessage").innerHTML = ruleMessage.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
         }
         setTimeout(() => {

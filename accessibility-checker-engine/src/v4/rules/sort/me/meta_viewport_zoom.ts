@@ -20,16 +20,16 @@ export let meta_viewport_zoom: Rule = {
     context: "dom:meta[name][content]",
     help: {
         "en-US": {
+            "group": "meta_viewport_zoom.html",
             "Pass_0": "meta_viewport_zoom.html",
-            "Potential_1": "meta_viewport_zoom.html",
-            "group": "meta_viewport_zoom.html"
+            "Potential_1": "meta_viewport_zoom.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "The 'meta[name=viewport]' should not prevent the browser zooming the content",
             "Pass_0": "The 'meta[name=viewport]' does not prevent the browser zooming the content",
-            "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user",
-            "group": "The 'meta[name=viewport]' should not prevent the browser zooming the content"
+            "Potential_1": "Confirm the 'meta[name=viewport]' with \"{0}\" can be zoomed by user"
         }
     },
     rulesets: [{
@@ -44,7 +44,12 @@ export let meta_viewport_zoom: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [{
+        "b4f0c3": {
+            "Pass_0": "pass",
+            "Potential_1": "fail"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 

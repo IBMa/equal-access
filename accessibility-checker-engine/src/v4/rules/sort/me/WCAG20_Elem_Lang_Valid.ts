@@ -45,7 +45,30 @@ export let WCAG20_Elem_Lang_Valid: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [{
+        "b5c3f8": {
+            "Pass_0": "pass",
+            "Fail_1": "fail",
+            "Fail_2": "inapplicable",
+            "Fail_3": "inapplicable",
+            "Fail_4": "inapplicable"
+        },
+        "bf051a": {
+            "Pass_0": "pass",
+            "Fail_1": "fail",
+            "Fail_2": "pass",
+            "Fail_3": "fail",
+            "Fail_4": "inapplicable"
+        },
+        // TODO: ACT: Mismatch because they don't check the html element in the same rule
+        "de46e4": {
+            "Pass_0": "pass",
+            "Fail_1": "fail",
+            "Fail_2": "pass",
+            "Fail_3": "inapplicable",
+            "Fail_4": "inapplicable"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();

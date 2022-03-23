@@ -41,7 +41,7 @@ export let combobox_focusable_elements: Rule = {
         "level": eRulePolicy.VIOLATION, 
         "toolkitLevel": eToolkitLevel.LEVEL_ONE 
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});

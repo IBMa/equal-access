@@ -251,7 +251,7 @@ export let element_attribute_deprecated: Rule = {
         "level": eRulePolicy.RECOMMENDATION, 
         "toolkitLevel": eToolkitLevel.LEVEL_ONE 
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 

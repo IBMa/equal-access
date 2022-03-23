@@ -30,8 +30,8 @@ export let Rpt_Aria_ValidRole: Rule = {
         "en-US": {
             "group": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed",
-            "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification",
-            "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification"
+            "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification",
+            "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification"
         }
     },
     rulesets: [{
@@ -40,7 +40,8 @@ export let Rpt_Aria_ValidRole: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    // TODO: ACT: Recheck
+    act: "674b10",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let roleStr = ruleContext.getAttribute("role").trim().toLowerCase();

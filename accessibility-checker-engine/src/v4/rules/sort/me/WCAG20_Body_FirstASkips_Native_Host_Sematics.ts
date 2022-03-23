@@ -39,7 +39,7 @@ export let WCAG20_Body_FirstASkips_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // This rule does not apply inside a presentational frame
         if (AncestorUtil.isPresentationFrame(contextHierarchies)) {
