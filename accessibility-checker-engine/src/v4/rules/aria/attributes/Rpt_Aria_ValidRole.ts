@@ -30,8 +30,8 @@ export let Rpt_Aria_ValidRole: Rule = {
         "en-US": {
             "group": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed",
-            "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification",
-            "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification"
+            "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification",
+            "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification"
         }
     },
     rulesets: [{

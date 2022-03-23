@@ -14,11 +14,11 @@
 import { exec } from "child_process";
 import { existsSync, readFileSync, writeFileSync } from "fs";
 import { Rule as RuleV4 } from "./v4/api/IRule";
-import { Rule as RuleV2 } from "./v2/api/IEngine";
 
 //requiring path and fs modules
 const path = require('path');
 const rulesV4 = require("./v4/rules");
+const rulesets = require("./v4/rulesets");
 
 function myExec(cmd: string) : Promise<string> {
     return new Promise((resolve, reject) => {
@@ -67,6 +67,209 @@ async function buildV4() {
     }
 }
 
+const valueMap = {
+    "VIOLATION": {
+        "Potential": "Needs review",
+        "Fail": "Violation",
+        "Pass": "Pass",
+        "Manual": "Needs review"
+    },
+    "RECOMMENDATION": {
+        "Potential": "Recommendation",
+        "Fail": "Recommendation",
+        "Pass": "Pass",
+        "Manual": "Recommendation"
+    }
+};
+
+function getSVG(rsLevel, ruleLevel) {
+    const val = valueMap[rsLevel][ruleLevel];
+    let icon = "";
+    if (val === "Violation") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
+<style type="text/css">
+.vst0{fill:none;}
+.vst1{fill:#A2191F;}
+.vst2{fill:#FFFFFF;fill-opacity:0;}
+</style>
+<rect class="vst0" width="16" height="16"/>
+<path class="vst1" d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
+<path class="vst2" d="M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z"/>
+</svg>`;
+    if (val === "Needs review") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
+<style type="text/css">
+.nrst0{fill:none;}
+.nrst1{fill:#F1C21B;}
+</style>
+<rect class="nrst0" width="16" height="16"/>
+<path class="nrst1" d="M14.9,13.3l-6.5-12C8.3,1,8,0.9,7.8,1.1c-0.1,0-0.2,0.1-0.2,0.2l-6.5,12c-0.1,0.1-0.1,0.3,0,0.5
+C1.2,13.9,1.3,14,1.5,14h13c0.2,0,0.3-0.1,0.4-0.2C15,13.6,15,13.4,14.9,13.3z M7.4,4h1.1v5H7.4V4z M8,11.8c-0.4,0-0.8-0.4-0.8-0.8
+s0.4-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,11.8,8,11.8z"/>
+<g><g><g>
+<rect x="7.45" y="4" width="1.1" height="5"/>
+</g></g><g><g>
+<circle cx="8" cy="11" r="0.8"/>
+</g></g></g>
+</svg>`;
+    if (val === "Recommendation") icon = `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+width="16px" height="16px" viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve" aria-hidden="true">
+<style type="text/css">
+.st0{fill:none;}
+.st1{fill:#0043CE;}
+.st2{fill:#FFFFFF;}
+.st3{font-family:'IBMPlexSerif';}
+.st4{font-size:12.9996px;}
+</style>
+<rect class="st0" width="16" height="16"/>
+<path class="st1" d="M14,15H2c-0.6,0-1-0.4-1-1V2c0-0.6,0.4-1,1-1h12c0.6,0,1,0.4,1,1v12C15,14.6,14.6,15,14,15z"/>
+<text transform="matrix(1 0 0 1 5.9528 12.5044)" class="st2 st3 st4">i</text>
+</svg>`;
+    return `<span class="issueLevel">${icon}&nbsp;${val}</span>`;
+}
+
+function processRules() {
+    let retVal = [];
+    for (const ruleset of rulesets.a11yRulesets) {
+        if (ruleset.type === "extension") continue;
+        let rsInfo = {
+            id: ruleset.id,
+            name: ruleset.name,
+            checkpoints: []
+        }
+        for (const cp of ruleset.checkponts) {
+            let cpInfo = {
+                num: cp.num,
+                name: cp.name,
+                wcagLevel: cp.wcagLevel,
+                summary: cp.summary,
+                rules: []
+            }
+            for (const ruleId in rulesV4) {
+                let includeRule = false;
+                let rule = rulesV4[ruleId];
+                let rsLevel = "";
+                let toolkitLevel;
+                for (const rsInfo of rule.rulesets) {
+                    if ((rsInfo.id === ruleset.id || rsInfo.id.includes(ruleset.id)) && (rsInfo.num === cp.num || rsInfo.num.includes(cp.num))) {
+                        includeRule = true;
+                        rsLevel = rsInfo.level;
+                        toolkitLevel = rsInfo.toolkitLevel;
+                        break;
+                    }
+                }
+                if (includeRule) {
+                    cpInfo.rules.push({
+                        level: rsLevel,
+                        toolkitLevel: toolkitLevel,
+                        rule: rule
+                    });
+                }
+            }
+            // cpInfo.rules.sort((a,b) => {
+            //     if (a.level === b.level) return 0;
+            //     if (a.level === "VIOLATION") return -1;
+            //     if (b.level === "VIOLATION") return 1;
+            //     if (a.level === ""
+            // }})
+            rsInfo.checkpoints.push(cpInfo);
+        }
+        retVal.push(rsInfo);
+    }
+    return retVal;
+}
+
+function buildRuleViewer() {
+    let switcherItems = "";
+    let firstRS;
+    let rsSections = "";
+    for (const ruleset of rulesets.a11yRulesets) {
+        if (ruleset.type === "extension") continue;
+        firstRS = firstRS || ruleset.id;
+        switcherItems += `<bx-content-switcher-item value="${ruleset.id}">${ruleset.name}</bx-content-switcher-item>`;
+
+        let cpSections = "";
+        for (const cp of ruleset.checkpoints) {
+            let cpRules = "";
+            for (const ruleId in rulesV4) {
+                let includeRule = false;
+                let rule = rulesV4[ruleId];
+                let rsLevel = "";
+                for (const rsInfo of rule.rulesets) {
+                    if ((rsInfo.id === ruleset.id || rsInfo.id.includes(ruleset.id)) && (rsInfo.num === cp.num || rsInfo.num.includes(cp.num))) {
+                        includeRule = true;
+                        rsLevel = rsInfo.level;
+                        break;
+                    }
+                }
+                if (includeRule) {
+                    let reasonSection = "";
+                    let src = rule.run.toString();
+                    for (const msgCode in rule.messages["en-US"]) {
+                        if (msgCode === "group") continue;
+                        let re = new RegExp(`\\.Rule([^()) ]+)[ ()]+["']${msgCode}["']`);
+                        let reMatch = re.exec(src);
+                        if (reMatch && reMatch[1] !== "Pass") {
+                            reasonSection += `<bx-list-item>${getSVG(rsLevel,reMatch[1])} ${rule.messages["en-US"][msgCode].replace(/</g, "&lt;").replace(/>/, "&gt;")}
+                            <a target="_blank" rel="noopener noreferrer" href="./en-US/${rule.help["en-US"][msgCode]}">Learn More</a></bx-list-item>`
+                        } else {
+                            // console.log(rule.id, msgCode);
+                        }
+                    }
+                    cpRules += `<bx-list-item><strong>${rule.id}</strong>: ${rule.messages["en-US"].group.replace(/</g, "&lt;").replace(/>/, "&gt;")}
+                        <bx-unordered-list nested>
+                        ${reasonSection}
+                        </bx-unordered-list>
+                    </bx-list-item>`
+                }
+            }
+            cpSections += `<div>
+    <h2>${cp.num} ${cp.name} [${cp.wcagLevel}]</h2>
+    <div>${cp.summary}</div>
+    ${cpRules.length > 0 ? `<bx-unordered-list style="margin-top: .5rem">${cpRules}</bx-unordered-list>` : ""}
+</div>`;
+        }
+        rsSections += `<div id="${ruleset.id}" style="padding: 1rem; display:${ruleset.id === firstRS ? "block": "none"}">
+${cpSections}
+    </div>`
+    }
+    let rulesHTML = `<html lang="en-US">
+    <head>
+        <title>Accessibility Checker Rules</title>
+        <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+        <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+        <link rel="stylesheet" href="./common/rules.css" />
+        <script type="module">
+            import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+            import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+            import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/content-switcher.min.js";
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script>
+            function hookEvents() {
+                let mainSwitcher = document.getElementById("rsSwitcher");
+                mainSwitcher.addEventListener("bx-content-switcher-selected", (evt) => {
+                    let oldValue = mainSwitcher.getAttribute("value") || "${firstRS}";
+                    let newValue = mainSwitcher.value;
+                    document.getElementById(oldValue).style.display="none";
+                    document.getElementById(newValue).style.display="block";
+                })
+            }
+        </script>
+    <head>
+    <body onload="hookEvents();">
+        <main>
+            <bx-content-switcher value="${firstRS}" id="rsSwitcher">
+            ${switcherItems}
+            </bx-content-switcher>
+            ${rsSections}
+        </main>
+    </body>
+</html>`
+    writeFileSync(path.join(__dirname, '..', 'dist', "help", "rules.html"), rulesHTML);
+}
+
 (async () => {
     await buildV4();
+    await buildRuleViewer();
 })();
