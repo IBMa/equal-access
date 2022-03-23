@@ -20,20 +20,20 @@ export let HAAC_Aria_ImgAlt: Rule = {
     context: "aria:img",
     help: {
         "en-US": {
+            "group": "HAAC_Aria_ImgAlt.html",
             "Pass_0": "HAAC_Aria_ImgAlt.html",
             "Fail_1": "HAAC_Aria_ImgAlt.html",
             "Fail_2": "HAAC_Aria_ImgAlt.html",
-            "Fail_3": "HAAC_Aria_ImgAlt.html",
-            "group": "HAAC_Aria_ImgAlt.html"
+            "Fail_3": "HAAC_Aria_ImgAlt.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "An element with \"img\" role must have a non-empty label",
             "Pass_0": "Rule Passed",
             "Fail_1": "Element with \"img\" role has no label",
             "Fail_2": "Element with \"img\" role has no label or an empty label",
-            "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'",
-            "group": "An element with \"img\" role must have a non-empty label"
+            "Fail_3": "Element with \"img\" role missing non-empty 'aria-label' or 'aria-labelledby'"
         }
     },
     rulesets: [{
@@ -42,7 +42,14 @@ export let HAAC_Aria_ImgAlt: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: ["23a2a8", {
+        "7d6734": {
+            "Pass_0": "pass",
+            "Fail_1": "inapplicable",
+            "Fail_2": "fail",
+            "Fail_3": "inapplicable"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule

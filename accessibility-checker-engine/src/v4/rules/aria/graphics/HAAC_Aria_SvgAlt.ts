@@ -20,20 +20,20 @@ export let HAAC_Aria_SvgAlt: Rule = {
     context: "aria:graphics-document,aria:graphics-symbol",
     help: {
         "en-US": {
+            "group": "HAAC_Aria_SvgAlt.html",
             "Pass_0": "HAAC_Aria_SvgAlt.html",
             "Fail_1": "HAAC_Aria_SvgAlt.html",
             "Fail_2": "HAAC_Aria_SvgAlt.html",
-            "Fail_3": "HAAC_Aria_SvgAlt.html",
-            "group": "HAAC_Aria_SvgAlt.html"
+            "Fail_3": "HAAC_Aria_SvgAlt.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "An element with a graphics role must have a non-empty label",
             "Pass_0": "Rule Passed",
             "Fail_1": "Element with \"{0}\" graphics role has no label",
             "Fail_2": "Element with \"{0}\" graphics role has no label or an empty label",
-            "Fail_3": "Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'",
-            "group": "An element with a graphics role must have a non-empty label"
+            "Fail_3": "Element with \"{0}\" graphics role missing non-empty 'aria-label' or 'aria-labelledby'"
         }
     },
     rulesets: [{
@@ -42,7 +42,14 @@ export let HAAC_Aria_SvgAlt: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [{
+        "7d6734": {
+            "Pass_0": "pass",
+            "Fail_1": "inapplicable",
+            "Fail_2": "fail",
+            "Fail_3": "inapplicable"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 

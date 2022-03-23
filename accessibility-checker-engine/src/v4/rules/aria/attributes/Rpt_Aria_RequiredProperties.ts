@@ -41,7 +41,7 @@ export let Rpt_Aria_RequiredProperties: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: "4e8ab6",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let attrNameArr = new Array();

@@ -38,7 +38,7 @@ export let Rpt_Aria_MultipleContentinfoInSiblingSet_Implicit: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //find out if <footer> element has siblings as <footer> has implicit contentinfo role

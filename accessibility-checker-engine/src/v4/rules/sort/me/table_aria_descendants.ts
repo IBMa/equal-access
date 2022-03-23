@@ -35,7 +35,7 @@ export let table_aria_descendants: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         let parentRole = contextHierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
         return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);

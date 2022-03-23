@@ -38,7 +38,7 @@ export let Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // Don't trigger this for SVG element for now until a determination is made (by Rich)

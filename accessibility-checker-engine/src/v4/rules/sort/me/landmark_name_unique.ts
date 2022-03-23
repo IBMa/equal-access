@@ -47,7 +47,7 @@ export let landmark_name_unique: Rule = {
         "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // TODO do I need to fiter out bad contentinfo nodes: The footer element is not a contentinfo landmark when it is a descendant of the following HTML5 sectioning elements: https://www.w3.org/TR/2017/NOTE-wai-aria-practices-1.1-20171214/examples/landmarks/HTML5.html
         const ruleContext = context["dom"].node as Element;
@@ -69,7 +69,12 @@ export let landmark_name_unique: Rule = {
 
         // Begining formCache work
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
-        let formCache = RPTUtil.getCache(
+        let formCache : {
+            navigationNodes: any[],
+            navigationNodesComputedLabels: string[],
+            navigationNodesParents: any[],
+            navigationNodesMatchFound: string[]
+        } = RPTUtil.getCache(
             ruleContext.ownerDocument,
             "landmark_name_unique",
             null
@@ -80,14 +85,14 @@ export let landmark_name_unique: Rule = {
                 navigationNodes: [],
                 navigationNodesComputedLabels: [],
                 navigationNodesParents: [],
-                navigationNodesMatchFound: [],
+                navigationNodesMatchFound: []
             };
             let navigationNodesTemp = ownerDocument.querySelectorAll(
                 'aside,[role="complementary"], footer,[role="contentinfo"], header,[role="banner"], main,[role="main"], nav,[role="navigation"], form,[role="form"], section,[role="region"],[role="search"]'
             );
             let navigationNodes = Array.from(navigationNodesTemp);
             let navigationNodesParents = [];
-            let navigationNodesMatchFound = [];
+            let navigationNodesMatchFound : string[] = [];
 
             // This block of code filters out any nav elements that are under an dialog. As those are not ones we want to test against as we consider dialogs are separate locations from the rest of the main page.    
             let navigationNodesWithoutDialogs = [];
@@ -277,26 +282,16 @@ export let landmark_name_unique: Rule = {
         if (indexToCheck === -1) {
             return null;
         }
-        if (
-            formCache.navigationNodesMatchFound[indexToCheck].includes(
-                "Pass_0"
-            )
-        ) {
-            return RulePass(
-                formCache.navigationNodesMatchFound[indexToCheck],
+        if (formCache.navigationNodesMatchFound[indexToCheck] === "Pass_0") {
+            return RulePass("Pass_0",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]
                     ),
                 ]
             );
-        } else if (
-            formCache.navigationNodesMatchFound[indexToCheck].includes(
-                "Fail_0"
-            )
-        ) {
-            return RuleFail(
-                formCache.navigationNodesMatchFound[indexToCheck],
+        } else if (formCache.navigationNodesMatchFound[indexToCheck] === "Fail_0") {
+            return RuleFail("Fail_0",
                 [
                     ARIAMapper.nodeToRole(
                         formCache.navigationNodes[indexToCheck]

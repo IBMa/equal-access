@@ -21,20 +21,20 @@ export let WCAG20_Doc_HasTitle: Rule = {
     context: "dom:html",
     help: {
         "en-US": {
+            "group": "WCAG20_Doc_HasTitle.html",
             "Pass_0": "WCAG20_Doc_HasTitle.html",
             "Fail_1": "WCAG20_Doc_HasTitle.html",
             "Fail_2": "WCAG20_Doc_HasTitle.html",
-            "Fail_3": "WCAG20_Doc_HasTitle.html",
-            "group": "WCAG20_Doc_HasTitle.html"
+            "Fail_3": "WCAG20_Doc_HasTitle.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "The page should have a title that correctly identifies the subject of the page",
             "Pass_0": "Rule Passed",
             "Fail_1": "Missing <head> element so there can be no <title> element present",
             "Fail_2": "Missing <title> element in <head> element",
-            "Fail_3": "The <title> element is empty (no innerHTML)",
-            "group": "The page should have a title that correctly identifies the subject of the page"
+            "Fail_3": "The <title> element is empty (no innerHTML)"
         }
     },
     rulesets: [{
@@ -43,7 +43,14 @@ export let WCAG20_Doc_HasTitle: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [{
+        "2779a5": {
+            "Pass_0": "pass",
+            "Fail_1": "pass",
+            "Fail_2": "fail",
+            "Fail_3": "fail"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         // This rule does not apply inside a presentational frame
         if (AncestorUtil.isFrame(contextHierarchies)) {

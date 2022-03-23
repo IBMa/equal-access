@@ -22,6 +22,7 @@ export let combobox_popup_reference: Rule = {
     dependencies: ["combobox_version"],
     help: {
         "en-US": {
+            "group": "combobox_popup_reference.html",
             "Pass_expanded": "combobox_popup_reference.html",
             "Pass_collapsed": "combobox_popup_reference.html",
             "Fail_1.0_missing_owns": "combobox_popup_reference.html",
@@ -29,12 +30,12 @@ export let combobox_popup_reference: Rule = {
             "Fail_1.0_popup_reference_missing": "combobox_popup_reference.html",
             "Fail_1.2_popup_reference_missing": "combobox_popup_reference.html",
             "Fail_combobox_expanded_hidden": "combobox_popup_reference.html",
-            "Fail_combobox_collapsed_visible": "combobox_popup_reference.html",
-            "group": "combobox_popup_reference.html"
+            "Fail_combobox_collapsed_visible": "combobox_popup_reference.html"
         }
     },
     messages: {
         "en-US": {
+            "group": "The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value",
             "Pass_expanded": "The combobox popup referenced by 'aria-controls' (ARIA 1.2) or 'aria-owns' (ARIA 1.0) exists and is visible",
             "Pass_collapsed": "The combobox popup in its collapsed state does not reference any visible popup as required",
             "Fail_1.0_missing_owns": "The 'aria-owns' attribute of the expanded combobox is missing",
@@ -42,8 +43,7 @@ export let combobox_popup_reference: Rule = {
             "Fail_1.0_popup_reference_missing": "The 'aria-owns' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value",
             "Fail_1.2_popup_reference_missing": "The 'aria-controls' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value",
             "Fail_combobox_expanded_hidden": "The combobox 'aria-expanded' attribute is true, but the combobox popup is not visible",
-            "Fail_combobox_collapsed_visible": "The combobox 'aria-expanded' attribute is false, but the combobox popup is visible",
-            "group": "The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value"
+            "Fail_combobox_collapsed_visible": "The combobox 'aria-expanded' attribute is false, but the combobox popup is visible"
         }
     },
     rulesets: [{
@@ -52,7 +52,18 @@ export let combobox_popup_reference: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [{
+        "4e8ab6": {
+            "Pass_expanded": "pass",
+            "Pass_collapsed": "pass",
+            "Fail_1.0_missing_owns": "inapplicable",
+            "Fail_1.2_missing_controls": "fail",
+            "Fail_1.0_popup_reference_missing": "inapplicable",
+            "Fail_1.2_popup_reference_missing": "fail",
+            "Fail_combobox_expanded_hidden": "inapplicable",
+            "Fail_combobox_collapsed_visible": "inapplicable"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});

@@ -38,7 +38,7 @@ export let WCAG20_Script_FocusBlurs: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: {},
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let passed = ruleContext.getAttribute("onfocus").indexOf(".blur(") == -1;
