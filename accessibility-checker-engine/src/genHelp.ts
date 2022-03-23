@@ -172,6 +172,7 @@ function processRules() {
                         let reMatch = re.exec(rule.run.toString());
                         if (reMatch && reMatch[1] !== "Pass") {
                             ruleInfo.reasons.push({
+                                id: msgCode,
                                 message: rule.messages["en-US"][msgCode],
                                 help: rule.help["en-US"][msgCode],
                                 type: reMatch[1]
@@ -229,8 +230,14 @@ function buildRuleViewer() {
             for (const ruleInfo of cp.rules) {
                 let reasonSection = "";
                 for (const reasonInfo of ruleInfo.reasons) {
-                    reasonSection += `<bx-list-item>${getSVG(ruleInfo.level,reasonInfo.type)} &mdash; ${reasonInfo.message.replace(/</g, "&lt;").replace(/>/, "&gt;")}
-                        <a target="_blank" rel="noopener noreferrer" href="./en-US/${reasonInfo.help}">Learn More</a></bx-list-item>`
+                    let helpDetail = {
+                        message: reasonInfo.message,
+                        msgArgs: ["{0}", "{1}", "{3}", "{4}"],
+                        value: [ruleInfo.level, reasonInfo.type.toUpperCase()],
+                        reasonId: reasonInfo.id
+                    }
+                    reasonSection += `<bx-list-item>${getSVG(ruleInfo.level,reasonInfo.type)} &mdash; 
+                        <a target="_blank" rel="noopener noreferrer" href="./en-US/${reasonInfo.help}#${encodeURIComponent(JSON.stringify(helpDetail))}">${reasonInfo.message.replace(/</g, "&lt;").replace(/>/, "&gt;")}</a></bx-list-item>`
                 }
                 cpRules += `<bx-list-item><strong>${ruleInfo.rule.id}</strong>: ${ruleInfo.rule.messages["en-US"].group.replace(/</g, "&lt;").replace(/>/, "&gt;")}
                     <bx-unordered-list nested>
