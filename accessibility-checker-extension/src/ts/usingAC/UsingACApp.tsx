@@ -30,6 +30,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
   render() {
     const manifest = chrome.runtime.getManifest();
+    function displayVersion() {
+        let extVersion = manifest.version;
+        if (extVersion.endsWith(".9999")) {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+        } else {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
+        }
+    }
 
     return (
       <div className="bx--grid bx--grid--full-width">
@@ -179,7 +187,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
             aria-label="User guide details"
           >
             <h1>IBM Accessibility Checker user guide</h1>
-            <div className="versionDec">Version {manifest.version}</div>
+            <div className="versionDec">Version {displayVersion()}</div>
 
             <p>
               The IBM Equal Access Accessibility Checker is a browser extension
