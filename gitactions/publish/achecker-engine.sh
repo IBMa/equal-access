@@ -13,3 +13,4 @@ if [ -n "${GITHUB_REF:10}" ]; then
         npm dist-tag add accessibility-checker-engine@${NPM_VERSION} next
     fi;
 fi
+
