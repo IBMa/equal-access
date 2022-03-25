@@ -9,7 +9,7 @@
         "build": "npm run prebuild && npx webpack --config webpack.config.js",
         "build-debug": "npm run prebuild && npx webpack --config webpack-debug.config.js",
         "prebuild": "ts-node src/genRuleIndex.ts",
-        "test": "karma start",
+        "test": "npm run prebuild && karma start",
         "serve": "serve .",
         "build:help": "ts-node src/genHelp.ts",
         "build:all": "npm run build && npm run build-node && npm run build-debug && npm run build-node-debug && npm run build:help && shx cp ./src/package.json ./dist/ && shx cp ./README-NPM.md ./dist/README.md"
