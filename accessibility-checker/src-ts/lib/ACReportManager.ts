@@ -942,7 +942,7 @@ export class ACReportManager {
             differences = differences.filter(difference => !(
                 difference.kind === "E" 
                 && difference.path.length === 4 
-                && difference.path[3] === "bounds" 
+                && difference.path[2] === "bounds" 
                 && Math.abs(difference.lhs-difference.rhs) <= 1));
             if (differences.length === 0) return undefined;
         }
