@@ -204,7 +204,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACEngineRootFolder, "ACHelper.js")));
 
     // Load a deep-diff util from a node module into the browser, so we can use a well defined diff tool
-    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(require.resolve('deep-diff'), '..','releases', 'deep-diff-0.3.4.min.js')));
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(require.resolve('deep-diff'), '..','dist', 'deep-diff.min.js')));
 
     ACCommon.log.debug("END 'ACEngineLoaderAndConfig' function");
 }

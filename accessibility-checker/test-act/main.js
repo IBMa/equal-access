@@ -19,7 +19,7 @@ const fs = require("fs");
             request.continue();
     });
     pupPage.on('console', message =>
-        console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+        !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
     await pupPage.setCacheEnabled(true);
     await pupPage.setViewport({ width: 1280, height: 1024 });
 

@@ -42,8 +42,14 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         if (report) {
             for (let result of report.results) {
                 let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
+                let version = message.archiveVersion || "latest";
                 if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
                     engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                } else {
+                    engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
+                    if (engineHelp.includes("//able.ibm.com/")) {
+                        engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
+                    }
                 }
                 let minIssue = {
                     message: result.message,

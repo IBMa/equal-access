@@ -1,0 +1,88 @@
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+
+export let WCAG20_Label_RefValid: Rule = {
+    id: "WCAG20_Label_RefValid",
+    context: "dom:label[for]",
+    help: {
+        "en-US": {
+            "Pass_0": "WCAG20_Label_RefValid.html",
+            "Fail_1": "WCAG20_Label_RefValid.html",
+            "group": "WCAG20_Label_RefValid.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "Pass_0": "Rule Passed",
+            "Fail_1": "The value \"{0}\" of the 'for' attribute is not the 'id' of a valid <input> element",
+            "group": "The 'for' attribute must reference a non-empty, unique 'id' attribute of an <input> element"
+        }
+    },
+    rulesets: [{
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "num": ["1.3.1"],
+        "level": eRulePolicy.VIOLATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+    }],
+    act: [],
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        let id = ruleContext.getAttribute("for");
+        let passed = false;
+        let target = FragmentUtil.getById(ruleContext, id);
+        if (target) {
+            passed = true;
+            // handles null and undefined
+            if (!target.hasAttribute("role")) {
+                // Fail if we're pointing at something that is labelled by another mechanism
+                let nodeName = target.nodeName.toLowerCase();
+                passed = nodeName == "input" || nodeName == "select" || nodeName == "textarea"
+                    || nodeName == "button" || nodeName == "datalist"
+                    || nodeName == "optgroup" || nodeName == "option"
+                    || nodeName == "keygen" || nodeName == "output"
+                    || nodeName == "progress" || nodeName == "meter"
+                    || nodeName == "fieldset" || nodeName == "legend";
+                if (target.nodeName.toLowerCase() == "input" && target.hasAttribute("type")) {
+                    let type = target.getAttribute("type").toLowerCase();
+                    passed = type == "text" || type == "password" || type == "file" ||
+                        type == "checkbox" || type == "radio" ||
+                        type == "hidden" || type == "search" || type == "tel" || type == "url" || type == "email" ||  //HTML 5
+                        type == "date" || type == "number" || type == "range" || type == "image" || //HTML 5
+                        type == "time" || type == "color" ||  // HTML 5
+                        type == "datetime" || type == "month" || type == "week"; //HTML5.1
+                }
+            }
+
+            // Add one more check to make sure the target element is NOT hidden, in the case the target is hidden
+            // flag a violation regardless of what the Check Hidden Content setting is.
+            if (passed && !RPTUtil.isNodeVisible(target)) {
+                passed = false;
+            }
+        }
+        let retToken: string[] = [];
+        if (!passed) {
+            retToken.push(id);
+        }
+        //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [retToken]);
+        if (!passed) {
+            return RuleFail("Fail_1", retToken);
+        } else {
+            return RulePass("Pass_0");
+        }
+    }
+}

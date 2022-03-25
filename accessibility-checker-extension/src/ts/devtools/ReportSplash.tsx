@@ -28,6 +28,14 @@ interface IReportSplashProps {
 export default class ReportSplash extends React.Component<IReportSplashProps, IReportSplashState> {
     render() {
         const manifest = chrome.runtime.getManifest();
+        function displayVersion() {
+            let extVersion = manifest.version;
+            if (extVersion.endsWith(".9999")) {
+                return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+            } else {
+                return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
+            }
+        }
         return <aside className="reportSplash">
             <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
                 <div className="bx--row">
@@ -35,7 +43,7 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
                         <h2>
                             <div className="title">IBM <span style={{ fontWeight: 600 }}>Accessibility</span></div>
                             <div className="subtitle">Equal Access Accessibility Checker</div>
-                            <div className="version">Version {manifest.version}</div>
+                            <div className="version">Version {displayVersion()}</div>
                         </h2>
                         <div className="description">
                             This extension helps you identify accessibility issues and understand how to fix them. Use the <span style={{ fontWeight: 600 }}>'Accessibility Checker' tab in 

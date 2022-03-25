@@ -80,6 +80,6 @@ export class LangUtil {
             primary2 = primary2.split("-")[0];
         }
 
-        return primary1 === primary2;
+        return primary1.toLowerCase() === primary2.toLowerCase();
     }
 }

@@ -496,10 +496,18 @@ export class ARIAMapper extends CommonMapper {
             //   Compute the text alternative of the current node beginning with step 2. Set the result 
             //     to that text alternative.
             //   Append the result to the accumulated text.
-            let walkChild = elem.firstChild;
-            while (walkChild) {
-                accumulated += " " + ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
-                walkChild = walkChild.nextSibling;
+            if (elem.nodeName.toUpperCase() === "SLOT") {
+                for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
+                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
+                    accumulated += " " + nextChildContent;
+                }
+            } else {
+                let walkChild = elem.firstChild;
+                while (walkChild) {
+                    let nextChildContent = ARIAMapper.computeNameHelp(walkId, walkChild, labelledbyTraverse, true);
+                    accumulated += " " + nextChildContent;
+                    walkChild = walkChild.nextSibling;
+                }
             }
 
             let after = null;

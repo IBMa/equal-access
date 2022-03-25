@@ -195,4 +195,15 @@ try {
     static getChecker() {
         return checker;
     }
+
+    static getRules = async function() {
+        if (!checker) {
+            await ACEngineManager.loadEngineLocal();
+        }
+        let retVal = [];
+        for (const ruleId in checker.engine.ruleMap) {
+            retVal.push(checker.engine.ruleMap[ruleId]);
+        }
+        return retVal;
+    }
 }
