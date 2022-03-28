@@ -61,6 +61,10 @@
             "0": "Interactive WAI_ARIA UI components must provide keyboard access",
             "Pass_0": "Rule Passed"
         },
+        "Rpt_Aria_MultipleDocumentRoles": {
+            "0": "All elements with a \"document\" role must have unique labels",
+            "Pass_0": "Rule Passed"
+        },
         "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
             "0": "All content must reside within an element with a landmark role",
             "Pass_0": "Rule Passed"
@@ -110,7 +114,7 @@
             "Pass_0": "Rule Passed"
         }
     },
-    "numExecuted": 119,
+    "numExecuted": 120,
     "results": [
         {
             "apiArgs": [],
@@ -2436,6 +2440,32 @@
         {
             "apiArgs": [],
             "bounds": {
+                "height": 213,
+                "left": 0,
+                "top": 0,
+                "width": 27332
+            },
+            "category": "Accessibility",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]",
+                "dom": "/html[1]"
+            },
+            "reasonId": "Pass_0",
+            "ruleId": "Rpt_Aria_MultipleDocumentRoles",
+            "ruleTime": 1,
+            "snippet": "<html lang=\"en\">",
+            "value": [
+                "VIOLATION",
+                "PASS"
+            ],
+            "ignored": false,
+            "level": "pass"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
                 "height": 74,
                 "left": 16,
                 "top": 95,
@@ -3251,7 +3281,7 @@
             "recommendation": 0,
             "potentialrecommendation": 0,
             "manual": 0,
-            "pass": 118,
+            "pass": 119,
             "ignored": 0
         },
         "scanTime": 33,
