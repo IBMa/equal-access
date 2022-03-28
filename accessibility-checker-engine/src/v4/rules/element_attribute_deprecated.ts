@@ -17,7 +17,7 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 const DEPRECATED_ELEMENTS = [
     /** original */
-    "applet", "basefont", "center", "dir", "font", "isindex", "listing", "menu",
+    "applet", "basefont", "center", "dir", "font", "isindex", "listing",
     "plaintext", "spacer", "s", "strike", "u", "xmp",
     /** added from https://dev.w3.org/html5/pf-summary/obsolete.html */
     "acronym", "frame", "frameset", "noframes", "noembed", "big", "blink", "marquee", "tt",
