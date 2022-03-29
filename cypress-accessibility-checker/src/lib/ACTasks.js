@@ -66,9 +66,9 @@ let ACTasks = module.exports = {
     },
 
     onRunComplete: () => {
-        ACTasks.reporterHTML.onRunComplete();
-        ACTasks.reporterJSON.onRunComplete();
-        ACTasks.reporterCSV.onRunComplete();
+        ACTasks.reporterHTML && ACTasks.reporterHTML.onRunComplete();
+        ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
+        ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
         return true;
     },
 
