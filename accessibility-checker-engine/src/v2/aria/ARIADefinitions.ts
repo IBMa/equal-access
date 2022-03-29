@@ -2511,6 +2511,55 @@ export class ARIADefinitions {
         }
     } // end of documentConformanceRequirementSpecialTags
 
+    // map aria attribute to corresponding native attribute, apply to any element applicable
+    // refer to https://w3c.github.io/html-aria/
+    static nativeCounterparts: {
+        [ariaAttr: string] : {
+            ariaAttribute: string[],
+            checkParent?: boolean | false
+        } 
+    } =  {
+        "aria-disabled": {
+            ariaAttribute: ["disabled", "style.visibility", "style.display"],
+            checkParent: true
+        },    
+        "aria-hidden": {
+            ariaAttribute: ["hidden"],
+            checkParent: true
+        },    
+        "aria-placeholder": {
+            ariaAttribute: ["placeholder"],
+        },    
+        "aria-valuemax": {
+            ariaAttribute: ["max"]
+        },    
+        "aria-valuemin": {
+            ariaAttribute: ["min"]
+        },    
+        "aria-readonly=true": {
+            ariaAttribute: ["readonly"]
+        },
+        "aria-readonly=false": {
+            ariaAttribute: ["contenteditable=true"],
+            checkParent: true
+        },
+        "aria-required": {
+            ariaAttribute: ["required"]
+        },        
+        "aria-colspan": {
+            ariaAttribute: ["colspan"]
+        },
+        "aria-rowspan": {
+            ariaAttribute: ["rowspan"]
+        },
+        "aria-autocomplete=none": {
+            ariaAttribute: ["autocomplete!=off"]
+        },
+        "aria-autocomplete!=none": {
+            ariaAttribute: ["autocomplete=off"]
+        }  
+    }
+
     static containers = []
 };
 
