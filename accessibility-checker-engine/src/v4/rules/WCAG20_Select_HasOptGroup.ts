@@ -1,0 +1,59 @@
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+
+export let WCAG20_Select_HasOptGroup: Rule = {
+    id: "WCAG20_Select_HasOptGroup",
+    context: "dom:select",
+    help: {
+        "en-US": {
+            "Pass_0": "WCAG20_Select_HasOptGroup.html",
+            "Potential_1": "WCAG20_Select_HasOptGroup.html",
+            "group": "WCAG20_Select_HasOptGroup.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "Pass_0": "Rule Passed",
+            "Potential_1": "Group of related options may need <optgroup>",
+            "group": "Groups of related options within a selection list should be grouped with <optgroup>"
+        }
+    },
+    rulesets: [{
+        "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+        "num": ["1.3.1"],
+        "level": eRulePolicy.RECOMMENDATION,
+        "toolkitLevel": eToolkitLevel.LEVEL_THREE
+    }],
+    act: [],
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const validateParams = {
+            paramNumOptions: {
+                value: 10,
+                type: "integer"
+            }
+        }
+        const ruleContext = context["dom"].node as Element;
+        // Handle the cases where optgroup is hidden, which should trigger a violations
+        // but in the case that Check hidden option is set then should not trigger a violation.
+        let passed = RPTUtil.getChildByTagHidden(ruleContext, "optgroup", false, true).length > 0 ||
+            RPTUtil.getChildByTagHidden(ruleContext, "option", false, true).length <=
+            validateParams.paramNumOptions.value;
+        if (passed) return RulePass("Pass_0");
+        if (!passed) return RulePotential("Potential_1");
+
+    }
+}
