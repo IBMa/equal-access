@@ -120,7 +120,7 @@ function processACConfig(ACConfig) {
         var baseA11yServerURL = ACConfig.baseA11yServerURL ? ACConfig.baseA11yServerURL : constants.baseA11yServerURL;
 
         // Get and parse the rule archive.
-        var ruleArchiveFile = `${baseA11yServerURL}/archives.json`;
+        let ruleArchiveFile = `${baseA11yServerURL}${baseA11yServerURL.includes("jsdelivr.net")?"@next":""}/archives.json`;
         let ruleArchiveParse;
 
         constants.DEBUG && console.log("Fetching archive");
@@ -131,11 +131,13 @@ function processACConfig(ACConfig) {
                 if (ruleArchiveParse && ruleArchiveParse.length > 0) {
                     constants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
                     ACConfig.ruleArchiveSet = ruleArchiveParse;
-                    var ruleArchive = ACConfig.ruleArchive;
-                    var ruleArchivePath = null;
-                    for (var i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
+                    let ruleArchive = ACConfig.ruleArchive;
+                    let ruleArchivePath = null;
+                    let ruleArchiveVersion = null;
+                    for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
                         if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                             ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                            ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                             ACConfig.ruleArchive = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                             break;
                         }
@@ -150,8 +152,12 @@ function processACConfig(ACConfig) {
                     process.exit(-1);
                 }
 
-                // Build the new rulePack based of the baseA11yServerURL 
-                ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
+                // Build the new rulePack based of the baseA11yServerURL and archive info
+                if (baseA11yServerURL.includes("jsdelivr.net")) {
+                    ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
+                } else {
+                    ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
+                }
 
                 constants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
                 constants.DEBUG && console.log("END 'processACConfig' function");

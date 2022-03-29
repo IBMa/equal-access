@@ -360,7 +360,7 @@ var ACCommon = {
                 ACCommon.log.error("[ERROR] RuleArchiveInvalid: Ensure correct rule archive is provided in the configuration file. More information is available in the README.md");
                 process.exit(-1);
             }
-            // Build the new rulePack based of the baseA11yServerURL, authToken and the ruleArchivePath
+            // Build the new rulePack based of the baseA11yServerURL and archive info
             if (baseA11yServerURL.includes("jsdelivr.net")) {
                 ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
             } else {
