@@ -95,7 +95,6 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
                 policyId = result.OPTIONS.selected_ruleset.id;
             }
 
-            await initTab(message.tabId, archiveId);
             await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
                 tabId: message.tabId,
                 tabURL: message.tabURL,
@@ -162,11 +161,10 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             let archiveId = Config.defaultArchiveId + "";
 
+            await initTab(message.tabId, archiveId);
             if (result.OPTIONS) {
                 archiveId = result.OPTIONS.selected_archive.id;
             } try {
-                await initTab(message.tabId, archiveId);
-
                 chrome.tabs.executeScript(message.tabId, {
                     code: "new window.ace.Checker().rulesets;",
                     frameId: 0,
