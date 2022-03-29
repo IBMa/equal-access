@@ -142,21 +142,20 @@ function processACConfig(ACConfig) {
                             break;
                         }
                     }
-                    if (!ruleArchivePath) {
+                    if (!ruleArchivePath || !ruleArchiveVersion) {
                         console.log("[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md");
                         process.exit(-1);
                     }
-                    //}
+
+                    // Build the new rulePack based of the baseA11yServerURL and archive info
+                    if (baseA11yServerURL.includes("jsdelivr.net")) {
+                        ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
+                    } else {
+                        ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
+                    }
                 } else {
                     console.log("[ERROR] UnableToParseArchive: Archives are unable to be parse. Contact support team.");
                     process.exit(-1);
-                }
-
-                // Build the new rulePack based of the baseA11yServerURL and archive info
-                if (baseA11yServerURL.includes("jsdelivr.net")) {
-                    ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
-                } else {
-                    ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
                 }
 
                 constants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
