@@ -15,21 +15,21 @@ import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let HAAC_Aria_Or_HTML5_Attr: Rule = {
-    id: "HAAC_Aria_Or_HTML5_Attr",
+export let aria_attribute_conflict: Rule = {
+    id: "aria_attribute_conflict",
     context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]",
     help: {
         "en-US": {
-            "Pass_0": "HAAC_Aria_Or_HTML5_Attr.html",
-            "Fail_1": "HAAC_Aria_Or_HTML5_Attr.html",
-            "group": "HAAC_Aria_Or_HTML5_Attr.html"
+            "pass": "aria_attribute_conflict.html",
+            "fail_conflict": "aria_attribute_conflict.html",
+            "group": "aria_attribute_conflict.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "HTML5 attribute is in conflict with the associated ARIA attribute used on an input element",
-            "group": "HTML5 attributes must not conflict with the associated ARIA attribute used on an input element"
+            "pass": "Rule Passed",
+            "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
+            "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
         }
     },
     rulesets: [{

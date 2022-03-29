@@ -29,7 +29,7 @@
 <script type="text/javascript">
 
 function runRule() {
-	var rule = OpenAjax.a11y.getRule("HAAC_Aria_Or_HTML5_Attr");
+	var rule = OpenAjax.a11y.getRule("aria_attribute_conflict");
 	var passed = rule.validate(document.getElementById("a"));
 	console.log("required:" + passed.result);
 	

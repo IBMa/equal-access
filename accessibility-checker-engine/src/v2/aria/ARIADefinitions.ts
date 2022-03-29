@@ -2515,48 +2515,44 @@ export class ARIADefinitions {
     // refer to https://w3c.github.io/html-aria/
     static nativeCounterparts: {
         [ariaAttr: string] : {
-            ariaAttribute: string[],
-            checkParent?: boolean | false
+            htmlAttribute: string[]    
         } 
     } =  {
         "aria-disabled": {
-            ariaAttribute: ["disabled", "style.visibility", "style.display"],
-            checkParent: true
+            htmlAttribute: ["disabled"]
         },    
         "aria-hidden": {
-            ariaAttribute: ["hidden"],
-            checkParent: true
+            htmlAttribute: ["hidden"]
         },    
         "aria-placeholder": {
-            ariaAttribute: ["placeholder"],
+            htmlAttribute: ["placeholder"]
         },    
         "aria-valuemax": {
-            ariaAttribute: ["max"]
+            htmlAttribute: ["max"]
         },    
         "aria-valuemin": {
-            ariaAttribute: ["min"]
+            htmlAttribute: ["min"]
         },    
         "aria-readonly=true": {
-            ariaAttribute: ["readonly"]
+            htmlAttribute: ["readonly"]
         },
         "aria-readonly=false": {
-            ariaAttribute: ["contenteditable=true"],
-            checkParent: true
+            htmlAttribute: ["contenteditable=true"]    
         },
         "aria-required": {
-            ariaAttribute: ["required"]
+            htmlAttribute: ["required"]
         },        
         "aria-colspan": {
-            ariaAttribute: ["colspan"]
+            htmlAttribute: ["colspan"]
         },
         "aria-rowspan": {
-            ariaAttribute: ["rowspan"]
+            htmlAttribute: ["rowspan"]
         },
         "aria-autocomplete=none": {
-            ariaAttribute: ["autocomplete!=off"]
+            htmlAttribute: ["autocomplete!=off"]
         },
         "aria-autocomplete!=none": {
-            ariaAttribute: ["autocomplete=off"]
+            htmlAttribute: ["autocomplete=off"]
         }  
     }
 
