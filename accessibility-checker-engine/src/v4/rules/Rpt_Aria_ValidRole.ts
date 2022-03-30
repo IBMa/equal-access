@@ -22,8 +22,8 @@ export let Rpt_Aria_ValidRole: Rule = {
         "en-US": {
             "group": `Rpt_Aria_ValidRole.html`,
             "Pass_0": `Rpt_Aria_ValidRole.html`,
-            "Fail_1": `Rpt_Aria_ValidRole.html`,
-            "Fail_2": `Rpt_Aria_ValidRole.html`
+            "Fail_2": `Rpt_Aria_ValidRole.html`,
+            "Potential_1": `Rpt_Aria_ValidRole.html`
         }
     },
     messages: {
@@ -31,7 +31,7 @@ export let Rpt_Aria_ValidRole: Rule = {
             "group": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed",
             "Fail_2": "The role '{0}' defined on the element is not valid per ARIA specification",
-            "Fail_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification"
+            "Potential_1": "Some of the roles, '{0}', defined on the element are not valid per ARIA specification"
         }
     },
     rulesets: [{
@@ -65,7 +65,7 @@ export let Rpt_Aria_ValidRole: Rule = {
         if (invalidRoles.length === roles.length) {
             return RuleFail("Fail_2", [invalidRoles.join(",")]);
         } else if (invalidRoles.length > 0) {
-            return RulePotential("Fail_1", [invalidRoles.join(",")]);
+            return RulePotential("Potential_1", [invalidRoles.join(",")]);
         } else {
             return RulePass("Pass_0");
         }
