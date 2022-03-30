@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let WCAG20_Meta_RedirectZero: Rule = {
     id: "WCAG20_Meta_RedirectZero",
@@ -51,7 +52,12 @@ export let WCAG20_Meta_RedirectZero: Rule = {
         if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
             return null;
         }
-        let fail = content.match(/^\d+; +[^ ]/) && !content.startsWith("0;");
+        // Only check the first one since it takes priority
+        if (RPTUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "WCAG20_Meta_RedirectZero", false)) {
+            return null;
+        }
+        let timeMatch = content.match(/^(\d+); +[^ ]/);
+        let fail = timeMatch && parseInt(timeMatch[1]) > 0 && parseInt(timeMatch[1]) < 72001;
         if (fail) {
             return RuleFail("Fail_1");
         } else {

@@ -27,14 +27,33 @@ const fs = require("fs");
         console.group(`* ${ruleTestInfo[ruleId].label}`);
         for (const testcase of ruleTestInfo[ruleId].testcases) {
             let ext = testcase.url.substring(testcase.url.lastIndexOf("."));
-            if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969") {
+            // if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969") {
                 // Skip
-            } else if (ext === ".html" || ext === ".xhtml") {
+            // } else 
+            if (ext === ".html" || ext === ".xhtml") {
                 try {
+                    // If no tests, don't bother loading the testcase
                     if (ruleTestInfo[ruleId].aceRules.length > 0) {
                         console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
-                        // If no tests, don't bother loading the testcase
-                        await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
+                        // Special handling for meta refresh
+                        if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
+                            || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4") 
+                        {
+                            let succeeded = false;
+                            while (!succeeded) {
+                                try {
+                                    await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded' });
+                                    await pupPage._client.send("Page.stopLoading");
+                                    let win = await pupPage.evaluate("document");
+                                    if (win) {
+                                        succeeded = true;
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                        } else {
+                            await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
+                        }
                     } else {
                         console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
                     }
