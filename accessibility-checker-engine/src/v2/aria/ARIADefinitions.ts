@@ -2515,44 +2515,68 @@ export class ARIADefinitions {
     // refer to https://w3c.github.io/html-aria/
     static nativeCounterparts: {
         [ariaAttr: string] : {
-            htmlAttribute: string[]    
+            conflictHtmlAttribute?: string[],
+            overlappingHtmlAttribute?: string[]     
         } 
     } =  {
-        "aria-disabled": {
-            htmlAttribute: ["disabled"]
+        "aria-checked=true": {
+            overlappingHtmlAttribute: ["checked"]
         },    
-        "aria-hidden": {
-            htmlAttribute: ["hidden"]
+        "aria-checked=false": {
+            conflictHtmlAttribute: ["checked"]
+        },    
+        "aria-disabled=true": {
+            overlappingHtmlAttribute: ["disabled"]
+        },
+        "aria-disabled=false": {
+            conflictHtmlAttribute: ["disabled"]
+        },
+        "aria-hidden=true": {
+            overlappingHtmlAttribute: ["hidden"]
+        },    
+        "aria-hidden=false": {
+            conflictHtmlAttribute: ["hidden"]
         },    
         "aria-placeholder": {
-            htmlAttribute: ["placeholder"]
+            conflictHtmlAttribute: ["placeholder"]
         },    
         "aria-valuemax": {
-            htmlAttribute: ["max"]
+            conflictHtmlAttribute: ["max"]
         },    
         "aria-valuemin": {
-            htmlAttribute: ["min"]
+            conflictHtmlAttribute: ["min"]
         },    
         "aria-readonly=true": {
-            htmlAttribute: ["readonly"]
+            overlappingHtmlAttribute: ["readonly", "contenteditable=true", "iscontenteditable=true"]
         },
         "aria-readonly=false": {
-            htmlAttribute: ["contenteditable=true"]    
+            conflictHtmlAttribute: ["readonly", "contenteditable=true", "iscontenteditable=true"]
         },
-        "aria-required": {
-            htmlAttribute: ["required"]
+        "aria-required=true": {
+            overlappingHtmlAttribute: ["required"]
+        },        
+        "aria-required=false": {
+            conflictHtmlAttribute: ["required"]
         },        
         "aria-colspan": {
-            htmlAttribute: ["colspan"]
+            overlappingHtmlAttribute: ["colspan"]
+        },
+        "aria-colspan=value": {
+            // conflict occurs if the values are different
+            conflictHtmlAttribute: ["colspan=value"]
         },
         "aria-rowspan": {
-            htmlAttribute: ["rowspan"]
+            overlappingHtmlAttribute: ["rowspan"]
+        },
+        "aria-rowspan=value": {
+            // conflict occurs if the values are different
+            conflictHtmlAttribute: ["rowspan=value"]
         },
         "aria-autocomplete=none": {
-            htmlAttribute: ["autocomplete!=off"]
+            conflictHtmlAttribute: ["autocomplete!=off"]
         },
         "aria-autocomplete!=none": {
-            htmlAttribute: ["autocomplete=off"]
+            conflictHtmlAttribute: ["autocomplete=off"]
         }  
     }
 
