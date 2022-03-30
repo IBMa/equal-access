@@ -33,6 +33,16 @@ jobs:
         working-directory: rule-server
       - run: npm run build
         working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+      - run: npm install
+        working-directory: accessibility-checker
+      - run: npm run build
+        working-directory: accessibility-checker
+      - run: npm test
+        working-directory: accessibility-checker/test-act
       - run: gitactions/publish/achecker-engine.sh
         env: 
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
