@@ -128,7 +128,7 @@ async function processACConfig(ACConfig) {
                 break;
             }
         }
-        if (!ruleArchivePath || !ruleArchiveVersion) {
+        if (!ruleArchivePath || ruleArchiveVersion === null) {
             const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
             console.error(errStr);
             throw new Error(errStr);

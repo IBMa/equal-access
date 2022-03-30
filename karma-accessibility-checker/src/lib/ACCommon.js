@@ -356,7 +356,7 @@ var ACCommon = {
                 }
             }
             // Throw error and exit if provided rule archive value doesn't match with our rule archive list
-            if (!ruleArchivePath || !ruleArchiveVersion) {
+            if (!ruleArchivePath || ruleArchiveVersion === null) {
                 ACCommon.log.error("[ERROR] RuleArchiveInvalid: Ensure correct rule archive is provided in the configuration file. More information is available in the README.md");
                 process.exit(-1);
             }

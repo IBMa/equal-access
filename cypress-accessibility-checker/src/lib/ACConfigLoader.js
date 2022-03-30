@@ -142,7 +142,7 @@ function processACConfig(ACConfig) {
                             break;
                         }
                     }
-                    if (!ruleArchivePath || !ruleArchiveVersion) {
+                    if (!ruleArchivePath || ruleArchiveVersion === null) {
                         console.log("[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md");
                         process.exit(-1);
                     }
