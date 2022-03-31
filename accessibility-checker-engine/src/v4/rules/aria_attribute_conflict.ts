@@ -12,12 +12,15 @@
 *****************************************************************************/
 
 import { DOMUtil } from "../../v2/dom/DOMUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
-    context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]",
+    context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]" 
+            + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
+            + ", dom:*[aria-rowspan]",
     help: {
         "en-US": {
             "pass": "aria_attribute_conflict.html",
@@ -41,74 +44,32 @@ export let aria_attribute_conflict: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        // The the ARIA attribute is completely invalid, skip this check
+        if (RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1") return null;
 
-        let passed = true;
-        if (ruleContext.hasAttribute("required") && ruleContext.hasAttribute("aria-required") &&
-            ruleContext.getAttribute("aria-required").trim().toLowerCase() == "false") {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("placeholder") && ruleContext.hasAttribute("aria-placeholder")) {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("aria-autocomplete")) {
-            let ariaAutoCompleteAttr = ruleContext.getAttribute("aria-autocomplete").trim().toLowerCase();
-            let myNode = ruleContext;
-            let html5AutoCompleteAttr = null;
-
-            // There is no need to do a consideration for hidden in this node walk if the ruleContext node is hidden then
-            // this rule will not trigger as hidden takes inheritance from the parent nodes that this is walking up to.
-            // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
-            // and continue to the next node.
-            while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("autocomplete")))) {
-                myNode = DOMUtil.parentElement(myNode);
-            }
-
-            if ((myNode != null) && (myNode.hasAttribute("autocomplete"))) {
-                html5AutoCompleteAttr = myNode.getAttribute("autocomplete").trim().toLowerCase();
-            }
-
-            // if HTML5 autocomplete attribute is specified and conflicting with aria tag
-            if ((html5AutoCompleteAttr != null) &&
-                (html5AutoCompleteAttr == "on" &&
-                    ariaAutoCompleteAttr == "none")) {
-                passed = false;
-            }
-        }
-        if (passed && ruleContext.hasAttribute("readonly") && ruleContext.hasAttribute("aria-readonly") &&
-            ruleContext.getAttribute("aria-readonly").trim().toLowerCase() == "false") {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("aria-disabled")) {
-            // && ruleContext.getAttribute("aria-disabled").trim().toLowerCase() == "false"){
-            let ariaDisabledAttr = ruleContext.getAttribute("aria-disabled").trim().toLowerCase();
-            let myNode = ruleContext;
-            let html5DisabledAttr: boolean | string = myNode.hasAttribute("disabled");
-
-            // There is no need to do a consideration for hidden in this node walk if the ruleContext node is hidden then
-            // this rule will not trigger as hidden takes inheritance from the parent nodes that this is walking up to.
-            // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
-            // and continue to the next node.
-            while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("disabled")))) {
-                myNode = DOMUtil.parentElement(myNode);
-            }
-
-            if ((myNode != null) && (myNode.hasAttribute("disabled"))) {
-                html5DisabledAttr = myNode.getAttribute("disabled");
-            }
-
-            // if HTML5 disabled attribute is specified and conflicting with aria tag
-            // Note RPT WebApp has a bug that inject disabled or DISABLED as the attribute value.
-            if (((html5DisabledAttr == true || html5DisabledAttr == "" || html5DisabledAttr == "DISABLED" || html5DisabledAttr == "disabled") && myNode.nodeName.toLowerCase() != 'html') &&
-                (ariaDisabledAttr == "false")) {
-                passed = false;
+        let domAttributes = ruleContext.attributes;
+        let ariaAttrs = [];
+        let htmlAttrs = [];
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase(); 
+                let attrValue = ruleContext.getAttribute(attrName);
+                if (attrName.substring(0, 5) === 'aria-') 
+                    ariaAttrs.push({name: attrName, value: attrValue});
+                else 
+                    htmlAttrs.push({name: attrName, value: attrValue});
             }
         }
 
-        //return new ValidationResult(passed, [ruleContext], '', '', []);
-        if (passed) {
-            return RulePass("Pass_0");
-        } else {
-            return RuleFail("Fail_1");
-        }
+        for (let i = 0; i < ariaAttrs.length; i++) {
+            const attr = RPTUtil.getConflictHtmlAttribute(ariaAttrs[i], htmlAttrs);
+            if (attr === null)  //ignore
+                return null;
+            else if (attr === 'Pass')  //pass
+                return RulePass("pass");
+            else  //failed
+                return RuleFail("fail_conflict", [ariaAttrs[i]['name'], attr]);
+        }    
+        
     }
 }

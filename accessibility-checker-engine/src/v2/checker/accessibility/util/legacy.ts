@@ -2557,6 +2557,40 @@ export class RPTUtil {
         } 
         return allowedAttributes;
     }
+    /**
+     * 
+     * @param ariaAttr 
+     * @param htmlAttrs 
+     * @returns 
+     *         htmlAttrName that conflicts with the ariaAttr, 
+     *         'Pass' with no conflict with the ariaAttr, 
+     *         or null where ariaAttr won't cause conflict
+     */
+    public static getConflictHtmlAttribute(ariaAttr, htmlAttrs): string | null {
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) {
+            let ariaAttrValue = exist.conflict.ariaAttributeValue;
+            if (ariaAttrValue === null || ariaAttrValue === ariaAttr['value']) {
+                let htmlAttrNames = exist.conflict.htmlAttributes;
+                let htmlAttrValues = exist.conflict.htmlAttributeValues;
+                
+                for (let i = 0; i < htmlAttrs.length; i++) {
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']);
+                    if (index != -1) {
+                        if (htmlAttrValues === null) 
+                            return htmlAttrs[i]['name'];
+                        
+                        if (htmlAttrs[i]['value'] !== htmlAttrValues[index])
+                            return htmlAttrs[i]['name'];
+                    } else
+                        return "Pass";        
+                }
+                
+            } else
+                return "Pass";
+        } else
+            return null;
+    }
 
     public static CSS(element) {
         let styleText = "";

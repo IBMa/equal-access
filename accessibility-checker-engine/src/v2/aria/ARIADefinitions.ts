@@ -2513,70 +2513,134 @@ export class ARIADefinitions {
 
     // map aria attribute to corresponding native attribute, apply to any element applicable
     // refer to https://w3c.github.io/html-aria/
-    static nativeCounterparts: {
+    static relatedAriaHtmlAttributes: {
         [ariaAttr: string] : {
-            conflictHtmlAttribute?: string[],
-            overlappingHtmlAttribute?: string[]     
+            conflict: {
+                ariaAttributeValue: string | null,
+                htmlAttributes: string[],
+                htmlAttributeValues: string[] | null
+            },
+            overlapping?: {    
+                ariaAttributeValue: string | null,
+                htmlAttributes: string[],
+                htmlAttributeValues: string[] | null
+            }
         } 
     } =  {
-        "aria-checked=true": {
-            overlappingHtmlAttribute: ["checked"]
+        "aria-checked": {
+            conflict: {
+                ariaAttributeValue: "true",
+                htmlAttributes: ["checked"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["checked"],
+                htmlAttributeValues: null
+            }
         },    
-        "aria-checked=false": {
-            conflictHtmlAttribute: ["checked"]
-        },    
-        "aria-disabled=true": {
-            overlappingHtmlAttribute: ["disabled"]
+        "aria-disabled": {
+            conflict: {
+                ariaAttributeValue: "true",
+                htmlAttributes: ["disabled"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["disabled"],
+                htmlAttributeValues: null
+            }
         },
-        "aria-disabled=false": {
-            conflictHtmlAttribute: ["disabled"]
-        },
-        "aria-hidden=true": {
-            overlappingHtmlAttribute: ["hidden"]
-        },    
-        "aria-hidden=false": {
-            conflictHtmlAttribute: ["hidden"]
+        "aria-hidden": {
+            conflict: {
+                ariaAttributeValue: "true",
+                htmlAttributes: ["hidden"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["hidden"],
+                htmlAttributeValues: null
+            }
         },    
         "aria-placeholder": {
-            conflictHtmlAttribute: ["placeholder"]
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributes: ["placeholder"],
+                htmlAttributeValues: null
+            }
         },    
         "aria-valuemax": {
-            conflictHtmlAttribute: ["max"]
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributes: ["max"],
+                htmlAttributeValues: null
+            }
         },    
         "aria-valuemin": {
-            conflictHtmlAttribute: ["min"]
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributes: ["min"],
+                htmlAttributeValues: null
+            }
         },    
-        "aria-readonly=true": {
-            overlappingHtmlAttribute: ["readonly", "contenteditable=true", "iscontenteditable=true"]
+        "aria-readonly": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributes: ["readonly", "contenteditable=true", "iscontenteditable=true"],
+                htmlAttributeValues: [null, "true", "true"]
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "true", "true"]
+            }
         },
-        "aria-readonly=false": {
-            conflictHtmlAttribute: ["readonly", "contenteditable=true", "iscontenteditable=true"]
-        },
-        "aria-required=true": {
-            overlappingHtmlAttribute: ["required"]
-        },        
-        "aria-required=false": {
-            conflictHtmlAttribute: ["required"]
+        "aria-required": {
+            conflict: {
+                ariaAttributeValue: "true",
+                htmlAttributes: ["required"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["required"],
+                htmlAttributeValues: null
+            }
         },        
         "aria-colspan": {
-            overlappingHtmlAttribute: ["colspan"]
-        },
-        "aria-colspan=value": {
-            // conflict occurs if the values are different
-            conflictHtmlAttribute: ["colspan=value"]
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "value",
+                htmlAttributes: ["colspan"],
+                htmlAttributeValues: ["value"]
+            },
+            overlapping: {    
+                ariaAttributeValue: "false",
+                htmlAttributes: ["colspan"],
+                htmlAttributeValues: null
+            }
         },
         "aria-rowspan": {
-            overlappingHtmlAttribute: ["rowspan"]
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "value",
+                htmlAttributes: ["rowspan"],
+                htmlAttributeValues: ["value"]
+            },
+            overlapping: {    
+                ariaAttributeValue: null,
+                htmlAttributes: ["rowspan"],
+                htmlAttributeValues: null
+            }
         },
-        "aria-rowspan=value": {
-            // conflict occurs if the values are different
-            conflictHtmlAttribute: ["rowspan=value"]
-        },
-        "aria-autocomplete=none": {
-            conflictHtmlAttribute: ["autocomplete!=off"]
-        },
-        "aria-autocomplete!=none": {
-            conflictHtmlAttribute: ["autocomplete=off"]
+        "aria-autocomplete": {
+            conflict: {
+                // conflict occurs if both values are conflict
+                ariaAttributeValue: "~value",
+                htmlAttributes: ["rowspan"],
+                htmlAttributeValues: ["~value"]
+            }
         }  
     }
 
