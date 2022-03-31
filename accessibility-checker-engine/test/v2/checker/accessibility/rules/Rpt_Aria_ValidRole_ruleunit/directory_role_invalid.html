@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="testcase">
+        <div role="directory">
+          <div role="listitem">an item in the directory</div>
+          <div role="listitem">an item in the directory</div>
+        </div>
+
+        <ul role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </ul>
+
+        <ol role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </ol>
+
+        <menu role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </menu>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["Rpt_Aria_ValidRole"],
+        results: [
+        {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The role 'directory' defined on the element is not valid per ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/listitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/main[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]",
+              "aria": "/document[1]/main[1]/list[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The role 'directory' defined on the element is not valid per ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]/li[2]",
+              "aria": "/document[1]/main[1]/list[1]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ol[1]",
+              "aria": "/document[1]/main[1]/list[2]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The role 'directory' defined on the element is not valid per ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ol[1]/li[2]",
+              "aria": "/document[1]/main[1]/list[2]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/menu[1]",
+              "aria": "/document[1]/main[1]/list[3]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The role 'directory' defined on the element is not valid per ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_ValidRole",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/menu[1]/li[2]",
+              "aria": "/document[1]/main[1]/list[3]/listitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

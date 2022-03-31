@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <map name='my map'>
+        <area shape='rect' coords="" alt='accName' role='button'> 
+        <area shape='rect' coords="" alt='accName' role='link'>
+        <area shape='rect' coords="" alt='accName' role='presentation'>
+      </map>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_role"],
+        results: [
+        {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/map[1]/area[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "button",
+              "area"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/map[1]/area[2]",
+              "aria": "/document[1]/main[1]/link[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "link",
+              "area"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/map[1]/area[3]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_2",
+            "message": "The ARIA role 'presentation' is not valid for the element <area> and may be ignored by the browser since the element is focusable",
+            "messageArgs": [
+              "presentation",
+              "area"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
