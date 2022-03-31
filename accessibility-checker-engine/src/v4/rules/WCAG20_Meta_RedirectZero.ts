@@ -11,9 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let WCAG20_Meta_RedirectZero: Rule = {
     id: "WCAG20_Meta_RedirectZero",
@@ -21,15 +22,17 @@ export let WCAG20_Meta_RedirectZero: Rule = {
     help: {
         "en-US": {
             "group": "WCAG20_Meta_RedirectZero.html",
-            "Pass_0": "WCAG20_Meta_RedirectZero.html",
-            "Fail_1": "WCAG20_Meta_RedirectZero.html",
+            "pass": "WCAG20_Meta_RedirectZero.html",
+            "fail": "WCAG20_Meta_RedirectZero.html",
+            "fail_longrefresh": "WCAG20_Meta_RedirectZero.html"
         }
     },
     messages: {
         "en-US": {
             "group": "Page should not automatically refresh without warning or option to turn it off or adjust the time limit",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Check page does not automatically refresh without warning or options"
+            "pass": "Rule Passed",
+            "fail": "Check page does not automatically refresh without warning or options",
+            "fail_longrefresh": "Check page does not automatically refresh without warning or options"
         }
     },
     rulesets: [{
@@ -38,7 +41,15 @@ export let WCAG20_Meta_RedirectZero: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act: [ "bisz58", "bc659a" ],
+    act: [ "bisz58", 
+        { 
+            "bc659a" : {
+                "pass": "pass",
+                "fail": "fail",
+                "fail_longrefresh": "pass"
+            }
+        }
+    ],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context
@@ -51,11 +62,20 @@ export let WCAG20_Meta_RedirectZero: Rule = {
         if (!content.match(/^\d+$/) && !content.match(/^\d+;/)) {
             return null;
         }
-        let fail = content.match(/^\d+; +[^ ]/) && !content.startsWith("0;");
-        if (fail) {
-            return RuleFail("Fail_1");
+        // Only check the first one since it takes priority
+        if (RPTUtil.triggerOnce(FragmentUtil.getOwnerFragment(ruleContext), "WCAG20_Meta_RedirectZero", false)) {
+            return null;
+        }
+        let timeMatch = content.match(/^(\d+); +[^ ]/);
+        if (!timeMatch || parseInt(timeMatch[1]) === 0) {
+            return RulePass("pass");
         } else {
-            return RulePass("Pass_0");
+            let time = parseInt(timeMatch[1]);
+            if (time < 72001) {
+                return RuleFail("fail");
+            } else {
+                return RuleFail("fail_longrefresh");
+            }
         }
     }
 }
