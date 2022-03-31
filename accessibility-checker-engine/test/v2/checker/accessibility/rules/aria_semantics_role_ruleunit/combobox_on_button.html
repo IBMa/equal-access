@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h2>Tests:</h2>
+      <p>Authors MAY use <code>role=combobox</code> on a <code>button</code> element, so long as other required attributes of the combobox role are also specified.</p>
+          
+      <div class="flex">
+        <div class="widgetDemo">
+          <div class="testcase">
+            <label for="b">name 1</label>
+            <button id="b" role="combobox">test 1</button>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+            This test fails because the button element has a role=combobox, but no other required attributes (aria-controls and aria-expanded).</p>
+        </div>
+        
+        <div class="widgetDemo">
+          <div class="testcase">
+            <label id="t2" for="c">name 2</label>
+            <button id="c" role="combobox" aria-haspopup="listbox" aria-activedescendant="" aria-autocomplete="list" aria-controls="f" aria-expanded="false">test 2</button>
+            <div role="listbox" id="f" hidden="" aria-labelledby="t2"><div role="option" aria-selected="false">option1</div></div>
+          </div>
+  
+          <p><strong>Expected result:</strong>
+            This test passes. The button element has a role=combobox, 
+            and has the required aria-controls and aria-expanded attributes.</p>
+        </div>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_role"],
+        results: [
+        {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/button[1]",
+              "aria": "/document[1]/main[1]/combobox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/button[1]",
+              "aria": "/document[1]/main[1]/combobox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "combobox",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

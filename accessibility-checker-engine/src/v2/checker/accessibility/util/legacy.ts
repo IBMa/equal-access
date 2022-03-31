@@ -2338,30 +2338,99 @@ export class RPTUtil {
     public static getAllowedAriaAttributes(ruleContext, permittedRoles, properties) {
         let tagName = ruleContext.tagName.toLowerCase();
         let allowedAttributes = [];
-        /*These needs to be handled first since its applicable to all elements*/
-        if (ruleContext.hasAttribute("disabled") && ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) === -1) {
-            /*Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
-                Use the disabled attribute on any element that is allowed the disabled attribute in HTML5. aria-disabled="true"
-                Only use the aria-disabled attribute for elements that are not allowed to have a disabled attribute in HTML5 */
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
+        let prohibitedAttributes = [];
+        // These needs to be handled first since its applicable to all elements
+
+        /** NOTE that the following section will be enabled to cover aria-* and their native attribute counterparts checker
+        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
+        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
+        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
+            if (ruleContext.hasAttribute("disabled")) {
+                // shouldn't or must not use aria-disabled on the element that already has the native disabled attribute 
+                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", prohibitedAttributes);   
+            } else {
+                // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
+            }
         }
-        if (ruleContext.hasAttribute("required") && ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
-            /*Element with a required attribute  // http://www.the-art-of-web.com/html/html5-form-validation/
-                * aria-required="true" Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
-                * MAY also be used for elements that have an attached ARIA role which allows the aria-required attribute.*/
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
-        }
-        if (ruleContext.hasAttribute("readonly") && ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) === -1) {
-            /*Element with a readonly attribute* aria-readonly="true" * Use the readonly attribute on any element that is allowed the readonly attribute in HTML5.
-                Only use the aria-readonly attribute for elements that are not allowed to have a readonly attribute in HTML5 */
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
-        }
-        if (ruleContext.hasAttribute("hidden")) {
-            /*Element with a hidden attribute Use the aria-hidden attribute on any HTML element.
-                Note: If an element has a hidden attribute, an aria-hidden attribute is not required.*/
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", allowedAttributes);
+        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
+        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
+            if (ruleContext.hasAttribute("required")) {
+                // shouldn't or must not use aria-disabled on the element that already has the native required attribute
+                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", prohibitedAttributes);   
+            } else {
+                // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
+            }
         }
 
+        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
+            if (ruleContext.hasAttribute("readonly")) {
+                // shouldn't or must not use aria-readonly on the element that already has the native readonly attribute
+                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);   
+            } else {
+                // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
+                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
+            }
+        }
+        // aria global attribute aria-hidden 
+        if (ruleContext.hasAttribute("hidden")) {
+            // shouldn't or must not use aria-hidden on the element that already has the native hidden attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", prohibitedAttributes);   
+        }
+
+        if (ruleContext.hasAttribute("placeholder")) {
+            // shouldn't or must not use aria-placeholder on the element that already has the native placeholder attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-placeholder", prohibitedAttributes);   
+        }
+        // html native global attribute: contenteditable
+        if ((ruleContext.hasAttribute("contenteditable") && ruleContext.getAttribute("contenteditable") === 'true')
+            || (ruleContext.parentElement && ruleContext.parentElement.hasAttribute("contenteditable") 
+                && ruleContext.parentElement.getAttribute("contenteditable") === 'true')) {
+            // Authors MUST NOT set aria-readonly="true" on an element that has contenteditable="true".
+            if (ruleContext.hasAttribute("aria-readonly") && ruleContext.getAttribute("aria-readonly") === 'true')
+                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);   
+        }
+        // html td and th: colspan 
+        if (ruleContext.hasAttribute("colspan")) {
+            // shouldn't or must not use aria-colspan on the element that already has the native colspan attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-colspan", prohibitedAttributes);   
+        }
+        // html td and th: rowspan 
+        if (ruleContext.hasAttribute("rowspan")) {
+            // shouldn't or must not use aria-rowspan on the element that already has the native rowspan attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-rowspan", prohibitedAttributes);   
+        }
+        // html meter, progress and input: max 
+        if (ruleContext.hasAttribute("max")) {
+            // shouldn't use aria-valuemax on the element that already has the native max attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemax", prohibitedAttributes);   
+        }
+        // html meter input: min 
+        if (ruleContext.hasAttribute("min")) {
+            // shouldn't use aria-valuemin on the element that already has the native min attribute
+            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemin", prohibitedAttributes);   
+        }
+         */
+
+        // NOTE that the following section will be removed in the future to cover aria-* and their native attribute counterparts checker
+        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
+        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
+        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
+            // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
+        }
+        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
+        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
+            // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
+        }
+
+        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
+            // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
+            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
+        }
+        
         let tagProperty = null;
         if (properties != null && properties !== undefined)
             tagProperty = properties;
@@ -2387,6 +2456,10 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        let prohibitedProps = roleProperty.prohibitedProps;
+                        if (prohibitedProps && prohibitedProps.length > 0) 
+                            RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
+                           
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                             RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2408,6 +2481,10 @@ export class RPTUtil {
             }
         }
 
+        // adding the other role to the allowed roles for the attributes
+        if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);
+
         // adding the specified role properties to the allowed attribute list
         for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
@@ -2416,6 +2493,9 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                let prohibitedProps = roleProperties.prohibitedProps;
+                if (prohibitedProps && prohibitedProps.length>0)
+                    RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                     RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2437,6 +2517,44 @@ export class RPTUtil {
 
         }
 
+        // add the other allowed attributes for the element
+        if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
+            // check attribute-value pair if exists
+            let allowed = [];
+            for (let p=0; p < tagProperty.otherAllowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherAllowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("=");
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        allowed.push(pair[0]);
+                } else
+                    allowed.push(attr);
+            } 
+            if (allowed.length > 0)    
+                RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
+        } 
+        // add the other prohibitted attributes for the element
+        if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
+            // check attribute-value pair if exists
+            let disallowed = [];
+            for (let p=0; p < tagProperty.otherDisallowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherDisallowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("="); 
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        disallowed.push(pair[0]);
+                } else
+                    disallowed.push(attr);
+            }
+            if (disallowed.length > 0)
+                RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
+        }
+        //exclude the prohibitedAttributes from the allowedAttributes
+        if (prohibitedAttributes.length > 0) {
+            allowedAttributes = allowedAttributes.filter((value) =>  {
+                return !prohibitedAttributes.includes(value);
+            });
+        } 
         return allowedAttributes;
     }
 

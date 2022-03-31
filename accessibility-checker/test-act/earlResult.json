@@ -1043,7 +1043,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1058,7 +1058,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1073,7 +1073,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1088,7 +1088,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1103,7 +1103,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1118,7 +1118,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1133,7 +1133,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1148,7 +1148,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1163,7 +1163,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1178,7 +1178,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -1193,7 +1193,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1208,7 +1208,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1223,7 +1223,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1238,7 +1238,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1253,7 +1253,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1268,7 +1268,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1283,7 +1283,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1298,7 +1298,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1313,7 +1313,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1328,7 +1328,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -1343,7 +1343,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1358,7 +1358,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -1373,7 +1373,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1|Rpt_Aria_ValidIdRef:Pass_0,Fail_1"
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -2633,7 +2633,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Html_HasLang:Pass_0,Fail_3|WCAG20_Elem_Lang_Valid:Pass_0,Fail_1"
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -2648,7 +2648,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Html_HasLang:Pass_0,Fail_3|WCAG20_Elem_Lang_Valid:Pass_0,Fail_1"
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2663,7 +2663,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Html_HasLang:Pass_0,Fail_3|WCAG20_Elem_Lang_Valid:Pass_0,Fail_1"
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2678,7 +2678,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Html_HasLang:Pass_0,Fail_3|WCAG20_Elem_Lang_Valid:Pass_0,Fail_1"
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -2693,7 +2693,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Html_HasLang:Pass_0,Fail_3|WCAG20_Elem_Lang_Valid:Pass_0,Fail_1"
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3563,7 +3563,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3578,7 +3578,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3593,7 +3593,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3608,7 +3608,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3623,7 +3623,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3638,7 +3638,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3653,7 +3653,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3668,7 +3668,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:passed"
@@ -3683,7 +3683,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3698,7 +3698,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3713,7 +3713,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3728,7 +3728,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3743,7 +3743,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:failed"
@@ -3758,7 +3758,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3773,7 +3773,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3788,7 +3788,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3803,7 +3803,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -3818,7 +3818,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3|HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3"
+            "title": "HAAC_Aria_ImgAlt:Pass_0,Fail_1,Fail_2,Fail_3|WCAG20_Img_HasAlt:Pass_0,Fail_1,Fail_2,Fail_3"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4368,15 +4368,30 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/bc659a/cbf6409b0df0b3b6437ab3409af341587b144969.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
+          },
+          "result": {
+            "outcome": "earl:passed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/bc659a/beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4.html",
       "assertions": [
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
-            "outcome": "earl:inapplicable"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -4388,10 +4403,10 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -4403,7 +4418,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -4418,7 +4433,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4433,7 +4448,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4448,7 +4463,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4463,7 +4478,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4478,7 +4493,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4493,7 +4508,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4508,7 +4523,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4523,7 +4538,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4538,7 +4553,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4553,7 +4568,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4568,7 +4583,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4583,10 +4598,10 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
-            "outcome": "earl:inapplicable"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -4598,10 +4613,10 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
-            "outcome": "earl:inapplicable"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -4613,7 +4628,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -4628,7 +4643,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4643,7 +4658,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4658,7 +4673,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:failed"
@@ -4673,7 +4688,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4688,7 +4703,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4703,7 +4718,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4718,7 +4733,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4733,7 +4748,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4748,7 +4763,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4763,7 +4778,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -4778,7 +4793,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Meta_RedirectZero:Pass_0,Fail_1|RPT_Meta_Refresh:Pass_0,Potential_1"
+            "title": "RPT_Meta_Refresh:Pass_0,Potential_1|WCAG20_Meta_RedirectZero:pass,fail,fail_longrefresh"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5168,7 +5183,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5183,7 +5198,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5198,7 +5213,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:cantTell"
@@ -5213,7 +5228,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5228,7 +5243,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5243,7 +5258,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5258,7 +5273,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5273,7 +5288,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5288,7 +5303,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5303,7 +5318,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Fail_1"
+            "title": "Rpt_Aria_ValidRole:Pass_0,Fail_2,Potential_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5318,7 +5333,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5333,7 +5348,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5348,7 +5363,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:passed"
@@ -5363,7 +5378,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5378,7 +5393,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:failed"
@@ -5393,7 +5408,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5408,7 +5423,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"
@@ -5423,7 +5438,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "Rpt_Aria_RequiredProperties:Pass_0,Fail_1|combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing"
+            "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
           },
           "result": {
             "outcome": "earl:inapplicable"

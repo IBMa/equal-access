@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div id="example-paragraphs">
+        <p>Fernstraßenbauprivatfinanzierungsgesetz</p>
+        <p>Fernstraßen<wbr aria-hidden="true">bau<wbr>privat<wbr role="presentation">finanzierungs<wbr aria-readonly="true">gesetz</p>
+        <p>Fernstraßen<br role="none">bau<br>privat<br aria-hidden="true">finanzierungs<br aria-readonly="true">gesetz</p>
+    </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_attribute"],
+        results: [
+        {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/p[2]/wbr[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-hidden",
+              "wbr",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/p[2]/wbr[4]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA attribute 'aria-readonly' is not valid for the element <wbr> with ARIA role 'none'",
+            "messageArgs": [
+              "aria-readonly",
+              "wbr",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/p[3]/br[3]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-hidden",
+              "br",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/p[3]/br[4]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA attribute 'aria-readonly' is not valid for the element <br> with ARIA role 'none'",
+            "messageArgs": [
+              "aria-readonly",
+              "br",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

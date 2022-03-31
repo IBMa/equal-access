@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="flex">
+				<div class="widgetDemo">
+					<h3>Test 1</h3>
+					<p>Authors MAY use the <code>aria-placeholder</code> attribute on any element that is allowed the <code>placeholder</code> attribute in HTML, or any element with a WAI-ARIA role which allows the <code>aria-placeholder</code> attribute. </p>
+
+					<p>The following <code>input</code>s have <code>aria-placeholder="test"</code> set.</p>
+
+					<div class="testcase">
+						<input aria-placeholder="test">
+						<input type="text" aria-placeholder="test">
+						<input type="search" aria-placeholder="test">
+						<input type="tel" aria-placeholder="test">
+						<input type="url" aria-placeholder="test">
+						<input type="email" aria-placeholder="test">
+						<input type="password" aria-placeholder="test">
+						<input type="number" aria-placeholder="test">
+					</div>
+
+					<p><strong>Expected result:</strong>
+					<br>No warning or error.</p>
+				</div>
+
+
+				<div class="widgetDemo">
+					<h3>Test 2</h3>
+					<p>Authors MUST NOT use the <code>aria-placeholder</code> attribute on any element which also has a <code>placeholder</code> attribute. </p>
+
+					<p>The following <code>input</code>s have <code>placeholder="test"</code> and <code>aria-placeholder="invalid"</code> set.</p>
+
+					<div class="testcase">
+						<input placeholder="test" aria-placeholder="invalid">
+						<input type="text" placeholder="test" aria-placeholder="invalid">
+						<input type="search" placeholder="test" aria-placeholder="invalid">
+						<input type="tel" placeholder="test" aria-placeholder="invalid">
+						<input type="url" placeholder="test" aria-placeholder="invalid">
+						<input type="email" placeholder="test" aria-placeholder="invalid">
+						<input type="password" placeholder="test" aria-placeholder="invalid">
+						<input type="number" placeholder="test" aria-placeholder="invalid">
+					</div>
+
+					<p><strong>Expected result:</strong>
+					<br>Error for use of <code>aria-placeholder</code> when element has a <code>placeholder</code> attribute set.</p>
+				</div>
+
+			</div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_attribute"],
+        results: [
+        {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]/textbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[2]",
+              "aria": "/document[1]/main[1]/textbox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[3]",
+              "aria": "/document[1]/main[1]/searchbox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "searchbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[4]",
+              "aria": "/document[1]/main[1]/textbox[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[5]",
+              "aria": "/document[1]/main[1]/textbox[4]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[6]",
+              "aria": "/document[1]/main[1]/textbox[5]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[7]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[8]",
+              "aria": "/document[1]/main[1]/spinbutton[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA attribute 'aria-placeholder' is not valid for the element <input> with ARIA role 'spinbutton'",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[1]",
+              "aria": "/document[1]/main[1]/textbox[6]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[2]",
+              "aria": "/document[1]/main[1]/textbox[7]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[3]",
+              "aria": "/document[1]/main[1]/searchbox[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "searchbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[4]",
+              "aria": "/document[1]/main[1]/textbox[8]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[5]",
+              "aria": "/document[1]/main[1]/textbox[9]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[6]",
+              "aria": "/document[1]/main[1]/textbox[10]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "textbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[7]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_attribute",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[8]",
+              "aria": "/document[1]/main[1]/spinbutton[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA attribute 'aria-placeholder' is not valid for the element <input> with ARIA role 'spinbutton'",
+            "messageArgs": [
+              "aria-placeholder",
+              "input",
+              "spinbutton"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
