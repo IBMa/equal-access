@@ -2561,7 +2561,7 @@ export class RPTUtil {
      * 
      * @param ariaAttr 
      * @param htmlAttrs 
-     * @returns 
+     * @returns htmlAttrName, 'Pass' or null
      *         htmlAttrName that conflicts with the ariaAttr, 
      *         'Pass' with no conflict with the ariaAttr, 
      *         or null where ariaAttr won't cause conflict
@@ -2571,7 +2571,7 @@ export class RPTUtil {
         if (exist) {
             let ariaAttrValue = exist.conflict.ariaAttributeValue;
             if (ariaAttrValue === null || ariaAttrValue === ariaAttr['value']) {
-                let htmlAttrNames = exist.conflict.htmlAttributes;
+                let htmlAttrNames = exist.conflict.htmlAttributeNames;
                 let htmlAttrValues = exist.conflict.htmlAttributeValues;
                 
                 for (let i = 0; i < htmlAttrs.length; i++) {

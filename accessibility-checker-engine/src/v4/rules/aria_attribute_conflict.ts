@@ -37,7 +37,7 @@ export let aria_attribute_conflict: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["3.3.2"],
+        "num": ["4.1.2"],
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
@@ -46,6 +46,8 @@ export let aria_attribute_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
         // The the ARIA attribute is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1") return null;
+        // if it's hidden,skip
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
@@ -61,15 +63,16 @@ export let aria_attribute_conflict: Rule = {
             }
         }
 
+        let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
             const attr = RPTUtil.getConflictHtmlAttribute(ariaAttrs[i], htmlAttrs);
             if (attr === null)  //ignore
                 return null;
             else if (attr === 'Pass')  //pass
-                return RulePass("pass");
+                ret.push(RulePass("pass"));
             else  //failed
-                return RuleFail("fail_conflict", [ariaAttrs[i]['name'], attr]);
+                ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], attr]));
         }    
-        
+        return ret;
     }
 }
