@@ -2566,28 +2566,30 @@ export class RPTUtil {
      *         'Pass' with no conflict with the ariaAttr, 
      *         or null where ariaAttr won't cause conflict
      */
-    public static getConflictHtmlAttribute(ariaAttr, htmlAttrs): string | null {
+    public static getConflictHtmlAttribute(ariaAttr, htmlAttrs): any[] | null {
         let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
-        if (exist) {
+        if (exist) { 
+            let examinedHtmlAtrNames = [];
             let ariaAttrValue = exist.conflict.ariaAttributeValue;
-            if (ariaAttrValue === null || ariaAttrValue === ariaAttr['value']) {
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
                 let htmlAttrNames = exist.conflict.htmlAttributeNames;
                 let htmlAttrValues = exist.conflict.htmlAttributeValues;
-                
-                for (let i = 0; i < htmlAttrs.length; i++) {
-                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']);
-                    if (index != -1) {
-                        if (htmlAttrValues === null) 
-                            return htmlAttrs[i]['name'];
-                        
-                        if (htmlAttrs[i]['value'] !== htmlAttrValues[index])
-                            return htmlAttrs[i]['name'];
-                    } else
-                        return "Pass";        
+                console.log("htmlAttrNames=" + JSON.stringify(htmlAttrNames));
+                for (let i = 0; i < htmlAttrs.length; i++) { 
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    if (index != -1) { console.log("htmlAttr value=" + htmlAttrs[i]['value'] +', htmlAttrValue' + (htmlAttrValues != null ? ', ' +htmlAttrValues[index]: ''));
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index]['value'] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                               continue;
+                        } else 
+                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
+                    }         
                 }
                 
-            } else
-                return "Pass";
+            }
+            return examinedHtmlAtrNames;
         } else
             return null;
     }

@@ -2529,36 +2529,36 @@ export class ARIADefinitions {
     } =  {
         "aria-checked": {
             conflict: {
-                ariaAttributeValue: "true",
+                ariaAttributeValue: "false",
                 htmlAttributeNames: ["checked"],
                 htmlAttributeValues: null
             },
             overlapping: {    
-                ariaAttributeValue: "false",
+                ariaAttributeValue: "true",
                 htmlAttributeNames: ["checked"],
                 htmlAttributeValues: null
             }
         },    
         "aria-disabled": {
             conflict: {
-                ariaAttributeValue: "true",
+                ariaAttributeValue: "false",
                 htmlAttributeNames: ["disabled"],
                 htmlAttributeValues: null
             },
             overlapping: {    
-                ariaAttributeValue: "false",
+                ariaAttributeValue: "true",
                 htmlAttributeNames: ["disabled"],
                 htmlAttributeValues: null
             }
         },
         "aria-hidden": {
             conflict: {
-                ariaAttributeValue: "true",
+                ariaAttributeValue: "false",
                 htmlAttributeNames: ["hidden"],
                 htmlAttributeValues: null
             },
             overlapping: {    
-                ariaAttributeValue: "false",
+                ariaAttributeValue: "true",
                 htmlAttributeNames: ["hidden"],
                 htmlAttributeValues: null
             }
@@ -2588,7 +2588,7 @@ export class ARIADefinitions {
             conflict: {
                 ariaAttributeValue: "false",
                 htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
-                htmlAttributeValues: [null, "true", "true"]
+                htmlAttributeValues: [null, "false", "false"]
             },
             overlapping: {    
                 ariaAttributeValue: "true",
@@ -2598,12 +2598,12 @@ export class ARIADefinitions {
         },
         "aria-required": {
             conflict: {
-                ariaAttributeValue: "true",
+                ariaAttributeValue: "false",
                 htmlAttributeNames: ["required"],
                 htmlAttributeValues: null
             },
             overlapping: {    
-                ariaAttributeValue: "false",
+                ariaAttributeValue: "true",
                 htmlAttributeNames: ["required"],
                 htmlAttributeValues: null
             }
@@ -2611,12 +2611,12 @@ export class ARIADefinitions {
         "aria-colspan": {
             conflict: {
                 // conflict occurs if both values are different
-                ariaAttributeValue: "aValue",
+                ariaAttributeValue: "VALUE",
                 htmlAttributeNames: ["colspan"],
-                htmlAttributeValues: ["aValue"]
+                htmlAttributeValues: ["VALUE"]
             },
             overlapping: {    
-                ariaAttributeValue: "false",
+                ariaAttributeValue: null,
                 htmlAttributeNames: ["colspan"],
                 htmlAttributeValues: null
             }
@@ -2624,9 +2624,9 @@ export class ARIADefinitions {
         "aria-rowspan": {
             conflict: {
                 // conflict occurs if both values are different
-                ariaAttributeValue: "value",
+                ariaAttributeValue: "VALUE",
                 htmlAttributeNames: ["rowspan"],
-                htmlAttributeValues: ["value"]
+                htmlAttributeValues: ["VALUE"]
             },
             overlapping: {    
                 ariaAttributeValue: null,

@@ -56,22 +56,27 @@ export let aria_attribute_conflict: Rule = {
             for (let i = 0; i < domAttributes.length; i++) {
                 let attrName = domAttributes[i].name.trim().toLowerCase(); 
                 let attrValue = ruleContext.getAttribute(attrName);
+                if (attrValue === '') attrValue = null;
                 if (attrName.substring(0, 5) === 'aria-') 
                     ariaAttrs.push({name: attrName, value: attrValue});
                 else 
                     htmlAttrs.push({name: attrName, value: attrValue});
             }
         }
-
+        console.log('node name=' + ruleContext.nodeName + ', arias=' + JSON.stringify(ariaAttrs) +", natives="+ JSON.stringify(htmlAttrs));
         let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
-            const attr = RPTUtil.getConflictHtmlAttribute(ariaAttrs[i], htmlAttrs);
-            if (attr === null)  //ignore
-                return null;
-            else if (attr === 'Pass')  //pass
-                ret.push(RulePass("pass"));
-            else  //failed
-                ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], attr]));
+            const examinedHtmlAtrNames = RPTUtil.getConflictHtmlAttribute(ariaAttrs[i], htmlAttrs);
+            if (examinedHtmlAtrNames === null) continue;
+            examinedHtmlAtrNames.forEach(item => {
+                if (item['result'] === 'Pass') { //pass
+                    ret.push(RulePass("pass"));
+                    console.log('pass node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
+                } else if (item['result'] === 'Failed') { //failed
+                    ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
+                    console.log('fail node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
+                }
+            });    
         }    
         return ret;
     }
