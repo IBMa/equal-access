@@ -23,22 +23,22 @@ export let aria_attribute_conflict: Rule = {
             + ", dom:*[aria-rowspan]",
     help: {
         "en-US": {
-            "pass": "aria_attribute_conflict.html",
-            "fail_conflict": "aria_attribute_conflict.html",
-            "group": "aria_attribute_conflict.html"
+            "pass": "aria_attribute_overlaps.html",
+            "fail_conflict": "aria_attribute_overlaps.html",
+            "group": "aria_attribute_overlaps.html"
         }
     },
     messages: {
         "en-US": {
             "pass": "Rule Passed",
-            "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
-            "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
+            "potential_overlap": "The ARIA attribute \"{0}\" should not overlap with the HTML attribute \"{0}\"",
+            "group": "An ARIA attribute should not overlap with the corresponding HTML attribute"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["4.1.2"],
-        "level": eRulePolicy.VIOLATION,
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [],
@@ -71,7 +71,7 @@ export let aria_attribute_conflict: Rule = {
                     ret.push(RulePass("pass"));
                     console.log('pass node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
                 } else if (item['result'] === 'Failed') { //failed
-                    ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
+                    ret.push(RuleFail("potential_overlap", [ariaAttrs[i]['name'], item['attr']]));
                     console.log('fail node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
                 }
             });    

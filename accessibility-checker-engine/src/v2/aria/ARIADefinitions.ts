@@ -2512,6 +2512,7 @@ export class ARIADefinitions {
     } // end of documentConformanceRequirementSpecialTags
 
     // map aria attribute to the corresponding native attribute, apply to any element applicable
+    // note this mapping is for the related attributes in the same element without checking the parent tree.
     // refer to https://w3c.github.io/html-aria/
     static relatedAriaHtmlAttributes: {
         [ariaAttr: string] : {
