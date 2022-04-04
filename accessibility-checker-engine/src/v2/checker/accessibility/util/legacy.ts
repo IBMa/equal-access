@@ -2594,6 +2594,43 @@ export class RPTUtil {
             return null;
     }
 
+    /**
+     * 
+     * @param ariaAttr 
+     * @param htmlAttrs 
+     * @returns htmlAttrName, 'Pass' or null
+     *         htmlAttrName that overlaps with the ariaAttr, 
+     *         'Pass' with no overlapping with the ariaAttr, 
+     *         or null where ariaAttr won't cause overlaps
+     */
+     public static getOverlappingHtmlAttribute(ariaAttr, htmlAttrs): any[] | null {
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) { 
+            let examinedHtmlAtrNames = [];
+            let ariaAttrValue = exist.overlapping.ariaAttributeValue;
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
+                let htmlAttrNames = exist.overlapping.htmlAttributeNames;
+                let htmlAttrValues = exist.overlapping.htmlAttributeValues;
+                console.log("htmlAttrNames=" + JSON.stringify(htmlAttrNames));
+                for (let i = 0; i < htmlAttrs.length; i++) { 
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    if (index != -1) { console.log("htmlAttr value=" + htmlAttrs[i]['value'] +', htmlAttrValue' + (htmlAttrValues != null ? ', ' +htmlAttrValues[index]: ''));
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index]['value'] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                               continue;
+                        } else 
+                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
+                    }         
+                }
+                
+            }
+            return examinedHtmlAtrNames;
+        } else
+            return null;
+    }
+
     public static CSS(element) {
         let styleText = "";
         if (element === null) return [];

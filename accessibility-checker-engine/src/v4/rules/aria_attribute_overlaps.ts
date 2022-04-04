@@ -16,8 +16,8 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let aria_attribute_conflict: Rule = {
-    id: "aria_attribute_conflict",
+export let aria_attribute_overlaps: Rule = {
+    id: "aria_attribute_overlaps",
     context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]" 
             + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
             + ", dom:*[aria-rowspan]",
@@ -46,7 +46,7 @@ export let aria_attribute_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1") return null;
-        
+         
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
         let htmlAttrs = [];
@@ -64,7 +64,7 @@ export let aria_attribute_conflict: Rule = {
         console.log('node name=' + ruleContext.nodeName + ', arias=' + JSON.stringify(ariaAttrs) +", natives="+ JSON.stringify(htmlAttrs));
         let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getConflictHtmlAttribute(ariaAttrs[i], htmlAttrs);
+            const examinedHtmlAtrNames = RPTUtil.getOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs);
             if (examinedHtmlAtrNames === null) continue;
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Pass') { //pass
