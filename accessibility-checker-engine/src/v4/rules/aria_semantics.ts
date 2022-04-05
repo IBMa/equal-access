@@ -192,6 +192,7 @@ export let aria_semantics_attribute: Rule = {
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
+            RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
             return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);

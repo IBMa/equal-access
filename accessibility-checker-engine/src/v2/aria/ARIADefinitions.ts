@@ -1862,7 +1862,7 @@ export class ARIADefinitions {
         },
         "nav": {
             implicitRole: ["navigation"],
-            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist"],
+            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist", "none", "presentation"],
             globalAriaAttributesValid: true
         },
         "noscript": {
@@ -2510,6 +2510,140 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         }
     } // end of documentConformanceRequirementSpecialTags
+
+    // map aria attribute to the corresponding native attribute, apply to any element applicable
+    // note this mapping is for the related attributes in the same element without checking the parent tree.
+    // refer to https://w3c.github.io/html-aria/
+    static relatedAriaHtmlAttributes: {
+        [ariaAttr: string] : {
+            conflict: {
+                ariaAttributeValue: string | null,
+                htmlAttributeNames: string[],
+                htmlAttributeValues: string[] | null
+            },
+            overlapping?: {    
+                ariaAttributeValue: string | null,
+                htmlAttributeNames: string[],
+                htmlAttributeValues: string[] | null
+            }
+        } 
+    } =  {
+        "aria-checked": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-disabled": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-hidden": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-placeholder": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["placeholder"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-valuemax": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["max"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-valuemin": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["min"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-readonly": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "false", "false"]
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "true", "true"]
+            }
+        },
+        "aria-required": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            }
+        },        
+        "aria-colspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {    
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-rowspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {    
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-autocomplete": {
+            conflict: {
+                // conflict occurs if both values are conflict
+                ariaAttributeValue: "none",
+                htmlAttributeNames: ["autocomplete"],
+                htmlAttributeValues: ["on"]
+            }
+        }  
+    }
 
     static containers = []
 };

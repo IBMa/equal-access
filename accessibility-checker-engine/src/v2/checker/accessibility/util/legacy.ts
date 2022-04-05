@@ -2557,6 +2557,56 @@ export class RPTUtil {
         } 
         return allowedAttributes;
     }
+    /**
+     * 
+     * @param ariaAttr 
+     * @param htmlAttrs 
+     * @type: conflict or overlapping
+     * @returns htmlAttrName, 'Pass' or null
+     *         htmlAttrName that conflicts with the ariaAttr, 
+     *         'Pass' with no conflict with the ariaAttr, 
+     *         or null where ariaAttr won't cause conflict
+     */
+    public static getConflictOrOverlappingHtmlAttribute(ariaAttr, htmlAttrs, type): any[] | null {
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) { 
+            let examinedHtmlAtrNames = [];
+            let ariaAttrValue = '';
+            if (type === 'conflict') {
+                if (!exist.conflict) return null;
+                ariaAttrValue = exist.conflict.ariaAttributeValue;
+            } else if (type === 'overlapping')  {
+                if (!exist.overlapping) return null;
+                ariaAttrValue = exist.overlapping.ariaAttributeValue; 
+            } else
+                return null;    
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
+                let htmlAttrNames = [];
+                let htmlAttrValues = [];
+                if (type === 'conflict') {
+                     htmlAttrNames = exist.conflict.htmlAttributeNames;
+                     htmlAttrValues = exist.conflict.htmlAttributeValues;
+                }  else {
+                     htmlAttrNames = exist.overlapping.htmlAttributeNames;
+                     htmlAttrValues = exist.overlapping.htmlAttributeValues;
+                }    
+                for (let i = 0; i < htmlAttrs.length; i++) { 
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    if (index != -1) { 
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index]['value'] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                               continue;
+                        } else 
+                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
+                    }         
+                }
+            }
+            return examinedHtmlAtrNames;
+        } else
+            return null;
+    }
 
     public static CSS(element) {
         let styleText = "";
