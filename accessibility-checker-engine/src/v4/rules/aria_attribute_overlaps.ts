@@ -12,7 +12,7 @@
 *****************************************************************************/
 
 import { DOMUtil } from "../../v2/dom/DOMUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
@@ -24,14 +24,14 @@ export let aria_attribute_overlaps: Rule = {
     help: {
         "en-US": {
             "pass": "aria_attribute_overlaps.html",
-            "fail_conflict": "aria_attribute_overlaps.html",
+            "potential_overlap": "aria_attribute_overlaps.html",
             "group": "aria_attribute_overlaps.html"
         }
     },
     messages: {
         "en-US": {
             "pass": "Rule Passed",
-            "potential_overlap": "The ARIA attribute \"{0}\" should not overlap with the HTML attribute \"{0}\"",
+            "potential_overlap": "The ARIA attribute \"{0}\" should not overlap with the HTML attribute \"{1}\"",
             "group": "An ARIA attribute should not overlap with the corresponding HTML attribute"
         }
     },
@@ -61,18 +61,15 @@ export let aria_attribute_overlaps: Rule = {
                     htmlAttrs.push({name: attrName, value: attrValue});
             }
         }
-        console.log('node name=' + ruleContext.nodeName + ', arias=' + JSON.stringify(ariaAttrs) +", natives="+ JSON.stringify(htmlAttrs));
         let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs);
+            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');;
             if (examinedHtmlAtrNames === null) continue;
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Pass') { //pass
                     ret.push(RulePass("pass"));
-                    console.log('pass node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
                 } else if (item['result'] === 'Failed') { //failed
-                    ret.push(RuleFail("potential_overlap", [ariaAttrs[i]['name'], item['attr']]));
-                    console.log('fail node name=' + ruleContext.nodeName + ', aria=' + ariaAttrs[i]['name'] +", native="+ item['attr']);
+                    ret.push(RulePotential("potential_overlap", [ariaAttrs[i]['name'], item['attr']]));
                 }
             });    
         }    
