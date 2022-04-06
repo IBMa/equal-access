@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://w3c.github.io/html-aria/tests/readonly-test.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>ARIA in HTML - Test Cases</title>
+    <link rel="stylesheet" href="./readonly-test-styles.css">
+		<style>
+		body{
+			font-size: 1em;
+		}
+		.roleTest {
+			border: 2px solid black;
+			width: 1em;
+			height: 1em;
+			margin: 5px;
+		}
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+		}
+		.widgetDemo {
+			border: 1px solid #EEE;
+			margin: .5em;
+			padding: 5px;
+			flex: 1 0 0;
+			min-width: calc(300px - 1em);
+		}
+		.widgetDemo p {
+			color: #696969;
+			font-size: 1.125em;
+			padding: 0;
+			margin: .75em 0;
+		}
+		.testcase {
+			margin: 2em 0;
+		}
+		h3{
+			margin: .5em 0;
+			border: 0;
+			padding: 0;
+		}
+		h2 {font-size:2em}
+
+		[contenteditable] {
+			border: 1px solid;
+			padding: .125em;
+		}
+	</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+		<h1>ARIA in HTML - test case for <code>aria-readonly</code></h1>
+		<p>last updated 28 February 2021</p>
+		<p>The <code>readonly</code> attribute is allowed on <code>input type=text, search, url, tel, email, password, date, month, week, time, datetime-local, number</code>. It is NOT RECOMMENDED to use <code>aria-readonly</code> on these elements.</p>
+		<p><code>aria-readonly=false</code> is not allowed on an element with <code>contenteditable</code>.</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 1</h3>
+				<p>Authors SHOULD NOT use the <code>aria-readonly="true"</code> on any element which also has a <code>readonly</code> attribute. </p>
+
+				<p>The following <code>input</code>s have <code>readonly</code> and <code>aria-readonly=true</code> set.</p>
+
+				<div class="testcase">
+					<input readonly="" aria-readonly="true">
+					<input type="text" readonly="" aria-readonly="true">
+					<input type="search" readonly="" aria-readonly="true">
+					<input type="tel" readonly="" aria-readonly="true">
+					<input type="url" readonly="" aria-readonly="true">
+					<input type="email" readonly="" aria-readonly="true">
+					<input type="password" readonly="" aria-readonly="true">
+					<input type="date" readonly="" aria-readonly="true">
+					<input type="month" readonly="" aria-readonly="true">
+					<input type="week" readonly="" aria-readonly="true">
+					<input type="time" readonly="" aria-readonly="true">
+					<input type="datetime-local" readonly="" aria-readonly="true">
+					<input type="number" readonly="" aria-readonly="true">
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>warning for unnecessary use of <code>aria-readonly=true</code> when element has <code>readonly</code>.</p>
+			</div>
+
+			<div class="widgetDemo">
+				<h3>Test 2</h3>
+				<p>Authors MUST NOT use <code>aria-readonly="false"</code> on any element which also has a <code>readonly</code> attribute. </p>
+
+				<p>The following <code>input</code>s have <code>readonly</code> and <code>aria-readonly=false</code> set.</p>
+
+				<div class="testcase">
+					<input readonly="" aria-readonly="false">
+					<input type="text" readonly="" aria-readonly="false">
+					<input type="search" readonly="" aria-readonly="false">
+					<input type="tel" readonly="" aria-readonly="false">
+					<input type="url" readonly="" aria-readonly="false">
+					<input type="email" readonly="" aria-readonly="false">
+					<input type="password" readonly="" aria-readonly="false">
+					<input type="date" readonly="" aria-readonly="false">
+					<input type="month" readonly="" aria-readonly="false">
+					<input type="week" readonly="" aria-readonly="false">
+					<input type="time" readonly="" aria-readonly="false">
+					<input type="datetime-local" readonly="" aria-readonly="false">
+					<input type="number" readonly="" aria-readonly="false">
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>error for use of <code>aria-readonly=false</code> which is in opposition of <code>readonly</code></p>
+			</div>
+
+		</div>
+	</main>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

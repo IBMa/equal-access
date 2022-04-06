@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)https://thepaciellogroup.github.io/aria-test-builder/dist/testcases/tr-treegrid-test.html -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>ARIA in HTML - test cases for &lt;tr&gt; within role=treegrid</title>
+  <style>
+  body {
+    background: #f7f7f5;
+    color: #333;
+    font: 400 105%/1.4 "Work Sans", sans-serif;
+    margin: 1.5em;
+  }
+
+  .clearFix:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  h4 {
+    clear: both;
+  }
+
+  .widgetDemo {
+    border: 1px solid #BBB;
+    background-color: #EEE;
+    width: 20em;
+    min-height: 10em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    float: left;
+  }
+
+  .role-test {
+    border: 2px solid #000 !important;
+    width: 1em;
+    height: 1em;
+    margin: 5px;
+    display: block;
+    border-radius: 7px;
+  }
+
+  section h4 {
+    padding: 0.5em;
+    border-top: 3px solid #630;
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+  }
+
+  ul.roleSummaryList li {
+    display: inline;
+  }
+
+  a:link,
+  a:visited {
+    border-bottom: 1px solid #2b7a82;
+    color: #2b7a82;
+    text-decoration: none;
+  }
+
+  [role]:focus,
+  [role]:hover {
+    outline: 3px solid #925e00;
+    outline-offset: 2px;
+  }
+
+  .allowed {
+    color: #009933;
+    font-weight: bold;
+  }
+
+  .notAllowed {
+    color: #cc0000;
+    font-weight: bold;
+  }
+
+  .notAllowed strong {
+    font-size: 120%;
+  }
+  </style>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+  
+    <header>
+    <h1>ARIA in HTML - test cases for &lt;tr&gt; within role=treegrid</h1>
+    <p>Last updated: 24 September 2021 16:25:43</p>
+         <p>
+      <a href="https://w3c.github.io/html-aria/#">Allowed Roles</a>: <strong>none</strong>
+    </p>
+  
+     
+    </header>
+    <main>
+    <h2>Tests</h2>
+    <section class="clearFix">
+      <h3>Widget roles</h3>
+      <section class="widgetDemo">
+        <h4>role="button" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="button" class="role-test button-test tr-treegrid-test" id="tr-treegrid-button-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="checkbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="checkbox" class="role-test checkbox-test tr-treegrid-test" id="tr-treegrid-checkbox-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="gridcell" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="gridcell" class="role-test gridcell-test tr-treegrid-test" id="tr-treegrid-gridcell-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="link" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="link" class="role-test link-test tr-treegrid-test" id="tr-treegrid-link-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="menuitem" class="role-test menuitem-test tr-treegrid-test" id="tr-treegrid-menuitem-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitemcheckbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="menuitemcheckbox" class="role-test menuitemcheckbox-test tr-treegrid-test" id="tr-treegrid-menuitemcheckbox-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitemradio" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="menuitemradio" class="role-test menuitemradio-test tr-treegrid-test" id="tr-treegrid-menuitemradio-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="option" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="option" class="role-test option-test tr-treegrid-test" id="tr-treegrid-option-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="progressbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="progressbar" class="role-test progressbar-test tr-treegrid-test" id="tr-treegrid-progressbar-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="radio" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="radio" class="role-test radio-test tr-treegrid-test" id="tr-treegrid-radio-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="scrollbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="scrollbar" class="role-test scrollbar-test tr-treegrid-test" id="tr-treegrid-scrollbar-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="searchbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="searchbox" class="role-test searchbox-test tr-treegrid-test" id="tr-treegrid-searchbox-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="separator" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="separator" class="role-test separator-test tr-treegrid-test" id="tr-treegrid-separator-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="slider" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="slider" class="role-test slider-test tr-treegrid-test" id="tr-treegrid-slider-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="spinbutton" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="spinbutton" class="role-test spinbutton-test tr-treegrid-test" id="tr-treegrid-spinbutton-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="switch" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="switch" class="role-test switch-test tr-treegrid-test" id="tr-treegrid-switch-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tab" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="tab" class="role-test tab-test tr-treegrid-test" id="tr-treegrid-tab-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tabpanel" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="tabpanel" class="role-test tabpanel-test tr-treegrid-test" id="tr-treegrid-tabpanel-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="textbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="textbox" class="role-test textbox-test tr-treegrid-test" id="tr-treegrid-textbox-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="treeitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="treeitem" class="role-test treeitem-test tr-treegrid-test" id="tr-treegrid-treeitem-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Composite roles</h3>
+      <section class="widgetDemo">
+        <h4>role="combobox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="combobox" class="role-test combobox-test tr-treegrid-test" id="tr-treegrid-combobox-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="grid" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="grid" class="role-test grid-test tr-treegrid-test" id="tr-treegrid-grid-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="listbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="listbox" class="role-test listbox-test tr-treegrid-test" id="tr-treegrid-listbox-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menu" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="menu" class="role-test menu-test tr-treegrid-test" id="tr-treegrid-menu-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menubar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="menubar" class="role-test menubar-test tr-treegrid-test" id="tr-treegrid-menubar-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="radiogroup" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="radiogroup" class="role-test radiogroup-test tr-treegrid-test" id="tr-treegrid-radiogroup-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tablist" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="tablist" class="role-test tablist-test tr-treegrid-test" id="tr-treegrid-tablist-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tree" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="tree" class="role-test tree-test tr-treegrid-test" id="tr-treegrid-tree-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="treegrid" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="treegrid" class="role-test treegrid-test tr-treegrid-test" id="tr-treegrid-treegrid-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Document Structure roles</h3>
+      <section class="widgetDemo">
+        <h4>role="application" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="application" class="role-test application-test tr-treegrid-test" id="tr-treegrid-application-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="article" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="article" class="role-test article-test tr-treegrid-test" id="tr-treegrid-article-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="cell" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="cell" class="role-test cell-test tr-treegrid-test" id="tr-treegrid-cell-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="columnheader" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="columnheader" class="role-test columnheader-test tr-treegrid-test" id="tr-treegrid-columnheader-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="definition" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="definition" class="role-test definition-test tr-treegrid-test" id="tr-treegrid-definition-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="directory" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="directory" class="role-test directory-test tr-treegrid-test" id="tr-treegrid-directory-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="document" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="document" class="role-test document-test tr-treegrid-test" id="tr-treegrid-document-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="feed" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="feed" class="role-test feed-test tr-treegrid-test" id="tr-treegrid-feed-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="figure" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="figure" class="role-test figure-test tr-treegrid-test" id="tr-treegrid-figure-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="group" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="group" class="role-test group-test tr-treegrid-test" id="tr-treegrid-group-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="heading" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="heading" class="role-test heading-test tr-treegrid-test" id="tr-treegrid-heading-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="img" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="img" class="role-test img-test tr-treegrid-test" id="tr-treegrid-img-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="list" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="list" class="role-test list-test tr-treegrid-test" id="tr-treegrid-list-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="listitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="listitem" class="role-test listitem-test tr-treegrid-test" id="tr-treegrid-listitem-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="math" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="math" class="role-test math-test tr-treegrid-test" id="tr-treegrid-math-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="none" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="none" class="role-test none-test tr-treegrid-test" id="tr-treegrid-none-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="note" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="note" class="role-test note-test tr-treegrid-test" id="tr-treegrid-note-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="presentation" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="presentation" class="role-test presentation-test tr-treegrid-test" id="tr-treegrid-presentation-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="row" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="row" class="role-test row-test tr-treegrid-test" id="tr-treegrid-row-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="rowgroup" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="rowgroup" class="role-test rowgroup-test tr-treegrid-test" id="tr-treegrid-rowgroup-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="rowheader" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="rowheader" class="role-test rowheader-test tr-treegrid-test" id="tr-treegrid-rowheader-20-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="separator" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="separator" class="role-test separator-test tr-treegrid-test" id="tr-treegrid-separator-21-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="table" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="table" class="role-test table-test tr-treegrid-test" id="tr-treegrid-table-22-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="term" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="term" class="role-test term-test tr-treegrid-test" id="tr-treegrid-term-23-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="toolbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="toolbar" class="role-test toolbar-test tr-treegrid-test" id="tr-treegrid-toolbar-24-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tooltip" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="tooltip" class="role-test tooltip-test tr-treegrid-test" id="tr-treegrid-tooltip-25-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Landmark roles</h3>
+      <section class="widgetDemo">
+        <h4>role="banner" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="banner" class="role-test banner-test tr-treegrid-test" id="tr-treegrid-banner-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="complementary" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="complementary" class="role-test complementary-test tr-treegrid-test" id="tr-treegrid-complementary-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="contentinfo" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="contentinfo" class="role-test contentinfo-test tr-treegrid-test" id="tr-treegrid-contentinfo-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="form" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="form" class="role-test form-test tr-treegrid-test" id="tr-treegrid-form-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="main" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="main" class="role-test main-test tr-treegrid-test" id="tr-treegrid-main-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="navigation" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="navigation" class="role-test navigation-test tr-treegrid-test" id="tr-treegrid-navigation-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="region" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="region" class="role-test region-test tr-treegrid-test" id="tr-treegrid-region-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="search" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="search" class="role-test search-test tr-treegrid-test" id="tr-treegrid-search-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Live region roles</h3>
+      <section class="widgetDemo">
+        <h4>role="alert" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="alert" class="role-test alert-test tr-treegrid-test" id="tr-treegrid-alert-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="log" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="log" class="role-test log-test tr-treegrid-test" id="tr-treegrid-log-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="marquee" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="marquee" class="role-test marquee-test tr-treegrid-test" id="tr-treegrid-marquee-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="status" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="status" class="role-test status-test tr-treegrid-test" id="tr-treegrid-status-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="timer" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="timer" class="role-test timer-test tr-treegrid-test" id="tr-treegrid-timer-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Window region roles</h3>
+      <section class="widgetDemo">
+        <h4>role="alertdialog" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="alertdialog" class="role-test alertdialog-test tr-treegrid-test" id="tr-treegrid-alertdialog-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="dialog" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="dialog" class="role-test dialog-test tr-treegrid-test" id="tr-treegrid-dialog-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>dpub roles</h3>
+      <section class="widgetDemo">
+        <h4>role="doc-abstract" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-abstract" class="role-test doc-abstract-test tr-treegrid-test" id="tr-treegrid-doc-abstract-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-acknowledgments" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-acknowledgments" class="role-test doc-acknowledgments-test tr-treegrid-test" id="tr-treegrid-doc-acknowledgments-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-afterword" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-afterword" class="role-test doc-afterword-test tr-treegrid-test" id="tr-treegrid-doc-afterword-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-appendix" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-appendix" class="role-test doc-appendix-test tr-treegrid-test" id="tr-treegrid-doc-appendix-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-backlink" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-backlink" class="role-test doc-backlink-test tr-treegrid-test" id="tr-treegrid-doc-backlink-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-biblioref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-biblioref" class="role-test doc-biblioref-test tr-treegrid-test" id="tr-treegrid-doc-biblioref-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-bibliography" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-bibliography" class="role-test doc-bibliography-test tr-treegrid-test" id="tr-treegrid-doc-bibliography-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-chapter" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-chapter" class="role-test doc-chapter-test tr-treegrid-test" id="tr-treegrid-doc-chapter-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-colophon" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-colophon" class="role-test doc-colophon-test tr-treegrid-test" id="tr-treegrid-doc-colophon-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-conclusion" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-conclusion" class="role-test doc-conclusion-test tr-treegrid-test" id="tr-treegrid-doc-conclusion-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-credit" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-credit" class="role-test doc-credit-test tr-treegrid-test" id="tr-treegrid-doc-credit-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-credits" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-credits" class="role-test doc-credits-test tr-treegrid-test" id="tr-treegrid-doc-credits-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-dedication" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-dedication" class="role-test doc-dedication-test tr-treegrid-test" id="tr-treegrid-doc-dedication-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-endnotes" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-endnotes" class="role-test doc-endnotes-test tr-treegrid-test" id="tr-treegrid-doc-endnotes-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-epigraph" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-epigraph" class="role-test doc-epigraph-test tr-treegrid-test" id="tr-treegrid-doc-epigraph-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-epilogue" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-epilogue" class="role-test doc-epilogue-test tr-treegrid-test" id="tr-treegrid-doc-epilogue-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-errata" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-errata" class="role-test doc-errata-test tr-treegrid-test" id="tr-treegrid-doc-errata-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-example" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-example" class="role-test doc-example-test tr-treegrid-test" id="tr-treegrid-doc-example-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-footnote" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-footnote" class="role-test doc-footnote-test tr-treegrid-test" id="tr-treegrid-doc-footnote-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-foreword" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-foreword" class="role-test doc-foreword-test tr-treegrid-test" id="tr-treegrid-doc-foreword-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-glossref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-glossref" class="role-test doc-glossref-test tr-treegrid-test" id="tr-treegrid-doc-glossref-20-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-glossary" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-glossary" class="role-test doc-glossary-test tr-treegrid-test" id="tr-treegrid-doc-glossary-21-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-index" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-index" class="role-test doc-index-test tr-treegrid-test" id="tr-treegrid-doc-index-22-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-introduction" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-introduction" class="role-test doc-introduction-test tr-treegrid-test" id="tr-treegrid-doc-introduction-23-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-noteref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-noteref" class="role-test doc-noteref-test tr-treegrid-test" id="tr-treegrid-doc-noteref-24-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-notice" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-notice" class="role-test doc-notice-test tr-treegrid-test" id="tr-treegrid-doc-notice-25-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-pagelist" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-pagelist" class="role-test doc-pagelist-test tr-treegrid-test" id="tr-treegrid-doc-pagelist-26-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-part" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-part" class="role-test doc-part-test tr-treegrid-test" id="tr-treegrid-doc-part-27-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-preface" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-preface" class="role-test doc-preface-test tr-treegrid-test" id="tr-treegrid-doc-preface-28-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-prologue" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-prologue" class="role-test doc-prologue-test tr-treegrid-test" id="tr-treegrid-doc-prologue-29-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-pullquote" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-pullquote" class="role-test doc-pullquote-test tr-treegrid-test" id="tr-treegrid-doc-pullquote-30-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-qna" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-qna" class="role-test doc-qna-test tr-treegrid-test" id="tr-treegrid-doc-qna-31-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-subtitle" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-subtitle" class="role-test doc-subtitle-test tr-treegrid-test" id="tr-treegrid-doc-subtitle-32-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-toc" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-toc" class="role-test doc-toc-test tr-treegrid-test" id="tr-treegrid-doc-toc-33-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-tip" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="treegrid"><tbody><tr role="doc-tip" class="role-test doc-tip-test tr-treegrid-test" id="tr-treegrid-doc-tip-34-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+     </main>
+    <span role="htmlLintNeedsOneErrorForOutput"></span>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

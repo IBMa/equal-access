@@ -1,0 +1,401 @@
+/* Web Fonts
+-------------------------------------------------- */
+@font-face {
+  font-family: 'Roboto Slab';
+  src: url("fonts/RobotoSlab-Bold-webfont.eot");
+  src: url("fonts/RobotoSlab-Bold-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/RobotoSlab-Bold-webfont.woff") format("woff"), url("fonts/RobotoSlab-Bold-webfont.ttf") format("truetype"), url("fonts/RobotoSlab-Bold-webfont.svg#roboto_slabbold") format("svg");
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Body & HTML
+-------------------------------------------------- */
+html {
+  font-family: Calibri, Candara, Geneva, sans-serif;
+}
+
+body {
+  background: #fefefe;
+  border-top: 6px solid #1b75bc;
+  padding: 2.5em;
+}
+
+/* Flow
+-------------------------------------------------- */
+* {
+  font-family: inherit;
+  margin: 0;
+}
+
+* + * {
+  margin-top: .5em;
+}
+
+body,
+br,
+li,
+dt,
+dd,
+th,
+td,
+option,
+a + ul,
+:empty + * {
+  margin-top: 0;
+}
+
+p + p {
+  margin-top: .75em;
+}
+
+label + * {
+  margin-top: 0;
+}
+
+li {
+  margin-top: .25em;
+}
+
+/* Headings
+-------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Roboto Slab", Cambria, Georgia, serif;
+  line-height: 1.125;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h2:not(:first-child) {
+  margin-top: 1em;
+}
+
+h3 {
+  border-top: lightgray solid 1px;
+  font-size: 1.33em;
+  padding-top: 1em;
+}
+
+h4 {
+  font-size: 1em;
+  font-variant: small-caps;
+  text-transform: uppercase;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+h6 {
+  font-size: .8em;
+}
+
+
+/* Links & Buttons
+-------------------------------------------------- */
+a {
+  border-bottom: 1px solid;
+  color: #1b75bc;
+  text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 2px solid;
+}
+
+a code {
+  color: #14578A;
+}
+
+button,
+[type="submit"],
+[type="reset"],
+[type="file"] {
+  background: #1b75bc;
+  border: 0;
+  border-radius: .125em;
+  color: #fff;
+  font-family: "Roboto Slab", Cambria, Georgia, serif;
+  font-size: 1.125em;
+  letter-spacing: 1px;
+  padding: .5em 1em;
+}
+
+button::-moz-focus-inner,
+input[type="submit"]::-moz-focus-inner,
+input[type="file"] > input[type="button"]::-moz-focus-inner,
+select:-moz-focusring {
+  border: 0;
+  padding: 0;
+}
+
+:focus:not([tabindex="-1"]) {
+  outline: .25rem solid #aade87;
+}
+
+/* fix for IE :( */
+div:not([tabindex]):focus {
+  outline: none;
+}
+
+button:focus,
+[type="submit"]:focus,
+[type="file"]:focus {
+  box-shadow: 0 0 0 .25rem #aade87;
+  outline: none !important;
+}
+
+button:hover,
+[type="submit"]:hover,
+[type="file"]:hover {
+  background: #333;
+}
+
+/* Forms
+-------------------------------------------------- */
+label {
+  display: block;
+}
+
+input:not([type="submit"]),
+textarea, select {
+  background: #fefefe;
+  border: .125rem solid;
+  border-radius: .125em;
+  padding: .25em;
+  width: 100%;
+}
+
+input:focus,
+textarea:focus {
+  box-shadow: 0 0 0 .25em #aade87;
+  outline: none !important;
+}
+
+/* Header Content Styles
+-------------------------------------------------- */
+body > header {
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  margin: -2.5em -2.5em 1.5em;
+  padding: 2.5em;
+}
+
+#logo {
+  float:left;
+  height: 128px;
+  width: 128px;
+}
+
+/* Navigation blocks
+-------------------------------------------------- */
+nav {
+  background: #1b75bc;
+  padding: 1.5em;
+  text-align: center;
+}
+
+nav ul {
+  padding: 0;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav li + li {
+  margin-left: .75em;
+}
+
+nav a {
+  border: 0;
+  color: #fff;
+}
+
+nav a:hover,
+nav a:focus {
+  border-bottom: 2px solid;
+  outline: none !important;
+}
+
+/* Tables
+-------------------------------------------------- */
+table {
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: .9em;
+  width: 100%;
+}
+
+caption {
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0 1em 1em;
+}
+
+th,
+td {
+  border: 1px solid #333;
+  padding: .33em;
+  text-align: left;
+}
+
+thead th {
+  background-color: #1b75bc;
+  color: #fff;
+}
+
+thead th,
+tfoot tr:first-of-type td {
+  font-family: "Roboto Slab", Cambria, Georgia, serif;
+  font-weight: bold;
+}
+
+tfoot tr:first-of-type > * {
+  border-top: 4px solid #1b75bc;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #f7f7f7;
+}
+
+tbody tr:hover {
+  box-shadow: inset 0 0 0 2px #666;
+}
+
+tbody th {
+  text-align: left;
+}
+
+table a {
+  border: 0;
+}
+
+/*table a:after {
+  content: '\279C';
+  margin-left: .25em;
+}*/
+
+td ul {
+  padding-left: 1.25em;
+}
+
+tbody th,
+tbody td {
+  vertical-align: top;
+}
+
+.status-icon {
+  height: 16px;
+  width: 16px;
+}
+
+.col-1 {
+  width: 180px;
+}
+
+.col-2 {
+  width: 320px;
+}
+
+/* Figures, note and kbd
+-------------------------------------------------- */
+figure {
+  border: 1px solid #111;
+  margin: 1em 0 0;
+  padding: .5em;
+}
+
+figcaption {
+  color: #1b75bb;
+}
+
+.note {
+  background: none repeat scroll 0 0 #e9FBe9;
+  border-left: .25em solid #52e052;
+  padding: .5em 2em;
+}
+
+kbd {
+  background-color: #333;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+  color: #fff;
+  display: inline-block;
+  min-width: 16px;
+  padding: .25em .5em;
+  text-align: center;
+}
+
+/* Footer
+-------------------------------------------------- */
+footer {
+  background: #eee;
+  margin: 1.5em -2.5em -2.5em;
+  padding: 2.5em;
+}
+
+footer h2,
+footer h3 {
+  font-size: 1.5em;
+}
+
+footer p:only-child {
+  text-align: center;
+}
+
+footer > p,
+footer > ul > li {
+  font-size: .9em;
+}
+
+/* Code blocks and inline code*/
+pre {
+  background: #ededed;
+  font-family: Courier, monospace;
+  font-size: 85%;
+  padding: 1em;
+  white-space: pre-wrap;
+}
+
+pre code {
+  display: block;
+  font-family: monospace;
+  overflow: auto;
+}
+
+p code,
+li code {
+  background-color: rgba(0, 0, 0, .04);
+  border-radius: 3px;
+  font-family: Courier, monospace;
+  font-size: 85%;
+  margin: 0;
+  padding: .2em 0;
+}
+
+code p br,
+code p div br,
+code div br {
+  display: none;
+}
+
+code code,
+code p {
+  display: inline;
+  padding: 0px;
+}
+
+strong.question { font-family: "Roboto Slab", Cambria, Georgia, serif; color:#900;font-size:larger;font weight:bold}

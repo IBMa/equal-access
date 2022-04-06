@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://thepaciellogroup.github.io/aria-test-builder/dist/testcases/th-grid-test.html -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <title>ARIA in HTML - test cases for &lt;th&gt; within role=grid</title>
+  <style>
+  body {
+    background: #f7f7f5;
+    color: #333;
+    font: 400 105%/1.4 "Work Sans", sans-serif;
+    margin: 1.5em;
+  }
+
+  .clearFix:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  h4 {
+    clear: both;
+  }
+
+  .widgetDemo {
+    border: 1px solid #BBB;
+    background-color: #EEE;
+    width: 20em;
+    min-height: 10em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    padding: 5px;
+    float: left;
+  }
+
+  .role-test {
+    border: 2px solid #000 !important;
+    width: 1em;
+    height: 1em;
+    margin: 5px;
+    display: block;
+    border-radius: 7px;
+  }
+
+  section h4 {
+    padding: 0.5em;
+    border-top: 3px solid #630;
+    margin-top: 2em;
+    margin-bottom: 1.5em;
+  }
+
+  ul.roleSummaryList li {
+    display: inline;
+  }
+
+  a:link,
+  a:visited {
+    border-bottom: 1px solid #2b7a82;
+    color: #2b7a82;
+    text-decoration: none;
+  }
+
+  [role]:focus,
+  [role]:hover {
+    outline: 3px solid #925e00;
+    outline-offset: 2px;
+  }
+
+  .allowed {
+    color: #009933;
+    font-weight: bold;
+  }
+
+  .notAllowed {
+    color: #cc0000;
+    font-weight: bold;
+  }
+
+  .notAllowed strong {
+    font-size: 120%;
+  }
+  </style>
+</head>
+
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+  
+    <header>
+    <h1>ARIA in HTML - test cases for &lt;th&gt; within role=grid</h1>
+    <p>Last updated: 24 September 2021 16:25:39</p>
+         <p>
+      <a href="https://w3c.github.io/html-aria/#">Allowed Roles</a>: <strong>none</strong>
+    </p>
+  
+     
+    </header>
+    <main>
+    <h2>Tests</h2>
+    <section class="clearFix">
+      <h3>Widget roles</h3>
+      <section class="widgetDemo">
+        <h4>role="button" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="button" class="role-test button-test th-grid-test" id="th-grid-button-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="checkbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="checkbox" class="role-test checkbox-test th-grid-test" id="th-grid-checkbox-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="gridcell" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="gridcell" class="role-test gridcell-test th-grid-test" id="th-grid-gridcell-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="link" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="link" class="role-test link-test th-grid-test" id="th-grid-link-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="menuitem" class="role-test menuitem-test th-grid-test" id="th-grid-menuitem-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitemcheckbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="menuitemcheckbox" class="role-test menuitemcheckbox-test th-grid-test" id="th-grid-menuitemcheckbox-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menuitemradio" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="menuitemradio" class="role-test menuitemradio-test th-grid-test" id="th-grid-menuitemradio-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="option" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="option" class="role-test option-test th-grid-test" id="th-grid-option-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="progressbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="progressbar" class="role-test progressbar-test th-grid-test" id="th-grid-progressbar-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="radio" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="radio" class="role-test radio-test th-grid-test" id="th-grid-radio-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="scrollbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="scrollbar" class="role-test scrollbar-test th-grid-test" id="th-grid-scrollbar-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="searchbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="searchbox" class="role-test searchbox-test th-grid-test" id="th-grid-searchbox-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="separator" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="separator" class="role-test separator-test th-grid-test" id="th-grid-separator-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="slider" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="slider" class="role-test slider-test th-grid-test" id="th-grid-slider-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="spinbutton" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="spinbutton" class="role-test spinbutton-test th-grid-test" id="th-grid-spinbutton-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="switch" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="switch" class="role-test switch-test th-grid-test" id="th-grid-switch-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tab" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="tab" class="role-test tab-test th-grid-test" id="th-grid-tab-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tabpanel" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="tabpanel" class="role-test tabpanel-test th-grid-test" id="th-grid-tabpanel-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="textbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="textbox" class="role-test textbox-test th-grid-test" id="th-grid-textbox-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="treeitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="treeitem" class="role-test treeitem-test th-grid-test" id="th-grid-treeitem-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Composite roles</h3>
+      <section class="widgetDemo">
+        <h4>role="combobox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="combobox" class="role-test combobox-test th-grid-test" id="th-grid-combobox-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="grid" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="grid" class="role-test grid-test th-grid-test" id="th-grid-grid-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="listbox" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="listbox" class="role-test listbox-test th-grid-test" id="th-grid-listbox-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menu" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="menu" class="role-test menu-test th-grid-test" id="th-grid-menu-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="menubar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="menubar" class="role-test menubar-test th-grid-test" id="th-grid-menubar-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="radiogroup" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="radiogroup" class="role-test radiogroup-test th-grid-test" id="th-grid-radiogroup-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tablist" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="tablist" class="role-test tablist-test th-grid-test" id="th-grid-tablist-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tree" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="tree" class="role-test tree-test th-grid-test" id="th-grid-tree-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="treegrid" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="treegrid" class="role-test treegrid-test th-grid-test" id="th-grid-treegrid-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Document Structure roles</h3>
+      <section class="widgetDemo">
+        <h4>role="application" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="application" class="role-test application-test th-grid-test" id="th-grid-application-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="article" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="article" class="role-test article-test th-grid-test" id="th-grid-article-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="cell" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="cell" class="role-test cell-test th-grid-test" id="th-grid-cell-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="columnheader" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="columnheader" class="role-test columnheader-test th-grid-test" id="th-grid-columnheader-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="definition" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="definition" class="role-test definition-test th-grid-test" id="th-grid-definition-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="directory" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="directory" class="role-test directory-test th-grid-test" id="th-grid-directory-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="document" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="document" class="role-test document-test th-grid-test" id="th-grid-document-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="feed" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="feed" class="role-test feed-test th-grid-test" id="th-grid-feed-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="figure" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="figure" class="role-test figure-test th-grid-test" id="th-grid-figure-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="group" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="group" class="role-test group-test th-grid-test" id="th-grid-group-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="heading" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="heading" class="role-test heading-test th-grid-test" id="th-grid-heading-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="img" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="img" class="role-test img-test th-grid-test" id="th-grid-img-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="list" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="list" class="role-test list-test th-grid-test" id="th-grid-list-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="listitem" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="listitem" class="role-test listitem-test th-grid-test" id="th-grid-listitem-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="math" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="math" class="role-test math-test th-grid-test" id="th-grid-math-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="none" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="none" class="role-test none-test th-grid-test" id="th-grid-none-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="note" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="note" class="role-test note-test th-grid-test" id="th-grid-note-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="presentation" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="presentation" class="role-test presentation-test th-grid-test" id="th-grid-presentation-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="row" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="row" class="role-test row-test th-grid-test" id="th-grid-row-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="rowgroup" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="rowgroup" class="role-test rowgroup-test th-grid-test" id="th-grid-rowgroup-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="rowheader" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="rowheader" class="role-test rowheader-test th-grid-test" id="th-grid-rowheader-20-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="separator" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="separator" class="role-test separator-test th-grid-test" id="th-grid-separator-21-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="table" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="table" class="role-test table-test th-grid-test" id="th-grid-table-22-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="term" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="term" class="role-test term-test th-grid-test" id="th-grid-term-23-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="toolbar" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="toolbar" class="role-test toolbar-test th-grid-test" id="th-grid-toolbar-24-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="tooltip" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="tooltip" class="role-test tooltip-test th-grid-test" id="th-grid-tooltip-25-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Landmark roles</h3>
+      <section class="widgetDemo">
+        <h4>role="banner" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="banner" class="role-test banner-test th-grid-test" id="th-grid-banner-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="complementary" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="complementary" class="role-test complementary-test th-grid-test" id="th-grid-complementary-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="contentinfo" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="contentinfo" class="role-test contentinfo-test th-grid-test" id="th-grid-contentinfo-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="form" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="form" class="role-test form-test th-grid-test" id="th-grid-form-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="main" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="main" class="role-test main-test th-grid-test" id="th-grid-main-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="navigation" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="navigation" class="role-test navigation-test th-grid-test" id="th-grid-navigation-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="region" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="region" class="role-test region-test th-grid-test" id="th-grid-region-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="search" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="search" class="role-test search-test th-grid-test" id="th-grid-search-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Live region roles</h3>
+      <section class="widgetDemo">
+        <h4>role="alert" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="alert" class="role-test alert-test th-grid-test" id="th-grid-alert-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="log" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="log" class="role-test log-test th-grid-test" id="th-grid-log-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="marquee" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="marquee" class="role-test marquee-test th-grid-test" id="th-grid-marquee-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="status" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="status" class="role-test status-test th-grid-test" id="th-grid-status-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="timer" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="timer" class="role-test timer-test th-grid-test" id="th-grid-timer-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>Window region roles</h3>
+      <section class="widgetDemo">
+        <h4>role="alertdialog" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="alertdialog" class="role-test alertdialog-test th-grid-test" id="th-grid-alertdialog-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="dialog" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="dialog" class="role-test dialog-test th-grid-test" id="th-grid-dialog-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+        <section class="clearFix">
+      <h3>dpub roles</h3>
+      <section class="widgetDemo">
+        <h4>role="doc-abstract" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-abstract" class="role-test doc-abstract-test th-grid-test" id="th-grid-doc-abstract-0-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-acknowledgments" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-acknowledgments" class="role-test doc-acknowledgments-test th-grid-test" id="th-grid-doc-acknowledgments-1-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-afterword" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-afterword" class="role-test doc-afterword-test th-grid-test" id="th-grid-doc-afterword-2-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-appendix" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-appendix" class="role-test doc-appendix-test th-grid-test" id="th-grid-doc-appendix-3-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-backlink" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-backlink" class="role-test doc-backlink-test th-grid-test" id="th-grid-doc-backlink-4-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-biblioref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-biblioref" class="role-test doc-biblioref-test th-grid-test" id="th-grid-doc-biblioref-5-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-bibliography" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-bibliography" class="role-test doc-bibliography-test th-grid-test" id="th-grid-doc-bibliography-6-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-chapter" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-chapter" class="role-test doc-chapter-test th-grid-test" id="th-grid-doc-chapter-7-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-colophon" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-colophon" class="role-test doc-colophon-test th-grid-test" id="th-grid-doc-colophon-8-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-conclusion" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-conclusion" class="role-test doc-conclusion-test th-grid-test" id="th-grid-doc-conclusion-9-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-credit" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-credit" class="role-test doc-credit-test th-grid-test" id="th-grid-doc-credit-10-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-credits" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-credits" class="role-test doc-credits-test th-grid-test" id="th-grid-doc-credits-11-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-dedication" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-dedication" class="role-test doc-dedication-test th-grid-test" id="th-grid-doc-dedication-12-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-endnotes" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-endnotes" class="role-test doc-endnotes-test th-grid-test" id="th-grid-doc-endnotes-13-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-epigraph" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-epigraph" class="role-test doc-epigraph-test th-grid-test" id="th-grid-doc-epigraph-14-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-epilogue" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-epilogue" class="role-test doc-epilogue-test th-grid-test" id="th-grid-doc-epilogue-15-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-errata" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-errata" class="role-test doc-errata-test th-grid-test" id="th-grid-doc-errata-16-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-example" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-example" class="role-test doc-example-test th-grid-test" id="th-grid-doc-example-17-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-footnote" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-footnote" class="role-test doc-footnote-test th-grid-test" id="th-grid-doc-footnote-18-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-foreword" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-foreword" class="role-test doc-foreword-test th-grid-test" id="th-grid-doc-foreword-19-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-glossref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-glossref" class="role-test doc-glossref-test th-grid-test" id="th-grid-doc-glossref-20-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-glossary" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-glossary" class="role-test doc-glossary-test th-grid-test" id="th-grid-doc-glossary-21-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-index" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-index" class="role-test doc-index-test th-grid-test" id="th-grid-doc-index-22-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-introduction" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-introduction" class="role-test doc-introduction-test th-grid-test" id="th-grid-doc-introduction-23-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-noteref" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-noteref" class="role-test doc-noteref-test th-grid-test" id="th-grid-doc-noteref-24-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-notice" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-notice" class="role-test doc-notice-test th-grid-test" id="th-grid-doc-notice-25-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-pagelist" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-pagelist" class="role-test doc-pagelist-test th-grid-test" id="th-grid-doc-pagelist-26-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-part" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-part" class="role-test doc-part-test th-grid-test" id="th-grid-doc-part-27-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-preface" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-preface" class="role-test doc-preface-test th-grid-test" id="th-grid-doc-preface-28-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-prologue" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-prologue" class="role-test doc-prologue-test th-grid-test" id="th-grid-doc-prologue-29-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-pullquote" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-pullquote" class="role-test doc-pullquote-test th-grid-test" id="th-grid-doc-pullquote-30-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-qna" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-qna" class="role-test doc-qna-test th-grid-test" id="th-grid-doc-qna-31-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-subtitle" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-subtitle" class="role-test doc-subtitle-test th-grid-test" id="th-grid-doc-subtitle-32-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-toc" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-toc" class="role-test doc-toc-test th-grid-test" id="th-grid-doc-toc-33-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+      <section class="widgetDemo">
+        <h4>role="doc-tip" (          <span class="notAllowed">
+            <strong>Not</strong> Allowed
+          </span>
+          )
+          
+        </h4>
+        <table role="grid"><tbody><tr role="doc-tip" class="role-test doc-tip-test th-grid-test" id="th-grid-doc-tip-34-test" aria-label="acc name" tabindex="0"><td></td></tr></tbody></table>
+      </section>
+    </section>
+    
+     </main>
+    <span role="htmlLintNeedsOneErrorForOutput"></span>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

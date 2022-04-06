@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)https://w3c.github.io/html-aria/tests/aria-hidden-invalid-element-test.html -->
+<html lang="en" aria-hidden="false"><!-- test --><head aria-hidden="false"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- test -->
+		 <!-- test -->
+		<title aria-hidden="false">ARIA in HTML - Test Cases</title><!-- test -->
+	  <link rel="stylesheet" href="./aria-hidden-invalid-element-styles.css" aria-hidden="false">
+		<style type="text/css">
+			body{
+				font-size: 1em;
+			}
+			.roleTest {
+				border: 2px solid black;
+				width: 1em;
+				height: 1em;
+				margin: 5px;
+			}
+			.flex {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: stretch;
+			}
+			.widgetDemo {
+				border: 1px solid #EEE;
+				margin: .5em;
+				padding: 5px;
+				flex: 1 0 0;
+				min-width: calc(300px - 1em);
+			}
+			.widgetDemo p {
+				color: #696969;
+				font-size: 1.125em;
+				padding: 0;
+				margin: .75em 0;
+			}
+			.testcase {
+				margin: 2em 0;
+			}
+			h3{
+				margin: .5em 0;
+				border: 0;
+				padding: 0;
+			}
+			h2 {font-size:2em}
+
+			[contenteditable] {
+				border: 1px solid;
+				padding: .125em;
+			}
+		</style>
+
+		<!-- tests -->
+		<!--<base aria-hidden="false">--><base href=".">
+	</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+		<h1>ARIA in HTML - test case for invalid <code>aria-hidden</code> use</h1>
+		<p>last updated 28 February 2021</p>
+		<p>The <code>aria-hidden</code> attribute is allowed on any element that allows for global <code>aria-*</code> attributes.</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 1</h3>
+				<p>Authors MAY use the <code>aria-hidden</code> attribute on any HTML element that allows global <code>aria-*</code> attributes, with the following exceptions:</p>
+				<p>
+					<code>aria-hidden</code> is <strong>not</strong> allowed on:
+				</p>
+				<ul>
+					<li><code>base</code></li>
+					<li><code>col</code></li>
+					<li><code>colgroup</code></li>
+					<li><code>head</code></li>
+					<li><code>html</code></li>
+					<li><code>input type=hidden</code></li>
+					<li><code>link</code></li>
+					<li><code>map</code></li>
+					<li><code>meta</code></li>
+					<li><code>noscript</code></li>
+					<li><code>param</code></li>
+					<li><code>picture</code></li>
+					<li><code>script</code></li>
+					<li><code>slot</code></li>
+					<li><code>source</code></li>
+					<li><code>style</code></li>
+					<li><code>template</code></li>
+					<li><code>title</code></li>
+					<li><code>track</code></li>
+				</ul>
+
+				<p>All elements represented above have been added to this document, in their proper locations so as to render in the browser. Each has an <code>aria-hidden="false"</code> so as to help ensure the test case will remain accessible.
+
+				</p><div class="testcase">
+
+					<table>
+						<caption>table contains colgroup/col with <code>aria-hidden</code></caption>
+						<colgroup aria-hidden="false">
+							<col aria-hidden="false">
+						</colgroup>
+					</table>
+					<p>all other non-<code>head</code> or <code>html</code> elements follow with <code>aria-hidden=false</code></p>
+					<input type="hidden" aria-hidden="false">
+					<noscript aria-hidden="false"></noscript>
+					<param aria-hidden="false">
+					<picture aria-hidden="false"></picture>
+					<script aria-hidden="false"></script>
+					<slot aria-hidden="false"></slot>
+					<source aria-hidden="false">
+					<style aria-hidden="false"></style>
+					<template aria-hidden="false"></template>
+					<track aria-hidden="false">
+					<map aria-hidden="false"></map>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>An error for all elements with <code>aria-hidden</code> set, regardless if it is set to <code>true</code> or <code>false</code>.</p>
+			</div>
+		</div>
+	</main>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

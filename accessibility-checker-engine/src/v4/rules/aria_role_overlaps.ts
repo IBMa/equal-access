@@ -64,7 +64,6 @@ export let aria_role_overlaps: Rule = {
         }  
         if (ret.length > 0)  
             return ret;
-        else
-            return null;    
+        return null;    
     }
 }

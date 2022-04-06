@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)https://w3c.github.io/html-aria/tests/colspan-test.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>ARIA in HTML - Test Cases</title>
+    <link rel="stylesheet" href="./colspan-test-styles.css">
+	<style type="text/css">
+		body{
+			font-size: 1em;
+		}
+		.roleTest {
+			border: 2px solid black;
+			width: 1em;
+			height: 1em;
+			margin: 5px;
+		}
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+		}
+		.widgetDemo {
+			border: 1px solid #EEE;
+			margin: .5em;
+			padding: 5px;
+			flex: 1 0 0;
+			min-width: calc(300px - 1em);
+		}
+		.widgetDemo p {
+			color: #696969;
+			font-size: 1.125em;
+			padding: 0;
+			margin: .75em 0;
+		}
+		.testcase {
+			margin: 2em 0;
+		}
+		h3{
+			margin: .5em 0;
+			border: 0;
+			padding: 0;
+		}
+		h2 {font-size:2em}
+	</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+	<h1>ARIA in HTML - test cases for <code>aria-colspan</code></h1>
+	<p>last updated 18 August 2021</p>
+	<p>
+		<a href="https://html.spec.whatwg.org/multipage/tables.html#attributes-common-to-td-and-th-elements"><code>colspan</code></a> is allowed on <code>td</code> and <code>th</code> elements
+	</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 1</h3>
+				Edit: removed test.
+			</div>
+
+			<div class="widgetDemo">
+				<h3>Test 2</h3>
+				<p>Authors SHOULD NOT use the <code>aria-colspan</code>. attribute on any element which also has a <code>colspan</code> attribute.</p>
+
+				<p>The first <code>th</code> and <code>td</code> each have an <code>aria-colspan="1"</code> and <code>colspan="1"</code> attribute</p>
+
+				<div class="testcase">
+					<table>
+						<thead>
+							<tr>
+								<th aria-colspan="1" colspan="1">header 1</th>
+								<th>header 2</th>
+							</tr>
+						</thead>
+						<tbody><tr>
+							<td aria-colspan="1" colspan="1">Cell 1</td>
+							<td>Cell 2</td>
+						</tr>
+					</tbody></table>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br> warning for unnecessary use of <code>aria-colspan</code> when element has <code>colspan</code>.</p>
+			</div>
+
+			<div class="widgetDemo">
+				<h3>Test 3</h3>
+				<p>Authors MUST NOT use <code>aria-colspan</code> on any element which also has a <code>colspan</code> attribute, and the values of each attribute do not match. </p>
+
+				<p>The first <code>th</code> and <code>td</code> each have an <code>aria-colspan="1"</code> and <code>colspan="2"</code> attribute</p>
+
+				<div class="testcase">
+					<table>
+						<thead>
+							<tr><th aria-colspan="2" colspan="1">header 1</th><th>header 2</th></tr>
+						</thead>
+						<tbody><tr>
+							<td aria-colspan="2" colspan="1">Cell 1</td>
+							<td>Cell 2</td>
+						</tr>
+					</tbody></table>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br> error for use of <code>aria-colspan</code> with value different than <code>colspan</code></p>
+			</div>
+		</div>
+	</main>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
