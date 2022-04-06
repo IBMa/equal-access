@@ -73,6 +73,8 @@ export let aria_attribute_conflict: Rule = {
                 }
             });    
         }    
-        return ret;
+        if (ret.length > 0)
+            return ret;
+        return null;    
     }
 }
