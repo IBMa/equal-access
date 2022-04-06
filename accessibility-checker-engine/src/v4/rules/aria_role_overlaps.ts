@@ -61,7 +61,10 @@ export let aria_role_overlaps: Rule = {
                 ret.push(RulePass("pass"));
             else     
                 ret.push(RulePotential("potential_overlap", [ariaRoles[i], elemName]));
-        }    
-        return ret;
+        }  
+        if (ret.length > 0)  
+            return ret;
+        else
+            return null;    
     }
 }
