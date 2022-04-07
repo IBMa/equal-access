@@ -41,7 +41,7 @@
 				"<all_urls>"
 			],
 			"js": [
-				"draw.js"
+				"draw.ts"
 			]
 		}
 	],

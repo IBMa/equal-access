@@ -36,6 +36,13 @@ async function initTab(tabId: number, archiveId: string) {
         })
     });
 
+    BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+        console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
+        await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, tabStopsErrors: message.tabStopsErrors});
+    
+        return true;
+    });
+
     // Switch to the appropriate engine for this archiveId
     let engineCode = await EngineCache.getEngine(archiveId);
     await new Promise((resolve, reject) => {
@@ -192,4 +199,29 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         tabTitle: tab.title
     });
 });
+
+BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
+    console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
+    BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
+
+    return true;
+});
+
+BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS received in background")
+    BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
+
+    return true;
+});
+
+BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
+    console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
+    BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
+        xpath: message.xpath,
+        circleNumber: message.circleNumber
+    });
+
+
+    return true;
+}); 
 

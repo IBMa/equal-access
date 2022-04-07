@@ -20,7 +20,7 @@ const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new
     reloadPage: true,
     entries: {
         background: 'background',
-        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel'],
+        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel', 'contentScripts'],
         contentScript: Object.keys(contentScripts),
     }
 }) : () => { this.apply = () => { } };
@@ -36,9 +36,10 @@ module.exports = {
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
         devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
         devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
+        draw: path.join(sourceRootPath, 'ts', 'contentScripts', 'index.ts'),
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
         usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
-        ...contentScripts,
+        // ...contentScripts,
     },
     output: {
         path: distRootPath,

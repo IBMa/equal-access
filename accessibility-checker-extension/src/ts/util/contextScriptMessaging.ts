@@ -30,7 +30,7 @@ export default class ContextScriptMessaging {
         myMessage.type = type;
 
 
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             chrome.runtime.sendMessage(myMessage, async function (res) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
