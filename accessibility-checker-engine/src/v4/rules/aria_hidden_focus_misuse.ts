@@ -44,8 +44,9 @@ export let aria_hidden_focus_misuse: Rule = {
         const ruleContext = context["dom"].node as Element;
             
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (RPTUtil.isTabbable(ruleContext) || ruleContext.hasAttribute("tabIndex") && ruleContext.getAttribute("tabIndex").length > 0)
+        if (RPTUtil.isTabbable(ruleContext)) {
             return RuleFail("Fail_1", [nodeName]);
+        }
         
         return RulePass("Pass_0");
     }

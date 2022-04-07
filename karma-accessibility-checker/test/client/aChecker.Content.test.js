@@ -32,9 +32,14 @@ describe("Rule Unit Tests As Content", function () {
 
     // All the html unit testscases will be stored in the window.__html__ by the preprocessor
     var unitTestcaseHTML = window.__html__;
+    let testFiles = [];
+    for (var unitTestFile in unitTestcaseHTML) {
+        testFiles.push(unitTestFile);
+    }
+    testFiles.sort();
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
+    for (var unitTestFile of testFiles) {
 
         // Do not run JSONObjectStructureVerification.html in this script
         if (unitTestFile === "test/client/htmlFiles/JSONObjectStructureVerification.html" || unitTestFile === "dependencies/tools-rules-html/v2/a11y/test/client/htmlFiles/JSONObjectStructureVerification.html") {
