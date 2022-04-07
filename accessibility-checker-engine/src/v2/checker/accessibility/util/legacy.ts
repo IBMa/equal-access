@@ -2592,9 +2592,9 @@ export class RPTUtil {
                 }    
                 for (let i = 0; i < htmlAttrs.length; i++) { 
                     let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
-                    if (index != -1) { 
+                    if (index !== -1) { 
                         if (htmlAttrValues === null
-                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index]['value'] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
                             || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
                                examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
                                continue;

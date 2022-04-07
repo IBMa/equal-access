@@ -53,6 +53,12 @@
 		Last name: <input type="text" name="lname"><br>
 		<input type="submit">
 	</form>
+	
+	<div aria-valuemax="10" max='5' ></div>
+	<div aria-valuemin="0" min='0' ></div>
+    <div aria-colspan="2" colspan="3" ></div>
+	<div aria-rowspan="2" rowspan="3" ></div>
+
 <script type="text/javascript">
 //<![CDATA[
   if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
@@ -63,10 +69,14 @@
       passedXpaths: [
       ],
       failedXpaths: [
-	  	"/html[1]/body[1]/form[1]/input[1]",
-	  	"/html[1]/body[1]/form[2]",
-	  	"/html[1]/body[1]/form[3]/input[1]",
-	  	"/html[1]/body[1]/form[4]/input[2]"
+	  "/html[1]/body[1]/div[1]",
+	  "/html[1]/body[1]/div[2]",
+	  "/html[1]/body[1]/div[3]",
+	  "/html[1]/body[1]/div[4]",
+	  "/html[1]/body[1]/form[1]/input[1]",
+	  "/html[1]/body[1]/form[2]",
+	  "/html[1]/body[1]/form[3]/input[1]",
+	  "/html[1]/body[1]/form[4]/input[2]"
       
         // Below violation are triggered on content that is hidden, when check hidden content is set it will trigger otherwise it will not
       	//"/html/body/form[5]/input[2]",
