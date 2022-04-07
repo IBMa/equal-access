@@ -48,10 +48,10 @@ export let aria_role_overlaps: Rule = {
          
         let elemName = ruleContext.tagName.toLowerCase();
         let ariaRoles = RPTUtil.getRoles(ruleContext, false);
-        if (!ariaRoles || ariaRoles.length ==0) return;
+        if (!ariaRoles || ariaRoles.length === 0) return;
 
         let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
-        if (!implicitRoles || implicitRoles.length == 0)
+        if (!implicitRoles || implicitRoles.length === 0)
              return RulePass("pass");
 
         let ret = [];
