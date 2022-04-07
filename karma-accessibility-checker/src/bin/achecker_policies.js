@@ -1,7 +1,7 @@
 const request = require("request");
 async function archiveList() {
     let ruleArchiveSet = await new Promise((resolve, reject) => {
-        request.get(`https://able.ibm.com/rules/archives.json`, (err, response, body) => {
+        request.get(`https://cdn.jsdelivr.net/npm/accessibility-checker-engine@next/archives.json`, (err, response, body) => {
             err && reject(err);
             !err && resolve(JSON.parse(body));
         });
