@@ -253,7 +253,8 @@ export class ARIADefinitions {
             nameRequired?: boolean,
             nameFrom?: string[],
             presentationalChildren?: boolean,
-            deprecated?: string[],
+            deprecated?: boolean,
+            deprecatedProps?: string[]
             prohibitedProps?: string[]
         }
     } = {
