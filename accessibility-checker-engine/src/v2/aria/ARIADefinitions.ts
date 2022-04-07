@@ -2577,6 +2577,7 @@ export class ARIADefinitions {
                 htmlAttributeNames: ["max"],
                 htmlAttributeValues: null
             }
+            //overlap case covered in the role definition: Authors SHOULD NOT use aria-valuemax on any element which allows the max attribute. Use the max attribute instead. 
         },    
         "aria-valuemin": {
             conflict: {
@@ -2584,6 +2585,7 @@ export class ARIADefinitions {
                 htmlAttributeNames: ["min"],
                 htmlAttributeValues: null
             }
+            ////overlap case covered in the role definition:Authors SHOULD NOT use aria-valuemin on any element which allows the min attribute. Use the min attribute instead.
         },    
         "aria-readonly": {
             conflict: {
@@ -2617,6 +2619,7 @@ export class ARIADefinitions {
                 htmlAttributeValues: ["VALUE"]
             },
             overlapping: {    
+                // overlap occurs if both exists
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["colspan"],
                 htmlAttributeValues: null
@@ -2629,7 +2632,8 @@ export class ARIADefinitions {
                 htmlAttributeNames: ["rowspan"],
                 htmlAttributeValues: ["VALUE"]
             },
-            overlapping: {    
+            overlapping: {   
+                // overlap occurs if both exists 
                 ariaAttributeValue: null,
                 htmlAttributeNames: ["rowspan"],
                 htmlAttributeValues: null

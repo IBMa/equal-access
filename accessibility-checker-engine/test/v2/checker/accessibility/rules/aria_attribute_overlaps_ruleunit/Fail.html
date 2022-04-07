@@ -53,6 +53,13 @@
 		Last name: <input type="text" name="lname"><br>
 		<input type="submit">
 	</form>
+
+  <div aria-valuemax="10" max='5' ></div>
+	<div aria-valuemin="0" min='0' ></div>
+  <div aria-colspan="3" colspan="3" ></div>
+	<div aria-rowspan="3" rowspan="3" ></div>
+
+
 	<script>
 		UnitTest = {
 			ruleIds: ["aria_attribute_overlaps"],
@@ -110,6 +117,44 @@
             "messageArgs": [
               "aria-disabled",
               "disabled"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_overlaps",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "The ARIA attribute \"aria-colspan\" should not overlap with the HTML attribute \"colspan\"",
+            "messageArgs": [
+              "aria-colspan",
+              "colspan"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_overlaps",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "potential_overlap",
+            "message": "The ARIA attribute \"aria-rowspan\" should not overlap with the HTML attribute \"rowspan\"",
+            "messageArgs": [
+              "aria-rowspan",
+              "rowspan"
             ],
             "apiArgs": [],
             "category": "Accessibility"
