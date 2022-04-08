@@ -16,6 +16,9 @@
 
 import React from "react";
 import Header from "./Header";
+import TabStopsHeader from "./TabStopsHeader";
+// import TabStops from "./TabStops";
+import ReportTabStops from "./ReportTabStops";
 import ReportManagerHeader from "./ReportManagerHeader";
 import ReportManagerTable from "./ReportManagerTable"
 import Help from "./Help";
@@ -56,6 +59,7 @@ interface IPanelState {
     tabId: number,
     tabTitle: string,
     selectedItem?: IReportItem,
+    currentSelectedItem?: IReportItem,
     selectedIssue: IReportItem | null,
     rulesets: IRuleset[] | null,
     selectedCheckpoint?: ICheckpoint,
@@ -94,7 +98,11 @@ interface IPanelState {
     selectedArchive: string | null,
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
-    focusedViewText: string
+    focusedViewText: string,
+    tabStops: [],
+    tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
+    tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[],
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -128,7 +136,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         selectedArchive: null,
         selectedPolicy: null,
         focusedViewFilter: false,
-        focusedViewText: ""
+        focusedViewText: "",
+        tabStops: [], // array of xpaths of the tab stops
+        tabStopsPanel: false,
+        tabStopsResults: [],
+        tabStopsErrors: []
     }
 
     ignoreNext = false;
@@ -206,6 +218,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             });
         }
+    }
+
+    async xpathFromTabstops(message: any) {
+        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+        // JCH take xpath and match to item with same item.path.dom
+        this.state.tabStopsResults.map((result: any) => {
+            if (message.xpath === result.path.dom) {
+                console.log("result xpath = ",result.path.dom);
+                this.getSelectedItem(result);
+                this.selectItem(result);
+            }
+        });
     }
 
     async componentDidMount() {
@@ -294,6 +318,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                         PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
+
+                        PanelMessaging.addListener("TABSTOP_XPATH_ONCLICK", async message => {self.xpathFromTabstops(message)} );
                     }
                     if (self.props.layout === "sub") {
                         self.selectElementInElements();
@@ -441,8 +467,42 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     selectedItem: undefined
                 });
             }
+
+// JCH before finish scan collect and order tab stops
+            // Note: the collection is actually all issues that are tab stops
+            // console.log("JCH DO TABBABLE");
+            let tabbable: IReportItem[] = [];
+            let tabbableErrors: IReportItem[] = [];
+            report.results.map((result: any) => {
+                if (result.ruleId === "detector_tabbable") {
+                    // there will always be at least one tab
+                    tabbable?.push(result);
+                } else if (result.value[1] !== "PASS" && (result.ruleId === "Rpt_Aria_InvalidTabindexForActivedescendant" ||
+                    result.ruleId === "IBMA_Focus_Tabbable" ||
+                    result.ruleId === "Rpt_Aria_MissingKeyboardHandler" ||
+                    result.ruleId === "Rpt_Aria_MissingFocusableChild" ||
+                    result.ruleId === "IBMA_Focus_MultiTab" ||
+                    result.ruleId === "RPT_Elem_EventMouseAndKey" ||
+                    result.ruleId === "Rpt_Aria_ValidRole")) {
+                    tabbableErrors?.push(result);
+                }
+            });
+            if (tabbable !== null) {
+                tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
+            }
+
+            // console.log("tabbable =", tabbable);
+            this.setState({ tabStopsResults: tabbable });
+            console.log("tabStopsErrors = ", tabbableErrors);
+            this.setState({ tabStopsErrors: tabbableErrors });
+
+            // End of tab stops stored state
+
+
             this.setState({ scanning: false }); // scan done
             // console.log("SCAN DONE");
+
+
             
             // Cases for storage
             // Note: if scanStorage false not storing scans, if true storing scans
@@ -959,6 +1019,34 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ reportManager: false });
     }
 
+    tabStopsShow() {
+        console.log("tabStopsShow");
+        let mythis = this;
+
+        this.setState({ tabStopsPanel: true });
+        setTimeout(function () {
+            console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+        }, 1);
+    }
+
+    tabStopsHandler() {
+        console.log("tabStopsHandler");
+        let mythis = this;
+
+        PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
+        this.setState({ tabStopsPanel: false });
+        setTimeout(function () {
+            console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
+        }, 1);
+        this.selectElementInElements();
+    }
+
+    tabStopsHighlight(index: number, result: any) {
+        console.log("Highlight tab stop with index = ", index);
+        PanelMessaging.sendToBackground("HIGHLIGHT_TABSTOP_TO_BACKGROUND", { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopId: index });
+        this.selectItem(result, undefined);
+    }
+
     showIssueTypeCheckBoxCallback (checked:boolean[]) {
         if (checked[1] == true && checked[2] == true && checked[3] == true) {
             // console.log("All true");
@@ -1021,6 +1109,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             focusedViewText={this.state.focusedViewText}
                             getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                             readOptionsData={this.readOptionsData.bind(this)}
+                            tabURL={this.state.tabURL}
+                            tabId={this.state.tabId}
+                            tabStopsShow={this.tabStopsShow.bind(this)}
+                            tabStopsResults={this.state.tabStopsResults}
+                            tabStopsErrors={this.state.tabStopsErrors}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1048,7 +1141,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
             return <React.Fragment>
                 {/* ok now need three way display for Report Manager so need reportManager state */}
-                <div style={{ display: this.state.reportManager && !this.state.learnMore ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <ReportManagerHeader 
                         reportManagerHelp={this.reportManagerHelp.bind(this)} 
                         actualStoredScansCount={this.actualStoredScansCount.bind(this)} 
@@ -1065,7 +1158,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         reportHandler={this.reportHandler.bind(this)}>
                     </ReportManagerTable>
                 </div>
-                <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                         <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
@@ -1076,10 +1169,21 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             </div>
                         </div>
                     </div>
+                    <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height: "100%" }}>
+                    <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
+                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                            <div>
+                                <div className="subPanel">
+                                    <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {/* Note the -72px is there to make sure that the help content starts under the header */}
                     {this.subPanelRef.current?.scrollTo(0, -72)}
                 </div>
-                <div style={{ display: !this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
+                <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <Header
                         badURL={this.state.badURL}
                         layout={this.props.layout}
@@ -1105,8 +1209,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         focusedViewText={this.state.focusedViewText}
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
+                        tabURL={this.state.tabURL}
+                        tabId={this.state.tabId}
+                        tabStopsShow={this.tabStopsShow.bind(this)}
+                        tabStopsResults={this.state.tabStopsResults}
+                        tabStopsErrors={this.state.tabStopsErrors}
                     />
-                     <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
+                    <div style={{ paddingLeft:"1rem", overflow: "auto", height: "100%" ,boxSizing: "border-box", top: "10em", position:"absolute"  }}>
                         <div role="region" aria-label="issue list" className="issueList">
                             {this.state.numScanning > 0 ? <Loading /> : <></>}
                             {this.state.report && <Report
