@@ -11,33 +11,32 @@
   limitations under the License.
 *****************************************************************************/
 
-import { DOMUtil } from "../../v2/dom/DOMUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let aria_role_overlaps: Rule = {
-    id: "aria_role_overlaps",
-    context: "dom:*",
+    id: "aria_role_redundant",
+    context: "dom:*[role]",
     help: {
         "en-US": {
-            "pass": "aria_role_overlaps.html",
-            "potential_overlap": "aria_role_overlaps.html",
-            "group": "aria_role_overlaps.html"
+            "pass": "aria_role_redundant.html",
+            "fail_redundant": "aria_role_redundant.html",
+            "group": "aria_role_redundant.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "Rule Passed",
-            "potential_overlap": "The explicitly-assigned ARIA role '{0}' should not overlap with the implicit role of the element <{1}>",
-            "group": "An explicitly-assigned ARIA role should not overlap with the implicit role of the element"
+            "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
+            "fail_redundant": "The explicitly-assigned ARIA role \"{0}\" is redundant with the implicit role of the element <{1}>",
+            "group": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["4.1.1"],
         "level": eRulePolicy.RECOMMENDATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_ONE
+        "toolkitLevel": eToolkitLevel.LEVEL_FOUR
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
@@ -59,7 +58,7 @@ export let aria_role_overlaps: Rule = {
             if (!implicitRoles.includes(ariaRoles[i]))  
                 ret.push(RulePass("pass"));
             else     
-                ret.push(RulePotential("potential_overlap", [ariaRoles[i], elemName]));
+                ret.push(RuleFail("fail_redundant", [ariaRoles[i], elemName]));
         }  
         if (ret.length > 0)  
             return ret;
