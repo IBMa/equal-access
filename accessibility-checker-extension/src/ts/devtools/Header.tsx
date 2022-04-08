@@ -18,10 +18,9 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 
 import {
-    Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
-} from 'carbon-components-react';
-import { settings } from 'carbon-components';
-import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+    Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
+} from '@carbon/react';
+import { Information, ReportData, Renew, ChevronDown } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 
@@ -30,7 +29,6 @@ import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
 
-const { prefix } = settings;
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
@@ -116,7 +114,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         this.focusInfoButton1();
     };
 
-    processFilterCheckBoxes(value: boolean, id: string) {
+    processFilterCheckBoxes(_evt: any, { checked: value, id} : { checked: boolean, id: string } ) {
         // console.log("In processFilterCheckBoxes - dataFromParent", this.props.dataFromParent);
         let newItems = this.props.dataFromParent;
         if (id === "Violations") {
@@ -210,47 +208,39 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
         let focusText = this.props.focusedViewText;
 
-        let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
+        let headerContent = (<div style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
             {this.props.layout === "sub" ? 
-            <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-4">
+            <Grid style={{ lineHeight: "1rem" }}>
+                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}}>
                     <h1>IBM Equal Access Accessibility Checker</h1>
-                </div>
-                {/* <div className="bx--col-sm-2" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
-                    <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
-                    <div>
-                        <span>Status: </span>
-                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
-                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
-                    </div>
-                </div> */}
-            </div>
-            : <div className="bx--row" style={{ lineHeight: "1rem" }}>
-                <div className="bx--col-sm-3">
+                </Column>
+            </Grid>
+            : <Grid style={{ lineHeight: "1rem" }}>
+                <Column sm={{span: 3}} md={{span: 6}} lg={{span: 12}}>
                     <h1>IBM Equal Access Accessibility Checker</h1>
-                </div>
-                <div className="bx--col-sm-1" style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
+                </Column>
+                <Column sm={{span: 1}} md={{span: 2}} lg={{span: 4}} style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
                     {/* <div>
                         <span>Status: </span>
                         <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                         <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                     </div> */}
-                </div>
-            </div>
+                </Column>
+            </Grid>
             }
             {/* Content for Checker Tab */}
             {this.props.layout === "sub" ?
                 <React.Fragment>
                     
-                <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
-                        <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                <Grid style={{ marginTop: '10px' }}>
+                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex', alignContent: 'center' }}>
+                        <Button disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
                         <OverflowMenu 
                             className="rendered-icon svg"
                             style={{backgroundColor: "black", height:"32px", width:"32px"}} 
                             iconDescription="Open and close report scan options"
-                            renderIcon={ChevronDown16}
+                            renderIcon={ChevronDown}
                             ariaLabel="Report menu" 
                             // size="xl"
                             id="reportMenu"
@@ -301,7 +291,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             }).bind(this)}
                             danger={true}
                             size='sm'
-                            selectorPrimaryFocus=".bx--modal-footer .bx--btn--secondary"
+                            selectorPrimaryFocus=".cds--modal-footer .cds--btn--secondary"
                             primaryButtonText="Delete"
                             secondaryButtonText="Cancel"
                             primaryButtonDisabled={false}
@@ -314,7 +304,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </Modal>
                         <Button 
                             ref={this.infoButton1Ref}
-                            renderIcon={Information16} 
+                            renderIcon={Information} 
                             kind="ghost"   
                             hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
@@ -348,18 +338,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     onClick={this.onLinkClick}
                                     href={chrome.runtime.getURL("options.html")}
                                     target="_blank"
-                                    className={`${prefix}--link`}
+                                    className={`cds--link`}
                                 >
                                     Change rule set
                                 </a>
                             </div>       
                         </Modal>
-                    </div>
-                    <div className="bx--col-md-2 bx--col-sm-0" style={{ height: "28px" }}></div>
+                    </Column>
+                    <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column>
 
-                    <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}></div>
-
-                    <div className="bx--col-md-3 bx--col-sm-2">
+                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}}>
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px"}}
@@ -392,29 +380,29 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             Focus view
                         </ReactTooltip>
 
-                    </div>
-                </div>
-                <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-4">
+                    </Column>
+                </Grid>
+                <Grid style={{ marginTop: '10px' }}>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}}>
                         <div>
                             <span>Status: </span>
                             <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                             <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                         </div>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
                 </React.Fragment>
                 // Content for the Assessment Tab
                 :
                 <React.Fragment>
                 
                     
-                <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-3" style={{ display: 'flex', alignContent: 'center' }}>
-                        <Button disabled={this.props.scanning} renderIcon={Renew16} onClick={this.props.startScan.bind(this)} size="small" className="scan-button">Scan</Button>
+                <Grid style={{ marginTop: '10px' }}>
+                    <Column sm={{span: 3}} md={{span: 6}} lg={{span: 12}} style={{ display: 'flex', alignContent: 'center' }}>
+                        <Button disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
                         <Button 
                             ref={this.infoButton2Ref}
-                            renderIcon={Information16} 
+                            renderIcon={Information} 
                             kind="ghost"   
                             hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
@@ -444,15 +432,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 <a
                                     href={chrome.runtime.getURL("options.html")}
                                     target="_blank"
-                                    className={`${prefix}--link`}
+                                    className={`cds--link`}
                                     
                                 >
                                     Change rule set
                                 </a>
                             </div>       
                         </Modal>
-                    </div>
-                    <div className="bx--col-sm-1" style={{ position: "relative" }}>
+                    </Column>
+                    <Column sm={{span: 1}} md={{span: 2}} lg={{span: 4}} style={{ position: "relative" }}>
                         <div className="headerTools" style={{ display: "flex", justifyContent: "flex-end" }}>
                             <div style={{ width: 210, paddingRight: "16px" }}>
                             </div>
@@ -461,7 +449,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 disabled={!this.props.counts}
                                 onClick={() => this.props.reportHandler("current")}
                                 className="settingsButtons" 
-                                size="small" 
+                                size="sm" 
                                 hasIconOnly 
                                 kind="ghost" 
                                 tooltipAlignment="center" 
@@ -469,11 +457,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 iconDescription="Reports" 
                                 type="button"
                             >
-                                <ReportData16/>
+                                <ReportData size={16}/>
                             </Button>
                         </div>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
                 </React.Fragment>
             }
             {/* Counts row uses same code for both Assessment and Checker Tabs */}

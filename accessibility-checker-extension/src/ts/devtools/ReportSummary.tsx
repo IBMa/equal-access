@@ -17,7 +17,7 @@
 import React from "react";
 
 import { IReport } from './Report';
-import { Tile } from 'carbon-components-react';
+import { Column, Grid, Tile } from '@carbon/react';
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
@@ -117,19 +117,19 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
-            <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
-                <div className="bx--row">
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+            <div style={{ margin: "2rem -1rem 0rem 0rem" }}>
+                <Grid>
+                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <h2 id="summaryTitle" className="summaryTitle">Scan summary</h2>
                         
                         <div className="summaryTitleDetail">{time}</div>
                         <div className="summaryTitleDetail"><span style={{ fontWeight: 600 }}>Scanned page:</span> {this.props.tabURL}</div>
-                    </div>
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
-                    </div>
-                </div>
-                <div className="bx--row">
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+                    </Column>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
+                    </Column>
+                </Grid>
+                <Grid>
+                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <Tile className="tile status-score-tile">
                             <div>
                                 <h3 className="tile-title" >Current Status</h3>
@@ -139,8 +139,8 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                             <div className="tile-description">Web page Total HTML Elements: {summaryNumbers[4]}</div>
                             <div className="tile-description">Elements with Violations or Needs review: {summaryNumbers[3]} </div>
                         </Tile>
-                    </div>
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+                    </Column>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <Tile className="tile count-tile">
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Violations</h3>
@@ -149,10 +149,10 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                             <div className="tile-score">{counts.total["Violation"]}</div>
                             <div className="tile-description">Accessibility failures that need to be corrected</div>
                         </Tile>
-                    </div>
-                </div>
-                <div className="bx--row">
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+                    </Column>
+                </Grid>
+                <Grid>
+                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <Tile className="tile count-tile">
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Needs review</h3>
@@ -161,8 +161,8 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                             <div className="tile-score">{counts.total["Needs review"]}</div>
                             <div className="tile-description2">Issues that may not be a violation; manual review is needed</div>
                         </Tile>
-                    </div>
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+                    </Column>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <Tile className="tile count-tile">
                             <div>
                                 <h3 className="tile-title" style={{ display: "inline" }}>Recommendations</h3>
@@ -171,8 +171,8 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                             <div className="tile-score">{counts.total["Recommendation"]}</div>
                             <div className="tile-description2">Opportunities to apply best practices to further improve accessibility</div>
                         </Tile>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
             </div>
         </aside>;
     }
