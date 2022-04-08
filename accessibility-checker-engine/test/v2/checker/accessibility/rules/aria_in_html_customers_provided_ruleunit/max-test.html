@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)https://w3c.github.io/html-aria/tests/max-test.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>ARIA in HTML - Test Cases</title>
+    <link rel="stylesheet" href="./max-test-styles.css">
+	<style>
+		body{
+			font-size: 1em;
+		}
+		.roleTest {
+			border: 2px solid black;
+			width: 1em;
+			height: 1em;
+			margin: 5px;
+		}
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+		}
+		.widgetDemo {
+			border: 1px solid #EEE;
+			margin: .5em;
+			padding: 5px;
+			flex: 1 0 0;
+			min-width: calc(300px - 1em);
+		}
+		.widgetDemo p {
+			color: #696969;
+			font-size: 1.125em;
+			padding: 0;
+			margin: .75em 0;
+		}
+		.testcase {
+			margin: 2em 0;
+		}
+		h3{
+			margin: .5em 0;
+			border: 0;
+			padding: 0;
+		}
+		h2 {font-size:2em}
+	</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+	<h1>ARIA in HTML - test cases for <code>aria-valuemax</code></h1>
+	<p>last updated 14 March 2021</p>
+	<p>
+		<code>max</code> is allowed on <a href="https://html.spec.whatwg.org/multipage/form-elements.html#attr-meter-max">meter</a>, <a href="https://html.spec.whatwg.org/multipage/form-elements.html#attr-progress-max">progress</a> and <a href="https://html.spec.whatwg.org/multipage/input.html#attr-input-max">input</a> type <code>date</code>, <code>month</code>, <code>week</code>, <code>time</code>, <code>datetime-local</code>, <code>number</code>, <code>range</code>.
+	</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 1</h3>
+				<p>
+          Authors SHOULD NOT use the <code>aria-valuemax</code> attribute on any element which allows the <code>max</code> attribute. Use the <code>max</code> attribute instead.
+        </p>
+
+				<div class="testcase">
+					<p>inputs</p>
+					<input type="date" aria-valuemax="1979-12-31">
+					<input type="month" aria-valuemax="2021-12">
+					<input type="week" aria-valuemax="2018-W26">
+					<input type="time" aria-valuemax="12:00">
+					<input type="datetime-local" aria-valuemax="2022-12-31T00:00">
+					<input type="number" aria-valuemax="6">
+					<input type="range" aria-valuemax="10">
+					<p>meter</p>
+					<meter value="6" aria-valuemax="8">6 blocks used (out of 8 total)</meter>
+					<p>progress</p>
+					<progress id="p1" aria-valuemax="100"><span>0</span>%</progress>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>Flag error or warning to authors to use <code>max</code> attribute instead. Authors may not be able to replicate all the necessary functionality of the native <code>max</code> attribute.</p>
+			</div>
+
+			<div class="widgetDemo">
+				<h3>Test 2</h3>
+				<p>
+          Authors MUST NOT use the <code>aria-valuemax</code> on any element which also has a <code>max</code> attribute, even if the values of each attribute match.
+        </p>
+
+				<div class="testcase">
+					<p>inputs</p>
+					<input type="date" aria-valuemax="1979-12-31" max="1979-12-31">
+					<input type="month" aria-valuemax="2021-12" max="2021-12">
+					<input type="week" aria-valuemax="2018-W26" max="2018-W26">
+					<input type="time" aria-valuemax="12:00" max="12:00">
+					<input type="datetime-local" aria-valuemax="2022-12-31T00:00" max="2022-12-31T00:00">
+					<input type="number" aria-valuemax="5" max="6">
+					<input type="range" aria-valuemax="9" max="10">
+					<p>meter</p>
+					<meter value="6" aria-valuemax="5" max="8">6 blocks used (out of 8 total)</meter>
+					<p>progress</p>
+					<progress id="p2" aria-valuemax="5" max="100"><span>0</span>%</progress>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>Error and tell authors to use <code>max</code> attribute by itself. Authors may not be able to replicate all the necessary functionality of the native <code>max</code> attribute.</p>
+			</div>
+		</div>
+	</main>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

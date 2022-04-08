@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!-- saved from url=(0085)https://w3c.github.io/html-aria/tests/aria-hidden-valid-element-test-hidden-attr.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>ARIA in HTML - Test Cases</title>
+	  <link rel="stylesheet" href="./aria-hidden-valid-element-test-hidden-styles.css">
+		<style type="text/css">
+			body{
+				font-size: 1em;
+			}
+			.roleTest {
+				border: 2px solid black;
+				width: 1em;
+				height: 1em;
+				margin: 5px;
+			}
+			.flex {
+				display: flex;
+				flex-wrap: wrap;
+				align-items: stretch;
+			}
+			.widgetDemo {
+				border: 1px solid #EEE;
+				margin: .5em;
+				padding: 5px;
+				flex: 1 0 0;
+				min-width: calc(300px - 1em);
+			}
+			.widgetDemo p {
+				color: #696969;
+				font-size: 1.125em;
+				padding: 0;
+				margin: .75em 0;
+			}
+			.testcase {
+				margin: 2em 0;
+			}
+			h3{
+				margin: .5em 0;
+				border: 0;
+				padding: 0;
+			}
+			h2 {font-size:2em}
+
+			[contenteditable] {
+				border: 1px solid;
+				padding: .125em;
+			}
+
+			.testcase > * {
+				border: 1px dotted;
+				padding: .25em;
+			}
+
+			kbd[hidden],
+			label[hidden] {
+				display: none
+			}
+			input[type=reset],
+			input[type=file] {
+			background: #1b75bc;
+		}
+		</style>
+	</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+		<h1>ARIA in HTML - test case for valid non-interactive elements which can use <code>aria-hidden</code></h1>
+		<p>last updated 28 February 2021</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 3</h3>
+				<p>Authors SHOULD NOT use the <code>aria-hidden="true"</code> attribute on any element which also has a <code>hidden</code> attribute. </p>
+
+				<p>This test case sets <code>aria-hidden="true"</code> and the <code>hidden</code> to all HTML elements where use of <code>aria-hidden</code> is not <a href="https://w3c.github.io/html-aria/tests/aria-hidden-invalid-element-test">invalid (test 1)</a>.
+
+				</p><div class="testcase">
+					<!-- sections -->
+					<article aria-hidden="true" hidden=""></article>
+					<section aria-hidden="true" hidden=""></section>
+					<nav aria-hidden="true" hidden=""></nav>
+					<aside aria-hidden="true" hidden=""></aside>
+					<h1 aria-hidden="true" hidden=""></h1>
+					<h2 aria-hidden="true" hidden=""></h2>
+					<h3 aria-hidden="true" hidden=""></h3>
+					<h4 aria-hidden="true" hidden=""></h4>
+					<h5 aria-hidden="true" hidden=""></h5>
+					<h6 aria-hidden="true" hidden=""></h6>
+					<hgroup aria-hidden="true" hidden=""></hgroup>
+					<header aria-hidden="true" hidden=""></header>
+					<footer aria-hidden="true" hidden=""></footer>
+					<address aria-hidden="true" hidden=""></address> <!--14-->
+					<!-- grouping content -->
+					<p aria-hidden="true" hidden=""></p>
+					<hr aria-hidden="true" hidden="">
+					<pre aria-hidden="true" hidden=""></pre>
+					<blockquote aria-hidden="true" hidden=""></blockquote>
+					<ol aria-hidden="true" hidden="">
+						<li aria-hidden="true" hidden=""></li></ol>
+					<ul aria-hidden="true" hidden=""></ul>
+					<menu aria-hidden="true" hidden=""></menu>
+					<dl aria-hidden="true" hidden="">
+						<dt aria-hidden="true" hidden=""></dt>
+						<dd aria-hidden="true" hidden=""></dd>
+					</dl>
+					<figure aria-hidden="true" hidden="">
+						<figcaption aria-hidden="true" hidden=""></figcaption>
+					</figure>
+					<main aria-hidden="true" hidden=""></main>
+					<div aria-hidden="true" hidden=""></div> <!-- 29-->
+
+					<!-- text-level semantics -->
+					<a aria-hidden="true" hidden=""></a>
+					<em aria-hidden="true" hidden=""></em>
+					<strong aria-hidden="true" hidden=""></strong>
+					<small aria-hidden="true" hidden=""></small>
+					<s aria-hidden="true" hidden=""></s>
+					<cite aria-hidden="true" hidden=""></cite>
+					<q aria-hidden="true" hidden=""></q>
+					<dfn aria-hidden="true" hidden=""></dfn>
+					<abbr aria-hidden="true" hidden=""></abbr>
+					<ruby aria-hidden="true" hidden="">
+						<rt aria-hidden="true" hidden=""></rt>
+						<rp aria-hidden="true" hidden=""></rp>
+					</ruby>
+					<data aria-hidden="true" hidden=""></data>
+					<time aria-hidden="true" hidden=""></time>
+					<code aria-hidden="true" hidden=""></code>
+					<var aria-hidden="true" hidden=""></var>
+					<samp aria-hidden="true" hidden=""></samp>
+					<kbd aria-hidden="true" hidden=""></kbd>
+					<sub aria-hidden="true" hidden=""></sub>
+					<sup aria-hidden="true" hidden=""></sup>
+					<i aria-hidden="true" hidden=""></i>
+					<b aria-hidden="true" hidden=""></b>
+					<u aria-hidden="true" hidden=""></u>
+					<mark aria-hidden="true" hidden=""></mark>
+					<bdi aria-hidden="true" hidden=""></bdi>
+					<bdo aria-hidden="true" hidden=""></bdo>
+					<span aria-hidden="true" hidden=""></span>
+					<br aria-hidden="true" hidden="">
+					<wbr aria-hidden="true" hidden=""> <!--58-->
+
+					<!-- edits -->
+					<ins aria-hidden="true" hidden=""></ins>
+					<del aria-hidden="true" hidden=""></del> <!--60-->
+
+					<!-- embedded content -->
+					<img alt="" aria-hidden="true" hidden="">
+					<math aria-hidden="true" hidden=""></math>
+					<svg aria-hidden="true" hidden=""></svg>
+					<map aria-hidden="true" hidden=""><area aria-hidden="true" hidden=""></map> <!--65-->
+
+					<!-- tabular data -->
+					<table aria-hidden="true" hidden="">
+						<caption aria-hidden="true" hidden=""></caption>
+						<thead aria-hidden="true" hidden="">
+							<tr aria-hidden="true" hidden="">
+								<th aria-hidden="true" hidden=""></th>
+							</tr>
+						</thead>
+						<tbody aria-hidden="true" hidden="">
+							<tr><td aria-hidden="true" hidden=""></td>
+						</tr></tbody>
+						<tfoot aria-hidden="true" hidden=""></tfoot>
+					</table> <!-- 73-->
+
+					<!-- forms -->
+					<form aria-hidden="true" hidden=""></form>
+					<output aria-hidden="true" hidden=""></output>
+					<meter aria-hidden="true" hidden=""></meter>
+					<progress aria-hidden="true" hidden=""></progress>
+					<fieldset aria-hidden="true" hidden="">
+						<legend aria-hidden="true" hidden=""></legend>
+					</fieldset> <!--79-->
+
+					<!-- scripting -->
+					<canvas aria-hidden="true" hidden=""></canvas> <!--81-->
+
+					<!-- custom element -->
+					<custom-element aria-hidden="true" hidden=""></custom-element> <!--83-->
+
+					<!-- interactive / focusable elements -->
+					<a href="https://w3c.github.io/html-aria/tests/aria-hidden-valid-element-test-hidden-attr.html#" aria-hidden="true" hidden=""></a>
+
+					<map name="i" aria-hidden="true" hidden="">
+					  <area shape="rect" href="https://w3c.github.io/html-aria/tests/aria-hidden-valid-element-test-hidden-attr.html#" alt="test" aria-hidden="true" hidden="">
+					</map>
+
+					<iframe src="./aria-hidden-valid-element-test-hidden-attr_files/empty.html" aria-hidden="true" hidden=""></iframe>
+
+					<embed aria-hidden="true" hidden="">
+					<object aria-hidden="true" hidden=""></object>
+					<audio aria-hidden="true" hidden=""></audio>
+					<video aria-hidden="true" hidden=""></video>
+
+					<label aria-hidden="true" hidden=""></label>
+					<input aria-hidden="true" hidden="">
+					<input type="text" aria-hidden="true" hidden="">
+					<input type="search" aria-hidden="true" hidden="">
+					<input type="tel" aria-hidden="true" hidden="">
+					<input type="url" aria-hidden="true" hidden="">
+					<input type="email" aria-hidden="true" hidden="">
+					<input type="password" aria-hidden="true" hidden="">
+					<input type="date" aria-hidden="true" hidden="">
+					<input type="month" aria-hidden="true" hidden="">
+					<input type="week" aria-hidden="true" hidden="">
+					<input type="time" aria-hidden="true" hidden="">
+					<input type="datetime-local" aria-hidden="true" hidden="">
+					<input type="number" aria-hidden="true" hidden="">
+					<input type="range" aria-hidden="true" hidden="">
+					<input type="color" aria-hidden="true" hidden="">
+					<input type="checkbox" aria-hidden="true" hidden="">
+					<input type="radio" aria-hidden="true" hidden="">
+					<input type="file" aria-hidden="true" hidden="">
+					<input type="submit" aria-hidden="true" hidden="">
+					<input type="image" alt="type-img" aria-hidden="true" hidden="">
+					<input type="reset" aria-hidden="true" hidden="">
+					<input type="button" value="button" aria-hidden="true" hidden="">
+
+					<button aria-hidden="true" hidden=""></button>
+					<select aria-hidden="true" hidden="">
+					  <optgroup aria-hidden="true" hidden="">
+					    <option aria-hidden="true" hidden="">1</option>
+					  </optgroup>
+					</select>
+
+					<datalist aria-hidden="true" hidden=""></datalist>
+
+					<textarea aria-hidden="true" hidden=""></textarea>
+
+					<details aria-hidden="true" hidden="">
+					  <summary aria-hidden="true" hidden=""></summary> <!-- 122-->
+					</details>
+
+					<dialog open="" aria-hidden="true" hidden="">dialog</dialog> <!-- 123 -->
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br>Warning for each element that uses both <code>aria-hidden=true</code> and <code>hidden</code> attributes</p>
+			</div>
+		</div>
+	</main>
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

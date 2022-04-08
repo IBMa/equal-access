@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Either HMTL 5 attributes or Aria attibutes</title>
+</head>
+<body>
+	<form>
+		User name: <input id="a" type="text" name="usrname" required aria-required="true">
+		<input type="submit">
+	</form>
+	<form id="b" autocomplete="both" aria-autocomplete="none">
+		First name:<input type="text" name="fname"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+	<form>
+		Country: <input id="c" type="text" name="country" value="Norway" readonly aria-readonly="true"><br>
+  		<input type="submit" value="Submit">
+	</form>
+	<form>
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" disabled aria-disabled="true"><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<form hidden disabled>
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" aria-disabled="false"><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<form id="b" hidden autocomplete="name">
+		First name:<input type="text" name="fname" aria-autocomplete="none"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+  ];
+//]]>
+</script>
+</body>
+</html>
