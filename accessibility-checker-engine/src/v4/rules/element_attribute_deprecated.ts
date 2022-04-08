@@ -227,9 +227,6 @@ export let element_attribute_deprecated: Rule = {
             "fail_elem": "element_attribute_deprecated.html",
             "fail_attr": "element_attribute_deprecated.html",
             "fail_elem_attr": "element_attribute_deprecated.html",
-            "fail_aria_role": "element_attribute_deprecated.html",
-            "fail_aria_attr": "element_attribute_deprecated.html",
-            "fail_role_attr": "element_attribute_deprecated.html",
             "group": "element_attribute_deprecated.html"
         }
     },
@@ -239,9 +236,6 @@ export let element_attribute_deprecated: Rule = {
             "fail_elem": "The <{0}> element is deprecated in HTML 5",
             "fail_attr": "The HTML attribute(s) \"{0}\" is deprecated in HTML 5",
             "fail_elem_attr": "The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5",
-            "fail_aria_role": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
-            "fail_aria_attr": "The ARIA attribute(s) \"{0}\" is deprecated in ARIA 1.2",
-            "fail_role_attr": "The ARIA attribute(s) \"{0}\" is deprecated for the role \"{1}\"",
             "group": "Avoid use of obsolete features if possible"
         }
     },
