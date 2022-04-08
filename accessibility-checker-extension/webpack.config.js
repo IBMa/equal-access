@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ExtensionReloader = require('webpack-ext-reloader');
+// const ExtensionReloader = require('webpack-ext-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
 
@@ -15,15 +15,15 @@ const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 
 const contentScripts = locateContentScripts(contentScriptsPath);
 
-const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new ExtensionReloader({
-    port: 9128,
-    reloadPage: true,
-    entries: {
-        background: 'background',
-        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel'],
-        contentScript: Object.keys(contentScripts),
-    }
-}) : () => { this.apply = () => { } };
+// const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new ExtensionReloader({
+//     port: 9128,
+//     reloadPage: true,
+//     entries: {
+//         background: 'background',
+//         extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel'],
+//         contentScript: Object.keys(contentScripts),
+//     }
+// }) : () => { this.apply = () => { } };
 
 const dotenv_path = nodeEnv === "production" ? ".env_production" : nodeEnv === "watch_local" ? "./.env_local" : "./.env_development";
 console.log(`[INFO] Using environment ${dotenv_path}`);
@@ -140,7 +140,7 @@ module.exports = {
             'NODE_ENV': JSON.stringify(nodeEnv),
             'WEB_BROWSER': JSON.stringify(webBrowser),
         }),
-        extensionReloader,
+        // extensionReloader,
     ],
 }
 

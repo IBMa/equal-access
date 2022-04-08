@@ -7,6 +7,7 @@
 		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
 		"build:dev": "npm run build:report && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",
 		"build:prod": "npm run build:report && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production && shx mv dist/background*.js dist/background.js",
+		"build:watch:noreport": "cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",
 		"build:watch": "npm run build:report && cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode development",
 		"build:watch:local": "npm run build:report && cross-env NODE_ENV=watch_local SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode development",
 		"clean": "shx rm -rf ./dist && shx rm -rf ./package",

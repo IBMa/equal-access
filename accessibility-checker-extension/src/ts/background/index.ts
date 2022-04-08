@@ -24,40 +24,37 @@ let metrics = new ACMetricsLogger("ac-extension");
 async function initTab(tabId: number, archiveId: string) {
     // Determine if we've ever loaded any engine
     let isLoaded = await new Promise((resolve, reject) => {
-        chrome.tabs.executeScript(tabId, {
-            code: "typeof window.ace",
-            frameId: 0,
-            matchAboutBlank: true
+        chrome.scripting.executeScript({
+            target: { tabId: tabId, frameIds: [0] },
+            func: () => (typeof (window as any).ace)
         }, function (res) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
-            resolve(res[0] !== "undefined");
+            resolve(res[0].result !== "undefined");
         })
     });
 
     // Switch to the appropriate engine for this archiveId
-    let engineCode = await EngineCache.getEngine(archiveId);
-    await new Promise((resolve, reject) => {
-        chrome.tabs.executeScript(tabId, {
-            code: engineCode + "window.ace = ace;",
-            frameId: 0,
-            matchAboutBlank: true
-        }, function (_res) {
-            if (chrome.runtime.lastError) {
-                reject(chrome.runtime.lastError.message);
-            }
-            resolve(_res);
-        })
-    });
+    await EngineCache.getEngine(archiveId);
+    // await new Promise((resolve, reject) => {
+    //     chrome.scripting.executeScript({
+    //         target: { tabId: tabId, frameIds: [0] },
+    //         func: () => { eval(engineCode + "window.ace = ace;") }
+    //     }, function (_res) {
+    //         if (chrome.runtime.lastError) {
+    //             reject(chrome.runtime.lastError.message);
+    //         }
+    //         resolve(_res);
+    //     })
+    // });
 
     // Initialize the listeners once
     if (!isLoaded) {
         await new Promise((resolve, reject) => {
-            chrome.tabs.executeScript(tabId, {
-                file: "tabListeners.js",
-                frameId: 0,
-                matchAboutBlank: true
+            chrome.scripting.executeScript({
+                target: { tabId: tabId, frameIds: [0] },
+                files: ["tabListeners.js"]
             }, function (_res) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
@@ -131,10 +128,9 @@ BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
             //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
             let canScan = await new Promise((resolve, _reject) => {
                 if (tab.id < 0) return resolve(false);
-                chrome.tabs.executeScript(tab.id, {
-                    code: "typeof window.ace",
-                    frameId: 0,
-                    matchAboutBlank: true
+                chrome.scripting.executeScript({
+                    target: { tabId: tab.id, frameIds: [0] },
+                    func: () => (typeof (window as any).ace)
                 }, function (res) {
                     resolve(!!res);
                 })
@@ -165,15 +161,14 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
             if (result.OPTIONS) {
                 archiveId = result.OPTIONS.selected_archive.id;
             } try {
-                chrome.tabs.executeScript(message.tabId, {
-                    code: "new window.ace.Checker().rulesets;",
-                    frameId: 0,
-                    matchAboutBlank: true
+                chrome.scripting.executeScript({
+                    target: { tabId: message.tabId, frameIds: [0] },
+                    func: () => (new (window as any).ace.Checker().rulesets)
                 }, function (res) {
                     if (chrome.runtime.lastError) {
                         reject(chrome.runtime.lastError.message);
                     }
-                    resolve(res[0]);
+                    resolve(res[0].result);
                 })
             } catch (err) {
                 reject(err);
@@ -185,6 +180,7 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
 // TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    console.log(changeInfo);
     BackgroundMessaging.sendToPanel("TAB_UPDATED", {
         tabId: tabId,
         status: changeInfo && changeInfo.status,
