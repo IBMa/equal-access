@@ -23,7 +23,7 @@ import ReportSummary from "./ReportSummary";
 import ReportSplash from "./ReportSplash";
 import Report, { preprocessReport, IReport, IReportItem, ICheckpoint, IRuleset } from "./Report";
 import PanelMessaging from '../util/panelMessaging';
-import MultiScanReport from "../xlsxReport/multiScanReport/xlsx/multiScanReport";
+// import MultiScanReport from "../xlsxReport/multiScanReport/xlsx/multiScanReport";
 import MultiScanData from "./MultiScanData";
 // import ReportSummaryUtil from '../util/reportSummaryUtil';
 import OptionMessaging from "../util/optionMessaging";
@@ -772,10 +772,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
-    xlsxReportHandler = (scanType:string) => {
+    xlsxReportHandler = (_scanType:string) => {
         // console.log("xlsxReportHandler");
         //@ts-ignore
-        MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
+        // TODO: Fix multi-scan report. MV3 unsafe-eval error
+        // MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
     }
 
     selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
