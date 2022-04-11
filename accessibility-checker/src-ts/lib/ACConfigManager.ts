@@ -94,7 +94,7 @@ async function processACConfig(ACConfig) {
     let ruleServer = ACConfig.ruleServer ? ACConfig.ruleServer : ACConstants.ruleServer;
 
     // Get and parse the rule archive.
-    let ruleArchiveFile = `${ruleServer}/archives.json`;
+    let ruleArchiveFile = `${ruleServer}${ruleServer.includes("jsdelivr.net")?"@next":""}/archives.json`;
     let ruleArchiveParse;
     try {
         if (ACConfig.ignoreHTTPSErrors) {
@@ -114,6 +114,7 @@ async function processACConfig(ACConfig) {
         throw new Error(err);
     }
     let ruleArchivePath = null;
+    let ruleArchiveVersion = null;
     if (ruleArchiveParse && ruleArchiveParse.length > 0) {
         ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
         ACConfig.ruleArchiveSet = ruleArchiveParse;
@@ -122,11 +123,12 @@ async function processACConfig(ACConfig) {
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
             if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                 ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                 ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                 break;
             }
         }
-        if (!ruleArchivePath) {
+        if (!ruleArchivePath || ruleArchiveVersion === null) {
             const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
             console.error(errStr);
             throw new Error(errStr);
@@ -138,8 +140,12 @@ async function processACConfig(ACConfig) {
         throw new Error(errStr);
     }
 
-    // Build the new rulePack based of the baseA11yServerURL 
-    ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    // Build the new rulePack based of the baseA11yServerURL
+    if (ruleServer.includes("jsdelivr.net")) {
+        ACConfig.rulePack = `${ruleServer}@${ruleArchiveVersion}`;
+    } else {
+        ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    }
     ACConfig.ruleServer = ruleServer;
 
     ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);

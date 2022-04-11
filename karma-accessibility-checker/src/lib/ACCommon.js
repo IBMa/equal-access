@@ -328,8 +328,10 @@ var ACCommon = {
             var baseA11yServerURL = ACConfig.baseA11yServerURL ? ACConfig.baseA11yServerURL : constants.baseA11yServerURL;
             // depending on the rule archive selected, we will direct them to diffrent path of the archive
             let archiveJson = await new Promise((resolve, reject) => {
+                let ruleArchiveFile = `${baseA11yServerURL}${baseA11yServerURL.includes("jsdelivr.net")?"@next":""}/archives.json`;
+
                 request.get({ 
-                    url: `${baseA11yServerURL}/archives.json`, 
+                    url: ruleArchiveFile, 
                     rejectUnauthorized: false
                 }, function (error, response, body) {
                     if (error) {
@@ -340,23 +342,30 @@ var ACCommon = {
                 });
             });
             fs.writeFileSync(pathLib.join(__dirname, "archives.json"), archiveJson);
-            var ACArchive = JSON.parse(archiveJson);
-            var ruleArchive = ACConfig.ruleArchive;
-            var ruleArchivePath = null;
-            for (var i = 0; i < ACArchive.length; i++) {
+            let ACArchive = JSON.parse(archiveJson);
+            let ruleArchive = ACConfig.ruleArchive;
+            let ruleArchivePath = null;
+            let ruleArchiveVersion = null;
+
+            for (let i = 0; i < ACArchive.length; i++) {
                 if (ruleArchive == ACArchive[i].id && !ACArchive[i].sunset) {
                     ruleArchivePath = ACArchive[i].path;
+                    ruleArchiveVersion = ACArchive[i].version;
                     ACConfig.ruleArchive = ACArchive[i].name + " (" + ACArchive[i].id + ")";
                     break;
                 }
             }
             // Throw error and exit if provided rule archive value doesn't match with our rule archive list
-            if (!ruleArchivePath) {
+            if (!ruleArchivePath || ruleArchiveVersion === null) {
                 ACCommon.log.error("[ERROR] RuleArchiveInvalid: Ensure correct rule archive is provided in the configuration file. More information is available in the README.md");
                 process.exit(-1);
             }
-            // Build the new rulePack based of the baseA11yServerURL, authToken and the ruleArchivePath
-            ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
+            // Build the new rulePack based of the baseA11yServerURL and archive info
+            if (baseA11yServerURL.includes("jsdelivr.net")) {
+                ACConfig.rulePack = `${baseA11yServerURL}@${ruleArchiveVersion}`;
+            } else {
+                ACConfig.rulePack = `${baseA11yServerURL}${ruleArchivePath}/js`;
+            }
             ACCommon.log.debug("Built new rulePack: " + ACConfig.rulePack);
         }
 

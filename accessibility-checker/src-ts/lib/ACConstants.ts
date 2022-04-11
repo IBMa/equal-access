@@ -30,7 +30,10 @@ export const ACConstants : IConfigUnsupported = {
     maxTabs: 1,
     policies: ["IBM_Accessibility"],
     // Specify the default rule pack server to use. (Where to pull the rules and engine from).
-    ruleServer: "https://able.ibm.com/rules",
+    // - JSDelivr CDN
+    ruleServer: "https://cdn.jsdelivr.net/npm/accessibility-checker-engine",
+    // - IBM Cloud hosting
+    // ruleServer: "https://able.ibm.com/rules",
 
     //Specify the rule set to be use.
     ruleArchive: "latest",
