@@ -68,17 +68,8 @@ function calcSummary(report: IReport) {
     let failUniqueElements = Array.from(new Set(failXpaths));
     summaryResults.push(failUniqueElements.length);
     // console.log("elementsWithIssues = "+summaryResults[3]);
-
-    let passXpaths: any = [];
-    let passResults = report.results.filter((result: any) => {
-        return result.value[1] === "PASS";
-    })
     
-    passResults.map((result:any) => {
-        passXpaths.push(result.path.dom);
-    })
-    
-    let passUniqueElements = Array.from(new Set(passXpaths));
+    let passUniqueElements = report.passUniqueElements;
     summaryResults[4] = passUniqueElements.length;
     // console.log("totalElements = "+summaryResults[4]);
     // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
@@ -136,8 +127,8 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                             </div>
                             <div className="tile-score">{currentStatus}%</div>
                             <div className="tile-description" style={{ marginBottom: "16px" }}>Percentage of elements with no detected violations or items to review</div>
-                            <div className="tile-description">Web page Total HTML Elements: {summaryNumbers[4]}</div>
                             <div className="tile-description">Elements with Violations or Needs review: {summaryNumbers[3]} </div>
+                            <div className="tile-description">Web page Total HTML Elements: {summaryNumbers[4]}</div>
                         </Tile>
                     </Column>
                     <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
