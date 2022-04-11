@@ -17,8 +17,12 @@
 	"permissions": [
         "tabs",
         "storage",
-        "scripting"
+        "scripting",
+        "activeTab"
 	],
+    "host_permissions": [
+        "*://*/*"
+    ],
 	"action": {
 		"default_title": "IBM Equal Access Accessibility Checker",
 		"default_icon": {

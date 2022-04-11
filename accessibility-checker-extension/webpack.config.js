@@ -8,6 +8,7 @@ const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
 
 const sourceRootPath = path.join(__dirname, 'src');
+const archivePath = path.join(__dirname, '..', 'rule-server', 'dist', 'static');
 const contentScriptsPath = path.join(sourceRootPath, 'ts', 'contentScripts');
 const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -44,7 +45,9 @@ module.exports = {
         path: distRootPath,
         filename: '[name].js',
     },
-    optimization: nodeEnv.includes("watch") ? undefined : {
+    optimization: nodeEnv.includes("watch") ? {
+        minimize: false
+    } : {
         splitChunks: {
             maxSize: 3500000,
             chunks: "all"
@@ -133,6 +136,15 @@ module.exports = {
                 from: path.join(sourceRootPath, 'manifest.json'),
                 to: path.join(distRootPath, 'manifest.json'),
                 toType: 'file',
+            },
+            {
+                from: path.join(archivePath, "archives.json"),
+                to: path.join(distRootPath, "archives.json"),
+                toType: 'file'
+            },
+            {
+                from: path.join(archivePath, "archives"),
+                to: path.join(distRootPath, "archives")
             }
         ]}),
        

@@ -18,6 +18,7 @@ import BackgroundMessaging from "../util/backgroundMessaging";
 import EngineCache from './helper/engineCache';
 import Config from "./helper/config";
 import { ACMetricsLogger } from "../util/ACMetricsLogger";
+import OptionMessaging from "../util/optionMessaging";
 
 let metrics = new ACMetricsLogger("ac-extension");
 
@@ -36,18 +37,18 @@ async function initTab(tabId: number, archiveId: string) {
     });
 
     // Switch to the appropriate engine for this archiveId
-    await EngineCache.getEngine(archiveId);
-    // await new Promise((resolve, reject) => {
-    //     chrome.scripting.executeScript({
-    //         target: { tabId: tabId, frameIds: [0] },
-    //         func: () => { eval(engineCode + "window.ace = ace;") }
-    //     }, function (_res) {
-    //         if (chrome.runtime.lastError) {
-    //             reject(chrome.runtime.lastError.message);
-    //         }
-    //         resolve(_res);
-    //     })
-    // });
+    let engineFile = await EngineCache.getEngine(archiveId);
+    await new Promise((resolve, reject) => {
+        chrome.scripting.executeScript({
+            target: { tabId: tabId, frameIds: [0] },
+            files: [engineFile]
+        }, function (res) {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError.message);
+            }
+            resolve(res);
+        })
+    });
 
     // Initialize the listeners once
     if (!isLoaded) {
@@ -177,10 +178,12 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
     });
 });
 
+BackgroundMessaging.addListener("OPTIONS", async (message: any) => {
+    return await OptionMessaging.optionMessageHandling(message);
+ });
 
 // TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    console.log(changeInfo);
     BackgroundMessaging.sendToPanel("TAB_UPDATED", {
         tabId: tabId,
         status: changeInfo && changeInfo.status,

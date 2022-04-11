@@ -1,29 +1,4 @@
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-//@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
-
-// @import '~carbon-components/scss/globals/scss/vendor/@carbon/type/scss/_font-family.scss';
-// @import '~carbon-components/scss/globals/scss/vendor/@carbon/layout/scss/_breakpoint.scss';
-// @import '~carbon-components/scss/globals/scss/_typography.scss';
-// @import '~carbon-components/scss/globals/scss/_vars.scss';
-// @import '~@carbon/icons-react/lib/checkmark--filled/20';
-// @import '~@carbon/icons-react/lib/development/20.js';
-
-@import '@carbon/themes/scss/themes';
-// Use the gray 10 theme
-$carbon--theme: $carbon--theme--g10;
-@include carbon--theme();
-// // Use the gray 90 theme
-// $carbon--theme: $carbon--theme--g90;
-// @include carbon--theme();
-// Use the gray 100 theme
-// $carbon--theme: $carbon--theme--g100;
-// @include carbon--theme();
-// import Carbon styles here
-@import 'carbon-components/scss/globals/scss/styles.scss';
+@use '@carbon/react';
 
 body {
     font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;

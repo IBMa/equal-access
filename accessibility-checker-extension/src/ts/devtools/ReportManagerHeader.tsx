@@ -17,12 +17,12 @@
     import React from "react";
 
     import {
-        Button
-    } from 'carbon-components-react';
+        Column, Grid, Button
+    } from '@carbon/react';
     
     
     // const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
-    // import { ArrowLeft16 } from '@carbon/icons-react';
+    // import { ArrowLeft16 } from '@carbon/react/icons/lib/index';
     
     interface IReportManagerHeaderState {
     }
@@ -47,19 +47,19 @@
         render() {
             // console.log("Render Report Manager Header");
             let headerContent = (
-                <div className="bx--grid" style={{paddingLeft:"1rem", paddingTop:"8px"}}>
-                    <div className="bx--row">
-                        <div className="bx--col-sm-2">
-                            <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="small" >Back to list view</Button>
-                        </div>
-                        <div className="bx--col-sm-2" style={{position: "relative", textAlign:"right", paddingRight:"0px", paddingTop:"2px"}}>
+                <div style={{paddingLeft:"1rem", paddingTop:"8px"}}>
+                    <Grid>
+                        <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
+                            <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="sm" >Back to list view</Button>
+                        </Column>
+                        <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{position: "relative", textAlign:"right", paddingRight:"0px", paddingTop:"2px"}}>
                             <div>
                             <span>Status: </span>
                             <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                             <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                             </div>
-                        </div>
-                    </div>
+                        </Column>
+                    </Grid>
                 </div>);
     
             if (this.props.layout === "main") {
