@@ -16,6 +16,7 @@
 
 import React from "react";
 import ReactTooltip from "react-tooltip";
+import { IReportItem } from "./Report";
 
 import {
     Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
@@ -24,6 +25,7 @@ import { settings } from 'carbon-components';
 import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
+import PanelMessaging from '../util/panelMessaging';
 
 const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
@@ -34,6 +36,7 @@ const { prefix } = settings;
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
+    showHideTabStops: boolean
  }
 
 interface IHeaderProps {
@@ -82,7 +85,12 @@ interface IHeaderProps {
     focusedViewFilter: boolean,
     focusedViewText: string,
     getCurrentSelectedElement: () => void,
-    readOptionsData: () => void
+    readOptionsData: () => void,
+    tabURL: string,
+    tabId: number,
+    tabStopsShow: () => void,
+    tabStopsResults: IReportItem[],
+    tabStopsErrors: IReportItem[]
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -97,6 +105,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     state: IHeaderState = {
         deleteModal: false,
         modalRulsetInfo: false,
+        showHideTabStops: true
     };
 
     focusInfoButton1() {
