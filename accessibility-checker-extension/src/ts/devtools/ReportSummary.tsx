@@ -48,12 +48,15 @@ function calcSummary(report: IReport) {
     })
     summaryResults.push(violations.length);
     // console.log("Violations = "+summaryResults[0]);
+    // console.log(violations);
 
     let potentials = results.filter((result: any) => {
         return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
     })
     summaryResults.push(potentials.length);
     // console.log("summaryPotential = "+summaryResults[1]);
+    // console.log(potentials);
+    
 
     let recommendations = results.filter((result: any) => {
         return result.value[0] === "RECOMMENDATION";
@@ -61,10 +64,14 @@ function calcSummary(report: IReport) {
     summaryResults.push(recommendations.length);
     // console.log("summaryRecommendation = "+summaryResults[2]);
 
+    let violationsPlusPotentials = violations.concat(potentials);
+    // console.log("violationsPlusPotentials = ", violationsPlusPotentials)
+
     let failXpaths: string[] = [];
-    results.map((result:any) => {
+    violationsPlusPotentials.map((result:any) => {
         failXpaths.push(result.path.dom);
     })
+   
     let failUniqueElements = Array.from(new Set(failXpaths));
     summaryResults.push(failUniqueElements.length);
     // console.log("elementsWithIssues = "+summaryResults[3]);
@@ -112,6 +119,12 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
         let summaryNumbers:any = [];
         summaryNumbers = calcSummary(this.props.report);
+
+        console.log("summaryNumbers[0] = ", summaryNumbers[0]);
+        console.log("summaryNumbers[1] = ", summaryNumbers[1]);
+        console.log("summaryNumbers[2] = ", summaryNumbers[2]);
+        console.log("summaryNumbers[3] = ", summaryNumbers[3]);
+        console.log("summaryNumbers[4] = ", summaryNumbers[4]);
         
         // Calculate score
         let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
