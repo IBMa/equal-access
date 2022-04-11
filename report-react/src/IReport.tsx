@@ -31,6 +31,7 @@ export interface IReport {
     counts: {
         total: { [key: string]: number }
     }
+    passUniqueElements: string[]
 }
 
 export interface IReportItem {

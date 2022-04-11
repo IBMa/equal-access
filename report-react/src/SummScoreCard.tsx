@@ -24,45 +24,50 @@ interface SummScoreCardProps {
 
 export default class SummScoreCard extends React.Component<SummScoreCardProps, {}> {
     calcSummary(report: IReport) {
-
         let summaryResults:any = [];
         let results = report.results.filter((result: any) => {
             return result.value[1] !== "PASS";
         })
+        // console.log("report.results.length = "+report.results.length);
+        // console.log("all issues = "+results.length);
     
         let violations = results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
         })
         summaryResults.push(violations.length);
+        // console.log("Violations = "+summaryResults[0]);
+        // console.log(violations);
     
         let potentials = results.filter((result: any) => {
             return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
         })
         summaryResults.push(potentials.length);
+        // console.log("summaryPotential = "+summaryResults[1]);
+        // console.log(potentials);
+        
     
         let recommendations = results.filter((result: any) => {
             return result.value[0] === "RECOMMENDATION";
         })
         summaryResults.push(recommendations.length);
+        // console.log("summaryRecommendation = "+summaryResults[2]);
+    
+        let violationsPlusPotentials = violations.concat(potentials);
+        // console.log("violationsPlusPotentials = ", violationsPlusPotentials)
     
         let failXpaths: string[] = [];
-        results.map((result:any) => {
+        violationsPlusPotentials.map((result:any) => {
             failXpaths.push(result.path.dom);
-            return null;
         })
+       
         let failUniqueElements = Array.from(new Set(failXpaths));
         summaryResults.push(failUniqueElements.length);
-    
-        let passResults = report.results.filter((result: any) => {
-            return result.value[1] === "PASS";
-        })
+        // console.log("elementsWithIssues = "+summaryResults[3]);
         
-        let passXpaths = passResults.map((result:any) => {
-            return result.path.dom;
-        })
-        
-        let passUniqueElements = Array.from(new Set(passXpaths));
+        let passUniqueElements = report.passUniqueElements;
         summaryResults[4] = passUniqueElements.length;
+        // console.log("totalElements = "+summaryResults[4]);
+        // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
         return summaryResults;
     }
 
