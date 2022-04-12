@@ -468,7 +468,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
 
-// JCH before finish scan collect and order tab stops
+            // JCH before finish scan collect and order tab stops
             // Note: the collection is actually all issues that are tab stops
             // console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
@@ -491,7 +491,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
             }
 
-            // console.log("tabbable =", tabbable);
+            console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable });
             console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
@@ -1170,18 +1170,19 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         </div>
                     </div>
                     <div style={{ display: this.state.tabStopsPanel && !this.state.reportManager && !this.state.learnMore ? "" : "none", height: "100%" }}>
-                    <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
-                    <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
-                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
-                            <div>
-                                <div className="subPanel">
-                                    <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
+                        <TabStopsHeader tabStopsHandler={this.tabStopsHandler.bind(this)} layout={this.props.layout}></TabStopsHeader>
+                        <div style={{ overflowY: "scroll", height: "100%" }} ref={this.subPanelRef}>
+                            <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                                <div>
+                                    <div className="subPanel">
+                                        <ReportTabStops report={this.state.report!} tabStopsHighlight={this.tabStopsHighlight.bind(this)} tabStopsResults={this.state.tabStopsResults} />
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {/* Note the -72px is there to make sure that the help content starts under the header */}
+                        {this.subPanelRef.current?.scrollTo(0, -72)}
                     </div>
-                    {/* Note the -72px is there to make sure that the help content starts under the header */}
-                    {this.subPanelRef.current?.scrollTo(0, -72)}
                 </div>
                 <div style={{ display: !this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
                     <Header

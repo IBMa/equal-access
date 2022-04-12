@@ -220,7 +220,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let focusText = this.props.focusedViewText;
 
         let headerContent = (<div className="bx--grid" style={{ paddingLeft: "1rem", paddingRight: "1rem" }}>
-            {this.props.layout === "sub" ? 
+            {this.props.layout === "sub" ?
             <div className="bx--row" style={{ lineHeight: "1rem" }}>
                 <div className="bx--col-sm-4">
                     <h1>IBM Equal Access Accessibility Checker</h1>
@@ -404,12 +404,25 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </div>
                 </div>
                 <div className="bx--row" style={{ marginTop: '10px' }}>
-                    <div className="bx--col-sm-4">
+                    <div className="bx--col-sm-2">
                         <div>
                             <span>Status: </span>
                             <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
                             <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
                         </div>
+                    </div >
+                    <div className="bx--col-sm-2">
+                        {this.state.showHideTabStops ? 
+                            <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
+                                this.setState({ showHideTabStops: false });
+                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
+                                // this.props.tabStopsShow(); // old code that we should keep
+                            }}>Show tab stops</a>
+                        :   <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
+                            PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                this.setState({ showHideTabStops: true });
+                            }}>Hide tab stops</a>
+                        }
                     </div>
                 </div>
                 </React.Fragment>
