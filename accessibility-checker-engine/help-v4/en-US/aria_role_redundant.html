@@ -44,27 +44,29 @@
 
 ### Why is this important?
 
-Using both an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an `<input>` element can cause a conflict that allows one of the attributes to override the other. This can lead to unexpected and confusing assistive technology behavior.
+A best practice is to avoid adding an ARIA explicit role to an HTML element whose implicit role has the identical semantic meaning. This will eliminate the extra browser processing to determine the role of the element to add to the DOM.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Remove one of the conflicting HTML5 or ARIA attributes from the `<input>` element.
+Remove the redundant ARIA role from the element.
 
-Example using HTML5:
+Note the redundant ARIA and HTML roles shown in the following examples.
 
 ```
-<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required>
+<button type="button" role="button">Save</button>
+
+<input type="button" role="button" value="Save">
 ```
     
-Example uses both HTML5 and ARIA attribute indicating the input is required without any conflict:
+In the following corrected examples, only an HTML role is used:
     
 ```
-<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required aria-required="true">
+<button type="button" id="saveChanges">Save</button>
+
+<input type="button" value="Save">
 ```
 
 </script></mark-down>
@@ -78,7 +80,8 @@ Example uses both HTML5 and ARIA attribute indicating the input is required with
 
 ### About this requirement
 
-* [IBM 3.3.2 Labels and Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [IBM 4.1.2 Name, role, value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA in HTML - Avoid specifying redundant roles](https://w3c.github.io/html-aria/#avoid-specifying-redundant-roles)
 
 ### Who does this affect?
 
