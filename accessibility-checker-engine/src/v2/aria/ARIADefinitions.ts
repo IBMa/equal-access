@@ -45,6 +45,11 @@ export class ARIADefinitions {
         , 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'
     ];
 
+    // deprecated roles
+    static globalDeprecatedRoles : string[] = [
+        'directory'
+    ];
+
     // the following are deprecated in ARIA 1.1 for all the roles
     static globalDeprecatedProperties : string[] = [
         'aria-grabbed', 'aria-dropeffect'

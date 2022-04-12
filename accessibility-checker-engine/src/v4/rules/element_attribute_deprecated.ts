@@ -75,112 +75,6 @@ const DEPRECATED_ELEMENT_ATTRIBUTES = {
     "tr": ["align", "bgcolor", "char", "charoff", "valign"]
 }
 
-const DEPRECATED_ROLES = [
-    /**  deprecated aria roles: https://www.w3.org/TR/wai-aria-1.2/ */
-    /** 
-     *  the aria deprecation will be better handled in ARIADefinition.ts
-     *  "directory" 
-    */
-]
-
-const DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
-    /**  add deprecated aria global attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-    /** 
-     *  the aria deprecation will be better handled in ARIADefinition.ts
-     *  "aria-grabbed", "aria-dropeffect" 
-    */
-]
-
-const DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
-    /**  add deprecated aria role and attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-    /** 
-     *  the aria deprecation will be better handled in ARIADefinition.ts
-    "alert" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "alertdialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "article" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "banner" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "blockquote" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "button" : ["aria-errormessage", "aria-invalid"],
-    "caption" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "cell" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "checkbox" : ["aria-haspopup"],
-    "code" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "command" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "complementary" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "composite" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "contentinfo" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "definition" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "deletion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "dialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "document" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "emphasis" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "feed" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "figure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "form" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "generic" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "grid" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "group" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "heading" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "img" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "input" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "landmark" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "insertion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "link" : ["aria-errormessage", "aria-invalid"],
-    "list" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "listbox" : ["aria-haspopup"],
-    "listitem" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "log" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "main" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "marquee" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "math" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "meter" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "menu" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "menubar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "menuitem" : ["aria-errormessage", "aria-invalid"],
-    "menuitemcheckbox" : ["aria-errormessage", "aria-invalid"],
-    "menuitemradio" : ["aria-errormessage", "aria-invalid"],
-    "navigation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "note" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "option" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "paragraph" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "presentation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "progressbar" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "radio" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "radiogroup" : ["aria-haspopup"],
-    "range" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "region" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "row" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "rowgroup" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "scrollbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "search" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "section" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "sectionhead" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "select" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "separator" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "spinbutton" : ["aria-haspopup"],
-    "status" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "strong" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "structure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "subscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "superscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "switch" : ["aria-haspopup"],
-    "tab" : ["aria-errormessage", "aria-invalid"],
-    "table" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "tablist" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "tabpanel" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "term" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "time" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "timer" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "toolbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "tooltip" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "tree" : ["aria-haspopup"],
-    "treegrid" : ["aria-haspopup"],
-    "treeitem" : ["aria-errormessage", "aria-invalid"],
-    "widget" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-    "window" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"]
-     */
-}
-
 function arrayToContextStr(obj, type) {
     let str = "";
     for (const prop of obj) {
@@ -189,11 +83,6 @@ function arrayToContextStr(obj, type) {
             str += 'dom:' + prop;
         else if (type === 'HTML_ATTRIBUTES')
             str += 'dom:*[' + prop + "]";
-        else if (type === 'ARIA_ROLES')
-            str += 'aria:' + prop;
-        else if (type === 'ARIA_ATTRIBUTES') {
-            str += 'dom:*[' + prop + "]";
-        }
     }
     return str;
 }
@@ -207,13 +96,7 @@ function objToContextStr(obj, type: string) {
                 if (str !== '' && !str.endsWith(", ")) str += ", ";
                 str += 'dom:' + prop + '[' + item + ']';
             }
-        } else if (type === 'ARIA_ROLE_ATTRIBUTES') {
-            for (let item of obj[prop] as String[]) {
-                if (str !== '' && !str.endsWith(", ")) str += ", ";
-                if (item.startsWith("aria-")) item = item.substring(5);
-                str += 'aria:' + prop + '[' + item + ']';
-            }
-        }
+        } 
     }
     return str;
 }
@@ -255,9 +138,12 @@ export let element_attribute_deprecated: Rule = {
         }
 
         const nodeName = ruleContext.nodeName.toLowerCase();
+
+        let ret = [];
         // check if it's a deprecated element
         if (DEPRECATED_ELEMENTS.includes(nodeName)) {
-            return RuleFail("fail_elem", [nodeName]);
+            ret.push(RuleFail("fail_elem", [nodeName]));
+
         }
 
         // check if it's a deprecated HTML global attribute
@@ -270,7 +156,7 @@ export let element_attribute_deprecated: Rule = {
             }
         }
         if (violations !== '') {
-            return RuleFail("fail_attr", [violations]);
+            ret.push(RuleFail("fail_attr", [violations]));
         }
 
         // check if it's a deprecated HTML element & attribute
@@ -283,48 +169,12 @@ export let element_attribute_deprecated: Rule = {
                 }
             }
             if (violations !== '') {
-                return RuleFail("fail_elem_attr", [violations, nodeName]);
+                ret.push(RuleFail("fail_elem_attr", [violations, nodeName]));
             }
         }
 
-
-        const roles = RPTUtil.getRoles(ruleContext, false);
-        // check if it's a deprecated global aria role
-        for (const role of roles) {
-            if (DEPRECATED_ROLES.includes(role)) {
-                return RuleFail("fail_aria_role", [role]);
-            }
-        }
-
-        // check if it's a deprecated aria global attribute
-        violations = '';
-        for (const attr of attrs) {
-            if (DEPRECATED_ARIA_GLOBAL_ATTRIBUTES.includes(attr)) {
-                if (violations !== '') violations += ', ';
-                violations += attr;
-            }
-        }
-        if (violations !== '') {
-            return RuleFail("fail_aria_attr", [violations]);
-        }
-
-        // check if it's a deprecated ARIA role & attribute    
-        for (const role of roles) {
-            violations = '';
-            if (role in DEPRECATED_ARIA_ROLE_ATTRIBUTES) {
-                for (const attr of attrs) {
-                    if (attr.startsWith('aria-') && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role]
-                        && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role].includes(attr)) {
-                        if (violations !== '') violations += ', ';
-                        violations += attr;
-                    }
-                }
-                if (violations !== '') {
-                    return RuleFail("fail_role_attr", [violations, role]);
-                }
-            }
-        }
-
+        if (ret.length > 0)
+            return ret;
         return RulePass("pass");
     }
 }
