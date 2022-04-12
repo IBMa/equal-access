@@ -473,6 +473,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
             let tabbableErrors: IReportItem[] = [];
+            console.log(report.results);
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
                     // there will always be at least one tab
