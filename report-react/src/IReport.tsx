@@ -71,5 +71,11 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
         "FAIL": "Recommendation",
         "PASS": "Pass",
         "MANUAL": "Recommendation"
+    },
+    "INFORMATION": {
+        "POTENTIAL": "Needs review",
+        "FAIL": "Violation",
+        "PASS": "Pass",
+        "MANUAL": "Recommendation"
     }
 };
