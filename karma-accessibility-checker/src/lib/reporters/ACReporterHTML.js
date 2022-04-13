@@ -112,13 +112,10 @@ var ACReporterHTML = {
         }
 
         ACReporterCommon.log.debug("Object will be written to file: \"" + fileName + "\"");
-        let passXpaths;
         let passResults = content.results.filter((result) => {
             return result.value[1] === "PASS";
-        })
-        passResults.map((result) => {
-            passXpaths.push(result.path.dom);
-        })
+        });
+        let passXpaths = passResults.map(result => result.path.dom);
 
         let outReport = {
             report: {

@@ -258,13 +258,10 @@ export class ACReporterHTML {
         }
 
         this.Config.DEBUG && console.log("Object will be written to file: \"" + fileName + "\"");
-        let passXpaths: any = [];
         let passResults = content.results.filter((result: any) => {
             return result.value[1] === "PASS";
         })
-        passResults.map((result:any) => {
-            passXpaths.push(result.path.dom);
-        })
+        let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
 
         let outReport = {
             report: {
