@@ -3156,6 +3156,28 @@
             "category": "Accessibility",
             "ignored": false,
             "level": "pass"
+        },
+        {
+            "apiArgs": [],
+            "bounds": {
+                "height": 999,
+                "left": 999,
+                "top": 999,
+                "width": 999
+            },
+            "category": "Accessibility",
+            "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
+            "messageArgs": [],
+            "path": {
+                "aria": "/document[1]/main[1]",
+                "dom": "/html[1]/body[1]/div[2]"
+            },
+            "reasonId": "pass",
+            "ruleId": "aria_role_redundant",
+            "snippet": "<div role=\"main\">",
+            "value": ["RECOMMENDATION", "PASS"],
+            "ignored": false,
+            "level": "pass"
         }
     ],
     "numExecuted": 120,
@@ -3232,6 +3254,10 @@
             "0": "Elements must have a valid 'role' per ARIA specification",
             "Pass_0": "Rule Passed"
         },
+        "aria_role_redundant": {
+			"0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
+			"pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
+		},
         "aria_semantics_role": {
             "0": "ARIA roles must be valid for the element to which they are assigned",
             "Pass_0": "Rule Passed"
