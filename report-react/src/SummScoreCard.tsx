@@ -55,10 +55,7 @@ export default class SummScoreCard extends React.Component<SummScoreCardProps, {
         let violationsPlusPotentials = violations.concat(potentials);
         // console.log("violationsPlusPotentials = ", violationsPlusPotentials)
     
-        let failXpaths: string[] = [];
-        violationsPlusPotentials.map((result:any) => {
-            failXpaths.push(result.path.dom);
-        })
+        let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
        
         let failUniqueElements = Array.from(new Set(failXpaths));
         summaryResults.push(failUniqueElements.length);
