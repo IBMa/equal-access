@@ -791,6 +791,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 var reportObj: any = {
                     tabURL: this.state.tabURL,
                     rulesets: this.state.rulesets,
+                    passUniqueElements: this.state.report.passUniqueElements,
                     report: {
                         timestamp: this.state.report.timestamp,
                         nls: this.state.report.nls,
