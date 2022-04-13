@@ -63,7 +63,7 @@ export let aria_attribute_overlaps: Rule = {
         }
         let ret = [];
         for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');;
+            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');
             if (examinedHtmlAtrNames === null) continue;
             examinedHtmlAtrNames.forEach(item => {
                 if (item['result'] === 'Pass') { //pass
