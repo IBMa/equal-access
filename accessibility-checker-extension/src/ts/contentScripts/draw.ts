@@ -12,8 +12,8 @@ console.log("Content Script for drawing tab stops has loaded")
 // var intervalTimer: any;
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
-    console.log(message.tabStopsResults);
+    // console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
+    // console.log(message.tabStopsResults);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     injectCSS(
@@ -169,12 +169,12 @@ function injectCSS(styleString: string) {
 }
 
 function draw(tabStopsErrors: any) {
-    console.log("Inside draw")
+    // console.log("Inside draw")
     redraw(tabStopsErrors);
 }
 
 function drawErrors(tabStopsErrors: any) {
-    console.log("Inside drawErrors")
+    // console.log("Inside drawErrors")
     redrawErrors(tabStopsErrors);
 }
 
@@ -184,9 +184,9 @@ function deleteDrawing(classToRemove: string) {
 
 
 function redrawErrors(tabStopsErrors: any) {
-    console.log("Inside redrawErrors")
+    // console.log("Inside redrawErrors")
     setTimeout(() => {
-        console.log("tabbable error nodes = ", tabStopsErrors);
+        // console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
         nodes = convertXpathsToHtmlElements(nodes);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
@@ -233,7 +233,7 @@ function redrawErrors(tabStopsErrors: any) {
 
 
 function redraw(tabStopsResults: any) {
-    console.log("Inside redraw")
+    // console.log("Inside redraw")
     setTimeout(() => {
         // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
@@ -248,7 +248,7 @@ function redraw(tabStopsResults: any) {
             return el != null;
         });
 
-        console.log("tabbable nodes = ", nodes);
+        // console.log("tabbable nodes = ", nodes);
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length - 1; i++) { //Make lines between numbers
@@ -292,9 +292,9 @@ function redraw(tabStopsResults: any) {
             let y = nodes[i].getBoundingClientRect().y - offset;
             let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-            if (i == 32) {
-                console.log("x y :", x, " ", y)
-            }
+            // if (i == 32) {
+            //     console.log("x y :", x, " ", y)
+            // }
             makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
             makeTextSmall(x, y, (i + 1).toString());
 
