@@ -44,20 +44,20 @@
   </ol>   
 	<script>
 		UnitTest = {
-			ruleIds: ["aria_role_overlaps"],
+			ruleIds: ["aria_role_redundant"],
 			results: [
 			{
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'document' should not overlap with the implicit role of the element <html>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"document\" is redundant with the implicit role of the element <html>",
             "messageArgs": [
               "document",
               "html"
@@ -66,17 +66,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'button' should not overlap with the implicit role of the element <button>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"button\" is redundant with the implicit role of the element <button>",
             "messageArgs": [
               "button",
               "button"
@@ -85,17 +85,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'link' should not overlap with the implicit role of the element <a>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"link\" is redundant with the implicit role of the element <a>",
             "messageArgs": [
               "link",
               "a"
@@ -104,17 +104,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/area[1]",
               "aria": "/document[1]/link[2]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'link' should not overlap with the implicit role of the element <area>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"link\" is redundant with the implicit role of the element <area>",
             "messageArgs": [
               "link",
               "area"
@@ -123,17 +123,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/datalist[1]",
               "aria": "/document[1]/listbox[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'listbox' should not overlap with the implicit role of the element <datalist>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"listbox\" is redundant with the implicit role of the element <datalist>",
             "messageArgs": [
               "listbox",
               "datalist"
@@ -142,17 +142,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/hr[1]",
               "aria": "/document[1]/separator[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'separator' should not overlap with the implicit role of the element <hr>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"separator\" is redundant with the implicit role of the element <hr>",
             "messageArgs": [
               "separator",
               "hr"
@@ -161,17 +161,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/figure[1]",
               "aria": "/document[1]/figure[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'figure' should not overlap with the implicit role of the element <figure>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"figure\" is redundant with the implicit role of the element <figure>",
             "messageArgs": [
               "figure",
               "figure"
@@ -180,17 +180,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]",
               "aria": "/document[1]/form[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'form' should not overlap with the implicit role of the element <form>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"form\" is redundant with the implicit role of the element <form>",
             "messageArgs": [
               "form",
               "form"
@@ -199,17 +199,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]/input[1]",
               "aria": "/document[1]/form[1]/checkbox[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'checkbox' should not overlap with the implicit role of the element <input>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"checkbox\" is redundant with the implicit role of the element <input>",
             "messageArgs": [
               "checkbox",
               "input"
@@ -218,17 +218,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]/input[2]",
               "aria": "/document[1]/form[1]/button[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'button' should not overlap with the implicit role of the element <input>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"button\" is redundant with the implicit role of the element <input>",
             "messageArgs": [
               "button",
               "input"
@@ -237,17 +237,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]/input[3]",
               "aria": "/document[1]/form[1]/button[2]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'button' should not overlap with the implicit role of the element <input>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"button\" is redundant with the implicit role of the element <input>",
             "messageArgs": [
               "button",
               "input"
@@ -256,17 +256,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/img[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'presentation' should not overlap with the implicit role of the element <img>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"presentation\" is redundant with the implicit role of the element <img>",
             "messageArgs": [
               "presentation",
               "img"
@@ -275,17 +275,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/img[2]",
               "aria": "/document[1]/img[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'img' should not overlap with the implicit role of the element <img>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"img\" is redundant with the implicit role of the element <img>",
             "messageArgs": [
               "img",
               "img"
@@ -294,17 +294,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/ol[1]",
               "aria": "/document[1]/list[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'list' should not overlap with the implicit role of the element <ol>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"list\" is redundant with the implicit role of the element <ol>",
             "messageArgs": [
               "list",
               "ol"
@@ -313,17 +313,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_role_overlaps",
+            "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/ol[1]/li[1]",
               "aria": "/document[1]/list[1]/listitem[1]"
             },
-            "reasonId": "potential_overlap",
-            "message": "The explicitly-assigned ARIA role 'listitem' should not overlap with the implicit role of the element <li>",
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"listitem\" is redundant with the implicit role of the element <li>",
             "messageArgs": [
               "listitem",
               "li"
