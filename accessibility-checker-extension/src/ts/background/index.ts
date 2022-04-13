@@ -158,10 +158,11 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             let archiveId = Config.defaultArchiveId + "";
 
-            await initTab(message.tabId, archiveId);
             if (result.OPTIONS) {
                 archiveId = result.OPTIONS.selected_archive.id;
-            } try {
+            } 
+            await initTab(message.tabId, archiveId);
+            try {
                 chrome.scripting.executeScript({
                     target: { tabId: message.tabId, frameIds: [0] },
                     func: () => (new (window as any).ace.Checker().rulesets)

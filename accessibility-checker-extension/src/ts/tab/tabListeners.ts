@@ -42,13 +42,11 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
             report: report
         };
         if (report) {
-            let passXpaths: any = [];
             let passResults = report.results.filter((result: any) => {
                 return result.value[1] === "PASS";
             })
-            passResults.map((result:any) => {
-                passXpaths.push(result.path.dom);
-            })
+            let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
+
             report.passUniqueElements = Array.from(new Set(passXpaths));
 
             report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS");
