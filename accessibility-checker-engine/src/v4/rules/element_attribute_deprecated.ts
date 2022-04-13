@@ -142,7 +142,7 @@ export let element_attribute_deprecated: Rule = {
         let ret = [];
         // check if it's a deprecated element
         if (DEPRECATED_ELEMENTS.includes(nodeName)) {
-            ret.push(RuleFail("fail_elem", [nodeName]));
+            return RuleFail("fail_elem", [nodeName]);
 
         }
 
@@ -156,7 +156,7 @@ export let element_attribute_deprecated: Rule = {
             }
         }
         if (violations !== '') {
-            ret.push(RuleFail("fail_attr", [violations]));
+            return RuleFail("fail_attr", [violations]);
         }
 
         // check if it's a deprecated HTML element & attribute
@@ -169,12 +169,10 @@ export let element_attribute_deprecated: Rule = {
                 }
             }
             if (violations !== '') {
-                ret.push(RuleFail("fail_elem_attr", [violations, nodeName]));
+                return RuleFail("fail_elem_attr", [violations, nodeName]);
             }
         }
 
-        if (ret.length > 0)
-            return ret;
         return RulePass("pass");
     }
 }

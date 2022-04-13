@@ -46,7 +46,9 @@ export let aria_attribute_deprecated: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+         
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
         if (domAttributes) {
