@@ -221,11 +221,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async xpathFromTabstops(message: any) {
-        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+        // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
         // JCH take xpath and match to item with same item.path.dom
         this.state.tabStopsResults.map((result: any) => {
             if (message.xpath === result.path.dom) {
-                console.log("result xpath = ",result.path.dom);
+                // console.log("result xpath = ",result.path.dom);
                 this.getSelectedItem(result);
                 this.selectItem(result);
             }
@@ -373,7 +373,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
 
-        console.log("this.state.tabCanScan = ",this.state.tabCanScan);
+        // console.log("this.state.tabCanScan = ",this.state.tabCanScan);
 
         if (!tab.canScan) {
             // console.log("Found BAD url: ",tab.url);
@@ -473,7 +473,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             // console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
             let tabbableErrors: IReportItem[] = [];
-            console.log(report.results);
             report.results.map((result: any) => {
                 if (result.ruleId === "detector_tabbable") {
                     // there will always be at least one tab
@@ -492,9 +491,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
             }
 
-            console.log("tabbable =", tabbable);
+            // console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable });
-            console.log("tabStopsErrors = ", tabbableErrors);
+            // console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
 
             // End of tab stops stored state
@@ -1021,29 +1020,29 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     tabStopsShow() {
-        console.log("tabStopsShow");
-        let mythis = this;
+        // console.log("tabStopsShow");
+        // let mythis = this;
 
         this.setState({ tabStopsPanel: true });
         setTimeout(function () {
-            console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+            // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
         }, 1);
     }
 
     tabStopsHandler() {
-        console.log("tabStopsHandler");
-        let mythis = this;
+        // console.log("tabStopsHandler");
+        // let mythis = this;
 
         PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
         this.setState({ tabStopsPanel: false });
         setTimeout(function () {
-            console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
+            // console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
         }, 1);
         this.selectElementInElements();
     }
 
     tabStopsHighlight(index: number, result: any) {
-        console.log("Highlight tab stop with index = ", index);
+        // console.log("Highlight tab stop with index = ", index);
         PanelMessaging.sendToBackground("HIGHLIGHT_TABSTOP_TO_BACKGROUND", { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopId: index });
         this.selectItem(result, undefined);
     }
@@ -1068,7 +1067,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
-        console.log("DevToolsPanelApp: render");
+        // console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
