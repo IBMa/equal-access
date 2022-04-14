@@ -34,7 +34,7 @@ export interface IReport {
     timestamp: number,
     filterstamp: number,
     results: IReportItem[],
-
+    passUniqueElements: string[],
     counts: { 
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
