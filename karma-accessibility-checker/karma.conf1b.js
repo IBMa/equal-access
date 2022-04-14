@@ -42,8 +42,8 @@ module.exports = function (config) {
         // If you want to use html files in js make sure to load them first.
         files: [
             // 'test/client/baseline/**/*.json',
-            { pattern: '../accessibility-checker-engine/test/**/[a-rA-R]*_ruleunit/*.html' },
-            { pattern: '../accessibility-checker-engine/test/**/[a-rA-R]*_ruleunit/*.htm' },
+            { pattern: '../accessibility-checker-engine/test/**/[s-zS-Z]*_ruleunit/*.html' },
+            { pattern: '../accessibility-checker-engine/test/**/[s-zS-Z]*_ruleunit/*.htm' },
             // 'dependencies/tools-rules-html/v2/a11y/test/**/*.html',
             'test/client/htmlFiles/**/*.html',
             'test/client/baseline/**/*.json',
