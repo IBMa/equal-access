@@ -92,7 +92,7 @@ module.exports = function (config) {
         browsers: ['ChromeCustom'],
         customLaunchers: {
             ChromeCustom: {
-                base: 'Chrome',
+                base: 'ChromeHeadless',
                 flags: [
                     '--disable-web-security'
                 ]
