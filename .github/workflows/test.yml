@@ -168,7 +168,7 @@ jobs:
       strategy:
         matrix:
           node-version: [16.x]
-          test-file: [karma.conf1.js, karma.conf2.js, karma.conf3.js]
+          test-file: [karma.conf1.js, karma.conf1b.js, karma.conf2.js, karma.conf2b.js, karma.conf3.js]
 
       steps:
       - uses: actions/checkout@v2
