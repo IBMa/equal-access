@@ -112,12 +112,17 @@ var ACReporterHTML = {
         }
 
         ACReporterCommon.log.debug("Object will be written to file: \"" + fileName + "\"");
+        let passResults = content.results.filter((result) => {
+            return result.value[1] === "PASS";
+        });
+        let passXpaths = passResults.map(result => result.path.dom);
 
         let outReport = {
             report: {
                 timestamp: content.summary.startScan,
                 nls: content.nls,
-                results: content.results,
+                results: content.results.filter((issue) => issue.value[1] !== "PASS"),
+                passUniqueElements: Array.from(new Set(passXpaths)),
                 counts: {
                     total: { }
                 }
