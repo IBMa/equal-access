@@ -19,7 +19,9 @@ import TabMessaging from "../util/tabMessaging";
 TabMessaging.addListener("DAP_CACHED_TAB", async (message: any) => {
     try {
         let c = (window as any).aceReportCache;
-        TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, tabURL: message.tabURL, report: c.report, archiveId: c.archiveId, policyId: c.policyId, origin: message.origin });
+        if (c && c.report) {
+            TabMessaging.sendToBackground("DAP_SCAN_TAB_COMPLETE", { tabId: message.tabId, tabURL: message.tabURL, report: c.report, archiveId: c.archiveId, policyId: c.policyId, origin: message.origin });
+        }
     } catch (e) {
         console.error(e);
     }
@@ -40,6 +42,14 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
             report: report
         };
         if (report) {
+            let passResults = report.results.filter((result: any) => {
+                return result.value[1] === "PASS";
+            })
+            let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
+
+            report.passUniqueElements = Array.from(new Set(passXpaths));
+
+            report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS");
             for (let result of report.results) {
                 let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
                 let version = message.archiveVersion || "latest";
