@@ -491,9 +491,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
             }
 
-            // console.log("tabbable =", tabbable);
+            console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable });
-            // console.log("tabStopsErrors = ", tabbableErrors);
+            console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
 
             // End of tab stops stored state

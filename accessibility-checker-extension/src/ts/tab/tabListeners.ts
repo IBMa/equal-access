@@ -36,6 +36,7 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
 
         let report = await checker.check(window.document, [message.policyId, "EXTENSIONS"]);
+        console.log(report);
         (window as any).aceReportCache = {
             archiveId: message.archiveId,
             policyId: message.policyId,
