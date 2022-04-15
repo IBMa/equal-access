@@ -5,7 +5,7 @@
     "test:start-http": "http-server -c-1 --silent"
   },
   "devDependencies": {
-    "cypress": "^4.11.0",
+    "cypress": "^9.5.4",
     "cypress-accessibility-checker": "*",
     "eslint": "^7.5.0",
     "eslint-plugin-cypress": "^2.11.1",
