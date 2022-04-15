@@ -168,6 +168,7 @@ jobs:
       strategy:
         matrix:
           node-version: [16.x]
+          test-file: [karma.conf1.js, karma.conf1b.js, karma.conf2.js, karma.conf2b.js, karma.conf3.js]
 
       steps:
       - uses: actions/checkout@v2
@@ -195,11 +196,8 @@ jobs:
         working-directory: karma-accessibility-checker
       - run: npm run installPlugin
         working-directory: karma-accessibility-checker
-      - run: npx karma start karma.conf1.js;
-        working-directory: karma-accessibility-checker
-      - run: npx karma start karma.conf2.js;
-        working-directory: karma-accessibility-checker
-      - run: npx karma start karma.conf3.js;
+      - name: Test using configuration ${{ matrix.test-file }}
+        run: npx karma start ${{ matrix.test-file }};
         working-directory: karma-accessibility-checker
 
 ###############################################################################
