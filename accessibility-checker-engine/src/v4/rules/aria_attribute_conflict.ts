@@ -69,11 +69,12 @@ export let aria_attribute_conflict: Rule = {
                 if (item['result'] === 'Pass') { //pass
                     ret.push(RulePass("pass"));
                 } else if (item['result'] === 'Failed') { //failed
+                    RPTUtil.setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
                     ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
                 }
             });    
         }    
-        if (ret.length > 0)
+        if (ret.length > 0) 
             return ret;
         return null;    
     }
