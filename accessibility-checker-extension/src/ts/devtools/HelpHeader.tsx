@@ -44,8 +44,8 @@
 
      render() {
  
-         let headerContent = (<div style={{paddingLeft:"1rem", marginTop:"6px"}}>
-             <Grid>
+         let headerContent = (<div style={{marginTop:"6px"}}>
+             <Grid style={{padding: "0rem"}}>
                 <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
                      <Button id='backToListView' onClick={this.props.learnHelp} size="sm" kind='tertiary'>Back to list view</Button>
                  </Column>

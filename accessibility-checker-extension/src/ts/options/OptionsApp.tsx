@@ -21,6 +21,7 @@ import {
     Column, Grid, Dropdown,
     Button,
     Modal,
+    Theme
 } from "@carbon/react";
 
 import { Restart, Save, Information } from "@carbon/react/icons/lib/index";
@@ -197,48 +198,102 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         }
         if (archives && rulesets) {
             return (
-                <div>
-                    <Grid fullWidth>
+                <div style={{height: "100%"}}>
+                    <Grid fullWidth style={{height: "100%", padding: "0rem"}}>
                         <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 4 }} className="leftPanel">
-                            <div role="banner">
-                                <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-                                <h2>
-                                    IBM <strong>Accessibility</strong>
-                                    <br /> Equal Access Toolkit:
-                                    <br /> Accessibility Checker
-                                </h2>
-                            </div>
-                            <aside aria-label="About Accessibility Checker Options">
-                                <div className="op_version" style={{ marginTop: "8px" }}>
-                                    Version {displayVersion()}
+                            <Theme theme="g10">
+                                <div role="banner">
+                                    <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
+                                    <h2>
+                                        IBM <strong>Accessibility</strong>
+                                        <br /> Equal Access Toolkit:
+                                        <br /> Accessibility Checker
+                                    </h2>
                                 </div>
-                                <p>
-                                    By default, the Accessibility Checker uses a set of rules that
-                                    correspond to the most recent WCAG guidelines plus some
-                                    additional IBM requirements. Rule sets for specific WCAG
-                                    versions are also available. The rule sets are updated
-                                    regularly to continuously improve coverage and accuracy.
-                                </p>
-                            </aside>
+                                <aside aria-label="About Accessibility Checker Options">
+                                    <div className="op_version" style={{ marginTop: "8px" }}>
+                                        Version {displayVersion()}
+                                    </div>
+                                    <p>
+                                        By default, the Accessibility Checker uses a set of rules that
+                                        correspond to the most recent WCAG guidelines plus some
+                                        additional IBM requirements. Rule sets for specific WCAG
+                                        versions are also available. The rule sets are updated
+                                        regularly to continuously improve coverage and accuracy.
+                                    </p>
+                                </aside>
+                            </Theme>
                         </Column>
-                        <Column sm={{span: 0}} md={{span: 0}} lg={{span: 1}} className="buffer"></Column>
+                        <Column sm={{span: 0}} md={{span: 0}} lg={{span: 1}} />
                         <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}} className="rightPanel">
-                            <main aria-labelledby="options">
-                                <h1 id="options">IBM Accessibility Checker options</h1>
+                            <Theme theme="white">
+                                <main aria-labelledby="options">
+                                    <h1 id="options">IBM Accessibility Checker options</h1>
 
-                                <div>
+                                    <div>
+                                        <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                                            Select a rule set deployment date
+                                            <Button
+                                                renderIcon={Information}
+                                                kind="ghost"
+                                                hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
+                                                style={{
+                                                    color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
+                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
+                                                }}
+                                                onClick={(() => {
+                                                    this.setState({ modalRuleSet: true });
+                                                }).bind(this)}>
+                                            </Button>
+                                        </div>
+
+                                        <Dropdown
+                                            ariaLabel={undefined}
+                                            disabled={false}
+                                            helperText={"Currently active: " + this.state.currentArchive}
+                                            id="archivedRuleset"
+                                            items={archives}
+                                            itemToString={(item: any) => (item ? item["name"] : "")}
+                                            label="Rule set deployment date"
+                                            light={false}
+                                            titleText=""
+                                            type="default"
+                                            selectedItem={selected_archive}
+                                            onChange={this.handleArchiveSelect}
+                                        />
+
+                                        <Modal
+                                            aria-label="Version information"
+                                            modalHeading="Selecting a rule set deployment date"
+                                            passiveModal={true}
+                                            open={this.state.modalRuleSet}
+                                            onRequestClose={(() => {
+                                                this.setState({ modalRuleSet: false });
+                                            }).bind(this)}
+                                        >
+                                            <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
+                                                for consistent testing throughout a project to replicate an earlier test</p>
+
+                                            <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
+
+                                            <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <a className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</a></p>
+                                        </Modal>
+
+
+                                    </div>
+
                                     <div className="rulesetDate" style={{ marginTop: "1rem" }}>
-                                        Select a rule set deployment date
+                                        Select accessibility guidelines
                                         <Button
                                             renderIcon={Information}
                                             kind="ghost"
-                                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
+                                            hasIconOnly iconDescription="Guidelines info" tooltipPosition="top"
                                             style={{
                                                 color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
                                                 paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
                                             }}
                                             onClick={(() => {
-                                                this.setState({ modalRuleSet: true });
+                                                this.setState({ modalGuidelines: true });
                                             }).bind(this)}>
                                         </Button>
                                     </div>
@@ -246,109 +301,59 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                     <Dropdown
                                         ariaLabel={undefined}
                                         disabled={false}
-                                        helperText={"Currently active: " + this.state.currentArchive}
-                                        id="archivedRuleset"
-                                        items={archives}
+                                        helperText={"Currently active: " + this.state.currentRuleset}
+                                        id="rulesetSelection"
+                                        items={rulesets}
                                         itemToString={(item: any) => (item ? item["name"] : "")}
-                                        label="Rule set deployment date"
+                                        label="Guideline selection"
                                         light={false}
                                         titleText=""
                                         type="default"
-                                        selectedItem={selected_archive}
-                                        onChange={this.handleArchiveSelect}
+                                        selectedItem={selected_ruleset}
+                                        onChange={this.handleRulesetSelect}
                                     />
 
                                     <Modal
-                                        aria-label="Version information"
-                                        modalHeading="Selecting a rule set deployment date"
+                                        aria-label="Guidelines information"
+                                        modalHeading="Selecting accessibility guidelines"
                                         passiveModal={true}
-                                        open={this.state.modalRuleSet}
+                                        open={this.state.modalGuidelines}
                                         onRequestClose={(() => {
-                                            this.setState({ modalRuleSet: false });
+                                            this.setState({ modalGuidelines: false });
                                         }).bind(this)}
                                     >
-                                        <p style={{ maxWidth: "100%" }}><strong>Dated deployment: </strong> Use a rule set from a specific date
-                                            for consistent testing throughout a project to replicate an earlier test</p>
-
-                                        <p style={{ maxWidth: "100%" }}><strong>Preview rules: </strong> Try an experimental preview of possible future rule set</p>
-
-                                        <p style={{ maxWidth: "100%" }}>For details on rule set changes between deployments, see <a className="link" href="https://www.ibm.com/able/requirements/release-notes" target="_blank" style={{ color: '#002D9C' }}>Release notes</a></p>
+                                        <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
+                                        <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
+                                        <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
+                                        <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility BETA: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements and experimental rules</p>
                                     </Modal>
 
-
-                                </div>
-
-                                <div className="rulesetDate" style={{ marginTop: "1rem" }}>
-                                    Select accessibility guidelines
-                                    <Button
-                                        renderIcon={Information}
-                                        kind="ghost"
-                                        hasIconOnly iconDescription="Guidelines info" tooltipPosition="top"
-                                        style={{
-                                            color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
-                                            paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
-                                        }}
-                                        onClick={(() => {
-                                            this.setState({ modalGuidelines: true });
-                                        }).bind(this)}>
-                                    </Button>
-                                </div>
-
-                                <Dropdown
-                                    ariaLabel={undefined}
-                                    disabled={false}
-                                    helperText={"Currently active: " + this.state.currentRuleset}
-                                    id="rulesetSelection"
-                                    items={rulesets}
-                                    itemToString={(item: any) => (item ? item["name"] : "")}
-                                    label="Guideline selection"
-                                    light={false}
-                                    titleText=""
-                                    type="default"
-                                    selectedItem={selected_ruleset}
-                                    onChange={this.handleRulesetSelect}
-                                />
-
-                                <Modal
-                                    aria-label="Guidelines information"
-                                    modalHeading="Selecting accessibility guidelines"
-                                    passiveModal={true}
-                                    open={this.state.modalGuidelines}
-                                    onRequestClose={(() => {
-                                        this.setState({ modalGuidelines: false });
-                                    }).bind(this)}
-                                >
-                                    <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
-                                    <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
-                                    <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
-                                    <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility BETA: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements and experimental rules</p>
-                                </Modal>
-
-                                <div className="buttonRow">
-                                    <Button
-                                        disabled={false}
-                                        kind="tertiary"
-                                        onClick={this.handlReset}
-                                        renderIcon={Restart}
-                                        size="default"
-                                        tabIndex={0}
-                                        type="button"
-                                    >
-                                        Reset to defaults
-                                    </Button>
-                                    <Button
-                                        disabled={false}
-                                        kind="primary"
-                                        onClick={this.handleSave}
-                                        renderIcon={Save}
-                                        size="default"
-                                        tabIndex={0}
-                                        type="button"
-                                    >
-                                        Save
-                                    </Button>
-                                </div>
-                            </main>
+                                    <div className="buttonRow">
+                                        <Button
+                                            disabled={false}
+                                            kind="tertiary"
+                                            onClick={this.handlReset}
+                                            renderIcon={Restart}
+                                            size="default"
+                                            tabIndex={0}
+                                            type="button"
+                                        >
+                                            Reset to defaults
+                                        </Button>
+                                        <Button
+                                            disabled={false}
+                                            kind="primary"
+                                            onClick={this.handleSave}
+                                            renderIcon={Save}
+                                            size="default"
+                                            tabIndex={0}
+                                            type="button"
+                                        >
+                                            Save
+                                        </Button>
+                                    </div>
+                                </main>
+                            </Theme>
                         </Column>
                         <Column sm={{span: 0}} md={{span: 0}} lg={{span: 3}} className="buffer"></Column>
                     </Grid>
@@ -356,13 +361,13 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             );
         } else {
             return (
-                <div>
+                <Theme theme="g10">
                     <p>An error occurred while loading this page. Please check your internet connection and try again.</p>
                     <br />
                     <p> Please also follow  {" "}
                         <a href={chrome.runtime.getURL("usingAC.html")} target="_blank" rel="noopener noreferred">User Guide</a>
                         {" "} to give the browser permission to run the Option page. </p>
-                </div>
+                </Theme>
             )
         }
     }

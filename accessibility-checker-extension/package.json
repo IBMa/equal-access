@@ -19,6 +19,7 @@
 	"license": "Apache-2.0",
 	"dependencies": {
 		"@carbon/react": "1.0.1",
+		"@carbon/themes": "^11.0.1",
 		"dotenv-webpack": "^7.0.3",
 		"exceljs": "^4.3.0",
 		"markdown-to-jsx": "^7.1.5",

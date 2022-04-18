@@ -4,7 +4,7 @@ import {
     Column, Grid, DataTable, Table, TableBody, TableCell, TableContainer, TableHead, TableHeader,
     TableRow, TableSelectAll, TableSelectRow, TableToolbar,
     TableToolbarContent,
-    TableToolbarSearch, TableBatchActions, TableBatchAction, Row, Button, Modal
+    TableToolbarSearch, TableBatchActions, TableBatchAction, Button, Modal
 } from '@carbon/react';
 
 import { Delete, Download } from '@carbon/react/icons/lib/index';
@@ -196,12 +196,12 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
 
                 <div className="headerLeftRN" >
 
-                    <Row style={{ marginTop: "64px", paddingLeft: "16px", height: "100%" }}>
-                        <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 3 }} className="stored-scans" style={{ marginBottom: "14px" }}>
+                    <Grid style={{ marginTop: "64px", paddingLeft: "0rem", paddingRight: "0rem", height: "100%" }}>
+                        <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 16 }} className="stored-scans" style={{ marginBottom: "1rem" }}>
                             Stored Scans
                         </Column>
-                        <Column sm={{ span: 4 }} md={{ span: 6 }} lg={{ span: 8 }} style={{ paddingLeft: 0, maxWidth: "100%" }}>
-                            <div style={{ overflowX: "auto", paddingBottom: "16px" }}>
+                        <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 16 }}>
+                            <div style={{ overflowX: "auto", paddingBottom: "1rem" }}>
                                 <DataTable
                                     size="compact"
                                     rows={rows}
@@ -336,7 +336,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                 {/* {selectAll(selectAll)} */}
                             </div>
                         </Column>
-                    </Row>
+                    </Grid>
                 </div>
             </React.Fragment>
         )

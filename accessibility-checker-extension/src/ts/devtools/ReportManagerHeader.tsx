@@ -47,8 +47,8 @@
         render() {
             // console.log("Render Report Manager Header");
             let headerContent = (
-                <div style={{paddingLeft:"1rem", paddingTop:"8px"}}>
-                    <Grid>
+                <div style={{paddingTop:"8px"}}>
+                    <Grid style={{padding: "0rem"}}>
                         <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
                             <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="sm" >Back to list view</Button>
                         </Column>

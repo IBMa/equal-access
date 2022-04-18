@@ -1,172 +1,175 @@
-@use '@carbon/styles/scss/type' as *;
-@use '@carbon/styles/scss/breakpoint' as *;
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
 
 html,
 body {
-  @include breakpoint('lg') {
-    height: 100%;
-  }
-  background: #f2f4f8;
+    @include breakpoint('lg') {
+        height: 100%;
+    }
 }
 
 #options-root {
-  @include breakpoint('lg') {
-    height: 100%;
-
-    .cds--grid,
-    .cds--row,
     .leftPanel {
-      height: 100%;
-    }
-  }
-
-  .cds--grid {
-    padding: 0rem 1rem;
-  }
-
-  p {
-    margin-top: 1.5rem;
-
-    @include breakpoint('md') {
-      max-width: 75%;
-    }
-  }
-
-  .leftPanel {
-    padding: 2rem 1rem;
-
-    .icon {
-      height: 2rem;
+        margin: 0rem;
+        background-color: $gray-10;
     }
 
-    h2 {
-      color: #252525;
-      @include type-style("productive-heading-04");
-      margin-top: 2rem;
+    @include breakpoint('lg') {
+        height: 100%;
+
+        .cds--grid,
+        .cds--row,
+        .leftPanel {
+            height: 100%;
+        }
     }
-    .op_version {
-      color: #525252;
-      @include type-style("body-compact-02");
+
+    .cds--grid {
+        padding: 0rem 1rem;
     }
 
     p {
-      @include breakpoint('lg') {
-        max-width: 100%;
-      }
-    }
-  }
-
-  .buffer {
-    background-color: white;
-  }
-
-  .rightPanel {
-    background-color: white;
-    padding: 3rem 1rem 1rem 1rem;
-    @include breakpoint('lg') {
-      padding-top: 6rem;
-    }
-
-    .cds--dropdown__wrapper {
-      margin-top: 1.5rem;
-      @include breakpoint('md') {
-        max-width: 75%;
-      }
-    }
-
-    .op_helper-text {
-      color: #525252;
-      @include type-style("body-compact-02");
-      margin-top: 0.5rem;
-    }
-
-    h1 {
-      color: #252525;
-      @include type-style("productive-heading-03");
-      margin-bottom: 48px;
-    }
-
-    h2 {
-      @include type-style("productive-heading-02");
-      margin-top: 1rem;
-    }
-
-    .accordion {
-      margin-top: 1rem;
-      @include breakpoint('md') {
-        max-width: 75%;
-      }
-
-      .cds--dropdown__wrapper {
         margin-top: 1.5rem;
+
         @include breakpoint('md') {
-          max-width: 100%;
+            max-width: 75%;
         }
-      }
-
-      .cds--accordion__content {
-        padding-right: 15%;
-      }
-
-      .accordionItem {
-        @include breakpoint('md') {
-          max-width: 100%;
-        }
-      }
-
-      p {
-        @include breakpoint('md') {
-          max-width: 100%;
-        }
-
-        ul {
-          list-style: none;
-          padding: 0;
-          margin: 0;
-        }
-
-        li::before {
-          content: "—";
-          padding-right: 0.5rem;
-        }
-      }
     }
 
-    .rulesetDate {
-      color: #262626;
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: 0;
-      line-height: 1.375rem;
+    .leftPanel {
+        padding: 2rem 1rem;
+
+        .icon {
+            height: 2rem;
+        }
+
+        h2 {
+            @include type-style("productive-heading-04");
+            margin-top: 2rem;
+        }
+
+        .op_version {
+            @include type-style("label-01");
+            color: $gray-70;
+        }
+
+        p {
+            @include breakpoint('lg') {
+                max-width: 100%;
+            }
+        }
     }
 
-    .buttonRow {
-      margin-top: 1.5rem;
-      display: flex;
-      margin-right: 1rem;
-      @include breakpoint('md') {
-        max-width: 73.2%;
-      }
+    .rightPanel {
+        padding: 3rem 0rem 1rem 0rem;
 
-      .cds--btn {
-        min-width: 50%;
-      }
+        @include breakpoint('lg') {
+            padding-top: 6rem;
+        }
 
-      .cds--btn + .cds--btn {
-        margin-left: 1rem;
-      }
+        .cds--dropdown__wrapper {
+            margin-top: 1.5rem;
+
+            @include breakpoint('md') {
+                max-width: 75%;
+            }
+        }
+
+        .op_helper-text {
+            @include type-style("body-compact-02");
+            margin-top: 0.5rem;
+        }
+
+        h1 {
+            @include type-style("productive-heading-03");
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            @include type-style("productive-heading-02");
+            margin-top: 1rem;
+        }
+
+        .accordion {
+            margin-top: 1rem;
+
+            @include breakpoint('md') {
+                max-width: 75%;
+            }
+
+            .cds--dropdown__wrapper {
+                margin-top: 1.5rem;
+
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+            }
+
+            .cds--accordion__content {
+                padding-right: 15%;
+            }
+
+            .accordionItem {
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+            }
+
+            p {
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                li::before {
+                    content: "—";
+                    padding-right: 0.5rem;
+                }
+            }
+        }
+
+        .rulesetDate {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            line-height: 1.375rem;
+        }
+
+        .buttonRow {
+            margin-top: 1.5rem;
+            display: flex;
+            margin-right: 1rem;
+
+            @include breakpoint('md') {
+                max-width: 73.2%;
+            }
+
+            .cds--btn {
+                min-width: 50%;
+            }
+
+            .cds--btn+.cds--btn {
+                margin-left: 1rem;
+            }
+        }
+
+        .notification {
+            margin-top: 1.5rem;
+            display: flex;
+
+            @include breakpoint('md') {
+                max-width: 73.2%;
+            }
+
+            p {
+                margin-top: 0rem;
+            }
+        }
     }
-
-    .notification {
-      margin-top: 1.5rem;
-      display: flex;
-      @include breakpoint('md') {
-        max-width: 73.2%;
-      }
-
-      p {
-        margin-top: 0rem;
-      }
-    }
-  }
 }
