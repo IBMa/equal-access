@@ -212,7 +212,7 @@
 .mainPanel {
     .summaryBarLabels {
         display:none;
-        @media only screen and (min-width: 78rem) {
+        @media only screen and (min-width: 85rem) {
             display:inline;
         }
     }
@@ -220,7 +220,7 @@
 .subPanel {
     .summaryBarLabels {
         display:none;
-        @media only screen and (min-width: 43rem) {
+        @media only screen and (min-width: 45rem) {
             display:inline;
         }
     }
