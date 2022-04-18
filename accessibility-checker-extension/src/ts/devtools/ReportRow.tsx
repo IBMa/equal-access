@@ -223,7 +223,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             { (this.props.dataFromParent[0] || this.props.dataFromParent[1] && vCount > 0 || this.props.dataFromParent[2] && nrCount > 0 || this.props.dataFromParent[3] && rCount > 0) && focusedView ? 
             <div className="itemRow">
             <Grid tabIndex={0} role="row" aria-rowindex={++rowindex} aria-expanded={open} className="itemHeader" onClick={this.toggleRow.bind(this)} onKeyDown={this.onKeyDown.bind(this)}>
-                <Column sm={{span: 2}} md={{span: 2}} lg={{span: 4}} role="cell">
+                <Column sm={{span: 2}} md={{span: 2}} lg={{span: 4}} role="cell" className="itemCol">
                     { this.state.scrollTo && <div ref={this.scrollRef}></div>}
                     <span style={{paddingRight:"16px"}}>{open ? <ChevronUp size={16} />: <ChevronDown size={16} />}</span>
                     { <span style={{whiteSpace:"nowrap"}}>{(this.props.dataFromParent[0] || this.props.dataFromParent[1]) && vCount > 0 && <><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"12px"}} alt="Violation" /><span style={{verticalAlign:"text-top",lineHeight:"8px", paddingLeft:"4px"}}>{vCount}</span> &nbsp;</>}</span> }

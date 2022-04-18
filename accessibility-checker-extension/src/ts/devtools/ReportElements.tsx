@@ -100,7 +100,7 @@ export default class ReportElements extends React.Component<IReportElementsProps
         return <div className="report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by element role">
             <div role="rowgroup">
                 <Grid className="reportHeader" role="row">
-                    <Column sm={{span: 2}} md={{span: 2}} lg={{span: 4}} role="columnheader">
+                    <Column sm={{span: 2}} md={{span: 2}} lg={{span: 4}} role="columnheader" className="itemCol">
                         Issues                    
                     </Column>
                     <Column sm={{span: 2}} md={{span: 6}} lg={{span: 12}} role="columnheader">
