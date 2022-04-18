@@ -24,14 +24,14 @@ export let aria_attribute_overlaps: Rule = {
     help: {
         "en-US": {
             "pass": "aria_attribute_overlaps.html",
-            "potential_overlap": "aria_attribute_overlaps.html",
+            "fail_overlap": "aria_attribute_overlaps.html",
             "group": "aria_attribute_overlaps.html"
         }
     },
     messages: {
         "en-US": {
             "pass": "Rule Passed",
-            "potential_overlap": "The ARIA attribute \"{0}\" should not overlap with the HTML attribute \"{1}\"",
+            "fail_overlap": "The ARIA attribute \"{0}\" should not overlap with the HTML attribute \"{1}\"",
             "group": "An ARIA attribute should not overlap with the corresponding HTML attribute"
         }
     },
@@ -46,6 +46,8 @@ export let aria_attribute_overlaps: Rule = {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1") return null;
+        // if conflict already reported, ignore reporting overlap
+        if (RPTUtil.getCache(ruleContext, "aria_attribute_conflict", "") === "fail_conflict") return null;
          
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
@@ -69,7 +71,7 @@ export let aria_attribute_overlaps: Rule = {
                 if (item['result'] === 'Pass') { //pass
                     ret.push(RulePass("pass"));
                 } else if (item['result'] === 'Failed') { //failed
-                    ret.push(RulePotential("potential_overlap", [ariaAttrs[i]['name'], item['attr']]));
+                    ret.push(RulePotential("fail_overlap", [ariaAttrs[i]['name'], item['attr']]));
                 }
             });    
         }    

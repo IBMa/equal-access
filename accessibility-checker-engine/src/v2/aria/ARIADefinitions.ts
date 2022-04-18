@@ -2373,6 +2373,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=month",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "number": {
@@ -2380,7 +2381,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=number",
                 validRoles: null,
                 globalAriaAttributesValid: true,
-                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
             },
             "password": {
                 implicitRole: null,
@@ -2483,6 +2484,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=week",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "default": {
