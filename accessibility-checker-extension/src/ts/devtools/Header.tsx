@@ -448,6 +448,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             }).bind(this)}
                         >
                             <p>
+                                Get started with the &nbsp;
+                                <a
+                                href={chrome.runtime.getURL("usingAC.html")}
+                                target="_blank"
+                                rel="noopener noreferred"
+                                >
+                                User guide
+                                </a>
+                                .
+                            </p>
+                            <br></br>
+                            <p>
                                 You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
                                 <span>{<br/>}</span>
                                 The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
