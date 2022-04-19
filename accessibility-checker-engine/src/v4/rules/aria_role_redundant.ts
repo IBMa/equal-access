@@ -41,11 +41,14 @@ export let aria_role_overlaps: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+        let elemName = ruleContext.tagName.toLowerCase();
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
         if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        // dependency check: if it's already failed in the parent relation, then skip this check
+        if (["td", "th", "tr"].includes(elemName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
+            return null;
          
-        let elemName = ruleContext.tagName.toLowerCase();
         let ariaRoles = RPTUtil.getRoles(ruleContext, false);
         if (!ariaRoles || ariaRoles.length === 0) return;
 
