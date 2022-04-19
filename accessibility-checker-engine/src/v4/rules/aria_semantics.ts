@@ -47,7 +47,7 @@ export let aria_semantics_role: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let tagName = ruleContext.tagName.toLowerCase();
-        // dependency check: if it's already checked, then skip
+        // dependency check: if it's already failed, then skip
         if (["td", "th", "tr"].includes(tagName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
         

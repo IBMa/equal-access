@@ -136,6 +136,10 @@ export let element_attribute_deprecated: Rule = {
         if (ruleContext.nodeName.toLowerCase() === "tbody" && ruleContext.hasAttribute("align")) {
             return RulePass("pass");
         }
+        if (ruleContext.nodeName.includes("-")) {
+            // This is a webcomponent element, HTML doesn't define what's deprecated
+            return null;
+        }
 
         const nodeName = ruleContext.nodeName.toLowerCase();
 
