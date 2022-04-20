@@ -16,16 +16,16 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let aria_attribute_overlaps: Rule = {
-    id: "aria_attribute_overlaps",
+export let aria_attribute_redundant: Rule = {
+    id: "aria_attribute_redundant",
     context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]" 
             + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
             + ", dom:*[aria-rowspan]",
     help: {
         "en-US": {
-            "pass": "aria_attribute_overlaps.html",
-            "fail_overlap": "aria_attribute_overlaps.html",
-            "group": "aria_attribute_overlaps.html"
+            "pass": "aria_attribute_redundant.html",
+            "potential_overlap": "aria_attribute_redundant.html",
+            "group": "aria_attribute_redundant.html"
         }
     },
     messages: {

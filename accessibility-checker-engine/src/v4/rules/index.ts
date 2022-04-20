@@ -15,7 +15,7 @@
 
 export * from "./aria_attribute_conflict"
 export * from "./aria_attribute_deprecated"
-export * from "./aria_attribute_overlaps"
+export * from "./aria_attribute_redundant"
 export * from "./aria_hidden_focus_misuse"
 export * from "./aria_role_redundant"
 export * from "./aria_semantics"
