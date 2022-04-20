@@ -317,14 +317,27 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <Modal
                             aria-label="Rule set information"
                             modalHeading="Rule set information"
-                            size='xs'
+                            // size='xs'
                             passiveModal={true}
+                            style={{maxHeight:"100% !important;"}}
                             open={this.state.modalRulsetInfo}
                             onRequestClose={(() => {
                                 this.setState({ modalRulsetInfo: false });
                                 this.focusInfoButton1();
                             }).bind(this)}
                         >
+                            <p>
+                                Get started with the &nbsp;
+                                <a
+                                href={chrome.runtime.getURL("usingAC.html")}
+                                target="_blank"
+                                rel="noopener noreferred"
+                                >
+                                User guide
+                                </a>
+                                .
+                            </p>
+                            <br></br>
                             <p>
                                 You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
                                 <span>{<br/>}</span>
@@ -333,7 +346,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 You are using the guidelines from {this.props.selectedPolicy}
                             </p>
                             <br></br>
-                            <div>
+                            <p>
                                 <a
                                     onClick={this.onLinkClick}
                                     href={chrome.runtime.getURL("options.html")}
@@ -342,7 +355,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 >
                                     Change rule set
                                 </a>
-                            </div>       
+                            </p>       
                         </Modal>
                     </Column>
                     <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column>
@@ -422,6 +435,18 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 this.focusInfoButton2();
                             }).bind(this)}
                         >
+                            <p>
+                                Get started with the &nbsp;
+                                <a
+                                href={chrome.runtime.getURL("usingAC.html")}
+                                target="_blank"
+                                rel="noopener noreferred"
+                                >
+                                User guide
+                                </a>
+                                .
+                            </p>
+                            <br></br>
                             <p>
                                 You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
                                 <span>{<br/>}</span>
