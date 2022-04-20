@@ -17,11 +17,9 @@
 import React from "react";
 import "./report.scss";
 
-import {
-} from 'carbon-components-react';
-
 import { IReport, IReportItem, valueMap, IRuleset } from "../IReport";
 import ReportRow from "./ReportRow";
+import { Grid, Column } from "@carbon/react";
 
 interface IReportChecklistState {
 }
@@ -74,15 +72,15 @@ export default class ReportChecklist extends React.Component<IReportChecklistPro
             }
         }
 
-        return <div className="bx--grid report" role="rowgroup">
-            <div className="bx--row reportHeader">
-                <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
+        return <div className="report" role="rowgroup">
+            <Grid className="reportHeader">
+                <Column sm={1} md={2} lg={4}>
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
-                </div>
-                <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
+                </Column>
+                <Column sm={3} md={6} lg={8}>
                     <div className="label">Requirements</div>
-                </div>
-            </div>
+                </Column>
+            </Grid>
             {groups.map(group => {
                 if (group.items.length > 0) {
                     return <ReportRow report={this.props.report} selectItem={this.props.selectItem} group={group} />;
