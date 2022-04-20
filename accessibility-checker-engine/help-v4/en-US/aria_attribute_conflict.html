@@ -44,15 +44,15 @@
 
 ### Why is this important?
 
-Using **both** an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an element can cause a conflict 
+Avoid conflicting and confusing assistive technology behavior.
+Using **both** an HTML _attribute_ and the associated ARIA _attribute_ with the same semantic meaning on an element can cause a conflict 
 that allows one of the attributes to override the other. 
-This can lead to unexpected and confusing assistive technology behavior.
 As stated in the [ARIA 1.2 specification](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict),
 when HTML elements use both ARIA attributes and their HTML equivalents, 
 browsers (user agents) **must** ignore the ARIA attributes – the native HTML attribute with the same implicit ARIA semantics takes precedence.
 
-Developers may use ARIA attributes in place of their HTML equivalent attributes on elements where the ARIA semantics would be expected. 
-For example, authors may specify `aria-disabled=true` on a button element, 
+Developers may use ARIA _attributes_ in place of their HTML equivalent _attributes_ on certain elements where the ARIA semantics would be expected. 
+For example, developers may specify `aria-disabled=true` on a button element, 
 while also implementing the necessary scripting to functionally disable the button, rather than the use the HTML `disabled` attribute.
 
 <!-- This is where the code snippet is injected -->
@@ -60,7 +60,7 @@ while also implementing the necessary scripting to functionally disable the butt
 
 ### What to do
 
-* Remove one of the conflicting HTML5 or ARIA attributes from the element. 
+* Remove one of the conflicting HTML or ARIA _attributes_ from the element. 
 * Review the "[Rules of ARIA attribute usage by HTML feature](https://w3c.github.io/html-aria/#docconformance-attr)" table to help determine which attribute to correctly use.
 
 
@@ -71,13 +71,6 @@ Example correctly using an element with only an ARIA attribute:
 <input type="text" id="phone" name="phone" aria-required="true">
 ```
     
-Example correctly uses both HTML5 and ARIA attribute indicating the input is required without any conflict:
-    
-```
-<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required aria-required="true">
-```
-
 </script></mark-down>
 <!-- End main panel -->
                 <!-- This is where the rule id is injected -->
@@ -90,7 +83,7 @@ Example correctly uses both HTML5 and ARIA attribute indicating the input is req
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [ARIA 1.2 specification](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
+* [ARIA 1.2 specification - Conflicts with Host Language Semantics](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
 * [ARIA in HTML](https://w3c.github.io/html-aria/#docconformance-attr)
 
 ### Who does this affect?
