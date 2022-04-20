@@ -44,28 +44,21 @@
 
 ### Why is this important?
 
-Using both an HTML5 attribute and the associated ARIA attribute with the same semantic meaning on an `<input>` element can cause a conflict that allows one of the attributes to override the other. This can lead to unexpected and confusing assistive technology behavior.
+We want to avoid unintended and confusing assistive technology behavior.
+HTML and ARIA _attributes_ are exposed to users of assistive technologies. 
+ARIA _attributes_ are only intended to be used to enhance HTML native semantics (e.g., indicating that the element is required with `aria-required` attribute). 
+Overlapping both an HTML attribute and the associated ARIA attribute with the same semantic meaning is redundant and has a potential for unintended conflicts if later changed.
+Conflicting _attributes_ can cause the ARIA attribute to be ignored. 
+
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Remove one of the conflicting HTML5 or ARIA attributes from the `<input>` element.
+* Remove the unnecessary redundant ARIA attribute that overlaps with HTML attribute.
+* Review the "[Rules of ARIA attribute usage by HTML feature](https://w3c.github.io/html-aria/#docconformance-attr)" table to help determine when an ARIA attribute should be correctly used.
 
-Example using HTML5:
-
-```
-<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required>
-```
-    
-Example uses both HTML5 and ARIA attribute indicating the input is required without any conflict:
-    
-```
-<label for="phone">* Phone number: </body>
-<input type="text" id="phone" name="phone" required aria-required="true">
-```
 
 </script></mark-down>
 <!-- End main panel -->
@@ -78,11 +71,16 @@ Example uses both HTML5 and ARIA attribute indicating the input is required with
 
 ### About this requirement
 
-* [IBM 3.3.2 Labels and Instructions](https://www.ibm.com/able/requirements/requirements/#3_3_2)
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA 1.2 specification](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
+* [ARIA in HTML](https://w3c.github.io/html-aria/#docconformance-attr)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
+* People using text only browser with Braille display
+* People with dexterity impairment using voice control
+* People using other assistive technologies that expose accessibility information 
 
 </script></mark-down>
 <!-- End side panel -->
