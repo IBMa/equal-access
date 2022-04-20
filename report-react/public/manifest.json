@@ -1,6 +1,6 @@
 {
-  "short_name": "Accessibility Checker Report",
-  "name": "IBM Equal Access Accessibility Checker Report",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",

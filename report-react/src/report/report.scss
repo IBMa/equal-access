@@ -1,25 +1,22 @@
 
-$feature-flags: (
-    grid-columns-16: true,
-);
-@import '~carbon-components/scss/globals/scss/styles.scss';
+@use '@carbon/styles/scss/type';
 
 .report {
-    .bx--col-lg-4 {
+    .cds--col-lg-4 {
         @media screen and (min-width: 66rem) {
             flex: 0 0 34% !important;
             max-width: 34% !important;
         }
     }
 
-    .bx--col-lg-2 {
+    .cds--col-lg-2 {
         @media (min-width: 66rem) {
             flex: 0 0 16% !important;
             max-width: 16% !important;
         }
     }
 
-    .bx--col-lg-6 {
+    .cds--col-lg-6 {
         @media (min-width: 66rem) {
             flex: 0 0 50% !important;
             max-width: 50% !important;
@@ -34,7 +31,7 @@ $feature-flags: (
         color: #161616;
 
         .label {
-            @include carbon--type-style('heading-01');
+            @include type.type-style('heading-01');
             font-size: 12px;
             padding: .4375rem 0 0;
         }
