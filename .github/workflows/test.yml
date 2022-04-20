@@ -67,6 +67,8 @@ jobs:
       - run: npm install
         working-directory: accessibility-checker-engine
       - run: npm install
+        working-directory: report-react
+      - run: npm install
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -111,6 +113,8 @@ jobs:
       - run: npm install
         working-directory: accessibility-checker-engine
       - run: npm install
+        working-directory: report-react
+      - run: npm install
         working-directory: accessibility-checker
         
       - run: npm run build
@@ -148,6 +152,8 @@ jobs:
 
       - run: npm install
         working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
       - run: npm install
         working-directory: accessibility-checker
         
@@ -188,6 +194,8 @@ jobs:
       - run: npm install
         working-directory: accessibility-checker-engine
       - run: npm install
+        working-directory: report-react
+      - run: npm install
         working-directory: karma-accessibility-checker
       - run: npm run setup
         working-directory: karma-accessibility-checker
@@ -227,6 +235,8 @@ jobs:
 
       - run: npm install
         working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
       - run: npm install
         working-directory: cypress-accessibility-checker
       - run: npm run build:report

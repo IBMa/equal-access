@@ -27,6 +27,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
       - run: npm run build:all
         working-directory: accessibility-checker-engine
       - run: npm install
@@ -62,6 +64,8 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: accessibility-checker
+      - run: npm install
+        working-directory: report-react
       - run: npm run build
         working-directory: accessibility-checker
       - run: gitactions/publish/achecker.sh
@@ -81,6 +85,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: report-react
       - run: npm install
         working-directory: karma-accessibility-checker
       - run: npm run build
@@ -102,6 +108,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: report-react
       - run: npm install
         working-directory: cypress-accessibility-checker
       - run: npm run build:report
