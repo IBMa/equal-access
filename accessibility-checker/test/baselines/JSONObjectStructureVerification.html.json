@@ -1617,6 +1617,27 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
+		"ruleId": "aria_attribute_deprecated",
+		"value": ["VIOLATION", "PASS"],
+		"path": {
+			"dom": "/html[1]/body[1]/div[2]",
+			"aria": "/document[1]/main[1]"
+		},
+		"reasonId": "pass",
+		"message": "The ARIA roles and attribute are used per specification",
+		"messageArgs": [],
+		"apiArgs": [],
+		"bounds": {
+			"left": 8,
+			"top": 48,
+			"height": 74,
+			"width": 784
+		},
+		"snippet": "<div role=\"main\">",
+		"category": "Accessibility",
+		"ignored": false,
+		"level": "pass"
+	}, {
 		"ruleId": "WCAG20_Text_LetterSpacing",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2142,6 +2163,27 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
+		"ruleId": "aria_attribute_deprecated",
+		"value": ["VIOLATION", "PASS"],
+		"path": {
+			"dom": "/html[1]/body[1]/div[1]",
+			"aria": "/document[1]/navigation[1]"
+		},
+		"reasonId": "pass",
+		"message": "The ARIA roles and attribute are used per specification",
+		"messageArgs": [],
+		"apiArgs": [],
+		"bounds": {
+			"left": 8,
+			"top": 8,
+			"height": 19,
+			"width": 784
+		},
+		"snippet": "<div role=\"navigation\">",
+		"category": "Accessibility",
+		"ignored": false,
+		"level": "pass"
+	}, {
 		"ruleId": "WCAG20_Text_LetterSpacing",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2562,7 +2604,7 @@
 		"ignored": false,
 		"level": "pass"
 	}],
-	"numExecuted": 122,
+	"numExecuted": 124,
 	"nls": {
 		"RPT_Html_SkipNav": {
 			"0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
@@ -2632,6 +2674,10 @@
 			"0": "Heading text must use a heading element",
 			"Pass_0": "Rule Passed"
 		},
+		"aria_attribute_deprecated": {
+			"0": "No deprecated ARIA role or attribute should be used",
+			"pass": "The ARIA roles and attribute are used per specification"
+		},
 		"aria_role_redundant": {
 			"0": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element",
 			"pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element"
@@ -2689,7 +2735,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 121,
+			"pass": 123,
 			"ignored": 0
 		},
 		"scanTime": 999,
