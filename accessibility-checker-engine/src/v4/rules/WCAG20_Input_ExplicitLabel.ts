@@ -157,20 +157,19 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
         }
         if (!passed) {
             // check aria role
-            //TODO: consider other aria roles relevant, other than menuitemcheckbox
-            const singleRole = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                || RPTUtil.hasRole(ruleContext, "radio", false);
-            const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false)
-                || RPTUtil.hasRole(ruleContext, "searchbox", false);
-
-            if (singleRole)
+            const nameFromBoth = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
+                || RPTUtil.hasRoleInSemantics(ruleContext, "radio") || RPTUtil.hasRoleInSemantics(ruleContext, "checkbox");
+            const nameFromAuthorOnly = RPTUtil.hasRoleInSemantics(ruleContext, "listbox") || RPTUtil.hasRoleInSemantics(ruleContext, "searchbox") 
+                || RPTUtil.hasRoleInSemantics(ruleContext, "textbox");
+            
+            if (nameFromBoth)
                 passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
-            else if (otherRole) {
+            
+            if (!passed) {
+                if (nameFromBoth || nameFromAuthorOnly)
                 passed = RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
                     || RPTUtil.attributeNonEmpty(ruleContext, "title");
-            } else {
-                // any other role?
-            }
+            } 
         }
 
         if (passed) {
