@@ -22,7 +22,7 @@ import {
     Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
 } from 'carbon-components-react';
 import { settings } from 'carbon-components';
-import { Information16, ReportData16, Renew16, ChevronDown16 } from '@carbon/icons-react';
+import { Information16, ReportData16, Renew16, ChevronDown16, View16 } from '@carbon/icons-react';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 import PanelMessaging from '../util/panelMessaging';
@@ -368,10 +368,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
                     <div className="bx--col-md-0 bx--col-sm-0" style={{paddingRight:0}}></div>
 
-                    <div className="bx--col-md-3 bx--col-sm-2">
+                    <div className="bx--col-md-3 bx--col-sm-2" style={{ display: 'flex', alignContent: 'center' }}>
+                        
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
-                            style={{height: "30px"}}
+                            style={{height: "30px", width: "250px"}}
+                            
                             selectionMode="manual"
                             selectedIndex={1}
                             onChange={((obj: any) => {
@@ -396,11 +398,61 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 onKeyDown={this.onKeyDown.bind(this)}
                             />
                         </ContentSwitcher>
-
                         <ReactTooltip id="focusViewTip" place="top" effect="solid">
                             Focus view
                         </ReactTooltip>
-
+                        <OverflowMenu 
+                            className="rendered-icon svg"
+                            style={{backgroundColor: "black", height:"32px", width:"32px", marginLeft:"8px"}} 
+                            iconDescription="Open and close keyboard visualization"
+                            renderIcon={View16}
+                            ariaLabel="Report menu" 
+                            flipped={true}
+                            // size="xl"
+                            id="visMenu"
+                        >
+                            <OverflowMenuItem
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                disabled={this.props.storedScans.length == 0 ? true : false}
+                                itemText="Show tab stops" 
+                                // itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
+                                onClick={() => this.props.reportHandler("current")}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                hasDivider
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText="Lines" 
+                                onClick={this.props.startStopScanStoring}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText="Numbers" 
+                                onClick={this.props.startStopScanStoring}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText="Outlines" 
+                                onClick={this.props.startStopScanStoring}
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                hasDivider
+                                // disabled={this.props.actualStoredScansCount() == 0 ? true : false}
+                                itemText="Alerts on" 
+                                // onClick={() => this.props.clearStoredScans(true) }
+                                onClick={() => this.deleteModalHandler() }
+                            />
+                            <OverflowMenuItem 
+                                style={{maxWidth:"13rem", width:"13rem"}}
+                                // if scanStorage false not storing scans, if true storing scans
+                                itemText="Learn more" 
+                                onClick={this.props.startStopScanStoring}
+                            />
+                        </OverflowMenu>
+                        
                     </div>
                 </div>
                 <div className="bx--row" style={{ marginTop: '10px' }}>
