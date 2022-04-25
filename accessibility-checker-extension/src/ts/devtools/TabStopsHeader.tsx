@@ -17,8 +17,8 @@
     import React from "react";
 
     import {
-        Button
-    } from 'carbon-components-react';
+        Button, Column, Grid
+    } from '@carbon/react';
     
     
     interface ITabStopsHeaderState {
@@ -41,17 +41,17 @@
    
         render() {
             // console.log("start TabStopsHeader render");
-            let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
-                <div className="bx--row">
-                    <div className="bx--col-sm-2">
+            let headerContent = (<div style={{marginTop:"6px"}}>
+                <Grid>
+                    <Column sm={2} md={4} lg={8}>
                         <Button id='backToListView' onClick={this.props.tabStopsHandler} size="small" kind='tertiary'>Back to list view</Button>
-                    </div>
-                    <div className="bx--col-sm-2" style={{position: "relative"}}>
+                    </Column>
+                    <Column sm={2} md={4} lg={8} style={{position: "relative"}}>
                         <div className="headerTools" >
                
                         </div>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
             </div>);
     
             if (this.props.layout === "main") {

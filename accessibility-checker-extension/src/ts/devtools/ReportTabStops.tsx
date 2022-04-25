@@ -16,14 +16,11 @@
 
 import React from "react";
 
-import {
-    Row,
-} from 'carbon-components-react';
-
+import { Grid } from "@carbon/react";
 import { IReport, 
     IReportItem, 
     valueMap
-   } from "./Report";
+} from "./Report";
 
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
@@ -133,7 +130,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
         if (this.props.tabStopsResults !== undefined) {
             this.props.tabStopsResults?.map((result: any, index:number) => {
                 temp.push(
-                    <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
+                    <Grid style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                         <div className="emulated-flex-gap">
                             <div className="tabStopsContent" style={{width:"52px",marginBottom:"14px"}}>
                                 {index+1}
@@ -154,7 +151,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                                 {result.apiArgs[0].name}
                             </div>
                         </div>
-                    </Row>
+                    </Grid>
                 );
             });
             // console.log("temp = ", temp);
@@ -167,12 +164,12 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
         // console.log("start TabStops render");
 
         return <div style={{height: "100%", width: "100%", paddingLeft: "0rem"}}>
-            <Row style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
+            <Grid style={{marginTop:"64px",paddingLeft: "1rem",height:"100%"}}>
                 <div className="stored-scans" style={{marginBottom:"14px"}}>
                     Tab stops summary
                 </div>
-            </Row>
-            <Row style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
+            </Grid>
+            <Grid style={{marginTop:"0px",paddingLeft: "2rem",height:"100%"}}>
                 <div className="emulated-flex-gap">
                     <div className="summaryBarCounts" style={{width:"52px",marginBottom:"14px"}}>
                         Index
@@ -187,7 +184,7 @@ export default class ReportTabStops extends React.Component<IReportTabStopsProps
                         Name
                     </div>
                 </div>
-            </Row>
+            </Grid>
             {/* {console.log("call printTabStops")} */}
             {this.printTabStops()}
         </div>
