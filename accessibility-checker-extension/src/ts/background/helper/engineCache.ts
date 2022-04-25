@@ -15,7 +15,6 @@
   *****************************************************************************/
  
 import Fetch from "./fetch";
-import Config from "./config";
 
 export interface IPolicyDefinition {
     id: string,
@@ -33,43 +32,35 @@ export interface IArchiveDefinition {
 }
 
 export default class EngineCache {
-    public static archives : IArchiveDefinition[] = [];
-    public static engines : {
-        [archiveId: string] : string
-    } = {}
-
-    public static clearCache() {
-        EngineCache.archives = [];
-        EngineCache.engines = {};
-    }
-
     public static async getArchives() {
-        if (EngineCache.archives.length === 0) {
-            if (Config.engineEndpoint?.includes("localhost")) {
-                EngineCache.archives = <IArchiveDefinition[]>await Fetch.json(Config.engineEndpoint+"/archives.json");
-            } else {
-                EngineCache.archives = <IArchiveDefinition[]>await Fetch.json("https://cdn.jsdelivr.net/npm/accessibility-checker-engine@next/archives.json");
+        try {
+            let archiveInfo = (await chrome.storage.local.get(['archiveInfo'])).archiveInfo || { archives: [], ts: 0 };
+            // If archive info is older than 30 minutes, or not there at all
+            let archives : IArchiveDefinition[] = archiveInfo.archives;
+            if (archives.length === 0 || new Date().getTime()-new Date(archiveInfo.ts).getTime() >= 30*60*1000) {
+                archives = <IArchiveDefinition[]>await Fetch.json(`chrome-extension://${chrome.runtime.id}/archives.json`);
             }
+            await chrome.storage.local.set({ archiveInfo: { archives }, ts: new Date().getTime() });
+            return archives;
+        } catch (err) {
+            console.error(err);
+            return []
         }
-
-        // console.log('---EngineCache.EngineCache----', EngineCache);
-        return EngineCache.archives;
     }
 
     public static async getEngine(archiveId: string) : Promise<string> {
-        if (archiveId in EngineCache.engines) {
-            return EngineCache.engines[archiveId];
+        let engineInfo = (await chrome.storage.local.get(['engineInfo'])).engineInfo || { engines: {}, ts: 0 };
+        let engines = engineInfo.engines;
+        if (archiveId in engines && new Date().getTime()-new Date(engineInfo.ts).getTime() >= 30*60*1000) {
+            return engines[archiveId];
         } else {
             let archiveDefs = await this.getArchives();
             for (const archiveDef of archiveDefs) {
                 if (archiveDef.id === archiveId) {
-                    if (Config.engineEndpoint?.includes("localhost")) {
-                        let engineURL = `${Config.engineEndpoint}${archiveDef.path}/js/ace.js`;
-                        return EngineCache.engines[archiveId] = <string>await Fetch.content(engineURL);
-                    } else {
-                        let engineURL = `https://cdn.jsdelivr.net/npm/accessibility-checker-engine@${archiveDef.version}/ace.js`;
-                        return EngineCache.engines[archiveId] = <string>await Fetch.content(engineURL);
-                    }
+                    let engineFile = `${archiveDef.path}/js/ace.js`;
+                    engines[archiveId] = engineFile;
+                    await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+                    return engineFile;
                 }
             }
         }

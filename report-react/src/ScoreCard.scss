@@ -1,9 +1,5 @@
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/breakpoint';
 
 .scoreCard {
     margin: 1rem -1rem 0rem -1rem;
@@ -13,11 +9,11 @@ $feature-flags: (
     background-color: #FFFFFF;
 
     .title {
-        @include carbon--type-style('heading-01');
+        @include type.type-style('heading-01');
     }
 
     .score {
-        @include carbon--type-style('display-03');
+        // @include type.type-style('display-03');
         font-size: 54px;
         margin: .5rem 0rem;
     }
@@ -26,11 +22,21 @@ $feature-flags: (
         color: #565656;
     }
 
-    @media (min-width: 42rem) {
+    @include breakpoint.breakpoint('sm') {
         margin: 1rem 0rem 0rem -1rem;
     }
 }
 
-.bx--modal-container {
+@include breakpoint.breakpoint('sm') {
+    .cds--css-grid-column:nth-child(even) .scoreCard {
+        margin-right: -1rem;
+    }
+}
+@include breakpoint.breakpoint('md') {
+    .cds--css-grid-column:nth-child(even) .scoreCard {
+        margin-right: 0rem;
+    }
+}
+.cds--modal-container {
     min-height: 80%;
 }

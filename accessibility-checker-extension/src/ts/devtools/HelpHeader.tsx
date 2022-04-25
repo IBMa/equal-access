@@ -17,12 +17,12 @@
  import React from "react";
 
  import {
-     Button
- } from 'carbon-components-react';
+    Column, Grid, Button
+ } from '@carbon/react';
  
  
  // const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
- // import { ArrowLeft16 } from '@carbon/icons-react';
+ // import { ArrowLeft16 } from '@carbon/react/icons/lib/index';
  
  interface IHeaderState {
  }
@@ -44,17 +44,17 @@
 
      render() {
  
-         let headerContent = (<div className="bx--grid" style={{paddingLeft:"1rem", marginTop:"6px"}}>
-             <div className="bx--row">
-                 <div className="bx--col-sm-2">
-                     <Button id='backToListView' onClick={this.props.learnHelp} size="small" kind='tertiary'>Back to list view</Button>
-                 </div>
-                 <div className="bx--col-sm-2" style={{position: "relative"}}>
+         let headerContent = (<div style={{marginTop:"6px"}}>
+             <Grid style={{padding: "0rem"}}>
+                <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
+                     <Button id='backToListView' onClick={this.props.learnHelp} size="sm" kind='tertiary'>Back to list view</Button>
+                 </Column>
+                 <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{position: "relative"}}>
                      <div className="headerTools" >
             
                      </div>
-                 </div>
-             </div>
+                 </Column>
+             </Grid>
          </div>);
  
          if (this.props.layout === "main") {
