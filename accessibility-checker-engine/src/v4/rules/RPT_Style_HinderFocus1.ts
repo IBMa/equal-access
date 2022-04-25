@@ -55,6 +55,9 @@ export let RPT_Style_HinderFocus1: Rule = {
             }
         }
         const ruleContext = context["dom"].node as Element;
+        if (!RPTUtil.isTabbable(ruleContext)) {
+            return null;
+        }
         let skipNodes = validateParams.skipNodes.value;
 
         let passed = true;
