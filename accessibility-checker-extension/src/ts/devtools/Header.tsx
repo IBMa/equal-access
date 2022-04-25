@@ -369,7 +369,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     </Column>
                     <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column>
 
-                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}}>
+                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex', alignContent: 'center' }}>
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px", width: "250px"}}
