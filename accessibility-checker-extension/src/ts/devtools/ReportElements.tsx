@@ -17,7 +17,8 @@
 import React from "react";
 
 import {
-} from 'carbon-components-react';
+    Column, Grid
+} from '@carbon/react';
 
 import { IReport, IReportItem, valueMap } from "./Report";
 import ReportRow from "./ReportRow";
@@ -96,16 +97,16 @@ export default class ReportElements extends React.Component<IReportElementsProps
         
         let idx=0;
         let scrollFirst = true;
-        return <div className="bx--grid report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by element role">
+        return <div className="report" role="table" style={{paddingLeft:"1rem", paddingRight:"0"}} aria-label="Issues grouped by element role">
             <div role="rowgroup">
-                <div className="bx--row reportHeader" role="row">
-                    <div className="bx--col-md-2 bx--col-sm-2" role="columnheader">
+                <Grid className="reportHeader" role="row">
+                    <Column sm={{span: 2}} md={{span: 2}} lg={{span: 4}} role="columnheader" className="itemCol">
                         Issues                    
-                    </div>
-                    <div className="bx--col-md-6 bx--col-sm-2" role="columnheader">
+                    </Column>
+                    <Column sm={{span: 2}} md={{span: 6}} lg={{span: 12}} role="columnheader">
                         Element Roles
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
             </div>
             <div role="rowgroup">
                 {this.props.focusedViewFilter === true && this.props.report.counts.filtered.All === 0 ?
