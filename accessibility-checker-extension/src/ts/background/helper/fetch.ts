@@ -16,46 +16,7 @@
 
 export default class Fetch {
     public static async json(filename: string) : Promise<any> {
-        return new Promise((resolve, reject) => {
-            let oXHR = new XMLHttpRequest();
-            oXHR.onreadystatechange = function() {
-                if (oXHR.readyState === 4) {
-                    if (oXHR.status === 200) {
-                        try {
-                            resolve(JSON.parse(this.responseText));
-                        } catch (e) {
-                            reject(e);
-                        }
-    
-                    } else {
-                        reject(this.responseText);
-                    }
-                }
-            };
-            oXHR.open("GET", filename);
-            oXHR.setRequestHeader("Pragma", "Cache-Control: no-cache");
-            oXHR.send();    
-        })
-    }
-
-    public static async content(filename: string) : Promise<string> {
-        return new Promise((resolve, reject) => {
-            var oReq = new XMLHttpRequest();
-            oReq.addEventListener("load", function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    resolve(this.responseText);
-                } else {
-                    reject(this.responseText);
-                }
-            });
-
-            oReq.addEventListener("error", function() {
-                reject("error: failed to load files from the rules server.");
-            });
-
-            oReq.open("GET", filename);
-            oReq.setRequestHeader("Pragma", "Cache-Control: no-cache");
-            oReq.send();
-        });
+        return fetch(filename)
+            .then((response) => response.json()) //assuming file contains json
     }
 }

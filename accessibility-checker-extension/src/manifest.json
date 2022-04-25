@@ -1,5 +1,5 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "IBM Equal Access Accessibility Checker",
 	"description": "A web browser extension for checking accessibility issues",
 	"author": "IBM",
@@ -11,13 +11,19 @@
         "64": "assets/Bee_Logo@64px.png",
         "128": "assets/Bee_Logo@128px.png"
 	},
-	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+	"content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
 	"permissions": [
-        "<all_urls>",
         "tabs",
-        "storage"
+        "storage",
+        "scripting",
+        "activeTab"
 	],
-	"browser_action": {
+    "host_permissions": [
+        "*://*/*"
+    ],
+	"action": {
 		"default_title": "IBM Equal Access Accessibility Checker",
 		"default_icon": {
             "16": "assets/Bee_Logo@16px.png",
@@ -30,10 +36,7 @@
 	},
 	"devtools_page": "devtools.html",
 	"background": {
-		"scripts": [
-			"background.js"
-		],
-		"persistent": true
+		"service_worker": "background.js"
 	},
 	"content_scripts": [ 
         {

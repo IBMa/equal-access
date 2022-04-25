@@ -3,11 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const ExtensionReloader = require('webpack-ext-reloader');
+// const ExtensionReloader = require('webpack-ext-reloader');
 const locateContentScripts = require('./utils/locateContentScripts');
 const Dotenv = require('dotenv-webpack');
 
 const sourceRootPath = path.join(__dirname, 'src');
+const archivePath = path.join(__dirname, '..', 'rule-server', 'dist', 'static');
 const contentScriptsPath = path.join(sourceRootPath, 'ts', 'contentScripts');
 const distRootPath = path.join(__dirname, 'dist');
 const nodeEnv = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -15,15 +16,15 @@ const webBrowser = process.env.WEB_BROWSER ? process.env.WEB_BROWSER : 'chrome';
 
 const contentScripts = locateContentScripts(contentScriptsPath);
 
-const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new ExtensionReloader({
-    port: 9128,
-    reloadPage: true,
-    entries: {
-        background: 'background',
-        extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel', 'contentScripts'],
-        contentScript: Object.keys(contentScripts),
-    }
-}) : () => { this.apply = () => { } };
+// const extensionReloader = nodeEnv === "watch" || nodeEnv === "watch_local" ? new ExtensionReloader({
+//     port: 9128,
+//     reloadPage: true,
+//     entries: {
+//         background: 'background',
+//         extensionPage: ['popup', 'options', 'devtools', 'devtoolsPanel', 'devtoolsSubpanel'],
+//         contentScript: Object.keys(contentScripts),
+//     }
+// }) : () => { this.apply = () => { } };
 
 const dotenv_path = nodeEnv === "production" ? ".env_production" : nodeEnv === "watch_local" ? "./.env_local" : "./.env_development";
 console.log(`[INFO] Using environment ${dotenv_path}`);
@@ -45,7 +46,9 @@ module.exports = {
         path: distRootPath,
         filename: '[name].js',
     },
-    optimization: nodeEnv.includes("watch") ? undefined : {
+    optimization: nodeEnv.includes("watch") ? {
+        minimize: false
+    } : {
         splitChunks: {
             maxSize: 3500000,
             chunks: "all"
@@ -134,6 +137,15 @@ module.exports = {
                 from: path.join(sourceRootPath, 'manifest.json'),
                 to: path.join(distRootPath, 'manifest.json'),
                 toType: 'file',
+            },
+            {
+                from: path.join(archivePath, "archives.json"),
+                to: path.join(distRootPath, "archives.json"),
+                toType: 'file'
+            },
+            {
+                from: path.join(archivePath, "archives"),
+                to: path.join(distRootPath, "archives")
             }
         ]}),
        
@@ -141,7 +153,7 @@ module.exports = {
             'NODE_ENV': JSON.stringify(nodeEnv),
             'WEB_BROWSER': JSON.stringify(webBrowser),
         }),
-        extensionReloader,
+        // extensionReloader,
     ],
 }
 

@@ -1,9 +1,4 @@
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
+@use '@carbon/styles/scss/type';
 
 .summScoreCard {
     margin: 1rem -1rem 0rem -1rem;
@@ -25,11 +20,11 @@ $feature-flags: (
     }
 
     .title {
-        @include carbon--type-style('heading-02');
+        @include type.type-style('heading-02');
     }
 
     .score {
-        @include carbon--type-style('display-03');
+        // @include type.type-style('display-03');
         font-size: 96px;
     }
 

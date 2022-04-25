@@ -20,7 +20,7 @@ import ScoreCard from './ScoreCard';
 import SummScoreCard from './SummScoreCard';
 import ReportChecklist from './report/ReportChecklist';
 import ReportRules from './report/ReportRules';
-import { ComposedModal, ModalHeader, ModalBody } from 'carbon-components-react';
+import { ComposedModal, ModalHeader, ModalBody, Grid, Column, Theme, Tabs, TabList, TabPanel, Tab, TabPanels } from '@carbon/react';
 
 const Violation16 = <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16">
     <rect style={{ fill: "none" }} width="16" height="16" />
@@ -63,7 +63,7 @@ interface SavedReportState {
     selectedItem: IReportItem | null
 }
 
-export default class SavedReport extends React.Component<SavedReportProps, SavedReportState> {
+export class SavedReport extends React.Component<SavedReportProps, SavedReportState> {
     state: SavedReportState = {
         selectedItem: null
     }
@@ -90,75 +90,95 @@ export default class SavedReport extends React.Component<SavedReportProps, Saved
             role="main"
             id="main-content"
         >
-            <div className="bx--grid">
-                <div className="bx--row">
-                    <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-4">
-                        <div className="summInfo">
-                            <h1 className="prodName">
-                                IBM <strong>Accessibility</strong><br />
-                                Equal Access Toolkit:<br />
-                                Accessibility Checker Report<br />
-                            </h1>
-                            
-                        </div>
-                    </div>
-                    <div className="bx--col-sm-4 bx--col-md-8 bx--col-lg-12" role="region" aria-label="Report overview: current status">
-                        <SummScoreCard title="Current status" report={this.props.reportData.report} />
-                    </div>
+            <Theme theme="g10">
+                <div>
+                    <Grid>
+                        <Column sm={2} md={8} lg={4}>
+                            <div className="summInfo">
+                                <h1 className="prodName">
+                                    IBM <strong>Accessibility</strong><br />
+                                    Equal Access Toolkit:<br />
+                                    Accessibility Checker Report<br />
+                                </h1>
+                                
+                            </div>
+                        </Column>
+                        <Column sm={4} md={8} lg={12} role="region" aria-label="Report overview: current status">
+                            <SummScoreCard title="Current status" report={this.props.reportData.report} />
+                        </Column>
+                    </Grid>
+                    <section aria-label="Report overview: score cards">
+                        <Grid>
+                            <Column sm={2} md={4} lg={4}>
+                                <div className="time" style={{paddingTop:"12px"}}>{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
+                                <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
+                            </Column>
+                            <Column sm={2} md={4} lg={4}>
+                                <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violations" icon={Violation16}>
+                                    Accessibility failures that need to be corrected
+                                </ScoreCard>
+                            </Column>
+                            <Column sm={2} md={4} lg={4}>
+                                <ScoreCard count={this.props.reportData.report.counts.total["Needs review"]} title="Needs review" icon={NeedsReview16}>
+                                    Issues that may not be a violation; manual review is needed
+                                </ScoreCard>
+                            </Column>
+                            <Column sm={2} md={4} lg={4}>
+                                <ScoreCard count={this.props.reportData.report.counts.total["Recommendation"]} title="Recommendations" icon={Recommendation16}>
+                                    Opportunities to apply best practices to further improve accessibility
+                                </ScoreCard>
+                            </Column>
+                        </Grid>
+                    </section>
+                    <section>
+                        <Grid>
+                            <Column sm={4} md={8} lg={{offset: 4, span: 12}}>
+                                <div className="summReport">
+                                    <Tabs>
+                                        <TabList aria-label="Report details">
+                                            <Tab>Requirements</Tab>
+                                            <Tab>Rules</Tab>
+                                        </TabList>
+                                        <TabPanels>
+                                            <TabPanel>
+                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
+                                                    <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
+                                                </div>
+                                            </TabPanel>
+                                            <TabPanel>
+                                                <div style={{margin: "0rem -1rem"}} role="table" aria-label="Issues grouped by checkpoint">
+                                                    <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
+                                                </div>
+                                            </TabPanel>
+                                        </TabPanels>
+                                    </Tabs>
+                                </div>
+                            </Column>
+                        </Grid>
+                    </section>
                 </div>
-                <section aria-label="Report overview: score cards">
-                    <div className="bx--row">
-                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                            <div className="time" style={{paddingTop:"12px"}}>{new Date(this.props.reportData.report.timestamp).toLocaleString()}</div>
-                            <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
-                        </div>
-                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                            <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violations" icon={Violation16}>
-                                Accessibility failures that need to be corrected
-                        </ScoreCard>
-
-                        </div>
-                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                            <ScoreCard count={this.props.reportData.report.counts.total["Needs review"]} title="Needs review" icon={NeedsReview16}>
-                                Issues that may not be a violation; manual review is needed
-                        </ScoreCard>
-                        </div>
-                        <div className="bx--col-sm-2 bx--col-md-4 bx--col-lg-4">
-                            <ScoreCard count={this.props.reportData.report.counts.total["Recommendation"]} title="Recommendations" icon={Recommendation16}>
-                                Opportunities to apply best practices to further improve accessibility
-                        </ScoreCard>
-
-                        </div>
+                <ComposedModal
+                    open={!!this.state.selectedItem}
+                    onClose={this.clearItem.bind(this)}
+                >
+                    <div onClick={(evt) => { 
+                        let tgt : HTMLElement | null = evt.target as HTMLElement;
+                        while (tgt && tgt.nodeName.toLowerCase() !== "button") {
+                            tgt = tgt.parentElement;
+                        }
+                        if (tgt && tgt.getAttribute("class") === "cds--modal-close") {
+                            this.clearItem();
+                            evt.preventDefault();
+                            return false;
+                        }
+                    }}>
+                        <ModalHeader onClose={this.clearItem.bind(this)} />
                     </div>
-                </section>
-                <section aria-label="Report details">
-                    <div className="bx--row">
-                        <div className="bx--col-sm-4 bx--col-md-8 bx--offset-lg-4 bx--col-lg-12">
-                            <div className="summReport" role="table" aria-label="Issues grouped by checkpoint">
-                                <h2 className="title">Results organized by requirements</h2>
-                                <ReportChecklist selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} ruleset={rs} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bx--row">
-                        <div className="bx--col-sm-4 bx--col-md-8 bx--offset-lg-4 bx--col-lg-12">
-                            <div className="summReport" role="table" aria-label="Issues grouped by rule">
-                                <h2 className="title">Results organized by rules</h2>
-                                <ReportRules selectItem={this.selectItem.bind(this)} report={this.props.reportData.report} />
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-            <ComposedModal
-                open={!!this.state.selectedItem}
-                onClose={() => this.clearItem()}
-            >
-                <ModalHeader />
-                <ModalBody aria-label="This modal has scrolling content">
-                    {this.state.selectedItem && <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "calc(100% - 1rem)", height: "100%"}} src={this.state.selectedItem.help} />}
-                </ModalBody>
-            </ComposedModal>
+                    <ModalBody aria-label="This modal has scrolling content">
+                        {this.state.selectedItem && <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "calc(100% - 1rem)", height: "100%"}} src={this.state.selectedItem.help} />}
+                    </ModalBody>
+                </ComposedModal>
+            </Theme>
         </div>
     }
 }

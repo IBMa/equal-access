@@ -17,9 +17,10 @@ import React, { ReactNode } from "react";
 import "./ScoreCard.scss";
 
 interface ScoreCardProps {
-    title: string,
-    icon?: ReactNode,
-    count?: number,
+    title: string
+    icon?: ReactNode
+    count?: number
+    children?: any
 }
 
 export default class ScoreCard extends React.Component<ScoreCardProps, {}> {
