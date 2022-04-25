@@ -1,19 +1,15 @@
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/colors';
 
 #main-content {
     margin-top: 1.5rem;
-    @include carbon--type-style('body-long-01');
+    @include type.type-style('body-long-01');
 
     .summInfo {
         margin-top: 1rem;
-        @include carbon--type-style('body-short-02');
+        @include type.type-style('body-short-02');
         .prodName {
-            @include carbon--type-style('productive-heading-04');
+            @include type.type-style('productive-heading-04');
         }
         .time {
             margin-top: 40px;
@@ -31,7 +27,7 @@ $feature-flags: (
         background-color: #FFFFFF;
 
         .title {
-            @include carbon--type-style('heading-01');
+            @include type.type-style('heading-01');
         }
 
         @media (min-width: 42rem) {
@@ -39,7 +35,7 @@ $feature-flags: (
         }
     }
 
-    .bx--modal-content {
+    .cds--modal-content {
         padding: 1rem 1rem 0rem 1rem;
         margin-bottom: 0rem;
     }
@@ -47,7 +43,7 @@ $feature-flags: (
     .toolHelp {
         background-color: #be95ff;
 
-        .bx--list--unordered {
+        .cds--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -55,7 +51,7 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        .bx--list--ordered {
+        .cds--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -63,12 +59,12 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        > .bx--grid {
+        > .cds--grid {
             max-width: 100%;
             padding-bottom: 0px;
         }
 
-        .bx--row {
+        .cds--row {
             margin: 0px;
         }
 
@@ -123,34 +119,34 @@ $feature-flags: (
         }
 
         .toolLeft {
-            @include carbon--type-style('body-long-01');
+            @include type.type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
 
 
-            .bx--list__item {
+            .cds--list__item {
                 color: black;
                 font-size: 12px;
                 line-height: 16px;
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-01');
+                @include type.type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-01');
+                @include type.type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             p {
-                @include carbon--type-style('body-long-01');
+                @include type.type-style('body-long-01');
 
                 margin-top: 0px;
                 margin-bottom: 14px;
@@ -168,14 +164,14 @@ $feature-flags: (
             }
 
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include type.type-style('productive-heading-03');
 
                 margin-top: 2rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-03');
+                @include type.type-style('productive-heading-03');
                 font-size: 16px;
                 font-weight: 600;
                 margin-top: 14px;
@@ -183,14 +179,14 @@ $feature-flags: (
                 line-height: 20px;
             }
             p {
-                @include carbon--type-style('body-long-01');
+                @include type.type-style('body-long-01');
                 margin-top: 0px;
                 font-size: 12px;
                 line-height: 16px;
             }
 
             .issueLevel {
-                @include carbon--type-style('heading-01');
+                @include type.type-style('heading-01');
                 font-weight: 600;
                 font-size: 12px;
 

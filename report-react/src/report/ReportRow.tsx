@@ -18,7 +18,11 @@ import React, { RefObject } from "react";
 
 import { IReportItem, valueMap, ICheckpoint, IReport } from "../IReport";
 
-import { Popup16, ChevronUp16, ChevronDown16 } from '@carbon/icons-react';
+import Popup from "@carbon/icons-react/lib/Popup";
+import ChevronUp from "@carbon/icons-react/lib/ChevronUp";
+import ChevronDown from "@carbon/icons-react/lib/ChevronDown";
+import { Grid, Column } from "@carbon/react";
+
 const Violation16 = <svg version="1.1" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 16 16">
     <rect style={{ fill: "none" }} width="16" height="16" />
     <path style={{ fill: "#A2191F" }} d="M8,1C4.1,1,1,4.1,1,8s3.1,7,7,7s7-3.1,7-7S11.9,1,8,1z M10.7,11.5L4.5,5.3l0.8-0.8l6.2,6.2L10.7,11.5z" />
@@ -136,34 +140,38 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             }, 0)
         }
         return <div className="itemRow">
-            <div role="row" aria-expanded={open} className="bx--row itemHeader" onClick={this.toggleRow.bind(this)} tabIndex={0} onKeyDown={this.onKeyDown.bind(this)}>
-                <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4" role="cell">
+            <Grid role="row" aria-expanded={open} className="itemHeader" onClick={this.toggleRow.bind(this)} tabIndex={0} onKeyDown={this.onKeyDown.bind(this)}>
+                <Column sm={1} md={2} lg={4} role="cell">
                     {this.state.scrollTo && <div ref={this.scrollRef}></div>}
-                    <span style={{ paddingRight: "16px" }}>{open ? <ChevronUp16 /> : <ChevronDown16 />}</span>
+                    <span style={{ paddingRight: "16px" }}>{open ? <ChevronUp size={16} /> : <ChevronDown size={16} />}</span>
                     {vCount > 0 && <><span style={{ verticalAlign: "text-top", lineHeight: "8px" }}>{vCount}</span> <span>{Violation16}&nbsp;</span></>}
                     {nrCount > 0 && <><span style={{ verticalAlign: "text-top", lineHeight: "8px" }}>{nrCount}</span> <span>{NeedsReview16}&nbsp;</span></>}
                     {rCount > 0 && <><span style={{ verticalAlign: "text-top", lineHeight: "8px" }}>{rCount}</span> {Recommendation16}</>}
-                </div>
-                <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8" role="cell">
+                </Column>
+                <Column sm={3} md={6} lg={8} role="cell">
                     <span >{group.title.length === 0 ? "Page" : group.title}</span>
-                </div>
-            </div>
-            {!open && <div className="bx--row itemDetail" />}
+                </Column>
+            </Grid>
+            {!open && <Grid className="itemDetail" />}
             {open && <React.Fragment>
                 {group.items.map(item => {
                     let val = valueMap[item.value[0]][item.value[1]];
-                    return (<div className={"bx--row itemDetail"}>
-                        <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4" role="cell"></div>
-                        <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8" role="cell">
+                    return (<Grid className={"itemDetail"}>
+                        <Column sm={1} md={2} lg={4} role="cell"></Column>
+                        <Column sm={3} md={6} lg={8} role="cell">
                             <div className="itemMessage">
                                 {val === "Violation" && <span>{Violation16}</span>}
                                 {val === "Needs review" && <span>{NeedsReview16}</span>}
                                 {val === "Recommendation" && <span>{Recommendation16}</span>}
                                 <span style={{ fontSize: "12px" }}>{item.message}</span>
-                                <span> </span><a className="helpLink" href="javascript:void(0);" onClick={this.props.selectItem.bind(this, item, this.props.group.checkpoint)} >Learn more <Popup16 /></a>
+                                <span> </span><a className="helpLink" href="/#" onClick={(evt) => {
+                                    this.props.selectItem(item);
+                                    evt.preventDefault();
+                                    return false;
+                                }}>Learn more <Popup size={16} /></a>
                             </div>
-                        </div>
-                    </div>)
+                        </Column>
+                    </Grid>)
                 })}
             </React.Fragment>}
         </div>

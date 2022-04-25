@@ -14,16 +14,9 @@
     limitations under the License.
   *****************************************************************************/
  
-import OptionMessaging from "../../util/optionMessaging";
-import BackgroundMessaging from "../../util/backgroundMessaging";
-
 export default class Config {
     public static defaultArchiveId = process.env.defaultArchiveId;
     public static engineEndpoint = process.env.engineEndpoint;
     public static workspace = process.env.workspace;
     
 }
-
-BackgroundMessaging.addListener("OPTIONS", async (message: any) => {
-    return await OptionMessaging.optionMessageHandling(message);
- });

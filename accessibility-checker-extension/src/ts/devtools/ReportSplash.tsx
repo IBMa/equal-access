@@ -16,7 +16,7 @@
 
 import React from "react";
 import BrowserDetection from "../util/browserDetection";
-
+import { Column, Grid } from "@carbon/react";
 const splashScreen = "/assets/splash_screen.svg";
 
 interface IReportSplashState {
@@ -37,9 +37,9 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
             }
         }
         return <aside className="reportSplash">
-            <div className="bx--grid" style={{ margin: "2rem -1rem 0rem 0rem" }}>
-                <div className="bx--row">
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+            <div style={{ margin: "2rem -1rem 0rem 0rem" }}>
+                <Grid>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <h2>
                             <div className="title">IBM <span style={{ fontWeight: 600 }}>Accessibility</span></div>
                             <div className="subtitle">Equal Access Accessibility Checker</div>
@@ -53,11 +53,11 @@ export default class ReportSplash extends React.Component<IReportSplashProps, IR
                             or follow the <a className="link" href="https://ibm.com/able/toolkit/verify" target="_blank">full accessibility test process</a>.<br /><br />
                             Learn how to design, build and test for accessibility with the <a className="link" href="https://ibm.com/able/toolkit" target="_blank">IBM Equal Access Toolkit</a>.
                         </div>
-                    </div>
-                    <div className="bx--col-lg-8 bx--col-md-8 box--col-sm-4">
+                    </Column>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                         <img src={splashScreen} alt="Splash screen" style={{ maxWidth: "100%", marginTop: "36px" }}></img>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
             </div>
         </aside>;
     }
