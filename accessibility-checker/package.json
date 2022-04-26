@@ -24,8 +24,8 @@
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "js-yaml": "^4.1.0",
-    "puppeteer": "^13.0.0",
-    "request": "^2.88.2"
+    "node-fetch": "^3.2.3",
+    "puppeteer": "^13.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.10.2",

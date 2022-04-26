@@ -1,5 +1,5 @@
 import { ACConfigManager } from "./ACConfigManager";
-import * as request from "request";
+import fetch from 'node-fetch';
 import * as path from "path";
 import * as fs from "fs";
 
@@ -94,32 +94,27 @@ try {
             return Promise.resolve();
         }
         let config = await ACConfigManager.getConfigUnsupported();
-
-        return new Promise<void>((resolve, reject) => {
-            request.get(`${config.rulePack}/ace-node.js`, function (err, data) {
-                if (!data) {
-                    console.log("Cannot read: " + `${config.rulePack}/ace-node.js`);
+        const response = await fetch(`${config.rulePack}/ace-node.js`);
+        const data = await response.text();
+        let engineDir = path.join(__dirname, "engine");
+        if (!fs.existsSync(engineDir)) {
+            fs.mkdirSync(engineDir);
+        }
+        let cacheDir = path.join(engineDir, "cache");
+        if (!fs.existsSync(cacheDir)) {
+            fs.mkdirSync(cacheDir);
+        }
+        await new Promise<void>((resolve, reject) => {
+            fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
+                try {
+                    err && console.log(err);
+                    ace = require("./engine/ace-node");
+                    checker = new ace.Checker();
+                } catch (e) {
+                    console.log(e);
+                    return reject(e);
                 }
-                data = data.body;
-                let engineDir = path.join(__dirname, "engine");
-                if (!fs.existsSync(engineDir)) {
-                    fs.mkdirSync(engineDir);
-                }
-                let cacheDir = path.join(engineDir, "cache");
-                if (!fs.existsSync(cacheDir)) {
-                    fs.mkdirSync(cacheDir);
-                }
-                fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
-                    try {
-                        err && console.log(err);
-                        ace = require("./engine/ace-node");
-                        checker = new ace.Checker();
-                    } catch (e) {
-                        console.log(e);
-                        return reject(e);
-                    }
-                    resolve();
-                });
+                resolve();
             });
         });
     }

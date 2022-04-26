@@ -21,7 +21,7 @@
  *******************************************************************************/
 
 // Load required modules
-import * as request from "request";
+import fetch from 'node-fetch';
 import { ILogger } from "../api/IChecker";
 
 /**
@@ -131,7 +131,7 @@ export class ACMetricsLogger {
                     // Dispatch the call to the metrics server
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
-                    request.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs, function () {
+                    fetch(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
                         // Decrement the numProfiles to identify that scan has finished
                         --numProfiles;
 

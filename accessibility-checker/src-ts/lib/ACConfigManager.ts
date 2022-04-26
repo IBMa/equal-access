@@ -19,7 +19,7 @@ import * as fs from "fs";
 import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants";
 import * as uuid from "uuid";
-import * as request from "request";
+import fetch from 'node-fetch';
 import { IConfig, IConfigUnsupported } from "./api/IChecker";
 
 /**
@@ -100,15 +100,8 @@ async function processACConfig(ACConfig) {
         if (ACConfig.ignoreHTTPSErrors) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
         }
-        ruleArchiveParse = await new Promise((resolve, reject) => {
-            request.get(ruleArchiveFile, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
+        const response = await fetch(ruleArchiveFile);
+        ruleArchiveParse = await response.json();
     } catch (err) {
         console.log(err);
         throw new Error(err);
