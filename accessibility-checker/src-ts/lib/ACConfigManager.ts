@@ -18,7 +18,7 @@ import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants";
-import * as uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import fetch from 'node-fetch';
 import { IConfig, IConfigUnsupported } from "./api/IChecker";
 
@@ -183,7 +183,7 @@ function initializeDefaults(config: IConfigUnsupported) {
 
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
-    config.scanID = uuid.v4();
+    config.scanID = uuidv4();
 
     for (const key in ACConstants) {
         config[key] = config[key] || ACConstants[key];
