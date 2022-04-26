@@ -16,11 +16,10 @@
 
 import React from "react";
 import "./report.scss";
-import {
-} from 'carbon-components-react';
 
 import { IReport, IReportItem, valueMap } from "../IReport";
 import ReportRow from "./ReportRow";
+import { Grid, Column } from "@carbon/react";
 
 interface IReportElementsState {
 }
@@ -62,15 +61,15 @@ export default class ReportElements extends React.Component<IReportElementsProps
             thisGroup.counts[val] = (thisGroup.counts[val] || 0) + 1;
         }
 
-        return <div className="bx--grid report" role="rowgroup">
-            <div className="bx--row reportHeader">
-                <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
+        return <div className="report" role="rowgroup">
+            <Grid className="reportHeader">
+                <Column sm={1} md={2} lg={4}>
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
-                </div>
-                <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
+                </Column>
+                <Column sm={3} md={6} lg={8}>
                     <div className="label">Element</div>
-                </div>
-            </div>
+                </Column>
+            </Grid>
             {groups.map(group => {
                 return <ReportRow report={this.props.report} selectItem={this.props.selectItem} group={group} />;
             })}

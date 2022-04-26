@@ -1,24 +1,5 @@
-@import '@carbon/themes/scss/themes';
-// Use the gray 10 theme
-$carbon--theme: $carbon--theme--g10;
-@include carbon--theme();
-// import Carbon styles here
-
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
-
-// @import '~carbon-components/scss/globals/scss/vendor/@carbon/type/scss/_font-family.scss';
-@import '~carbon-components/scss/globals/scss/vendor/@carbon/layout/scss/_breakpoint.scss';
-// @import '~carbon-components/scss/globals/scss/_typography.scss';
-// @import '~carbon-components/scss/globals/scss/_vars.scss';
-// @import '~@carbon/icons-react/lib/checkmark--filled/20';
-// @import '~@carbon/icons-react/lib/development/20.js';
-
-
+@use '@carbon/react';
+@use '@carbon/styles/scss/colors' as *;
 body {
     font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
     // color: #090909;
