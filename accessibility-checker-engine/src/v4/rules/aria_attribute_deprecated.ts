@@ -40,7 +40,7 @@ export let aria_attribute_deprecated: Rule = {
     rulesets: [{ 
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"], 
         "num": ["4.1.1"], 
-        "level": eRulePolicy.VIOLATION, 
+        "level": eRulePolicy.RECOMMENDATION, 
         "toolkitLevel": eToolkitLevel.LEVEL_ONE 
     }],
     act: [],
