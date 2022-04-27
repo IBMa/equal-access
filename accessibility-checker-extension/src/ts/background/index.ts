@@ -75,6 +75,7 @@ async function initTab(tabId: number, archiveId: string) {
 
 BackgroundMessaging.addListener("DAP_CACHED", async (message: any) => {
     await BackgroundMessaging.sendToTab(message.tabId, "DAP_CACHED_TAB", { tabId: message.tabId, tabURL: message.tabURL, origin: message.origin });
+
     return true;
 });
 
@@ -111,6 +112,7 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         } catch (err) {
             console.error(err);
         }
+
         return true;
     });
 });
@@ -202,26 +204,25 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
     console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
-    BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
+    await BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
 
     return true;
 });
 
 BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS received in background")
-    BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
+    await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
 
     return true;
 });
 
 BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
     console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
-    BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
+    await BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
         xpath: message.xpath,
         circleNumber: message.circleNumber
     });
-
-
+    
     return true;
 }); 
 
