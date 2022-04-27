@@ -415,16 +415,20 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.storedScans.length == 0 ? true : false}
                                 // JCH - Tip: for some reason the style needs to be before the href
-                                itemText={this.state.showHideTabStops ? 
-                                    <a style={{ color: this.props.storedScans.length == 0 ? "#d3d3d3" : "black" , textDecoration : "none"}} href="#" onClick={() => {
+                                itemText={this.state.showHideTabStops ? "Show tab stops" : "Hide tab stops"}
+                                onClick={ async() => {
+                                    if (this.state.showHideTabStops) {
+                                        console.log("DRAW_TABS_TO_BACKGROUND");
+                                        await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
                                         this.setState({ showHideTabStops: false });
-                                        PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
-                                    }}>Show tab stops</a>
-                                :   <a style={{ color: this.props.storedScans.length == 0 ? "d3d3d3" : "black" , textDecoration : "none"}} href="#" onClick={() => {
+                                    } else {
+                                        console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                                        await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
                                         this.setState({ showHideTabStops: true });
-                                        PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                    }}>Hide tab stops</a>
-                                } 
+                                    }
+                                    
+                                }}
+
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
@@ -471,17 +475,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         </div>
                     </Column>
                     <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
-                        {this.state.showHideTabStops ? 
-                            <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
-                                this.setState({ showHideTabStops: false });
-                                PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
-                                // this.props.tabStopsShow(); // old code that we should keep
-                            }}>Show tab stops</a>
-                        :   <a href="#" style={{ display: !this.props.counts ? "none" : ""}} onClick={() => {
-                            PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                this.setState({ showHideTabStops: true });
-                            }}>Hide tab stops</a>
-                        }
                     </Column>
                 </Grid>
                 </React.Fragment>

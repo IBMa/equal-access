@@ -119,7 +119,7 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
 
 BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) => {
     try {
-        BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
+        await BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
         if (message.archiveId && message.policyId) {
             let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
             let totalTime = (message.report != undefined)? message.report.totalTime: message.totalTime;
@@ -222,7 +222,7 @@ BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) =>
         xpath: message.xpath,
         circleNumber: message.circleNumber
     });
-    
+
     return true;
 }); 
 
