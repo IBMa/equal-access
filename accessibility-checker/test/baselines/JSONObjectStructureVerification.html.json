@@ -1618,7 +1618,7 @@
 		"level": "pass"
 	}, {
 		"ruleId": "aria_attribute_deprecated",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]",
 			"aria": "/document[1]/main[1]"
@@ -2164,7 +2164,7 @@
 		"level": "pass"
 	}, {
 		"ruleId": "aria_attribute_deprecated",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]",
 			"aria": "/document[1]/navigation[1]"

@@ -1758,7 +1758,7 @@
 		"reasonId": "pass",
 		"ruleId": "aria_attribute_deprecated",
 		"snippet": "<div role=\"main\">",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"ignored": false,
 		"level": "pass"
 	}, {
@@ -2304,7 +2304,7 @@
 		"reasonId": "pass",
 		"ruleId": "aria_attribute_deprecated",
 		"snippet": "<div role=\"navigation\">",
-		"value": ["VIOLATION", "PASS"],
+		"value": ["RECOMMENDATION", "PASS"],
 		"ignored": false,
 		"level": "pass"
 	}, {
