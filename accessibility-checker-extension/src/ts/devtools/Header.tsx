@@ -414,42 +414,50 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             <OverflowMenuItem
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 disabled={this.props.storedScans.length == 0 ? true : false}
-                                itemText="Show tab stops" 
-                                // itemText= {this.props.scanStorage ? "Stop storing scans" : "Start storing scans"}
-                                onClick={() => this.props.reportHandler("current")}
+                                // JCH - Tip: for some reason the style needs to be before the href
+                                itemText={this.state.showHideTabStops ? 
+                                    <a style={{ color: this.props.storedScans.length == 0 ? "#d3d3d3" : "black" , textDecoration : "none"}} href="#" onClick={() => {
+                                        this.setState({ showHideTabStops: false });
+                                        PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
+                                    }}>Show tab stops</a>
+                                :   <a style={{ color: this.props.storedScans.length == 0 ? "d3d3d3" : "black" , textDecoration : "none"}} href="#" onClick={() => {
+                                        this.setState({ showHideTabStops: true });
+                                        PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                    }}>Hide tab stops</a>
+                                } 
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 hasDivider
                                 // if scanStorage false not storing scans, if true storing scans
-                                itemText="Lines" 
-                                onClick={this.props.startStopScanStoring}
+                                itemText={<Checkbox id="linesCB" defaultChecked labelText="Lines" />}
+                                // onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 // if scanStorage false not storing scans, if true storing scans
-                                itemText="Numbers" 
-                                onClick={this.props.startStopScanStoring}
+                                itemText={<Checkbox id="numbersCB" defaultChecked labelText="Numbers" />}
+                                // onClick={this.props.startStopScanStoring}
+                                onClick={console.log("Numbers")}
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 // if scanStorage false not storing scans, if true storing scans
-                                itemText="Outlines" 
-                                onClick={this.props.startStopScanStoring}
+                                itemText={<Checkbox id="outlinesCB" defaultChecked labelText="Outlines" />}
+                                // onClick={this.props.startStopScanStoring}
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 hasDivider
                                 // disabled={this.props.actualStoredScansCount() == 0 ? true : false}
                                 itemText="Alerts on" 
-                                // onClick={() => this.props.clearStoredScans(true) }
-                                onClick={() => this.deleteModalHandler() }
+                                // onClick={() => this.deleteModalHandler() }
                             />
                             <OverflowMenuItem 
                                 style={{maxWidth:"13rem", width:"13rem"}}
                                 // if scanStorage false not storing scans, if true storing scans
-                                itemText="Learn more" 
-                                onClick={this.props.startStopScanStoring}
+                                itemText={<a href="#" target="_blank">Learn more</a>}
+                                // onClick={this.props.startStopScanStoring}
                             />
                         </OverflowMenu>                        
                     </Column>
