@@ -468,8 +468,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 });
             }
 
-            // JCH before finish scan collect and order tab stops
-            // Note: the collection is actually all issues that are tab stops
+            /* JCH before finish scan collect and order tab stops
+             * Note: the collection is actually all issues that are tab stops
+             * 
+             * The errors need to be reworked a bit 
+             * Now we are capturing issues based on a partial set of keyboard rules
+             * So the key question is how do we want the rule issues mapped to the
+             * tab stops vs general keyboard issues located else where on the page.
+             */
             // console.log("JCH DO TABBABLE");
             let tabbable: IReportItem[] = [];
             let tabbableErrors: IReportItem[] = [];

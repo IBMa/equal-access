@@ -1,19 +1,12 @@
-// import { launch } from 'puppeteer';
-// import "./draw.scss";
-// import { TabsSkeleton } from 'carbon-components-react';
-// import ContextScriptMessaging from "../util/contextScriptMessaging";
 import TabMessaging from "../util/tabMessaging";
-// import getAbsoluteXPath from "../util/xpath";
-// import PanelMessaging from '../util/panelMessaging';
-
 
 console.log("Content Script for drawing tab stops has loaded")
 
 // var intervalTimer: any;
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    // console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
-    // console.log(message.tabStopsResults);
+    console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
+    console.log(message.tabStopsResults);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     injectCSS(
@@ -102,49 +95,23 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         `
     );
+
+    // JCH want there to be one function draw() which draws circles for tab stops with
+    //     no errors and triangles for tab stops with errors
     draw(message.tabStopsResults);
     drawErrors(message.tabStopsErrors);
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(message.tabStopsResults);
         redrawErrors(message.tabStopsErrors)
-        // clearInterval(intervalTimer)
     })
-
-    // intervalTimer = setInterval(function () {
-    //     let nodes = getNodesXpaths(message.tabStopsResults);
-    //     nodes = convertXpathsToHtmlElements(nodes);
-    //     nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
-    //         return el != null;
-    //     });
-
-    //     for (let i = 0; i < nodes.length; i++) {
-    //         let node = nodes[i]  //document.evaluate(message.tabStopsResults[i].path.dom, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
-    //         let line: any = document.getElementsByClassName('lineTop lineNumber'+i)[0]
-
-    //         console.log("Evaluated noded",i," =", (node));
-    //         console.log("Evaluated node: = ", (node as HTMLElement).getBoundingClientRect().y);
-    //         console.log("Evaluated line y1: = ", line.y1.baseVal.value);
-
-    //         if (Math.abs((node as HTMLElement).getBoundingClientRect().y - line.y1.baseVal.value) > 3) { // Set to 3 because the offset variable is set to 3
-    //             deleteDrawing(".deleteMe");
-    //             redraw(message.tabStopsResults);
-    //             redrawErrors(message.tabStopsErrors)
-    //             break;
-    //         }
-
-    //     }
-
-    // }, 3000);
-
-
 
     return true;
 });
 
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    // console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground");
-    // console.log(message);
+    console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground");
+    console.log(message);
 
     // Clearing any that are already highlighted
     document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
@@ -155,8 +122,8 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
 
 //@ts-ignore
 TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    // console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
-    // console.log(message)
+    console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS recieved in foreground")
+    console.log(message)
 
     deleteDrawing(".deleteMe");
     return true;
@@ -169,12 +136,12 @@ function injectCSS(styleString: string) {
 }
 
 function draw(tabStopsErrors: any) {
-    // console.log("Inside draw")
+    console.log("Inside draw")
     redraw(tabStopsErrors);
 }
 
 function drawErrors(tabStopsErrors: any) {
-    // console.log("Inside drawErrors")
+    console.log("Inside drawErrors")
     redrawErrors(tabStopsErrors);
 }
 
@@ -184,7 +151,7 @@ function deleteDrawing(classToRemove: string) {
 
 
 function redrawErrors(tabStopsErrors: any) {
-    // console.log("Inside redrawErrors")
+    console.log("Inside redrawErrors")
     setTimeout(() => {
         // console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
@@ -206,7 +173,7 @@ function redrawErrors(tabStopsErrors: any) {
             // makeTextSmall(x, y, (i + 1).toString());
 
 
-            // Make box around active component
+            // MAKE BOX AROUND ACTIVE COMPONENT
             makeLine(x, y, xPlusWidth, y, ["lineError"]);
             makeLine(x, y, x, yPlusHeight, ["lineError"]);
             makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
@@ -233,9 +200,8 @@ function redrawErrors(tabStopsErrors: any) {
 
 
 function redraw(tabStopsResults: any) {
-    // console.log("Inside redraw")
+    console.log("Inside redraw")
     setTimeout(() => {
-        // let nodes = getNodesToDrawBettween();
         let nodes = getNodesXpaths(tabStopsResults);
         let nodeXpaths = nodes;
 
@@ -320,22 +286,6 @@ function redraw(tabStopsResults: any) {
     }, 1)
 }
 
-// function makeIcons(x1: number, y1: number, arrayOfIcons: any) { 
-//     let numberOfIcons = 0; // TODO ALI Needs to be dynamically set, this the the array length of the icons that need to be shown should be set to arrayOfIcons.length
-//     let iconName = "" // TODO ALI Needs to be dynamically set, this is the name of the icon to draw  
-//     arrayOfIcons = arrayOfIcons // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-
-//     // Bias the icons to the center of the circles
-//     x1 = x1 + 15;
-//     y1 = y1 - 8;
-//     let iconBias = 16
-
-//     for (let i = 0; i < numberOfIcons; i++) {
-//         makeIcon(x1 + iconBias * i, y1, iconName);
-//     }
-
-// }
-
 function makeIcon(x1: number, y1: number, iconName: string) {
     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
     var iconClone = createSVGErrorIconTemplate();
@@ -355,8 +305,6 @@ function makeIcon(x1: number, y1: number, iconName: string) {
         document.body.appendChild(elemDIV);
     }
     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-
-
 }
 
 
@@ -387,6 +335,53 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
         document.body.appendChild(elemSVG);
     }
     document.getElementById('svgCircle')?.appendChild(circleClone)
+}
+
+function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: number, xpath: string) {
+    // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
+    //  <polygon points="0,0 100,0 50,100"/>
+    // </svg>
+
+    // .svg-triangle{
+    //     margin: 0 auto;
+    //     width: 100px;
+    //     height: 100px;
+    // }
+    
+    // .svg-triangle polygon {
+    // fill:#98d02e;
+    // stroke:#65b81d;
+    // stroke-width:2;
+    // }
+
+    // TODO: Find possible better way to deal with this (Talk to design)
+    // If the circle is being drawn slighly off of the screen move it into the screen
+    if (x1 >= -10 && x1 <= 6) {
+        x1 = 12;
+    }
+    if (y1 >= -10 && y1 <= 6) {
+        y1 = 12;
+    }
+    var triangleClone = createSVGTriangleTemplate();
+    triangleClone.removeAttribute("id");
+    triangleClone.classList.add("deleteMe");
+    triangleClone.classList.add("circleNumber" + circleNumber);
+    triangleClone.setAttribute('x1', String(x1));
+    triangleClone.setAttribute('y1', String(y1));
+    triangleClone.setAttribute('x2', String(x2));
+    triangleClone.setAttribute('y2', String(y2));
+    triangleClone.setAttribute('x3', String(x3));
+    triangleClone.setAttribute('y3', String(y3));
+    triangleClone.setAttribute('pointer-events', "auto");
+    triangleClone.onclick = () => {
+        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
+    };
+    if (document.getElementById("svgTriangle") == null) {
+        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        elemSVG.setAttribute("id", "svgTriangle");
+        document.body.appendChild(elemSVG);
+    }
+    document.getElementById('svgTriangle')?.appendChild(triangleClone)
 }
 
 function makeTextSmall(x1: number, y1: number, n: string) {
@@ -428,6 +423,7 @@ function makeTextSmall(x1: number, y1: number, n: string) {
 }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
+    console.log("Inject line");
     // let line = document.getElementsByClassName('tabLine')[0]
     var lineClone = createSVGLineTemplate()//line.cloneNode(true);
     if (CSSclass) {
@@ -449,7 +445,9 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
     document.getElementById('svgLine')?.appendChild(lineClone);
 }
 
+
 function createSVGCircleTemplate() {
+    console.log("Inject circle");
     // This is what we are creating:
     // <svg id="svgCircle">
     // THIS PART->     <circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/>
@@ -476,6 +474,38 @@ function createSVGCircleTextTemplate() {
     elemText.setAttribute("font-size", "10");
     elemText.setAttribute("font-weight", "normal");
     elemText.setAttribute("fill", "white");
+    return elemText
+}
+
+function createSVGTriangleTemplate() {
+    console.log("Inject triangle");
+    // This is what we are creating:
+    // <svg id="svgTriangle">
+    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
+    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
+    // </svg>
+    // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    elemCircle.setAttribute("id", "triangle");
+    elemCircle.setAttribute("class", "tabTriangle");
+    elemCircle.setAttribute("stroke", "grey");
+    elemCircle.setAttribute("stroke-width", "1");
+    elemCircle.setAttribute("fill", "yellow");
+    return elemCircle
+}
+
+function createSVGTriangleTextTemplate() {
+    // This is what we are creating:
+    // <svg id="svgTriangle">
+    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
+    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
+    // </svg>
+    var elemText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    elemText.setAttribute("class", "triangleText");
+    elemText.setAttribute("font-family", "helvetica");
+    elemText.setAttribute("font-size", "10");
+    elemText.setAttribute("font-weight", "normal");
+    elemText.setAttribute("fill", "black");
     return elemText
 }
 
@@ -553,6 +583,7 @@ function convertXpathsToHtmlElements(nodes: any) {
 }
 
 function getNodesXpaths(nodes: any) {
+    console.log("getNodesXpaths");
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         tabXpaths.push(result.path.dom);
