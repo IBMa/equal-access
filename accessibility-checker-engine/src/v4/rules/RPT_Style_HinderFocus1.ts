@@ -14,22 +14,21 @@
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { getDefinedStyles } from "../util/CSSUtil";
 
 export let RPT_Style_HinderFocus1: Rule = {
     id: "RPT_Style_HinderFocus1",
-    context: "dom:style, dom:*[style]",
+    context: "dom:*",
     help: {
         "en-US": {
             "group": `RPT_Style_HinderFocus1.html`,
-            "Pass_0": `RPT_Style_HinderFocus1.html`,
             "Potential_1": `RPT_Style_HinderFocus1.html`
         }
     },
     messages: {
         "en-US": {
             "group": "The keyboard focus indicator must be highly visible when default border or outline is modified by CSS",
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Check the keyboard focus indicator is highly visible when using CSS elements for border or outline"
+            "Potential_1": "Check the keyboard focus indicator is highly visible when using CSS declaration for 'border' or 'outline'"
         }
     },
     rulesets: [{
@@ -45,44 +44,28 @@ export let RPT_Style_HinderFocus1: Rule = {
                 value: ["table"],
                 type: "[string]"
             },
-            regex1: {
-                value: /(^|})([^{]*){[^}]*(outline|border)[ \t]*\:/gi,
-                type: "regex"
-            },
-            regex2: {
-                value: /([a-z]+)[ \t]*(,|$)/gi,
-                type: "regex"
+            checkParams: {
+                value: ["border", "border-width", "border-color", "border-style",
+                    "outline", "outline-width", "outline-color", "outline-style"],
+                type: "[string]"
             }
         }
-        const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.isTabbable(ruleContext)) {
+        const ruleContext = context["dom"].node as HTMLElement;
+        if (!RPTUtil.isTabbable(ruleContext) || validateParams.skipNodes.value.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
-        let skipNodes = validateParams.skipNodes.value;
-
-        let passed = true;
-        // Note: link to be handled by RPT_Style_ExternalStyleSheet
-        let nodeName = ruleContext.nodeName.toLowerCase();
-        if (nodeName === "style") {
-            let textValue = RPTUtil.getInnerText(ruleContext);
-            let r = validateParams.regex1.value;
-            r.lastIndex = 0;
-            let m; let m2;
-            while (passed && (m = r.exec(textValue)) !== null) {
-                let selector = m[2];
-                let r2 = validateParams.regex2.value;
-                r2.lastIndex = 0;
-                while (passed && (m2 = r2.exec(selector)) !== null) {
-                    passed = skipNodes.includes(m2[1].trim().toLowerCase());
+        let arrStyles = []
+        arrStyles.push(getDefinedStyles(ruleContext));
+        arrStyles.push(getDefinedStyles(ruleContext, ":focus"));
+        arrStyles.push(getDefinedStyles(ruleContext, ":focus-visible"));
+        arrStyles.push(getDefinedStyles(ruleContext, ":focus-within"));
+        for (const st of arrStyles) {
+            for (const param of validateParams.checkParams.value) {
+                if (param in st) {
+                    return RulePotential("Potential_1");
                 }
             }
-        } else if (!ruleContext.hasAttribute("disabled") ||
-            ruleContext.getAttribute("disabled").toLowerCase() === "false") {
-            let textValue = ruleContext.getAttribute('style');
-            passed = skipNodes.includes(nodeName) ||
-                !(/(outline|border)[ \t]*\:/.test(textValue));
         }
-        if (passed) return RulePass("Pass_0");
-        if (!passed) return RulePotential("Potential_1");
+        return null;
     }
 }
