@@ -126,10 +126,14 @@ class WrappedRule {
 
 export class Engine implements IEngine {
     public static getLanguages() {
-        const env = typeof process !== "undefined" && process.env;
-        let nodeLang = env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES;
-        if (nodeLang) {
-            nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
+        const env = typeof process !== "undefined" && typeof (process as any).nodeType === "undefined" && process.env;
+        // If all else fails, default to US English
+        let nodeLang = "en-US";
+        if (env) {
+            nodeLang = env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES;
+            if (nodeLang) {
+                nodeLang = nodeLang.split(".")[0].replace(/_/g,"-");
+            }
         }
         return typeof navigator !== "undefined" && navigator.languages || [nodeLang];
     }
