@@ -337,52 +337,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
-function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: number, xpath: string) {
-    // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
-    //  <polygon points="0,0 100,0 50,100"/>
-    // </svg>
 
-    // .svg-triangle{
-    //     margin: 0 auto;
-    //     width: 100px;
-    //     height: 100px;
-    // }
-    
-    // .svg-triangle polygon {
-    // fill:#98d02e;
-    // stroke:#65b81d;
-    // stroke-width:2;
-    // }
-
-    // TODO: Find possible better way to deal with this (Talk to design)
-    // If the circle is being drawn slighly off of the screen move it into the screen
-    if (x1 >= -10 && x1 <= 6) {
-        x1 = 12;
-    }
-    if (y1 >= -10 && y1 <= 6) {
-        y1 = 12;
-    }
-    var triangleClone = createSVGTriangleTemplate();
-    triangleClone.removeAttribute("id");
-    triangleClone.classList.add("deleteMe");
-    triangleClone.classList.add("circleNumber" + circleNumber);
-    triangleClone.setAttribute('x1', String(x1));
-    triangleClone.setAttribute('y1', String(y1));
-    triangleClone.setAttribute('x2', String(x2));
-    triangleClone.setAttribute('y2', String(y2));
-    triangleClone.setAttribute('x3', String(x3));
-    triangleClone.setAttribute('y3', String(y3));
-    triangleClone.setAttribute('pointer-events', "auto");
-    triangleClone.onclick = () => {
-        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
-    };
-    if (document.getElementById("svgTriangle") == null) {
-        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        elemSVG.setAttribute("id", "svgTriangle");
-        document.body.appendChild(elemSVG);
-    }
-    document.getElementById('svgTriangle')?.appendChild(triangleClone)
-}
 
 function makeTextSmall(x1: number, y1: number, n: string) {
 
@@ -477,37 +432,8 @@ function createSVGCircleTextTemplate() {
     return elemText
 }
 
-function createSVGTriangleTemplate() {
-    console.log("Inject triangle");
-    // This is what we are creating:
-    // <svg id="svgTriangle">
-    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
-    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
-    // </svg>
-    // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    elemCircle.setAttribute("id", "triangle");
-    elemCircle.setAttribute("class", "tabTriangle");
-    elemCircle.setAttribute("stroke", "grey");
-    elemCircle.setAttribute("stroke-width", "1");
-    elemCircle.setAttribute("fill", "yellow");
-    return elemCircle
-}
 
-function createSVGTriangleTextTemplate() {
-    // This is what we are creating:
-    // <svg id="svgTriangle">
-    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
-    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
-    // </svg>
-    var elemText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    elemText.setAttribute("class", "triangleText");
-    elemText.setAttribute("font-family", "helvetica");
-    elemText.setAttribute("font-size", "10");
-    elemText.setAttribute("font-weight", "normal");
-    elemText.setAttribute("fill", "black");
-    return elemText
-}
+
 
 function createSVGLineTemplate() {
     // This is what we are creating:
