@@ -17,6 +17,7 @@
 type PseudoClass = ":hover" | ":active" | ":focus" | ":focus-visible" | ":focus-within";
 
 export function selectorMatchesElem(element, selector) {
+    if (selector.trim() === "") return false;
     if (typeof element.matches === 'function') {
         return element.matches(selector);
     }
@@ -49,13 +50,36 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
 /**
  * Returns the style defined for this element
  * 
- * Note: This differs from the computed style in that the computed style will return
+ * This differs from the computed style in that the computed style will return
  * styles defined by the user agent. This will only return styles defined by the
  * application
- * @param elem 
+ * 
+ * @param {HTMLElement} elem 
+ * @param {string} [pseudoClass] If specified, will return values that are different
+ * than when the pseudoClass does not match.
  */
 export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     let definedStyles = {}
+    let definedStylePseudo = {}
+
+    function fillStyle(maps, style) {
+        for (let sIndex=0; sIndex < style.length; ++sIndex) {
+            if (style[sIndex] === "all" && style[style[sIndex]]) {
+                for (const map of maps) {
+                    for (const key in map) {
+                        delete map[key];
+                    }
+                }
+                break;
+            } else {
+                const key = style[sIndex];
+                for (const map of maps) {
+                    map[key] = style[key];
+                }
+            }
+        }
+    }
+
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
@@ -63,29 +87,25 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             if (sheet && sheet.cssRules) {
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
                     const rule = sheet.cssRules[rIndex] as CSSStyleRule;
-                    if (rule.selectorText) {
-                        // Determine if the rule matches this element
-                        let matches = selectorMatchesElem(elem, rule.selectorText);
-                        if (!matches && pseudoClass && rule.selectorText.includes(pseudoClass)) {
-                            // Need some special handling for pseudo selector found in rule
-                            let selector = rule.selectorText.replace(new RegExp(pseudoClass, "g"), "");
-                            if (selector.trim().length === 0) {
-                                matches = true;
-                            } else {
-                                matches = selectorMatchesElem(elem, selector);
-                            }
+                    const fullRuleSelector = rule.selectorText;
+                    if (fullRuleSelector) {
+                        const pseudoMatch = fullRuleSelector.match(/^(.*)(:[a-zA-Z-]*)$/);
+                        const hasPseudoClass = !!pseudoMatch;
+                        let selMain = hasPseudoClass ? pseudoMatch[1] : fullRuleSelector;
+                        const selPseudo = hasPseudoClass ? pseudoMatch[2] : "";
+                        const samePseudoClass = selPseudo === pseudoClass;
+                        if (pseudoClass && pseudoClass === ":focus") {
+                            // If this element has focus, remove focus-within from parents
+                            selMain = selMain.replace(/([ >][^+~ >]+):focus-within/g, "$1");
                         }
-                        // If we match, capture the styles
-                        if (matches) {
-                            for (let sIndex=0; sIndex < rule.style.length; ++sIndex) {
-                                if (rule.style[sIndex] === "all" && rule.style[rule.style[sIndex]]) {
-                                    definedStyles = {};
-                                    break;
-                                } else {
-                                    const key = rule.style[sIndex];
-                                    definedStyles[key] = rule.style[key];
-                                }
-                            }
+
+                        // Get styles of non-pseudo selectors
+                        if (!hasPseudoClass && selectorMatchesElem(elem, selMain)) {
+                            fillStyle([definedStyles, definedStylePseudo], rule.style);
+                        }
+
+                        if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
+                            fillStyle([definedStylePseudo], rule.style);
                         }
                     }
                 }
@@ -98,24 +118,29 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     }
 
     // Handled the stylesheets, now handle the element defined styles
-    for (let sIndex=0; sIndex < elem.style.length; ++sIndex) {
-        const key = elem.style[sIndex];
-        if (typeof key === "string" && elem.style[key] && elem.style[key].length > 0) {
-            if (key === "all" && elem.style[key] === "initial") {
-                definedStyles = {};
-                break;
-            } else {
-                definedStyles[key] = elem.style[key];
-            }
-        }
-    }
+    fillStyle([definedStyles, definedStylePseudo], elem.style);
 
     for (const key in definedStyles) {
         if (definedStyles[key] === "initial") {
             delete definedStyles[key];
         }
     }
+    for (const key in definedStylePseudo) {
+        if (definedStylePseudo[key] === "initial") {
+            delete definedStylePseudo[key];
+        }
+    }
 
-    // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
-    return definedStyles;
+    if (!pseudoClass) {
+        // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
+        return definedStyles;
+    } else {
+        for (const key in definedStylePseudo) {
+            if (definedStylePseudo[key] === definedStyles[key]) {
+                delete definedStylePseudo[key];
+            }
+        }
+        // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStylePseudo, null, 2));
+        return definedStylePseudo;
+    }
 }
