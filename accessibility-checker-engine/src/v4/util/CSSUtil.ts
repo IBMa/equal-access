@@ -54,7 +54,7 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * application
  * @param elem 
  */
- export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
+export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     let definedStyles = {}
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
@@ -78,7 +78,13 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
                         // If we match, capture the styles
                         if (matches) {
                             for (let sIndex=0; sIndex < rule.style.length; ++sIndex) {
-                                definedStyles[rule.style[sIndex]] = rule.style[rule.style[sIndex]];
+                                if (rule.style[sIndex] === "all" && rule.style[rule.style[sIndex]]) {
+                                    definedStyles = {};
+                                    break;
+                                } else {
+                                    const key = rule.style[sIndex];
+                                    definedStyles[key] = rule.style[key];
+                                }
                             }
                         }
                     }
@@ -92,12 +98,24 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
     }
 
     // Handled the stylesheets, now handle the element defined styles
-    for (let key in elem.style) {
+    for (let sIndex=0; sIndex < elem.style.length; ++sIndex) {
+        const key = elem.style[sIndex];
         if (typeof key === "string" && elem.style[key] && elem.style[key].length > 0) {
-            definedStyles[key] = elem.style[key];
+            if (key === "all" && elem.style[key] === "initial") {
+                definedStyles = {};
+                break;
+            } else {
+                definedStyles[key] = elem.style[key];
+            }
         }
     }
 
-    // console.log("QQQ", definedStyles);
+    for (const key in definedStyles) {
+        if (definedStyles[key] === "initial") {
+            delete definedStyles[key];
+        }
+    }
+
+    // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
     return definedStyles;
 }
