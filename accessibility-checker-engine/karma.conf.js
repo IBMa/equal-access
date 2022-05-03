@@ -55,19 +55,13 @@ module.exports = (config) => {
         ],
 
         frameworks: ['jasmine'],
-        Plugins: [
-            require('karma-jasmine'),
-            require('karma-chrome-launcher'),
-        ],
-        browsers: ['ChromeHeadless'],
-        browserNoActivityTimeout: 120000,
-        // browsers: ['ChromeCustom'],
-        // customLaunchers: {
-        //     ChromeCustom: {
-        //         base: 'ChromeHeadless',
-        //         flags: ['--disable-web-security']
-        //     }
-        // },
+        browsers: ['ChromeCustom'],
+        customLaunchers: {
+            ChromeCustom: {
+                base: 'ChromeHeadless',
+                flags: ['--disable-web-security']
+            }
+        },
         preprocessors: {
             'test/**/*_ruleunit/*.html': ['html2js'],
             'test/**/*_ruleunit/*.htm': ['html2js'],
