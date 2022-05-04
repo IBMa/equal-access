@@ -12,8 +12,8 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getDefinedStyles } from "../../v4/util/CSSUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { getDefinedStyles, getComputedStyle } from "../../v4/util/CSSUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let element_tabbable_off_screen: Rule = {
@@ -24,14 +24,16 @@ export let element_tabbable_off_screen: Rule = {
         "en-US": {
             "group": "element_tabbable_off_screen.html",
             "pass": "element_tabbable_off_screen.html",
-            "fail_off": "element_tabbable_off_screen.html"
+            "fail_off": "element_tabbable_off_screen.html",
+            "potential_off": "element_tabbable_off_screen.html"
         }
     },
     messages: {
         "en-US": {
             "group": "Tabbable element should be on the screen",
             "pass": "Tabbable element is on the screen",
-            "fail_off": "The tabbable element <{0}> is off the screen"
+            "fail_off": "The tabbable element <{0}> is off the screen",
+            "potential_off": "Confirm that the tabbable element <{0}> is on the screen when it receives focus"
         }
     },
     rulesets: [{
@@ -55,14 +57,45 @@ export let element_tabbable_off_screen: Rule = {
         const bounds = context["dom"].bounds;
         //in case the bounds not available
         if (!bounds) return null;
-        let isOnScreen = bounds['top'] > 0 && bounds['left'] > 0;
-        if (isOnScreen) 
+        console.log("node=" + ruleContext.nodeName + ", bounds=" + JSON.stringify(bounds));
+        const default_styles = getComputedStyle(ruleContext);
+        console.log("node=" + ruleContext.nodeName + ", default_styles left =" + default_styles['left']
+             +  ", default_styles top =" + default_styles['top']
+             +  ", default_styles position =" + default_styles['position']);
+
+        const onfocus_styles = getDefinedStyles(ruleContext, ":focus");
+        console.log("node=" + ruleContext.nodeName + ", onfocus_styles=" + JSON.stringify(onfocus_styles));
+        console.log("node=" + ruleContext.nodeName + ", onfocus_styles left =" + onfocus_styles['left']
+             +  ", onfocus_styles top =" + onfocus_styles['top']
+             +  ", onfocus_styles position =" + onfocus_styles['position']);
+        
+        let top = bounds['top'];
+        let left = bounds['left'];     
+        if (Object.keys(onfocus_styles).length > 0 ) { 
+            if (onfocus_styles['top'] !== 'undefined') { console.log(onfocus_styles['position'] +", " + default_styles['position'] );
+                if (onfocus_styles['position'] === 'absolute' || (onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
+                    top = onfocus_styles['top'];
+                else { 
+                    // the position is undefined and the parent's position is 'relative'
+                    top = Number.MIN_VALUE;   
+                }     
+            } 
+            if (onfocus_styles['left'] !== 'undefined') {
+                if (onfocus_styles['position'] === 'absolute' || (onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
+                    left = onfocus_styles['left'];
+                else { 
+                    // the position is undefined and the parent's position is 'relative'
+                    left = Number.MIN_VALUE;   
+                }     
+            }    
+        }
+        console.log('left=' + left +", top=" + top);
+        if (top === Number.MIN_VALUE || left === Number.MIN_VALUE)
+            return RulePotential("potential_off");
+
+        else if (top > 0 && left > 0)
             return RulePass("pass");
-
-        const styles = getDefinedStyles(ruleContext, ":focus");
-        console.log("node=" + ruleContext.nodeName + ", styles=" + JSON.stringify(styles));
-
-         
+        
         return RuleFail("fail_off", [ruleContext.nodeName.toLowerCase()]);
 
     }
