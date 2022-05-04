@@ -31,22 +31,24 @@ export default class ContextScriptMessaging {
 
 
         return new Promise<void>((resolve, reject) => {
-            chrome.runtime.sendMessage(myMessage, async function (res) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                } else {
-                    if (res) {
-                        if (typeof res === "string") {
-                            try {
-                                res = JSON.parse(res);
-                            } catch (e) { }
-                        }
-                        resolve(res);
+            setTimeout(() => {
+                chrome.runtime.sendMessage(myMessage, async function (res) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
                     } else {
-                        resolve();
+                        if (res) {
+                            if (typeof res === "string") {
+                                try {
+                                    res = JSON.parse(res);
+                                } catch (e) { }
+                            }
+                            resolve(res);
+                        } else {
+                            resolve();
+                        }
                     }
-                }
-            });
+                });
+            }, 0);
         })
     }
 
