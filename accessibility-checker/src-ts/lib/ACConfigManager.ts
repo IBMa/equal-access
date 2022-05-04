@@ -19,8 +19,8 @@ import * as fs from "fs";
 import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants";
 import { v4 as uuidv4 } from 'uuid';
-import fetch from 'node-fetch';
 import { IConfig, IConfigUnsupported } from "./api/IChecker";
+import axios from "axios";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -100,8 +100,8 @@ async function processACConfig(ACConfig) {
         if (ACConfig.ignoreHTTPSErrors) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
         }
-        const response = await fetch(ruleArchiveFile);
-        ruleArchiveParse = await response.json();
+        const response = await axios.get(ruleArchiveFile);
+        ruleArchiveParse = await response.data;
     } catch (err) {
         console.log(err);
         throw new Error(err);

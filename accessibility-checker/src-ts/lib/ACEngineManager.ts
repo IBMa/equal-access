@@ -1,7 +1,7 @@
 import { ACConfigManager } from "./ACConfigManager";
-import fetch from 'node-fetch';
 import * as path from "path";
 import * as fs from "fs";
+import axios from "axios";
 
 let ace;
 
@@ -94,8 +94,8 @@ try {
             return Promise.resolve();
         }
         let config = await ACConfigManager.getConfigUnsupported();
-        const response = await fetch(`${config.rulePack}/ace-node.js`);
-        const data = await response.text();
+        const response = await axios.get(`${config.rulePack}/ace-node.js`);
+        const data = await response.data;
         let engineDir = path.join(__dirname, "engine");
         if (!fs.existsSync(engineDir)) {
             fs.mkdirSync(engineDir);

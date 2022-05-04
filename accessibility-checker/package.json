@@ -21,10 +21,10 @@
     "node": ">=10"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
     "js-yaml": "^4.1.0",
-    "node-fetch": "^3.2.3",
     "puppeteer": "^13.0.0",
     "uuid": "^8.3.2"
   },
