@@ -3,6 +3,7 @@ import TabMessaging from "../util/tabMessaging";
 console.log("Content Script for drawing tab stops has loaded")
 
 // var intervalTimer: any;
+// var circleXpaths [] = "";
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
@@ -55,9 +56,13 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             z-index: 2147483646 !important;
             visibility: visible !important;
         }
+
+        .noHighlightSVG{
+            fill: green;
+        }
         
         .highlightSVG{
-            fill: blue
+            fill: blue !important;
         }
         `
     );
@@ -104,10 +109,39 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         deleteDrawing(".deleteMe");
         redraw(message.tabStopsResults);
         redrawErrors(message.tabStopsErrors)
-    })
-
+    });
+    // Tab key listener
+    window.addEventListener('keydown', function (event) {
+        console.log("keycode = ", event.code);
+        let element = this.document.activeElement;
+        console.log("element = ",element?.tagName);
+        // Highlight circle
+        //      When circles are made keep array of xpath and circle number
+        //      for the active element find xpath that matches circle and get circle number
+        let elementXpath = getXPathForElement(element);
+        console.log("elementXpath = ", elementXpath);
+        //      get circle with circle number
+        let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
+        console.log("circle xpath",circle?.getAttribute("xpath"));
+        //      change fill color to highlight
+        // setTimeout(() => {
+        //     circle?.setAttribute("fill", "blue");
+        // }, 0)
+        console.log("circle fill",circle?.getAttribute("fill"));
+        circle?.classList.remove("noHighlightSVG");
+        circle?.classList.add("highlightSVG");
+        console.log("circle fill",circle?.getAttribute("fill"));
+        // Inspect active element
+    });
+    
     return true;
 });
+
+function getXPathForElement(element: any) {
+    const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+    const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+    return segs(element).join('/');
+}
 
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS recieved in foreground");
@@ -322,16 +356,19 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     circleClone.removeAttribute("id");
     circleClone.classList.add("deleteMe");
     circleClone.classList.add("circleNumber" + circleNumber);
+    // circleClone.classList.add("dynamic");
     circleClone.setAttribute('cx', String(x1));
     circleClone.setAttribute('cy', String(y1));
     circleClone.setAttribute('pointer-events', "auto");
     circleClone.setAttribute('r', String(radius));
+    circleClone.setAttribute('xpath', xpath);
     circleClone.onclick = () => {
         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
     };
     if (document.getElementById("svgCircle") == null) {
         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         elemSVG.setAttribute("id", "svgCircle");
+        elemSVG.classList.add("dynamic");
         document.body.appendChild(elemSVG);
     }
     document.getElementById('svgCircle')?.appendChild(circleClone)
@@ -378,7 +415,7 @@ function makeTextSmall(x1: number, y1: number, n: string) {
 }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
-    console.log("Inject line");
+    // console.log("Inject line");
     // let line = document.getElementsByClassName('tabLine')[0]
     var lineClone = createSVGLineTemplate()//line.cloneNode(true);
     if (CSSclass) {
@@ -402,7 +439,7 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
 
 
 function createSVGCircleTemplate() {
-    console.log("Inject circle");
+    // console.log("Inject circle");
     // This is what we are creating:
     // <svg id="svgCircle">
     // THIS PART->     <circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/>
@@ -411,9 +448,11 @@ function createSVGCircleTemplate() {
     var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
+    elemCircle.classList.add("dynamic");
+    elemCircle.classList.add("noHighlightSVG");
     elemCircle.setAttribute("stroke", "grey");
     elemCircle.setAttribute("stroke-width", "1");
-    elemCircle.setAttribute("fill", "purple");
+    // elemCircle.setAttribute("fill", "purple");
     return elemCircle
 }
 
