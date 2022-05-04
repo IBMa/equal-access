@@ -47,8 +47,8 @@
 Avoid unintended and confusing assistive technology behavior.
 HTML and ARIA _attributes_ are exposed to users of assistive technologies. 
 ARIA _attributes_ are only intended to be used to enhance HTML native semantics (e.g., indicating that the element is required with `aria-required` attribute). 
-Overlapping both an HTML attribute and the associated ARIA attribute with the same semantic meaning is redundant and has a potential for unintended conflicts if later changed.
-Conflicting _attributes_ can cause the ARIA attribute to be ignored. 
+Using **both** an HTML attribute and the associated ARIA attribute with the same semantic meaning is redundant and has a potential for unintended conflicts if later changed.
+Conflicting _attributes or values_ cause the ARIA attribute or value to be ignored. 
 
 
 <!-- This is where the code snippet is injected -->
@@ -56,7 +56,7 @@ Conflicting _attributes_ can cause the ARIA attribute to be ignored.
 
 ### What to do
 
-* Remove the unnecessary redundant ARIA attribute that overlaps with HTML attribute.
+* Remove the unnecessary ARIA attribute that is redundant with HTML attribute.
 * Review the "[Rules of ARIA attribute usage by HTML feature](https://w3c.github.io/html-aria/#docconformance-attr)" table to help determine when an ARIA attribute should be correctly used.
 
 
@@ -72,8 +72,8 @@ Conflicting _attributes_ can cause the ARIA attribute to be ignored.
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [ARIA 1.2 specification](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
-* [ARIA in HTML](https://w3c.github.io/html-aria/#docconformance-attr)
+* [ARIA 1.2 specification - Conflicts with Host Language Semantics](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
+* [ARIA in HTML - Requirements for use of ARIA attributes in place of equivalent HTML attributes](https://w3c.github.io/html-aria/#docconformance-attr)
 
 ### Who does this affect?
 
