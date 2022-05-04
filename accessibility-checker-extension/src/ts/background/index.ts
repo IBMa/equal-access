@@ -36,12 +36,7 @@ async function initTab(tabId: number, archiveId: string) {
         })
     });
 
-    BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
-        console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
-        await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, tabStopsErrors: message.tabStopsErrors});
     
-        return true;
-    });
 
     // Switch to the appropriate engine for this archiveId
     let engineFile = await EngineCache.getEngine(archiveId);
@@ -200,6 +195,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         tabUrl: tab.url,
         tabTitle: tab.title
     });
+});
+
+BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+    console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
+    await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, tabStopsErrors: message.tabStopsErrors});
+
+    return true;
 });
 
 BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
