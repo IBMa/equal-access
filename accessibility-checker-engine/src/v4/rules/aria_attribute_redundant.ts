@@ -32,7 +32,7 @@ export let aria_attribute_redundant: Rule = {
         "en-US": {
             "pass": "Rule Passed",
             "fail_overlap": "The ARIA attribute \"{0}\" is redundant with the HTML attribute \"{1}\"",
-            "group": "An ARIA attribute should not be redundant with the corresponding HTML attribute"
+            "group": "An ARIA attribute should not be used when there is a corresponding HTML attribute"
         }
     },
     rulesets: [{
