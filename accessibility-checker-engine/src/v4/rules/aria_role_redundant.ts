@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let aria_role_overlaps: Rule = {
+export let aria_role_redundant: Rule = {
     id: "aria_role_redundant",
     context: "dom:*[role]",
     help: {
