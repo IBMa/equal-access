@@ -21,8 +21,8 @@
  *******************************************************************************/
 
 // Load required modules
-import * as request from "request";
 import { ILogger } from "../api/IChecker";
+import axios from "axios";
 
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
@@ -95,7 +95,7 @@ export class ACMetricsLogger {
      *
      * @memberOf this
      */
-    sendLogsV2(done, rulePack) {
+    async sendLogsV2(done, rulePack) {
         this.log.debug("START 'sendLogsV2' function");
 
         // Copy this.log into loggerInScope so that it can be used in callback function
@@ -131,7 +131,7 @@ export class ACMetricsLogger {
                     // Dispatch the call to the metrics server
                     // Istanbul is not able to capture the coverate of functions call in a callback therefore we need to skip
                     /* istanbul ignore next */
-                    request.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs, function () {
+                    axios.get(this.metricsURLV2 + "/api/pub/meter/v2" + qs).then(() => {
                         // Decrement the numProfiles to identify that scan has finished
                         --numProfiles;
 
