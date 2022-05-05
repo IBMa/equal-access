@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+<!-- ################################################################### -->
+
+<div class="testcase">
+  <div role="directory">
+    <div role="listitem">an item in the directory</div>
+    <div role="listitem">an item in the directory</div>
+  </div>
+
+  <menu role="directory">
+    <li>an item in the directory, no explicit role</li>
+    <li role="listitem">an item in the directory with role=listitem</li>
+  </menu>
+</div>
+
+<script>
+  UnitTest = {
+      ruleIds: ["aria_attribute_deprecated"],
+      results: [
+      {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]",
+              "aria": "/document[1]/directory[1]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/directory[1]/listitem[1]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/directory[1]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/menu[1]",
+              "aria": "/document[1]/directory[2]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/menu[1]/li[2]",
+              "aria": "/document[1]/directory[2]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+    ]
+  }
+</script>
+</body>
+
+</html>
