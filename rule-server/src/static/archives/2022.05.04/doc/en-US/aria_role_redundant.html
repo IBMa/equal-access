@@ -1,9 +1,9 @@
 <html lang="en-US">
 <head>
-    <title>element_attribute_deprecated - Accessibility Checker Help</title>
+    <title>aria_role_redundant - Accessibility Checker Help</title>
     <script>
-        RULE_MESSAGES = {"en-US":{"pass":"Rule Passed","fail_elem":"The <{0}> element is deprecated in HTML 5","fail_attr":"The HTML attribute(s) \"{0}\" is deprecated in HTML 5","fail_elem_attr":"The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5","group":"Avoid use of obsolete features if possible"}};
-        RULE_ID = "element_attribute_deprecated"
+        RULE_MESSAGES = {"en-US":{"pass":"An explicitly-assigned ARIA role is not redundant with the implicit role of the element","fail_redundant":"The explicitly-assigned ARIA role \"{0}\" is redundant with the implicit role of the element <{1}>","group":"An explicitly-assigned ARIA role should not be redundant with the implicit role of the element"}};
+        RULE_ID = "aria_role_redundant"
     </script>
 
     <!--
@@ -50,27 +50,30 @@
 
 ### Why is this important?
 
-Browsers and assistive technology must be able to accurately interpret the markup of the content.
-If the code is ambiguous or incorrect, then it may be interpreted differently by browsers and assistive technology and the content will not be accessible to the user.
-
-As technology evolves, 
-sometimes new ways to meet a use case become available, that work better than a feature that was previously defined in a specification.
-When specifications are updated, some elements and attributes become "deprecated" because of existing implementations of the older feature.
-This indicates that the feature is allowed and expected to be supported by conforming browsers.
-However, those deprecated features may soon become obsolete, will be removed in future specifications,
-and will no longer be expected to be supported by browsers and assistive technology used by persons with disabilities.
-So, it is prudent to update the code to avoid deprecated features. 
-
-For example, 
-developers should not specify a `border` attribute on an `<img>` element in [HTML 5](https://dev.w3.org/html5/pf-summary/obsolete.html).
-[CSS](https://www.w3.org/Style/CSS/Overview.en.html) should be used instead.
+A best practice is to avoid adding an ARIA explicit role to an HTML element whose implicit role has the identical semantic meaning. This will eliminate the extra browser processing to determine the role of the element to add to the DOM.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Replace deprecated elements and attributes with those preferred in the current version of the specification.
+Remove the redundant ARIA role from the element.
+
+Note the redundant ARIA and HTML roles shown in the following examples.
+
+```
+<button type="button" role="button">Save</button>
+
+<input type="button" role="button" value="Save">
+```
+    
+In the following corrected examples, only an HTML role is used:
+    
+```
+<button type="button" id="saveChanges">Save</button>
+
+<input type="button" value="Save">
+```
 
 </script></mark-down>
 <!-- End main panel -->
@@ -83,12 +86,12 @@ Replace deprecated elements and attributes with those preferred in the current v
 
 ### About this requirement
 
-* [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
-* [HTML 5 - Obsolete Features](https://dev.w3.org/html5/pf-summary/obsolete.html)
+* [IBM 4.1.2 Name, role, value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA in HTML - Avoid specifying redundant roles](https://w3c.github.io/html-aria/#avoid-specifying-redundant-roles)
 
 ### Who does this affect?
 
-* People using assistive technologies that expose accessibility information 
+* People using a screen reader, including blind, low vision and neurodivergent people
 
 </script></mark-down>
 <!-- End side panel -->

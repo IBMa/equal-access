@@ -1,9 +1,9 @@
 <html lang="en-US">
 <head>
-    <title>element_attribute_deprecated - Accessibility Checker Help</title>
+    <title>aria_attribute_deprecated - Accessibility Checker Help</title>
     <script>
-        RULE_MESSAGES = {"en-US":{"pass":"Rule Passed","fail_elem":"The <{0}> element is deprecated in HTML 5","fail_attr":"The HTML attribute(s) \"{0}\" is deprecated in HTML 5","fail_elem_attr":"The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5","group":"Avoid use of obsolete features if possible"}};
-        RULE_ID = "element_attribute_deprecated"
+        RULE_MESSAGES = {"en-US":{"pass":"The ARIA roles and attribute are used per specification","fail_aria_role":"The ARIA role \"{0}\" is deprecated in the ARIA specification","fail_aria_attr":"The ARIA attributes \"{0}\" are deprecated in the ARIA specification","fail_role_attr":"The ARIA attributes \"{0}\" are deprecated for the role \"{1}\" in the ARIA specification","group":"No deprecated ARIA role or attribute should be used"}};
+        RULE_ID = "aria_attribute_deprecated"
     </script>
 
     <!--
@@ -51,26 +51,26 @@
 ### Why is this important?
 
 Browsers and assistive technology must be able to accurately interpret the markup of the content.
-If the code is ambiguous or incorrect, then it may be interpreted differently by browsers and assistive technology and the content will not be accessible to the user.
+If the code is ambiguous or incorrect, then it may be interpreted differently by browsers and assistive technology and the content will not be accessible to users.
 
 As technology evolves, 
 sometimes new ways to meet a use case become available, that work better than a feature that was previously defined in a specification.
-When specifications are updated, some elements and attributes become "deprecated" because of existing implementations of the older feature.
+When specifications are updated, some roles and attributes become "deprecated" because of existing implementations of the older feature.
 This indicates that the feature is allowed and expected to be supported by conforming browsers.
 However, those deprecated features may soon become obsolete, will be removed in future specifications,
 and will no longer be expected to be supported by browsers and assistive technology used by persons with disabilities.
 So, it is prudent to update the code to avoid deprecated features. 
 
-For example, 
-developers should not specify a `border` attribute on an `<img>` element in [HTML 5](https://dev.w3.org/html5/pf-summary/obsolete.html).
-[CSS](https://www.w3.org/Style/CSS/Overview.en.html) should be used instead.
+For example, 
+in [ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/#deprecated) the `role=directory` is being deprecated,
+and the `aria-disabled` state is being deprecated as a global state. 
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Replace deprecated elements and attributes with those preferred in the current version of the specification.
+* Replace deprecated roles and attributes with those preferred in the current version of the specification.
 
 </script></mark-down>
 <!-- End main panel -->
@@ -84,7 +84,7 @@ Replace deprecated elements and attributes with those preferred in the current v
 ### About this requirement
 
 * [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
-* [HTML 5 - Obsolete Features](https://dev.w3.org/html5/pf-summary/obsolete.html)
+* [ARIA 1.2 - Deprecated Requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
 
 ### Who does this affect?
 

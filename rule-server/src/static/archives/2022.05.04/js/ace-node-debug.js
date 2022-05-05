@@ -163,7 +163,19 @@ var ARIADefinitions = /** @class */ (function () {
      */
     ARIADefinitions.globalProperties = ["aria-atomic", "aria-busy", "aria-controls", "aria-current", "aria-describedby",
         "aria-details", "aria-flowto", "aria-hidden", "aria-keyshortcuts",
-        "aria-label", "aria-labelledby", "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"];
+        "aria-label", "aria-labelledby", "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"
+        // the following are deprecated in ARIA 1.2, will indicate deprecation in individual role
+        ,
+        'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'
+    ];
+    // deprecated roles
+    ARIADefinitions.globalDeprecatedRoles = [
+        'directory'
+    ];
+    // the following are deprecated in ARIA 1.1 for all the roles
+    ARIADefinitions.globalDeprecatedProperties = [
+        'aria-grabbed', 'aria-dropeffect'
+    ];
     /*
      * XSD data types for all WAI-ARIA properties
      * along with valid values when the data type is NMTOKEN
@@ -366,7 +378,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "liveRegion",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "alertdialog": {
             container: null,
@@ -376,11 +389,12 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "window",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "application": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid"],
+            props: ["aria-activedescendant", "aria-expanded"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
@@ -395,7 +409,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "banner": {
             container: null,
@@ -404,7 +419,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "blockquote": {
             container: null,
@@ -413,18 +429,20 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "button": {
             container: null,
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-pressed"],
+            props: ["aria-expanded", "aria-pressed"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "button | input[@type='button']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "caption": {
             container: ["figure", "grid", "table", "treegrid"],
@@ -434,7 +452,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "cell": {
             container: ["row"],
@@ -443,18 +462,20 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: "td",
             roleType: "structure",
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "checkbox": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-expanded", "aria-readonly", "aria-required"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='checkbox']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-haspopup']
         },
         "code": {
             container: null,
@@ -464,11 +485,12 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "columnheader": {
             container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
+            props: ["aria-colindex", "aria-colspan", "aria-expanded", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "th[@scope='col']",
@@ -478,7 +500,7 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "combobox": {
             container: null,
-            props: ["aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-readonly", "aria-required"],
             reqProps: ["aria-expanded"],
             reqChildren: [],
             htmlEquiv: null,
@@ -493,7 +515,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "contentinfo": {
             container: null,
@@ -502,7 +525,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "definition": {
             container: null,
@@ -511,7 +535,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "deletion": {
             container: null,
@@ -521,7 +546,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "dialog": {
             container: null,
@@ -531,20 +557,20 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "window",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
-        /**
-         *  the directory role is deprecated in Aria 1.2
-         "directory": {
-             container: null,
-             props: null,
-             reqProps: null,
-             reqChildren: null,
-             htmlEquiv: null,
-             roleType: "structure",
-             nameFrom: ["author"],
-             deprecated: ["list"] // TODO
-         }, */
+        "directory": {
+            container: null,
+            props: null,
+            reqProps: null,
+            reqChildren: null,
+            htmlEquiv: null,
+            roleType: "structure",
+            nameFrom: ["author"],
+            deprecated: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
+        },
         "doc-abstract": {
             container: null,
             props: null,
@@ -935,7 +961,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "emphasis": {
             container: null,
@@ -945,7 +972,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "feed": {
             container: null,
@@ -954,7 +982,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: ["article"],
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "figure": {
             container: null,
@@ -963,7 +992,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "form": {
             container: null,
@@ -973,7 +1003,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: "form",
             roleType: "landmark",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "generic": {
             container: null,
@@ -983,7 +1014,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby", "aria-roledescription"]
+            prohibitedProps: ["aria-label", "aria-labelledby", "aria-roledescription"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "graphics-document": {
             container: null,
@@ -1015,13 +1047,14 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "grid": {
             container: null,
-            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-multiselectable", "aria-readonly", "aria-rowcount"],
+            props: ["aria-activedescendant", "aria-colcount", "aria-multiselectable", "aria-readonly", "aria-rowcount"],
             reqProps: null,
             reqChildren: ["row", "rowgroup"],
             htmlEquiv: "table",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "gridcell": {
             container: ["row"],
@@ -1034,12 +1067,13 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "group": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled"],
+            props: ["aria-activedescendant"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "heading": {
             container: null,
@@ -1049,7 +1083,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: "h1 | h2 | h3 | h4 | h5 | h6",
             roleType: "structure",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "img": {
             container: null,
@@ -1060,7 +1095,8 @@ var ARIADefinitions = /** @class */ (function () {
             roleType: "structure",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "insertion": {
             container: null,
@@ -1070,17 +1106,19 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "link": {
             container: null,
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            props: ["aria-expanded"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "a | link",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "list": {
             container: null,
@@ -1089,17 +1127,19 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: ["listitem"],
             htmlEquiv: "ol | ul",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "listbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-expanded", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: ["group", "option"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup']
         },
         "listitem": {
             container: ["list"],
@@ -1108,7 +1148,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: "li",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "log": {
             container: null,
@@ -1117,7 +1158,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "main": {
             container: null,
@@ -1126,7 +1168,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "marquee": {
             container: null,
@@ -1136,7 +1179,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "liveRegion",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "math": {
             container: null,
@@ -1146,59 +1190,65 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["author"],
-            presentationalChildren: false
+            presentationalChildren: false,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "menu": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "menubar": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "menuitem": {
             container: ["group", "menu", "menubar"],
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "menuitemcheckbox": {
             container: ["group", "menu", "menubar"],
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "menuitemradio": {
             container: ["group", "menu", "menubar"],
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "meter": {
             container: null,
@@ -1209,7 +1259,8 @@ var ARIADefinitions = /** @class */ (function () {
             roleType: "structure",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "navigation": {
             container: null,
@@ -1218,7 +1269,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "none": {
             container: null,
@@ -1227,6 +1279,7 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "note": {
             container: null,
@@ -1235,18 +1288,20 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "option": {
             container: ["group", "listbox"],
-            props: ["aria-selected", "aria-checked", "aria-disabled", "aria-posinset", "aria-setsize"],
+            props: ["aria-selected", "aria-checked", "aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "option",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "paragraph": {
             container: null,
@@ -1256,7 +1311,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "presentation": {
             container: null,
@@ -1265,6 +1321,7 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "progressbar": {
             container: null,
@@ -1275,28 +1332,31 @@ var ARIADefinitions = /** @class */ (function () {
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "radio": {
             container: null,
-            props: ["aria-disabled", "aria-posinset", "aria-setsize"],
+            props: ["aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='radio']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "radiogroup": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-orientation", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: ["radio"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup']
         },
         "region": {
             container: null,
@@ -1306,16 +1366,18 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "landmark",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "row": {
             container: ["grid", "rowgroup", "table", "treegrid"],
-            props: ["aria-activedescendant", "aria-colindex", "aria-disabled", "aria-expanded", "aria-level", "aria-posinset", "aria-rowindex", "aria-selected", "aria-setsize"],
+            props: ["aria-activedescendant", "aria-colindex", "aria-expanded", "aria-level", "aria-posinset", "aria-rowindex", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: ["cell", "columnheader", "gridcell", "rowheader"],
             htmlEquiv: "tr",
             roleType: "structure",
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "rowgroup": {
             container: ["grid", "table", "treegrid"],
@@ -1324,11 +1386,12 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: ["row"],
             htmlEquiv: "tbody | tfoot | thead",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "rowheader": {
             container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
+            props: ["aria-colindex", "aria-colspan", "aria-expanded", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "th[@scope='row']",
@@ -1338,14 +1401,15 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "scrollbar": {
             container: null,
-            props: ["aria-disabled", "aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            props: ["aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
             reqProps: ["aria-controls", "aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "search": {
             container: null,
@@ -1354,11 +1418,12 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "searchbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "input[@type='search']",
@@ -1374,11 +1439,12 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "slider": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-orientation", "aria-readonly", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            props: ["aria-orientation", "aria-readonly", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
             reqProps: ["aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
@@ -1389,13 +1455,14 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "spinbutton": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-readonly", "aria-required", "aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
+            props: ["aria-activedescendant", "aria-readonly", "aria-required", "aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup']
         },
         "status": {
             container: null,
@@ -1404,7 +1471,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "strong": {
             container: null,
@@ -1413,7 +1481,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "subscript": {
             container: null,
@@ -1422,7 +1491,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "superscript": {
             container: null,
@@ -1431,28 +1501,31 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "switch": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-expanded", "aria-readonly", "aria-required"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-haspopup']
         },
         "tab": {
             container: ["tablist"],
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-selected", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
         "table": {
             container: null,
@@ -1462,17 +1535,19 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: "table",
             roleType: "structure",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "tablist": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-multiselectable", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-multiselectable", "aria-orientation"],
             reqProps: null,
             reqChildren: ["tab"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "tabpanel": {
             container: null,
@@ -1482,7 +1557,8 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "term": {
             container: null,
@@ -1491,11 +1567,12 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: "dfn",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "textbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "input[@type='text']",
@@ -1510,7 +1587,8 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "timer": {
             container: null,
@@ -1519,16 +1597,18 @@ var ARIADefinitions = /** @class */ (function () {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "toolbar": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "tooltip": {
             container: null,
@@ -1538,37 +1618,41 @@ var ARIADefinitions = /** @class */ (function () {
             htmlEquiv: null,
             roleType: "structure",
             nameRequired: false,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']
         },
         "tree": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-required"],
+            props: ["aria-activedescendant", "aria-multiselectable", "aria-orientation", "aria-required"],
             reqProps: null,
             reqChildren: ["group", "treeitem"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup']
         },
         "treegrid": {
             container: null,
-            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required", "aria-rowcount"],
+            props: ["aria-activedescendant", "aria-colcount", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required", "aria-rowcount"],
             reqProps: null,
             reqChildren: ["row", "rowgroup"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup']
         },
         "treeitem": {
             container: ["group", "tree"],
-            props: ["aria-checked", "aria-disabled", "aria-expanded", "aria-haspopup", "aria-level", "aria-posinset", "aria-selected", "aria-setsize"],
+            props: ["aria-checked", "aria-expanded", "aria-level", "aria-posinset", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid']
         },
     }; // end designPatterns
     // copied from https://html.spec.whatwg.org/multipage/semantics-other.html#disabled-elements
@@ -1875,7 +1959,7 @@ var ARIADefinitions = /** @class */ (function () {
         },
         "nav": {
             implicitRole: ["navigation"],
-            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist"],
+            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist", "none", "presentation"],
             globalAriaAttributesValid: true
         },
         "noscript": {
@@ -2293,6 +2377,7 @@ var ARIADefinitions = /** @class */ (function () {
                 //roleCondition: " with type=month",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "number": {
@@ -2300,7 +2385,7 @@ var ARIADefinitions = /** @class */ (function () {
                 //roleCondition: " with type=number",
                 validRoles: null,
                 globalAriaAttributesValid: true,
-                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
             },
             "password": {
                 implicitRole: null,
@@ -2403,6 +2488,7 @@ var ARIADefinitions = /** @class */ (function () {
                 //roleCondition: " with type=week",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "default": {
@@ -2515,6 +2601,130 @@ var ARIADefinitions = /** @class */ (function () {
             globalAriaAttributesValid: true
         }
     }; // end of documentConformanceRequirementSpecialTags
+    // map aria attribute to the corresponding native attribute, apply to any element applicable
+    // note this mapping is for the related attributes in the same element without checking the parent tree.
+    // refer to https://w3c.github.io/html-aria/
+    ARIADefinitions.relatedAriaHtmlAttributes = {
+        "aria-checked": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            },
+            overlapping: {
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-disabled": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            },
+            overlapping: {
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-hidden": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            },
+            overlapping: {
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-placeholder": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["placeholder"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-valuemax": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["max"],
+                htmlAttributeValues: null
+            }
+            //overlap case covered in the role definition: Authors SHOULD NOT use aria-valuemax on any element which allows the max attribute. Use the max attribute instead. 
+        },
+        "aria-valuemin": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["min"],
+                htmlAttributeValues: null
+            }
+            ////overlap case covered in the role definition:Authors SHOULD NOT use aria-valuemin on any element which allows the min attribute. Use the min attribute instead.
+        },
+        "aria-readonly": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "false", "false"]
+            },
+            overlapping: {
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "true", "true"]
+            }
+        },
+        "aria-required": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            },
+            overlapping: {
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-colspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {
+                // overlap occurs if both exists
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-rowspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {
+                // overlap occurs if both exists 
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-autocomplete": {
+            conflict: {
+                // conflict occurs if both values are conflict
+                ariaAttributeValue: "none",
+                htmlAttributeNames: ["autocomplete"],
+                htmlAttributeValues: ["on"]
+            }
+        }
+    };
     ARIADefinitions.containers = [];
     return ARIADefinitions;
 }());
@@ -5540,80 +5750,6 @@ var RPTUtil = /** @class */ (function () {
         var tagName = ruleContext.tagName.toLowerCase();
         var allowedAttributes = [];
         var prohibitedAttributes = [];
-        // These needs to be handled first since its applicable to all elements
-        /** NOTE that the following section will be enabled to cover aria-* and their native attribute counterparts checker
-        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
-        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
-        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("disabled")) {
-                // shouldn't or must not use aria-disabled on the element that already has the native disabled attribute
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", prohibitedAttributes);
-            } else {
-                // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
-            }
-        }
-        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
-        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("required")) {
-                // shouldn't or must not use aria-disabled on the element that already has the native required attribute
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", prohibitedAttributes);
-            } else {
-                // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
-            }
-        }
-
-        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("readonly")) {
-                // shouldn't or must not use aria-readonly on the element that already has the native readonly attribute
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);
-            } else {
-                // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
-            }
-        }
-        // aria global attribute aria-hidden
-        if (ruleContext.hasAttribute("hidden")) {
-            // shouldn't or must not use aria-hidden on the element that already has the native hidden attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", prohibitedAttributes);
-        }
-
-        if (ruleContext.hasAttribute("placeholder")) {
-            // shouldn't or must not use aria-placeholder on the element that already has the native placeholder attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-placeholder", prohibitedAttributes);
-        }
-        // html native global attribute: contenteditable
-        if ((ruleContext.hasAttribute("contenteditable") && ruleContext.getAttribute("contenteditable") === 'true')
-            || (ruleContext.parentElement && ruleContext.parentElement.hasAttribute("contenteditable")
-                && ruleContext.parentElement.getAttribute("contenteditable") === 'true')) {
-            // Authors MUST NOT set aria-readonly="true" on an element that has contenteditable="true".
-            if (ruleContext.hasAttribute("aria-readonly") && ruleContext.getAttribute("aria-readonly") === 'true')
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);
-        }
-        // html td and th: colspan
-        if (ruleContext.hasAttribute("colspan")) {
-            // shouldn't or must not use aria-colspan on the element that already has the native colspan attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-colspan", prohibitedAttributes);
-        }
-        // html td and th: rowspan
-        if (ruleContext.hasAttribute("rowspan")) {
-            // shouldn't or must not use aria-rowspan on the element that already has the native rowspan attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-rowspan", prohibitedAttributes);
-        }
-        // html meter, progress and input: max
-        if (ruleContext.hasAttribute("max")) {
-            // shouldn't use aria-valuemax on the element that already has the native max attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemax", prohibitedAttributes);
-        }
-        // html meter input: min
-        if (ruleContext.hasAttribute("min")) {
-            // shouldn't use aria-valuemin on the element that already has the native min attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemin", prohibitedAttributes);
-        }
-         */
-        // NOTE that the following section will be removed in the future to cover aria-* and their native attribute counterparts checker
-        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
         // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
         if (ARIADefinitions_1.ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
             // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
@@ -5747,6 +5883,63 @@ var RPTUtil = /** @class */ (function () {
             });
         }
         return allowedAttributes;
+    };
+    /**
+     *
+     * @param ariaAttr
+     * @param htmlAttrs
+     * @type: conflict or overlapping
+     * @returns htmlAttrName, 'Pass' or null
+     *         htmlAttrName that conflicts with the ariaAttr,
+     *         'Pass' with no conflict with the ariaAttr,
+     *         or null where ariaAttr won't cause conflict
+     */
+    RPTUtil.getConflictOrOverlappingHtmlAttribute = function (ariaAttr, htmlAttrs, type) {
+        var exist = ARIADefinitions_1.ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) {
+            var examinedHtmlAtrNames = [];
+            var ariaAttrValue = '';
+            if (type === 'conflict') {
+                if (!exist.conflict)
+                    return null;
+                ariaAttrValue = exist.conflict.ariaAttributeValue;
+            }
+            else if (type === 'overlapping') {
+                if (!exist.overlapping)
+                    return null;
+                ariaAttrValue = exist.overlapping.ariaAttributeValue;
+            }
+            else
+                return null;
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
+                var htmlAttrNames = [];
+                var htmlAttrValues = [];
+                if (type === 'conflict') {
+                    htmlAttrNames = exist.conflict.htmlAttributeNames;
+                    htmlAttrValues = exist.conflict.htmlAttributeValues;
+                }
+                else {
+                    htmlAttrNames = exist.overlapping.htmlAttributeNames;
+                    htmlAttrValues = exist.overlapping.htmlAttributeValues;
+                }
+                for (var i = 0; i < htmlAttrs.length; i++) {
+                    var index = htmlAttrNames.indexOf(htmlAttrs[i]['name']);
+                    if (index !== -1) {
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                            examinedHtmlAtrNames.push({ result: 'Failed', 'attr': htmlAttrs[i]['name'] });
+                            continue;
+                        }
+                        else
+                            examinedHtmlAtrNames.push({ result: 'Pass', 'attr': htmlAttrs[i]['name'] });
+                    }
+                }
+            }
+            return examinedHtmlAtrNames;
+        }
+        else
+            return null;
     };
     RPTUtil.CSS = function (element) {
         var styleText = "";
@@ -9210,121 +9403,6 @@ exports.HAAC_Aria_ImgAlt = {
         }
         else {
             return (0, IRule_1.RuleFail)("Fail_2");
-        }
-    }
-};
-
-
-/***/ }),
-
-/***/ 1101:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-/******************************************************************************
-  Copyright:: 2022- IBM, Inc
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-  http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-*****************************************************************************/
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.HAAC_Aria_Or_HTML5_Attr = void 0;
-var DOMUtil_1 = __webpack_require__(295);
-var IRule_1 = __webpack_require__(4377);
-var IRule_2 = __webpack_require__(4377);
-exports.HAAC_Aria_Or_HTML5_Attr = {
-    id: "HAAC_Aria_Or_HTML5_Attr",
-    context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]",
-    help: {
-        "en-US": {
-            "Pass_0": "HAAC_Aria_Or_HTML5_Attr.html",
-            "Fail_1": "HAAC_Aria_Or_HTML5_Attr.html",
-            "group": "HAAC_Aria_Or_HTML5_Attr.html"
-        }
-    },
-    messages: {
-        "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "HTML5 attribute is in conflict with the associated ARIA attribute used on an input element",
-            "group": "HTML5 attributes must not conflict with the associated ARIA attribute used on an input element"
-        }
-    },
-    rulesets: [{
-            "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-            "num": ["3.3.2"],
-            "level": IRule_2.eRulePolicy.VIOLATION,
-            "toolkitLevel": IRule_2.eToolkitLevel.LEVEL_ONE
-        }],
-    act: [],
-    run: function (context, options, contextHierarchies) {
-        var ruleContext = context["dom"].node;
-        var passed = true;
-        if (ruleContext.hasAttribute("required") && ruleContext.hasAttribute("aria-required") &&
-            ruleContext.getAttribute("aria-required").trim().toLowerCase() == "false") {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("placeholder") && ruleContext.hasAttribute("aria-placeholder")) {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("aria-autocomplete")) {
-            var ariaAutoCompleteAttr = ruleContext.getAttribute("aria-autocomplete").trim().toLowerCase();
-            var myNode = ruleContext;
-            var html5AutoCompleteAttr = null;
-            // There is no need to do a consideration for hidden in this node walk if the ruleContext node is hidden then
-            // this rule will not trigger as hidden takes inheritance from the parent nodes that this is walking up to.
-            // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
-            // and continue to the next node.
-            while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("autocomplete")))) {
-                myNode = DOMUtil_1.DOMUtil.parentElement(myNode);
-            }
-            if ((myNode != null) && (myNode.hasAttribute("autocomplete"))) {
-                html5AutoCompleteAttr = myNode.getAttribute("autocomplete").trim().toLowerCase();
-            }
-            // if HTML5 autocomplete attribute is specified and conflicting with aria tag
-            if ((html5AutoCompleteAttr != null) &&
-                (html5AutoCompleteAttr == "on" &&
-                    ariaAutoCompleteAttr == "none")) {
-                passed = false;
-            }
-        }
-        if (passed && ruleContext.hasAttribute("readonly") && ruleContext.hasAttribute("aria-readonly") &&
-            ruleContext.getAttribute("aria-readonly").trim().toLowerCase() == "false") {
-            passed = false;
-        }
-        if (passed && ruleContext.hasAttribute("aria-disabled")) {
-            // && ruleContext.getAttribute("aria-disabled").trim().toLowerCase() == "false"){
-            var ariaDisabledAttr = ruleContext.getAttribute("aria-disabled").trim().toLowerCase();
-            var myNode = ruleContext;
-            var html5DisabledAttr = myNode.hasAttribute("disabled");
-            // There is no need to do a consideration for hidden in this node walk if the ruleContext node is hidden then
-            // this rule will not trigger as hidden takes inheritance from the parent nodes that this is walking up to.
-            // In the case that we ever need to consider hidden for this case need to add if (RPTUtil.shouldNodeBeSkippedHidden(myNode)
-            // and continue to the next node.
-            while ((myNode != null) && (myNode.nodeName.toLowerCase() != 'html') && (!(myNode.hasAttribute("disabled")))) {
-                myNode = DOMUtil_1.DOMUtil.parentElement(myNode);
-            }
-            if ((myNode != null) && (myNode.hasAttribute("disabled"))) {
-                html5DisabledAttr = myNode.getAttribute("disabled");
-            }
-            // if HTML5 disabled attribute is specified and conflicting with aria tag
-            // Note RPT WebApp has a bug that inject disabled or DISABLED as the attribute value.
-            if (((html5DisabledAttr == true || html5DisabledAttr == "" || html5DisabledAttr == "DISABLED" || html5DisabledAttr == "disabled") && myNode.nodeName.toLowerCase() != 'html') &&
-                (ariaDisabledAttr == "false")) {
-                passed = false;
-            }
-        }
-        //return new ValidationResult(passed, [ruleContext], '', '', []);
-        if (passed) {
-            return (0, IRule_1.RulePass)("Pass_0");
-        }
-        else {
-            return (0, IRule_1.RuleFail)("Fail_1");
         }
     }
 };
@@ -19141,19 +19219,17 @@ exports.WCAG20_Input_ExplicitLabel = {
         }
         if (!passed) {
             // check aria role
-            //TODO: consider other aria roles relevant, other than menuitemcheckbox
-            var singleRole = legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                || legacy_1.RPTUtil.hasRole(ruleContext, "radio", false);
-            var otherRole = legacy_1.RPTUtil.hasRole(ruleContext, "listbox", false) || legacy_1.RPTUtil.hasRole(ruleContext, "textbox", false)
-                || legacy_1.RPTUtil.hasRole(ruleContext, "searchbox", false);
-            if (singleRole)
+            //any more roles for input? 
+            var nameFromBoth = legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
+                || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "radio") || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "checkbox");
+            var nameFromAuthorOnly = legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "listbox") || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "searchbox")
+                || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "textbox") || legacy_1.RPTUtil.hasRoleInSemantics(ruleContext, "combobox")
+                || !legacy_1.RPTUtil.hasAnyRole(ruleContext, true);
+            if (nameFromBoth)
                 passed = legacy_1.RPTUtil.getInnerText(ruleContext) && legacy_1.RPTUtil.getInnerText(ruleContext).trim().length > 0;
-            else if (otherRole) {
-                passed = legacy_1.RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || legacy_1.RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
-                    || legacy_1.RPTUtil.attributeNonEmpty(ruleContext, "title");
-            }
-            else {
-                // any other role?
+            if (!passed) {
+                if (nameFromBoth || nameFromAuthorOnly)
+                    passed = legacy_1.RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || legacy_1.RPTUtil.attributeNonEmpty(ruleContext, "title");
             }
         }
         if (passed) {
@@ -21772,6 +21848,300 @@ exports.WCAG21_Style_Viewport = {
 
 /***/ }),
 
+/***/ 5316:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.aria_attribute_conflict = void 0;
+var IRule_1 = __webpack_require__(4377);
+var IRule_2 = __webpack_require__(4377);
+var legacy_1 = __webpack_require__(8422);
+exports.aria_attribute_conflict = {
+    id: "aria_attribute_conflict",
+    context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]"
+        + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
+        + ", dom:*[aria-rowspan]",
+    help: {
+        "en-US": {
+            "pass": "aria_attribute_conflict.html",
+            "fail_conflict": "aria_attribute_conflict.html",
+            "group": "aria_attribute_conflict.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "pass": "Rule Passed",
+            "fail_conflict": "The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"",
+            "group": "An ARIA attribute must not conflict with the corresponding HTML attribute"
+        }
+    },
+    rulesets: [{
+            "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+            "num": ["4.1.2"],
+            "level": IRule_2.eRulePolicy.VIOLATION,
+            "toolkitLevel": IRule_2.eToolkitLevel.LEVEL_ONE
+        }],
+    act: [],
+    run: function (context, options, contextHierarchies) {
+        var ruleContext = context["dom"].node;
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        if (legacy_1.RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1")
+            return null;
+        var domAttributes = ruleContext.attributes;
+        var ariaAttrs = [];
+        var htmlAttrs = [];
+        if (domAttributes) {
+            for (var i = 0; i < domAttributes.length; i++) {
+                var attrName = domAttributes[i].name.trim().toLowerCase();
+                var attrValue = ruleContext.getAttribute(attrName);
+                if (attrValue === '')
+                    attrValue = null;
+                if (attrName.substring(0, 5) === 'aria-')
+                    ariaAttrs.push({ name: attrName, value: attrValue });
+                else
+                    htmlAttrs.push({ name: attrName, value: attrValue });
+            }
+        }
+        var ret = [];
+        var _loop_1 = function (i) {
+            var examinedHtmlAtrNames = legacy_1.RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'conflict');
+            if (examinedHtmlAtrNames === null)
+                return "continue";
+            examinedHtmlAtrNames.forEach(function (item) {
+                if (item['result'] === 'Pass') { //pass
+                    ret.push((0, IRule_1.RulePass)("pass"));
+                }
+                else if (item['result'] === 'Failed') { //failed
+                    legacy_1.RPTUtil.setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
+                    ret.push((0, IRule_1.RuleFail)("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
+                }
+            });
+        };
+        for (var i = 0; i < ariaAttrs.length; i++) {
+            _loop_1(i);
+        }
+        if (ret.length > 0)
+            return ret;
+        return null;
+    }
+};
+
+
+/***/ }),
+
+/***/ 8412:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.aria_attribute_deprecated = void 0;
+var IRule_1 = __webpack_require__(4377);
+var IRule_2 = __webpack_require__(4377);
+var legacy_1 = __webpack_require__(8422);
+var ARIADefinitions_1 = __webpack_require__(8235);
+exports.aria_attribute_deprecated = {
+    id: "aria_attribute_deprecated",
+    context: "dom:*",
+    help: {
+        "en-US": {
+            "pass": "aria_attribute_deprecated.html",
+            "fail_aria_role": "aria_attribute_deprecated.html",
+            "fail_aria_attr": "aria_attribute_deprecated.html",
+            "fail_role_attr": "aria_attribute_deprecated.html",
+            "group": "aria_attribute_deprecated.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "pass": "The ARIA roles and attribute are used per specification",
+            "fail_aria_role": "The ARIA role \"{0}\" is deprecated in the ARIA specification",
+            "fail_aria_attr": "The ARIA attributes \"{0}\" are deprecated in the ARIA specification",
+            "fail_role_attr": "The ARIA attributes \"{0}\" are deprecated for the role \"{1}\" in the ARIA specification",
+            "group": "No deprecated ARIA role or attribute should be used"
+        }
+    },
+    rulesets: [{
+            "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+            "num": ["4.1.1"],
+            "level": IRule_2.eRulePolicy.RECOMMENDATION,
+            "toolkitLevel": IRule_2.eToolkitLevel.LEVEL_ONE
+        }],
+    act: [],
+    run: function (context, options, contextHierarchies) {
+        var ruleContext = context["dom"].node;
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        if (legacy_1.RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1")
+            return null;
+        var domAttributes = ruleContext.attributes;
+        var ariaAttrs = [];
+        if (domAttributes) {
+            for (var i = 0; i < domAttributes.length; i++) {
+                var attrName = domAttributes[i].name;
+                if (attrName.substring(0, 5) === 'aria-')
+                    ariaAttrs.push(attrName);
+            }
+        }
+        var roles = legacy_1.RPTUtil.getRoles(ruleContext, false);
+        var ret = [];
+        if (roles && roles.length > 0) {
+            var globalDeprecatedRoles = ARIADefinitions_1.ARIADefinitions.globalDeprecatedRoles;
+            var globalDeprecatedAttributes = ARIADefinitions_1.ARIADefinitions.globalDeprecatedProperties;
+            for (var i = 0; i < roles.length; i++) {
+                var passed = true;
+                if (globalDeprecatedRoles.includes(roles[i])) {
+                    ret.push((0, IRule_1.RuleFail)('fail_aria_role', [roles[i]]));
+                    passed = false;
+                }
+                var roleWithDeprecatedAttributes = ARIADefinitions_1.ARIADefinitions.designPatterns[roles[i]];
+                if (roleWithDeprecatedAttributes) {
+                    var deprecatedAttriNames = roleWithDeprecatedAttributes['deprecatedProps'];
+                    if (deprecatedAttriNames && deprecatedAttriNames.length > 0) {
+                        for (var i_1 = 0; i_1 < ariaAttrs.length; i_1++) {
+                            if (globalDeprecatedAttributes.includes(ariaAttrs[i_1])) {
+                                ret.push((0, IRule_1.RuleFail)('fail_aria_attr', [ariaAttrs[i_1]]));
+                                passed = false;
+                            }
+                            else if (deprecatedAttriNames.includes(ariaAttrs[i_1])) {
+                                ret.push((0, IRule_1.RuleFail)('fail_role_attr', [ariaAttrs[i_1], roles[i_1]]));
+                                passed = false;
+                            }
+                        }
+                    }
+                }
+                if (passed)
+                    ret.push((0, IRule_1.RulePass)("pass"));
+            }
+        }
+        if (ret.length > 0)
+            return ret;
+        return null;
+    }
+};
+
+
+/***/ }),
+
+/***/ 9844:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.aria_attribute_redundant = void 0;
+var IRule_1 = __webpack_require__(4377);
+var IRule_2 = __webpack_require__(4377);
+var legacy_1 = __webpack_require__(8422);
+exports.aria_attribute_redundant = {
+    id: "aria_attribute_redundant",
+    context: "dom:*[aria-required], dom:*[aria-autocomplete], dom:*[aria-readonly], dom:*[aria-disabled], dom:*[aria-placeholder]"
+        + ", dom:*[aria-checked], dom:*[aria-hidden], dom:*[aria-valuemax], dom:*[aria-valuemin], dom:*[aria-colspan]"
+        + ", dom:*[aria-rowspan]",
+    help: {
+        "en-US": {
+            "pass": "aria_attribute_redundant.html",
+            "fail_redundant": "aria_attribute_redundant.html",
+            "group": "aria_attribute_redundant.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "pass": "Rule Passed",
+            "fail_redundant": "The ARIA attribute \"{0}\" is redundant with the HTML attribute \"{1}\"",
+            "group": "An ARIA attribute should not be used when there is a corresponding HTML attribute"
+        }
+    },
+    rulesets: [{
+            "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+            "num": ["4.1.2"],
+            "level": IRule_2.eRulePolicy.RECOMMENDATION,
+            "toolkitLevel": IRule_2.eToolkitLevel.LEVEL_ONE
+        }],
+    act: [],
+    run: function (context, options, contextHierarchies) {
+        var ruleContext = context["dom"].node;
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        if (legacy_1.RPTUtil.getCache(ruleContext, "aria_semantics_attribute", "") === "Fail_1")
+            return null;
+        // if conflict already reported, ignore reporting overlap
+        if (legacy_1.RPTUtil.getCache(ruleContext, "aria_attribute_conflict", "") === "fail_conflict")
+            return null;
+        var domAttributes = ruleContext.attributes;
+        var ariaAttrs = [];
+        var htmlAttrs = [];
+        if (domAttributes) {
+            for (var i = 0; i < domAttributes.length; i++) {
+                var attrName = domAttributes[i].name.trim().toLowerCase();
+                var attrValue = ruleContext.getAttribute(attrName);
+                if (attrValue === '')
+                    attrValue = null;
+                if (attrName.substring(0, 5) === 'aria-')
+                    ariaAttrs.push({ name: attrName, value: attrValue });
+                else
+                    htmlAttrs.push({ name: attrName, value: attrValue });
+            }
+        }
+        var ret = [];
+        var _loop_1 = function (i) {
+            var examinedHtmlAtrNames = legacy_1.RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'overlapping');
+            if (examinedHtmlAtrNames === null)
+                return "continue";
+            examinedHtmlAtrNames.forEach(function (item) {
+                if (item['result'] === 'Pass') { //pass
+                    ret.push((0, IRule_1.RulePass)("pass"));
+                }
+                else if (item['result'] === 'Failed') { //failed
+                    ret.push((0, IRule_1.RuleFail)("fail_redundant", [ariaAttrs[i]['name'], item['attr']]));
+                }
+            });
+        };
+        for (var i = 0; i < ariaAttrs.length; i++) {
+            _loop_1(i);
+        }
+        if (ret.length > 0)
+            return ret;
+        return null;
+    }
+};
+
+
+/***/ }),
+
 /***/ 2334:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -21831,6 +22201,82 @@ exports.aria_hidden_focus_misuse = {
 
 /***/ }),
 
+/***/ 8545:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+/******************************************************************************
+  Copyright:: 2022- IBM, Inc
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.aria_role_redundant = void 0;
+var IRule_1 = __webpack_require__(4377);
+var IRule_2 = __webpack_require__(4377);
+var legacy_1 = __webpack_require__(8422);
+exports.aria_role_redundant = {
+    id: "aria_role_redundant",
+    context: "dom:*[role]",
+    help: {
+        "en-US": {
+            "pass": "aria_role_redundant.html",
+            "fail_redundant": "aria_role_redundant.html",
+            "group": "aria_role_redundant.html"
+        }
+    },
+    messages: {
+        "en-US": {
+            "pass": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
+            "fail_redundant": "The explicitly-assigned ARIA role \"{0}\" is redundant with the implicit role of the element <{1}>",
+            "group": "An explicitly-assigned ARIA role should not be redundant with the implicit role of the element"
+        }
+    },
+    rulesets: [{
+            "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
+            "num": ["4.1.1"],
+            "level": IRule_2.eRulePolicy.RECOMMENDATION,
+            "toolkitLevel": IRule_2.eToolkitLevel.LEVEL_FOUR
+        }],
+    act: [],
+    run: function (context, options, contextHierarchies) {
+        var ruleContext = context["dom"].node;
+        var elemName = ruleContext.tagName.toLowerCase();
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        if (legacy_1.RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1")
+            return null;
+        // dependency check: if it's already failed in the parent relation, then skip this check
+        if (["td", "th", "tr"].includes(elemName) && legacy_1.RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role")
+            return null;
+        var ariaRoles = legacy_1.RPTUtil.getRoles(ruleContext, false);
+        if (!ariaRoles || ariaRoles.length === 0)
+            return;
+        var implicitRoles = legacy_1.RPTUtil.getImplicitRole(ruleContext);
+        if (!implicitRoles || implicitRoles.length === 0)
+            return (0, IRule_1.RulePass)("pass");
+        var ret = [];
+        for (var i = 0; i < ariaRoles.length; i++) {
+            if (!implicitRoles.includes(ariaRoles[i]))
+                ret.push((0, IRule_1.RulePass)("pass"));
+            else
+                ret.push((0, IRule_1.RuleFail)("fail_redundant", [ariaRoles[i], elemName]));
+        }
+        if (ret.length > 0)
+            return ret;
+        return null;
+    }
+};
+
+
+/***/ }),
+
 /***/ 1908:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -21883,6 +22329,10 @@ exports.aria_semantics_role = {
     act: [],
     run: function (context, options, contextHierarchies) {
         var ruleContext = context["dom"].node;
+        var tagName = ruleContext.tagName.toLowerCase();
+        // dependency check: if it's already failed, then skip
+        if (["td", "th", "tr"].includes(tagName) && legacy_1.RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role")
+            return null;
         var domRoles = [];
         if (ruleContext.getAttribute("role") !== null) {
             domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
@@ -21894,7 +22344,6 @@ exports.aria_semantics_role = {
             if (!(role.toLowerCase() in designPatterns))
                 return null;
         }
-        var tagName = ruleContext.tagName.toLowerCase();
         // Roles allowed on this node
         var allowedRoles = [];
         // Failing roles
@@ -22023,6 +22472,7 @@ exports.aria_semantics_attribute = {
         //	    }
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
+            legacy_1.RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
             return (0, IRule_1.RuleFail)("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         }
         else if (passAttributeTokens.length > 0) {
@@ -22719,10 +23169,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.element_attribute_deprecated = void 0;
 var IRule_1 = __webpack_require__(4377);
 var IRule_2 = __webpack_require__(4377);
-var legacy_1 = __webpack_require__(8422);
 var DEPRECATED_ELEMENTS = [
     /** original */
-    "applet", "basefont", "center", "dir", "font", "isindex", "listing", "menu",
+    "applet", "basefont", "center", "dir", "font", "isindex", "listing",
     "plaintext", "spacer", "s", "strike", "u", "xmp",
     /** added from https://dev.w3.org/html5/pf-summary/obsolete.html */
     "acronym", "frame", "frameset", "noframes", "noembed", "big", "blink", "marquee", "tt",
@@ -22775,109 +23224,6 @@ var DEPRECATED_ELEMENT_ATTRIBUTES = {
     "thead": ["char", "charoff", "valign", "align"],
     "tr": ["align", "bgcolor", "char", "charoff", "valign"]
 };
-var DEPRECATED_ROLES = [
-/**  deprecated aria roles: https://www.w3.org/TR/wai-aria-1.2/ */
-/**
- *  the aria deprecation will be better handled in ARIADefinition.ts
- *  "directory"
-*/
-];
-var DEPRECATED_ARIA_GLOBAL_ATTRIBUTES = [
-/**  add deprecated aria global attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-/**
- *  the aria deprecation will be better handled in ARIADefinition.ts
- *  "aria-grabbed", "aria-dropeffect"
-*/
-];
-var DEPRECATED_ARIA_ROLE_ATTRIBUTES = {
-/**  add deprecated aria role and attributes: https://www.w3.org/TR/wai-aria-1.2/ */
-/**
- *  the aria deprecation will be better handled in ARIADefinition.ts
-"alert" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"alertdialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"article" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"banner" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"blockquote" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"button" : ["aria-errormessage", "aria-invalid"],
-"caption" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"cell" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"checkbox" : ["aria-haspopup"],
-"code" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"command" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"complementary" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"composite" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"contentinfo" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"definition" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"deletion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"dialog" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"document" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"emphasis" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"feed" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"figure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"form" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"generic" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"grid" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"group" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"heading" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"img" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"input" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"landmark" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"insertion" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"link" : ["aria-errormessage", "aria-invalid"],
-"list" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"listbox" : ["aria-haspopup"],
-"listitem" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"log" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"main" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"marquee" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"math" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"meter" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"menu" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"menubar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"menuitem" : ["aria-errormessage", "aria-invalid"],
-"menuitemcheckbox" : ["aria-errormessage", "aria-invalid"],
-"menuitemradio" : ["aria-errormessage", "aria-invalid"],
-"navigation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"note" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"option" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"paragraph" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"presentation" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"progressbar" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"radio" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"radiogroup" : ["aria-haspopup"],
-"range" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"region" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"row" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"rowgroup" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"scrollbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"search" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"section" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"sectionhead" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"select" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"separator" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"spinbutton" : ["aria-haspopup"],
-"status" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"strong" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"structure" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"subscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"superscript" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"switch" : ["aria-haspopup"],
-"tab" : ["aria-errormessage", "aria-invalid"],
-"table" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"tablist" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"tabpanel" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"term" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"time" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"timer" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"toolbar" : ["aria-errormessage", "aria-haspopup", "aria-invalid"],
-"tooltip" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"tree" : ["aria-haspopup"],
-"treegrid" : ["aria-haspopup"],
-"treeitem" : ["aria-errormessage", "aria-invalid"],
-"widget" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"],
-"window" : ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid"]
- */
-};
 function arrayToContextStr(obj, type) {
     var str = "";
     for (var _i = 0, obj_1 = obj; _i < obj_1.length; _i++) {
@@ -22888,11 +23234,6 @@ function arrayToContextStr(obj, type) {
             str += 'dom:' + prop;
         else if (type === 'HTML_ATTRIBUTES')
             str += 'dom:*[' + prop + "]";
-        else if (type === 'ARIA_ROLES')
-            str += 'aria:' + prop;
-        else if (type === 'ARIA_ATTRIBUTES') {
-            str += 'dom:*[' + prop + "]";
-        }
     }
     return str;
 }
@@ -22909,16 +23250,6 @@ function objToContextStr(obj, type) {
                 str += 'dom:' + prop + '[' + item + ']';
             }
         }
-        else if (type === 'ARIA_ROLE_ATTRIBUTES') {
-            for (var _b = 0, _c = obj[prop]; _b < _c.length; _b++) {
-                var item = _c[_b];
-                if (str !== '' && !str.endsWith(", "))
-                    str += ", ";
-                if (item.startsWith("aria-"))
-                    item = item.substring(5);
-                str += 'aria:' + prop + '[' + item + ']';
-            }
-        }
     }
     return str;
 }
@@ -22931,9 +23262,6 @@ exports.element_attribute_deprecated = {
             "fail_elem": "element_attribute_deprecated.html",
             "fail_attr": "element_attribute_deprecated.html",
             "fail_elem_attr": "element_attribute_deprecated.html",
-            "fail_aria_role": "element_attribute_deprecated.html",
-            "fail_aria_attr": "element_attribute_deprecated.html",
-            "fail_role_attr": "element_attribute_deprecated.html",
             "group": "element_attribute_deprecated.html"
         }
     },
@@ -22943,9 +23271,6 @@ exports.element_attribute_deprecated = {
             "fail_elem": "The <{0}> element is deprecated in HTML 5",
             "fail_attr": "The HTML attribute(s) \"{0}\" is deprecated in HTML 5",
             "fail_elem_attr": "The HTML attribute(s) \"{0}\" is deprecated for the <{1}> element in HTML 5",
-            "fail_aria_role": "The ARIA role \"{0}\" is deprecated in ARIA 1.2",
-            "fail_aria_attr": "The ARIA attribute(s) \"{0}\" is deprecated in ARIA 1.2",
-            "fail_role_attr": "The ARIA attribute(s) \"{0}\" is deprecated for the role \"{1}\"",
             "group": "Avoid use of obsolete features if possible"
         }
     },
@@ -22967,6 +23292,7 @@ exports.element_attribute_deprecated = {
             return null;
         }
         var nodeName = ruleContext.nodeName.toLowerCase();
+        var ret = [];
         // check if it's a deprecated element
         if (DEPRECATED_ELEMENTS.includes(nodeName)) {
             return (0, IRule_1.RuleFail)("fail_elem", [nodeName]);
@@ -22998,46 +23324,6 @@ exports.element_attribute_deprecated = {
             }
             if (violations !== '') {
                 return (0, IRule_1.RuleFail)("fail_elem_attr", [violations, nodeName]);
-            }
-        }
-        var roles = legacy_1.RPTUtil.getRoles(ruleContext, false);
-        // check if it's a deprecated global aria role
-        for (var _b = 0, roles_1 = roles; _b < roles_1.length; _b++) {
-            var role = roles_1[_b];
-            if (DEPRECATED_ROLES.includes(role)) {
-                return (0, IRule_1.RuleFail)("fail_aria_role", [role]);
-            }
-        }
-        // check if it's a deprecated aria global attribute
-        violations = '';
-        for (var _c = 0, attrs_3 = attrs; _c < attrs_3.length; _c++) {
-            var attr = attrs_3[_c];
-            if (DEPRECATED_ARIA_GLOBAL_ATTRIBUTES.includes(attr)) {
-                if (violations !== '')
-                    violations += ', ';
-                violations += attr;
-            }
-        }
-        if (violations !== '') {
-            return (0, IRule_1.RuleFail)("fail_aria_attr", [violations]);
-        }
-        // check if it's a deprecated ARIA role & attribute    
-        for (var _d = 0, roles_2 = roles; _d < roles_2.length; _d++) {
-            var role = roles_2[_d];
-            violations = '';
-            if (role in DEPRECATED_ARIA_ROLE_ATTRIBUTES) {
-                for (var _e = 0, attrs_4 = attrs; _e < attrs_4.length; _e++) {
-                    var attr = attrs_4[_e];
-                    if (attr.startsWith('aria-') && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role]
-                        && DEPRECATED_ARIA_ROLE_ATTRIBUTES[role].includes(attr)) {
-                        if (violations !== '')
-                            violations += ', ';
-                        violations += attr;
-                    }
-                }
-                if (violations !== '') {
-                    return (0, IRule_1.RuleFail)("fail_role_attr", [violations, role]);
-                }
             }
         }
         return (0, IRule_1.RulePass)("pass");
@@ -23206,7 +23492,11 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 // This file is automatically generated by "npm run prebuild". Do not edit
+__exportStar(__webpack_require__(5316), exports);
+__exportStar(__webpack_require__(8412), exports);
+__exportStar(__webpack_require__(9844), exports);
 __exportStar(__webpack_require__(2334), exports);
+__exportStar(__webpack_require__(8545), exports);
 __exportStar(__webpack_require__(1908), exports);
 __exportStar(__webpack_require__(3974), exports);
 __exportStar(__webpack_require__(1254), exports);
@@ -23222,7 +23512,6 @@ __exportStar(__webpack_require__(3724), exports);
 __exportStar(__webpack_require__(2521), exports);
 __exportStar(__webpack_require__(4701), exports);
 __exportStar(__webpack_require__(3647), exports);
-__exportStar(__webpack_require__(1101), exports);
 __exportStar(__webpack_require__(4806), exports);
 __exportStar(__webpack_require__(645), exports);
 __exportStar(__webpack_require__(4623), exports);
@@ -24257,6 +24546,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.table_aria_descendants = void 0;
 var IRule_1 = __webpack_require__(4377);
 var IRule_2 = __webpack_require__(4377);
+var legacy_1 = __webpack_require__(8422);
 exports.table_aria_descendants = {
     id: "table_aria_descendants",
     context: "aria:table dom:tr[role], aria:table dom:th[role], aria:table dom:td[role], aria:grid dom:tr[role], aria:grid dom:th[role], aria:grid dom:td[role], aria:treegrid dom:tr[role], aria:treegrid dom:th[role], aria:treegrid dom:td[role]",
@@ -24280,7 +24570,10 @@ exports.table_aria_descendants = {
         }],
     act: [],
     run: function (context, options, contextHierarchies) {
+        var ruleContext = context["dom"].node;
         var parentRole = contextHierarchies["aria"].filter(function (hier) { return ["table", "grid", "treegrid"].includes(hier.role); });
+        // cache the result
+        legacy_1.RPTUtil.setCache(ruleContext, "table_aria_descendants", "explicit_role");
         return (0, IRule_1.RuleFail)("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
     }
 };
