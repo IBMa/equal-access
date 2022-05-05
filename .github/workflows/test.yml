@@ -36,7 +36,7 @@ jobs:
       working-directory: accessibility-checker-engine
     - run: npx karma start karmaaction.conf.js --single-run --watch=false
       working-directory: accessibility-checker-engine
-    - run: npx mocha test/mocha/help/help.test.js
+    - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
 
 ###############################################################################
