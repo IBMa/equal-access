@@ -55,12 +55,30 @@ export default class EngineCache {
             return engines[archiveId];
         } else {
             let archiveDefs = await this.getArchives();
-            for (const archiveDef of archiveDefs) {
-                if (archiveDef.id === archiveId) {
-                    let engineFile = `${archiveDef.path}/js/ace.js`;
-                    engines[archiveId] = engineFile;
-                    await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
-                    return engineFile;
+            if (archiveId === "latest") {
+                let latestVersion;
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id === "latest") {
+                        latestVersion = archiveDef.version;
+                        break;
+                    }
+                }
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id !== "latest" && archiveDef.version === latestVersion) {
+                        let engineFile = `${archiveDef.path}/js/ace.js`;
+                        engines[archiveId] = engineFile;
+                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+                        return engineFile;
+                    }
+                }
+            } else {
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id === archiveId) {
+                        let engineFile = `${archiveDef.path}/js/ace.js`;
+                        engines[archiveId] = engineFile;
+                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+                        return engineFile;
+                    }
                 }
             }
         }
