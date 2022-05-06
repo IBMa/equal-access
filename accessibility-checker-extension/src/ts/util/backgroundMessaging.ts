@@ -26,23 +26,25 @@ export default class BackgroundMessaging {
         let myMessage = JSON.parse(JSON.stringify(message || {}));
         myMessage.type = type;
         return new Promise((resolve, reject) => {
-            chrome.tabs.sendMessage(tabId, myMessage, function(res) {
-               
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                } else {
-                    if (res) {
-                        if (typeof res === "string") {
-                            try {
-                                res = JSON.parse(res);
-                            } catch (e) {}
-                        }
-                        resolve(res);
+            setTimeout(() => {
+                chrome.tabs.sendMessage(tabId, myMessage, function(res) {
+                
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
                     } else {
-                        resolve(null);
+                        if (res) {
+                            if (typeof res === "string") {
+                                try {
+                                    res = JSON.parse(res);
+                                } catch (e) {}
+                            }
+                            resolve(res);
+                        } else {
+                            resolve(null);
+                        }
                     }
-                }
-            });
+                });
+            }, 0);
         });
     }
 
@@ -50,22 +52,24 @@ export default class BackgroundMessaging {
         let myMessage = JSON.parse(JSON.stringify(message));
         myMessage.type = type;
         return new Promise((resolve, reject) => {
-			chrome.runtime.sendMessage(myMessage, async function (res) {
-                if (chrome.runtime.lastError) {
-                    reject(`${type}: ${chrome.runtime.lastError.message}`);
-                } else {
-                    if (res) {
-                        if (typeof res === "string") {
-                            try {
-                                res = JSON.parse(res);
-                            } catch (e) {}
-                        }
-                        resolve(res);
+            setTimeout(() => {
+                chrome.runtime.sendMessage(myMessage, async function (res) {
+                    if (chrome.runtime.lastError) {
+                        reject(`${type}: ${chrome.runtime.lastError.message}`);
                     } else {
-                        resolve(null);
+                        if (res) {
+                            if (typeof res === "string") {
+                                try {
+                                    res = JSON.parse(res);
+                                } catch (e) {}
+                            }
+                            resolve(res);
+                        } else {
+                            resolve(null);
+                        }
                     }
-                }
-			});
+                });
+            }, 0);
         }).catch(error => {console.log(error)});
     }
 

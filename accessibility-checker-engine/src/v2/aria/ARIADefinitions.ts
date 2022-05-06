@@ -40,8 +40,21 @@ export class ARIADefinitions {
      */
     static globalProperties : string[] = ["aria-atomic", "aria-busy", "aria-controls", "aria-current", "aria-describedby", 
         "aria-details", "aria-flowto", "aria-hidden", "aria-keyshortcuts",
-        "aria-label", "aria-labelledby", "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"];
+        "aria-label", "aria-labelledby", "aria-live", "aria-owns", "aria-relevant", "aria-roledescription"
+        // the following are deprecated in ARIA 1.2, will indicate deprecation in individual role
+        , 'aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'
+    ];
 
+    // deprecated roles
+    static globalDeprecatedRoles : string[] = [
+        'directory'
+    ];
+
+    // the following are deprecated in ARIA 1.1 for all the roles
+    static globalDeprecatedProperties : string[] = [
+        'aria-grabbed', 'aria-dropeffect'
+    ];
+    
     /*
      * XSD data types for all WAI-ARIA properties
      * along with valid values when the data type is NMTOKEN
@@ -253,7 +266,8 @@ export class ARIADefinitions {
             nameRequired?: boolean,
             nameFrom?: string[],
             presentationalChildren?: boolean,
-            deprecated?: string[],
+            deprecated?: boolean,
+            deprecatedProps?: string[]
             prohibitedProps?: string[]
         }
     } = {
@@ -265,7 +279,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "liveRegion",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "alertdialog": {
@@ -276,18 +291,19 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "window",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "application": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid"],
+            props: ["aria-activedescendant", "aria-expanded"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure", // or can be "widget"
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"] 
         },
 
         "article": {
@@ -297,7 +313,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "banner": {
@@ -307,7 +324,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "blockquote": {
@@ -317,19 +335,21 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "button": {
             container: null,
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-pressed"],
+            props: ["aria-expanded", "aria-pressed"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "button | input[@type='button']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
 
         "caption": {
@@ -340,7 +360,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "cell": {
@@ -350,19 +371,21 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "td",
             roleType: "structure",
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "checkbox": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-expanded", "aria-readonly", "aria-required"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='checkbox']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "code": {
@@ -373,29 +396,30 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "columnheader": {
             container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
+            props: ["aria-colindex", "aria-colspan", "aria-expanded", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "th[@scope='col']",
             roleType: "structure",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"] 
         },
 
         "combobox": {
             container: null,
-            props: ["aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-controls", "aria-activedescendant", "aria-autocomplete", "aria-readonly", "aria-required"],
             reqProps: ["aria-expanded"], // aria-controls isn't actually required when aria-expanded="false"
             reqChildren: [],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"] 
         },
 
         "complementary": {
@@ -405,7 +429,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "contentinfo": {
@@ -415,7 +440,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "definition": {
@@ -425,7 +451,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "deletion": {
@@ -436,7 +463,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "dialog": {
@@ -447,11 +475,9 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "window",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
-
-       /** 
-        *  the directory role is deprecated in Aria 1.2
         "directory": {
             container: null,
             props: null,
@@ -460,8 +486,9 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["author"],
-            deprecated: ["list"] // TODO
-        }, */
+            deprecated: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid']  
+        }, 
         "doc-abstract": {
             container: null,
             props: null,
@@ -852,7 +879,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "emphasis": {
@@ -863,7 +891,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "feed": {
@@ -873,7 +902,8 @@ export class ARIADefinitions {
             reqChildren: ["article"],
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "figure": {
@@ -883,7 +913,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "form": {
@@ -894,7 +925,8 @@ export class ARIADefinitions {
             htmlEquiv: "form",
             roleType: "landmark",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "generic": {
@@ -905,7 +937,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby", "aria-roledescription"]
+            prohibitedProps: ["aria-label", "aria-labelledby", "aria-roledescription"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "graphics-document": {
@@ -941,13 +974,14 @@ export class ARIADefinitions {
         
         "grid": {
             container: null,
-            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-multiselectable", "aria-readonly", "aria-rowcount"],
+            props: ["aria-activedescendant", "aria-colcount", "aria-multiselectable", "aria-readonly", "aria-rowcount"],
             reqProps: null,
             reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
             htmlEquiv: "table",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "gridcell": {
@@ -962,12 +996,13 @@ export class ARIADefinitions {
 
         "group": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled"],
+            props: ["aria-activedescendant"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "heading": {
@@ -978,7 +1013,8 @@ export class ARIADefinitions {
             htmlEquiv: "h1 | h2 | h3 | h4 | h5 | h6",
             roleType: "structure",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "img": {
@@ -990,7 +1026,8 @@ export class ARIADefinitions {
             roleType: "structure",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "insertion": {
@@ -1001,18 +1038,20 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "link": {
             container: null,
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup"],
+            props: ["aria-expanded"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "a | link",
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
 
         "list": {
@@ -1022,18 +1061,20 @@ export class ARIADefinitions {
             reqChildren: ["listitem"],
             htmlEquiv: "ol | ul",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "listbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-expanded", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: ["group", "option"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "listitem": {
@@ -1043,7 +1084,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "li",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "log": {
@@ -1053,7 +1095,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "main": {
@@ -1063,7 +1106,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "marquee": {
@@ -1074,7 +1118,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "liveRegion",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "math": {
@@ -1085,64 +1130,70 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["author"],
-            presentationalChildren: false
+            presentationalChildren: false,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "menu": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "menubar": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: ["group", "menuitem", "menuitemcheckbox", "menuitemradio"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false, 
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "menuitem": {
             container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
-
+        
         "menuitemcheckbox": {
             container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
 
         "menuitemradio": {
             container: ["group", "menu", "menubar"], // group only counts as a valid container if it is contained in a menu or menubar
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
 
         "meter": {
@@ -1154,7 +1205,8 @@ export class ARIADefinitions {
             roleType: "structure",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "navigation": {
@@ -1164,7 +1216,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "none": {
@@ -1174,6 +1227,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "note": {
@@ -1183,19 +1237,21 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "option": {
             container: ["group", "listbox"], // group only counts as a valid container if it is contained in a listbox
-            props: ["aria-selected", "aria-checked", "aria-disabled", "aria-posinset", "aria-setsize"],
+            props: ["aria-selected", "aria-checked", "aria-posinset", "aria-setsize"],
             reqProps: null, // "aria-selected" has a default
             reqChildren: null,
             htmlEquiv: "option",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "paragraph": {
@@ -1206,7 +1262,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameFrom: ["prohibited"],
-            prohibitedProps: ["aria-label", "aria-labelledby"]
+            prohibitedProps: ["aria-label", "aria-labelledby"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "presentation": {
@@ -1216,6 +1273,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "progressbar": {
@@ -1227,30 +1285,33 @@ export class ARIADefinitions {
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "radio": {
             container: null,
-            props: ["aria-disabled", "aria-posinset", "aria-setsize"],
+            props: ["aria-posinset", "aria-setsize"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: "input[@type='radio']",
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "radiogroup": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-orientation", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-orientation", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: ["radio"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "region": {
@@ -1261,17 +1322,19 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "landmark",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "row": {
             container: ["grid", "rowgroup", "table", "treegrid"],
-            props: ["aria-activedescendant", "aria-colindex", "aria-disabled", "aria-expanded", "aria-level", "aria-posinset", "aria-rowindex", "aria-selected", "aria-setsize"],
+            props: ["aria-activedescendant", "aria-colindex", "aria-expanded", "aria-level", "aria-posinset", "aria-rowindex", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: ["cell", "columnheader", "gridcell", "rowheader"],
             htmlEquiv: "tr",
             roleType: "structure",
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "rowgroup": {
@@ -1281,12 +1344,13 @@ export class ARIADefinitions {
             reqChildren: ["row"],
             htmlEquiv: "tbody | tfoot | thead",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "rowheader": {
             container: ["row"],
-            props: ["aria-colindex", "aria-colspan", "aria-disabled", "aria-errormessage", "aria-expanded", "aria-haspopup", "aria-invalid", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
+            props: ["aria-colindex", "aria-colspan", "aria-expanded", "aria-readonly", "aria-required", "aria-rowindex", "aria-rowspan", "aria-selected", "aria-sort"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "th[@scope='row']",
@@ -1297,14 +1361,15 @@ export class ARIADefinitions {
 
         "scrollbar": {
             container: null,
-            props: ["aria-disabled", "aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            props: ["aria-orientation", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
             reqProps: ["aria-controls", "aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false,
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "search": {
@@ -1314,12 +1379,13 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "landmark",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "searchbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "input[@type='search']",
@@ -1336,12 +1402,13 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure", // or widget if focusable
             nameFrom: ["author"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "slider": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-orientation", "aria-readonly", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
+            props: ["aria-orientation", "aria-readonly", "aria-valuemax", "aria-valuemin", "aria-valuetext"],
             reqProps: ["aria-valuenow"],
             reqChildren: null,
             htmlEquiv: null,
@@ -1353,13 +1420,14 @@ export class ARIADefinitions {
 
         "spinbutton": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-readonly", "aria-required", "aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
+            props: ["aria-activedescendant", "aria-readonly", "aria-required", "aria-valuemax", "aria-valuemin", "aria-valuenow", "aria-valuetext"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "status": {
@@ -1369,7 +1437,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "strong": {
@@ -1379,7 +1448,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "subscript": {
@@ -1389,7 +1459,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "superscript": {
@@ -1399,30 +1470,33 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["prohibited"]
+            nameFrom: ["prohibited"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "switch": {
             container: null,
-            props: ["aria-disabled", "aria-errormessage", "aria-expanded", "aria-invalid", "aria-readonly", "aria-required"],
+            props: ["aria-expanded", "aria-readonly", "aria-required"],
             reqProps: ["aria-checked"],
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "tab": {
             container: ["tablist"],
-            props: ["aria-disabled", "aria-expanded", "aria-haspopup", "aria-posinset", "aria-selected", "aria-setsize"],
+            props: ["aria-expanded", "aria-posinset", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameFrom: ["author", "contents"],
-            presentationalChildren: true
+            presentationalChildren: true,
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
 
         "table": {
@@ -1433,18 +1507,20 @@ export class ARIADefinitions {
             htmlEquiv: "table",
             roleType: "structure",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "tablist": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-multiselectable", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-multiselectable", "aria-orientation"],
             reqProps: null,
             reqChildren: ["tab"],
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: false, 
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "tabpanel": {
@@ -1455,7 +1531,8 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "term": {
@@ -1465,12 +1542,13 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: "dfn",
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "textbox": {
             container: null,
-            props: ["aria-activedescendant", "aria-autocomplete", "aria-disabled", "aria-errormessage", "aria-haspopup", "aria-invalid", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
+            props: ["aria-activedescendant", "aria-autocomplete", "aria-multiline", "aria-placeholder", "aria-readonly", "aria-required"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: "input[@type='text']",
@@ -1486,7 +1564,8 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "timer": {
@@ -1496,17 +1575,19 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "liveRegion",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "toolbar": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-orientation"],
+            props: ["aria-activedescendant", "aria-orientation"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "tooltip": {
@@ -1517,40 +1598,44 @@ export class ARIADefinitions {
             htmlEquiv: null,
             roleType: "structure",
             nameRequired: false, // ARIA 1.2 has this as nameRequired: true, but ARIA 1.3 removed it because it makes no sense to require a name on a tooltip.
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
         "tree": {
             container: null,
-            props: ["aria-activedescendant", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-required"],
+            props: ["aria-activedescendant", "aria-multiselectable", "aria-orientation", "aria-required"],
             reqProps: null,
             reqChildren: ["group", "treeitem"], // group is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "treegrid": {
             container: null,
-            props: ["aria-activedescendant", "aria-colcount", "aria-disabled", "aria-errormessage", "aria-invalid", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required", "aria-rowcount"],
+            props: ["aria-activedescendant", "aria-colcount", "aria-multiselectable", "aria-orientation", "aria-readonly", "aria-required", "aria-rowcount"],
             reqProps: null,
             reqChildren: ["row", "rowgroup"], // rowgroup is not required, but it is allowed
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author"]
+            nameFrom: ["author"],
+            deprecatedProps: ['aria-haspopup'] 
         },
 
         "treeitem": {
             container: ["group", "tree"],
-            props: ["aria-checked", "aria-disabled", "aria-expanded", "aria-haspopup", "aria-level", "aria-posinset", "aria-selected", "aria-setsize"],
+            props: ["aria-checked", "aria-expanded", "aria-level", "aria-posinset", "aria-selected", "aria-setsize"],
             reqProps: null,
             reqChildren: null,
             htmlEquiv: null,
             roleType: "widget",
             nameRequired: true,
-            nameFrom: ["author", "contents"]
+            nameFrom: ["author", "contents"],
+            deprecatedProps: ['aria-errormessage', 'aria-invalid'] 
         },
     } // end designPatterns
 
@@ -1862,7 +1947,7 @@ export class ARIADefinitions {
         },
         "nav": {
             implicitRole: ["navigation"],
-            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist"],
+            validRoles: ["doc-index", "doc-pagelist", "doc-toc", "menu", "menubar", "tablist", "none", "presentation"],
             globalAriaAttributesValid: true
         },
         "noscript": {
@@ -2288,6 +2373,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=month",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "number": {
@@ -2295,7 +2381,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=number",
                 validRoles: null,
                 globalAriaAttributesValid: true,
-                otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
+                otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
             },
             "password": {
                 implicitRole: null,
@@ -2398,6 +2484,7 @@ export class ARIADefinitions {
                 //roleCondition: " with type=week",
                 validRoles: null,
                 globalAriaAttributesValid: true,
+                otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
             "default": {
@@ -2510,6 +2597,144 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         }
     } // end of documentConformanceRequirementSpecialTags
+
+    // map aria attribute to the corresponding native attribute, apply to any element applicable
+    // note this mapping is for the related attributes in the same element without checking the parent tree.
+    // refer to https://w3c.github.io/html-aria/
+    static relatedAriaHtmlAttributes: {
+        [ariaAttr: string] : {
+            conflict: {
+                ariaAttributeValue: string | null,
+                htmlAttributeNames: string[],
+                htmlAttributeValues: string[] | null
+            },
+            overlapping?: {    
+                ariaAttributeValue: string | null,
+                htmlAttributeNames: string[],
+                htmlAttributeValues: string[] | null
+            }
+        } 
+    } =  {
+        "aria-checked": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["checked"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-disabled": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["disabled"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-hidden": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["hidden"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-placeholder": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["placeholder"],
+                htmlAttributeValues: null
+            }
+        },    
+        "aria-valuemax": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["max"],
+                htmlAttributeValues: null
+            }
+            //overlap case covered in the role definition: Authors SHOULD NOT use aria-valuemax on any element which allows the max attribute. Use the max attribute instead. 
+        },    
+        "aria-valuemin": {
+            conflict: {
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["min"],
+                htmlAttributeValues: null
+            }
+            ////overlap case covered in the role definition:Authors SHOULD NOT use aria-valuemin on any element which allows the min attribute. Use the min attribute instead.
+        },    
+        "aria-readonly": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "false", "false"]
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["readonly", "contenteditable", "iscontenteditable"],
+                htmlAttributeValues: [null, "true", "true"]
+            }
+        },
+        "aria-required": {
+            conflict: {
+                ariaAttributeValue: "false",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            },
+            overlapping: {    
+                ariaAttributeValue: "true",
+                htmlAttributeNames: ["required"],
+                htmlAttributeValues: null
+            }
+        },        
+        "aria-colspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {    
+                // overlap occurs if both exists
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["colspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-rowspan": {
+            conflict: {
+                // conflict occurs if both values are different
+                ariaAttributeValue: "VALUE",
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: ["VALUE"]
+            },
+            overlapping: {   
+                // overlap occurs if both exists 
+                ariaAttributeValue: null,
+                htmlAttributeNames: ["rowspan"],
+                htmlAttributeValues: null
+            }
+        },
+        "aria-autocomplete": {
+            conflict: {
+                // conflict occurs if both values are conflict
+                ariaAttributeValue: "none",
+                htmlAttributeNames: ["autocomplete"],
+                htmlAttributeValues: ["on"]
+            }
+        }  
+    }
 
     static containers = []
 };
