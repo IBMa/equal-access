@@ -58,11 +58,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
 
         .noHighlightSVG{
-            fill: green;
+            fill: purple;
         }
         
         .highlightSVG{
-            fill: blue !important;
+            fill: blue;
         }
         `
     );
@@ -113,25 +113,36 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // Tab key listener
     window.addEventListener('keydown', function (event) {
         console.log("keycode = ", event.code);
-        let element = this.document.activeElement;
-        console.log("element = ",element?.tagName);
-        // Highlight circle
-        //      When circles are made keep array of xpath and circle number
-        //      for the active element find xpath that matches circle and get circle number
-        let elementXpath = getXPathForElement(element);
-        console.log("elementXpath = ", elementXpath);
-        //      get circle with circle number
-        let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
-        console.log("circle xpath",circle?.getAttribute("xpath"));
-        //      change fill color to highlight
-        // setTimeout(() => {
-        //     circle?.setAttribute("fill", "blue");
-        // }, 0)
-        console.log("circle fill",circle?.getAttribute("fill"));
-        circle?.classList.remove("noHighlightSVG");
-        circle?.classList.add("highlightSVG");
-        console.log("circle fill",circle?.getAttribute("fill"));
-        // Inspect active element
+        if (event.code === "Tab") { // only catch Tab key
+            let element = this.document.activeElement;  // get element just tabbed to
+            console.log("element = ",element?.tagName);
+            // get xpath for active element
+            let elementXpath = getXPathForElement(element);
+            console.log("elementXpath = ", elementXpath);
+            // get circle with matching xpath
+            let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
+            // find any circle already highlighted with highlightSVG class
+            let prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0];
+            
+            console.log(prevHighlightedElement);
+            
+            // remove highlightSVG and add noHighlightSVG
+            if (prevHighlightedElement) {
+                console.log("before remove = ",prevHighlightedElement);
+                prevHighlightedElement.classList.remove("highlightSVG");
+                console.log("before add = ",prevHighlightedElement);
+                // setTimeout(() => {
+                    prevHighlightedElement.classList.add("noHighlightSVG");
+                // }, 1);
+                console.log("after remove and add = ",prevHighlightedElement);
+            }
+            // Highlight circle
+            circle?.classList.remove("noHighlightSVG");
+            circle?.classList.add("highlightSVG");
+            
+            // Inspect active element
+        }
+        
     });
     
     return true;
@@ -548,7 +559,6 @@ function convertXpathsToHtmlElements(nodes: any) {
 }
 
 function getNodesXpaths(nodes: any) {
-    console.log("getNodesXpaths");
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         tabXpaths.push(result.path.dom);
