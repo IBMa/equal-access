@@ -198,11 +198,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
 
     draw(regularTabstops);
-    drawErrors(message.tabStopsErrors);
+    drawErrors(errorsMisc);
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(regularTabstops);
-        redrawErrors(message.tabStopsErrors)
+        redrawErrors(errorsMisc)
     });
     // Tab key listener
     window.addEventListener('keydown', function (event) {
