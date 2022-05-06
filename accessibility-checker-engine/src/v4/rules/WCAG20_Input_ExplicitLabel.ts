@@ -107,7 +107,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
                 (!labelElem && RPTUtil.attributeNonEmpty(ruleContext, "title") || RPTUtil.attributeNonEmpty(ruleContext, "placeholder")) ||
                 RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.hasImplicitLabel(ruleContext);
             if (!passed) POF = 2 + textTypes.indexOf(type);
-
+            
         } else if (buttonTypes.indexOf(type) !== -1) { // If type is a button
             if (buttonTypesWithDefaults.indexOf(type) !== -1 && !ruleContext.hasAttribute("value")) {
                 // 'submit' and 'reset' have visible defaults so pass if there is no 'value' attribute
@@ -157,20 +157,20 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
         }
         if (!passed) {
             // check aria role
-            //TODO: consider other aria roles relevant, other than menuitemcheckbox
-            const singleRole = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
-                || RPTUtil.hasRole(ruleContext, "radio", false);
-            const otherRole = RPTUtil.hasRole(ruleContext, "listbox", false) || RPTUtil.hasRole(ruleContext, "textbox", false)
-                || RPTUtil.hasRole(ruleContext, "searchbox", false);
-
-            if (singleRole)
+            //any more roles for input? 
+            const nameFromBoth = RPTUtil.hasRoleInSemantics(ruleContext, "menuitemcheckbox") || RPTUtil.hasRoleInSemantics(ruleContext, "menuitemradio")
+                || RPTUtil.hasRoleInSemantics(ruleContext, "radio") || RPTUtil.hasRoleInSemantics(ruleContext, "checkbox");
+            const nameFromAuthorOnly = RPTUtil.hasRoleInSemantics(ruleContext, "listbox") || RPTUtil.hasRoleInSemantics(ruleContext, "searchbox") 
+                || RPTUtil.hasRoleInSemantics(ruleContext, "textbox") || RPTUtil.hasRoleInSemantics(ruleContext, "combobox")
+                || !RPTUtil.hasAnyRole(ruleContext, true);   
+            
+            if (nameFromBoth)
                 passed = RPTUtil.getInnerText(ruleContext) && RPTUtil.getInnerText(ruleContext).trim().length > 0;
-            else if (otherRole) {
-                passed = RPTUtil.attributeNonEmpty(ruleContext, "aria-label") || RPTUtil.attributeNonEmpty(ruleContext, "aria-labelledby")
-                    || RPTUtil.attributeNonEmpty(ruleContext, "title");
-            } else {
-                // any other role?
-            }
+            
+            if (!passed) {
+                if (nameFromBoth || nameFromAuthorOnly)
+                passed = RPTUtil.getAriaLabel(ruleContext).trim().length > 0 || RPTUtil.attributeNonEmpty(ruleContext, "title");
+            } 
         }
 
         if (passed) {

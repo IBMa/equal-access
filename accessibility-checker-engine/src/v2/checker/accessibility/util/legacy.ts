@@ -2339,82 +2339,6 @@ export class RPTUtil {
         let tagName = ruleContext.tagName.toLowerCase();
         let allowedAttributes = [];
         let prohibitedAttributes = [];
-        // These needs to be handled first since its applicable to all elements
-
-        /** NOTE that the following section will be enabled to cover aria-* and their native attribute counterparts checker
-        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
-        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
-        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("disabled")) {
-                // shouldn't or must not use aria-disabled on the element that already has the native disabled attribute 
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", prohibitedAttributes);   
-            } else {
-                // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
-            }
-        }
-        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
-        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("required")) {
-                // shouldn't or must not use aria-disabled on the element that already has the native required attribute
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", prohibitedAttributes);   
-            } else {
-                // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
-            }
-        }
-
-        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
-            if (ruleContext.hasAttribute("readonly")) {
-                // shouldn't or must not use aria-readonly on the element that already has the native readonly attribute
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);   
-            } else {
-                // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
-                allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
-            }
-        }
-        // aria global attribute aria-hidden 
-        if (ruleContext.hasAttribute("hidden")) {
-            // shouldn't or must not use aria-hidden on the element that already has the native hidden attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", prohibitedAttributes);   
-        }
-
-        if (ruleContext.hasAttribute("placeholder")) {
-            // shouldn't or must not use aria-placeholder on the element that already has the native placeholder attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-placeholder", prohibitedAttributes);   
-        }
-        // html native global attribute: contenteditable
-        if ((ruleContext.hasAttribute("contenteditable") && ruleContext.getAttribute("contenteditable") === 'true')
-            || (ruleContext.parentElement && ruleContext.parentElement.hasAttribute("contenteditable") 
-                && ruleContext.parentElement.getAttribute("contenteditable") === 'true')) {
-            // Authors MUST NOT set aria-readonly="true" on an element that has contenteditable="true".
-            if (ruleContext.hasAttribute("aria-readonly") && ruleContext.getAttribute("aria-readonly") === 'true')
-                prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", prohibitedAttributes);   
-        }
-        // html td and th: colspan 
-        if (ruleContext.hasAttribute("colspan")) {
-            // shouldn't or must not use aria-colspan on the element that already has the native colspan attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-colspan", prohibitedAttributes);   
-        }
-        // html td and th: rowspan 
-        if (ruleContext.hasAttribute("rowspan")) {
-            // shouldn't or must not use aria-rowspan on the element that already has the native rowspan attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-rowspan", prohibitedAttributes);   
-        }
-        // html meter, progress and input: max 
-        if (ruleContext.hasAttribute("max")) {
-            // shouldn't use aria-valuemax on the element that already has the native max attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemax", prohibitedAttributes);   
-        }
-        // html meter input: min 
-        if (ruleContext.hasAttribute("min")) {
-            // shouldn't use aria-valuemin on the element that already has the native min attribute
-            prohibitedAttributes = RPTUtil.concatUniqueArrayItem("aria-valuemin", prohibitedAttributes);   
-        }
-         */
-
-        // NOTE that the following section will be removed in the future to cover aria-* and their native attribute counterparts checker
-        // handle implicit aria semantic attribute: https://w3c.github.io/html-aria/
         // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
         if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
             // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
@@ -2556,6 +2480,56 @@ export class RPTUtil {
             });
         } 
         return allowedAttributes;
+    }
+    /**
+     * 
+     * @param ariaAttr 
+     * @param htmlAttrs 
+     * @type: conflict or overlapping
+     * @returns htmlAttrName, 'Pass' or null
+     *         htmlAttrName that conflicts with the ariaAttr, 
+     *         'Pass' with no conflict with the ariaAttr, 
+     *         or null where ariaAttr won't cause conflict
+     */
+    public static getConflictOrOverlappingHtmlAttribute(ariaAttr, htmlAttrs, type): any[] | null {
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) { 
+            let examinedHtmlAtrNames = [];
+            let ariaAttrValue = '';
+            if (type === 'conflict') {
+                if (!exist.conflict) return null;
+                ariaAttrValue = exist.conflict.ariaAttributeValue;
+            } else if (type === 'overlapping')  {
+                if (!exist.overlapping) return null;
+                ariaAttrValue = exist.overlapping.ariaAttributeValue; 
+            } else
+                return null;    
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
+                let htmlAttrNames = [];
+                let htmlAttrValues = [];
+                if (type === 'conflict') {
+                     htmlAttrNames = exist.conflict.htmlAttributeNames;
+                     htmlAttrValues = exist.conflict.htmlAttributeValues;
+                }  else {
+                     htmlAttrNames = exist.overlapping.htmlAttributeNames;
+                     htmlAttrValues = exist.overlapping.htmlAttributeValues;
+                }    
+                for (let i = 0; i < htmlAttrs.length; i++) { 
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    if (index !== -1) { 
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                               continue;
+                        } else 
+                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
+                    }         
+                }
+            }
+            return examinedHtmlAtrNames;
+        } else
+            return null;
     }
 
     public static CSS(element) {

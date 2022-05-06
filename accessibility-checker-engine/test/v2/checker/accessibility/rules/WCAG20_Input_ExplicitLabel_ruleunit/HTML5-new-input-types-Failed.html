@@ -48,7 +48,7 @@
 		</fieldset>
 	</form>
 	
-	<!--3 failed: label is empty -->
+	<!--3 failed: label is empty: this should pass because of the title -->
 	<form action="..." method="post">
 		<fieldset>
 			<legend>Legend text: tel</legend>
@@ -190,7 +190,6 @@
 	      passedXpaths: [
 	      ],
 	      failedXpaths: [
-			"/html/body/form[3]/fieldset/input",	// "/html[1]/body[1]/form[3]/fieldset[1]/input[1]",                      
 			"/html/body/form[5]/fieldset/input",  // "/html[1]/body[1]/form[5]/fieldset[1]/input[1]",              
 			"/html/body/datalist",                // "/html[1]/body[1]/datalist[1]",      
 			"/html/body/form[15]/keygen",         // "/html[1]/body[1]/form[15]/keygen[1]",                      

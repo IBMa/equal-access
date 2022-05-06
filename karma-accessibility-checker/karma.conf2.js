@@ -95,9 +95,7 @@ module.exports = function (config) {
             ChromeCustom: {
                 base: 'ChromeHeadless',
                 flags: [
-                    '--disable-web-security',
-                    '--disable-gpu',
-                    '--no-sandbox'
+                    '--disable-web-security'
                 ]
             }
         },
@@ -203,7 +201,7 @@ module.exports = function (config) {
         browserDisconnectTimeout: 8000,
 
         // How long will Karma wait for a message from a browser before disconnecting from it (in ms).
-        browserNoActivityTimeout: 400000,
+        browserNoActivityTimeout: 600000,
 
         // Timeout for capturing a browser (in ms).
         captureTimeout: 100000,

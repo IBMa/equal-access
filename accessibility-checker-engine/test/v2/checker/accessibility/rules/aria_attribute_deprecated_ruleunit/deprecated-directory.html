@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)https://w3c.github.io/html-aria/tests/deprecated-directory.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<title>ARIA in HTML - Test Cases</title>
+  <link rel="stylesheet" href="./deprecated-directory_files/styles.css">
+	<style type="text/css">
+		body{
+			font-size: 1em;
+		}
+		.roleTest {
+			border: 2px solid black;
+			width: 1em;
+			height: 1em;
+			margin: 5px;
+		}
+		.flex {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+		}
+		.widgetDemo {
+			border: 1px solid #EEE;
+			margin: .5em;
+			padding: 5px;
+			flex: 1 0 0;
+			min-width: calc(300px - 1em);
+		}
+		.widgetDemo p {
+			color: #696969;
+			font-size: 1.125em;
+			padding: 0;
+			margin: .75em 0;
+		}
+		.testcase {
+			margin: 2em 0;
+		}
+		h3{
+			margin: .5em 0;
+			border: 0;
+			padding: 0;
+		}
+		h2 {font-size:2em}
+	</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1055.0" data-gr-ext-installed="">
+
+	<header>
+	<h1>ARIA in HTML - test case for deprecated <code>role=directory</code></h1>
+	<p>last updated 10 January 2022</p>
+	</header>
+	<main>
+		<h2>Tests:</h2>
+
+		<div class="flex">
+			<div class="widgetDemo">
+				<h3>Test 1</h3>
+				<p>Authors are NOT RECOMMENDED to use the <code>role=directory</code>, as it has been deprecated. The following div, ul, ol and menu elements have a <code>role=directory</code>.</p>
+				<p>Authours should not need to use <code>role=listitem</code> on <code>li</code> elements, however not all browsers will respect the <code>li</code> mapping to <code>listitem</code> if the
+					parent list element has a <code>role=directory</code> specified.
+				</p><div class="testcase">
+					<div role="directory">
+						<div role="listitem">an item in the directory</div>
+						<div role="listitem">an item in the directory</div>
+					</div>
+
+					<ul role="directory">
+						<li>an item in the directory, no explicit role</li>
+						<li role="listitem">an item in the directory with role=listitem</li>
+					</ul>
+
+					<ol role="directory">
+						<li>an item in the directory, no explicit role</li>
+						<li role="listitem">an item in the directory with role=listitem</li>
+					</ol>
+
+					<menu role="directory">
+						<li>an item in the directory, no explicit role</li>
+						<li role="listitem">an item in the directory with role=listitem</li>
+					</menu>
+				</div>
+
+				<p><strong>Expected result:</strong>
+				<br> warn authors <code>role=directory</code> has been deprecated, and that they should use a native list element (<code>ul</code>, 
+					<code>ol</code>, <code>menu</code>) or <code>role=list</code> instead.</p>
+				<p><strong>Note:</strong> while a <code>directory</code> maps to a <code>list</code>, 
+					if used on a <code>ul</code>, <code>ol</code> or <code>menu</code>, their child <code>li</code> elements do not remain 
+					mapped to <code>listitem</code> in Chromium browsers.  Firefox and Webkit <strong>do</strong> still map the <code>li</code>
+					elements to <code>listitem</code>.  Essentially, if not using <code>listitem</code> on each child of a <code>directory</code>, then 
+					those lists will be broken in Chromium browsers.</p>
+			</div>
+		</div>
+	</main>
+	<script>
+		UnitTest = {
+			ruleIds: ["aria_attribute_deprecated"],
+			results: [
+			{
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/directory[1]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/directory[1]/listitem[1]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/main[1]/directory[1]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/ul[1]",
+              "aria": "/document[1]/main[1]/directory[2]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/ul[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[2]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/ol[1]",
+              "aria": "/document[1]/main[1]/directory[3]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/ol[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[3]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/menu[1]",
+              "aria": "/document[1]/main[1]/directory[4]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/menu[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[4]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+			]
+		}
+	  </script>
+
+</body>
+</html>
