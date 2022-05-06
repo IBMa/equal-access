@@ -28,11 +28,11 @@
 
 <h3>Elements Tests</h3>
 
-<button width="350" height="350" style="position: absolute; left: -1000px;">
+<button width="350" height="350">
 	 OK
 </button>
 
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
+<a href='google.com' style="position: absolute; left: 500px;">lick here</a>
 
 <script>
   UnitTest = {
@@ -42,17 +42,15 @@
             "ruleId": "element_tabbable_off_screen",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <button> is on the screen when it receives focus",
-            "messageArgs": [
-              "button"
-            ],
+            "reasonId": "pass",
+            "message": "Tabbable element is on the screen",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -60,17 +58,15 @@
             "ruleId": "element_tabbable_off_screen",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <a> is on the screen when it receives focus",
-            "messageArgs": [
-              "a"
-            ],
+            "reasonId": "pass",
+            "message": "Tabbable element is on the screen",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }

@@ -40,15 +40,9 @@
 
 <body>
 
-<h3>Elements Tests</h3>
-
-<a href='google.com' >Visit Google</a>
-<p></p>
 <button width="350" height="350">
 	 OK
 </button>
-
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
 
 <script>
   UnitTest = {
@@ -58,35 +52,15 @@
             "ruleId": "element_tabbable_off_screen",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "fail_off",
-            "message": "The tabbable element <button> is off the screen",
-            "messageArgs": [
-              "button"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_off_screen",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "fail_off",
-            "message": "The tabbable element <a> is off the screen",
-            "messageArgs": [
-              "a"
-            ],
+            "reasonId": "pass",
+            "message": "Tabbable element is on the screen",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }

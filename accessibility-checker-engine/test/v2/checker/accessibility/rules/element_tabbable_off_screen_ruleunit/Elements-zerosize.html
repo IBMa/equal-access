@@ -22,17 +22,33 @@
 
 <head>
 	<title>RPT Test Suite</title>
+  <style type="text/css">
+      .zerowidth {
+          padding-left: 0; padding-right: 0;
+          border-left-width: 0; border-right-width: 0;
+          white-space: nowrap;
+          overflow: hidden;
+      }
+      .zeroheight {
+          padding-top: 0; padding-bottom: 0;
+          border-bottom-width: 0; border-top-width: 0;
+          white-space: nowrap;
+          overflow: hidden;
+      } 
+  </style>
 </head>
 
 <body>
 
 <h3>Elements Tests</h3>
 
-<button width="350" height="350" style="position: absolute; left: -1000px;">
-	 OK
+<button class='zerowidth'>
 </button>
 
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
+<button  class='zeroheight' style="width:0; height:350; position: absolute; left: -1000px;">
+	
+</button>
+
 
 <script>
   UnitTest = {
@@ -48,8 +64,8 @@
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <button> is on the screen when it receives focus",
+            "reasonId": "potential_zerosize",
+            "message": "Confirm that the tabbable element <button> meets minimum target size when it receives focus",
             "messageArgs": [
               "button"
             ],
@@ -63,13 +79,13 @@
               "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
             },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <a> is on the screen when it receives focus",
+            "reasonId": "potential_zerosize",
+            "message": "Confirm that the tabbable element <button> meets minimum target size when it receives focus",
             "messageArgs": [
-              "a"
+              "button"
             ],
             "apiArgs": [],
             "category": "Accessibility"

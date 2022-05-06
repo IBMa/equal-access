@@ -12,7 +12,7 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getDefinedStyles, getComputedStyle } from "../../v4/util/CSSUtil";
+import { getDefinedStyles, getComputedStyle, getTotalOffset } from "../../v4/util/CSSUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
@@ -30,9 +30,9 @@ export let element_tabbable_off_screen: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "Tabbable element should be on the screen",
+            "group": "Tabbable element should be on the screen and meet minimum target size when it receives focus",
             "pass": "Tabbable element is on the screen",
-            "fail_off": "The tabbable element <{0}> is off the screen",
+            "potential_zerosize": "Confirm that the tabbable element <{0}> meets minimum target size when it receives focus",
             "potential_off": "Confirm that the tabbable element <{0}> is on the screen when it receives focus"
         }
     },
@@ -47,16 +47,18 @@ export let element_tabbable_off_screen: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
         if (!RPTUtil.isTabbable(ruleContext))
             return null;
-        /**
-         * If the element has a positive top and left bounding box, Pass
-         * If the element has a :focus style that moves it, Potential. For 2, if it can be determined 
-         *     that it moves it on screen (e.g., it was -5 left, and the difference between non-focus and focus is more than 5, maybe we can pass).
-         * If the element has a negative top or negative left, and the :focus styles don’t change that, Fail.
-         */
         
+        const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
         const bounds = context["dom"].bounds;
         //in case the bounds not available
         if (!bounds) return null;
+
+        if (bounds['height'] === 0 || bounds['width'] === 0)
+            return RulePotential("potential_zerosize", [nodeName]);
+
+        if (bounds['top'] > 0 && bounds['left'] > 0)
+            return RulePass("pass");
+        
         console.log("node=" + ruleContext.nodeName + ", bounds=" + JSON.stringify(bounds));
         const default_styles = getComputedStyle(ruleContext);
         console.log("node=" + ruleContext.nodeName + ", default_styles left =" + default_styles['left']
@@ -69,20 +71,28 @@ export let element_tabbable_off_screen: Rule = {
              +  ", onfocus_styles top =" + onfocus_styles['top']
              +  ", onfocus_styles position =" + onfocus_styles['position']);
         
+        const offsets = getTotalOffset(ruleContext);
+        console.log("node=" + ruleContext.nodeName + ", offset left =" + offsets[0]
+             +  ", offset top =" + offsets[1]);
+             
         let top = bounds['top'];
         let left = bounds['left'];     
-        if (Object.keys(onfocus_styles).length > 0 ) { 
-            if (onfocus_styles['top'] !== 'undefined') { console.log(onfocus_styles['position'] +", " + default_styles['position'] );
-                if (onfocus_styles['position'] === 'absolute' || (onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
-                    top = onfocus_styles['top'];
-                else { 
+        if (Object.keys(onfocus_styles).length === 0 ) {
+            // no onfocus position change, but could be changed from js 
+            return RulePotential("potential_off", [nodeName]);
+        } else {   
+            // with onfocus position change
+            if (typeof onfocus_styles['top'] !== 'undefined') { console.log((onfocus_styles['position'] === 'undefined') +", " + (default_styles['position'] === 'absolute') );
+                if (onfocus_styles['position'] === 'absolute' || (typeof onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute')) {
+                    top = onfocus_styles['top'].replace(/\D/g,'');; console.log("top=" + top);
+                } else { 
                     // the position is undefined and the parent's position is 'relative'
                     top = Number.MIN_VALUE;   
                 }     
             } 
-            if (onfocus_styles['left'] !== 'undefined') {
-                if (onfocus_styles['position'] === 'absolute' || (onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
-                    left = onfocus_styles['left'];
+            if (typeof onfocus_styles['left'] !== 'undefined') {console.log("left");
+                if (onfocus_styles['position'] === 'absolute' || (typeof onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
+                    left = onfocus_styles['left'].replace(/\D/g,'');
                 else { 
                     // the position is undefined and the parent's position is 'relative'
                     left = Number.MIN_VALUE;   
@@ -90,13 +100,9 @@ export let element_tabbable_off_screen: Rule = {
             }    
         }
         console.log('left=' + left +", top=" + top);
-        if (top === Number.MIN_VALUE || left === Number.MIN_VALUE)
-            return RulePotential("potential_off");
-
-        else if (top > 0 && left > 0)
+        if (top > 0 && left > 0)
             return RulePass("pass");
-        
-        return RuleFail("fail_off", [ruleContext.nodeName.toLowerCase()]);
-
+        else
+            return RulePotential("potential_off", [nodeName]);
     }
 }

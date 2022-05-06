@@ -15,6 +15,7 @@
  *****************************************************************************/
 
 type PseudoClass = ":hover" | ":active" | ":focus" | ":focus-visible" | ":focus-within";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export function selectorMatchesElem(element, selector) {
     if (selector.trim() === "") return false;
@@ -144,3 +145,15 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         return definedStylePseudo;
     }
 }
+
+export function getTotalOffset(elm) {
+    var totalOffsetTop  = 0;
+    var totalOffsetLeft  = 0;
+    var current = DOMUtil.parentElement(elm);
+    while(current && current.nodeName.toLowerCase() !== 'body') {
+        if (current[0] && current[0].offsetTop) totalOffsetTop  += current[0].offsetTop;
+        if (current[0] && current[0].offsetLeft) totalOffsetLeft  += current[0].offsetLeft;
+        current = DOMUtil.parentElement(current);
+    }
+    return [totalOffsetTop, totalOffsetLeft];
+ }

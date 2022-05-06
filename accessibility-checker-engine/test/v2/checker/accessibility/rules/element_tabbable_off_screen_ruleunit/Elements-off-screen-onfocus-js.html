@@ -41,10 +41,6 @@
 
 <body>
 
-<h3>Elements Tests</h3>
-
-<a href='google.com' >Visit Google</a>
-<p></p>
 <button id='mybutton' width="350" height="350" style="position:absolute; left:-100px;">
 	 OK
 </button>
@@ -59,14 +55,14 @@
             "ruleId": "element_tabbable_off_screen",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "fail_off",
-            "message": "The tabbable element <button> is off the screen",
+            "reasonId": "potential_off",
+            "message": "Confirm that the tabbable element <button> is on the screen when it receives focus",
             "messageArgs": [
               "button"
             ],
@@ -77,14 +73,14 @@
             "ruleId": "element_tabbable_off_screen",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "fail_off",
-            "message": "The tabbable element <a> is off the screen",
+            "reasonId": "potential_off",
+            "message": "Confirm that the tabbable element <a> is on the screen when it receives focus",
             "messageArgs": [
               "a"
             ],
