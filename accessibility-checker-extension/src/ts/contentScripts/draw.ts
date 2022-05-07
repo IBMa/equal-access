@@ -7,7 +7,7 @@ console.log("Content Script for drawing tab stops has loaded")
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
-    console.log(message.tabStopsResults);
+    // console.log(message.tabStopsResults);
     document.body.scrollTop = document.documentElement.scrollTop = 0;
 
     injectCSS(
@@ -111,37 +111,57 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         redrawErrors(message.tabStopsErrors)
     });
     // Tab key listener
-    window.addEventListener('keydown', function (event) {
-        console.log("keycode = ", event.code);
-        if (event.code === "Tab") { // only catch Tab key
-            let element = this.document.activeElement;  // get element just tabbed to
-            console.log("element = ",element?.tagName);
+    window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
+        if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
+            let element = this.document.activeElement;  // get element just tabbed to which has focus
             // get xpath for active element
             let elementXpath = getXPathForElement(element);
-            console.log("elementXpath = ", elementXpath);
+            // get circle with matching xpath
+            let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
+            let prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0];
+            // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+            if (prevHighlightedElement) {
+                prevHighlightedElement.classList.remove("highlightSVG");
+                prevHighlightedElement.classList.add("noHighlightSVG");
+                // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+            } else {
+                // console.log("No prevHighlightedElement to highlight")
+            }
+            // Highlight circle
+            if (circle) {
+                circle?.classList.remove("noHighlightSVG");
+                circle?.classList.add("highlightSVG");
+                // console.log("circle highlighted = ",circle);
+            } else {
+                // console.log("No circle to highlight = ",circle);
+            }
+        } else if (event.shiftKey && event.key === "Tab") { // catch only SHIFT TAB
+            let element = this.document.activeElement;  // get element just tabbed to
+            // get xpath for active element
+            let elementXpath = getXPathForElement(element);
             // get circle with matching xpath
             let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
             // find any circle already highlighted with highlightSVG class
             let prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0];
-            
-            console.log(prevHighlightedElement);
-            
             // remove highlightSVG and add noHighlightSVG
             if (prevHighlightedElement) {
-                console.log("before remove = ",prevHighlightedElement);
                 prevHighlightedElement.classList.remove("highlightSVG");
-                console.log("before add = ",prevHighlightedElement);
-                // setTimeout(() => {
-                    prevHighlightedElement.classList.add("noHighlightSVG");
-                // }, 1);
-                console.log("after remove and add = ",prevHighlightedElement);
+                prevHighlightedElement.classList.add("noHighlightSVG");
+                // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+            } else {
+                // console.log("No prevHighlightedElement to highlight")
             }
             // Highlight circle
-            circle?.classList.remove("noHighlightSVG");
-            circle?.classList.add("highlightSVG");
-            
-            // Inspect active element
+            if (circle) {
+                circle?.classList.remove("noHighlightSVG");
+                circle?.classList.add("highlightSVG");
+                // console.log("circle highlighted = ",circle);
+            } else {
+                // console.log("No circle to highlight = ",circle);
+            }
         }
+         
+            // Inspect active element
         
     });
     
@@ -181,12 +201,12 @@ function injectCSS(styleString: string) {
 }
 
 function draw(tabStopsErrors: any) {
-    console.log("Inside draw")
+    // console.log("Inside draw")
     redraw(tabStopsErrors);
 }
 
 function drawErrors(tabStopsErrors: any) {
-    console.log("Inside drawErrors")
+    // console.log("Inside drawErrors")
     redrawErrors(tabStopsErrors);
 }
 
@@ -196,7 +216,7 @@ function deleteDrawing(classToRemove: string) {
 
 
 function redrawErrors(tabStopsErrors: any) {
-    console.log("Inside redrawErrors")
+    // console.log("Inside redrawErrors")
     setTimeout(() => {
         // console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
@@ -245,7 +265,7 @@ function redrawErrors(tabStopsErrors: any) {
 
 
 function redraw(tabStopsResults: any) {
-    console.log("Inside redraw")
+    // console.log("Inside redraw")
     setTimeout(() => {
         let nodes = getNodesXpaths(tabStopsResults);
         let nodeXpaths = nodes;
