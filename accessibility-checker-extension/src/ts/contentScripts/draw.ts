@@ -135,6 +135,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
+            // Inspect active element
+            console.log("circle.xpath = ", circle?.getAttribute("xpath"));
+            console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
+            TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
+            // Returm from elements tab to browse page tab
         } else if (event.shiftKey && event.key === "Tab") { // catch only SHIFT TAB
             let element = this.document.activeElement;  // get element just tabbed to
             // get xpath for active element
@@ -159,9 +164,12 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
+            // Inspect active element
+            console.log("circle.xpath = ", circle?.getAttribute("xpath"));
+            console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
+            TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 })
         }
          
-            // Inspect active element
         
     });
     
