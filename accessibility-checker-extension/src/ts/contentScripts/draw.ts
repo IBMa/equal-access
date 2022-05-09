@@ -64,6 +64,15 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         .highlightSVG{
             fill: blue;
         }
+
+        .textColorWhite{
+            fill: white
+        }
+
+        .textColorBlack{
+            fill: black
+        }
+
         `
     );
     // position: absolute;
@@ -103,12 +112,113 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
     // JCH want there to be one function draw() which draws circles for tab stops with
     //     no errors and triangles for tab stops with errors
-    draw(message.tabStopsResults);
-    drawErrors(message.tabStopsErrors);
+
+    // console.log("message.tabStopsResults" + message.tabStopsResults)
+    // console.log("message.tabStopsResultslength" + message.tabStopsResults.length)
+    // console.log("message.tabStopsErrors" + message.tabStopsErrors)
+    // console.log("message.tabStopsErrorslength" + message.tabStopsErrors.length)
+
+    // Create nodes for regular tabstops
+    //    1. To to this remove any errors from full list - we are adding the normal tabstop icon here
+    // let regularTabstops = JSON.parse(JSON.stringify(message.tabStopsResults));
+    // let regularTabstops: any[] = []
+    // for (let index = 0; index < message.tabStopsResults.length; index++) {
+    //     const tabElem = message.tabStopsResults[index];
+    //     let flagMatchFound = false;
+    //     message.tabStopsErrors.forEach((errorElem: any) => {
+    //         if (tabElem.path.dom === errorElem.path.dom) {
+    //             // console.log(errorElem.path.dom)
+    //             // console.log(tabElem.path.dom)
+    //             flagMatchFound = true;
+    //         }
+    //     });
+    //     if (flagMatchFound) {
+    //         regularTabstops.splice(index, 1, null)
+    //     }
+    //     else (
+    //         regularTabstops.push(tabElem)
+    //     )
+
+    // }
+
+    // Create nodes for error tabstops - We are adding yellow triangles here
+    // let errorTabstops: any[] = [];
+    // for (let index = 0; index < message.tabStopsResults.length; index++) {
+    //     const tabElem = message.tabStopsResults[index];
+    //     let flagMatchFound = false;
+    //     message.tabStopsErrors.forEach((errorElem: any) => {
+    //         if (tabElem.path.dom === errorElem.path.dom) {
+    //             // console.log(errorElem.path.dom)
+    //             // console.log(tabElem.path.dom)
+    //             flagMatchFound = true
+    //         }
+    //     });
+    //     if (flagMatchFound) {
+    //         errorTabstops.push(tabElem)
+    //     }
+    //     else {
+    //         errorTabstops.push(null)
+    //     }
+    // }
+
+    // Create nodes for errors (that are not tabstops) -  We are using warning icons here
+    //    1. To to this remove any regular tabstops from the errors list
+    let errorsMisc = JSON.parse(JSON.stringify(message.tabStopsErrors));
+    for (let index = 0; index < message.tabStopsErrors.length; index++) {
+        const tabElem = message.tabStopsErrors[index];
+        message.tabStopsResults.forEach((errorElem: any) => {
+            if (tabElem.path.dom === errorElem.path.dom) {
+                console.log(errorElem.path.dom)
+                console.log(tabElem.path.dom)
+                errorsMisc.splice(index, 1)
+            }
+        });
+    }
+    // console.log("regularTabstops " + regularTabstops)
+    // console.log("regularTabstops " + regularTabstops.length)
+    // console.log("errorTabstops " + errorTabstops)
+    // console.log("errorTabstops " + errorTabstops.length)
+    // console.log("errorsMisc " + errorsMisc)
+
+
+    let regularTabstops: any = JSON.parse(JSON.stringify(message.tabStopsResults));
+    for (let index = 0; index < message.tabStopsResults.length; index++) {
+        const tabElem = message.tabStopsResults[index];
+        let flagMatchFound = false;
+        message.tabStopsErrors.forEach((errorElem: any) => {
+            if (tabElem.path.dom === errorElem.path.dom) {
+                console.log("============123===================")
+                console.log(errorElem.path.dom)
+                console.log(tabElem.path.dom)
+                console.log("=============123==================")
+                flagMatchFound = true;
+            }
+        });
+        if (flagMatchFound) {
+            // regularTabstops1.splice(index, 1, null)
+            regularTabstops[index].nodeHasError = true
+        }
+        else { }
+        // regularTabstops1.push(tabElem)
+
+
+    }
+    console.log("regularTabstops1" + regularTabstops)
+    console.log(regularTabstops)
+
+
+    console.log("===============================")
+    console.log(message.tabStopsResults)
+    console.log(message.tabStopsErrors)
+    console.log("===============================")
+
+
+    draw(regularTabstops);
+    drawErrors(errorsMisc);
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
-        redraw(message.tabStopsResults);
-        redrawErrors(message.tabStopsErrors)
+        redraw(regularTabstops);
+        redrawErrors(errorsMisc)
     });
     // Tab key listener
     window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
@@ -172,7 +282,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
          
         
     });
-    
+
     return true;
 });
 
@@ -208,9 +318,9 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw(tabStopsErrors: any) {
-    // console.log("Inside draw")
-    redraw(tabStopsErrors);
+function draw(tabstops: any) {
+    console.log("Inside draw")
+    redraw(tabstops);
 }
 
 function drawErrors(tabStopsErrors: any) {
@@ -229,6 +339,7 @@ function redrawErrors(tabStopsErrors: any) {
         // console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
         nodes = convertXpathsToHtmlElements(nodes);
+        let nodeXpaths = nodes;
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
@@ -265,120 +376,298 @@ function redrawErrors(tabStopsErrors: any) {
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
 
             // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-            makeIcon(x, y, "test");
+            // makeIcon(x, y, "test");
+
+            // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+            let triangleLegLength = 27
+            let triangleXShifted = x-1  // Shift 1 px to center the ! we draw
+            let triangleYShifted = y
+            makeTriangle(  
+                        triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                        triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                        triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                        "Error"+i, nodeXpaths[i])
+            
+            makeTextSmall(x, y, "!", "textColorBlack");
+
+
+            
         }
     }, 1)
 }
 
 
 
-function redraw(tabStopsResults: any) {
-    // console.log("Inside redraw")
-    setTimeout(() => {
-        let nodes = getNodesXpaths(tabStopsResults);
-        let nodeXpaths = nodes;
-
+function redraw(tabstops: any) {
+    console.log("Inside redraw")
+    setTimeout(() => { 
         let offset = 3;
+        let nodes = getNodesXpaths(tabstops);
+        // console.log(tabstopErrors)
+        let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
-        nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
-            return el != null;
-        });
-        nodeXpaths = nodeXpaths.filter(function (el: any) {  // Removing failure case of null nodes being sent
-            return el != null;
-        });
+
+        // let nodesErrors = getNodesXpaths(tabstopErrors);
+        // console.log(tabstopErrors)
+        // let nodeXpathsErrors = nodesErrors;
+        // nodesErrors = convertXpathsToHtmlElements(nodesErrors);
+
+        // nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+        //     return el != null;
+        // });
+        // nodeXpaths = nodeXpaths.filter(function (el: any) {  // Removing failure case of null nodes being sent
+        //     return el != null;
+        // });
 
         // console.log("tabbable nodes = ", nodes);
 
         // JCH - need for last line to return to first node
-        for (let i = 0; i < nodes.length - 1; i++) { //Make lines between numbers
-            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+        for (let i = 0; i < nodes.length-1; i++) { //Make lines between numbers
 
-            makeLine(nodes[i].getBoundingClientRect().x - offset,
-                nodes[i].getBoundingClientRect().y - offset,
-                nodes[i + 1].getBoundingClientRect().x - offset,
-                nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
+            if (nodes[i] != null) {
+                console.log(tabstops[i])
+                if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
+                    console.log("+++++++++++++++++++")
+                    // drawSingleCircle(nodes, i, 20, nodeXpaths)
+                    let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
-            // Create white outline
-            if (Math.abs(slope) < 1) {  // Low slope move y
-                makeLine(nodes[i].getBoundingClientRect().x - offset,
-                    nodes[i].getBoundingClientRect().y - offset - 1,
-                    nodes[i + 1].getBoundingClientRect().x - offset,
-                    nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+                    makeLine(nodes[i].getBoundingClientRect().x - offset,
+                        nodes[i].getBoundingClientRect().y - offset,
+                        nodes[i + 1].getBoundingClientRect().x - offset,
+                        nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
-                makeLine(nodes[i].getBoundingClientRect().x - offset,
-                    nodes[i].getBoundingClientRect().y - offset + 1,
-                    nodes[i + 1].getBoundingClientRect().x - offset,
-                    nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+                    // Create white outline
+                    if (Math.abs(slope) < 1) {  // Low slope move y
+                        makeLine(nodes[i].getBoundingClientRect().x - offset,
+                            nodes[i].getBoundingClientRect().y - offset - 1,
+                            nodes[i + 1].getBoundingClientRect().x - offset,
+                            nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
-            } else { // high slope move x
-                makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-                    nodes[i].getBoundingClientRect().y - offset,
-                    nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                        makeLine(nodes[i].getBoundingClientRect().x - offset,
+                            nodes[i].getBoundingClientRect().y - offset + 1,
+                            nodes[i + 1].getBoundingClientRect().x - offset,
+                            nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
 
-                makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-                    nodes[i].getBoundingClientRect().y - offset,
-                    nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                    } else { // high slope move x
+                        makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                            nodes[i].getBoundingClientRect().y - offset,
+                            nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                        makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                            nodes[i].getBoundingClientRect().y - offset,
+                            nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                    }
+
+                    let x = nodes[i].getBoundingClientRect().x - offset;
+                    let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+
+                    let y = nodes[i].getBoundingClientRect().y - offset;
+                    let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+
+                    // if (i == 32) {
+                    //     console.log("x y :", x, " ", y)
+                    // }
+
+                    // makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
+
+                    // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+                    let triangleLegLength = 27
+                    let triangleXShifted = x
+                    let triangleYShifted = y
+                    makeTriangle(  
+                                triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                                triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                i.toString(), nodeXpaths[i])
+                    
+                    makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
+
+                    // Make box around active component
+                    makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+                    makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+
+
+                    // Make white stroke around active component outline
+                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+
+                    // Make white stroke inside active component outline
+                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                }
+                else { // This is the defalt case were we just draw a circle
+                    console.log("-------------------------")
+
+                    // drawSingleCircle(nodes, i, offset, nodeXpaths)
+                    let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+
+                    makeLine(nodes[i].getBoundingClientRect().x - offset,
+                        nodes[i].getBoundingClientRect().y - offset,
+                        nodes[i + 1].getBoundingClientRect().x - offset,
+                        nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
+
+                    // Create white outline
+                    if (Math.abs(slope) < 1) {  // Low slope move y
+                        makeLine(nodes[i].getBoundingClientRect().x - offset,
+                            nodes[i].getBoundingClientRect().y - offset - 1,
+                            nodes[i + 1].getBoundingClientRect().x - offset,
+                            nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+
+                        makeLine(nodes[i].getBoundingClientRect().x - offset,
+                            nodes[i].getBoundingClientRect().y - offset + 1,
+                            nodes[i + 1].getBoundingClientRect().x - offset,
+                            nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+                    } else { // high slope move x
+                        makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                            nodes[i].getBoundingClientRect().y - offset,
+                            nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                        makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                            nodes[i].getBoundingClientRect().y - offset,
+                            nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                    }
+
+                    let x = nodes[i].getBoundingClientRect().x - offset;
+                    let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+
+                    let y = nodes[i].getBoundingClientRect().y - offset;
+                    let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+
+                    // if (i == 32) {
+                    //     console.log("x y :", x, " ", y)
+                    // }
+                    makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
+                    makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
+
+                    // Make box around active component
+                    makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+                    makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+
+
+                    // Make white stroke around active component outline
+                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+
+                    // Make white stroke inside active component outline
+                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                }
             }
-        }
+            // else if (nodesErrors[i] != null) {
+            //     console.log("ALI WAS HERE")
+            //     drawSingleCircle(nodesErrors, i, offset, nodeXpathsErrors)
 
-
-        for (let i = 0; i < nodes.length; i++) {
-            let x = nodes[i].getBoundingClientRect().x - offset;
-            let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
-
-            let y = nodes[i].getBoundingClientRect().y - offset;
-            let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
-
-            // if (i == 32) {
-            //     console.log("x y :", x, " ", y)
             // }
-            makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
-            makeTextSmall(x, y, (i + 1).toString());
-
-            // Make box around active component
-            makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
-            makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
-            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
-            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
-
-
-            // Make white stroke around active component outline
-            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
-            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
-            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-
-            // Make white stroke inside active component outline
-            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
-            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
-            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
-            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+            // else {
+            //     //Skip
+            // }
         }
+
     }, 1)
 }
 
-function makeIcon(x1: number, y1: number, iconName: string) {
-    iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-    var iconClone = createSVGErrorIconTemplate();
-    iconClone.removeAttribute("display");
-    iconClone.classList.remove("svgIcon1");
-    iconClone.classList.add("svgIconTest");
-    iconClone.classList.add("deleteMe");
-    iconClone.style.position = "absolute";
-    iconClone.style.left = String(x1) + "px";
-    iconClone.style.top = String(y1) + "px";
-    // (iconClone as HTMLElement).style.fill = "red";
-    // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
+// function drawSingleCircle(nodes: any[], i: any, offset: any, nodeXpaths: any) {
+//     let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
-    if (document.getElementById("svgIcons") == null) {
-        var elemDIV = document.createElement('div');
-        elemDIV.setAttribute("class", "svgIcons");
-        document.body.appendChild(elemDIV);
-    }
-    document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-}
+//     makeLine(nodes[i].getBoundingClientRect().x - offset,
+//         nodes[i].getBoundingClientRect().y - offset,
+//         nodes[i + 1].getBoundingClientRect().x - offset,
+//         nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
+
+//     // Create white outline
+//     if (Math.abs(slope) < 1) {  // Low slope move y
+//         makeLine(nodes[i].getBoundingClientRect().x - offset,
+//             nodes[i].getBoundingClientRect().y - offset - 1,
+//             nodes[i + 1].getBoundingClientRect().x - offset,
+//             nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+
+//         makeLine(nodes[i].getBoundingClientRect().x - offset,
+//             nodes[i].getBoundingClientRect().y - offset + 1,
+//             nodes[i + 1].getBoundingClientRect().x - offset,
+//             nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+//     } else { // high slope move x
+//         makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+//             nodes[i].getBoundingClientRect().y - offset,
+//             nodes[i + 1].getBoundingClientRect().x - offset - 1,
+//             nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+//         makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+//             nodes[i].getBoundingClientRect().y - offset,
+//             nodes[i + 1].getBoundingClientRect().x - offset + 1,
+//             nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+//     }
+
+//     let x = nodes[i].getBoundingClientRect().x - offset;
+//     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+
+//     let y = nodes[i].getBoundingClientRect().y - offset;
+//     let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+
+//     // if (i == 32) {
+//     //     console.log("x y :", x, " ", y)
+//     // }
+//     makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
+//     makeTextSmall(x, y, (i + 1).toString());
+
+//     // Make box around active component
+//     makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+//     makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+//     makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+//     makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+
+
+//     // Make white stroke around active component outline
+//     makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+//     makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+//     makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+//     makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+
+//     // Make white stroke inside active component outline
+//     makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+//     makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+//     makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+//     makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+// }
+
+
+// function makeIcon(x1: number, y1: number, iconName: string) {
+//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
+//     var iconClone = createSVGErrorIconTemplate();
+//     iconClone.removeAttribute("display");
+//     iconClone.classList.remove("svgIcon1");
+//     iconClone.classList.add("svgIconTest");
+//     iconClone.classList.add("deleteMe");
+//     iconClone.style.position = "absolute";
+//     iconClone.style.left = String(x1) + "px";
+//     iconClone.style.top = String(y1) + "px";
+//     // (iconClone as HTMLElement).style.fill = "red";
+//     // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
+
+//     if (document.getElementById("svgIcons") == null) {
+//         var elemDIV = document.createElement('div');
+//         elemDIV.setAttribute("class", "svgIcons");
+//         document.body.appendChild(elemDIV);
+//     }
+//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+// }
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
@@ -413,9 +702,59 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
+function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
+    // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
+    //  <polygon points="0,0 100,0 50,100"/>
+    // </svg>
+
+    // .svg-triangle{
+    //     margin: 0 auto;
+    //     width: 100px;
+    //     height: 100px;
+    // }
+    
+    // .svg-triangle polygon {
+    // fill:#98d02e;
+    // stroke:#65b81d;
+    // stroke-width:2;
+    // }
+
+    // TODO: Find possible better way to deal with this (Talk to design)
+    // If the circle is being drawn slighly off of the screen move it into the screen
+    if (x1 >= -10 && x1 <= 6) {
+        x1 = 12;
+    }
+    if (y1 >= -10 && y1 <= 6) {
+        y1 = 12;
+    }
+    var triangleClone = createSVGTriangleTemplate();
+    triangleClone.removeAttribute("id");
+    triangleClone.classList.add("deleteMe");
+    triangleClone.classList.add("circleNumber" + circleNumber);
+
+    triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
+
+    // triangleClone.setAttribute('x1', String(x1));
+    // triangleClone.setAttribute('y1', String(y1));
+    // triangleClone.setAttribute('x2', String(x2));
+    // triangleClone.setAttribute('y2', String(y2));
+    // triangleClone.setAttribute('x3', String(x3));
+    // triangleClone.setAttribute('y3', String(y3));
+    triangleClone.setAttribute('pointer-events', "auto");
+    triangleClone.onclick = () => {
+        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
+    };
+    if (document.getElementById("svgCircle") == null) {
+        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        elemSVG.setAttribute("id", "svgCircle");
+        document.body.appendChild(elemSVG);
+    }
+    document.getElementById('svgCircle')?.appendChild(triangleClone)
+}
 
 
-function makeTextSmall(x1: number, y1: number, n: string) {
+
+function makeTextSmall(x1: number, y1: number, n: string, textColorClassName?: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
@@ -431,6 +770,9 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     textClone.removeAttribute("id");
     textClone.classList.add("deleteMe");
     textClone.classList.add("circleSmall");
+    if(textColorClassName){
+        textClone.classList.add(textColorClassName); 
+    }
 
     if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
         textClone.setAttribute('x', String(x1 - 10));
@@ -474,6 +816,25 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
         document.body.appendChild(elemSVG);
     }
     document.getElementById('svgLine')?.appendChild(lineClone);
+}
+
+function createSVGTriangleTemplate() {
+    console.log("Inject triangle");
+    // This is what we are creating:
+    // <svg id="svgTriangle">
+    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
+    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
+    // </svg>
+    // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    // elemCircle.setAttribute("id", "triangle");
+    elemCircle.setAttribute("id", "circle");
+    elemCircle.setAttribute("class", "tabCircle");
+    // elemCircle.setAttribute("class", "tabTriangle");
+    elemCircle.setAttribute("stroke", "grey");
+    elemCircle.setAttribute("stroke-width", "1");
+    elemCircle.setAttribute("fill", "yellow");
+    return elemCircle
 }
 
 
@@ -524,59 +885,59 @@ function createSVGLineTemplate() {
     return elemLine
 }
 
-function createSVGErrorIconTemplate() {
-    // This is what we are creating:
-    // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
-    //     <defs>
-    //         <style> 
-    //            .cls-1 { fill: none; } 
-    //         </style>
-    //     </defs >
-    //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
-    //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
-    //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
-    //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
-    // </svg>
-    var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    elemSvg.setAttribute("class", "svgIcon1");
-    elemSvg.setAttribute("display", "none");
-    elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    elemSvg.setAttribute("width", "12px");
-    elemSvg.setAttribute("height", "12px");
-    elemSvg.setAttribute("viewBox", "0 0 32 32");
+// function createSVGErrorIconTemplate() {
+//     // This is what we are creating:
+//     // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
+//     //     <defs>
+//     //         <style> 
+//     //            .cls-1 { fill: none; } 
+//     //         </style>
+//     //     </defs >
+//     //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
+//     //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
+//     //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
+//     //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
+//     // </svg>
+//     var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//     elemSvg.setAttribute("class", "svgIcon1");
+//     elemSvg.setAttribute("display", "none");
+//     elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+//     elemSvg.setAttribute("width", "12px");
+//     elemSvg.setAttribute("height", "12px");
+//     elemSvg.setAttribute("viewBox", "0 0 32 32");
 
-    var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+//     var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
 
-    var elemStyle = document.createElement('style');
-    elemStyle.innerText = ".cls-1 { fill: none; }"
+//     var elemStyle = document.createElement('style');
+//     elemStyle.innerText = ".cls-1 { fill: none; }"
 
-    var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath1.setAttribute("class", "cls-1");
-    elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
-    elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
+//     var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath1.setAttribute("class", "cls-1");
+//     elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
+//     elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
 
-    var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
-    elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
+//     var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
+//     elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
 
-    var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
-    elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
+//     var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
+//     elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
 
-    var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
-    elemRect.setAttribute("class", "cls-1");
-    elemRect.setAttribute("width", "32");
-    elemRect.setAttribute("height", "32");
+//     var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+//     elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
+//     elemRect.setAttribute("class", "cls-1");
+//     elemRect.setAttribute("width", "32");
+//     elemRect.setAttribute("height", "32");
 
-    elemDefs.appendChild(elemStyle);
-    elemSvg.appendChild(elemDefs);
-    elemSvg.appendChild(elemPath1);
-    elemSvg.appendChild(elemPath2);
-    elemSvg.appendChild(elemPath3);
-    elemSvg.appendChild(elemRect);
-    return elemSvg;
-}
+//     elemDefs.appendChild(elemStyle);
+//     elemSvg.appendChild(elemDefs);
+//     elemSvg.appendChild(elemPath1);
+//     elemSvg.appendChild(elemPath2);
+//     elemSvg.appendChild(elemPath3);
+//     elemSvg.appendChild(elemRect);
+//     return elemSvg;
+// }
 
 function convertXpathsToHtmlElements(nodes: any) {
     let results: any = [];
@@ -587,9 +948,12 @@ function convertXpathsToHtmlElements(nodes: any) {
 }
 
 function getNodesXpaths(nodes: any) {
+    console.log("Inside getNodesXpaths");
     let tabXpaths: any = [];
     nodes.map((result: any) => {
-        tabXpaths.push(result.path.dom);
+        if (result != null) {
+            tabXpaths.push(result.path.dom);
+        }
     });
     return tabXpaths;
 }
