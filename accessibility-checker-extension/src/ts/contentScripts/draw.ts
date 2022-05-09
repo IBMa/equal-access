@@ -64,6 +64,15 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         .highlightSVG{
             fill: blue !important;
         }
+
+        .textColorWhite{
+            fill: white
+        }
+
+        .textColorBlack{
+            fill: black
+        }
+
         `
     );
     // position: absolute;
@@ -178,8 +187,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         let flagMatchFound = false;
         message.tabStopsErrors.forEach((errorElem: any) => {
             if (tabElem.path.dom === errorElem.path.dom) {
-                // console.log(errorElem.path.dom)
-                // console.log(tabElem.path.dom)
+                console.log("============123===================")
+                console.log(errorElem.path.dom)
+                console.log(tabElem.path.dom)
+                console.log("=============123==================")
                 flagMatchFound = true;
             }
         });
@@ -195,6 +206,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     console.log("regularTabstops1" + regularTabstops)
     console.log(regularTabstops)
 
+
+    console.log("===============================")
+    console.log(message.tabStopsResults)
+    console.log(message.tabStopsErrors)
+    console.log("===============================")
 
 
     draw(regularTabstops);
@@ -284,6 +300,7 @@ function redrawErrors(tabStopsErrors: any) {
         // console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
         nodes = convertXpathsToHtmlElements(nodes);
+        let nodeXpaths = nodes;
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
@@ -320,7 +337,22 @@ function redrawErrors(tabStopsErrors: any) {
             makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
 
             // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-            makeIcon(x, y, "test");
+            // makeIcon(x, y, "test");
+
+            // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+            let triangleLegLength = 27
+            let triangleXShifted = x-1  // Shift 1 px to center the ! we draw
+            let triangleYShifted = y
+            makeTriangle(  
+                        triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                        triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                        triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                        "Error", nodeXpaths[i])
+            
+            makeTextSmall(x, y, "!", "textColorBlack");
+
+
+            
         }
     }, 1)
 }
@@ -329,7 +361,7 @@ function redrawErrors(tabStopsErrors: any) {
 
 function redraw(tabstops: any) {
     console.log("Inside redraw")
-    setTimeout(() => {
+    setTimeout(() => { 
         let offset = 3;
         let nodes = getNodesXpaths(tabstops);
         // console.log(tabstopErrors)
@@ -355,7 +387,7 @@ function redraw(tabstops: any) {
 
             if (nodes[i] != null) {
                 console.log(tabstops[i])
-                if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) {
+                if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     console.log("+++++++++++++++++++")
                     // drawSingleCircle(nodes, i, 20, nodeXpaths)
                     let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
@@ -400,12 +432,18 @@ function redraw(tabstops: any) {
                     // }
 
                     // makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
+
+                    // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+                    let triangleLegLength = 27
                     let triangleXShifted = x
                     let triangleYShifted = y
-                    let triangleSize = 12
-                    makeTriangle( triangleXShifted,triangleYShifted-triangleSize ,triangleXShifted+triangleSize,triangleYShifted+triangleSize,  triangleXShifted-triangleSize,triangleYShifted+triangleSize,1,nodeXpaths[i])
-        
-                    makeTextSmall(x, y, (i + 1).toString());
+                    makeTriangle(  
+                                triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                                triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                i.toString(), nodeXpaths[i])
+                    
+                    makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
 
                     // Make box around active component
                     makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
@@ -426,7 +464,7 @@ function redraw(tabstops: any) {
                     makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                 }
-                else {
+                else { // This is the defalt case were we just draw a circle
                     console.log("-------------------------")
 
                     // drawSingleCircle(nodes, i, offset, nodeXpaths)
@@ -471,7 +509,7 @@ function redraw(tabstops: any) {
                     //     console.log("x y :", x, " ", y)
                     // }
                     makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
-                    makeTextSmall(x, y, (i + 1).toString());
+                    makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
                     // Make box around active component
                     makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
@@ -571,26 +609,26 @@ function redraw(tabstops: any) {
 // }
 
 
-function makeIcon(x1: number, y1: number, iconName: string) {
-    iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-    var iconClone = createSVGErrorIconTemplate();
-    iconClone.removeAttribute("display");
-    iconClone.classList.remove("svgIcon1");
-    iconClone.classList.add("svgIconTest");
-    iconClone.classList.add("deleteMe");
-    iconClone.style.position = "absolute";
-    iconClone.style.left = String(x1) + "px";
-    iconClone.style.top = String(y1) + "px";
-    // (iconClone as HTMLElement).style.fill = "red";
-    // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
+// function makeIcon(x1: number, y1: number, iconName: string) {
+//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
+//     var iconClone = createSVGErrorIconTemplate();
+//     iconClone.removeAttribute("display");
+//     iconClone.classList.remove("svgIcon1");
+//     iconClone.classList.add("svgIconTest");
+//     iconClone.classList.add("deleteMe");
+//     iconClone.style.position = "absolute";
+//     iconClone.style.left = String(x1) + "px";
+//     iconClone.style.top = String(y1) + "px";
+//     // (iconClone as HTMLElement).style.fill = "red";
+//     // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
 
-    if (document.getElementById("svgIcons") == null) {
-        var elemDIV = document.createElement('div');
-        elemDIV.setAttribute("class", "svgIcons");
-        document.body.appendChild(elemDIV);
-    }
-    document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-}
+//     if (document.getElementById("svgIcons") == null) {
+//         var elemDIV = document.createElement('div');
+//         elemDIV.setAttribute("class", "svgIcons");
+//         document.body.appendChild(elemDIV);
+//     }
+//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+// }
 
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
@@ -625,7 +663,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
-function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: number, xpath: string) {
+function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
     // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
     //  <polygon points="0,0 100,0 50,100"/>
     // </svg>
@@ -677,7 +715,7 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
 
 
 
-function makeTextSmall(x1: number, y1: number, n: string) {
+function makeTextSmall(x1: number, y1: number, n: string, textColorClassName?: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
@@ -693,6 +731,9 @@ function makeTextSmall(x1: number, y1: number, n: string) {
     textClone.removeAttribute("id");
     textClone.classList.add("deleteMe");
     textClone.classList.add("circleSmall");
+    if(textColorClassName){
+        textClone.classList.add(textColorClassName); 
+    }
 
     if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
         textClone.setAttribute('x', String(x1 - 10));
@@ -805,59 +846,59 @@ function createSVGLineTemplate() {
     return elemLine
 }
 
-function createSVGErrorIconTemplate() {
-    // This is what we are creating:
-    // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
-    //     <defs>
-    //         <style> 
-    //            .cls-1 { fill: none; } 
-    //         </style>
-    //     </defs >
-    //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
-    //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
-    //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
-    //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
-    // </svg>
-    var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    elemSvg.setAttribute("class", "svgIcon1");
-    elemSvg.setAttribute("display", "none");
-    elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    elemSvg.setAttribute("width", "12px");
-    elemSvg.setAttribute("height", "12px");
-    elemSvg.setAttribute("viewBox", "0 0 32 32");
+// function createSVGErrorIconTemplate() {
+//     // This is what we are creating:
+//     // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
+//     //     <defs>
+//     //         <style> 
+//     //            .cls-1 { fill: none; } 
+//     //         </style>
+//     //     </defs >
+//     //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
+//     //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
+//     //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
+//     //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
+//     // </svg>
+//     var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//     elemSvg.setAttribute("class", "svgIcon1");
+//     elemSvg.setAttribute("display", "none");
+//     elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+//     elemSvg.setAttribute("width", "12px");
+//     elemSvg.setAttribute("height", "12px");
+//     elemSvg.setAttribute("viewBox", "0 0 32 32");
 
-    var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+//     var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
 
-    var elemStyle = document.createElement('style');
-    elemStyle.innerText = ".cls-1 { fill: none; }"
+//     var elemStyle = document.createElement('style');
+//     elemStyle.innerText = ".cls-1 { fill: none; }"
 
-    var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath1.setAttribute("class", "cls-1");
-    elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
-    elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
+//     var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath1.setAttribute("class", "cls-1");
+//     elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
+//     elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
 
-    var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
-    elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
+//     var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
+//     elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
 
-    var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
-    elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
+//     var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+//     elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
+//     elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
 
-    var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
-    elemRect.setAttribute("class", "cls-1");
-    elemRect.setAttribute("width", "32");
-    elemRect.setAttribute("height", "32");
+//     var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+//     elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
+//     elemRect.setAttribute("class", "cls-1");
+//     elemRect.setAttribute("width", "32");
+//     elemRect.setAttribute("height", "32");
 
-    elemDefs.appendChild(elemStyle);
-    elemSvg.appendChild(elemDefs);
-    elemSvg.appendChild(elemPath1);
-    elemSvg.appendChild(elemPath2);
-    elemSvg.appendChild(elemPath3);
-    elemSvg.appendChild(elemRect);
-    return elemSvg;
-}
+//     elemDefs.appendChild(elemStyle);
+//     elemSvg.appendChild(elemDefs);
+//     elemSvg.appendChild(elemPath1);
+//     elemSvg.appendChild(elemPath2);
+//     elemSvg.appendChild(elemPath3);
+//     elemSvg.appendChild(elemRect);
+//     return elemSvg;
+// }
 
 function convertXpathsToHtmlElements(nodes: any) {
     let results: any = [];
