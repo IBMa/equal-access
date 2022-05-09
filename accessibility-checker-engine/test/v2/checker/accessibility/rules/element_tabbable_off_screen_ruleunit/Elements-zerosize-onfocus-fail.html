@@ -22,30 +22,40 @@
 
 <head>
 	<title>Test Example</title>
-  <script>
-    document.onreadystatechange = function () {
-      if  (document.readyState == "interactive") {
-          var elem = document.getElementById("mybutton");
-          elem.onfocus = function() { 
-              elem.style.position = 'relative';
-              elem.style.left = '50px';
-              elem.style.color = 'red';
-          };  
-      }      
+  <style>
+    .bx--skip-to-content {
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    margin: -1px;
+		    padding: 0;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    border: 0;
+		    visibility: inherit;
+		    clip: rect(0,0,0,0);
     }
-    
-  </script>
-  
+
+    .bx--skip-to-content:focus {
+		    top: 0;
+		    left: 0;
+		    z-index: 9999;
+		    display: flex;
+		    align-items: center;
+		    width: auto;
+		    height: 3rem;
+		    padding: 0 1rem;
+		    color: #f4f4f4;
+		    background-color: #161616;
+		    border: 4px solid #0f62fe;
+		    outline: none;
+    }
 </style>
 </head>
 
 <body>
 
-<button id='mybutton' width="350" height="350" style="position:absolute; left:-100px;">
-	 OK
-</button>
-
-<a href='google.com' style="position: absolute; left: -500px;">lick here</a>
+  <a class='bx--skip-to-content' href='#main-content' tabindex='0'>Skip to main content</a>
 
 <script>
   UnitTest = {
@@ -58,29 +68,11 @@
               "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/button[1]",
-              "aria": "/document[1]/button[1]"
-            },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <button> is on the screen when it has keyboard focus",
-            "messageArgs": [
-              "button"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_off_screen",
-            "value": [
-              "INFORMATION",
-              "POTENTIAL"
-            ],
-            "path": {
               "dom": "/html[1]/body[1]/a[1]",
               "aria": "/document[1]/link[1]"
             },
-            "reasonId": "potential_off",
-            "message": "Confirm that the tabbable element <a> is on the screen when it has keyboard focus",
+            "reasonId": "potential_zerosize",
+            "message": "Confirm that the tabbable element <a> meets minimum target size when it has keyboard focus",
             "messageArgs": [
               "a"
             ],

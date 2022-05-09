@@ -145,15 +145,3 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         return definedStylePseudo;
     }
 }
-
-export function getTotalOffset(elm) {
-    var totalOffsetTop  = 0;
-    var totalOffsetLeft  = 0;
-    var current = DOMUtil.parentElement(elm);
-    while(current && current.nodeName.toLowerCase() !== 'body') {
-        if (current[0] && current[0].offsetTop) totalOffsetTop  += current[0].offsetTop;
-        if (current[0] && current[0].offsetLeft) totalOffsetLeft  += current[0].offsetLeft;
-        current = DOMUtil.parentElement(current);
-    }
-    return [totalOffsetTop, totalOffsetLeft];
- }
