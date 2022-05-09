@@ -22,13 +22,48 @@ import OptionMessaging from "../util/optionMessaging";
 
 let metrics = new ACMetricsLogger("ac-extension");
 
+function myExecuteScript(
+    params: any, 
+    pCB?: (any) | undefined): void
+{
+    if (chrome && chrome.scripting && chrome.scripting.executeScript) {
+        chrome.scripting.executeScript(params, pCB);
+    } else {
+        if (params.func) {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    code: params.func.toString(),
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    pCB && pCB(res.map(item => ({ result: item })));
+                }
+            )
+        } else {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    file: params.files[0],
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    pCB && pCB(res.map(item => ({ result: item })));
+                }
+            )
+        }
+    }
+}
+
 async function initTab(tabId: number, archiveId: string) {
     // Determine if we've ever loaded any engine
     let isLoaded = await new Promise((resolve, reject) => {
-        chrome.scripting.executeScript({
+        myExecuteScript({
             target: { tabId: tabId, frameIds: [0] },
             func: () => (typeof (window as any).ace)
-        }, function (res) {
+        }, function (res: any) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
@@ -39,10 +74,10 @@ async function initTab(tabId: number, archiveId: string) {
     // Switch to the appropriate engine for this archiveId
     let engineFile = await EngineCache.getEngine(archiveId);
     await new Promise((resolve, reject) => {
-        chrome.scripting.executeScript({
+        myExecuteScript({
             target: { tabId: tabId, frameIds: [0] },
             files: [engineFile]
-        }, function (res) {
+        }, function (res: any) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
@@ -53,10 +88,10 @@ async function initTab(tabId: number, archiveId: string) {
     // Initialize the listeners once
     if (!isLoaded) {
         await new Promise((resolve, reject) => {
-            chrome.scripting.executeScript({
+            myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
                 files: ["tabListeners.js"]
-            }, function (_res) {
+            }, function (_res: any) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
                 }
@@ -129,10 +164,10 @@ BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
             //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
             let canScan = await new Promise((resolve, _reject) => {
                 if (tab.id < 0) return resolve(false);
-                chrome.scripting.executeScript({
+                myExecuteScript({
                     target: { tabId: tab.id, frameIds: [0] },
                     func: () => (typeof (window as any).ace)
-                }, function (res) {
+                }, function (res: any) {
                     resolve(!!res);
                 })
             });
@@ -163,10 +198,10 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
             } 
             await initTab(message.tabId, archiveId);
             try {
-                chrome.scripting.executeScript({
+                myExecuteScript({
                     target: { tabId: message.tabId, frameIds: [0] },
                     func: () => (new (window as any).ace.Checker().rulesets)
-                }, function (res) {
+                }, function (res: any) {
                     if (chrome.runtime.lastError) {
                         reject(chrome.runtime.lastError.message);
                     }
