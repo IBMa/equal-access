@@ -347,7 +347,7 @@ function redrawErrors(tabStopsErrors: any) {
                         triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                         triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
                         triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                        "Error", nodeXpaths[i])
+                        "Error"+i, nodeXpaths[i])
             
             makeTextSmall(x, y, "!", "textColorBlack");
 
