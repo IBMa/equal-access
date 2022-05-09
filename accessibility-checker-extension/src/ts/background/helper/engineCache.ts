@@ -34,11 +34,11 @@ export interface IArchiveDefinition {
 export default class EngineCache {
     public static async getArchives() {
         try {
-            let archiveInfo = (await chrome.storage.local.get(['archiveInfo'])).archiveInfo || { archives: [], ts: 0 };
+            let archiveInfo = ((await chrome.storage.local.get(['archiveInfo'])) || {}).archiveInfo || { archives: [], ts: 0 };
             // If archive info is older than 30 minutes, or not there at all
             let archives : IArchiveDefinition[] = archiveInfo.archives;
             if (archives.length === 0 || new Date().getTime()-new Date(archiveInfo.ts).getTime() >= 30*60*1000) {
-                archives = <IArchiveDefinition[]>await Fetch.json(`chrome-extension://${chrome.runtime.id}/archives.json`);
+                archives = <IArchiveDefinition[]>await Fetch.json(chrome.runtime.getURL("archives.json"));
             }
             await chrome.storage.local.set({ archiveInfo: { archives }, ts: new Date().getTime() });
             return archives;
@@ -49,7 +49,7 @@ export default class EngineCache {
     }
 
     public static async getEngine(archiveId: string) : Promise<string> {
-        let engineInfo = (await chrome.storage.local.get(['engineInfo'])).engineInfo || { engines: {}, ts: 0 };
+        let engineInfo = ((await chrome.storage.local.get(['engineInfo'])) || {}).engineInfo || { engines: {}, ts: 0 };
         let engines = engineInfo.engines;
         if (archiveId in engines && new Date().getTime()-new Date(engineInfo.ts).getTime() >= 30*60*1000) {
             return engines[archiveId];

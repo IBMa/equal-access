@@ -33,14 +33,17 @@ function myExecuteScript(
             chrome.tabs.executeScript(
                 params.target.tabId as number,
                 { 
-                    code: params.func.toString(),
+                    code: `(${params.func.toString()})()`,
                     frameId: params.target.frameIds[0],
                     matchAboutBlank: true
                 },
                 (res) => {
-                    pCB && pCB(res.map(item => ({ result: item })));
-                }
-            )
+                    if (!res) {
+                        pCB && pCB(res);
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
         } else {
             chrome.tabs.executeScript(
                 params.target.tabId as number,
@@ -50,9 +53,25 @@ function myExecuteScript(
                     matchAboutBlank: true
                 },
                 (res) => {
-                    pCB && pCB(res.map(item => ({ result: item })));
-                }
-            )
+                    if (params.files[0].includes("ace.js")) {
+                        chrome.tabs.executeScript(
+                            params.target.tabId as number,
+                            { 
+                                code: `window.ace = ace`,
+                                frameId: params.target.frameIds[0],
+                                matchAboutBlank: true
+                            },
+                            (res) => {
+                                if (!res) {
+                                    pCB && pCB(res);
+                                } else {
+                                    pCB && pCB(res.map(item => ({ result: item })));
+                                }
+                            })
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
         }
     }
 }
@@ -82,7 +101,7 @@ async function initTab(tabId: number, archiveId: string) {
                 reject(chrome.runtime.lastError.message);
             }
             resolve(res);
-        })
+        });
     });
 
     // Initialize the listeners once
@@ -90,7 +109,7 @@ async function initTab(tabId: number, archiveId: string) {
         await new Promise((resolve, reject) => {
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
-                files: ["tabListeners.js"]
+                files: ["/tabListeners.js"]
             }, function (_res: any) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
@@ -204,8 +223,9 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
                 }, function (res: any) {
                     if (chrome.runtime.lastError) {
                         reject(chrome.runtime.lastError.message);
+                    } else {
+                        resolve(res[0].result);
                     }
-                    resolve(res[0].result);
                 })
             } catch (err) {
                 reject(err);
