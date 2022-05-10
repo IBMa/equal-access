@@ -74,8 +74,9 @@ export let element_tabbable_off_screen: Rule = {
             return RulePotential("potential_off", [nodeName]);
         } else {   
             // with onfocus position change
+            var positions = ['absolute', 'fixed'];
             if (typeof onfocus_styles['top'] !== 'undefined') {
-                if (onfocus_styles['position'] === 'absolute' || (typeof onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute')) {
+                if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
                     top = onfocus_styles['top'].replace(/\D/g,'');
                 } else { 
                     // the position is undefined and the parent's position is 'relative'
@@ -83,9 +84,9 @@ export let element_tabbable_off_screen: Rule = {
                 }     
             } 
             if (typeof onfocus_styles['left'] !== 'undefined') {
-                if (onfocus_styles['position'] === 'absolute' || (typeof onfocus_styles['position'] === 'undefined' && default_styles['position'] === 'absolute'))
+                if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
                     left = onfocus_styles['left'].replace(/\D/g,'');
-                else { 
+                } else { 
                     // the position is undefined and the parent's position is 'relative'
                     left = Number.MIN_VALUE;   
                 }     
