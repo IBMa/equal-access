@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>RPT Test Suite</title>
+</head>
+
+<body>
+
+<basefont color="red" size="5"></basefont>
+
+<a href="#navskip">skip to main content</a>
+
+
+<h2>Test case: Elements-AttributeDeprecated.html</h2>
+
+
+
+<!-- ################################################################### -->
+
+
+<h3>Elements Tests</h3>
+
+
+<ul>
+	<li>Test - Elements which have attributes which have been deprecated</li>
+</ul>
+
+<!-- img border attribute -->
+<img src="fish.gif" alt="fish" border="2">
+	fish
+</img>
+
+<!-- object border attribute -->
+<object classid="clsid:F08DF954-8592-11D1-B16A-00C0F0283628" id="Slider1" width="100" height="50" border="2">
+	<param name="BorderStyle" value="1" />
+	<param name="MousePointer" value="0" />
+	Test text
+</object>
+
+<!-- th height, th height, td width, th width attributes -->
+<table role="presentation">
+	<tr>
+		<th height="20" width="30" scope="col">Class</th>
+		<th height="20" width="30" scope="col"># of Boys</th>
+		<th height="20" width="30" scope="col"># of Girls</th>
+	</tr>
+
+	<tr>
+		<th height="20" width="30" scope="row">1st Grade</th>
+		<td height="20" width="30" >11</td>
+		<td height="20" width="30" >10</td>
+	</tr>
+</table>
+
+<!-- li type, ol type, ul type, li value attributes -->
+<ol id="ol1" type="1">
+	<li type="a" value="2">List item one</li>
+	<li type="a" value="3">List item two</li>
+</ol>
+
+<ul id="ul1" type="A">
+	<li>test 1</li>
+	<li>test 2</li>
+</ul>
+
+<!-- hr width attribute -->
+<hr width="3"></hr>
+
+<a name="navskip"></a>
+
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "256",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+        "/html/body/img",
+        "/html/body/object",
+        "/html/body/table/tbody/tr[1]/th[1]",
+        "/html/body/table/tbody/tr[1]/th[2]",
+        "/html/body/table/tbody/tr[1]/th[3]",
+        "/html/body/table/tbody/tr[2]/th",
+        "/html/body/table/tbody/tr[2]/td[1]",
+        "/html/body/table/tbody/tr[2]/td[2]",
+        "/html/body/ol",
+        "/html/body/ol/li[1]",
+        "/html/body/ol/li[2]",
+        "/html/body/ul[2]",
+        "/html/body/hr"
+      ]
+    }
+  ];
+//]]>
+</script></body>
+
+</html>
