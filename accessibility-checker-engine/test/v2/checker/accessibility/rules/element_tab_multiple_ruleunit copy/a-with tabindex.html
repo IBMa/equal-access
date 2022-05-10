@@ -26,68 +26,25 @@
 
 <body>
 
-<basefont color="red" size="5"></basefont>
+  <a href="...">
+      <span tabindex="0">Something strange<span>
+  </a>
+  
+  <div style='margin-top:50px;margin-bottom:50px;'>
+      <a href='ibm.com/able' >normal</a>
+  </div>
 
-<a href="#navskip">skip to main content</a>
+  <button class="btn" aria-label="dummy label">
+    <span class="material-icons" tabindex='0'>inside text with tabindex</span>
+  </button>
 
+  <div tabindex="0" style='margin-top:50px;margin-bottom:50px;'>
+    <button>outside div with tabindex</button>
+  </div>
 
-<h2>Test case: Elements-AttributeDeprecated.html</h2>
-
-
-
-<!-- ################################################################### -->
-
-
-<h3>Elements Tests</h3>
-
-
-<ul>
-	<li>Test - Elements which have attributes which have been deprecated</li>
-</ul>
-
-<!-- img border attribute -->
-<img src="fish.gif" alt="fish" border="2">
-	fish
-</img>
-
-<!-- object border attribute -->
-<object classid="clsid:F08DF954-8592-11D1-B16A-00C0F0283628" id="Slider1" width="100" height="50" border="2">
-	<param name="BorderStyle" value="1" />
-	<param name="MousePointer" value="0" />
-	Test text
-</object>
-
-<!-- th height, th height, td width, th width attributes -->
-<table role="presentation">
-	<tr>
-		<th height="20" width="30" scope="col">Class</th>
-		<th height="20" width="30" scope="col"># of Boys</th>
-		<th height="20" width="30" scope="col"># of Girls</th>
-	</tr>
-
-	<tr>
-		<th height="20" width="30" scope="row">1st Grade</th>
-		<td height="20" width="30" >11</td>
-		<td height="20" width="30" >10</td>
-	</tr>
-</table>
-
-<!-- li type, ol type, ul type, li value attributes -->
-<ol id="ol1" type="1">
-	<li type="a" value="2">List item one</li>
-	<li type="a" value="3">List item two</li>
-</ol>
-
-<ul id="ul1" type="A">
-	<li>test 1</li>
-	<li>test 2</li>
-</ul>
-
-<!-- hr width attribute -->
-<hr width="3"></hr>
-
-<a name="navskip"></a>
-
+  <div style='margin-top:50px;' tabindex="0">this is a div 
+    <span style='color:blue' tabindex='0'>this is a inside span</span>
+  </div>
 
 <script type="text/javascript">
 //<![CDATA[
