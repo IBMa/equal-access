@@ -24,16 +24,14 @@ export let element_tabbable_off_screen: Rule = {
         "en-US": {
             "group": "element_tabbable_off_screen.html",
             "pass": "element_tabbable_off_screen.html",
-            "fail_off": "element_tabbable_off_screen.html",
-            "potential_off": "element_tabbable_off_screen.html"
+            "potential_visible": "element_tabbable_off_screen.html"
         }
     },
     messages: {
         "en-US": {
-            "group": "Tabbable element should be on the screen and meet minimum target size when it has keyboard focus",
-            "pass": "Tabbable element is on the screen",
-            "potential_zerosize": "Confirm that the tabbable element <{0}> meets minimum target size when it has keyboard focus",
-            "potential_off": "Confirm that the tabbable element <{0}> is on the screen when it has keyboard focus"
+            "group": "A tabbable element should be on the screen and meet minimum target size when it has keyboard focus",
+            "pass": "The tabbable element is visible on the screen",
+            "potential_visible": "Confirm that the tabbable element <{0}> is visible on the screen when it has keyboard focus"
         }
     },
     rulesets: [{
@@ -60,7 +58,7 @@ export let element_tabbable_off_screen: Rule = {
         if (bounds['height'] === 0 || bounds['width'] === 0 
             || (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
               && !onfocus_styles['clip']))
-            return RulePotential("potential_zerosize", [nodeName]);
+            return RulePotential("potential_visible", [nodeName]);
 
         if (bounds['top'] > 0 && bounds['left'] > 0)
             return RulePass("pass");
@@ -71,7 +69,7 @@ export let element_tabbable_off_screen: Rule = {
         let left = bounds['left'];     
         if (Object.keys(onfocus_styles).length === 0 ) {
             // no onfocus position change, but could be changed from js 
-            return RulePotential("potential_off", [nodeName]);
+            return RulePotential("potential_visible", [nodeName]);
         } else {   
             // with onfocus position change
             var positions = ['absolute', 'fixed'];
@@ -96,6 +94,6 @@ export let element_tabbable_off_screen: Rule = {
         if (top > 0 && left > 0)
             return RulePass("pass");
         else
-            return RulePotential("potential_off", [nodeName]);
+            return RulePotential("potential_visible", [nodeName]);
     }
 }
