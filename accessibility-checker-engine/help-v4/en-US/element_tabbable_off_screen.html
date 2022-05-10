@@ -70,6 +70,19 @@ as in the '**Skip to main content**' example below. 
 
 Example: this "**_Skip to main content_**" tabbable element uses CSS positioning to ensure it is visible when the element has keyboard focus:
 
+```
+    <style>
+    .skip {
+        position: absolute; background-color: white; padding: 0.5rem;
+        left: -1000px;
+    }
+    .skip:focus {
+        left: 1rem;
+    }
+    </style>
+    <a class="skip" href="#main">Skip to main content</a>   
+```
+
 </script></mark-down>
 <!-- End main panel -->
                 <!-- This is where the rule id is injected -->
