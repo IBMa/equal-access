@@ -1890,6 +1890,27 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
+		"ruleId": "element_tabbable_off_screen",
+		"value": ["VIOLATION", "PASS"],
+		"path": {
+			"dom": "/html[1]/body[1]/div[1]/a[1]",
+			"aria": "/document[1]/navigation[1]/link[1]"
+		},
+		"reasonId": "pass",
+		"message": "The tabbable element is visible on the screen",
+		"messageArgs": [],
+		"apiArgs": [],
+		"bounds": {
+			"left": 8,
+			"top": 8,
+			"height": 18,
+			"width": 56
+		},
+		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
+		"category": "Accessibility",
+		"ignored": false,
+		"level": "pass"
+	}, {
 		"ruleId": "WCAG20_Text_LetterSpacing",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2604,7 +2625,7 @@
 		"ignored": false,
 		"level": "pass"
 	}],
-	"numExecuted": 124,
+	"numExecuted": 125,
 	"nls": {
 		"RPT_Html_SkipNav": {
 			"0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
@@ -2714,6 +2735,10 @@
 			"0": "Hyperlinks must have a text description of their purpose",
 			"Pass_0": "Hyperlink has a description of its purpose"
 		},
+		"element_tabbable_off_screen": {
+			"0": "A tabbable element should be on the screen and meet minimum target size when it has keyboard focus",
+			"pass": "The tabbable element is visible on the screen"
+		},
 		"RPT_Header_HasContent": {
 			"0": "Heading elements must provide descriptive text",
 			"Pass_0": "Rule Passed"
@@ -2735,7 +2760,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 123,
+			"pass": 124,
 			"ignored": 0
 		},
 		"scanTime": 999,
