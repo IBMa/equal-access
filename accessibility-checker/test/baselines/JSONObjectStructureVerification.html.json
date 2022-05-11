@@ -2736,7 +2736,7 @@
 			"Pass_0": "Hyperlink has a description of its purpose"
 		},
 		"element_tabbable_off_screen": {
-			"0": "A tabbable element should be on the screen and meet minimum target size when it has keyboard focus",
+			"0": "A tabbable element should be visible on the screen when it has keyboard focus",
 			"pass": "The tabbable element is visible on the screen"
 		},
 		"RPT_Header_HasContent": {
