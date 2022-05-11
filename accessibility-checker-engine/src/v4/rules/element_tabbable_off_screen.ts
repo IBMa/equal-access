@@ -29,7 +29,7 @@ export let element_tabbable_off_screen: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "A tabbable element should be on the screen and meet minimum target size when it has keyboard focus",
+            "group": "A tabbable element should be visible on the screen when it has keyboard focus",
             "pass": "The tabbable element is visible on the screen",
             "potential_visible": "Confirm that the tabbable element <{0}> is visible on the screen when it has keyboard focus"
         }
