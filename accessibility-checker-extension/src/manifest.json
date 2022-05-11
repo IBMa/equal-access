@@ -11,16 +11,16 @@
         "64": "assets/Bee_Logo@64px.png",
         "128": "assets/Bee_Logo@128px.png"
 	},
-	"content_security_policy": {
+    "content_security_policy": {
         "extension_pages": "script-src 'self'; object-src 'self'"
     },
-	"permissions": [
+    "permissions": [
         "tabs",
         "storage",
         "scripting",
         "activeTab"
 	],
-    "host_permissions": [
+	"host_permissions": [
         "*://*/*"
     ],
 	"action": {
@@ -41,5 +41,6 @@
 	"options_ui": {
 		"page": "options.html",
 		"open_in_tab": true
-    }
+    },
+    "incognito": "split"
 }
