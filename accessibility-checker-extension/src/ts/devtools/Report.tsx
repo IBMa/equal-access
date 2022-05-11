@@ -172,7 +172,7 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         return <React.Fragment>
-             <div >
+             <div style={{backgroundColor: "white"}}>
                 <Grid fullWidth style={{padding: "0rem"}}>
                     <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}}>
                         <Tabs

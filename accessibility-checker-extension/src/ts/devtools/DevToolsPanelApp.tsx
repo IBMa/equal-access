@@ -1069,7 +1069,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
-                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                        <div style={{ marginTop: "56px", height: "calc(100% - 56px)" }}>
                             <div style={{ height: "100%" }}>
                                 <div className="subPanel" style={{ height: "100%"  }}>
                                     {this.state.learnMore && this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -1107,7 +1107,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
                     />
-                     <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>
+                     <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">
                             {this.state.numScanning > 0 ? <Loading /> : <></>}
                             {this.state.report && <Report
