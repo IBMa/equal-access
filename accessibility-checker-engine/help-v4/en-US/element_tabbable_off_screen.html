@@ -52,7 +52,7 @@ An off-screen or invisible (zero-sized or clipped) keyboard-focusable element ha
 In some cases, the Checker can't detect where JavaScript is repositioning or resizing elements when they have keyboard focus.
 This requires some human review to confirm that the element should receive keyboard focus, and if so, doesn't remain off-screen or impossible to see when it does get keyboard focus.
 If it should not be operable with the keyboard and is not removed from the tab order,
-people using a screen reader will "see" the element even though it's invisible (such as off-screen, zero-sized, or clipped) which will cause confusion. 
+people using a screen reader will "see" the element even though it's invisible which will cause confusion. 
 
 Normally, keyboard-focusable (tabbable) elements should be visible, 
 but there are situations where it is acceptable to "hide" and then reveal the element when it receives keyboard focus,
@@ -67,6 +67,7 @@ as in the '**Skip to main content**' example below. 
 - **Or**, if users _should_ be able to interact with this element using the keyboard, use the Tab key to confirm it is visible on screen when it has keyboard focus
 - **And**, if the interactive element is off-screen when it receives keyboard focus, use the pseudo class `:focus` or adjust the position style (see example)
 - **And**, ensure the focus is visible as specified in [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+
 
 Example: this "**_Skip to main content_**" tabbable element uses CSS positioning to ensure it is visible when the element has keyboard focus:
 
@@ -95,7 +96,6 @@ Example: this "**_Skip to main content_**" tabbable element uses CSS positioning
 ### About this requirement
 
 * [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
-* [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance)
 * [Unit test - check tab order](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#check-tab-order)
 * [Unit test - confirm component keyboard interaction](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#confirm-component-keyboard-interaction) 
 
