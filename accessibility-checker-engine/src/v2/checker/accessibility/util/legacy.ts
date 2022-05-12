@@ -667,7 +667,7 @@ export class RPTUtil {
     }
     /**
      * This function is responsible for retrieving element's roles.
-     * This function aslo finds implicit roles.
+     * This function also finds implicit roles.
      * @parm {HTMLElement} ele - element for which to find role.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
