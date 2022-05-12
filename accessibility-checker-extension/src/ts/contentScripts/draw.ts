@@ -2,9 +2,6 @@ import TabMessaging from "../util/tabMessaging";
 
 console.log("Content Script for drawing tab stops has loaded")
 
-// var intervalTimer: any;
-// var circleXpaths [] = "";
-
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     // console.log(message.tabStopsResults);
@@ -65,6 +62,14 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             fill: blue;
         }
 
+        .noHighlightSVGtriangle{
+            fill: darkorange;
+        }
+        
+        .highlightSVGtriangle{
+            fill: yellow;
+        }
+
         .textColorWhite{
             fill: white
         }
@@ -109,57 +114,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         `
     );
-
-    // JCH want there to be one function draw() which draws circles for tab stops with
-    //     no errors and triangles for tab stops with errors
-
-    // console.log("message.tabStopsResults" + message.tabStopsResults)
-    // console.log("message.tabStopsResultslength" + message.tabStopsResults.length)
-    // console.log("message.tabStopsErrors" + message.tabStopsErrors)
-    // console.log("message.tabStopsErrorslength" + message.tabStopsErrors.length)
-
-    // Create nodes for regular tabstops
-    //    1. To to this remove any errors from full list - we are adding the normal tabstop icon here
-    // let regularTabstops = JSON.parse(JSON.stringify(message.tabStopsResults));
-    // let regularTabstops: any[] = []
-    // for (let index = 0; index < message.tabStopsResults.length; index++) {
-    //     const tabElem = message.tabStopsResults[index];
-    //     let flagMatchFound = false;
-    //     message.tabStopsErrors.forEach((errorElem: any) => {
-    //         if (tabElem.path.dom === errorElem.path.dom) {
-    //             // console.log(errorElem.path.dom)
-    //             // console.log(tabElem.path.dom)
-    //             flagMatchFound = true;
-    //         }
-    //     });
-    //     if (flagMatchFound) {
-    //         regularTabstops.splice(index, 1, null)
-    //     }
-    //     else (
-    //         regularTabstops.push(tabElem)
-    //     )
-
-    // }
-
-    // Create nodes for error tabstops - We are adding yellow triangles here
-    // let errorTabstops: any[] = [];
-    // for (let index = 0; index < message.tabStopsResults.length; index++) {
-    //     const tabElem = message.tabStopsResults[index];
-    //     let flagMatchFound = false;
-    //     message.tabStopsErrors.forEach((errorElem: any) => {
-    //         if (tabElem.path.dom === errorElem.path.dom) {
-    //             // console.log(errorElem.path.dom)
-    //             // console.log(tabElem.path.dom)
-    //             flagMatchFound = true
-    //         }
-    //     });
-    //     if (flagMatchFound) {
-    //         errorTabstops.push(tabElem)
-    //     }
-    //     else {
-    //         errorTabstops.push(null)
-    //     }
-    // }
 
     // Create nodes for errors (that are not tabstops) -  We are using warning icons here
     //    1. To to this remove any regular tabstops from the errors list
@@ -226,13 +180,27 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             let element = this.document.activeElement;  // get element just tabbed to which has focus
             // get xpath for active element
             let elementXpath = getXPathForElement(element);
-            // get circle with matching xpath
+            // get circle or polygon with matching xpath
             let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
-            let prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0];
+            let polygon = this.document.querySelector('polygon[xpath="'+elementXpath+'"]');
+            let prevHighlightedElement;
+            if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0]) {
+                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+            } else if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVGtriangle")[0]) {
+                // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+            }
             // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+            
             if (prevHighlightedElement) {
-                prevHighlightedElement.classList.remove("highlightSVG");
-                prevHighlightedElement.classList.add("noHighlightSVG");
+                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+                if (prevHighlightedElement.tagName === "circle") {
+                    prevHighlightedElement.classList.remove("highlightSVG");
+                    prevHighlightedElement.classList.add("noHighlightSVG");
+                } 
+                else if (prevHighlightedElement.tagName === "polygon") {
+                    prevHighlightedElement.classList.remove("highlightSVGtriangle");
+                    prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+                }
                 // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
                 // console.log("No prevHighlightedElement to highlight")
@@ -245,23 +213,43 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
+            if (polygon) {
+                polygon?.classList.remove("noHighlightSVGtriangle");
+                polygon?.classList.add("highlightSVGtriangle");
+                // console.log("polygon highlighted = ",polygon);
+            } else {
+                // console.log("No circle to highlight = ",circle);
+            }
             // Inspect active element
-            console.log("circle.xpath = ", circle?.getAttribute("xpath"));
-            console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
-            TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
+            // console.log("circle.xpath = ", circle?.getAttribute("xpath"));
+            // console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
+            // TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
             // Returm from elements tab to browse page tab
         } else if (event.shiftKey && event.key === "Tab") { // catch only SHIFT TAB
-            let element = this.document.activeElement;  // get element just tabbed to
+            let element = this.document.activeElement;  // get element just tabbed to which has focus
             // get xpath for active element
             let elementXpath = getXPathForElement(element);
-            // get circle with matching xpath
+            // get circle or polygon with matching xpath
             let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
-            // find any circle already highlighted with highlightSVG class
-            let prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0];
-            // remove highlightSVG and add noHighlightSVG
+            let polygon = this.document.querySelector('polygon[xpath="'+elementXpath+'"]');
+            let prevHighlightedElement;
+            if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0]) {
+                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+            } else if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVGtriangle")[0]) {
+                // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+            }
+            // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+            
             if (prevHighlightedElement) {
-                prevHighlightedElement.classList.remove("highlightSVG");
-                prevHighlightedElement.classList.add("noHighlightSVG");
+                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+                if (prevHighlightedElement.tagName === "circle") {
+                    prevHighlightedElement.classList.remove("highlightSVG");
+                    prevHighlightedElement.classList.add("noHighlightSVG");
+                } 
+                else if (prevHighlightedElement.tagName === "polygon") {
+                    prevHighlightedElement.classList.remove("highlightSVGtriangle");
+                    prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+                }
                 // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
                 // console.log("No prevHighlightedElement to highlight")
@@ -274,12 +262,19 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
+            if (polygon) {
+                polygon?.classList.remove("noHighlightSVGtriangle");
+                polygon?.classList.add("highlightSVGtriangle");
+                // console.log("polygon highlighted = ",polygon);
+            } else {
+                // console.log("No circle to highlight = ",circle);
+            }
             // Inspect active element
-            console.log("circle.xpath = ", circle?.getAttribute("xpath"));
-            console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
-            TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 })
+            // console.log("circle.xpath = ", circle?.getAttribute("xpath"));
+            // console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
+            // TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
+            // Returm from elements tab to browse page tab
         }
-         
         
     });
 
@@ -379,19 +374,16 @@ function redrawErrors(tabStopsErrors: any) {
             // makeIcon(x, y, "test");
 
             // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
-            let triangleLegLength = 27
-            let triangleXShifted = x-1  // Shift 1 px to center the ! we draw
-            let triangleYShifted = y
+            let triangleLegLength = 27;
+            let triangleXShifted = x;  // Shift 1 px to center the ! we draw
+            let triangleYShifted = y+1;
             makeTriangle(  
                         triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                         triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
                         triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
                         "Error"+i, nodeXpaths[i])
             
-            makeTextSmall(x, y, "!", "textColorBlack");
-
-
-            
+            makeTextSmall(x, y, "?", "textColorBlack");
         }
     }, 1)
 }
@@ -422,6 +414,7 @@ function redraw(tabstops: any) {
         // console.log("tabbable nodes = ", nodes);
 
         // JCH - need for last line to return to first node
+        console.log("nodes.length = ", nodes.length);
         for (let i = 0; i < nodes.length-1; i++) { //Make lines between numbers
 
             if (nodes[i] != null) {
@@ -466,16 +459,11 @@ function redraw(tabstops: any) {
                     let y = nodes[i].getBoundingClientRect().y - offset;
                     let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-                    // if (i == 32) {
-                    //     console.log("x y :", x, " ", y)
-                    // }
-
-                    // makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
-
                     // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
                     let triangleLegLength = 27
                     let triangleXShifted = x
                     let triangleYShifted = y
+                    console.log("Make triangle with x= ",x,"   y= ",y);
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                                 triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
@@ -547,6 +535,7 @@ function redraw(tabstops: any) {
                     // if (i == 32) {
                     //     console.log("x y :", x, " ", y)
                     // }
+                    console.log("Make circle with x= ",x,"   y= ",y);
                     makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
@@ -583,93 +572,6 @@ function redraw(tabstops: any) {
     }, 1)
 }
 
-// function drawSingleCircle(nodes: any[], i: any, offset: any, nodeXpaths: any) {
-//     let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
-
-//     makeLine(nodes[i].getBoundingClientRect().x - offset,
-//         nodes[i].getBoundingClientRect().y - offset,
-//         nodes[i + 1].getBoundingClientRect().x - offset,
-//         nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
-
-//     // Create white outline
-//     if (Math.abs(slope) < 1) {  // Low slope move y
-//         makeLine(nodes[i].getBoundingClientRect().x - offset,
-//             nodes[i].getBoundingClientRect().y - offset - 1,
-//             nodes[i + 1].getBoundingClientRect().x - offset,
-//             nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
-
-//         makeLine(nodes[i].getBoundingClientRect().x - offset,
-//             nodes[i].getBoundingClientRect().y - offset + 1,
-//             nodes[i + 1].getBoundingClientRect().x - offset,
-//             nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
-
-//     } else { // high slope move x
-//         makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-//             nodes[i].getBoundingClientRect().y - offset,
-//             nodes[i + 1].getBoundingClientRect().x - offset - 1,
-//             nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
-
-//         makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-//             nodes[i].getBoundingClientRect().y - offset,
-//             nodes[i + 1].getBoundingClientRect().x - offset + 1,
-//             nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
-//     }
-
-//     let x = nodes[i].getBoundingClientRect().x - offset;
-//     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
-
-//     let y = nodes[i].getBoundingClientRect().y - offset;
-//     let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
-
-//     // if (i == 32) {
-//     //     console.log("x y :", x, " ", y)
-//     // }
-//     makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
-//     makeTextSmall(x, y, (i + 1).toString());
-
-//     // Make box around active component
-//     makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
-//     makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
-//     makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
-//     makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
-
-
-//     // Make white stroke around active component outline
-//     makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
-//     makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
-//     makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-//     makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-
-//     // Make white stroke inside active component outline
-//     makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
-//     makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
-//     makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
-//     makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
-// }
-
-
-// function makeIcon(x1: number, y1: number, iconName: string) {
-//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-//     var iconClone = createSVGErrorIconTemplate();
-//     iconClone.removeAttribute("display");
-//     iconClone.classList.remove("svgIcon1");
-//     iconClone.classList.add("svgIconTest");
-//     iconClone.classList.add("deleteMe");
-//     iconClone.style.position = "absolute";
-//     iconClone.style.left = String(x1) + "px";
-//     iconClone.style.top = String(y1) + "px";
-//     // (iconClone as HTMLElement).style.fill = "red";
-//     // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
-
-//     if (document.getElementById("svgIcons") == null) {
-//         var elemDIV = document.createElement('div');
-//         elemDIV.setAttribute("class", "svgIcons");
-//         document.body.appendChild(elemDIV);
-//     }
-//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-// }
-
-
 function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
@@ -684,7 +586,6 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
     circleClone.removeAttribute("id");
     circleClone.classList.add("deleteMe");
     circleClone.classList.add("circleNumber" + circleNumber);
-    // circleClone.classList.add("dynamic");
     circleClone.setAttribute('cx', String(x1));
     circleClone.setAttribute('cy', String(y1));
     circleClone.setAttribute('pointer-events', "auto");
@@ -699,6 +600,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: n
         elemSVG.classList.add("dynamic");
         document.body.appendChild(elemSVG);
     }
+    console.log("Inject circle circleNumber" + circleNumber);
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -731,16 +633,9 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
     triangleClone.removeAttribute("id");
     triangleClone.classList.add("deleteMe");
     triangleClone.classList.add("circleNumber" + circleNumber);
-
     triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
-
-    // triangleClone.setAttribute('x1', String(x1));
-    // triangleClone.setAttribute('y1', String(y1));
-    // triangleClone.setAttribute('x2', String(x2));
-    // triangleClone.setAttribute('y2', String(y2));
-    // triangleClone.setAttribute('x3', String(x3));
-    // triangleClone.setAttribute('y3', String(y3));
     triangleClone.setAttribute('pointer-events', "auto");
+    triangleClone.setAttribute('xpath', xpath);
     triangleClone.onclick = () => {
         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
     };
@@ -749,7 +644,8 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
         elemSVG.setAttribute("id", "svgCircle");
         document.body.appendChild(elemSVG);
     }
-    document.getElementById('svgCircle')?.appendChild(triangleClone)
+    console.log("Inject triangle circleNumber" + circleNumber);
+    document.getElementById('svgCircle')?.appendChild(triangleClone);
 }
 
 
@@ -819,7 +715,6 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
 }
 
 function createSVGTriangleTemplate() {
-    console.log("Inject triangle");
     // This is what we are creating:
     // <svg id="svgTriangle">
     // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="grey" stroke-width="1" fill="yellow"/>
@@ -830,16 +725,15 @@ function createSVGTriangleTemplate() {
     // elemCircle.setAttribute("id", "triangle");
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
-    // elemCircle.setAttribute("class", "tabTriangle");
+    elemCircle.classList.add("dynamic");
+    elemCircle.classList.add("noHighlightSVGtriangle");
     elemCircle.setAttribute("stroke", "grey");
     elemCircle.setAttribute("stroke-width", "1");
-    elemCircle.setAttribute("fill", "yellow");
     return elemCircle
 }
 
 
 function createSVGCircleTemplate() {
-    // console.log("Inject circle");
     // This is what we are creating:
     // <svg id="svgCircle">
     // THIS PART->     <circle id="circle" class="tabCircle" stroke="grey" stroke-width="1" fill="purple"/>
@@ -852,7 +746,6 @@ function createSVGCircleTemplate() {
     elemCircle.classList.add("noHighlightSVG");
     elemCircle.setAttribute("stroke", "grey");
     elemCircle.setAttribute("stroke-width", "1");
-    // elemCircle.setAttribute("fill", "purple");
     return elemCircle
 }
 
