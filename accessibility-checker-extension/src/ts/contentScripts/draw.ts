@@ -149,11 +149,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             }
         });
         if (flagMatchFound) {
-            // regularTabstops1.splice(index, 1, null)
             regularTabstops[index].nodeHasError = true
         }
-        else { }
-        // regularTabstops1.push(tabElem)
+        else { 
+
+        }
 
 
     }
@@ -331,59 +331,60 @@ function deleteDrawing(classToRemove: string) {
 function redrawErrors(tabStopsErrors: any) {
     // console.log("Inside redrawErrors")
     setTimeout(() => {
-        // console.log("tabbable error nodes = ", tabStopsErrors);
+        console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
-        nodes = convertXpathsToHtmlElements(nodes);
         let nodeXpaths = nodes;
+        nodes = convertXpathsToHtmlElements(nodes);
+        
+        console.log("redrawErrors nodeXpaths = ", nodeXpaths);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
         let offset = 0;
 
-
+        console.log("nodes = ",nodes);
         for (let i = 0; i < nodes.length; i++) {
-            let x = nodes[i].getBoundingClientRect().x - offset;
-            let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
-
-            let y = nodes[i].getBoundingClientRect().y - offset;
-            let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
-
-            // makeCircleSmall(x, y, i, 7);
-            // makeTextSmall(x, y, (i + 1).toString());
-
-
-            // MAKE BOX AROUND ACTIVE COMPONENT
-            makeLine(x, y, xPlusWidth, y, ["lineError"]);
-            makeLine(x, y, x, yPlusHeight, ["lineError"]);
-            makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
-            makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
-
-            // Make white stroke around active component outline
-            makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
-            makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
-            makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-            makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-
-            // Make white stroke inside active component outline
-            makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
-            makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
-            makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-            makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-
-            // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-            // makeIcon(x, y, "test");
-
-            // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
-            let triangleLegLength = 27;
-            let triangleXShifted = x;  // Shift 1 px to center the ! we draw
-            let triangleYShifted = y+1;
-            makeTriangle(  
-                        triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
-                        triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                        triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                        "Error"+i, nodeXpaths[i])
             
-            makeTextSmall(x, y, "?", "textColorBlack");
+            if (nodeXpaths[i].includes("body")) { // JCH - much be within body
+                let x = nodes[i].getBoundingClientRect().x - offset;
+                let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+
+                let y = nodes[i].getBoundingClientRect().y - offset;
+                let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+
+                // MAKE BOX AROUND ACTIVE COMPONENT
+                makeLine(x, y, xPlusWidth, y, ["lineError"]);
+                makeLine(x, y, x, yPlusHeight, ["lineError"]);
+                makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
+                makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
+
+                // Make white stroke around active component outline
+                makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
+                makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
+                makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+
+                // Make white stroke inside active component outline
+                makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
+                makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
+                makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+
+                // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
+                // makeIcon(x, y, "test");
+
+                // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+                let triangleLegLength = 27;
+                let triangleXShifted = x;  // Shift 1 px to center the ! we draw
+                let triangleYShifted = y+1;
+                makeTriangle(  
+                            triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                            triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                            triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                            "Error"+i.toString(), nodeXpaths[i])
+                
+                makeTextSmall(x, y, "?", "textColorBlack");
+            }
         }
     }, 1)
 }
@@ -394,65 +395,56 @@ function redraw(tabstops: any) {
     console.log("Inside redraw")
     setTimeout(() => { 
         let offset = 3;
+        console.log("redraw tabstops = ", tabstops);
         let nodes = getNodesXpaths(tabstops);
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
 
-        // let nodesErrors = getNodesXpaths(tabstopErrors);
-        // console.log(tabstopErrors)
-        // let nodeXpathsErrors = nodesErrors;
-        // nodesErrors = convertXpathsToHtmlElements(nodesErrors);
-
-        // nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
-        //     return el != null;
-        // });
-        // nodeXpaths = nodeXpaths.filter(function (el: any) {  // Removing failure case of null nodes being sent
-        //     return el != null;
-        // });
-
-        // console.log("tabbable nodes = ", nodes);
-
         // JCH - need for last line to return to first node
         console.log("nodes.length = ", nodes.length);
-        for (let i = 0; i < nodes.length-1; i++) { //Make lines between numbers
-
+        for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
+            console.log("##########################");
             if (nodes[i] != null) {
                 console.log(tabstops[i])
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
+                    
                     console.log("+++++++++++++++++++")
-                    // drawSingleCircle(nodes, i, 20, nodeXpaths)
-                    let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
-
-                    makeLine(nodes[i].getBoundingClientRect().x - offset,
-                        nodes[i].getBoundingClientRect().y - offset,
-                        nodes[i + 1].getBoundingClientRect().x - offset,
-                        nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
-
-                    // Create white outline
-                    if (Math.abs(slope) < 1) {  // Low slope move y
-                        makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset - 1,
-                            nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+                    if (i < nodes.length - 1) {
+                        // drawSingleCircle(nodes, i, 20, nodeXpaths)
+                        let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
                         makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset + 1,
+                            nodes[i].getBoundingClientRect().y - offset,
                             nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
-                    } else { // high slope move x
-                        makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                        // Create white outline
+                        if (Math.abs(slope) < 1) {  // Low slope move y
+                            makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                nodes[i].getBoundingClientRect().y - offset - 1,
+                                nodes[i + 1].getBoundingClientRect().x - offset,
+                                nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
-                        makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                nodes[i].getBoundingClientRect().y - offset + 1,
+                                nodes[i + 1].getBoundingClientRect().x - offset,
+                                nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+                        } else { // high slope move x
+                            makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                                nodes[i].getBoundingClientRect().y - offset,
+                                nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                            makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                                nodes[i].getBoundingClientRect().y - offset,
+                                nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                        }
+
                     }
-
+                        
                     let x = nodes[i].getBoundingClientRect().x - offset;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
@@ -495,36 +487,40 @@ function redraw(tabstops: any) {
                     console.log("-------------------------")
 
                     // drawSingleCircle(nodes, i, offset, nodeXpaths)
-                    let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
-
-                    makeLine(nodes[i].getBoundingClientRect().x - offset,
-                        nodes[i].getBoundingClientRect().y - offset,
-                        nodes[i + 1].getBoundingClientRect().x - offset,
-                        nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
-
-                    // Create white outline
-                    if (Math.abs(slope) < 1) {  // Low slope move y
-                        makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset - 1,
-                            nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+                    if (i < nodes.length - 1) {
+                        let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
                         makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset + 1,
+                            nodes[i].getBoundingClientRect().y - offset,
                             nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+                            nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
-                    } else { // high slope move x
-                        makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                        // Create white outline
+                        if (Math.abs(slope) < 1) {  // Low slope move y
+                            makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                nodes[i].getBoundingClientRect().y - offset - 1,
+                                nodes[i + 1].getBoundingClientRect().x - offset,
+                                nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
-                        makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                nodes[i].getBoundingClientRect().y - offset + 1,
+                                nodes[i + 1].getBoundingClientRect().x - offset,
+                                nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+                        } else { // high slope move x
+                            makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                                nodes[i].getBoundingClientRect().y - offset,
+                                nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                            makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                                nodes[i].getBoundingClientRect().y - offset,
+                                nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                        }
+
                     }
+                    
 
                     let x = nodes[i].getBoundingClientRect().x - offset;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
@@ -536,7 +532,7 @@ function redraw(tabstops: any) {
                     //     console.log("x y :", x, " ", y)
                     // }
                     console.log("Make circle with x= ",x,"   y= ",y);
-                    makeCircleSmall(x, y, i, 13, nodeXpaths[i]);
+                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
                     // Make box around active component
@@ -559,20 +555,12 @@ function redraw(tabstops: any) {
                     makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                 }
             }
-            // else if (nodesErrors[i] != null) {
-            //     console.log("ALI WAS HERE")
-            //     drawSingleCircle(nodesErrors, i, offset, nodeXpathsErrors)
-
-            // }
-            // else {
-            //     //Skip
-            // }
         }
 
     }, 1)
 }
 
-function makeCircleSmall(x1: number, y1: number, circleNumber: number, radius: number, xpath: string) {
+function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
@@ -845,6 +833,7 @@ function getNodesXpaths(nodes: any) {
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         if (result != null) {
+            console.log("result.path.dom = "+result.path.dom);
             tabXpaths.push(result.path.dom);
         }
     });
