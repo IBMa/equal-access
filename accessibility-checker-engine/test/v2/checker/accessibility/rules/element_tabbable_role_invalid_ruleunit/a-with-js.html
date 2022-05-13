@@ -27,6 +27,30 @@
 <body>
 
 <a href='' onclick="javascript:alert('me')">here</a>
+
+<script>
+  UnitTest = {
+    ruleIds: ["element_tabbable_role_invalid"],
+    results: [
+      {
+          "ruleId": "element_tabbable_role_invalid",
+          "value": [
+            "INFORMATION",
+            "PASS"
+          ],
+          "path": {
+            "dom": "/html[1]/body[1]/div[1]",
+            "aria": "/document[1]"
+          },
+          "reasonId": "pass",
+          "message": "The tabbable element has a widget role",
+          "messageArgs": [],
+          "apiArgs": [],
+          "category": "Accessibility"
+        }
+    ]
+  }
+  </script>
 </body>
 
 </html>

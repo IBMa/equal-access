@@ -17,9 +17,9 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDefinedStyles } from "../util/CSSUtil";
 
-export let IBMA_Focus_Tabbable: Rule = {
+export let element_tabbable_role_invalid: Rule = {
     id: "element_tabbable_role_invalid",
-    context: "dom.*",
+    context:"dom:*",
     help: {
         "en-US": {
             "pass": "element_tabbable_role_invalid.html",
@@ -49,13 +49,16 @@ export let IBMA_Focus_Tabbable: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
+        console.log(ruleContext.nodeName +", " + JSON.stringify(ruleContext));
+        // dependency check: if the the multi-tab rule triggered, skip this check
+        if (RPTUtil.getCache(ruleContext, "IBMA_Focus_MultiTab", "") === "Potential_1") return null;
         
         if (!RPTUtil.isTabbable(ruleContext)) return null;
 
         let roles = RPTUtil.getRoles(ruleContext, true);
-
+        
         // pass if one of the roles is a widget type
-        roles.forEach(role => {
+        roles.forEach(role => { console.log("role=" + role);
             if (ARIADefinitions.designPatterns[role].roleType && ARIADefinitions.designPatterns[role].roleType === 'widget')
                  return RulePass("pass");
         });
@@ -63,8 +66,9 @@ export let IBMA_Focus_Tabbable: Rule = {
         // ignore elements with CSS overflow: scroll or auto
         let styles = getDefinedStyles(ruleContext);
         console.log("styles=" + JSON.stringify(styles));
-        if (styles['overflow'] === 'scroll' || styles['overflow'] === 'auto')
-            return RulePass("Pass_0");
+        if (styles['overflow-x'] === 'scroll' || styles['overflow-y'] === 'scroll' 
+            || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
+            return RulePass("pass");
             
         return RuleFail("fail_invalid_role", [roles.length === 0 ? 'none' : roles.join(', ')]);
     }

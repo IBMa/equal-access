@@ -57,6 +57,8 @@ export let IBMA_Focus_MultiTab: Rule = {
             }
         }
         let passed = count < 2;
+        if (!passed)
+            RPTUtil.setCache(ruleContext, "IBMA_Focus_MultiTab", "Potential_1");
         return passed ? RulePass("Pass_0") : RulePotential("Potential_1", [role]);
     }
 }
