@@ -5,8 +5,7 @@ console.log("Content Script for drawing tab stops has loaded")
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
     // console.log(message.tabStopsResults);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
-
+    
     injectCSS(
         `
         .line {
@@ -167,8 +166,17 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     console.log("===============================")
 
 
-    draw(regularTabstops);
-    drawErrors(errorsMisc);
+    // JCH - this allows the web to scroll to the top before drawing occurs
+    goToTop().then(function() {
+        setTimeout(() => {
+            draw(regularTabstops);
+            drawErrors(errorsMisc);
+        }, 1000)
+        
+    })
+    // draw(regularTabstops);
+    // drawErrors(errorsMisc);
+
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(regularTabstops);
@@ -321,6 +329,7 @@ function draw(tabstops: any) {
 function drawErrors(tabStopsErrors: any) {
     // console.log("Inside drawErrors")
     redrawErrors(tabStopsErrors);
+    return true;
 }
 
 function deleteDrawing(classToRemove: string) {
@@ -336,13 +345,13 @@ function redrawErrors(tabStopsErrors: any) {
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
         
-        console.log("redrawErrors nodeXpaths = ", nodeXpaths);
+        // console.log("redrawErrors nodeXpaths = ", nodeXpaths);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
         let offset = 0;
 
-        console.log("nodes = ",nodes);
+        // console.log("nodes = ",nodes);
         for (let i = 0; i < nodes.length; i++) {
             
             if (nodeXpaths[i].includes("body")) { // JCH - much be within body
@@ -386,7 +395,7 @@ function redrawErrors(tabStopsErrors: any) {
                 makeTextSmall(x, y, "?", "textColorBlack");
             }
         }
-    }, 1)
+    }, 1);
 }
 
 
@@ -404,12 +413,12 @@ function redraw(tabstops: any) {
         // JCH - need for last line to return to first node
         console.log("nodes.length = ", nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
-            console.log("##########################");
+            // console.log("##########################");
             if (nodes[i] != null) {
-                console.log(tabstops[i])
+                // console.log(tabstops[i])
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     
-                    console.log("+++++++++++++++++++")
+                    // console.log("+++++++++++++++++++")
                     if (i < nodes.length - 1) {
                         // drawSingleCircle(nodes, i, 20, nodeXpaths)
                         let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
@@ -455,7 +464,7 @@ function redraw(tabstops: any) {
                     let triangleLegLength = 27
                     let triangleXShifted = x
                     let triangleYShifted = y
-                    console.log("Make triangle with x= ",x,"   y= ",y);
+                    // console.log("Make triangle with x= ",x,"   y= ",y);
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                                 triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
@@ -484,7 +493,7 @@ function redraw(tabstops: any) {
                     makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                 }
                 else { // This is the defalt case were we just draw a circle
-                    console.log("-------------------------")
+                    // console.log("-------------------------")
 
                     // drawSingleCircle(nodes, i, offset, nodeXpaths)
                     if (i < nodes.length - 1) {
@@ -531,7 +540,7 @@ function redraw(tabstops: any) {
                     // if (i == 32) {
                     //     console.log("x y :", x, " ", y)
                     // }
-                    console.log("Make circle with x= ",x,"   y= ",y);
+                    // console.log("Make circle with x= ",x,"   y= ",y);
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
@@ -588,7 +597,7 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         elemSVG.classList.add("dynamic");
         document.body.appendChild(elemSVG);
     }
-    console.log("Inject circle circleNumber" + circleNumber);
+    // console.log("Inject circle circleNumber" + circleNumber);
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
@@ -632,7 +641,7 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
         elemSVG.setAttribute("id", "svgCircle");
         document.body.appendChild(elemSVG);
     }
-    console.log("Inject triangle circleNumber" + circleNumber);
+    // console.log("Inject triangle circleNumber" + circleNumber);
     document.getElementById('svgCircle')?.appendChild(triangleClone);
 }
 
@@ -838,6 +847,14 @@ function getNodesXpaths(nodes: any) {
         }
     });
     return tabXpaths;
+}
+
+async function goToTop() {
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
 }
 
 // function getXPathForElement(element: any) {
