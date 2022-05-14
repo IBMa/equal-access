@@ -34,7 +34,7 @@ export default class OptionUtil {
                 latestArchive?.name.substring(
                     0,
                     latestArchive.name.indexOf("Deployment")
-                ) + " - Latest Deployment"
+                ) + " Deployment"
             );
         } else if (selected_archive_id == "preview") {
             return "Preview (TBD)";
