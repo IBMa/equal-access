@@ -75,7 +75,7 @@ function calcSummary(report: IReport) {
     
     let passUniqueElements = report.passUniqueElements;
     summaryResults[4] = passUniqueElements.length;
-    // console.log("totalElements = "+summaryResults[4]);
+    console.log("totalElements = "+summaryResults[4]);
     // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
     return summaryResults;
 }
