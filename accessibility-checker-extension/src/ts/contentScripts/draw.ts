@@ -54,15 +54,15 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
 
         .noHighlightSVG{
-            fill: purple;
+            fill: #7937DD;
         }
         
         .highlightSVG{
-            fill: blue;
+            fill: #D9BFFF;
         }
 
         .noHighlightSVGtriangle{
-            fill: darkorange;
+            fill: #FC7B1E;
         }
         
         .highlightSVGtriangle{
