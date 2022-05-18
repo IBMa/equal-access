@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDefinedStyles } from "../util/CSSUtil";
+import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export let element_tabbable_role_invalid: Rule = {
     id: "element_tabbable_role_invalid",
@@ -49,26 +50,50 @@ export let element_tabbable_role_invalid: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        console.log(ruleContext.nodeName +", " + JSON.stringify(ruleContext));
-        // dependency check: if the the multi-tab rule triggered, skip this check
-        if (RPTUtil.getCache(ruleContext, "IBMA_Focus_MultiTab", "") === "Potential_1") return null;
         
-        if (!RPTUtil.isTabbable(ruleContext)) return null;
+        if (RPTUtil.isNodeDisabled(ruleContext) || RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        
+        const nodeName = ruleContext.nodeName.toLowerCase();
+        // if the elemen is tabbable by default without tabindex, let the other rules (such as IBMA_Focus_MultiTab) to handle it
+        if (nodeName in RPTUtil.tabTagMap ) {
+            let value = RPTUtil.tabTagMap[nodeName];
+            if (typeof (value) === "function") {
+                value = value(ruleContext);
+            } 
+            if (value) return null;
+        } 
 
-        let roles = RPTUtil.getRoles(ruleContext, true);
-        
-        // pass if one of the roles is a widget type
-        roles.forEach(role => { console.log("role=" + role);
-            if (ARIADefinitions.designPatterns[role].roleType && ARIADefinitions.designPatterns[role].roleType === 'widget')
-                 return RulePass("pass");
-        });
+        // handle the case: no tabindex or tabindex < 0
+        if (!ruleContext.hasAttribute("tabindex") || parseInt(ruleContext.getAttribute("tabindex")) < 0)
+            return null;
         
         // ignore elements with CSS overflow: scroll or auto
         let styles = getDefinedStyles(ruleContext);
-        console.log("styles=" + JSON.stringify(styles));
         if (styles['overflow-x'] === 'scroll' || styles['overflow-y'] === 'scroll' 
             || styles['overflow-x'] === 'auto' || styles['overflow-y'] === 'auto')
-            return RulePass("pass");
+            return null;
+
+        // elements whose roles allow no descendants that are interactive or with a tabindex >= 0 
+        // this case should be handled in IBMA_Focus_MultiTab and Rpt_Aria_MissingFocusableChild
+        const roles_no_interactive_child =["button", "checkbox", "img", "link", "menuitem", "menuitemcheckbox", "menuitemradio", 
+                               "option", "radio", "switch", "tab"];
+
+        const roles = RPTUtil.getRoles(ruleContext, true);
+        const parent = DOMUtil.parentNode(ruleContext);
+        const parent_roles = RPTUtil.getRoles(parent as Element, true);
+        
+        // ignore if one of the parent roles is in roles_no_interactive_child
+        for (let i=0; i < parent_roles.length; i++) {
+            if (roles_no_interactive_child.includes(parent_roles[i]))
+                 return null;
+        }
+
+        // handle the case: tabindex >= 0 to examine whether a widget role is setup or not 
+        // pass if one of the roles is a widget type
+        for (let i=0; i < roles.length; i++) {
+            if (ARIADefinitions.designPatterns[roles[i]].roleType === 'widget')
+                 return RulePass("pass");
+        }
             
         return RuleFail("fail_invalid_role", [roles.length === 0 ? 'none' : roles.join(', ')]);
     }

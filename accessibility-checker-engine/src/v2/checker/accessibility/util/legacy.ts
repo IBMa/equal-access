@@ -365,6 +365,25 @@ export class RPTUtil {
         }
         return false;
     }
+
+    /**
+     * get number of tabbable children
+     * @param element 
+     */
+    public static getTabbableChildren(element) {
+        let count = 0;
+        // If node has children, look for tab stops in the children
+        if (element.firstChild) {
+            let nw = new NodeWalker(element);
+            while (nw.nextNode() && nw.node != element) {
+                if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
     //TODO: function does not handle equivalents for roles: row, link, header, button
     // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
     public static isHtmlEquiv(node, htmlEquiv) {

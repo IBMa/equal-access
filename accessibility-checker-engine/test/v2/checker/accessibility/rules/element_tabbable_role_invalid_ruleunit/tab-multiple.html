@@ -40,22 +40,24 @@
   UnitTest = {
     ruleIds: ["element_tabbable_role_invalid"],
     results: [
-      {
-          "ruleId": "element_tabbable_role_invalid",
-          "value": [
-            "INFORMATION",
-            "PASS"
-          ],
-          "path": {
-            "dom": "/html[1]/body[1]/div[1]",
-            "aria": "/document[1]"
-          },
-          "reasonId": "pass",
-          "message": "The tabbable element has a widget role",
-          "messageArgs": [],
-          "apiArgs": [],
-          "category": "Accessibility"
-        }
+       {
+            "ruleId": "element_tabbable_role_invalid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_invalid_role",
+            "message": "The tabbable element's role 'none' is not a widget role",
+            "messageArgs": [
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+       }
     ]
   }
   </script>

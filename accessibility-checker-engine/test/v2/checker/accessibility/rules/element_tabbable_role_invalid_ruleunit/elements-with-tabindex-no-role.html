@@ -21,7 +21,7 @@
 <html lang="en">
 
 <head>
-	<title>RPT Test Suite</title>
+	<title>Test cases</title>
 </head>
 
 <body>
@@ -35,29 +35,29 @@
   </div>
 
   <button class="btn" aria-label="dummy label">
-    <span class="material-icons" tabindex='0'>inside text with tabindex</span>
+      <span class="material-icons" tabindex='0'>inside text with tabindex</span>
   </button>
 
   <div tabindex="0" style='margin-top:25px;margin-bottom:25px;'>
-    <button>outside div with tabindex</button>
+      <button>outside div with tabindex</button>
   </div>
 
   <div style='margin-top:25px;' tabindex="0">this is a div 
-    <span style='color:blue' tabindex='0'>this is a inside span</span>
+      <span style='color:blue' tabindex='0'>this is a inside span</span>
   </div>
 
   <form style='margin-top:25px;' id="my_form" tabindex="0">
-    <input type="'text" value="" />
-    <button>OK</button>
+      <input type="'text" value="" />
+      <button>OK</button>
   </form>
 
   <div role='table' style='margin-top:25px;' tabindex="0">
-    <div role='row'>
-      <div role="cell"><a href='#'>value11</a></div><div role="cell"><a href='#'>value12</a></div>
-    </div>
-    <div role='row'>
-      <div role="cell"><a href='#'>value21</a></div><div role="cell"><a href='#'>value22</a></div>
-    </div>
+      <div role='row'>
+          <div role="cell"><a href='#'>value11</a></div><div role="cell"><a href='#'>value12</a></div>
+      </div>
+      <div role='row'>
+          <div role="cell"><a href='#'>value21</a></div><div role="cell"><a href='#'>value22</a></div>
+      </div>
   </div>
 
   <div role="list" tabindex="0" id="listbox1" aria-label="my box" style='margin-top:25px;'>
@@ -80,107 +80,15 @@
             "ruleId": "element_tabbable_role_invalid",
             "value": [
               "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/a[1]/span[1]",
-              "aria": "/document[1]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'none' is not a widget role",
-            "messageArgs": [
-              "none"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/tab[1]"
             },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'tab' is not a widget role",
-            "messageArgs": [
-              "tab"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/a[1]",
-              "aria": "/document[1]/tab[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/button[1]",
-              "aria": "/document[1]/button[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'button' is not a widget role",
-            "messageArgs": [
-              "button"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/button[1]/span[1]",
-              "aria": "/document[1]/button[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'none' is not a widget role",
-            "messageArgs": [
-              "none"
-            ],
+            "reasonId": "pass",
+            "message": "The tabbable element has a widget role",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -198,24 +106,6 @@
             "message": "The tabbable element's role 'none' is not a widget role",
             "messageArgs": [
               "none"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[2]/button[1]",
-              "aria": "/document[1]/button[2]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'button' is not a widget role",
-            "messageArgs": [
-              "button"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -281,42 +171,6 @@
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/form[1]/input[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'textbox' is not a widget role",
-            "messageArgs": [
-              "textbox"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/form[1]/button[1]",
-              "aria": "/document[1]/button[3]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'button' is not a widget role",
-            "messageArgs": [
-              "button"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
               "dom": "/html[1]/body[1]/div[4]",
               "aria": "/document[1]/table[1]"
             },
@@ -324,78 +178,6 @@
             "message": "The tabbable element's role 'table' is not a widget role",
             "messageArgs": [
               "table"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[4]/div[1]/div[1]/a[1]",
-              "aria": "/document[1]/table[1]/row[1]/cell[1]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[4]/div[1]/div[2]/a[1]",
-              "aria": "/document[1]/table[1]/row[1]/cell[2]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[4]/div[2]/div[1]/a[1]",
-              "aria": "/document[1]/table[1]/row[2]/cell[1]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[4]/div[2]/div[2]/a[1]",
-              "aria": "/document[1]/table[1]/row[2]/cell[2]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -422,71 +204,15 @@
             "ruleId": "element_tabbable_role_invalid",
             "value": [
               "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[5]/div[1]/a[1]",
-              "aria": "/document[1]/list[1]/listitem[1]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[5]/div[2]/a[1]",
-              "aria": "/document[1]/list[1]/listitem[2]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[5]/div[3]/a[1]",
-              "aria": "/document[1]/list[1]/listitem[3]/link[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'link' is not a widget role",
-            "messageArgs": [
-              "link"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "element_tabbable_role_invalid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[6]",
               "aria": "/document[1]/radiogroup[1]"
             },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'radiogroup' is not a widget role",
-            "messageArgs": [
-              "radiogroup"
-            ],
+            "reasonId": "pass",
+            "message": "The tabbable element has a widget role",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -494,17 +220,15 @@
             "ruleId": "element_tabbable_role_invalid",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[6]/div[1]",
               "aria": "/document[1]/radiogroup[1]/radio[1]"
             },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'radio' is not a widget role",
-            "messageArgs": [
-              "radio"
-            ],
+            "reasonId": "pass",
+            "message": "The tabbable element has a widget role",
+            "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
