@@ -54,7 +54,7 @@ export let element_tabbable_role_invalid: Rule = {
         if (RPTUtil.isNodeDisabled(ruleContext) || RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
         const nodeName = ruleContext.nodeName.toLowerCase();
-        // if the elemen is tabbable by default without tabindex, let the other rules (such as IBMA_Focus_MultiTab) to handle it
+        // if the elemen is tabbable by default with or without tabindex, let the other rules (such as IBMA_Focus_MultiTab) to handle it
         if (nodeName in RPTUtil.tabTagMap ) {
             let value = RPTUtil.tabTagMap[nodeName];
             if (typeof (value) === "function") {
