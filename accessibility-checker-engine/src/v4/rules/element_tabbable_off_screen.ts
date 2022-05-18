@@ -58,7 +58,7 @@ export let element_tabbable_off_screen: Rule = {
         if (bounds['height'] === 0 || bounds['width'] === 0 
             || (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
               && !onfocus_styles['clip']))
-            return RulePotential("potential_visible", [nodeName]);
+            return RulePotential("potential_visible", []);
 
         if (bounds['top'] > 0 && bounds['left'] > 0)
             return RulePass("pass");
@@ -69,7 +69,7 @@ export let element_tabbable_off_screen: Rule = {
         let left = bounds['left'];     
         if (Object.keys(onfocus_styles).length === 0 ) {
             // no onfocus position change, but could be changed from js 
-            return RulePotential("potential_visible", [nodeName]);
+            return RulePotential("potential_visible", []);
         } else {   
             // with onfocus position change
             var positions = ['absolute', 'fixed'];
@@ -94,6 +94,6 @@ export let element_tabbable_off_screen: Rule = {
         if (top > 0 && left > 0)
             return RulePass("pass");
         else
-            return RulePotential("potential_visible", [nodeName]);
+            return RulePotential("potential_visible", []);
     }
 }
