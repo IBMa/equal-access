@@ -44,29 +44,53 @@
 
 ### Why is this important?
 
-A best practice is to avoid adding an ARIA explicit role to an HTML element whose implicit role has the identical semantic meaning. This will eliminate the extra browser processing to determine the role of the element to add to the DOM.
+Keyboard users navigate through the operable elements on the page by pressing the Tab key.
+Users can interact with those elements that get keyboard focus by understanding its role, otherwise they have no context about what to do. 
+The widget's appearance and their semantic role inform the user about the expected interaction, such as checking a checkbox or pressing a radio button. 
+Other roles describe structures that organize content in a page, such as headings. Document structures are not usually interactive with the keyboard, 
+although may receive focus, just not keyboard focus.
+
+A keyboard-focusable (tabbable) element has been found with an invalid role.
+User are expecting a widget role when it gets keyboard focus. 
+The Checker also detects implied roles of interactive HTML elements that automatically get keyboard focus 
+and content blocks that get keyboard focus to enable keyboard scrolling of the area, such as ______ [looking for reference]
+
+If it should not be operable with the keyboard then it should not get keyboard focus regardless of its role, 
+otherwise the keyboard user will be confused with the intent of the design.
+
+Note: IBM considers this a violation of WCAG Success Criteria to preserve meaning and operability. 
+But because others may use a stricter interpretation of the criteria, they may recommend it to be fixed. 
+There's agreement it is an accessibility impact to users.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-Remove the redundant ARIA role from the element.
+- If users *should not* be able to interact with this element using the keyboard, replace the non-widget role, 
+*and/or* use the explicit `tabindex="-1"` attribute to remove the element from the keyboard focus (tab) order.
 
-Note the redundant ARIA and HTML roles shown in the following examples.
+− *Or*,if users *should* be able to interact with this element using the keyboard, use a valid widget role
+
+− *And*, ensure the keyboard focus order as specified in2.4.3 Focus Order
+
+### Example:
+
+This first toggle button example creates a focusable button but requires JavaScript and CSS to include button appearance and functionality. 
+These features are provided by default when using the HTML`<button>`with `type=”button”` element (second example) to inform the user about its intended interaction.
+The 3rd example shows a bock of text that should get keyboard focus to allow it to be scrolled using CSS Overflow:
 
 ```
-<button type="button" role="button">Save</button>
+<div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
 
-<input type="button" role="button" value="Save">
-```
-    
-In the following corrected examples, only an HTML role is used:
-    
-```
-<button type="button" id="saveChanges">Save</button>
+<buttont ype="button" id="saveChanges">Save</button>
 
-<input type="button" value="Save">
+[Phill will insert a valid “block” example using CSS to enable keyboard arrow keys for scrolling (interaction); 
+where the block does not have any tabbable elements. 
+Questions remains if the valid example / area needs a label or heading so the SR users can identify its purpose? 
+But does the SR user even need to scroll the area?  
+Is it obvious enough for the low-vision and sighted keyboard user to not need a label or heading?]
+
 ```
 
 </script></mark-down>
@@ -80,12 +104,19 @@ In the following corrected examples, only an HTML role is used:
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, role, value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [ARIA in HTML - Avoid specifying redundant roles](https://w3c.github.io/html-aria/#avoid-specifying-redundant-roles)
+* [2.4.3 Focus order]()
+* [Widget role definition][()
+* [Unit test - check tab order]()
+* [Unit test - confirm component keyboard interaction]() 
 
 ### Who does this affect?
 
+* People who rely on keyboard control
+* People with low vision who use screen magnification with the keyboard
+* People with dexterity impairment using voice control or a keyboard-like switch device
 * People using a screen reader, including blind, low vision and neurodivergent people
+* Neurodivergent people who use the keyboard
+* Older adults who use the keyboard
 
 </script></mark-down>
 <!-- End side panel -->
