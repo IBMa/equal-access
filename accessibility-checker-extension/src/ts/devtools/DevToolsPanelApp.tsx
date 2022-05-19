@@ -347,8 +347,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
 
-        console.log("this.state.tabCanScan = ",this.state.tabCanScan);
-
         if (!tab.canScan) {
             // console.log("Found BAD url: ",tab.url);
             // console.log("badURL = ",this.state.badURL);
@@ -555,14 +553,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         var recommendation = report?.counts.total["Recommendation"];
         var all = report?.counts.total["All"];
 
-        // var summaryNumbers = ReportSummaryUtil.calcSummary(report);
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
-
-        var violation = report?.counts.total["Violation"];
-        var needsReview = report?.counts.total["Needs review"];
-        var recommendation = report?.counts.total["Recommendation"];
-        var all = report?.counts.total["All"];
 
         // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
@@ -980,7 +972,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
-        console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
