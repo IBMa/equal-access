@@ -46,7 +46,11 @@ export let aria_semantics_role: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-
+        let tagName = ruleContext.tagName.toLowerCase();
+        // dependency check: if it's already failed, then skip
+        if (["td", "th", "tr"].includes(tagName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
+            return null;
+        
         let domRoles: string[] = [];
         if (ruleContext.getAttribute("role") !== null) {
             domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
@@ -58,7 +62,6 @@ export let aria_semantics_role: Rule = {
             if (!(role.toLowerCase() in designPatterns)) 
                 return null;
         
-        let tagName = ruleContext.tagName.toLowerCase();
         // Roles allowed on this node
         let allowedRoles = [];
 
@@ -192,6 +195,7 @@ export let aria_semantics_attribute: Rule = {
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
+            RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
             return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);

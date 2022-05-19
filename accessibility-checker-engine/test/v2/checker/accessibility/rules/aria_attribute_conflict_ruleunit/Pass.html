@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Either HMTL 5 attributes or Aria attibutes</title>
+</head>
+<body onload="runRule();">
+	<!-- html -->
+	<P>HTML5 attributes</P>
+	<form>
+		User name: <input id="a" type="text" name="usrname" required>
+		<input type="submit">
+	</form>
+
+	<form id="b" autocomplete="on">
+		First name:<input type="text" name="fname"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+
+	<form>
+		Country: <input id="c" type="text" name="country" value="Norway" readonly><br>
+  		<input type="submit" value="Submit">
+	</form>
+
+	<form action="demo_form.asp">
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" disabled><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<!-- aria -->
+	<P>Aria attributes</P>
+	<form>
+		User name: <input id="e" type="text" name="usrname" aria-required>
+		<input type="submit">
+	</form>
+
+	<form id="f" aria-autocomplete="on">
+		First name:<input type="text" name="fname"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+
+	<form>
+		Country: <input id="g" type="text" name="country" value="Norway" aria-readonly><br>
+  		<input type="submit" value="Submit">
+	</form>
+
+	<form action="demo_form.asp">
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="h" type="text" name="lname" aria-disabled><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<!-- aria and HTML 5 mixed. Refer to Rich's note in the story-->
+	<P>Redundant attributes</P>
+	<form>
+		User name: <input id="i" type="text" name="usrname" required aria-required = "true">
+		<input type="submit">
+	</form>
+
+	<div aria-colspan="3" colspan="3" ></div>
+	<div aria-rowspan="3" rowspan="3" ></div>
+
+<script type="text/javascript">
+//<![CDATA[
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1141",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];
+//]]>
+</script>
+
+</body>
+</html>

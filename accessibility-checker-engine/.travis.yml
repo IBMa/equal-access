@@ -19,4 +19,4 @@ before_install:
   - google-chrome --version
 
 script:
-  - npx karma start --single-run --watch=false
+  - npx karma start --single-run --watch=false --no-sandbox

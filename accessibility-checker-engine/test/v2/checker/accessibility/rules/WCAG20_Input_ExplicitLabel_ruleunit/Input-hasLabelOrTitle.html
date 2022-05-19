@@ -46,7 +46,7 @@
 	<li>Test #4 - Associated label tag and title attribute - Select"</li>
 	<li>Test #5 - Associated label tag and title attribute - Textarea"</li>
 </ul>
-
+<!-- form 1 -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Personal Information</legend>
@@ -56,7 +56,7 @@
 		<input type="text" name="lastname" id="ln1" value="enter last name">
 	</fieldset>
 </form>
-
+<!-- form 2, pass with title though empty label -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Personal Information</legend>
@@ -66,7 +66,7 @@
 		<input type="text" name="lastname" id="ln2" value="enter last name" title="enter last name">
 	</fieldset>
 </form>
-
+<!-- form 3 -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: File Information</legend>
@@ -76,7 +76,7 @@
 		<input type="file" name="lastfilename" id="lfn1" value="enter last file name">
 	</fieldset>
 </form>
-
+<!-- form 4, pass with title though empty label -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: File Information</legend>
@@ -86,7 +86,7 @@
 		<input type="file" name="lastfilename" id="lfn2" value="enter last file name" title="Enter last filename">
 	</fieldset>
 </form>
-
+<!-- form 5 -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Personal Information</legend>
@@ -96,7 +96,7 @@
 		<input type="password" name="lastpassword" id="lpw1" value="enter last password">
 	</fieldset>
 </form>
-
+<!-- form 6, failed with title though empty label -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Personal Information</legend>
@@ -106,7 +106,7 @@
 		<input type="password" name="lastpassword" id="lpw2" value="enter last password" title="enter last password">
 	</fieldset>
 </form>
-
+<!-- form 7 -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Automobiles</legend>
@@ -129,7 +129,7 @@
 		</select>
 	</fieldset>
 </form>
-
+<!-- form 8, passed with title though empty label-->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Automobiles</legend>
@@ -151,7 +151,7 @@
 		</select>
 	</fieldset>
 </form>
-
+<!-- form 9, passed with label from above -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Automobiles</legend>
@@ -162,7 +162,7 @@
 		</textarea>
 	</fieldset>
 </form>
-
+<!-- form 10, passed with title though empty label -->
 <form action="..." method="post">
 	<fieldset>
 		<legend>Legend text: Automobiles</legend>
@@ -188,11 +188,7 @@
       passedXpaths: [
       ],
       failedXpaths: [
-        "/html/body/form[2]/fieldset/input",
-        "/html/body/form[4]/fieldset/input",
-        "/html/body/form[6]/fieldset/input",
-        "/html/body/form[8]/fieldset/select",
-        "/html/body/form[10]/fieldset/textarea"
+    
       ]
     }
   ];

@@ -121,7 +121,7 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "HAAC_Aria_ImgAlt": "1128",
     "HAAC_BackgroundImg_HasTextOrTitle": "1132",
     "HAAC_Accesskey_NeedLabel": "1140",
-    "HAAC_Aria_Or_HTML5_Attr": "1141",
+    "aria_attribute_conflict": "1141",
     "HAAC_Canvas": "1143",
     "HAAC_Figure_label": "1144",
     "HAAC_Input_Placeholder": "1145",
