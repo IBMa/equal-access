@@ -21,7 +21,7 @@ import { IReportItem } from "./Report";
 import {
     Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
 } from '@carbon/react';
-import { Information, ReportData, Renew, ChevronDown, View } from '@carbon/react/icons/lib/index';
+import { Information, ReportData, Renew, ChevronDown, View, ViewOff } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 import PanelMessaging from '../util/panelMessaging';
@@ -317,7 +317,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             kind="ghost"   
                             hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
                             style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px"}}
+                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px", paddingBottom:"8px"}}
                             onClick={(() => {
                                 this.props.readOptionsData();
                                 this.setState({ modalRulsetInfo: true });
@@ -401,7 +401,26 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         <ReactTooltip id="focusViewTip" place="top" effect="solid">
                             Focus view
                         </ReactTooltip>
-                        <OverflowMenu 
+                        <Button 
+                            renderIcon={this.state.showHideTabStops ? View : ViewOff} 
+                            disabled={!this.props.counts}
+                            hasIconOnly iconDescription="Keyboard Checker Mode" tooltipPosition="top" 
+                            style={{background:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
+                            paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
+                            onClick={ async() => {
+                                if (this.state.showHideTabStops) {
+                                    console.log("DRAW_TABS_TO_BACKGROUND");
+                                    await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
+                                    this.setState({ showHideTabStops: false });
+                                } else {
+                                    console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                                    await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
+                                    this.setState({ showHideTabStops: true });
+                                }
+                                
+                            }}>
+                        </Button>
+                        {/* <OverflowMenu 
                             className="rendered-icon svg"
                             style={{backgroundColor: "black", height:"32px", width:"32px", marginLeft:"8px"}} 
                             iconDescription="Open and close keyboard visualization"
@@ -457,7 +476,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 itemText={<a href="#" target="_blank">Learn more</a>}
                                 onClick={() => console.log("Learn more")}
                             />
-                        </OverflowMenu>                        
+                        </OverflowMenu>                         */}
                     </Column>
                 </Grid>
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
