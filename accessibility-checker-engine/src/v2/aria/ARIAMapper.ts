@@ -20,6 +20,7 @@ import { DOMUtil } from "../dom/DOMUtil";
 import { RPTUtil } from "../checker/accessibility/util/legacy"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
+import { ARIAWalker } from "./ARIAWalker";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
@@ -79,7 +80,7 @@ export class ARIAMapper extends CommonMapper {
         return retVal;
     }
 
-    getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
+    static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
         const doc = FragmentUtil.getOwnerFragment(elem);
         if (!RPTUtil.getCache(doc, "ARIAMapper::precalcOwned", false)) {
             const owners = doc.querySelectorAll("[aria-owns]");
@@ -133,9 +134,32 @@ export class ARIAMapper extends CommonMapper {
                     [role: string]: number
                 }
                 childrenCanHaveRole: boolean
-            }> = RPTUtil.getCache(elem, "ARIAMapper::getNodeInfo", null);
+            }> = RPTUtil.getCache(elem, "ARIAMapper::getNodeHierarchy", null);
             if (!nodeHierarchy) {
-                nodeHierarchy = [];
+                // This element hasn't been processed yet - but ::reset processes them all in the right order
+
+                // Get details about the correct parent first
+                let parent = ARIAMapper.getAriaOwnedBy(elem);
+                if (!parent) {
+                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                }
+                while (parent && parent.nodeType !== 1) {
+                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                }
+                let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
+                let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
+                    role: "",
+                    rolePath: "",
+                    roleCount: {},
+                    childrenCanHaveRole: true
+                };
+                while (parentInfo.role === "none" || parentInfo.role === "/none") {
+                    parent = ARIAMapper.getAriaOwnedBy(parent) || DOMUtil.parentElement(parent) as HTMLElement;
+                    parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
+                    parentInfo = parentHierarchy[parentHierarchy.length-1];
+                }
+
+                // Set initial node info
                 let nodeInfo : {
                     attributes: {
                         [role: string]: string
@@ -159,40 +183,8 @@ export class ARIAMapper extends CommonMapper {
                     roleCount: {},
                     childrenCanHaveRole: true
                 }
-                // Get parent info
-                let parent = this.getAriaOwnedBy(elem);
-                if (!parent) {
-                    parent = DOMUtil.parentElement(elem) as HTMLElement;
-                } else {
-                    // Need to process all of my parent's children first and other aria-owns
-                    // to get the counts right
-                    const children = parent.childNodes;
-                    for (let idx=0; idx<children.length; ++idx) {
-                        const child = children[idx];
-                        if (child.nodeType === 1 && !this.getAriaOwnedBy(child as HTMLElement)) {
-                            this.getNodeHierarchy(child as HTMLElement);
-                        }
-                    }
-                    const otherOwns = parent.getAttribute("aria-owns").split(/ +/g);
-                    for (let idx=0; idx<otherOwns.length; ++idx) {
-                        if (otherOwns[idx] === elem.getAttribute("id")) break;
-                        const child = FragmentUtil.getOwnerFragment(parent).getElementById(otherOwns[idx]);
-                        this.getNodeHierarchy(child as HTMLElement);
-                    }
-                }
-                let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
-                let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
-                    role: "",
-                    rolePath: "",
-                    roleCount: {},
-                    childrenCanHaveRole: true
-                };
-                while (parentInfo.role === "none" || parentInfo.role === "/none") {
-                    parent = this.getAriaOwnedBy(parent) || DOMUtil.parentElement(parent) as HTMLElement;
-                    parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
-                    parentInfo = parentHierarchy[parentHierarchy.length-1];
-                }
-                // Compute role
+
+                // Adjust role if we're within a presentational container
                 let presentationalContainer = !parentInfo.childrenCanHaveRole;
                 if (presentationalContainer) {
                     nodeInfo.role = "none";
@@ -200,7 +192,9 @@ export class ARIAMapper extends CommonMapper {
                     nodeInfo.childrenCanHaveRole = parentInfo.childrenCanHaveRole 
                         && this.childrenCanHaveRole(elem, nodeInfo.role);
                 }
-                if (nodeInfo.role !== "none") {                
+
+                // Set the paths
+                if (nodeInfo.role !== "none") {
                     parentInfo.roleCount[nodeInfo.role] = (parentInfo.roleCount[nodeInfo.role] || 0) + 1; 
                     nodeInfo.rolePath = parentInfo.rolePath+"/"+nodeInfo.role+"["+parentInfo.roleCount[nodeInfo.role]+"]";
                 } else {
@@ -208,20 +202,38 @@ export class ARIAMapper extends CommonMapper {
                 }
         
                 // Set hierarchy
+                nodeHierarchy = []
                 for (const item of parentHierarchy) {
                     nodeHierarchy.push(item);
                 }
                 nodeHierarchy.push(nodeInfo);
-                RPTUtil.setCache(elem, "ARIAMapper::getNodeInfo", nodeHierarchy);
+                RPTUtil.setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
             }
             return nodeHierarchy;
         }
     }
 
     reset(node: Node) {
-        // TODO: Fix reset
         ARIAMapper.nameComputationId = 0;
-        super.reset(node);
+        this.hierarchyRole = [];
+        this.hierarchyResults = [];
+        this.hierarchyPath = [{
+            rolePath: "",
+            roleCount: {}
+        }];
+        // Get to the topmost node
+        let goodNode = node;
+        let next;
+        while (next = DOMUtil.parentNode(goodNode)) {
+            goodNode = next;
+        };
+        // Walk the tree and set the hierarchies in the right order
+        let ariaWalker = new ARIAWalker(goodNode, false, goodNode);
+        do {
+            if (ariaWalker.node.nodeType === 1) {
+                this.getNodeHierarchy(ariaWalker.node);
+            }
+        } while (ariaWalker.nextNode());
     }
 
     openScope(node: Node): IMapResult[] {
