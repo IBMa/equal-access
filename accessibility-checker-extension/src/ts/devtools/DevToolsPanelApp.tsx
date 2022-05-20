@@ -103,6 +103,7 @@ interface IPanelState {
     tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
     tabStopsResults: IReportItem[],
     tabStopsErrors: IReportItem[],
+    showHideTabStops: boolean,
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -140,7 +141,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabStops: [], // array of xpaths of the tab stops
         tabStopsPanel: false,
         tabStopsResults: [],
-        tabStopsErrors: []
+        tabStopsErrors: [],
+        showHideTabStops: false,
     }
 
     ignoreNext = false;
@@ -439,6 +441,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
+        console.log("Function: onReport");
         try {
             if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                 let blob_url = message.blob_url;
@@ -518,6 +521,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             this.setState({ tabStopsResults: tabbable });
             console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
+            // JCH - clear visualization
+            if (this.state.showHideTabStops === false ) {
+                console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
+            }
+            this.setState({ showHideTabStops: true });
 
             // End of tab stops stored state
 
@@ -1037,11 +1046,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         this.setState({ reportManager: false });
     }
 
-    tabStopsShow() {
-        // console.log("tabStopsShow");
+    setTabStopsShowHide() {
+        // console.log("setTabStopsShowHide");
         // let mythis = this;
 
-        this.setState({ tabStopsPanel: true });
+        if(this.state.showHideTabStops) {
+            this.setState({ showHideTabStops: false });
+        } else {
+            this.setState({ showHideTabStops: true });
+        }
         setTimeout(function () {
             // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
         }, 1);
@@ -1128,9 +1141,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             readOptionsData={this.readOptionsData.bind(this)}
                             tabURL={this.state.tabURL}
                             tabId={this.state.tabId}
-                            tabStopsShow={this.tabStopsShow.bind(this)}
+                            setTabStopsShowHide={this.setTabStopsShowHide.bind(this)} // JCH - sets show / hide state
                             tabStopsResults={this.state.tabStopsResults}
                             tabStopsErrors={this.state.tabStopsErrors}
+                            showHideTabStops={this.state.showHideTabStops} // JCH holds show / hide state
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1229,9 +1243,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         readOptionsData={this.readOptionsData.bind(this)}
                         tabURL={this.state.tabURL}
                         tabId={this.state.tabId}
-                        tabStopsShow={this.tabStopsShow.bind(this)}
+                        setTabStopsShowHide={this.setTabStopsShowHide.bind(this)}
                         tabStopsResults={this.state.tabStopsResults}
                         tabStopsErrors={this.state.tabStopsErrors}
+                        showHideTabStops={this.state.showHideTabStops}
                     />
                      <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">

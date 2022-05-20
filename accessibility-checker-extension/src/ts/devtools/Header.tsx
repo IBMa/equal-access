@@ -34,7 +34,6 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
-    showHideTabStops: boolean
  }
 
 interface IHeaderProps {
@@ -86,9 +85,10 @@ interface IHeaderProps {
     readOptionsData: () => void,
     tabURL: string,
     tabId: number,
-    tabStopsShow: () => void,
+    setTabStopsShowHide: () => void,
     tabStopsResults: IReportItem[],
-    tabStopsErrors: IReportItem[]
+    tabStopsErrors: IReportItem[],
+    showHideTabStops: boolean,
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -103,7 +103,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     state: IHeaderState = {
         deleteModal: false,
         modalRulsetInfo: false,
-        showHideTabStops: true
     };
 
     focusInfoButton1() {
@@ -402,20 +401,20 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             Focus view
                         </ReactTooltip>
                         <Button 
-                            renderIcon={this.state.showHideTabStops ? View : ViewOff} 
+                            renderIcon={this.props.showHideTabStops ? View : ViewOff} 
                             disabled={!this.props.counts}
-                            hasIconOnly iconDescription="Keyboard Checker Mode" tooltipPosition="top" 
+                            hasIconOnly iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             style={{background:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
-                                if (this.state.showHideTabStops) {
+                                if (this.props.showHideTabStops) {
                                     console.log("DRAW_TABS_TO_BACKGROUND");
                                     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
-                                    this.setState({ showHideTabStops: false });
+                                    this.props.setTabStopsShowHide();
                                 } else {
                                     console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                    this.setState({ showHideTabStops: true });
+                                    this.props.setTabStopsShowHide();
                                 }
                                 
                             }}>
