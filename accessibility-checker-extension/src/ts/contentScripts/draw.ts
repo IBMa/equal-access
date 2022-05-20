@@ -170,7 +170,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     goToTop().then(function() {
         setTimeout(() => {
             draw(regularTabstops);
-            drawErrors(errorsMisc);
+            drawErrors(errorsMisc, regularTabstops);
         }, 1000)
         
     })
@@ -180,7 +180,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(regularTabstops);
-        redrawErrors(errorsMisc)
+        redrawErrors(errorsMisc, regularTabstops);
     });
     // Tab key listener
     window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
@@ -326,9 +326,9 @@ function draw(tabstops: any) {
     redraw(tabstops);
 }
 
-function drawErrors(tabStopsErrors: any) {
+function drawErrors(tabStopsErrors: any, tabStops: any) {
     // console.log("Inside drawErrors")
-    redrawErrors(tabStopsErrors);
+    redrawErrors(tabStopsErrors, tabStops);
     return true;
 }
 
@@ -337,9 +337,11 @@ function deleteDrawing(classToRemove: string) {
 }
 
 
-function redrawErrors(tabStopsErrors: any) {
+function redrawErrors(tabStopsErrors: any, tabStops: any) {
+    // JCH - FIX drawing ? trangle if there is already a tabbable triangle
     // console.log("Inside redrawErrors")
     setTimeout(() => {
+        let tabbableNodesXpaths = getNodesXpaths(tabStops);
         console.log("tabbable error nodes = ", tabStopsErrors);
         let nodes = getNodesXpaths(tabStopsErrors);
         let nodeXpaths = nodes;
@@ -352,9 +354,18 @@ function redrawErrors(tabStopsErrors: any) {
         let offset = 0;
 
         // console.log("nodes = ",nodes);
+        let skipErrorNode = false;
         for (let i = 0; i < nodes.length; i++) {
-            
-            if (nodeXpaths[i].includes("body")) { // JCH - much be within body
+            // Check if already taken care of in the tabbable elements
+            for (let j=0; j < tabbableNodesXpaths.length; j++) {
+                if (nodeXpaths[i] === tabbableNodesXpaths[j]) {
+                    skipErrorNode = true; // JCH - already taken care of in redraw
+                }
+            }
+            if (skipErrorNode === true) {
+                continue; // JCH - don't put up non triangle for an element if already done in redraw
+            }
+            if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
                 let x = nodes[i].getBoundingClientRect().x - offset;
                 let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
@@ -414,7 +425,7 @@ function redraw(tabstops: any) {
         console.log("nodes.length = ", nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             // console.log("##########################");
-            if (nodes[i] != null) {
+            if (nodes[i] != null) { // JCH - tabbable nodes
                 // console.log(tabstops[i])
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     
