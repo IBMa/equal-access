@@ -18,6 +18,18 @@ import { Ruleset } from "./checker/Checker";
 import { eRulePolicy, eRuleCategory, eToolkitLevel, eRulesetType } from "../v2/api/IEngine";
 
 export let a11yRulesets: Ruleset[] = [
+    // {
+    //     id: "DEBUG",
+    //     name: "DEBUG Rules",
+    //     category: eRuleCategory.ACCESSIBILITY,
+    //     description: "Rules for debugging",
+    //     checkpoints: [{
+    //         num: "1",
+    //         name: "Debug CP 1",
+    //         wcagLevel: "A",
+    //         summary: "Rules for Debug"
+    //     }]
+    // },
     {
         id: "EXTENSIONS",
         name: "Extension Rules",
