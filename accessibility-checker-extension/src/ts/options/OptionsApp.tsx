@@ -325,7 +325,6 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                         <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements</p>
                                         <p style={{ maxWidth: "100%" }}><strong>WCAG 2.1 (A, AA): </strong> This is the current W3C recommendation. Content that conforms to WCAG 2.1 also conforms to WCAG 2.0</p>
                                         <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
-                                        <p style={{ maxWidth: "100%" }}><strong>IBM Accessibility BETA: </strong> Rules for WCAG 2.1 AA plus additional IBM requirements and experimental rules</p>
                                     </Modal>
 
                                     <div className="buttonRow">
