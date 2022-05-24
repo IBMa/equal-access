@@ -19,7 +19,7 @@ limitations under the License.
 import React from "react";
 import {
     Column, Grid, Dropdown,
-    Button,
+    Button, Checkbox, Toggle,
     Modal,
     Theme
 } from "@carbon/react";
@@ -40,7 +40,11 @@ interface OptionsAppState {
     show_reset_notif: boolean;
     modalRuleSet: boolean;
     modalGuidelines: boolean;
-
+    // Keyboard Checker Mode options
+    tabStopLines: boolean;
+    tabStopOutlines: boolean;
+    tabStopAlerts: boolean;
+    tabStopFirstTime: boolean;
 }
 
 class OptionsApp extends React.Component<{}, OptionsAppState> {
@@ -55,6 +59,11 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         show_reset_notif: false,
         modalRuleSet: false,
         modalGuidelines: false,
+         // Keyboard Checker Mode options
+        tabStopLines: false,
+        tabStopOutlines: false,
+        tabStopAlerts: false,
+        tabStopFirstTime: false,
     };
 
     async componentDidMount() {
@@ -204,22 +213,31 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <Theme theme="g10">
                                 <div role="banner">
                                     <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-                                    <h2>
-                                        IBM <strong>Accessibility</strong>
-                                        <br /> Equal Access Toolkit:
-                                        <br /> Accessibility Checker
-                                    </h2>
+                                    <div style={{marginTop:"2rem"}}>
+                                        <span className="ibm">IBM</span> <span className="accessibility">Accessibility</span>
+                                        <br /> <span className="equal-access-toolkit">Equal Access Toolkit:</span>
+                                        <br /> <span className="equal-access-toolkit">Accessibility Checker</span>
+                                    </div>
                                 </div>
                                 <aside aria-label="About Accessibility Checker Options">
                                     <div className="op_version" style={{ marginTop: "8px" }}>
                                         Version {displayVersion()}
                                     </div>
                                     <p>
-                                        By default, the Accessibility Checker uses a set of rules that
-                                        correspond to the most recent WCAG guidelines plus some
-                                        additional IBM requirements. Rule sets for specific WCAG
-                                        versions are also available. The rule sets are updated
-                                        regularly to continuously improve coverage and accuracy.
+                                    By default, the Accessibility Checker uses a set of rules that correspond to 
+                                    the most recent WCAG standards plus some additional IBM requirements. Rule sets 
+                                    for specific WCAG versions are also available. The rule sets are updated regularly, 
+                                    and each update has a date of deployment. If you need to replicate an earlier test, 
+                                    choose the deployment date of the original test.
+                                    <br/><br/>
+                                    For more in-dept guidance, see  <a
+                                    href={chrome.runtime.getURL("usingAC.html")}
+                                    target="_blank"
+                                    rel="noopener noreferred"
+                                    >
+                                    user guide
+                                    </a>
+                                    .
                                     </p>
                                 </aside>
                             </Theme>
@@ -228,10 +246,12 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                         <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}} className="rightPanel">
                             <Theme theme="white">
                                 <main aria-labelledby="options">
-                                    <h1 id="options">IBM Accessibility Checker options</h1>
+                                    <div id="options" className="checker-options">IBM Accessibility Checker options</div>
+
+                                    <div className="rule-sets">Rule sets</div>
 
                                     <div>
-                                        <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                                        <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
                                             Select a rule set deployment date
                                             <Button
                                                 renderIcon={Information}
@@ -239,7 +259,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                                 hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
                                                 style={{
                                                     color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
-                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
+                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px", paddingBottom:"8px"
                                                 }}
                                                 onClick={(() => {
                                                     this.setState({ modalRuleSet: true });
@@ -282,7 +302,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                                     </div>
 
-                                    <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                                    <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
                                         Select accessibility guidelines
                                         <Button
                                             renderIcon={Information}
@@ -327,6 +347,22 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                         <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
                                     </Modal>
 
+                                    <div className="rule-sets" style={{marginTop:"57px"}}>Keyboard checker mode</div>
+                                    <div style={{marginBottom:"2rem"}}>
+                                        <fieldset className="cds--fieldset" style={{marginBottom:"24px"}}>
+                                            <legend className="cds--label">Visualization options</legend>
+                                            <Checkbox labelText="Lines connecting tab stops" id="checked" checked/>
+                                            <Checkbox labelText="Element outlines" id="checked-2" checked/>
+                                        </fieldset>
+
+                                        <Toggle
+                                            aria-label="toggle button"
+                                            defaultToggled
+                                            id="toggle-1"
+                                            labelText="Alert Notifications"
+                                        />
+                                    </div>
+
                                     <div className="buttonRow">
                                         <Button
                                             disabled={false}
@@ -351,6 +387,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                             Save
                                         </Button>
                                     </div>
+                                    
                                 </main>
                             </Theme>
                         </Column>
