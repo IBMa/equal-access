@@ -121,7 +121,7 @@
 			"0": "ARIA roles must be valid for the element to which they are assigned",
 			"Pass_0": "Rule Passed"
 		},
-		"element_tabbable_off_screen": {
+		"element_tabbable_visible": {
 			"0": "A tabbable element should be visible on the screen when it has keyboard focus",
 			"pass": "The tabbable element is visible on the screen"
 		}
@@ -2033,7 +2033,7 @@
 			"dom": "/html[1]/body[1]/div[1]/a[1]"
 		},
 		"reasonId": "pass",
-		"ruleId": "element_tabbable_off_screen",
+		"ruleId": "element_tabbable_visible",
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,

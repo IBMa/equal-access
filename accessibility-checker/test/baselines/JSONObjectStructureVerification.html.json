@@ -1890,7 +1890,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "element_tabbable_off_screen",
+		"ruleId": "element_tabbable_visible",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]/a[1]",
@@ -2735,7 +2735,7 @@
 			"0": "Hyperlinks must have a text description of their purpose",
 			"Pass_0": "Hyperlink has a description of its purpose"
 		},
-		"element_tabbable_off_screen": {
+		"element_tabbable_visible": {
 			"0": "A tabbable element should be visible on the screen when it has keyboard focus",
 			"pass": "The tabbable element is visible on the screen"
 		},
