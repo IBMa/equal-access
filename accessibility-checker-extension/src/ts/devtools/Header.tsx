@@ -89,6 +89,11 @@ interface IHeaderProps {
     tabStopsResults: IReportItem[],
     tabStopsErrors: IReportItem[],
     showHideTabStops: boolean,
+    // Keyboard Mode
+    tabStopLines:boolean,
+    tabStopOutlines: boolean,
+    tabStopAlerts: boolean,
+    tabStopFirstTime: boolean,
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -408,8 +413,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
                                 if (this.props.showHideTabStops) {
-                                    console.log("DRAW_TABS_TO_BACKGROUND");
-                                    await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
+                                    console.log("Header: DRAW_TABS_TO_BACKGROUND");
+                                    console.log("this.props.tabStopLines = ", this.props.tabStopLines);
+                                    console.log("this.props.tabStopOutlines = ", this.props.tabStopOutlines);
+                                    await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
+                                        { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors, 
+                                            tabStopLines: this.props.tabStopLines, tabStopOutlines: this.props.tabStopOutlines });
                                     this.props.setTabStopsShowHide();
                                 } else {
                                     console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");

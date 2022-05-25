@@ -100,6 +100,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 console.log("tabStopFirstTime = ", tabStopFirstTime);
             } else {
                 //OPTIONS are in storage
+                console.log("OPTIONS ARE in storage");
                 selected_archive = result.OPTIONS.selected_archive;
                 rulesets = result.OPTIONS.rulesets;
                 selected_ruleset = result.OPTIONS.selected_ruleset;
@@ -173,6 +174,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         await chrome.storage.local.set(options, function () {
             console.log("options is set to ", options);
         });
+        
     };
 
     handleArchiveSelect = async (item: any) => {

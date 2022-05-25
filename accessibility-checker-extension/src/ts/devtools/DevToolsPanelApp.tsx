@@ -99,11 +99,16 @@ interface IPanelState {
     selectedPolicy: string | null,
     focusedViewFilter: boolean,
     focusedViewText: string,
+    // Keyboard Mode 
     tabStops: [],
     tabStopsPanel: boolean, // true show Tab Stops Summary, false do not show
     tabStopsResults: IReportItem[],
     tabStopsErrors: IReportItem[],
     showHideTabStops: boolean,
+    tabStopLines: boolean,
+    tabStopOutlines: boolean,
+    tabStopAlerts: boolean,
+    tabStopFirstTime: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -143,6 +148,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabStopsResults: [],
         tabStopsErrors: [],
         showHideTabStops: false,
+        tabStopLines: false,
+        tabStopOutlines: false,
+        tabStopAlerts: false,
+        tabStopFirstTime: false
     }
 
     ignoreNext = false;
@@ -282,6 +291,31 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     policyName = result.OPTIONS.selected_ruleset.name;
                 }
 
+                let tabStopLines:boolean = true;
+                let tabStopOutlines:boolean = true;
+                let tabStopAlerts:boolean = true;
+                let tabStopFirstTime:boolean = true;
+
+                console.log("tabStopLines = ",tabStopLines);
+                console.log("tabStopOutlines = ",tabStopOutlines);
+                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
+                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
+
+                // Get the Keyboard Mode OPTIONS
+                if (result.OPTIONS) {
+                    console.log("Get Keyboard Mode OPTIONS");
+                    tabStopLines = result.OPTIONS.tabStopLines;
+                    tabStopOutlines = result.OPTIONS.tabStopOutlines;
+                    tabStopAlerts = result.OPTIONS.tabStopAlerts;
+                    tabStopFirstTime = result.OPTIONS.tabStopFirstTime;
+                }
+
+                console.log("tabStopLines = ",tabStopLines);
+                console.log("tabStopOutlines = ",tabStopOutlines);
+                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
+                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
+
+
                 // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
                 // and get url using chrome.tabs.get via message "TAB_INFO"
                 let thisTabId = chrome.devtools.inspectedWindow.tabId;
@@ -333,10 +367,25 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     if (self.props.layout === "sub") {
                         self.selectElementInElements();
                     }
+
+                    console.log("Before set state");
+                    console.log("tabStopLines = ",tabStopLines);
+                    console.log("tabStopOutlines = ",tabStopOutlines);
+                    console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
+                    console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
+
                     self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
-                        tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, selectedArchive: archiveId, 
-                        selectedPolicy: policyName });
+                        tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, 
+                        selectedArchive: archiveId, selectedPolicy: policyName, tabStopLines: tabStopLines, 
+                        tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
+
+                    });
                 }
+                console.log("After set state");
+                console.log("this.state.tabStopLines = ",self.state.tabStopLines);
+                console.log("this.state.tabStopOutlines = ",self.state.tabStopOutlines);
+                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
+                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
                 resolve();
             });
         })
@@ -1145,6 +1194,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             tabStopsResults={this.state.tabStopsResults}
                             tabStopsErrors={this.state.tabStopsErrors}
                             showHideTabStops={this.state.showHideTabStops} // JCH holds show / hide state
+                            tabStopLines={this.state.tabStopLines}
+                            tabStopOutlines={this.state.tabStopOutlines}
+                            tabStopAlerts={this.state.tabStopAlerts}
+                            tabStopFirstTime={this.state.tabStopFirstTime}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1247,6 +1300,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabStopsResults={this.state.tabStopsResults}
                         tabStopsErrors={this.state.tabStopsErrors}
                         showHideTabStops={this.state.showHideTabStops}
+                        tabStopLines={this.state.tabStopLines}
+                        tabStopOutlines={this.state.tabStopOutlines}
+                        tabStopAlerts={this.state.tabStopAlerts}
+                        tabStopFirstTime={this.state.tabStopFirstTime}
                     />
                      <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">

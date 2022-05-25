@@ -121,8 +121,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         const tabElem = message.tabStopsErrors[index];
         message.tabStopsResults.forEach((errorElem: any) => {
             if (tabElem.path.dom === errorElem.path.dom) {
-                console.log(errorElem.path.dom)
-                console.log(tabElem.path.dom)
+                // console.log(errorElem.path.dom)
+                // console.log(tabElem.path.dom)
                 errorsMisc.splice(index, 1)
             }
         });
@@ -140,10 +140,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         let flagMatchFound = false;
         message.tabStopsErrors.forEach((errorElem: any) => {
             if (tabElem.path.dom === errorElem.path.dom) {
-                console.log("============123===================")
-                console.log(errorElem.path.dom)
-                console.log(tabElem.path.dom)
-                console.log("=============123==================")
+                // console.log("============123===================")
+                // console.log(errorElem.path.dom)
+                // console.log(tabElem.path.dom)
+                // console.log("=============123==================")
                 flagMatchFound = true;
             }
         });
@@ -156,30 +156,30 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
 
     }
-    console.log("regularTabstops1" + regularTabstops)
-    console.log(regularTabstops)
+    // console.log("regularTabstops1" + regularTabstops)
+    // console.log(regularTabstops)
 
 
-    console.log("===============================")
-    console.log(message.tabStopsResults)
-    console.log(message.tabStopsErrors)
-    console.log("===============================")
+    // console.log("===============================")
+    // console.log(message.tabStopsResults)
+    // console.log(message.tabStopsErrors)
+    // console.log("===============================")
 
 
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
         setTimeout(() => {
-            draw(regularTabstops);
+            console.log("message.tabStopLines = ", message.tabStopLines);
+            console.log("message.tabStopOutlines = ", message.tabStopOutlines);
+            draw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
             drawErrors(errorsMisc, regularTabstops);
         }, 1000)
         
-    })
-    // draw(regularTabstops);
-    // drawErrors(errorsMisc);
+    });
 
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
-        redraw(regularTabstops);
+        redraw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
         redrawErrors(errorsMisc, regularTabstops);
     });
     // Tab key listener
@@ -321,9 +321,9 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw(tabstops: any) {
+function draw(tabstops: any, lines:boolean, outlines:boolean) {
     console.log("Inside draw")
-    redraw(tabstops);
+    redraw(tabstops, lines, outlines);
 }
 
 function drawErrors(tabStopsErrors: any, tabStops: any) {
@@ -411,60 +411,63 @@ function redrawErrors(tabStopsErrors: any, tabStops: any) {
 
 
 
-function redraw(tabstops: any) {
-    console.log("Inside redraw")
+function redraw(tabstops: any, lines: boolean, outlines: boolean) {
+    console.log("Inside redraw");
+    console.log("lines = ", lines);
+    console.log("outlines = ", outlines);
     setTimeout(() => { 
         let offset = 3;
-        console.log("redraw tabstops = ", tabstops);
+        // console.log("redraw tabstops = ", tabstops);
         let nodes = getNodesXpaths(tabstops);
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
 
         // JCH - need for last line to return to first node
-        console.log("nodes.length = ", nodes.length);
+        // console.log("nodes.length = ", nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             // console.log("##########################");
             if (nodes[i] != null) { // JCH - tabbable nodes
                 // console.log(tabstops[i])
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     
-                    // console.log("+++++++++++++++++++")
-                    if (i < nodes.length - 1) {
-                        // drawSingleCircle(nodes, i, 20, nodeXpaths)
-                        let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
-
-                        makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
-
-                        // Create white outline
-                        if (Math.abs(slope) < 1) {  // Low slope move y
-                            makeLine(nodes[i].getBoundingClientRect().x - offset,
-                                nodes[i].getBoundingClientRect().y - offset - 1,
-                                nodes[i + 1].getBoundingClientRect().x - offset,
-                                nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+                    // console.log("+++++++++++++++++++");
+                    if (lines) {
+                        if (i < nodes.length - 1) {
+                            // drawSingleCircle(nodes, i, 20, nodeXpaths)
+                            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
                             makeLine(nodes[i].getBoundingClientRect().x - offset,
-                                nodes[i].getBoundingClientRect().y - offset + 1,
+                                nodes[i].getBoundingClientRect().y - offset,
                                 nodes[i + 1].getBoundingClientRect().x - offset,
-                                nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
-                        } else { // high slope move x
-                            makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-                                nodes[i].getBoundingClientRect().y - offset,
-                                nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            // Create white outline
+                            if (Math.abs(slope) < 1) {  // Low slope move y
+                                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                    nodes[i].getBoundingClientRect().y - offset - 1,
+                                    nodes[i + 1].getBoundingClientRect().x - offset,
+                                    nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
-                            makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-                                nodes[i].getBoundingClientRect().y - offset,
-                                nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                    nodes[i].getBoundingClientRect().y - offset + 1,
+                                    nodes[i + 1].getBoundingClientRect().x - offset,
+                                    nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+                            } else { // high slope move x
+                                makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                                    nodes[i].getBoundingClientRect().y - offset,
+                                    nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                                makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                                    nodes[i].getBoundingClientRect().y - offset,
+                                    nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            }
                         }
-
                     }
-                        
+
                     let x = nodes[i].getBoundingClientRect().x - offset;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
@@ -484,61 +487,68 @@ function redraw(tabstops: any) {
                     
                     makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
 
-                    // Make box around active component
-                    makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
-                    makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
-                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
-                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+                    if (outlines) {
 
+                        // Make box around active component
+                        makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+                        makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+                        makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+                        makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
 
-                    // Make white stroke around active component outline
-                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
-                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
-                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                        // Make white stroke around active component outline
+                        makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+                        makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+                        makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                        makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
 
-                    // Make white stroke inside active component outline
-                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
-                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
-                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
-                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                        // Make white stroke inside active component outline
+                        makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+                        makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+                        makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                        makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                    }
                 }
                 else { // This is the defalt case were we just draw a circle
                     // console.log("-------------------------")
 
                     // drawSingleCircle(nodes, i, offset, nodeXpaths)
-                    if (i < nodes.length - 1) {
-                        let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
-                        makeLine(nodes[i].getBoundingClientRect().x - offset,
-                            nodes[i].getBoundingClientRect().y - offset,
-                            nodes[i + 1].getBoundingClientRect().x - offset,
-                            nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
+                    if (lines) {
 
-                        // Create white outline
-                        if (Math.abs(slope) < 1) {  // Low slope move y
-                            makeLine(nodes[i].getBoundingClientRect().x - offset,
-                                nodes[i].getBoundingClientRect().y - offset - 1,
-                                nodes[i + 1].getBoundingClientRect().x - offset,
-                                nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
+                    
+                        if (i < nodes.length - 1) {
+                            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
                             makeLine(nodes[i].getBoundingClientRect().x - offset,
-                                nodes[i].getBoundingClientRect().y - offset + 1,
+                                nodes[i].getBoundingClientRect().y - offset,
                                 nodes[i + 1].getBoundingClientRect().x - offset,
-                                nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+                                nodes[i + 1].getBoundingClientRect().y - offset, ["line"]);
 
-                        } else { // high slope move x
-                            makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
-                                nodes[i].getBoundingClientRect().y - offset,
-                                nodes[i + 1].getBoundingClientRect().x - offset - 1,
-                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            // Create white outline
+                            if (Math.abs(slope) < 1) {  // Low slope move y
+                                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                    nodes[i].getBoundingClientRect().y - offset - 1,
+                                    nodes[i + 1].getBoundingClientRect().x - offset,
+                                    nodes[i + 1].getBoundingClientRect().y - offset - 1, ["lineEmboss"]);
 
-                            makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
-                                nodes[i].getBoundingClientRect().y - offset,
-                                nodes[i + 1].getBoundingClientRect().x - offset + 1,
-                                nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                                makeLine(nodes[i].getBoundingClientRect().x - offset,
+                                    nodes[i].getBoundingClientRect().y - offset + 1,
+                                    nodes[i + 1].getBoundingClientRect().x - offset,
+                                    nodes[i + 1].getBoundingClientRect().y - offset + 1, ["lineEmboss"]);
+
+                            } else { // high slope move x
+                                makeLine(nodes[i].getBoundingClientRect().x - offset - 1,
+                                    nodes[i].getBoundingClientRect().y - offset,
+                                    nodes[i + 1].getBoundingClientRect().x - offset - 1,
+                                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+
+                                makeLine(nodes[i].getBoundingClientRect().x - offset + 1,
+                                    nodes[i].getBoundingClientRect().y - offset,
+                                    nodes[i + 1].getBoundingClientRect().x - offset + 1,
+                                    nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
+                            }
+
                         }
-
                     }
                     
 
@@ -555,24 +565,28 @@ function redraw(tabstops: any) {
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
-                    // Make box around active component
-                    makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
-                    makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
-                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
-                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
+                    if (outlines) {
+
+                    
+                        // Make box around active component
+                        makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
+                        makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
+                        makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
+                        makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
 
 
-                    // Make white stroke around active component outline
-                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
-                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
-                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
-                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                        // Make white stroke around active component outline
+                        makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
+                        makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmboss"]);
+                        makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
+                        makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmboss"]);
 
-                    // Make white stroke inside active component outline
-                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
-                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
-                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
-                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                        // Make white stroke inside active component outline
+                        makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmboss"]);
+                        makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmboss"]);
+                        makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                        makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
+                    }
                 }
             }
         }
@@ -849,11 +863,11 @@ function convertXpathsToHtmlElements(nodes: any) {
 }
 
 function getNodesXpaths(nodes: any) {
-    console.log("Inside getNodesXpaths");
+    // console.log("Inside getNodesXpaths");
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         if (result != null) {
-            console.log("result.path.dom = "+result.path.dom);
+            // console.log("result.path.dom = "+result.path.dom);
             tabXpaths.push(result.path.dom);
         }
     });

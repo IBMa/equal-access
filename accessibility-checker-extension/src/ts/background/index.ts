@@ -254,7 +254,13 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
 BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
     console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
-    await BackgroundMessaging.sendToTab(message.tabId, "DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, tabStopsErrors: message.tabStopsErrors});
+    await BackgroundMessaging.sendToTab(message.tabId,
+        "DRAW_TABS_TO_CONTEXT_SCRIPTS", 
+        { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, 
+            tabStopsErrors: message.tabStopsErrors, tabStopLines: message.tabStopLines,
+            tabStopOutlines: message.tabStopOutlines, tabStopAlerts: message.tabStopAlerts,
+            tabStopFirstTime: message.tabStopFirstTime,
+        });
 
     return true;
 });
