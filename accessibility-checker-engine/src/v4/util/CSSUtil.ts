@@ -15,7 +15,6 @@
  *****************************************************************************/
 
 type PseudoClass = ":hover" | ":active" | ":focus" | ":focus-visible" | ":focus-within";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 
 export function selectorMatchesElem(element, selector) {
     if (selector.trim() === "") return false;

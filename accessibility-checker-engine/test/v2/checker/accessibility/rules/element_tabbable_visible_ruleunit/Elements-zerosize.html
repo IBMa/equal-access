@@ -21,55 +21,64 @@
 <html lang="en">
 
 <head>
-	<title>Test Example</title>
-  <style>
-    .bx--skip-to-content {
-		    position: absolute;
-		    width: 1px;
-		    height: 1px;
-		    margin: -1px;
-		    padding: 0;
-		    overflow: hidden;
-		    white-space: nowrap;
-		    border: 0;
-		    visibility: inherit;
-		    clip: rect(0,0,0,0);
-    }
-
-    .bx--skip-to-content:focus {
-		    top: 0;
-		    left: 0;
-		    z-index: 9999;
-		    display: flex;
-		    align-items: center;
-		    width: auto;
-		    height: 3rem;
-		    padding: 0 1rem;
-		    color: #f4f4f4;
-		    background-color: #161616;
-		    border: 4px solid #0f62fe;
-		    outline: none;
-    }
-</style>
+	<title>RPT Test Suite</title>
+  <style type="text/css">
+      .zerowidth {
+          padding-left: 0; padding-right: 0;
+          border-left-width: 0; border-right-width: 0;
+          white-space: nowrap;
+          overflow: hidden;
+      }
+      .zeroheight {
+          padding-top: 0; padding-bottom: 0;
+          border-bottom-width: 0; border-top-width: 0;
+          white-space: nowrap;
+          overflow: hidden;
+      } 
+  </style>
 </head>
 
 <body>
 
-  <a class='bx--skip-to-content' href='#main-content' tabindex='0'>Skip to main content</a>
+<h3>Elements Tests</h3>
+
+<button class='zerowidth'>
+</button>
+
+<button  class='zeroheight' style="width:0; height:350; position: absolute; left: -1000px;">
+	
+</button>
+
 
 <script>
   UnitTest = {
-      ruleIds: ["element_tabbable_off_screen"],
+      ruleIds: ["element_tabbable_visible"],
       results: [
       {
-            "ruleId": "element_tabbable_off_screen",
+            "ruleId": "element_tabbable_visible",
             "value": [
               "INFORMATION",
               "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/a[1]",
-              "aria": "/document[1]/link[1]"
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "potential_visible",
+            "message": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_tabbable_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
             },
             "reasonId": "potential_visible",
             "message": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus",

@@ -23,43 +23,56 @@
 <head>
 	<title>Test Example</title>
   <style>
-    button {
-        outline:none;
-        border-bottom: 1px solid #031483;
-        position: absolute;
-        left: -50px
+    .bx--skip-to-content {
+		    position: absolute;
+		    width: 1px;
+		    height: 1px;
+		    margin: -1px;
+		    padding: 0;
+		    overflow: hidden;
+		    white-space: nowrap;
+		    border: 0;
+		    visibility: inherit;
+		    clip: rect(0,0,0,0);
     }
-    button:focus {
-        outline:none;
-        border-bottom: 1px solid #830303;
-        position: absolute;
-        left: 5px
+
+    .bx--skip-to-content:focus {
+		    top: 0;
+		    left: 0;
+		    z-index: 9999;
+		    display: flex;
+		    align-items: center;
+		    width: auto;
+		    height: 3rem;
+		    padding: 0 1rem;
+		    color: #f4f4f4;
+		    background-color: #161616;
+		    border: 4px solid #0f62fe;
+		    outline: none;
     }
 </style>
 </head>
 
 <body>
 
-<button width="350" height="350">
-	 OK
-</button>
+  <a class='bx--skip-to-content' href='#main-content' tabindex='0'>Skip to main content</a>
 
 <script>
   UnitTest = {
-      ruleIds: ["element_tabbable_off_screen"],
+      ruleIds: ["element_tabbable_visible"],
       results: [
       {
-            "ruleId": "element_tabbable_off_screen",
+            "ruleId": "element_tabbable_visible",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/button[1]",
-              "aria": "/document[1]/button[1]"
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
             },
-            "reasonId": "pass",
-            "message": "The tabbable element is visible on the screen",
+            "reasonId": "potential_visible",
+            "message": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

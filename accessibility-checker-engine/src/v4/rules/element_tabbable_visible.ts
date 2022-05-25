@@ -12,19 +12,19 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getDefinedStyles, getComputedStyle } from "../../v4/util/CSSUtil";
+import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
-export let element_tabbable_off_screen: Rule = {
-    id: "element_tabbable_off_screen",
+export let element_tabbable_visible: Rule = {
+    id: "element_tabbable_visible",
     context: "dom:*",
     dependencies: [],
     help: {
         "en-US": {
-            "group": "element_tabbable_off_screen.html",
-            "pass": "element_tabbable_off_screen.html",
-            "potential_visible": "element_tabbable_off_screen.html"
+            "group": "element_tabbable_visible.html",
+            "pass": "element_tabbable_visible.html",
+            "potential_visible": "element_tabbable_visible.html"
         }
     },
     messages: {
