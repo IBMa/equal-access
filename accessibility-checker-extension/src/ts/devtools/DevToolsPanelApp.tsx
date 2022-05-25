@@ -248,7 +248,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async readOptionsData() {
         await new Promise<void>((resolve, _reject) => {
-            // console.log("readOptionsData");
+            console.log("readOptionsData");
             var self = this;
             chrome.storage.local.get("OPTIONS", async function (result: any) {
                 //pick default archive id from env

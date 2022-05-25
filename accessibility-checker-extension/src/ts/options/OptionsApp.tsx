@@ -60,16 +60,17 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         modalRuleSet: false,
         modalGuidelines: false,
          // Keyboard Checker Mode options
-        tabStopLines: false,
-        tabStopOutlines: false,
-        tabStopAlerts: false,
-        tabStopFirstTime: false,
+        tabStopLines: true,
+        tabStopOutlines: true,
+        tabStopAlerts: true,
+        tabStopFirstTime: true,
     };
 
     async componentDidMount() {
+        console.log("Options App ComponentDidMount");
         var self = this;
 
-        //get the selected_archive from storage
+        // get OPTIONS from storage
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //always sync archives with server
             var archives = await self.getArchives();
@@ -78,6 +79,11 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             var rulesets: any = null;
             var selected_ruleset: any = null;
             var currentRuleset: any = null;
+            // Keyboard Mode options
+            var tabStopLines: any = true;
+            var tabStopOutlines: any = true;
+            var tabStopAlerts: any = true;
+            var tabStopFirstTime: any = true;
 
             //OPTIONS are not in storage
             if (result != null && result.OPTIONS == undefined) {
@@ -86,11 +92,26 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                 rulesets = await self.getRulesets(selected_archive);
                 selected_ruleset = rulesets[0];
+                // leave all Keyboard mode options to true, i.e., show all
+                console.log("OPTIONS are NOT in storage");
+                console.log("tabStopLines = ", tabStopLines);
+                console.log("tabStopLines = ", tabStopOutlines);
+                console.log("tabStopLines = ", tabStopAlerts);
+                console.log("tabStopFirstTime = ", tabStopFirstTime);
             } else {
                 //OPTIONS are in storage
                 selected_archive = result.OPTIONS.selected_archive;
                 rulesets = result.OPTIONS.rulesets;
                 selected_ruleset = result.OPTIONS.selected_ruleset;
+                tabStopLines = result.OPTIONS.tabStopLines;
+                tabStopOutlines = result.OPTIONS.tabStopOutlines;
+                tabStopAlerts = result.OPTIONS.tabStopAlerts;
+                tabStopFirstTime = result.OPTIONS.tabStopFirstTime;
+                console.log("OPTIONS are in storage");
+                console.log("tabStopLines = ", tabStopLines);
+                console.log("tabStopLines = ", tabStopOutlines);
+                console.log("tabStopLines = ", tabStopAlerts);
+                console.log("tabStopFirstTime = ", tabStopFirstTime);
 
                 if (selected_archive) {
                     if (archives.some((archive: any) => (archive.id === selected_archive.id && archive.name === selected_archive.name))) {
@@ -114,11 +135,16 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             currentArchive = selected_archive.name;
             currentRuleset = selected_ruleset.name;
 
-            // self.setState({ archives, selected_archive, rulesets, selected_ruleset });
+            console.log("tabStopLines = ", tabStopLines);
+            console.log("tabStopLines = ", tabStopOutlines);
+            console.log("tabStopLines = ", tabStopAlerts);
+            console.log("tabStopFirstTime = ", tabStopFirstTime);
+            
             self.setState({
                 archives: archives, selected_archive: selected_archive, rulesets: rulesets,
                 selected_ruleset: selected_ruleset, currentArchive: currentArchive,
-                currentRuleset: currentRuleset
+                currentRuleset: currentRuleset, tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
+                tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
             });
             self.save_options_to_storage(self.state);
         });
@@ -169,7 +195,13 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         //      modal choices  
         //            delete scans and update ruleset
         //            keep stored scans and don't update rulset (ali says don't give this choice)
-        this.setState({ currentArchive: this.state.selected_archive.name, currentRuleset: this.state.selected_ruleset.name })
+        this.setState({ 
+            currentArchive: this.state.selected_archive.name, 
+            currentRuleset: this.state.selected_ruleset.name,
+            tabStopLines: this.state.tabStopLines,
+            tabStopOutlines: this.state.tabStopOutlines,
+            tabStopAlerts: this.state.tabStopAlerts,
+         })
         this.save_options_to_storage(this.state);
         this.setState({ show_notif: true, show_reset_notif: false, });
     };
@@ -351,15 +383,38 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                     <div style={{marginBottom:"2rem"}}>
                                         <fieldset className="cds--fieldset" style={{marginBottom:"24px"}}>
                                             <legend className="cds--label">Visualization options</legend>
-                                            <Checkbox labelText="Lines connecting tab stops" id="checked" checked/>
-                                            <Checkbox labelText="Element outlines" id="checked-2" checked/>
+                                            <Checkbox 
+                                                labelText="Lines connecting tab stops" 
+                                                id="checked"
+                                                checked={this.state.tabStopLines}
+                                                //@ts-ignore
+                                                onChange={(value: any, id: any) => {
+                                                    console.log("lines checkbox id.checked = ",id.checked);
+                                                    this.setState({ tabStopLines: id.checked });
+                                                }} 
+
+                                            />
+                                            <Checkbox 
+                                                labelText="Element outlines" 
+                                                id="checked-2"
+                                                checked={this.state.tabStopOutlines}
+                                                //@ts-ignore
+                                                onChange={(value: any, id: any) => {
+                                                    console.log("lines checkbox id.checked = ",id.checked);
+                                                    this.setState({ tabStopOutlines: id.checked });
+                                                }} 
+                                            />
                                         </fieldset>
 
                                         <Toggle
                                             aria-label="toggle button"
-                                            defaultToggled
-                                            id="toggle-1"
                                             labelText="Alert Notifications"
+                                            id="alertToggle"
+                                            toggled={this.state.tabStopAlerts}
+                                            onToggle={(value: any) => {
+                                                console.log("lines checkbox value = ",value);
+                                                this.setState({ tabStopAlerts: value });
+                                            }} 
                                         />
                                     </div>
 
