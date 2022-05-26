@@ -156,23 +156,14 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
 
     }
-    // console.log("regularTabstops1" + regularTabstops)
-    // console.log(regularTabstops)
-
-
-    // console.log("===============================")
-    // console.log(message.tabStopsResults)
-    // console.log(message.tabStopsErrors)
-    // console.log("===============================")
-
-
+    
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
         setTimeout(() => {
             console.log("message.tabStopLines = ", message.tabStopLines);
             console.log("message.tabStopOutlines = ", message.tabStopOutlines);
             draw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
-            drawErrors(errorsMisc, regularTabstops);
+            drawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
         }, 1000)
         
     });
@@ -180,7 +171,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
         redraw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
-        redrawErrors(errorsMisc, regularTabstops);
+        redrawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
     });
     // Tab key listener
     window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
@@ -322,13 +313,13 @@ function injectCSS(styleString: string) {
 }
 
 function draw(tabstops: any, lines:boolean, outlines:boolean) {
-    console.log("Inside draw")
+    // console.log("Inside draw")
     redraw(tabstops, lines, outlines);
 }
 
-function drawErrors(tabStopsErrors: any, tabStops: any) {
+function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
     // console.log("Inside drawErrors")
-    redrawErrors(tabStopsErrors, tabStops);
+    redrawErrors(tabStopsErrors, tabStops, outlines);
     return true;
 }
 
@@ -337,7 +328,7 @@ function deleteDrawing(classToRemove: string) {
 }
 
 
-function redrawErrors(tabStopsErrors: any, tabStops: any) {
+function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
     // console.log("Inside redrawErrors")
     setTimeout(() => {
@@ -372,26 +363,26 @@ function redrawErrors(tabStopsErrors: any, tabStops: any) {
                 let y = nodes[i].getBoundingClientRect().y - offset;
                 let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-                // MAKE BOX AROUND ACTIVE COMPONENT
-                makeLine(x, y, xPlusWidth, y, ["lineError"]);
-                makeLine(x, y, x, yPlusHeight, ["lineError"]);
-                makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
-                makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
+                if (outlines) {
 
-                // Make white stroke around active component outline
-                makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
-                makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
-                makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-                makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                    // MAKE BOX AROUND ACTIVE COMPONENT
+                    makeLine(x, y, xPlusWidth, y, ["lineError"]);
+                    makeLine(x, y, x, yPlusHeight, ["lineError"]);
+                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
+                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
 
-                // Make white stroke inside active component outline
-                makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
-                makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
-                makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-                makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                    // Make white stroke around active component outline
+                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
+                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
+                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
 
-                // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-                // makeIcon(x, y, "test");
+                    // Make white stroke inside active component outline
+                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
+                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
+                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                }
 
                 // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
                 let triangleLegLength = 27;
@@ -424,14 +415,10 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
         nodes = convertXpathsToHtmlElements(nodes);
 
         // JCH - need for last line to return to first node
-        // console.log("nodes.length = ", nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
-            // console.log("##########################");
             if (nodes[i] != null) { // JCH - tabbable nodes
                 // console.log(tabstops[i])
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
-                    
-                    // console.log("+++++++++++++++++++");
                     if (lines) {
                         if (i < nodes.length - 1) {
                             // drawSingleCircle(nodes, i, 20, nodeXpaths)
@@ -478,7 +465,7 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
                     let triangleLegLength = 27
                     let triangleXShifted = x
                     let triangleYShifted = y
-                    // console.log("Make triangle with x= ",x,"   y= ",y);
+
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                                 triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
@@ -509,13 +496,7 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
                     }
                 }
                 else { // This is the defalt case were we just draw a circle
-                    // console.log("-------------------------")
-
-                    // drawSingleCircle(nodes, i, offset, nodeXpaths)
-
                     if (lines) {
-
-                    
                         if (i < nodes.length - 1) {
                             let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
@@ -547,7 +528,6 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
                                     nodes[i + 1].getBoundingClientRect().x - offset + 1,
                                     nodes[i + 1].getBoundingClientRect().y - offset, ["lineEmboss"]);
                             }
-
                         }
                     }
                     
@@ -567,7 +547,6 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
 
                     if (outlines) {
 
-                    
                         // Make box around active component
                         makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
                         makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
@@ -709,8 +688,6 @@ function makeTextSmall(x1: number, y1: number, n: string, textColorClassName?: s
         document.body.appendChild(elemSVG);
     }
     document.getElementById('svgCircle')?.appendChild(textClone)
-
-
 }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
@@ -881,26 +858,3 @@ async function goToTop() {
         behavior: 'smooth'
       });
 }
-
-// function getXPathForElement(element: any) {
-//     const idx: any = (sib: any, name: any) => sib
-//         ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name)
-//         : 1;
-//     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1)
-//         ? ['']
-//         : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
-
-
-// function getXPathForElement(element) { // same function as above but without typescript for use on chrome console
-//     const idx = (sib, name) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
-//     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
-//     return segs(element).join('/');
-// }
-
-// UNUSED xpath evaluation function:
-// function getElementByXPath(path:any) { 
-//     return (new XPathEvaluator()) 
-//         .evaluate(path, document.documentElement, null, 
-//                         XPathResult.FIRST_ORDERED_NODE_TYPE, null) 
-//         .singleNodeValue; 
-// } 

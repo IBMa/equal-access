@@ -232,18 +232,18 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async xpathFromTabstops(message: any) {
-        console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+        // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
         // JCH take xpath and match to item with same item.path.dom
         this.state.tabStopsResults.map((result: any) => {
             if (message.xpath === result.path.dom) {
-                console.log("result xpath = ",result.path.dom);
+                // console.log("result xpath = ",result.path.dom);
                 this.getSelectedItem(result);
                 this.selectItem(result);
             }
         });
         this.state.tabStopsErrors.map((result: any) => {
             if (message.xpath === result.path.dom) {
-                console.log("result xpath = ",result.path.dom);
+                // console.log("result xpath = ",result.path.dom);
                 this.getSelectedItem(result);
                 this.selectItem(result);
             }
@@ -257,7 +257,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     async readOptionsData() {
         await new Promise<void>((resolve, _reject) => {
-            console.log("readOptionsData");
+            // console.log("readOptionsData");
             var self = this;
             chrome.storage.local.get("OPTIONS", async function (result: any) {
                 //pick default archive id from env
@@ -296,25 +296,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 let tabStopAlerts:boolean = true;
                 let tabStopFirstTime:boolean = true;
 
-                console.log("tabStopLines = ",tabStopLines);
-                console.log("tabStopOutlines = ",tabStopOutlines);
-                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
-                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
-
                 // Get the Keyboard Mode OPTIONS
                 if (result.OPTIONS) {
-                    console.log("Get Keyboard Mode OPTIONS");
+                    // console.log("Get Keyboard Mode OPTIONS");
                     tabStopLines = result.OPTIONS.tabStopLines;
                     tabStopOutlines = result.OPTIONS.tabStopOutlines;
                     tabStopAlerts = result.OPTIONS.tabStopAlerts;
                     tabStopFirstTime = result.OPTIONS.tabStopFirstTime;
                 }
-
-                console.log("tabStopLines = ",tabStopLines);
-                console.log("tabStopOutlines = ",tabStopOutlines);
-                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
-                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
-
 
                 // to fix when undocked get tab id using chrome.devtools.inspectedWindow.tabId
                 // and get url using chrome.tabs.get via message "TAB_INFO"
@@ -368,12 +357,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         self.selectElementInElements();
                     }
 
-                    console.log("Before set state");
-                    console.log("tabStopLines = ",tabStopLines);
-                    console.log("tabStopOutlines = ",tabStopOutlines);
-                    console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
-                    console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
-
                     self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                         tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, 
                         selectedArchive: archiveId, selectedPolicy: policyName, tabStopLines: tabStopLines, 
@@ -381,11 +364,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
                     });
                 }
-                console.log("After set state");
-                console.log("this.state.tabStopLines = ",self.state.tabStopLines);
-                console.log("this.state.tabStopOutlines = ",self.state.tabStopOutlines);
-                console.log("result.OPTIONS.tabStopLines = ", result.OPTIONS.tabStopLines);
-                console.log("result.OPTIONS.tabStopOutlines = ", result.OPTIONS.tabStopOutlines);
                 resolve();
             });
         })
@@ -490,7 +468,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
-        console.log("Function: onReport");
+        // console.log("Function: onReport");
         try {
             if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                 let blob_url = message.blob_url;
@@ -566,13 +544,13 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
             }
 
-            console.log("tabbable =", tabbable);
+            // console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable });
-            console.log("tabStopsErrors = ", tabbableErrors);
+            // console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
             // JCH - clear visualization
             if (this.state.showHideTabStops === false ) {
-                console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                 await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
             }
             this.setState({ showHideTabStops: true });

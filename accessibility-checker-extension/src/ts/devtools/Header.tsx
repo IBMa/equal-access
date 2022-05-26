@@ -21,7 +21,7 @@ import { IReportItem } from "./Report";
 import {
     Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
 } from '@carbon/react';
-import { Information, ReportData, Renew, ChevronDown, View, ViewOff } from '@carbon/react/icons/lib/index';
+import { Information, ReportData, Renew, ChevronDown, View, ViewOff, Help, Settings } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 import PanelMessaging from '../util/panelMessaging';
@@ -99,10 +99,14 @@ interface IHeaderProps {
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
     infoButton1Ref: React.RefObject<HTMLButtonElement>;
     infoButton2Ref: React.RefObject<HTMLButtonElement>;
+    helpButtonRef: React.RefObject<HTMLButtonElement>;
+    settingsButtonRef: React.RefObject<HTMLButtonElement>;
     constructor(props:any) {
         super(props);
         this.infoButton1Ref = React.createRef();
         this.infoButton2Ref = React.createRef();
+        this.helpButtonRef = React.createRef();
+        this.settingsButtonRef = React.createRef();
     }
     
     state: IHeaderState = {
@@ -222,23 +226,50 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         let focusText = this.props.focusedViewText;
 
         let headerContent = (<div>
-            {this.props.layout === "sub" ? 
-            <Grid style={{ lineHeight: "1rem", padding: "0rem" }}>
-                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}}>
+            {this.props.layout === "sub" ?
+            // checker view 
+            <Grid style={{ lineHeight: "1rem", padding: "0rem" }}> 
+                <Column sm={{span: 3}} md={{span: 6}} lg={{span: 12}}>
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </Column>
+                <Column sm={{span: 1}} md={{span: 2}} lg={{span: 4}} style={{marginLeft:"auto"}}>
+                    <Button 
+                        ref={this.helpButtonRef}
+                        renderIcon={Help} 
+                        kind="ghost"   
+                        hasIconOnly iconDescription="Help" tooltipPosition="left" 
+                        style={{
+                            color:"black", border:"none", paddingTop:"0px", 
+                            verticalAlign:"text-top", minHeight:"16px"}}
+                        onClick={(() => {
+                            this.props.readOptionsData();
+                            let url = chrome.runtime.getURL("usingAC.html");
+                            window.open(url, "_blank");
+                        }).bind(this)}>
+                    </Button>
+                    <Button 
+                        ref={this.settingsButtonRef}
+                        renderIcon={Settings} 
+                        kind="ghost"   
+                        hasIconOnly iconDescription="Settings" tooltipPosition="left" 
+                        style={{color:"black", border:"none", paddingTop:"0px", paddingLeft:"8px", paddingRight:"0px", 
+                                verticalAlign:"text-top", minHeight:"16px"}}
+                        onClick={(() => {
+                            this.props.readOptionsData();
+                            let url = chrome.runtime.getURL("options.html");
+                            window.open(url, "_blank");
+                        }).bind(this)}>
+                    </Button>
+                </Column>
             </Grid>
-            : <Grid style={{ lineHeight: "1rem", padding: "0rem" }}>
+            : 
+            // accessment view
+            <Grid style={{ lineHeight: "1rem", padding: "0rem" }}> 
                 <Column sm={{span: 3}} md={{span: 6}} lg={{span: 12}}>
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </Column>
                 <Column sm={{span: 1}} md={{span: 2}} lg={{span: 4}} style={{ position: "relative", textAlign: "right", paddingTop:"2px" }}>
                     <img className="bee-logo" src={BeeLogo} alt="IBM Accessibility" />
-                    {/* <div>
-                        <span>Status: </span>
-                        <span>{this.props.scanStorage === true ? "storing, " : ""}</span>
-                        <span>{this.props.actualStoredScansCount().toString() === "0" ? "no scans stored" : (this.props.actualStoredScansCount().toString() === "1" ? this.props.actualStoredScansCount().toString() + " scan stored" : this.props.actualStoredScansCount().toString() + " scans stored")}</span>
-                    </div> */}
                 </Column>
             </Grid>
             }
@@ -315,69 +346,13 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 This action is irreversible.
                             </p>
                         </Modal>
-                        <Button 
-                            ref={this.infoButton1Ref}
-                            renderIcon={Information} 
-                            kind="ghost"   
-                            hasIconOnly iconDescription="Rule set info" tooltipPosition="top" 
-                            style={{color:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
-                                    paddingTop:"8px", paddingLeft:"8px", paddingRight:"8px", paddingBottom:"8px"}}
-                            onClick={(() => {
-                                this.props.readOptionsData();
-                                this.setState({ modalRulsetInfo: true });
-                            }).bind(this)}>
-                        </Button>
-                        <Modal
-                            aria-label="Rule set information"
-                            modalHeading="Rule set information"
-                            // size='xs'
-                            passiveModal={true}
-                            style={{maxHeight:"100% !important;"}}
-                            open={this.state.modalRulsetInfo}
-                            onRequestClose={(() => {
-                                this.setState({ modalRulsetInfo: false });
-                                this.focusInfoButton1();
-                            }).bind(this)}
-                        >
-                            <p>
-                                Get started with the &nbsp;
-                                <a
-                                href={chrome.runtime.getURL("usingAC.html")}
-                                target="_blank"
-                                rel="noopener noreferred"
-                                >
-                                User guide
-                                </a>
-                                .
-                            </p>
-                            <br></br>
-                            <p>
-                                Currently active rule set: {'"'+OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)+'"'}
-                                <span>{<br/>}</span>
-                                Most recent rule set: {'"'+OptionUtil.getRuleSetDate('latest', this.props.archives)+'"'}
-                                <br/><br/>
-                                Currently active guidelines: {'"'+this.props.selectedPolicy+'"'}
-                            </p>
-                            <br></br>
-                            <p>
-                                <a
-                                    onClick={this.onLinkClick}
-                                    href={chrome.runtime.getURL("options.html")}
-                                    target="_blank"
-                                    className={`cds--link`}
-                                >
-                                    Change rule set
-                                </a>
-                            </p>       
-                        </Modal>
                     </Column>
                     <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column>
 
-                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex', alignContent: 'center' }}>
+                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex'}}>
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
                             style={{height: "30px", width: "250px"}}
-                            
                             selectionMode="manual"
                             selectedIndex={1}
                             onChange={((obj: any) => {
@@ -428,63 +403,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 
                             }}>
                         </Button>
-                        {/* <OverflowMenu 
-                            className="rendered-icon svg"
-                            style={{backgroundColor: "black", height:"32px", width:"32px", marginLeft:"8px"}} 
-                            iconDescription="Open and close keyboard visualization"
-                            renderIcon={View}
-                            ariaLabel="Report menu" 
-                            flipped={true}
-                            // size="xl"
-                            id="visMenu"
-                        >
-                            <OverflowMenuItem
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                disabled={this.props.storedScans.length == 0 ? true : false}
-                                // JCH - Tip: for some reason the style needs to be before the href
-                                itemText={this.state.showHideTabStops ? "Show tab stops" : "Hide tab stops"}
-                                onClick={ async() => {
-                                    if (this.state.showHideTabStops) {
-                                        console.log("DRAW_TABS_TO_BACKGROUND");
-                                        await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors });
-                                        this.setState({ showHideTabStops: false });
-                                    } else {
-                                        console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
-                                        await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                        this.setState({ showHideTabStops: true });
-                                    }
-                                    
-                                }}
-
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                hasDivider
-                                itemText={<Checkbox id="linesCB" defaultChecked labelText="Lines" />}
-                                onClick={() => console.log("Lines")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                itemText={<Checkbox id="numbersCB" defaultChecked labelText="Numbers" />}
-                                onClick={() => console.log("Numbers")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                itemText={<Checkbox id="outlinesCB" defaultChecked labelText="Outlines" />}
-                                onClick={() => console.log("Outlines")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                hasDivider
-                                itemText="Alerts on" 
-                                onClick={() => console.log("Alerts on")}
-                            />
-                            <OverflowMenuItem 
-                                style={{maxWidth:"13rem", width:"13rem"}}
-                                itemText={<a href="#" target="_blank">Learn more</a>}
-                                onClick={() => console.log("Learn more")}
-                            />
-                        </OverflowMenu>                         */}
                     </Column>
                 </Grid>
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
@@ -542,9 +460,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </p>
                             <br></br>
                             <p>
-                                You are using a rule set from {OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)}.
+                            Currently active rule set: {'"'+OptionUtil.getRuleSetDate(this.props.selectedArchive, this.props.archives)+'"'}
                                 <span>{<br/>}</span>
-                                The latest rule set is {OptionUtil.getRuleSetDate('latest', this.props.archives)}
+                                Most recent rule set: {'"'+OptionUtil.getRuleSetDate('latest', this.props.archives)+'"'}
+                                <br/><br/>
+                                Currently active guidelines: {'"'+this.props.selectedPolicy+'"'}
                             </p>
                             <br></br>
                             <div>
