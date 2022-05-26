@@ -278,7 +278,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 <React.Fragment>
                     
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
-                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex', alignContent: 'center' }}>
+                    <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{ display: 'flex', alignContent: 'center' }}>
                         <Button disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
                         <OverflowMenu 
                             className="rendered-icon svg"
@@ -347,12 +347,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             </p>
                         </Modal>
                     </Column>
-                    <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column>
+                    {/* <Column sm={{span: 0}} md={{span: 2}} lg={{span: 4}} style={{ height: "28px" }}></Column> */}
 
-                    <Column sm={{span: 2}} md={{span: 3}} lg={{span: 6}} style={{ display: 'flex'}}>
+                    <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{ display: 'flex'}}>
                         <ContentSwitcher data-tip data-for="focusViewTip"
                             // title="Focus View"
-                            style={{height: "30px", width: "250px"}}
+                            style={{height: "30px"}}
                             selectionMode="manual"
                             selectedIndex={1}
                             onChange={((obj: any) => {
@@ -388,15 +388,15 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
                                 if (this.props.showHideTabStops) {
-                                    console.log("Header: DRAW_TABS_TO_BACKGROUND");
-                                    console.log("this.props.tabStopLines = ", this.props.tabStopLines);
-                                    console.log("this.props.tabStopOutlines = ", this.props.tabStopOutlines);
+                                    // console.log("Header: DRAW_TABS_TO_BACKGROUND");
+                                    // console.log("this.props.tabStopLines = ", this.props.tabStopLines);
+                                    // console.log("this.props.tabStopOutlines = ", this.props.tabStopOutlines);
                                     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
                                         { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors, 
                                             tabStopLines: this.props.tabStopLines, tabStopOutlines: this.props.tabStopOutlines });
                                     this.props.setTabStopsShowHide();
                                 } else {
-                                    console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                                    // console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
                                     this.props.setTabStopsShowHide();
                                 }
