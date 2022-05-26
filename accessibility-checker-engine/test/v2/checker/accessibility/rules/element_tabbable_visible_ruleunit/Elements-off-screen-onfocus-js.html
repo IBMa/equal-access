@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+	<title>Test Example</title>
+  <script>
+    document.onreadystatechange = function () {
+      if  (document.readyState == "interactive") {
+          var elem = document.getElementById("mybutton");
+          elem.onfocus = function() { 
+              elem.style.position = 'relative';
+              elem.style.left = '50px';
+              elem.style.color = 'red';
+          };  
+      }      
+    }
+    
+  </script>
+  
+</style>
+</head>
+
+<body>
+
+<button id='mybutton' width="350" height="350" style="position:absolute; left:-100px;">
+	 OK
+</button>
+
+<a href='google.com' style="position: absolute; left: -500px;">Click here</a>
+
+<script>
+  UnitTest = {
+      ruleIds: ["element_tabbable_visible"],
+      results: [
+      {
+            "ruleId": "element_tabbable_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "potential_visible",
+            "message": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "element_tabbable_visible",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "potential_visible",
+            "message": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  }
+</script>
+
+</body>
+
+</html>

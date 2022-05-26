@@ -120,9 +120,13 @@
 		"aria_semantics_role": {
 			"0": "ARIA roles must be valid for the element to which they are assigned",
 			"Pass_0": "Rule Passed"
+		},
+		"element_tabbable_visible": {
+			"0": "A tabbable element should be visible on the screen when it has keyboard focus",
+			"pass": "The tabbable element is visible on the screen"
 		}
 	},
-	"numExecuted": 124,
+	"numExecuted": 125,
 	"results": [{
 		"apiArgs": [],
 		"bounds": {
@@ -2022,6 +2026,27 @@
 			"width": 999
 		},
 		"category": "Accessibility",
+		"message": "The tabbable element is visible on the screen",
+		"messageArgs": [],
+		"path": {
+			"aria": "/document[1]/navigation[1]/link[1]",
+			"dom": "/html[1]/body[1]/div[1]/a[1]"
+		},
+		"reasonId": "pass",
+		"ruleId": "element_tabbable_visible",
+		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
+		"value": ["VIOLATION", "PASS"],
+		"ignored": false,
+		"level": "pass"
+	}, {
+		"apiArgs": [],
+		"bounds": {
+			"height": 999,
+			"left": 999,
+			"top": 999,
+			"width": 999
+		},
+		"category": "Accessibility",
 		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
@@ -2735,7 +2760,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 123,
+			"pass": 124,
 			"ignored": 0
 		},
 		"scanTime": 999,
