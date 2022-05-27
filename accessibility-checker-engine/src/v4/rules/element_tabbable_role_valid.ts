@@ -37,13 +37,13 @@ export let element_tabbable_role_valid: Rule = {
     },
     rulesets: [{
             "id": ["IBM_Accessibility"],
-            "num": ["2.4.3"],
+            "num": ["4.1.2"],
             "level": eRulePolicy.VIOLATION,
             "toolkitLevel": eToolkitLevel.LEVEL_ONE
         },
         {
             "id": ["WCAG_2_1", "WCAG_2_0"],
-            "num": ["2.4.3"],
+            "num": ["4.1.2"],
             "level": eRulePolicy.RECOMMENDATION,
             "toolkitLevel": eToolkitLevel.LEVEL_ONE
         }],
