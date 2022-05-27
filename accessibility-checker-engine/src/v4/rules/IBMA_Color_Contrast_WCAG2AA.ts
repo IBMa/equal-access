@@ -187,7 +187,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let colorCombo = RPTUtil.ColorCombo(ruleContext);
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
-        let ratio = fg.contrastRatio(bg);
+        let ratio = fg.contrastRatio(bg);console.log('nodeName=' + nodeName +', colorCombo=' + JSON.stringify(colorCombo)  +', ratio=' + ratio);
         // console.log("fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
         let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
         let size = RPTUtilStyle.getFontInPixels(style.fontSize);

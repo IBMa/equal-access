@@ -3229,7 +3229,7 @@ export class RPTUtil {
             var thisBgColor = null;
             if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
                 thisBgColor = RPTUtil.Color(cStyle.backgroundColor);
-            }
+            }console.log('nodename=' + procNext.nodeName + ', cStyle.backgroundColor=' + JSON.stringify(cStyle.backgroundColor) + ', thisBgColor=' + JSON.stringify(thisBgColor));
 
             // If there is a gradient involved, set thisBgColor to the worst color combination available against the foreground
             if (cStyle.backgroundImage && cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
@@ -3245,7 +3245,7 @@ export class RPTUtil {
                     }
                     thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
                 }
-            }
+            }console.log('2 nodename=' + procNext.nodeName + ', thisBgColor=' + JSON.stringify(thisBgColor));
 
             // Handle non-solid opacity
             if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
@@ -3295,7 +3295,8 @@ export class RPTUtil {
                     retVal.hasBGImage = true;
                 }
             }
-        }
+        }console.log('3 nodename=' + procNext.nodeName + ', thisBgColor=' + JSON.stringify(thisBgColor));
+        console.log('4 nodename=' + procNext.nodeName + ', thisStackBG=' + JSON.stringify(thisStackBG));
         if (thisStackBG != null) {
             fg = fg.getOverlayColor(thisStackBG);
             delete fg.alpha;
@@ -3304,8 +3305,8 @@ export class RPTUtil {
         fg = fg.getOverlayColor(priorStackBG);
         if (thisStackBG != null) {
             thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
-            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);
-        }
+            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);console.log('5 nodename=' + procNext.nodeName + ', thisStackBG=' + JSON.stringify(thisStackBG));
+        } console.log('6 nodename=' + procNext.nodeName + ', priorStackBG=' + JSON.stringify(priorStackBG));
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
