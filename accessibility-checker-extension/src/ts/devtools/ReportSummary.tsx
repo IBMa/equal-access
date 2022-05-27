@@ -34,52 +34,6 @@ interface IReportSummaryProps {
     } | null,
 }
 
-function calcSummary(report: IReport) {
-
-    let summaryResults:any = [];
-    let results = report.results.filter((result: any) => {
-        return result.value[1] !== "PASS";
-    })
-    // console.log("report.results.length = "+report.results.length);
-    // console.log("all issues = "+results.length);
-
-    let violations = results.filter((result: any) => {
-        return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
-    })
-    summaryResults.push(violations.length);
-    // console.log("Violations = "+summaryResults[0]);
-    // console.log(violations);
-
-    let potentials = results.filter((result: any) => {
-        return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
-    })
-    summaryResults.push(potentials.length);
-    // console.log("summaryPotential = "+summaryResults[1]);
-    // console.log(potentials);
-    
-
-    let recommendations = results.filter((result: any) => {
-        return result.value[0] === "RECOMMENDATION";
-    })
-    summaryResults.push(recommendations.length);
-    // console.log("summaryRecommendation = "+summaryResults[2]);
-
-    let violationsPlusPotentials = violations.concat(potentials);
-    // console.log("violationsPlusPotentials = ", violationsPlusPotentials)
-
-    let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
-   
-    let failUniqueElements = Array.from(new Set(failXpaths));
-    summaryResults.push(failUniqueElements.length);
-    // console.log("elementsWithIssues = "+summaryResults[3]);
-    
-    let passUniqueElements = report.passUniqueElements;
-    summaryResults[4] = passUniqueElements.length;
-    // console.log("totalElements = "+summaryResults[4]);
-    // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
-    return summaryResults;
-}
-
 export default class ReportSummary extends React.Component<IReportSummaryProps, IReportSummaryState> {
     render() {
 
@@ -93,6 +47,24 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         counts.total["Recommendation"] = counts.total["Recommendation"] || 0;
         counts.total["All"] = counts.total["Violation"] + counts.total["Needs review"] + counts.total["Recommendation"];
 
+        // JCH find unique elements that have violations and needs review issues
+        let violations = this.props.report.results.filter((result: any) => {
+            return result.value[0] === "VIOLATION" && result.value[1] === "FAIL";
+        });
+
+        let potentials = this.props.report.results.filter((result: any) => {
+            return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
+        });
+
+        let violationsPlusPotentials = violations.concat(potentials);
+        let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
+        let failUniqueElements = Array.from(new Set(failXpaths));
+
+        let vPlusNRPlusRxPaths = this.props.report.results.map(result => result.path.dom);
+        let vPlusNRPlusR_Elements = Array.from(new Set(vPlusNRPlusRxPaths));
+    
+        let testedElements = this.props.report.passUniqueElements.length + vPlusNRPlusR_Elements.length;
+
         let d = new Date();
         let options = {
             year: 'numeric',
@@ -103,19 +75,9 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
         };
         //@ts-ignore
         let time = d.toLocaleString('en-us', options);
-
-        // Note summaryNumbers [Violations,Needs review, Recommendations, elementsWithIssues, totalElements]
-        let summaryNumbers:any = [];
-        summaryNumbers = calcSummary(this.props.report);
-
-        console.log("summaryNumbers[0] = ", summaryNumbers[0]);
-        console.log("summaryNumbers[1] = ", summaryNumbers[1]);
-        console.log("summaryNumbers[2] = ", summaryNumbers[2]);
-        console.log("summaryNumbers[3] = ", summaryNumbers[3]);
-        console.log("summaryNumbers[4] = ", summaryNumbers[4]);
         
         // Calculate score
-        let currentStatus = (100 - ((summaryNumbers[3]/summaryNumbers[4])*100)).toFixed(0);
+        let currentStatus = (100 - ((failUniqueElements.length/testedElements)*100)).toFixed(0);
 
         return <aside className="reportSummary" aria-labelledby="summaryTitle">
             <div style={{ margin: "2rem -1rem 0rem 0rem" }}>
@@ -136,9 +98,9 @@ export default class ReportSummary extends React.Component<IReportSummaryProps, 
                                 <h3 className="tile-title" >Current Status</h3>
                             </div>
                             <div className="tile-score">{currentStatus}%</div>
-                            <div className="tile-description" style={{ marginBottom: "16px" }}>Percentage of elements with no detected violations or items to review</div>
-                            <div className="tile-description">Elements with Violations or Needs review: {summaryNumbers[3]} </div>
-                            <div className="tile-description">Web page Total HTML Elements: {summaryNumbers[4]}</div>
+                            <div className="tile-description">Percentage of elements with no detected violations or items to review</div>
+                            {/* <div className="tile-description">Elements with Violations or Needs review: {failUniqueElements.length} </div>
+                            <div className="tile-description">Web page tested HTML elements: {testedElements}</div> */}
                         </Tile>
                     </Column>
                     <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>

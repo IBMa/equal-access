@@ -347,8 +347,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let thisTabId = chrome.devtools.inspectedWindow.tabId;
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
 
-        console.log("this.state.tabCanScan = ",this.state.tabCanScan);
-
         if (!tab.canScan) {
             // console.log("Found BAD url: ",tab.url);
             // console.log("badURL = ",this.state.badURL);
@@ -555,14 +553,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         var recommendation = report?.counts.total["Recommendation"];
         var all = report?.counts.total["All"];
 
-        // var summaryNumbers = ReportSummaryUtil.calcSummary(report);
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
-
-        var violation = report?.counts.total["Violation"];
-        var needsReview = report?.counts.total["Needs review"];
-        var recommendation = report?.counts.total["Recommendation"];
-        var all = report?.counts.total["All"];
 
         // Keep track of number of stored scans (be sure to adjust when clear scans)
         this.setState(prevState => {
@@ -980,7 +972,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
-        console.log("DevToolsPanelApp: render");
         let error = this.state.error;
 
         if (error) {
@@ -1069,7 +1060,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 <div style={{ display: this.state.learnMore && !this.state.reportManager ? "" : "none", height:"100%" }}>
                     <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
                     <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
-                        <div style={{ marginTop: "72px", height: "calc(100% - 72px)" }}>
+                        <div style={{ marginTop: "56px", height: "calc(100% - 56px)" }}>
                             <div style={{ height: "100%" }}>
                                 <div className="subPanel" style={{ height: "100%"  }}>
                                     {this.state.learnMore && this.state.report && this.state.learnItem && <Help report={this.state.report!} item={this.state.learnItem} checkpoint={this.state.selectedCheckpoint} />}
@@ -1107,7 +1098,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         getCurrentSelectedElement={this.getCurrentSelectedElement.bind(this)}
                         readOptionsData={this.readOptionsData.bind(this)}
                     />
-                     <div style={{ marginTop: "9rem", height: "calc(100% - 9rem)" }}>
+                     <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">
                             {this.state.numScanning > 0 ? <Loading /> : <></>}
                             {this.state.report && <Report
