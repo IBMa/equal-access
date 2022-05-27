@@ -4,11 +4,14 @@ const puppeteer = require('puppeteer');
 const { getTestcases, getResult } = require("./act");
 const fs = require("fs");
 (async () => {
+    // Fetch the testcases from ACT
+    let ruleTestInfo = await getTestcases();
     let earlResult = {
         "@context": "https://act-rules.github.io/earl-context.json",
         "@graph": []
     }
-    let ruleTestInfo = await getTestcases();
+    
+    // Setup the Puppeteer test environment
     let browser = await puppeteer.launch({ headless: true, ignoreHTTPSErrors: true });
     let pupPage = await browser.newPage();
     await pupPage.setRequestInterception(true);
@@ -23,6 +26,7 @@ const fs = require("fs");
     await pupPage.setCacheEnabled(true);
     await pupPage.setViewport({ width: 1280, height: 1024 });
 
+    // Work through the testcases
     for (const ruleId in ruleTestInfo) {
         console.group(`* ${ruleTestInfo[ruleId].label}`);
         for (const testcase of ruleTestInfo[ruleId].testcases) {
@@ -32,8 +36,9 @@ const fs = require("fs");
             // } else 
             if (ext === ".html" || ext === ".xhtml") {
                 try {
-                    // If no tests, don't bother loading the testcase
+                    // First, load the page
                     if (ruleTestInfo[ruleId].aceRules.length > 0) {
+                        // This rule has testcases, run the test
                         console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
                         // Special handling for meta refresh
                         if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
@@ -57,19 +62,14 @@ const fs = require("fs");
                             await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                         }
                     } else {
+                        // If no tests, don't bother loading the testcase
                         console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
                     }
-                    let { title, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
+                    let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
                     earlResult["@graph"].push({
                         "@type": "TestSubject",
                         "source": `https://act-rules.github.io/testcases/${ruleId}/${testcase.testcaseId}.html`,
-                        "assertions": [
-                            {
-                                "@type": "Assertion",
-                                "test": { "title": title },
-                                "result": { "outcome": result }
-                            }
-                        ]
+                        "assertions": assertions
                     });
                     if (result === "earl:cantTell" && (testcase.expected === "passed" || testcase.expected === "failed")) {
                         console.log("--Can't tell");
