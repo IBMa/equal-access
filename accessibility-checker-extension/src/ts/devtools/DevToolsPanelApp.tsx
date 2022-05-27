@@ -532,7 +532,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     // 2.4.7 Focus Visible
                     result.ruleId === "RPT_Style_HinderFocus1" ||
                     result.ruleId === "WCAG20_Script_FocusBlurs" ||
-                        // JCH - add rule for tab stop off page
+                                      "element_tabbable_visible" ||
                     // 3.2.1 On Focus
                     result.ruleId === "WCAG20_Select_NoChangeAction" ||
                     // 4.1.2 Name, Role, Value
