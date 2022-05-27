@@ -18,14 +18,14 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDefinedStyles } from "../util/CSSUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export let element_tabbable_role_invalid: Rule = {
-    id: "element_tabbable_role_invalid",
+export let element_tabbable_role_valid: Rule = {
+    id: "element_tabbable_role_valid",
     context:"dom:*",
     help: {
         "en-US": {
-            "pass": "element_tabbable_role_invalid.html",
-            "fail_invalid_role": "element_tabbable_role_invalid.html",
-            "group": "element_tabbable_role_invalid.html"
+            "pass": "element_tabbable_role_valid.html",
+            "fail_invalid_role": "element_tabbable_role_valid.html",
+            "group": "element_tabbable_role_valid.html"
         }
     },
     messages: {
