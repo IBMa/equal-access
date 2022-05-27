@@ -40,6 +40,8 @@ module.exports = {
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
         usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
         ...contentScripts,
+        quickGuideAC: path.join(sourceRootPath, 'ts', 'quickGuideAC', 'index.tsx'),
+        ...contentScripts,
     },
     output: {
         path: distRootPath,
@@ -125,6 +127,13 @@ module.exports = {
             filename: 'usingAC.html',
             title: 'Accessibility Checker Extension - User Guide',
             chunks: ['usingAC']
+        }),
+        new HtmlWebpackPlugin({
+            template: path.join(sourceRootPath, 'html', 'quickGuideAC.html'),
+            inject: 'body',
+            filename: 'quickGuideAC.html',
+            title: 'Accessibility Checker Extension - Quick Guide',
+            chunks: ['quickGuideAC']
         }),
         new CopyWebpackPlugin({
             patterns: [
