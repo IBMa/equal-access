@@ -46,7 +46,7 @@
 
 A keyboard-focusable (tabbable) element has been found with an invalid role.
 When users reach elements by tabbing with the keyboard, 
-the element’s role provides context about the expected interaction, 
+the element's role provides context about the expected interaction, 
 and assistive technologies like screen readers can provide additional information about ways to interact. 
 The only elements that should be in the tab order should be operable widgets. 
 Inoperable elements, such as headings, can be given focus by developers; however, they should not be tabbable by the user.
@@ -68,8 +68,7 @@ However, there is broad agreement that putting inoperable elements in the tab or
 
 - If users *should not* be able to interact with this element using the keyboard, replace the non-widget role, 
 *and/or* use the explicit `tabindex="-1"` attribute to remove the element from the keyboard focus (tab) order.
-
-− *Or*,if users *should* be able to interact with this element using the keyboard, use a valid widget role
+- *Or*,if users *should* be able to interact with this element using the keyboard, use a valid widget role
 
 ### Examples:
 
@@ -83,7 +82,7 @@ This first example is a simple focusable *toggle button*.
 The second example is placed in the tab order automatically and provides features by default when using the HTML`<button>`element of `type=”button”` that informs the user about its intended interaction: 
 
 ```
-<buttont ype="button" id="saveChanges">Save</button>
+<buttont type="button" id="saveChanges">Save</button>
 ```
 
 The third example shows how a block of text can get keyboard focus to enable scrolling of the area by specifying `overflow: scroll` in the CSS: 
