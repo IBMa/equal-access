@@ -32,7 +32,7 @@ export let element_tabbable_role_valid: Rule = {
         "en-US": {
             "pass": "The tabbable element has a widget role",
             "fail_invalid_role": "The tabbable element's role '{0}' is not a widget role",
-            "group": "A tabbable element must have a widget role"
+            "group": "A tabbable element must have a valid widget role"
         }
     },
     rulesets: [{
