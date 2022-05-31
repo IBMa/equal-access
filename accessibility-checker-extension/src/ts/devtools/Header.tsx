@@ -243,7 +243,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             verticalAlign:"text-top", minHeight:"16px"}}
                         onClick={(() => {
                             this.props.readOptionsData();
-                            let url = chrome.runtime.getURL("usingAC.html");
+                            let url = chrome.runtime.getURL("quickGuideAC.html");
                             window.open(url, "_blank");
                         }).bind(this)}>
                     </Button>
