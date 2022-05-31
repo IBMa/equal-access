@@ -63,7 +63,7 @@ async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
     return await new Promise((resolve, reject) => {
-        request("https://act-rules.github.io/testcases.json", (err, req, body) => {
+        request("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json", (err, req, body) => {
             let testcaseInfo = JSON.parse(body);
             for (const testcase of testcaseInfo.testcases) {
                 if (testcase.ruleId in aceMapping) {
@@ -80,7 +80,7 @@ async function getTestcases() {
     });
 }
 
-async function getResult(page, testcaseId, aceRules) {
+async function getResult(page, ruleId, testcaseId, aceRules) {
     const ruleset = await rulesetP;
     let assertions = [];
     if (aceRules.length === 0) {
@@ -98,7 +98,7 @@ async function getResult(page, testcaseId, aceRules) {
             issuesAll: []    
         }
     }
-    let results = await aChecker.getCompliance(page, testcaseId);
+    let results = await aChecker.getCompliance(page, `${ruleId}_${testcaseId}`);
     let ruleIds = {};
     let issuesFailMap = {};
     let issuesReviewMap = {};

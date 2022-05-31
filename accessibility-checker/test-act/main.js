@@ -41,11 +41,13 @@ const fs = require("fs");
                         // This rule has testcases, run the test
                         console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
                         // Special handling for meta refresh
-                        if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
-                            || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4"
-                            || testcase.testcaseId === "d1bbcc895f6e11010b033578d073138e7c4fc57e"
-                            || testcase.testcaseId === "d789ff3d0c087c77117a02527e71a646a343d4a3")
+                        if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a") 
                         {
+                        //     testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
+                        //     || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4"
+                        //     || testcase.testcaseId === "d1bbcc895f6e11010b033578d073138e7c4fc57e"
+                        //     || testcase.testcaseId === "d789ff3d0c087c77117a02527e71a646a343d4a3")
+                        // {
                             let succeeded = false;
                             while (!succeeded) {
                                 try {
@@ -65,7 +67,7 @@ const fs = require("fs");
                         // If no tests, don't bother loading the testcase
                         console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
                     }
-                    let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
+                    let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.ruleId, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
                     earlResult["@graph"].push({
                         "@type": "TestSubject",
                         "source": `https://act-rules.github.io/testcases/${ruleId}/${testcase.testcaseId}.html`,
