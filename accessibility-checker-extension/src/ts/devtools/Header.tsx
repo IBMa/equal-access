@@ -239,7 +239,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                         kind="ghost"   
                         hasIconOnly iconDescription="Help" tooltipPosition="left" 
                         style={{
-                            color:"black", border:"none", paddingTop:"0px", 
+                            color:"black", border:"none", paddingTop:"0px", paddingRight:"0px", 
                             verticalAlign:"text-top", minHeight:"16px"}}
                         onClick={(() => {
                             this.props.readOptionsData();
