@@ -1,0 +1,175 @@
+@use '@carbon/react';
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/breakpoint' as *;
+
+html,
+body {
+  @include breakpoint('lg') {
+    height: 100%;
+  }
+  background: #f2f4f8;
+}
+
+img {
+  vertical-align: middle;
+}
+
+p {
+  color: #161616;
+  font-family: "IBM Plex Sans";
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+
+#quickGuideAC-root {
+  @include breakpoint('lg') {
+    height: 100%;
+
+    .cds--grid,
+    .cds--row,
+    .leftPanel {
+      height: 100%;
+    }
+  }
+
+  .cds--grid {
+    padding: 0rem 1rem;
+  }
+
+  p {
+
+    @include breakpoint('md') {
+      max-width: 75%;
+    }
+  }
+  
+  .toc {
+    list-style: none;
+    margin-inline-start: 1rem;
+  }
+
+  .leftPanel {
+    
+    .icon {
+      height: 2.5rem;
+      margin-bottom: 2rem;
+      margin-top: 2rem;
+    }
+
+    .op_version {
+      color: #525252;
+      @include type-style("body-compact-01");
+      margin-top: .5rem;
+    }
+
+    p {
+      @include breakpoint('lg') {
+        max-width: 100%;
+      }
+      margin-top: 2rem;
+    }
+
+    h1 {
+      color: #161616;
+      @include type-style("productive-heading-03");
+    }
+    
+    h2 {
+      @include type-style("productive-heading-01");
+      margin-top: 1.25rem;
+    }
+    
+    h3 {
+      color: #252525;
+      @include type-style("productive-heading-03");
+      margin-top: .5rem;
+    }
+    ul {
+      margin-left: 0em;
+    }
+    li {
+      margin-top: 1rem;
+    }
+  }
+
+  .buffer {
+    background-color: white;
+  }
+
+  .rightPanel {
+    background-color: white;
+    padding: 3rem 1rem 1rem 1rem;
+    @include breakpoint('lg') {
+      padding-top: 4rem;
+    }
+    .rectangle-image {
+      height: 240px;
+      width: 400px;
+      background-color: rgba(0,0,0,0.5);
+      margin-top: 2rem;
+    }
+    p {
+      @include breakpoint('lg') {
+        max-width: 100%;
+      }
+    }
+    p {
+      color: #161616;
+      font-family: "IBM Plex Sans";
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .cds--dropdown__wrapper {
+      margin-top: 1.5rem;
+      @include breakpoint('md') {
+        max-width: 75%;
+      }
+    }
+
+    .op_helper-text {
+      color: #525252;
+      @include type-style("body-compact-02");
+      margin-top: 2rem;
+    }
+
+    .versionDec {
+        color: #3C3838;
+        font-family: "IBM Plex Sans";
+        font-size: 11px;
+        letter-spacing: 0.13px;
+        line-height: 18px;
+        margin-top: 2em;
+    }
+
+    h1 {
+      color: #161616;
+      @include type-style("productive-heading-03");
+      margin-bottom: 1rem;
+      margin-top: 2.25em;
+    }
+    
+    h2 {
+      @include type-style("productive-heading-02");
+      margin-top: 2rem;
+    }
+    
+    h3 {
+      color: #252525;
+      @include type-style("productive-heading-03");
+      margin-top: 1.25rem;
+    }
+    .pa {
+      margin-top: 1.25rem;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 2em;
+      margin-top: 1.5em;
+    }
+    li {
+      margin-top: .5rem;
+    }
+  }
+}
