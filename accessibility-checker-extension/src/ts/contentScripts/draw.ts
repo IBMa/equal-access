@@ -153,8 +153,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         else { 
 
         }
-
-
     }
     
     // JCH - this allows the web to scroll to the top before drawing occurs
@@ -162,7 +160,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         setTimeout(() => {
             console.log("message.tabStopLines = ", message.tabStopLines);
             console.log("message.tabStopOutlines = ", message.tabStopOutlines);
-            draw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
+            draw(regularTabstops, errorsMisc, message.tabStopLines, message.tabStopOutlines);
             drawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
         }, 1000)
         
@@ -170,7 +168,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
     window.addEventListener('resize', function () {
         deleteDrawing(".deleteMe");
-        redraw(regularTabstops, message.tabStopLines, message.tabStopOutlines);
+        redraw(regularTabstops, errorsMisc, message.tabStopLines, message.tabStopOutlines);
         redrawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
     });
     // Tab key listener
@@ -312,9 +310,9 @@ function injectCSS(styleString: string) {
     document.head.append(style);
 }
 
-function draw(tabstops: any, lines:boolean, outlines:boolean) {
+function draw(tabstops: any, tabStopsErrors: any, lines:boolean, outlines:boolean) {
     // console.log("Inside draw")
-    redraw(tabstops, lines, outlines);
+    redraw(tabstops, tabStopsErrors, lines, outlines);
 }
 
 function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
@@ -333,7 +331,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
     // console.log("Inside redrawErrors")
     setTimeout(() => {
         let tabbableNodesXpaths = getNodesXpaths(tabStops);
-        console.log("tabbable error nodes = ", tabStopsErrors);
+        
         let nodes = getNodesXpaths(tabStopsErrors);
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
@@ -402,10 +400,13 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
 
 
-function redraw(tabstops: any, lines: boolean, outlines: boolean) {
-    console.log("Inside redraw");
-    console.log("lines = ", lines);
-    console.log("outlines = ", outlines);
+function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean) {
+    console.log(tabStopsErrors);
+
+    
+    
+    
+
     setTimeout(() => { 
         let offset = 3;
         // console.log("redraw tabstops = ", tabstops);
@@ -413,15 +414,18 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
+        let slope: number;
+
+        
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             if (nodes[i] != null) { // JCH - tabbable nodes
-                // console.log(tabstops[i])
+                // console.log(tabstops[i].ruleID);
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     if (lines) {
                         if (i < nodes.length - 1) {
-                            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+                            slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
                             // Create basic black line
                             makeLine(nodes[i].getBoundingClientRect().x - offset,
                                 nodes[i].getBoundingClientRect().y - offset,
@@ -471,6 +475,59 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
                     //
                     //       if we have the line(s) for an element get the y for the line at x = ~ 16px
                     //       now how do we choose which of the two lines to use? Higher on page or lower on page?
+                    // console.log("tabstop ",i);
+                    // console.log("Calculate coordinates for element_tabbable_visible triangle");
+                    // console.log("x1 = ",x,"   y1 = ",y);
+                    // console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
+                    // console.log("slope = ",slope);
+
+                    // check to see if any tab stop has ruleID element_tabbable_visible
+                    let yIntercept: number;
+                    tabStopsErrors.map((result: any, index: any) => {
+                        if (result.ruleId === "element_tabbable_visible") {
+                            if (nodeXpaths[i] === result.path.dom) {
+                                if (triangleXShifted < 0) { // need to get y intercept
+                                    console.log(index);
+                                    console.log(result.ruleId);
+                                    // Adjust coords for Triangle to put on page where line goes left off page
+                                    // console.log("tabstop ",i);
+                                    // straight line eq: Ax + By = C
+                                    // y intercept is y = B/C
+                                    // x intercept is x = C/A
+                                    console.log("Calculate coordinates for element_tabbable_visible triangle");
+                                    console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
+                                    console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
+                                    console.log("slope = ",slope);
+                                    // find y intercept y = mx + c or c = y - mx
+                                    yIntercept = triangleYShifted - slope * triangleXShifted;
+                                    console.log("yIntercept = ",yIntercept);
+                                    triangleXShifted = 20;
+                                    triangleYShifted = yIntercept + 10;
+                                } else if (triangleYShifted < 0) { // need to get x intercept
+                                    console.log(index);
+                                    console.log(result.ruleId);
+                                    // Adjust coords for Triangle to put on page where line goes left off page
+                                    // console.log("tabstop ",i);
+                                    console.log("Calculate coordinates for element_tabbable_visible triangle");
+                                    console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
+                                    console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
+                                    console.log("slope = ",slope);
+
+                                    // find x intercept y = mx + c or c = y - mx
+
+                                    yIntercept = triangleYShifted - slope * triangleXShifted;
+                                    console.log("yIntercept = ",yIntercept);
+                                    // 0 = slope * x + yIntercept
+                                    // xIntercept = yIntercept / slope
+                                    let xIntercept = -yIntercept / slope;
+                                    console.log("xIntercept = ", xIntercept);
+                                    triangleXShifted = xIntercept + 10;
+                                    triangleYShifted = 25;
+                                }
+                                
+                            }
+                        }         
+                    });
 
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
@@ -478,7 +535,9 @@ function redraw(tabstops: any, lines: boolean, outlines: boolean) {
                                 triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
                                 i.toString(), nodeXpaths[i])
                     
-                    makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
+                    // makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
+
+                    makeTextSmall(triangleXShifted, triangleYShifted, (i + 1).toString(), "textColorBlack");
 
                     if (outlines) {
 
