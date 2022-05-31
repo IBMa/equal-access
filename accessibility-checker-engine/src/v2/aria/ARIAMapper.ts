@@ -16,42 +16,16 @@
 
 import { ARIADefinitions } from "./ARIADefinitions";
 import { CommonMapper } from "../common/CommonMapper";
-import { IMapResult} from "../api/IMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 import { RPTUtil } from "../checker/accessibility/util/legacy"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
+import { IMapResult } from "../../v4/api/IMapper";
+import { ARIAWalker } from "./ARIAWalker";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
 export class ARIAMapper extends CommonMapper {
-    //dom-defined relationship overridden by aria-owns: elemId : parentRolePath
-    private ariaHierarchy: Array<{
-            id: string,
-            hierarchyRole : string[],
-            hierarchyChildrenHaveRole: boolean[],
-            hierarchyPath: Array<{
-                rolePath: string,
-                roleCount: {
-                    [role: string]: number
-                }
-            }>,
-            hierarchyResults: IMapResult[],
-            node:Node | null,
-            shadowRoot: Node | null
-    }> = null;
-        
-    private hierarchyCache: {  
-        hierarchyRole : string[],
-        hierarchyChildrenHaveRole: boolean[],
-        hierarchyPath: Array<{
-            rolePath: string,
-            roleCount: {
-                [role: string]: number
-            }
-        }>,
-        hierarchyResults: IMapResult[]
-    }; 
-    childrenHaveRole(node: Node, role: string) : boolean {
+    childrenCanHaveRole(node: Node, role: string) : boolean {
         // if (node.nodeType === 1 /* Node.ELEMENT_NODE */) {
         //     const elem = node as Element;
         //     if (elem.getAttribute("aria-hidden") === "true") {
@@ -106,114 +80,205 @@ export class ARIAMapper extends CommonMapper {
         return retVal;
     }
 
+    static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
+        const doc = FragmentUtil.getOwnerFragment(elem);
+        if (!RPTUtil.getCache(doc, "ARIAMapper::precalcOwned", false)) {
+            const owners = doc.querySelectorAll("[aria-owns]");
+            for (let iOwner = 0; iOwner < owners.length; ++iOwner) {
+                const owner = owners[iOwner];
+                const ownIds = owner.getAttribute("aria-owns").split(/ +/g);
+                for (let iId=0; iId < ownIds.length; ++iId) {
+                    const owned = doc.getElementById(ownIds[iId]);
+                    if (owned) {
+                        RPTUtil.setCache(owned, "aria-owned", owner);
+                    }
+                }
+            }
+            RPTUtil.setCache(doc, "ARIAMapper::precalcOwned", true);
+        }
+        return RPTUtil.getCache(elem, "aria-owned", null);
+    }
+
+    private getNodeHierarchy(node: Node) {
+        if (!node) return [];
+        if (node.nodeType !== 1) {
+            let parentHierarchy = this.getNodeHierarchy(DOMUtil.parentElement(node));
+            let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
+                role: "",
+                rolePath: "",
+                roleCount: {},
+                childrenCanHaveRole: true
+            };
+            let nodeHierarchy = [];
+            // Set hierarchy
+            for (const item of parentHierarchy) {
+                nodeHierarchy.push(item);
+            }
+            nodeHierarchy.push({
+                attributes: {},
+                bounds: this.getBounds(node),
+                namespace: this.getNamespace(),
+                node: node,
+                role: this.getRole(node) || "none",
+                rolePath: parentInfo.rolePath+"/"+(this.getRole(node) || "none"),
+                roleCount: {},
+                childrenCanHaveRole: parentInfo.childrenCanHaveRole
+            });
+            return nodeHierarchy;
+        } else {
+            let elem = node as HTMLElement;
+            let nodeHierarchy : Array<{
+                role: string,
+                rolePath: string,
+                roleCount: {
+                    [role: string]: number
+                }
+                childrenCanHaveRole: boolean
+            }> = RPTUtil.getCache(elem, "ARIAMapper::getNodeHierarchy", null);
+            if (!nodeHierarchy) {
+                // This element hasn't been processed yet - but ::reset processes them all in the right order
+
+                // Get details about the correct parent first
+                let parent = ARIAMapper.getAriaOwnedBy(elem);
+                if (!parent) {
+                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                }
+                while (parent && parent.nodeType !== 1) {
+                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                }
+                let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
+                let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
+                    role: "",
+                    rolePath: "",
+                    roleCount: {},
+                    childrenCanHaveRole: true
+                };
+                while (parentInfo.role === "none" || parentInfo.role === "/none") {
+                    parent = ARIAMapper.getAriaOwnedBy(parent) || DOMUtil.parentElement(parent) as HTMLElement;
+                    parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
+                    parentInfo = parentHierarchy[parentHierarchy.length-1];
+                }
+
+                // Set initial node info
+                let nodeInfo : {
+                    attributes: {
+                        [role: string]: string
+                    }
+                    bounds: any,
+                    namespace: string,
+                    node: HTMLElement,
+                    role: string,
+                    rolePath: string,
+                    roleCount: {
+                        [role: string]: number
+                    }
+                    childrenCanHaveRole: boolean
+                } = {
+                    attributes: elem.nodeType === 1 ? this.getAttributes(elem): {},   
+                    bounds: this.getBounds(elem),
+                    namespace: this.getNamespace(),
+                    node: elem,
+                    role: this.getRole(elem) || "none",
+                    rolePath: "",
+                    roleCount: {},
+                    childrenCanHaveRole: true
+                }
+
+                // Adjust role if we're within a presentational container
+                let presentationalContainer = !parentInfo.childrenCanHaveRole;
+                if (presentationalContainer) {
+                    nodeInfo.role = "none";
+                } else {
+                    nodeInfo.childrenCanHaveRole = parentInfo.childrenCanHaveRole 
+                        && this.childrenCanHaveRole(elem, nodeInfo.role);
+                }
+
+                // Set the paths
+                if (nodeInfo.role !== "none") {
+                    parentInfo.roleCount[nodeInfo.role] = (parentInfo.roleCount[nodeInfo.role] || 0) + 1; 
+                    nodeInfo.rolePath = parentInfo.rolePath+"/"+nodeInfo.role+"["+parentInfo.roleCount[nodeInfo.role]+"]";
+                } else {
+                    nodeInfo.rolePath = parentInfo.rolePath;
+                }
+        
+                // Set hierarchy
+                nodeHierarchy = []
+                for (const item of parentHierarchy) {
+                    nodeHierarchy.push(item);
+                }
+                nodeHierarchy.push(nodeInfo);
+                RPTUtil.setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
+            }
+            return nodeHierarchy;
+        }
+    }
+
     reset(node: Node) {
-        if (this.ariaHierarchy === null) {
-            let parent = DOMUtil.parentNode(node);
-            if (parent && parent.nodeType === 9 /* Node.DOCUMENT_NODE */) {
-                let top = (parent as Document).documentElement;
-                let list = top.querySelectorAll('[aria-owns]');
-                if (list !== null) {
-                    this.ariaHierarchy = [];
-                    list.forEach((elem) => {
-                        let hierarchies : IMapResult[] = this.openScope(elem);
-                        let hierarchyRole : string[] = JSON.parse(JSON.stringify(this.hierarchyRole)); 
-                        let hierarchyChildrenHaveRole: boolean[] = JSON.parse(JSON.stringify(this.hierarchyChildrenHaveRole));
-                        let hierarchyPath: Array<{
-                            rolePath: string,
-                            roleCount: {
-                                [role: string]: number
-                            }
-                        }> = JSON.parse(JSON.stringify(this.hierarchyPath));
-                        let hierarchyResults: IMapResult[] = DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults);
-                        let attrValue = elem.getAttribute("aria-owns");
-                        let ids = attrValue.trim().split(" ");
-                        ids.forEach((id) => {
-                            this.ariaHierarchy.push({
-                                id: id.trim(), 
-                                hierarchyRole: hierarchyRole, 
-                                hierarchyChildrenHaveRole: hierarchyChildrenHaveRole,
-                                hierarchyPath: hierarchyPath,
-                                hierarchyResults: hierarchyResults, 
-                                node: null,
-                                shadowRoot: DOMUtil.shadowRootNode(elem)
-                            });
-                        });
-                        //clear the hierarchies
-                        this.hierarchyRole = [];
-                        this.hierarchyResults = [];
-                        this.hierarchyChildrenHaveRole = [];
-                        this.hierarchyPath = [{
-                            rolePath: "",
-                            roleCount: {}
-                        }]; 
-                    });
-                } 
-            } 
-        }    
         ARIAMapper.nameComputationId = 0;
-        super.reset(node); 
+        this.hierarchyRole = [];
+        this.hierarchyResults = [];
+        this.hierarchyPath = [{
+            rolePath: "",
+            roleCount: {}
+        }];
+        // Get to the topmost node
+        let goodNode = node;
+        let next;
+        while (next = DOMUtil.parentNode(goodNode)) {
+            goodNode = next;
+        };
+        // Walk the tree and set the hierarchies in the right order
+        let ariaWalker = new ARIAWalker(goodNode, false, goodNode);
+        do {
+            if (ariaWalker.node.nodeType === 1) {
+                this.getNodeHierarchy(ariaWalker.node);
+            }
+        } while (ariaWalker.nextNode());
+    }
+
+    openScope(node: Node): IMapResult[] {
+        if (this.hierarchyRole === null) {
+            this.reset(node);
+        }
+        this.pushHierarchy(node)
+        for (let idx=0; idx<this.hierarchyResults.length; ++idx) {
+            if (this.hierarchyResults[idx].role[0] === "/") {
+                this.hierarchyResults[idx].role = this.hierarchyResults[idx].role.substring(1);
+            }
+        }
+        return this.hierarchyResults;
     }
 
     pushHierarchy(node: Node) {
-        if (this.switchParentHierarchies(node)) {
-            //cache the original hierarchies
-            this.hierarchyCache = {
-                hierarchyRole: JSON.parse(JSON.stringify(this.hierarchyRole)), 
-                hierarchyChildrenHaveRole: JSON.parse(JSON.stringify(this.hierarchyChildrenHaveRole)),
-                hierarchyPath: JSON.parse(JSON.stringify(this.hierarchyPath)),
-                hierarchyResults: DOMUtil.objectCopyWithNodeRefs(this.hierarchyResults)
-            };
-
-            //rewrite parent hierarchy to the element with aria-owns
-            const value = (node as Element).getAttribute("id");
-            const hierarchyItem = this.ariaHierarchy.find(aria => aria.id === value);
-            this.hierarchyRole = hierarchyItem.hierarchyRole; 
-            this.hierarchyChildrenHaveRole = hierarchyItem.hierarchyChildrenHaveRole;
-            this.hierarchyPath = hierarchyItem.hierarchyPath;
-            this.hierarchyResults = hierarchyItem.hierarchyResults;  
-            //set the current node 
-            hierarchyItem.node = node;
-        } 
-        super.pushHierarchy(node);
-    }    
-
-    closeScope(node: Node): IMapResult[] {
-        const results : IMapResult[] = super.closeScope(node);
-
-        if (node.nodeType === Node.ELEMENT_NODE && this.ariaHierarchy != null && this.ariaHierarchy.length > 0) {
-            const value = (node as Element).getAttribute("id");
-            let hierarchyItem = this.ariaHierarchy.find(aria => aria.id === value);
-            if (hierarchyItem) {
-                if (DOMUtil.sameNode(node, hierarchyItem.node)) {
-                    //rewrite competed, restore original hierarchies
-                    this.hierarchyRole = this.hierarchyCache.hierarchyRole; 
-                    this.hierarchyChildrenHaveRole = this.hierarchyCache.hierarchyChildrenHaveRole;
-                    this.hierarchyPath = this.hierarchyCache.hierarchyPath;
-                    this.hierarchyResults = this.hierarchyCache.hierarchyResults; 
-
-                    //set rewrite parent node to null
-                    hierarchyItem.node = null;
-                }
-            }
+        // If we're not an element, no special handling
+        let nodeHierarchy = []
+        // Determine our node info
+        nodeHierarchy = this.getNodeHierarchy(node);
+        let nodeInfo = nodeHierarchy[nodeHierarchy.length-1];
+        this.hierarchyRole.push(nodeInfo.role);
+        if (nodeInfo.role !== "none") {
+            this.hierarchyPath.push(nodeInfo);
         }
-        return results;
+
+        this.hierarchyResults = nodeHierarchy;
     }
 
-    //rewrite aria role path for aria-owns
-    switchParentHierarchies(node : Node) : boolean {
-        if (this.ariaHierarchy === null || this.ariaHierarchy.length === 0 || node.nodeType !== node.ELEMENT_NODE) return false; 
-        const value : string = (node as Element).getAttribute("id"); 
-        if (value === null) return false;
-        const ariaMap = this.ariaHierarchy.find(aria => aria.id === value);
-        if (!ariaMap) return false;
-        //aria-owns doesn't cross doms
-        const shadowRoot = DOMUtil.shadowRootNode(node);
-        if ((shadowRoot && !ariaMap.shadowRoot) 
-            || (!shadowRoot && ariaMap.shadowRoot) 
-            || (shadowRoot && ariaMap.shadowRoot && !DOMUtil.sameNode(shadowRoot, ariaMap.shadowRoot))) 
-            return false; 
-        
-        return true;
+    closeScope(node: Node): IMapResult[] {
+        let retVal : IMapResult[] = [];
+        for (const res of this.hierarchyResults) {
+            // const temp = res.node;
+            // res.node = null;
+            // let cloned = JSON.parse(JSON.stringify(res));
+            // cloned.node = res.node = temp; 
+            // retVal.push(cloned);
+            retVal.push(res);
+        }
+        if (retVal.length > 0) {
+            retVal[retVal.length-1].role = "/"+retVal[retVal.length-1].role
+            let parent = DOMUtil.parentElement(node);
+            this.hierarchyResults = parent ? RPTUtil.getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
+        }
+        return retVal;
     }
 
     ////////////////////////////////////////////////////////////////////////////
