@@ -17,9 +17,6 @@
 import { CommonMapper } from "../common/CommonMapper";
 
 export class StyleMapper extends CommonMapper {
-    childrenHaveRole(node: Node, role: string) : boolean {
-        return true;
-    }
     getRole(node: Node) : string {
         return "computed";
     }
