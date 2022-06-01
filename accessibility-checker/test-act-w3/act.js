@@ -9,7 +9,8 @@
 
 const aChecker = require("../src/index");
 const request = require("request");
- 
+const rulesetP = aChecker.getRuleset('IBM_Accessibility');
+
 async function getAceMapping() {
     let rules = await aChecker.getRules();
     let retVal = {};
@@ -62,7 +63,7 @@ async function getTestcases() {
     let aceMapping = await getAceMapping();
     let ruleTestInfo = {}
     return await new Promise((resolve, reject) => {
-        request("https://act-rules.github.io/testcases.json", (err, req, body) => {
+        request("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json", (err, req, body) => {
             let testcaseInfo = JSON.parse(body);
             for (const testcase of testcaseInfo.testcases) {
                 if (testcase.ruleId in aceMapping) {
@@ -79,9 +80,16 @@ async function getTestcases() {
     });
 }
 
-async function getResult(page, testcaseId, aceRules) {
+async function getResult(page, ruleId, testcaseId, aceRules) {
+    const ruleset = await rulesetP;
+    let assertions = [];
     if (aceRules.length === 0) {
         return {
+            assertions: [{
+                "@type": "Assertion",
+                "test": { "title": "", "isPartOf": []},
+                "result": { "outcome": "earl:untested" }
+            }],
             title: "",
             result: "earl:untested",
             issuesPass: [],
@@ -90,10 +98,11 @@ async function getResult(page, testcaseId, aceRules) {
             issuesAll: []    
         }
     }
-    let results = await aChecker.getCompliance(page, testcaseId);
-    let issuesFail = [];
-    let issuesReview = [];
-    let issuesPass = [];
+    let results = await aChecker.getCompliance(page, `${ruleId}_${testcaseId}`);
+    let ruleIds = {};
+    let issuesFailMap = {};
+    let issuesReviewMap = {};
+    let issuesPassMap = {};
     for (const result of results.report.results) {
         for (const aceRule of aceRules) {
             if (result.ruleId === aceRule.ruleId) {
@@ -101,53 +110,108 @@ async function getResult(page, testcaseId, aceRules) {
                     let earlResult = aceRule.remap[result.reasonId];
                     switch (earlResult) {
                         case "pass":
-                            issuesPass.push(result);
+                            ruleIds[result.ruleId] = true;
+                            issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
+                            issuesPassMap[result.ruleId].push(result);
                             break;
                         case "fail":
-                            issuesFail.push(result);
+                            ruleIds[result.ruleId] = true;
+                            issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
+                            issuesFailMap[result.ruleId].push(result);
                             break;
                         case "cantTell":
-                            issuesReview.push(result);
+                            ruleIds[result.ruleId] = true;
+                            issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
+                            issuesReviewMap[result.ruleId].push(result);
                             break;
                         case "inapplicable":
                             break;
                     }
                 } else if (!aceRule.remap) {
                     if (result.value[1] === "FAIL") {
-                        issuesFail.push(result);
+                        ruleIds[result.ruleId] = true;
+                        issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
+                        issuesFailMap[result.ruleId].push(result);
                     } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
-                        issuesReview.push(result);
+                        ruleIds[result.ruleId] = true;
+                        issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
+                        issuesReviewMap[result.ruleId].push(result);
                     } else if (result.value[1] === "PASS") {
-                        issuesPass.push(result);
+                        ruleIds[result.ruleId] = true;
+                        issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
+                        issuesPassMap[result.ruleId].push(result);
                     }
                 }
             }
         }
     }
 
-    let issues2 = results.report.results;
-    let ruleStrs = [];
-    for (let aceRule of aceRules) {
-        ruleStrs.push(`${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`)
+    // Summarize the results
+    let issuesPass = [];
+    let issuesFail = [];
+    let issuesReview = [];
+    for (const ruleId in ruleIds) {
+        let ruleTitle = "";
+        aChecker.getRuleset("")
+        for (let aceRule of aceRules) {
+            if (aceRule.ruleId === ruleId) {
+                ruleTitle = `${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`;
+            }
+        }
+        let result = "";
+        const hasFail = ruleId in issuesFailMap && issuesFailMap[ruleId].length > 0;
+        const hasReview = ruleId in issuesReviewMap && issuesReviewMap[ruleId].length > 0;
+        const hasPass = ruleId in issuesPassMap && issuesPassMap[ruleId].length > 0;
+        if (!hasFail && !hasReview && !hasPass) {
+            result = "earl:inapplicable";
+        } else if (hasFail) {
+            result = "earl:failed";
+        } else if (hasReview) {
+            result = "earl:cantTell";
+        } else {
+            result = "earl:passed";
+        }
+        assertions.push({
+            "@type": "Assertion",
+            "test": { 
+                "title": ruleTitle,
+                "isPartOf": ruleset.checkpoints
+                    // Get checkpoints that have this rule
+                    .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
+                    // Replace with the scId
+                    .map(cp => cp.scId)
+            },
+            "result": { "outcome": result }
+        })
+        if (hasFail) { 
+            issuesFail = issuesFail.concat(issuesFailMap[ruleId]); 
+        }
+        if (hasReview) { 
+            issuesReview = issuesReview.concat(issuesReviewMap[ruleId]);
+        }
+        if (hasPass) { 
+            issuesPass = issuesPass.concat(issuesPassMap[ruleId]);
+        }
     }
-    let ruleTitle = ruleStrs.join("|");
-    let result = "";
+
+    let overallResult = "";
     if (issuesFail.length === 0 && issuesReview.length === 0 && issuesPass.length === 0) {
-        result = "earl:inapplicable";
+        overallResult = "earl:inapplicable";
     } else if (issuesFail.length > 0) {
-        result = "earl:failed";
+        overallResult = "earl:failed";
     } else if (issuesReview.length > 0) {
-        result = "earl:cantTell";
+        overallResult = "earl:cantTell";
     } else if (issuesPass.length > 0) {
-        result = "earl:passed";
-    }
+        overallResult = "earl:passed";
+    }    
+
     return {
-        title: ruleTitle,
-        result: result,
+        assertions: assertions,
+        result: overallResult,
         issuesPass: issuesPass,
         issuesFail: issuesFail,
         issuesReview: issuesReview,
-        issuesAll: issues2
+        issuesAll: results.report.results
     }
 }
 
