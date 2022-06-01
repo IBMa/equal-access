@@ -18,9 +18,6 @@ import { CommonMapper } from "../common/CommonMapper";
 import { Bounds } from "../api/IMapper";
 
 export class DOMMapper extends CommonMapper {
-    childrenHaveRole(node: Node, role: string) : boolean {
-        return true;
-    }
     getRole(node: Node) : string {
         return node.nodeName.toLowerCase();
     }

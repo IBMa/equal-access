@@ -405,18 +405,34 @@ export class Engine implements IEngine {
         this.mappers[mapper.getNamespace()] = mapper;
     }
 
-    private static match(ruleParts: PartInfo[],
+    private static match(rule: WrappedRule,
         contextHier: RuleContextHierarchy) : boolean
     {
+        let ruleParts = rule.parsedInfo.contextInfo;
         let partIdx = ruleParts.length-1;
-        let hierIdx = contextHier["dom"].length-1;
-        // First check the end of the hierarchy
-        if (!ruleParts[partIdx].matches(contextHier, hierIdx)) {
+        let curNS = ruleParts[partIdx].namespace;
+        let curHier = contextHier[curNS][contextHier[curNS].length-1];
+        const contextNode = curHier.node;
+
+        // If the end of the rule part doesn't match the end of the hierarchy, we don't have a match
+        if (!ruleParts[partIdx].matches(contextHier, contextHier[curNS].length-1)) {
             return false;
-        } else {
-            --partIdx;
-            --hierIdx;
         }
+        // If there was only one part, we have a match
+        if (ruleParts.length === 1) {
+            return true;
+        }
+        // Need to deal with parent parts. To walk the hierarchy, these need to be
+        // all in the same namespace. Confirm that is true.
+        curNS = ruleParts[0].namespace;
+        curHier = contextHier[curNS][contextHier[curNS].length-1];
+        --partIdx;
+        if (ruleParts.slice(0, ruleParts.length-1).some(part => part.namespace !== curNS)) {
+            console.error(`[ERROR] Rule ${rule.rule.id} has inconsitent parent namespaces`);
+            return false;
+        }
+        // If the target node matches the end of the hierarchy, move up past it, otherwise, start at the end
+        let hierIdx = contextHier[curNS].length - (curHier.node.isSameNode(contextNode) ? 2 : 1);
         while (hierIdx >= 0 && partIdx >= 0) {
             const part = ruleParts[partIdx];
             const matchesPart = ruleParts[partIdx].matches(contextHier, hierIdx);
@@ -461,7 +477,7 @@ export class Engine implements IEngine {
         let matches : WrappedRule[] = [];
         function addMatches(rules: WrappedRule[]) {
             for (const rule of rules) {
-                if (rule.rule.enabled && Engine.match(rule.parsedInfo.contextInfo, ctxHier)) {
+                if (rule.rule.enabled && Engine.match(rule, ctxHier)) {
                     if (!(rule.rule.id in dupeCheck)) {
                         matches.push(rule);
                         dupeCheck[rule.rule.id] = true;
@@ -470,7 +486,7 @@ export class Engine implements IEngine {
             }
         }
         for (const ns in ctxHier) {
-            let role = ns+":"+ctxHier[ns][ctxHier[ns].length-1].role;
+            let role = ns+":"+(ctxHier[ns].length > 0 ? ctxHier[ns][ctxHier[ns].length-1].role : "none");
             if (role in this.inclRules) {
                 addMatches(this.inclRules[role]);
             }
