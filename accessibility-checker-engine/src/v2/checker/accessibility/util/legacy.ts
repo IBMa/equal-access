@@ -3146,6 +3146,174 @@ export class RPTUtil {
         //    return null; // Unreachable
     };
 
+    public static ColorCombo_New(ruleContext : HTMLElement) {
+        var doc = ruleContext.ownerDocument;
+        if (!doc) {
+            return null;
+        }
+        var win = doc.defaultView;
+        if (!win) {
+            return null;
+        }
+
+        var ancestors = [];
+        let walkNode : Element = ruleContext;
+        while (walkNode) {
+            if (walkNode.nodeType === 1)
+                ancestors.push(walkNode);
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+
+        var retVal = {
+            "hasGradient": false,
+            "hasBGImage": false,
+            "fg": null,
+            "bg": null
+        };
+        var compStyleColor = win.getComputedStyle(ruleContext).color;
+        var compStyleBgColor = win.getComputedStyle(ruleContext).backgroundColor;
+        if (!compStyleColor)
+            compStyleColor = "black";
+        var fg = RPTUtil.Color(compStyleColor);
+        console.log('target nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', fg=' + JSON.stringify(fg) + ', compStyleBgColor=' + JSON.stringify(compStyleBgColor));
+        var reColor = /transparent|rgba?\([^)]+\)/gi;
+        var guessGradColor = function (gradList, bgColor, fgColor) {
+            try {
+                // If there's only one color, return that
+                if (typeof gradList.length === "undefined")
+                    return gradList;
+
+                var overallWorst = null;
+                var overallWorstRatio = null;
+                for (var iGrad = 1; iGrad < gradList.length; ++iGrad) {
+                    var worstColor = gradList[iGrad - 1];
+                    var worstRatio = fgColor.contrastRatio(gradList[iGrad - 1]);
+                    var step = .1;
+                    var idx = 0;
+                    while (step > .0001) {
+                        while (idx + step <= 1 && worstRatio > fgColor.contrastRatio(gradList[iGrad].mix(gradList[iGrad - 1], idx + step).getOverlayColor(bgColor))) {
+                            worstColor = gradList[iGrad].mix(gradList[iGrad - 1], idx + step).getOverlayColor(bgColor);
+                            worstRatio = fgColor.contrastRatio(worstColor);
+                            idx = idx + step;
+                        }
+                        while (idx - step >= 0 && worstRatio > fgColor.contrastRatio(gradList[iGrad].mix(gradList[iGrad - 1], idx - step).getOverlayColor(bgColor))) {
+                            worstColor = gradList[iGrad].mix(gradList[iGrad - 1], idx - step).getOverlayColor(bgColor);
+                            worstRatio = fgColor.contrastRatio(worstColor);
+                            idx = idx - step;
+                        }
+                        step = step / 10;
+                    }
+                    if (overallWorstRatio === null || overallWorstRatio > worstRatio) {
+                        overallWorstRatio = worstRatio;
+                        overallWorst = worstColor;
+                    }
+                }
+                return overallWorst;
+            } catch (e) {
+                console.log(e);
+            }
+            return bgColor;
+        };
+
+        var priorStackBG = RPTUtil.Color("white");
+        var thisStackOpacity = null;
+        var thisStackAlpha = null;
+        var thisStackBG = null;
+        // Ancestors processed from the child toward the parent chain till the color is resolved 
+        while (ancestors.length > 0) {
+            var procNext = ancestors.splice(0, 1)[0];
+            // cStyle is the computed style of this layer
+            var cStyle = win.getComputedStyle(procNext);
+            if (cStyle === null) continue;
+
+            // thisBgColor is the color of this layer or null if the layer is transparent
+            var thisBgColor = null;
+            if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
+                thisBgColor = RPTUtil.Color(cStyle.backgroundColor);
+            }console.log('nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', cStyle.backgroundColor=' + JSON.stringify(cStyle.backgroundColor) + ', thisBgColor=' + JSON.stringify(thisBgColor));
+
+            // If there is a gradient involved, set thisBgColor to the worst color combination available against the foreground
+            if (cStyle.backgroundImage && cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
+                var gradColors : string[] = cStyle.backgroundImage.match(reColor);
+                if (gradColors) {
+                    let gradColorComp : ColorObj[] = [];
+                    for (var i = 0; i < gradColors.length; ++i) {
+                        if (!gradColors[i].length) {
+                            gradColors.splice(i--, 1);
+                        } else {
+                            gradColorComp.push(RPTUtil.Color(gradColors[i]));
+                        }
+                    }
+                    thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
+                }
+            }console.log('2 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', thisBgColor=' + JSON.stringify(thisBgColor));
+
+            // Handle non-solid opacity
+            if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
+                // New stack, reset
+                if (thisStackBG != null) {
+                    // Overlay
+                    thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
+                    priorStackBG = thisStackBG.getOverlayColor(priorStackBG);
+                }
+                thisStackOpacity = 1.0;
+                thisStackAlpha = null;
+                thisStackBG = null;
+                if (cStyle.opacity && cStyle.opacity.length > 0) {
+                    thisStackOpacity = parseFloat(cStyle.opacity);
+                }
+                if (thisBgColor != null) {
+                    thisStackBG = thisBgColor;
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
+                    delete thisStackBG.alpha;
+                    if (thisStackOpacity === 1.0 && thisStackAlpha === 1.0) {
+                        retVal.hasBGImage = false;
+                        retVal.hasGradient = false;
+                    }
+                }
+            }
+            // Handle solid color backgrounds and gradient color backgrounds
+            else if (thisBgColor != null) {
+                // If this stack already has a background color, blend it
+                if (thisStackBG === null) {
+                    thisStackBG = thisBgColor;
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
+                    delete thisStackBG.alpha;
+                } else {
+                    thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
+                }
+                // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
+                // We can't wipe out the gradient info if this layer was transparent
+                if (thisStackOpacity === 1.0 && thisStackAlpha === 1.0 && (thisStackBG.alpha || 1.0) === 1.0 && (thisBgColor.alpha || 1.0) === 0) {
+                    retVal.hasBGImage = false;
+                    retVal.hasGradient = false;
+                }
+            }
+            if (cStyle.backgroundImage && cStyle.backgroundImage != "none") {
+                if (cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
+                    retVal.hasGradient = true;
+                } else {
+                    retVal.hasBGImage = true;
+                }
+            }console.log('2-2 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', priorStackBG=' + JSON.stringify(priorStackBG) + ', thisStackBG=' + JSON.stringify(thisStackBG) + ', thisStackOpacity=' + JSON.stringify(thisStackOpacity) + ', thisStackAlpha=' + JSON.stringify(thisStackAlpha));
+        }
+        console.log('3 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', thisBgColor=' + JSON.stringify(thisBgColor));
+        console.log('4 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', thisStackBG=' + JSON.stringify(thisStackBG));
+        if (thisStackBG != null) {
+            fg = fg.getOverlayColor(thisStackBG);
+            delete fg.alpha;
+        }
+        fg.alpha = (fg.alpha || 1) * thisStackOpacity;
+        fg = fg.getOverlayColor(priorStackBG);
+        if (thisStackBG != null) {
+            thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
+            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);console.log('5 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', thisStackBG=' + JSON.stringify(thisStackBG));
+        } console.log('6 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', priorStackBG=' + JSON.stringify(priorStackBG) + ', thisStackBG=' + JSON.stringify(thisStackBG) + ', thisStackOpacity=' + JSON.stringify(thisStackOpacity) + ', thisStackAlpha=' + JSON.stringify(thisStackAlpha));
+        retVal.fg = fg;
+        retVal.bg = priorStackBG;
+        return retVal;
+    };
+
     public static ColorCombo(ruleContext : HTMLElement) {
         var doc = ruleContext.ownerDocument;
         if (!doc) {
@@ -3174,7 +3342,7 @@ export class RPTUtil {
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = RPTUtil.Color(compStyleColor);
-
+        console.log('target nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class"));
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
             try {
@@ -3229,7 +3397,7 @@ export class RPTUtil {
             var thisBgColor = null;
             if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
                 thisBgColor = RPTUtil.Color(cStyle.backgroundColor);
-            }console.log('nodename=' + procNext.nodeName + ', cStyle.backgroundColor=' + JSON.stringify(cStyle.backgroundColor) + ', thisBgColor=' + JSON.stringify(thisBgColor));
+            }console.log('nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', cStyle.backgroundColor=' + JSON.stringify(cStyle.backgroundColor) + ', thisBgColor=' + JSON.stringify(thisBgColor));
 
             // If there is a gradient involved, set thisBgColor to the worst color combination available against the foreground
             if (cStyle.backgroundImage && cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
@@ -3245,7 +3413,7 @@ export class RPTUtil {
                     }
                     thisBgColor = guessGradColor(gradColorComp, thisStackBG || priorStackBG, fg);
                 }
-            }console.log('2 nodename=' + procNext.nodeName + ', thisBgColor=' + JSON.stringify(thisBgColor));
+            }console.log('2 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', thisBgColor=' + JSON.stringify(thisBgColor));
 
             // Handle non-solid opacity
             if (thisStackOpacity === null || (cStyle.opacity && cStyle.opacity.length > 0 && parseFloat(cStyle.opacity) < 1)) {
@@ -3294,9 +3462,9 @@ export class RPTUtil {
                 } else {
                     retVal.hasBGImage = true;
                 }
-            }
-        }console.log('3 nodename=' + procNext.nodeName + ', thisBgColor=' + JSON.stringify(thisBgColor));
-        console.log('4 nodename=' + procNext.nodeName + ', thisStackBG=' + JSON.stringify(thisStackBG));
+            }console.log('2-2 nodename=' + procNext.nodeName + ", class="+ RPTUtil.getElementAttribute(procNext, "class") + ', priorStackBG=' + JSON.stringify(priorStackBG) + ', thisStackBG=' + JSON.stringify(thisStackBG) + ', thisStackOpacity=' + JSON.stringify(thisStackOpacity) + ', thisStackAlpha=' + JSON.stringify(thisStackAlpha));
+        }console.log('3 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', thisBgColor=' + JSON.stringify(thisBgColor));
+        console.log('4 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', thisStackBG=' + JSON.stringify(thisStackBG) + ', priorStackBG=' + JSON.stringify(priorStackBG));
         if (thisStackBG != null) {
             fg = fg.getOverlayColor(thisStackBG);
             delete fg.alpha;
@@ -3305,8 +3473,8 @@ export class RPTUtil {
         fg = fg.getOverlayColor(priorStackBG);
         if (thisStackBG != null) {
             thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
-            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);console.log('5 nodename=' + procNext.nodeName + ', thisStackBG=' + JSON.stringify(thisStackBG));
-        } console.log('6 nodename=' + procNext.nodeName + ', priorStackBG=' + JSON.stringify(priorStackBG));
+            priorStackBG = thisStackBG.getOverlayColor(priorStackBG);console.log('5 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', thisStackBG=' + JSON.stringify(thisStackBG));
+        } console.log('6 nodename=' + ruleContext.nodeName + ", class="+ RPTUtil.getElementAttribute(ruleContext, "class") + ', priorStackBG=' + JSON.stringify(priorStackBG) + ', thisStackBG=' + JSON.stringify(thisStackBG) + ', thisStackOpacity=' + JSON.stringify(thisStackOpacity) + ', thisStackAlpha=' + JSON.stringify(thisStackAlpha));
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
