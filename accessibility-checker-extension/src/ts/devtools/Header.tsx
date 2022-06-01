@@ -19,7 +19,7 @@ import ReactTooltip from "react-tooltip";
 import { IReportItem } from "./Report";
 
 import {
-    Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal
+    Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal, 
 } from '@carbon/react';
 import { Information, ReportData, Renew, ChevronDown, View, ViewOff, Help, Settings } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
@@ -34,6 +34,7 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
+    modalKeyboardMode: boolean,
  }
 
 interface IHeaderProps {
@@ -112,6 +113,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     state: IHeaderState = {
         deleteModal: false,
         modalRulsetInfo: false,
+        modalKeyboardMode: false,
     };
 
     focusInfoButton1() {
@@ -189,6 +191,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     deleteModalHandler() {
         this.setState({ 
             deleteModal: true, 
+        });
+    }
+
+    keyboardModalHandler() {
+        this.setState({ 
+            modalKeyboardMode: true, 
         });
     }
 
@@ -394,7 +402,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
                                         { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors, 
                                             tabStopLines: this.props.tabStopLines, tabStopOutlines: this.props.tabStopOutlines });
-                                    this.props.setTabStopsShowHide();
+                                    setTimeout(() => {
+                                        this.props.setTabStopsShowHide();
+                                    }, 1000);
+                                    this.keyboardModalHandler();
                                 } else {
                                     // console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
@@ -403,6 +414,43 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 
                             }}>
                         </Button>
+                        
+                        <Modal
+                            aria-label="Keyboard checker mode"
+                            modalHeading="Keyboard checker mode"
+                            size="sm"
+                            passiveModal
+                            open={this.state.modalKeyboardMode}
+                            onRequestClose={(() => {
+                                this.setState({ modalKeyboardMode: false });
+                            }).bind(this)}
+                            >
+                            <p style={{ marginBottom: '1rem' }}>
+                                Shows current tab stops. Click any marker or tab through the page for element information.
+                                <br></br><br></br>
+                                You can customize this feature in options and read more in the user guide. 
+                            </p>
+                            <p>
+                                <span>
+                                <a
+                                href={chrome.runtime.getURL("options.html")}
+                                target="_blank"
+                                rel="noopener noreferred"
+                                style={{marginRight:"100px"}}
+                                >
+                                Options
+                                </a>
+                                <a
+                                href={chrome.runtime.getURL("usingAC.html")}
+                                target="_blank"
+                                rel="noopener noreferred"
+                                >
+                                User guide
+                                </a>
+                                </span>
+                            </p>
+                            
+                        </Modal>
                     </Column>
                 </Grid>
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>

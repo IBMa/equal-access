@@ -1074,9 +1074,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     setTabStopsShowHide() {
-        // console.log("setTabStopsShowHide");
-        // let mythis = this;
-
         if(this.state.showHideTabStops) {
             this.setState({ showHideTabStops: false });
         } else {
@@ -1084,7 +1081,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
         setTimeout(function () {
             // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
-        }, 1);
+        }, 10);
     }
 
     tabStopsHandler() {
