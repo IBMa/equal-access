@@ -1,4 +1,4 @@
-import { Config } from "../Config";
+import { Config } from "../config";
 const Cloudant = require("@cloudant/cloudant");
 const VCAP_SERVICES = Config.VCAP_SERVICES ? JSON.parse(Config.VCAP_SERVICES) : {}
 
