@@ -7,9 +7,9 @@
         "specVersion": 3,
         "outputDirectory": "./api/dist"
     },
-    "basePath": "/api/v1",
+    "basePath": "/tools/api/pub",
     "routes": {
-      "basePath": "/api/v1",
+      "basePath": "/tools/api/pub",
       "entryFile": "./src/main.ts",
       "routesDir": "./src/routes",
       "middleware": "express"
