@@ -51,9 +51,9 @@ and assistive technologies like screen readers can provide additional informatio
 The only elements that should be in the tab order should be operable widgets. 
 Inoperable elements, such as headings, can be given focus by developers; however, they should not be tabbable by the user.
 
-It's likely that either a non-interactive element was given a `tabindex=` value of 0 or greater, or assigned an element’s role incorrectly. 
+It's likely that either a non-interactive element was given a `tabindex` value of 0 or greater, or assigned an element’s role incorrectly. 
 The Checker detects implied roles of interactive HTML elements that automatically get keyboard focus. 
-The Checker also detects content blocks that get keyboard focus to enable scrolling of the area using arrow keys when coding CSS `overflow: scroll`. 
+The Checker also detects content blocks that get keyboard focus to enable scrolling of the area using arrow keys when coding CSS `overflow: scroll` or `overflow: auto`. 
 Both of these situations are valid. 
 However, if the element *should not* be operable with the keyboard, then it *should not* be tabbable and get keyboard focus. 
 
