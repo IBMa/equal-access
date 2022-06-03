@@ -254,6 +254,7 @@ export class Engine implements IEngine {
                 }
             }
         } while (walker.nextNode());
+        Engine.clearCaches(root);
         retVal.totalTime = new Date().getTime()-start;
         return Promise.resolve(retVal);
     }
