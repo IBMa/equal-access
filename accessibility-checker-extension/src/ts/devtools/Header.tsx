@@ -19,7 +19,7 @@ import ReactTooltip from "react-tooltip";
 import { IReportItem } from "./Report";
 
 import {
-    Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal, 
+    Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal, ToastNotification,
 } from '@carbon/react';
 import { Information, ReportData, Renew, ChevronDown, View, ViewOff, Help, Settings } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
@@ -95,6 +95,7 @@ interface IHeaderProps {
     tabStopOutlines: boolean,
     tabStopAlerts: boolean,
     tabStopFirstTime: boolean,
+    tabStopsSetFirstTime: boolean,
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -414,43 +415,51 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 
                             }}>
                         </Button>
-                        
-                        <Modal
-                            aria-label="Keyboard checker mode"
-                            modalHeading="Keyboard checker mode"
-                            size="sm"
-                            passiveModal
-                            open={this.state.modalKeyboardMode}
-                            onRequestClose={(() => {
-                                this.setState({ modalKeyboardMode: false });
-                            }).bind(this)}
-                            >
-                            <p style={{ marginBottom: '1rem' }}>
-                                Shows current tab stops. Click any marker or tab through the page for element information.
-                                <br></br><br></br>
-                                You can customize this feature in options and read more in the user guide. 
-                            </p>
-                            <p>
-                                <span>
-                                <a
-                                href={chrome.runtime.getURL("options.html")}
-                                target="_blank"
-                                rel="noopener noreferred"
-                                style={{marginRight:"100px"}}
-                                >
-                                Options
-                                </a>
-                                <a
-                                href={chrome.runtime.getURL("usingAC.html")}
-                                target="_blank"
-                                rel="noopener noreferred"
-                                >
-                                User guide
-                                </a>
-                                </span>
-                            </p>
-                            
-                        </Modal>
+                        {this.state.modalKeyboardMode ?
+                            <div style={{position:"fixed",width: "100%", height: "100%", top:"200px", left:"0px", right:"0px", bottom:"0px", zIndex:"2"}}>
+                                <ToastNotification
+                                    className="notification"
+                                    kind="info"
+                                    inline={false}
+                                    aria-label="Keyboard checker mode"
+                                    title="Keyboard checker mode"
+                                    closeOnEscape={true} // only available for ActionalbleNotification
+                                    hideCloseButton={false}
+                                    lowContrast
+                                    onClose={(() => {
+                                        this.setState({ modalKeyboardMode: false });
+                                    }).bind(this)}
+                                    >
+                                    <div>
+                                        <br></br>
+                                        <p style={{ marginBottom: '1rem', fontSize:"14px" }}>
+                                            Shows current tab stops. Click any marker or tab through the page for element information.
+                                            <br></br><br></br>
+                                            You can customize this feature in options and read more in the user guide. 
+                                        </p>
+                                        <p style={{ marginBottom: '1rem', fontSize:"14px" }}>
+                                            <span>
+                                            <a
+                                            href={chrome.runtime.getURL("options.html")}
+                                            target="_blank"
+                                            rel="noopener noreferred"
+                                            style={{marginRight:"30px"}}
+                                            >
+                                            Options
+                                            </a>
+                                            <a
+                                            href={chrome.runtime.getURL("usingAC.html")}
+                                            target="_blank"
+                                            rel="noopener noreferred"
+                                            >
+                                            User guide
+                                            </a>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </ToastNotification>
+                            </div>
+                        : ""}
                     </Column>
                 </Grid>
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
