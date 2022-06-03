@@ -105,10 +105,13 @@ interface IPanelState {
     tabStopsResults: IReportItem[],
     tabStopsErrors: IReportItem[],
     showHideTabStops: boolean,
-    tabStopLines: boolean,
-    tabStopOutlines: boolean,
+    // local storage vars
+    tabStopLines: boolean,      // repeated since both OptionsApp and DevToolsPanelApp
+    tabStopOutlines: boolean,   // gets the states from local storage
     tabStopAlerts: boolean,
-    tabStopFirstTime: boolean
+    tabStopFirstTime: boolean,
+    // end local storage vars
+    tabStopsSetFirstTime: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -148,10 +151,11 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabStopsResults: [],
         tabStopsErrors: [],
         showHideTabStops: false,
-        tabStopLines: false,
+        tabStopLines: false, 
         tabStopOutlines: false,
         tabStopAlerts: false,
-        tabStopFirstTime: false
+        tabStopFirstTime: false,
+        tabStopsSetFirstTime: false,
     }
 
     ignoreNext = false;
@@ -813,13 +817,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     };
 
     getCheckOption = (archiveId: string, policyId: string, archives: any) => {
-        
         var option = archives.find( (element: any) => element.id === archiveId);
-        
         var policy = option.policies;
-
         var guideline = policy.find( (element: any) => element.id === policyId);
-
         var ret = {deployment: {id: archiveId, name: option.name}, guideline: {id: policyId, name: guideline.name}}; 
 
         return ret;
@@ -1084,6 +1084,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }, 10);
     }
 
+    tabStopsSetFirstTime () {
+        if (this.state.tabStopFirstTime) {
+            this.setState({ tabStopFirstTime: false });
+        }
+    }
+
     tabStopsHandler() {
         // console.log("tabStopsHandler");
         // let mythis = this;
@@ -1173,6 +1179,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             tabStopOutlines={this.state.tabStopOutlines}
                             tabStopAlerts={this.state.tabStopAlerts}
                             tabStopFirstTime={this.state.tabStopFirstTime}
+                            tabStopsSetFirstTime={this.state.tabStopsSetFirstTime}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1279,6 +1286,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabStopOutlines={this.state.tabStopOutlines}
                         tabStopAlerts={this.state.tabStopAlerts}
                         tabStopFirstTime={this.state.tabStopFirstTime}
+                        tabStopsSetFirstTime={this.state.tabStopsSetFirstTime}
                     />
                      <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">
