@@ -170,7 +170,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         deleteDrawing(".deleteMe");
         redraw(regularTabstops, errorsMisc, message.tabStopLines, message.tabStopOutlines);
         redrawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
+        let resize = true;
+        TabMessaging.sendToBackground("TABSTOP_RESIZE", { resize: resize })
     });
+
     // Tab key listener
     window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
@@ -401,11 +404,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
 
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean) {
-    console.log(tabStopsErrors);
-
-    
-    
-    
+    // console.log(tabStopsErrors);
 
     setTimeout(() => { 
         let offset = 3;
@@ -415,8 +414,6 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
         let slope: number;
-
-        
 
         // JCH - need for last line to return to first node
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
@@ -483,44 +480,44 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     // check to see if any tab stop has ruleID element_tabbable_visible
                     let yIntercept: number;
-                    tabStopsErrors.map((result: any, index: any) => {
+                    tabStopsErrors.map((result: any) => {
                         if (result.ruleId === "element_tabbable_visible") {
                             if (nodeXpaths[i] === result.path.dom) {
                                 if (triangleXShifted < 0) { // need to get y intercept
-                                    console.log(index);
-                                    console.log(result.ruleId);
+                                    // console.log(index);
+                                    // console.log(result.ruleId);
                                     // Adjust coords for Triangle to put on page where line goes left off page
                                     // console.log("tabstop ",i);
                                     // straight line eq: Ax + By = C
                                     // y intercept is y = B/C
                                     // x intercept is x = C/A
-                                    console.log("Calculate coordinates for element_tabbable_visible triangle");
-                                    console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
-                                    console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
-                                    console.log("slope = ",slope);
+                                    // console.log("Calculate coordinates for element_tabbable_visible triangle");
+                                    // console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
+                                    // console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
+                                    // console.log("slope = ",slope);
                                     // find y intercept y = mx + c or c = y - mx
                                     yIntercept = triangleYShifted - slope * triangleXShifted;
-                                    console.log("yIntercept = ",yIntercept);
+                                    // console.log("yIntercept = ",yIntercept);
                                     triangleXShifted = 20;
                                     triangleYShifted = yIntercept + 10;
                                 } else if (triangleYShifted < 0) { // need to get x intercept
-                                    console.log(index);
-                                    console.log(result.ruleId);
+                                    // console.log(index);
+                                    // console.log(result.ruleId);
                                     // Adjust coords for Triangle to put on page where line goes left off page
                                     // console.log("tabstop ",i);
-                                    console.log("Calculate coordinates for element_tabbable_visible triangle");
-                                    console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
-                                    console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
-                                    console.log("slope = ",slope);
+                                    // console.log("Calculate coordinates for element_tabbable_visible triangle");
+                                    // console.log("x1 = ",triangleXShifted,"   y1 = ",triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength);
+                                    // console.log("x2 = ",nodes[i + 1].getBoundingClientRect().x - offset + 1,"   y2 = ",nodes[i + 1].getBoundingClientRect().y - offset);
+                                    // console.log("slope = ",slope);
 
                                     // find x intercept y = mx + c or c = y - mx
 
                                     yIntercept = triangleYShifted - slope * triangleXShifted;
-                                    console.log("yIntercept = ",yIntercept);
+                                    // console.log("yIntercept = ",yIntercept);
                                     // 0 = slope * x + yIntercept
                                     // xIntercept = yIntercept / slope
                                     let xIntercept = -yIntercept / slope;
-                                    console.log("xIntercept = ", xIntercept);
+                                    // console.log("xIntercept = ", xIntercept);
                                     triangleXShifted = xIntercept + 10;
                                     triangleYShifted = 25;
                                 }
@@ -528,6 +525,10 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                             }
                         }         
                     });
+
+                    // console.log("before make triangle ",i);
+                    // console.log("triangleXShifted = ",triangleXShifted);
+                    // console.log("triangleYShifted = ",triangleYShifted);
 
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
