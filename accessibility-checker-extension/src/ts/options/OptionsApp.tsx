@@ -67,7 +67,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
     };
 
     async componentDidMount() {
-        // console.log("Options App ComponentDidMount");
+        console.log("Options App ComponentDidMount");
         var self = this;
 
         // get OPTIONS from storage
@@ -85,10 +85,17 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             var tabStopAlerts: any = true;
             var tabStopFirstTime: any = true;
 
-            //OPTIONS are not in storage
-            if (result != null && result.OPTIONS == undefined) {
+            console.log("_____________");
+            console.log(result.OPTIONS);
+            console.log("_____________");
+
+            // OPTIONS are not in storage
+            // JCH make this test stronger
+            if (result == null || result.OPTIONS == undefined || 
+                result.OPTIONS.selected_archive == undefined || 
+                result.OPTIONS.selected_ruleset == undefined) {
                 // OPTIONS are NOT in storage
-                // console.log("OPTIONS are NOT in storage");
+                console.log("OPTIONS are NOT in storage");
                 //find the latest archive
                 selected_archive = self.getLatestArchive(archives);
 
@@ -97,7 +104,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                 // leave all Keyboard mode options to true, i.e., show all
             } else {
                 //OPTIONS are in storage
-                // console.log("OPTIONS ARE in storage");
+                console.log("OPTIONS ARE in storage");
                 selected_archive = result.OPTIONS.selected_archive;
                 rulesets = result.OPTIONS.rulesets;
                 selected_ruleset = result.OPTIONS.selected_ruleset;
@@ -155,14 +162,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         return selected_archive.policies;
     };
 
-    //save options into browser's storage
-    save_options_to_storage = async (state: any) => {
-        var options = { OPTIONS: state };
-        await chrome.storage.local.set(options, function () {
-            // console.log("options is set to ", options);
-        });
-        
-    };
+    
 
     handleArchiveSelect = async (item: any) => {
         var rulesets = await this.getRulesets(item.selectedItem);
@@ -184,18 +184,36 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         //      modal choices  
         //            delete scans and update ruleset
         //            keep stored scans and don't update rulset (ali says don't give this choice)
+        console.log("handleSave");
+        console.log("this.state.selected_archive.name = ",this.state.selected_archive.name);
+        console.log("this.state.selected_ruleset.name = ",this.state.selected_ruleset.name,);
+        console.log("this.state.tabStopLines = ",this.state.tabStopLines);
+        console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
+        console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
+        console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
+
         this.setState({ 
             currentArchive: this.state.selected_archive.name, 
             currentRuleset: this.state.selected_ruleset.name,
             tabStopLines: this.state.tabStopLines,
             tabStopOutlines: this.state.tabStopOutlines,
             tabStopAlerts: this.state.tabStopAlerts,
+            tabStopFirstTime: false,
          })
         this.save_options_to_storage(this.state);
         this.setState({ show_notif: true, show_reset_notif: false, });
     };
 
-    handlReset = () => {
+    //save options into browser's storage
+    save_options_to_storage = async (state: any) => {
+        var options = { OPTIONS: state };
+        await chrome.storage.local.set(options, function () {
+            // console.log("options is set to ", options);
+        });
+        
+    };
+
+    handleReset = () => {
         var selected_archive: any = this.getLatestArchive(this.state.archives);
         var selected_ruleset: any = this.state.rulesets[0];
 
@@ -204,6 +222,10 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             selected_ruleset,
             show_reset_notif: true,
             show_notif: false,
+            tabStopLines: true,
+            tabStopOutlines: true,
+            tabStopAlerts: true,
+            tabStopFirstTime: true
         });
     };
 
@@ -216,6 +238,11 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         } = {
             ...this.state,
         };
+
+        // only show keyboard first time notification on first time 
+        // user uses the keyboard visualization - note it is can be 
+        // reset with "Reset to defaults"
+        
 
         const manifest = chrome.runtime.getManifest();
         function displayVersion() {
@@ -411,7 +438,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                         <Button
                                             disabled={false}
                                             kind="tertiary"
-                                            onClick={this.handlReset}
+                                            onClick={this.handleReset}
                                             renderIcon={Restart}
                                             size="default"
                                             tabIndex={0}

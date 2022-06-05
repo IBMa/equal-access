@@ -34,7 +34,7 @@ import Recommendation16 from "../../assets/Recommendation16.svg";
 interface IHeaderState {
     deleteModal: boolean,
     modalRulsetInfo: boolean,
-    modalKeyboardMode: boolean,
+    openKeyboardMode: boolean,
  }
 
 interface IHeaderProps {
@@ -95,7 +95,7 @@ interface IHeaderProps {
     tabStopOutlines: boolean,
     tabStopAlerts: boolean,
     tabStopFirstTime: boolean,
-    tabStopsSetFirstTime: boolean,
+    tabStopsSetFirstTime: () => void,
 }
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
@@ -114,7 +114,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     state: IHeaderState = {
         deleteModal: false,
         modalRulsetInfo: false,
-        modalKeyboardMode: false,
+        openKeyboardMode: false,
     };
 
     focusInfoButton1() {
@@ -197,9 +197,11 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
 
     keyboardModalHandler() {
         this.setState({ 
-            modalKeyboardMode: true, 
+            openKeyboardMode: true, 
         });
     }
+
+    
 
 
 
@@ -415,7 +417,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 
                             }}>
                         </Button>
-                        {this.state.modalKeyboardMode ?
+                        {this.state.openKeyboardMode && this.props.tabStopFirstTime ?
                             <div style={{position:"fixed",width: "100%", height: "100%", top:"200px", left:"0px", right:"0px", bottom:"0px", zIndex:"2"}}>
                                 <ToastNotification
                                     className="notification"
@@ -427,7 +429,17 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     hideCloseButton={false}
                                     lowContrast
                                     onClose={(() => {
-                                        this.setState({ modalKeyboardMode: false });
+                                        this.setState({ openKeyboardMode: false });
+                                        this.props.tabStopsSetFirstTime();
+                                    }).bind(this)}
+                                    onKeyDown={((evt: any) => {
+                                        if (evt.key === "Escape") {
+                                            this.setState({ openKeyboardMode: false });
+                                            evt.preventDefault();
+                                            evt.stopPropagation();
+                                            return false;
+                                        }
+                                        return true;
                                     }).bind(this)}
                                     >
                                     <div>

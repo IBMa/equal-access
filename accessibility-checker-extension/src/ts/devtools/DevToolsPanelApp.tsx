@@ -97,6 +97,8 @@ interface IPanelState {
     archives: IArchiveDefinition[] | null,
     selectedArchive: string | null,
     selectedPolicy: string | null,
+    currentArchive: any;
+    currentRuleset: any;
     focusedViewFilter: boolean,
     focusedViewText: string,
     // Keyboard Mode 
@@ -111,7 +113,6 @@ interface IPanelState {
     tabStopAlerts: boolean,
     tabStopFirstTime: boolean,
     // end local storage vars
-    tabStopsSetFirstTime: boolean
 }
 
 export default class DevToolsPanelApp extends React.Component<IPanelProps, IPanelState> {
@@ -144,6 +145,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         archives: null,
         selectedArchive: null,
         selectedPolicy: null,
+        currentArchive: null,
+        currentRuleset: null,
         focusedViewFilter: false,
         focusedViewText: "",
         tabStops: [], // array of xpaths of the tab stops
@@ -155,7 +158,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         tabStopOutlines: false,
         tabStopAlerts: false,
         tabStopFirstTime: false,
-        tabStopsSetFirstTime: false,
     }
 
     ignoreNext = false;
@@ -255,28 +257,35 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async componentDidMount() {
-        // console.log("componentDidMount");
+        console.log("componentDidMount");
         await this.readOptionsData();
     }
 
     async readOptionsData() {
+        console.log("readOptionsData");
         await new Promise<void>((resolve, _reject) => {
             // console.log("readOptionsData");
             var self = this;
             chrome.storage.local.get("OPTIONS", async function (result: any) {
+                console.log(result.OPTIONS);
                 //pick default archive id from env
                 let archiveId = process.env.defaultArchiveId + "";
+                console.log("archiveId 1 = ",archiveId);
                 const archives = await self.getArchives();
                 const validArchive = ((id: string) => id && archives.some((archive:any) => archive.id === id));
 
-                //if default archive id is not good, pick 'latest'
+                // if default archive id is not good, pick 'latest'
                 if (!validArchive(archiveId)) {
                     archiveId = "latest";
+                    console.log("archiveId 2 = ",archiveId);
                 }
 
                 //use archive id if it is in storage,
                 if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
                     archiveId = result.OPTIONS.selected_archive.id;
+                    console.log("archiveId 3 = ",archiveId);
+                } else {
+                    archiveId = "latest";
                 }
 
                 let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
@@ -361,6 +370,9 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         self.selectElementInElements();
                     }
 
+                    console.log("archiveId 4 = ",archiveId);
+
+                    // store OPTIONS
                     self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                         tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, 
                         selectedArchive: archiveId, selectedPolicy: policyName, tabStopLines: tabStopLines, 
@@ -1085,10 +1097,32 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     tabStopsSetFirstTime () {
+        console.log("tabStopsSetFirstTime");
+        
         if (this.state.tabStopFirstTime) {
-            this.setState({ tabStopFirstTime: false });
+            console.log("setState tabStopFirstTime to false");
+            this.setState({ tabStopFirstTime: false }); 
         }
+
+        this.setState({ 
+            currentArchive: this.state.selectedArchive, 
+            currentRuleset: this.state.rulesets,
+            tabStopLines: this.state.tabStopLines,
+            tabStopOutlines: this.state.tabStopOutlines,
+            tabStopAlerts: this.state.tabStopAlerts,
+            tabStopFirstTime: false,
+         });
+        this.save_options_to_storage(this.state);
     }
+
+    save_options_to_storage = async (state: any) => {
+        console.log("save_options_to_storage");
+        var options = { OPTIONS: state };
+        console.log(options);
+        await chrome.storage.local.set(options, function () {
+            console.log("options is set to ", options);
+        });
+    };
 
     tabStopsHandler() {
         // console.log("tabStopsHandler");
@@ -1128,6 +1162,14 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
 
     
     render() {
+        console.log("render");
+        console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
+        console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
+        console.log("this.state.tabStopLines = ",this.state.tabStopLines);
+        console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
+        console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
+        console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
+
         let error = this.state.error;
 
         if (error) {
@@ -1179,7 +1221,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             tabStopOutlines={this.state.tabStopOutlines}
                             tabStopAlerts={this.state.tabStopAlerts}
                             tabStopFirstTime={this.state.tabStopFirstTime}
-                            tabStopsSetFirstTime={this.state.tabStopsSetFirstTime}
+                            tabStopsSetFirstTime={this.tabStopsSetFirstTime.bind(this)}
                         />
                         <div style={{ marginTop: "8rem", height: "calc(100% - 8rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
@@ -1286,7 +1328,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         tabStopOutlines={this.state.tabStopOutlines}
                         tabStopAlerts={this.state.tabStopAlerts}
                         tabStopFirstTime={this.state.tabStopFirstTime}
-                        tabStopsSetFirstTime={this.state.tabStopsSetFirstTime}
+                        tabStopsSetFirstTime={this.tabStopsSetFirstTime.bind(this)}
                     />
                      <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
                         <div role="region" aria-label="issue list" className="issueList">

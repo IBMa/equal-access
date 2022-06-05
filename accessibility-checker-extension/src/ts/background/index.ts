@@ -216,7 +216,7 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             let archiveId = Config.defaultArchiveId + "";
 
-            if (result.OPTIONS) {
+            if (result.OPTIONS && result.OPTIONS.selected_archive.id == undefined) {
                 archiveId = result.OPTIONS.selected_archive.id;
             } 
             await initTab(message.tabId, archiveId);
