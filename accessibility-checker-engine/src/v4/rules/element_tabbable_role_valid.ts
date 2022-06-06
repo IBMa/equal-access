@@ -18,32 +18,32 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDefinedStyles } from "../util/CSSUtil";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 
-export let element_tabbable_role_invalid: Rule = {
-    id: "element_tabbable_role_invalid",
+export let element_tabbable_role_valid: Rule = {
+    id: "element_tabbable_role_valid",
     context:"dom:*",
     help: {
         "en-US": {
-            "pass": "element_tabbable_role_invalid.html",
-            "fail_invalid_role": "element_tabbable_role_invalid.html",
-            "group": "element_tabbable_role_invalid.html"
+            "pass": "element_tabbable_role_valid.html",
+            "fail_invalid_role": "element_tabbable_role_valid.html",
+            "group": "element_tabbable_role_valid.html"
         }
     },
     messages: {
         "en-US": {
             "pass": "The tabbable element has a widget role",
             "fail_invalid_role": "The tabbable element's role '{0}' is not a widget role",
-            "group": "A tabbable element must have a widget role"
+            "group": "A tabbable element must have a valid widget role"
         }
     },
     rulesets: [{
             "id": ["IBM_Accessibility"],
-            "num": ["2.4.3"],
+            "num": ["4.1.2"],
             "level": eRulePolicy.VIOLATION,
             "toolkitLevel": eToolkitLevel.LEVEL_ONE
         },
         {
             "id": ["WCAG_2_1", "WCAG_2_0"],
-            "num": ["2.4.3"],
+            "num": ["4.1.2"],
             "level": eRulePolicy.RECOMMENDATION,
             "toolkitLevel": eToolkitLevel.LEVEL_ONE
         }],
