@@ -360,11 +360,15 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                             }
                         });
 
+                        
                         PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
 
                         PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
 
                         PanelMessaging.addListener("TABSTOP_XPATH_ONCLICK", async message => {self.xpathFromTabstops(message)} );
+
+                        PanelMessaging.addListener("TABSTOP_RESIZE", async message => { resize: message.resize });
+
                     }
                     if (self.props.layout === "sub") {
                         self.selectElementInElements();

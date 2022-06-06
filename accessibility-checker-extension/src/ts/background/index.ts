@@ -289,3 +289,13 @@ BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) =>
     return true;
 }); 
 
+BackgroundMessaging.addListener("TABSTOP_RESIZE", async (message: any) => {
+    console.log("Message TABSTOP_RESIZE received in background, resize: "+ message.resize)
+    await BackgroundMessaging.sendToPanel("TABSTOP_RESIZE", {
+        resize: message.resize,
+    });
+
+    return true;
+}); 
+
+
