@@ -421,8 +421,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         // console.log("startScan");
         let tabURL = this.state.tabURL;
         let tabId = this.state.tabId;
-        // console.log("tabURL = ",tabURL);
-        // console.log("tabId = ",tabId);
 
         await this.readOptionsData();
 
@@ -430,43 +428,20 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         let tab = await PanelMessaging.sendToBackground("TAB_INFO", { tabId: thisTabId });
 
         if (!tab.canScan) {
-            // console.log("Found BAD url: ",tab.url);
-            // console.log("badURL = ",this.state.badURL);
             if (this.state.badURL === false) {
                 this.setState({ badURL: true });
             } 
             this.setState({ tabURL: tab.url, tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan });
             return;
         } else {
-            // console.log("Found GOOD url: ",tab.url);
-            // console.log("badURL = ",this.state.badURL);
             if (this.state.badURL === true) {
                 this.setState({ badURL: false });
             } 
         }
-        
-        // if (!this.state.tabCanScan) {
-        //     if (this.state.badURL === false) {
-        //         this.setState({ badURL: true });
-        //     }
-        //     return;
-        // } else {
-        //     if (this.state.badURL === true) {
-        //         this.setState({ badURL: false });
-        //     } 
-        // }
-       
-        // if (tabURL !== this.state.prevTabURL) {
-        //     this.setState({firstScan: true});
-        // }
-
 
         this.state.prevTabURL = tabURL;
 
-       
-
         if (tabId === -1) {
-            // componentDidMount is not done initializing yet
             setTimeout(this.startScan.bind(this), 100);
         } else {
             this.setState({ numScanning: this.state.numScanning + 1, scanning: true });
@@ -478,11 +453,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
         }
     }
 
+    // JCH - not used
     collapseAll() {
-        // if (this.state.report) {
-        //     this.state.report.filterstamp = new Date().getTime();
-        //     this.setState({ filter: null, report: preprocessReport(this.state.report, null, false), selectedItem: undefined, selectedCheckpoint: undefined });
-        // }
         this.setState({firstScan: true});
         this.startScan();
     }
@@ -564,9 +536,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
             }
 
-            // console.log("tabbable =", tabbable);
             this.setState({ tabStopsResults: tabbable });
-            // console.log("tabStopsErrors = ", tabbableErrors);
             this.setState({ tabStopsErrors: tabbableErrors });
             // JCH - clear visualization
             if (this.state.showHideTabStops === false ) {
@@ -1047,9 +1017,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 }
                 // get current element after inspected Window script
                 setTimeout(() => {
-                    // console.log("result = ",result);
                     mythis.setState({ focusedViewText: "<"+result.toLowerCase()+">"});
-                    // console.log("this.state.focusedViewText", this.state.focusedViewText);
                 }, 0);
             }
         );
@@ -1068,7 +1036,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                 setTimeout(() => {
                     // console.log("selected element");
                 }, 0);
-            });
+            }
+        );
     }
 
     getItem(item: IReportItem) {
@@ -1076,7 +1045,6 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     getSelectedItem(item: IReportItem) {
-        // console.log("Function: getSelectedItem item = ", item);
         this.setState({ selectedIssue: item });
     }
 
