@@ -218,7 +218,9 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
             if (result.OPTIONS && result.OPTIONS.selected_archive.id == undefined) {
                 archiveId = result.OPTIONS.selected_archive.id;
-            } 
+            } else {
+                archiveId = "latest";
+            }
             await initTab(message.tabId, archiveId);
             try {
                 myExecuteScript({

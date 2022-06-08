@@ -264,11 +264,10 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     async readOptionsData() {
         console.log("readOptionsData");
         await new Promise<void>((resolve, _reject) => {
-            // console.log("readOptionsData");
             var self = this;
             chrome.storage.local.get("OPTIONS", async function (result: any) {
                 console.log(result.OPTIONS);
-                //pick default archive id from env
+                // pick default archive id from env
                 let archiveId = process.env.defaultArchiveId + "";
                 console.log("archiveId 1 = ",archiveId);
                 const archives = await self.getArchives();
@@ -280,13 +279,16 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                     console.log("archiveId 2 = ",archiveId);
                 }
 
-                //use archive id if it is in storage,
+                // use archive id if it is in storage,
                 if (result.OPTIONS && result.OPTIONS.selected_archive && validArchive(result.OPTIONS.selected_archive.id)) {
                     archiveId = result.OPTIONS.selected_archive.id;
                     console.log("archiveId 3 = ",archiveId);
                 } else {
                     archiveId = "latest";
                 }
+
+                console.log("archiveId 3a = ",archiveId);
+                
 
                 let selectedArchive = archives.filter((archive:any) => archive.id === archiveId)[0];
 
@@ -374,9 +376,12 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
                         self.selectElementInElements();
                     }
 
-                    console.log("archiveId 4 = ",archiveId);
+                    
 
                     // store OPTIONS
+                    console.log("Store OPTIONS");
+                    console.log("archiveId 4 = ",archiveId);
+                    console.log("policyName = ",policyId);
                     self.setState({ rulesets: rulesets, listenerRegistered: true, tabURL: tab.url, 
                         tabId: tab.id, tabTitle: tab.title, tabCanScan: tab.canScan, error: null, archives, 
                         selectedArchive: archiveId, selectedPolicy: policyName, tabStopLines: tabStopLines, 
@@ -418,7 +423,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async startScan() {
-        // console.log("startScan");
+        console.log("startScan");
         let tabURL = this.state.tabURL;
         let tabId = this.state.tabId;
 
@@ -460,7 +465,7 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
     }
 
     async onReport(message: any): Promise<any> {
-        // console.log("Function: onReport");
+        console.log("Function: onReport");
         try {
             if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                 let blob_url = message.blob_url;
@@ -473,7 +478,8 @@ export default class DevToolsPanelApp extends React.Component<IPanelProps, IPane
             
             if (!report) return;
 
-        let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
+            let check_option = this.getCheckOption(message.archiveId, message.policyId, archives);
+            console.log("check_option = ",check_option);
 
             // JCH add itemIdx to report (used to be in message.report)
             report.results.map((result: any, index: any) => {
