@@ -21,11 +21,6 @@ then
     export CF_SPACE=AAT_dev
     export APP_MANIFEST_PATH=${PWD}/manifest-dev.yml
     export APP_POSTFIX=-dev
-elif [ ${TRAVIS_BRANCH} == "deploy-rules" ]
-then
-    export CF_SPACE=AAT_dev
-    export APP_MANIFEST_PATH=${PWD}/manifest-deploy.yml
-    export APP_POSTFIX=-deploy
 elif [ ${TRAVIS_BRANCH} == "prod" ]
 then
     export CF_SPACE=AAT_prod

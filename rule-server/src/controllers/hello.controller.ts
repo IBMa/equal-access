@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
- import { Body, Query, Controller, Get, Route, Request, Response, Post, Put, Path, Delete } from 'tsoa';
+ import { Controller, Get, Route, Request, Response } from 'tsoa';
 import * as express from 'express';
 import { ApiError } from './apiError';
 

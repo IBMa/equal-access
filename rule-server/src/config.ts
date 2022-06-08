@@ -60,6 +60,9 @@ export class Config {
     public static __LOCAL__: boolean = !process.env.TRAVIS_BRANCH && !process.env.VCAP_SERVICES;
 
     public static VCAP_SERVICES = process.env.VCAP_SERVICES ? JSON.parse(process.env.VCAP_SERVICES) : null;
+    public static CouchDBUser = process.env.COUCHDB_USER;
+    public static CouchDBPassword = process.env.COUCHDB_PASSWORD;
+
 }
 /* istanbul ignore if */
 if (!Config.secure) {
