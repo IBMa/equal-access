@@ -80,13 +80,11 @@ export class DOMUtil {
 
     static parentNode(node: Node) : Node | null {
         let p : Node = node.parentNode;
-        if ((node as any).slotOwner) {
-            p = (node as any).slotOwner;
-        } else if ((node as any).ownerElement) {
-            p = (node as any).ownerElement;
-        } else if (p && p.nodeType === 11) {
+        if (p && p.nodeType === 11) {
             if ((p as ShadowRoot).host) {
                 p = (p as ShadowRoot).host;
+            } else if ((p as any).ownerElement) {
+                p = (p as any).ownerElement;
             } else {
                 p = null;
             }

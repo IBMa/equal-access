@@ -26,41 +26,16 @@
 
 <body>
 
-<a href="#navskip">skip to main content</a>
-
-
-<h2>Test case: Attributes-deprecated.html</h2>
-
-<div tabindex="0"><button>I will get focus twice</button></div>
-<p></p>
-<a href="'google.com">Visit Google</a>
-
+<a href='https://google.com' onclick="javascript:alert('me')">here</a>
 
 <script>
   UnitTest = {
-    ruleIds: ["element_tabbable_role_valid"],
+    ruleIds: ["element_tabbable_role_invalid"],
     results: [
-       {
-            "ruleId": "element_tabbable_role_valid",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]"
-            },
-            "reasonId": "fail_invalid_role",
-            "message": "The tabbable element's role 'none' is not a widget role",
-            "messageArgs": [
-              "none"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-       }
+      
     ]
   }
   </script>
-  </body>
+</body>
 
 </html>

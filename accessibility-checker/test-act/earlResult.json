@@ -236,7 +236,7 @@
             "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
-            "outcome": "earl:passed"
+            "outcome": "earl:failed"
           }
         }
       ]
@@ -2471,7 +2471,7 @@
             "title": "WCAG20_Input_ExplicitLabel:Pass_0,Fail_1,Fail_2"
           },
           "result": {
-            "outcome": "earl:passed"
+            "outcome": "earl:failed"
           }
         }
       ]
@@ -5028,21 +5028,6 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/8fc3b6/e65a5306672e7e3e0571d35fd37df576a9b28668.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
-          },
-          "result": {
-            "outcome": "earl:failed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/8fc3b6/d108cbe5fc7504de20a2432938baffa3074b0553.html",
       "assertions": [
         {
@@ -5074,6 +5059,21 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/8fc3b6/358271acbe8d353ca18ee72d4a79dc97f2aaa28a.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Object_HasText:Pass_0,Fail_1"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/8fc3b6/e65a5306672e7e3e0571d35fd37df576a9b28668.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -5439,246 +5439,6 @@
           "@type": "Assertion",
           "test": {
             "title": "combobox_popup_reference:Pass_expanded,Pass_collapsed,Fail_1.2_missing_controls,Fail_1.2_popup_reference_missing|Rpt_Aria_RequiredProperties:Pass_0,Fail_1"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/9ca3347f9cc650826458c4a93ef4bb48fe05b924.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/b50314a077856c381dc97b7ab137c47feeec3317.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/d4180a079caba89d0b67fb0a6e3b5c786299c683.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/4c7ecdda09a93d361c292de91d2f89f751dabde2.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/d8fb3e97f99c0f6661a5b7750e3f5a57835017dd.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/9950efbcae11c6a74d285355e65f3010de06b0f1.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/b4a1ee541c688a4274f8f44cf59fb61504e50126.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/7b0aec741508524b48e73fd0ec10435409994e9c.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/de7be114aef0050e7e9b0eb5cc114c2dead9a2ed.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:failed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/a376cd9a2dab75096ea41cf3178cfce91e803cea.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:failed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/48a474d8339827ca31a341e784a6ebbc2b52ab10.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:failed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/98f8a6a4387e780e8fbcd8201244750091df857a.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/d496254239c30419f2d57ea643dae036d1151832.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/c762c64d2fad555db40034d643e8f12cd5bcddc4.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/cf152e4f1f83863272aeb9809601677935a57e6b.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/a25f45/3da68fb99173bb3e1f102d6da9a1f0e397694907.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
           },
           "result": {
             "outcome": "earl:inapplicable"

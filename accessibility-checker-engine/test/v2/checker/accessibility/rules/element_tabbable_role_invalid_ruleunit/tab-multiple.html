@@ -22,37 +22,45 @@
 
 <head>
 	<title>RPT Test Suite</title>
-  <style>
-    div {
-        width: 500px;
-        height: 50px;
-        border: 1px solid black;
-        overflow: auto;
-    }
-    </style>
 </head>
 
 <body>
 
-  <div tabindex="0">
-    The indeterminate property sets or returns whether the state of a checkbox has changed.
-
-    Checkboxes actually has three states: true, false and indeterminate which indicates that a checkbox is neither "on" or "off".
-    
-    A checkbox cannot be set to indeterminate state by an HTML attribute - it must be set by a JavaScript.
-    
-    This state can be used to force the user to check or uncheck the checkbox.
-  </div>
+<a href="#navskip">skip to main content</a>
 
 
-  <script>
-		UnitTest = {
-			ruleIds: ["element_tabbable_role_valid"],
-			results: [
-		  	
-		  ]
-		}
-	  </script>
-    </body>
+<h2>Test case: Attributes-deprecated.html</h2>
+
+<div tabindex="0"><button>I will get focus twice</button></div>
+<p></p>
+<a href="'google.com">Visit Google</a>
+
+
+<script>
+  UnitTest = {
+    ruleIds: ["element_tabbable_role_invalid"],
+    results: [
+       {
+            "ruleId": "element_tabbable_role_invalid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_invalid_role",
+            "message": "The tabbable element's role 'none' is not a widget role",
+            "messageArgs": [
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+       }
+    ]
+  }
+  </script>
+  </body>
 
 </html>

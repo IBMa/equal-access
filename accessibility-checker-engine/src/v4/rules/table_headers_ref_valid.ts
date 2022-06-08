@@ -45,7 +45,7 @@ export let table_headers_ref_valid: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
-    act: ["a25f45"],
+    act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let parentTable = RPTUtil.getAncestor(ruleContext, "table");

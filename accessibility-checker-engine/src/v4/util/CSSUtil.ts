@@ -17,29 +17,24 @@
 type PseudoClass = ":hover" | ":active" | ":focus" | ":focus-visible" | ":focus-within";
 
 export function selectorMatchesElem(element, selector) {
-    try {
-        if (selector.trim() === "") return false;
-        if (typeof element.matches === 'function') {
-            return element.matches(selector);
-        }
-
-        if (typeof element.matchesSelector === 'function') {
-            return element.matchesSelector(selector);
-        }
-
-        // Native functions not there, fallback
-        let matches = (element.document || element.ownerDocument).querySelectorAll(selector);
-        let i = 0;
-
-        while (i < matches.length && matches[i] !== element) {
-            ++i;
-        }
-
-        return i < matches.length;
-    } catch (err) {
-        // Bad selector? Doesn't match then...
-        return false;
+    if (selector.trim() === "") return false;
+    if (typeof element.matches === 'function') {
+        return element.matches(selector);
     }
+
+    if (typeof element.matchesSelector === 'function') {
+        return element.matchesSelector(selector);
+    }
+
+    // Native functions not there, fallback
+    let matches = (element.document || element.ownerDocument).querySelectorAll(selector);
+    let i = 0;
+
+    while (i < matches.length && matches[i] !== element) {
+        ++i;
+    }
+
+    return i < matches.length;
 }
 
 /**

@@ -16,11 +16,6 @@
 
 import { DOMUtil } from "./DOMUtil";
 
-/**
- * Walks in a DOM order
- * 
- * See also ../aria/ARIAWalker
- */
 export class DOMWalker {
     root : Node;
     node : Node;

@@ -1966,7 +1966,7 @@ export class RPTUtil {
         return cacheObj.aceCache[keyName]
     }
 
-    public static setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value) : any {
+    public static setCache(cacheSpot: Document | Element | ShadowRoot, globalName, value) : any {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
