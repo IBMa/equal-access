@@ -14,14 +14,16 @@
     limitations under the License.
  *****************************************************************************/
 
-import { DOMUtil } from "./DOMUtil";
+import { FragmentUtil } from "../checker/accessibility/util/fragment";
+import { DOMUtil } from "../dom/DOMUtil";
+import { ARIAMapper } from "./ARIAMapper";
 
 /**
- * Walks in a DOM order
+ * Walks in an ARIA order
  * 
- * See also ../aria/ARIAWalker
+ * See also ../dom/DOMWalker
  */
-export class DOMWalker {
+export class ARIAWalker {
     root : Node;
     node : Node;
     bEndTag: boolean;
@@ -47,7 +49,9 @@ export class DOMWalker {
     }
 
     nextNode() : boolean {
+        let skipOwned = false;
         do {
+            skipOwned = false;
             // console.log(this.node.nodeName, this.bEndTag?"END":"START", this.node.nodeType === 1 && (this.node as any).getAttribute("id"));
             if (!this.bEndTag) {
                 let iframeNode = (this.node as HTMLIFrameElement);
@@ -106,7 +110,26 @@ export class DOMWalker {
                 } else if (this.node.nextSibling) {
                     this.node = this.node.nextSibling;
                     this.bEndTag = false;
+                    skipOwned = true;
                 } else if (this.node.parentNode) {
+                    if (this.node.parentNode.nodeType === 1 && (this.node.parentNode as HTMLElement).hasAttribute("aria-owns")) {
+                        let ownIds = (this.node.parentNode as HTMLElement).getAttribute("aria-owns").split(/ +/g);
+                        if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("id")) {
+                            this.node = FragmentUtil.getOwnerFragment(this.node).getElementById(ownIds[0]);
+                            this.bEndTag = false;
+                        } else {
+                            let idx = ownIds.indexOf((this.node as HTMLElement).getAttribute("id"));
+                            if (idx === ownIds.length - 1) {
+                                // last one
+                                this.node = this.node.parentNode;
+                                this.bEndTag = true;            
+                            } else {
+                                // grab next
+                                this.node = FragmentUtil.getOwnerFragment(this.node).getElementById(ownIds[idx+1]);
+                                this.bEndTag = false;
+                            }
+                        }
+                    }
                     this.node = this.node.parentNode;
                     this.bEndTag = true;
                 } else {
@@ -116,6 +139,7 @@ export class DOMWalker {
         } while (
             (this.node.nodeType !== 1 /* Node.ELEMENT_NODE */ && this.node.nodeType !== 11 && this.node.nodeType !== 3 /* Node.TEXT_NODE */)
             || (this.node.nodeType === 1 && (this.node as Element).getAttribute("aChecker") === "ACE")
+            || (skipOwned && this.node.nodeType === 1 && !!ARIAMapper.getAriaOwnedBy(this.node as HTMLElement))
         );
         return true;
     }

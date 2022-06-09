@@ -12,20 +12,14 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
- *****************************************************************************/
+  *****************************************************************************/
+ 
+import * as React from 'react';
+import ReactDOM from 'react-dom';
+import QuickGuideACApp from './QuickGuideACApp';
 
- import { Controller, Get, Route, Request, Response } from 'tsoa';
-import * as express from 'express';
-import { ApiError } from './apiError';
+//import "../styles/index.scss";
+import "../styles/quickGuideAC.scss";
 
-@Route('/hello')
-export class UserV1Controller extends Controller {
-    @Get('')
-    @Response<ApiError>('500', 'Internal Server Error')
-    public async hello(
-        @Request() req:express.Request
-    ) 
-    {
-        return "Hello World";
-    }
-}
+ReactDOM.render(<QuickGuideACApp />
+	, document.getElementById('quickGuideAC-root'));

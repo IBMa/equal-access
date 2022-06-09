@@ -365,6 +365,25 @@ export class RPTUtil {
         }
         return false;
     }
+
+    /**
+     * get number of tabbable children
+     * @param element 
+     */
+    public static getTabbableChildren(element) {
+        let count = 0;
+        // If node has children, look for tab stops in the children
+        if (element.firstChild) {
+            let nw = new NodeWalker(element);
+            while (nw.nextNode() && nw.node != element) {
+                if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
     //TODO: function does not handle equivalents for roles: row, link, header, button
     // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
     public static isHtmlEquiv(node, htmlEquiv) {
@@ -667,7 +686,7 @@ export class RPTUtil {
     }
     /**
      * This function is responsible for retrieving element's roles.
-     * This function aslo finds implicit roles.
+     * This function also finds implicit roles.
      * @parm {HTMLElement} ele - element for which to find role.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1947,7 +1966,7 @@ export class RPTUtil {
         return cacheObj.aceCache[keyName]
     }
 
-    public static setCache(cacheSpot: Document | Element | ShadowRoot, globalName, value) : any {
+    public static setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value) : any {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}

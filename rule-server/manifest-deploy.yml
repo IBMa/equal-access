@@ -1,9 +1,0 @@
-applications:
-- path: dist
-  command: node main.js
-  memory: 256M
-  instances: 1
-  name: rules-server-deploy-next
-  disk_quota: 2024M
-  routes:
-  - route: rules-deploy.mybluemix.net/rules

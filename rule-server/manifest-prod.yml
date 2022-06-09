@@ -5,5 +5,8 @@ applications:
   instances: 1
   name: rules-server-next
   disk_quota: 2024M
+  services:
+  - aat-dashboard-cloudant
   routes:
   - route: able.ibm.com/rules
+  - route: able.ibm.com/tools
