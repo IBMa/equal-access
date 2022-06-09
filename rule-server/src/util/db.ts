@@ -1,6 +1,6 @@
 import { Config } from "../config";
 const Cloudant = require("@cloudant/cloudant");
-const VCAP_SERVICES = Config.VCAP_SERVICES ? JSON.parse(Config.VCAP_SERVICES) : {}
+const VCAP_SERVICES = Config.VCAP_SERVICES ? Config.VCAP_SERVICES : {}
 
 const createConnection = (url: string, dbName: string) => new Promise((resolve, reject) => {
     Cloudant(url, (err, cloudant) => {
