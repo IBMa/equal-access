@@ -66,9 +66,9 @@ let ACTasks = module.exports = {
     },
 
     onRunComplete: () => {
-        ACTasks.reporterHTML.onRunComplete();
-        ACTasks.reporterJSON.onRunComplete();
-        ACTasks.reporterCSV.onRunComplete();
+        ACTasks.reporterHTML && ACTasks.reporterHTML.onRunComplete();
+        ACTasks.reporterJSON && ACTasks.reporterJSON.onRunComplete();
+        ACTasks.reporterCSV && ACTasks.reporterCSV.onRunComplete();
         return true;
     },
 
@@ -284,7 +284,8 @@ let ACTasks = module.exports = {
         fs.readdir(readDirPath, function (err, files) {
             //handling error
             if (err) {
-                return console.log('Unable to scan directory: ' + err);
+                console.log('Unable to scan directory: ' + err);
+                return resolve(result);
             } 
             for (let file of files) {
                 let filePath = path.join(readDirPath,file);
@@ -315,9 +316,9 @@ let ACTasks = module.exports = {
      *
      * @memberOf this
      */
-    getBaseline: function (label) {
+    getBaseline: function (labelStr) {
         try {
-            return require(path.join(path.join(process.cwd(), ACTasks.Config.baselineFolder), label));
+            return require(path.join(path.join(process.cwd(), ACTasks.Config.baselineFolder), labelStr));
         } catch (e) {
             return null;
         }

@@ -315,7 +315,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
         const page = parsed;
-        let report : Report = await page.evaluate((policies, customRulesets) => {
+        let report : Report = await page.evaluate(({ policies, customRulesets }) => {
             let checker = new (window as any).ace.Checker();
             customRulesets.forEach((rs) => checker.addRuleset(rs));
             return new Promise<Report>((resolve, reject) => {
@@ -328,7 +328,7 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
                     })
                 }, 0)
             })
-        }, Config.policies, ACEngineManager.customRulesets);
+        }, { policies: Config.policies, customRulesets: ACEngineManager.customRulesets });
         report = ACReportManager.setLevels(report);
         if (curPol != null && !checkPolicy) {
             const valPolicies = ACEngineManager.customRulesets.map(rs => rs.id).concat(await page.evaluate("new window.ace.Checker().rulesetIds"));

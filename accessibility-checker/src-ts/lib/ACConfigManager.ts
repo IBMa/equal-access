@@ -18,9 +18,9 @@ import * as pathLib from "path";
 import * as fs from "fs";
 import * as YAML from "js-yaml";
 import { ACConstants } from "./ACConstants";
-import * as uuid from "uuid";
-import * as request from "request";
+import { v4 as uuidv4 } from 'uuid';
 import { IConfig, IConfigUnsupported } from "./api/IChecker";
+import axios from "axios";
 
 /**
  * This function is responsible converting policies into an Array based on string or Array.
@@ -94,26 +94,20 @@ async function processACConfig(ACConfig) {
     let ruleServer = ACConfig.ruleServer ? ACConfig.ruleServer : ACConstants.ruleServer;
 
     // Get and parse the rule archive.
-    let ruleArchiveFile = `${ruleServer}/archives.json`;
+    let ruleArchiveFile = `${ruleServer}${ruleServer.includes("jsdelivr.net")?"@next":""}/archives.json`;
     let ruleArchiveParse;
     try {
         if (ACConfig.ignoreHTTPSErrors) {
             process.env.NODE_TLS_REJECT_UNAUTHORIZED="0"
         }
-        ruleArchiveParse = await new Promise((resolve, reject) => {
-            request.get(ruleArchiveFile, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
+        const response = await axios.get(ruleArchiveFile);
+        ruleArchiveParse = await response.data;
     } catch (err) {
         console.log(err);
         throw new Error(err);
     }
     let ruleArchivePath = null;
+    let ruleArchiveVersion = null;
     if (ruleArchiveParse && ruleArchiveParse.length > 0) {
         ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
         ACConfig.ruleArchiveSet = ruleArchiveParse;
@@ -122,11 +116,12 @@ async function processACConfig(ACConfig) {
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
             if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                 ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
+                ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                 ACConfig.ruleArchiveLabel = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
                 break;
             }
         }
-        if (!ruleArchivePath) {
+        if (!ruleArchivePath || ruleArchiveVersion === null) {
             const errStr = "[ERROR] RuleArchiveInvalid: Make Sure correct rule archive is provided in the configuration file. More information is available in the README.md";
             console.error(errStr);
             throw new Error(errStr);
@@ -138,8 +133,12 @@ async function processACConfig(ACConfig) {
         throw new Error(errStr);
     }
 
-    // Build the new rulePack based of the baseA11yServerURL 
-    ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    // Build the new rulePack based of the baseA11yServerURL
+    if (ruleServer.includes("jsdelivr.net")) {
+        ACConfig.rulePack = `${ruleServer}@${ruleArchiveVersion}`;
+    } else {
+        ACConfig.rulePack = `${ruleServer}${ruleArchivePath}/js`;
+    }
     ACConfig.ruleServer = ruleServer;
 
     ACConstants.DEBUG && console.log("Built new rulePack: " + ACConfig.rulePack);
@@ -184,7 +183,7 @@ function initializeDefaults(config: IConfigUnsupported) {
 
     // Using the uuid module generate a uuid number which is used to assoiciate to the scans that
     // are done for a single run of karma.
-    config.scanID = uuid.v4();
+    config.scanID = uuidv4();
 
     for (const key in ACConstants) {
         config[key] = config[key] || ACConstants[key];

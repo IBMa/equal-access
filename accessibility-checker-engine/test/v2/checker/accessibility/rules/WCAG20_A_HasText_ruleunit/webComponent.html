@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Issue 741</title>
+    <meta charset="UTF-8" />
+    <template id="my-link">
+      <a href="https://ibm.com/able">
+        <slot></slot>
+      </a>
+    </template>
+    <script>
+      customElements.define(
+        "my-link",
+        class extends HTMLElement {
+          constructor() {
+            super();
+            let template = document.getElementById("my-link");
+            let templateContent = template.content;
+
+            const shadowRoot = this.attachShadow({ mode: "open" });
+            shadowRoot.appendChild(templateContent.cloneNode(true));
+          }
+        }
+      );
+    </script>
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <my-link href="https://ibm.com/able">
+        Link text
+      </my-link>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["WCAG20_A_HasText"],
+        results: [
+          {
+            "ruleId": "WCAG20_A_HasText",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/my-link[1]/#document-fragment[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Hyperlink has a description of its purpose",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

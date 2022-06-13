@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <img role='none' src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="200" alt="">
+      <img role='presentation' src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="200" alt="">
+      <img role='img' src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="200" alt="">
+      
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_semantics_role"],
+        results: [
+        {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/img[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'none' is not valid for the element <img>",
+            "messageArgs": [
+              "none",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/img[2]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "presentation",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/img[3]",
+              "aria": "/document[1]/main[1]/img[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'img' is not valid for the element <img>",
+            "messageArgs": [
+              "img",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

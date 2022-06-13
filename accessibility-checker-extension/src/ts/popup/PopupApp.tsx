@@ -28,6 +28,14 @@ export default class PopupApp extends React.Component {
 
   render() {
     const manifest = chrome.runtime.getManifest();
+    function displayVersion() {
+        let extVersion = manifest.version;
+        if (extVersion.endsWith(".9999")) {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1");
+        } else {
+            return extVersion.replace(/(\d+\.\d+\.\d+)\.(\d+)/, "$1-rc.$2");
+        }
+    }
 
     const checker_screen_copy = BrowserDetection.isChrome()
       ? checker_chrome
@@ -45,7 +53,7 @@ export default class PopupApp extends React.Component {
               <br />
               Accessibility Checker
             </div>
-            <div className="versionDec">Version {manifest.version}</div>
+            <div className="versionDec">Version {displayVersion()}</div>
           </div>
           <div
             style={{

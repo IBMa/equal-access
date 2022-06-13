@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <div class="testcase">
+        <div role="directory">
+          <div role="listitem">an item in the directory</div>
+          <div role="listitem">an item in the directory</div>
+        </div>
+
+        <ul role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </ul>
+
+        <ol role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </ol>
+
+        <menu role="directory">
+          <li>an item in the directory, no explicit role</li>
+          <li role="listitem">an item in the directory with role=listitem</li>
+        </menu>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_deprecated"],
+        results: [
+        {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/directory[1]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]/directory[1]/listitem[1]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/main[1]/directory[1]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]",
+              "aria": "/document[1]/main[1]/directory[2]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[2]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ol[1]",
+              "aria": "/document[1]/main[1]/directory[3]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ol[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[3]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/menu[1]",
+              "aria": "/document[1]/main[1]/directory[4]"
+            },
+            "reasonId": "fail_aria_role",
+            "message": "The ARIA role \"directory\" is deprecated in the ARIA specification",
+            "messageArgs": [
+              "directory"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_deprecated",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/menu[1]/li[2]",
+              "aria": "/document[1]/main[1]/directory[4]/listitem[2]"
+            },
+            "reasonId": "pass",
+            "message": "The ARIA roles and attribute are used per specification",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

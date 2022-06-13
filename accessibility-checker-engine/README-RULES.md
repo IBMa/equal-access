@@ -13,62 +13,48 @@ Multiple objects are needed for a rule to fire and show up in the tool results:
   
 ### Rule object
 
-The basic rule format is defined by the Rule type in [src/v2/api/IEngine.ts](src/v2/api/IEngine.ts). Rule implementation is located in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
-* RulePass("MSG_ID")
-* RuleFail("MSG_ID")
-* RulePotential("MSG_ID")
-* RuleManual("MSG_ID")
+The basic rule format is defined by the Rule type in [src/v4/api/IRule.ts](src/v4/api/IRule.ts). Rule implementation is located in [src/v4/rules](src/v4/rules).  The rule context, including DOM object hierarchies, attributes, explicit/implicit CSS and ARIA attributes, that may trigger a rule, are defined in [src/v2/common/Context.ts](src/v2/common/Context.ts). The rule results can be one of:
+* RulePass("pass_reason")
+* RuleFail("fail_reason")
+* RulePotential("potential_reason")
+* RuleManual("manual_reason")
   
 Each of these can take message arguments as a string array in the second parameter. They may also pass parameters to other APIs as an array in the third argument.
 
 An example rule might look like:
 ```
 {
-    id: "TRIGGER_ALL_BODY",
+    id: "body_all_trigger",
     context: "dom:body",
-    run: (context: RuleContext, 
-    options?: {}): RuleResult | RuleResult[] => {
+    help: {
+        "en-US": {
+            0: `body_all_trigger.html`,
+            "Pass_0": `body_all_trigger.html`
+        }
+    },
+    messages: {
+        "en-US": {
+            "group": "Grouping label for the rule",
+            "manual_always": "Check the body element for something"
+        }
+    },
+    rulesets: [{
+        id: [ "IBM_Accessibility", "WCAG_2_0", "WCAG_2_1"],
+        num: "2.1.1", // num: [ "2.4.4", "x.y.z" ] also allowed
+        level: eRulePolicy.RECOMMENDATION,
+        toolkitLevel: eToolkitLevel.LEVEL_FOUR
+    }],
+    act: {},
+    run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         const domAttrs = context["dom"].attributes;
 
-        return return RuleManual("Pass_0");
+        return RuleManual("manual_always");
     }
 }
 ```
 
-### Ruleset mapping
-
-Rules are mapped to rulesets based on checkpoints. A rule may be mapped to one or more rulesets, and a ruleset may include one or more rules. The ruleset mappings are defined in [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). Rules are added to an appropriate checkpoint section with a mapping such as:
-```
-{
-    id: "TRIGGER_ALL_BODY",
-    level: eRulePolicy.VIOLATION,
-    toolkitLevel: eToolkitLevel.LEVEL_ONE
-}
-```
-
-### Messages
-
-Each rule message is a short description of the result of a rule execution. Message mappings are defined in [src/v2/checker/accessibility/nls/index.ts](src/v2/checker/accessibility/nls/index.ts). Mappings are defined as:
-```
-"TRIGGER_ALL_BODY": {
-    0: "Passive message used for rule groupings",
-    "Pass_0": "Message with message code PASS_0 and arguments {0}, {1}, etc",
-    "Fail_1": "Another message with message code Fail_1."
-},
-```
-
-### Help file
-
-Each rule has its own help file in .mdx format. A help file contains rule description and examples. The rule help files are located in [help](help). The mapping between a rule and its help file is defined in [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts):
-
-```
-"TRIGGER_ALL_BODY": {
-    0: `${Config.helpRoot}/Rpt_Aria_MultipleApplicationLandmarks`,
-    "Pass_0": `${Config.helpRoot}/Rpt_Aria_MultipleApplicationLandmarks`,
-    "Fail_1": `${Config.helpRoot}/Rpt_Aria_MultipleApplicationLandmarks`
-}
-```
+Help files are found in [help-v4](help-v4).
 
 ## Test cases
 
@@ -83,19 +69,19 @@ Each rule may have one or more test cases. Test cases are located in [test/v2/ch
 
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["TRIGGER_ALL_BODY"],
+            ruleIds: ["body_all_trigger"],
             results: [{
-                "ruleId": "TRIGGER_ALL_BODY",
+                "ruleId": "body_all_trigger",
                 "category": "Accessibility",
                 "value": [
-                    "INFORMATION", "FAIL"
+                    "INFORMATION", "MANUAL"
                 ],
                 "path": {
                     "dom": "/html[1]/body[1]",
                     "aria": "/document[1]"
                 },
-                "reasonId": "Fail_1",
-                "message": "Another message with message code Fail_1.",
+                "reasonId": "manual_always",
+                "message": "Check the body element for something",
                 "messageArgs": [],
                 "apiArgs": []
             }]
@@ -123,7 +109,7 @@ Then, run `npm test` again.
 
 You can run test cases to verify a rule implementation, or you can deploy the rules to a local rule server, and then build the browser extension to access the rules deployed in the local server to test. The steps to use a local server are:
 
-* Build and start rule server. In `rule-server` run `npm run start` or without help `npm run start:nohelp`.
+* Build and start rule server. In `rule-server` run `npm run start`.
 * Load `https://localhost:9445/` in the browser and type `thisisunsafe` to bypass cert warnings.
 * Build extension. In `accessibility-checker-extension` run `npm run build:watch:local`.
 * Add the extension in the `accessibility-checker-extension/dist` directory to Chrome. It will have the `(local)` label on the DevTools tab.
@@ -133,8 +119,7 @@ Note: Rule changes are not automatically rebuilt. You will have to kill the rule
 ## Summary of steps to implement/update and test a new rule
 
 * Create a rule id for a new rule. 
-* Create the rule and ruleset mapping to [src/v2/checker/accessibility/rulesets/index.ts](src/v2/checker/accessibility/rulesets/index.ts). 
-* Create the <rule id>.mdx help file in [help](help), and add the rule and the help file mapping to [src/v2/checker/accessibility/help/index.ts](src/v2/checker/accessibility/help/index.ts).
-* Create the rule implementation in [src/v2/checker/accessibility/rules](src/v2/checker/accessibility/rules). The rule implementation includes the rule context, logic and outcome (Pass or Fail).
+* Create the help file in [help-v4](help-v4).
+* Create the rule implementation in [src/v4/rules](src/v4/rules). The rule implementation includes the rule context, message, help, ruleset mappings, logic and outcome.
 * Create test cases for the rule in [test/v2/checker/accessibility/rules](test/v2/checker/accessibility/rules).
 * Test the rules with the test cases. You may run the test cases locally, or run with the local rule server. 

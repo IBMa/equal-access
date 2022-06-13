@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="../../src/oaa-a11y.js"></script>
+<script src="../../src/scripts/util-rpt.js"></script>
+<script src="../../src/scripts/util.js"></script>
+<script src="../../src/wai-aria/aria_definitions.js"></script>
+<script src="../../src/rules/rpt-aria-rules.js"></script>
+
+<script type="text/javascript">
+
+function runRule() {
+	var rule = OpenAjax.a11y.getRule("aria_attribute_conflict");
+	var passed = rule.validate(document.getElementById("a"));
+	console.log("required:" + passed.result);
+	
+	passed = rule.validate(document.getElementById("b"));
+	console.log("autocomplete:" + passed.result);
+	
+	passed = rule.validate(document.getElementById("c"));
+	console.log("readonly:" + passed.result);
+	
+	passed = rule.validate(document.getElementById("d"));
+	console.log("disabled:" + passed.result);
+}
+
+
+  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
+  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
+  OpenAjax.a11y.ruleCoverage = [
+    {
+      ruleId: "1141",
+      passedXpaths: [
+      ],
+      failedXpaths: [
+      ]
+    }
+  ];  
+</script>
+
+<title>Either HMTL 5 attributes or Aria attibutes</title>
+</head>
+<body onload="runRule();">
+	<form>
+		User name: <input id="a" type="text" name="usrname" required aria-required="false">
+		<input type="submit">
+	</form>
+	
+	<form id="b" autocomplete="on" aria-autocomplete="none">
+		First name:<input type="text" name="fname"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+	
+	<form>
+		Country: <input id="c" type="text" name="country" value="Norway" readonly aria-readonly="false"><br>
+  		<input type="submit" value="Submit">
+	</form>
+	
+	<form action="demo_form.asp">
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" disabled aria-disabled="false"><br>
+		<input type="submit" value="Submit">
+	</form>
+</body>
+</html>

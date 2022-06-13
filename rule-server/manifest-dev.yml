@@ -5,5 +5,8 @@ applications:
   instances: 1
   name: rules-server-dev-next
   disk_quota: 2024M
+  services:
+  - aat-dashboard-cloudant-dev
   routes:
   - route: rules-dev.mybluemix.net/rules
+  - route: rules-dev.mybluemix.net/tools

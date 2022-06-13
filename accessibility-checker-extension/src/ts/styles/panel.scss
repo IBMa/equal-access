@@ -1,19 +1,15 @@
-$feature-flags: (
-  grid-columns-16: true,
-);
-
-@import '~carbon-components/scss/globals/scss/styles.scss';
-@import '~carbon-components/scss/globals/grid/grid';
+@use '@carbon/styles/scss/breakpoint' as *;
+@use '@carbon/styles/scss/type' as *;
 
 #devtoolsPanel-root {
     overflow: hidden;
 }
 
-.bx--overflow-menu-options {
+.cds--overflow-menu-options {
     width: 12rem;
 }
 
-.bx--overflow-menu-options__btn {
+.cds--overflow-menu-options__btn {
     width: 12rem;
 }
 
@@ -46,8 +42,6 @@ $feature-flags: (
 
     .bee-logo {
         height: 2rem;
-        // position: absolute;
-        // right: 1rem;
         @media only screen and (min-width: 42rem) {
             right: 0px;
         }
@@ -63,18 +57,18 @@ $feature-flags: (
         @media only screen and (min-width: 42rem) {
             right: -.5rem;
         }
-        button.bx--btn {
+        button.cds--btn {
             color: black;
             background-color: white;
         }
 
-        button.bx--btn.bx--btn--disabled {
+        button.cds--btn.cds--btn--disabled {
             color: #c6c6c6;
             border-width: 0px;
             background-color: white;
         }
 
-        button.bx--btn.bx--btn--disabled:hover {
+        button.cds--btn.cds--btn--disabled:hover {
             color: #c6c6c6;
             svg {
                 fill: #c6c6c6;
@@ -83,18 +77,18 @@ $feature-flags: (
     }
 
     .reportButton {
-        button.bx--btn {
+        button.cds--btn {
             color: black;
             background-color: white;
         }
 
-        button.bx--btn.bx--btn--disabled {
+        button.cds--btn.cds--btn--disabled {
             color: #c6c6c6;
             border-width: 0px;
             background-color: white;
         }
 
-        button.bx--btn.bx--btn--disabled:hover {
+        button.cds--btn.cds--btn--disabled:hover {
             color: #c6c6c6;
             svg {
                 fill: #c6c6c6;
@@ -103,24 +97,24 @@ $feature-flags: (
     }
 
     .filterButtons {
-        button .bx--assistive-text {
+        button .cds--assistive-text {
             top: -1.5rem;
         }
         button::before {
             top: 0rem;
         }
-        button.bx--btn {
+        button.cds--btn {
             color: black;
             background-color: white;
         }
     
-        button.bx--btn.bx--btn--disabled {
+        button.cds--btn.cds--btn--disabled {
             color: #c6c6c6;
             border-width: 0px;
             background-color: white;
         }
     
-        button.bx--btn.bx--btn--disabled:hover {
+        button.cds--btn.cds--btn--disabled:hover {
             color: #c6c6c6;
             svg {
                 fill: #c6c6c6;
@@ -128,7 +122,7 @@ $feature-flags: (
         }
     }
 
-    .bx--checkbox-wrapper {
+    .cds--checkbox-wrapper {
         display: inline;
     }
 
@@ -218,7 +212,7 @@ $feature-flags: (
 .mainPanel {
     .summaryBarLabels {
         display:none;
-        @media only screen and (min-width: 78rem) {
+        @media only screen and (min-width: 85rem) {
             display:inline;
         }
     }
@@ -226,13 +220,16 @@ $feature-flags: (
 .subPanel {
     .summaryBarLabels {
         display:none;
-        @media only screen and (min-width: 43rem) {
+        @media only screen and (min-width: 45rem) {
             display:inline;
         }
     }
 }
 
 .report {
+    .itemCol {
+        margin-right: -.5rem;
+    }
     .reportHeader {
         height: 2rem;
         background-color: #DCE1E7;
@@ -298,34 +295,31 @@ $feature-flags: (
         padding: 1rem 1rem;
 
         .helpCpTitle {
-            @include carbon--type-style('productive-heading-03');
+            @include type-style('productive-heading-03');
         }
 
         .helpCpSumm {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
         }
     }
 
 
-    // .toolHelp, .toolHelp .bx--row:nth-child(1) {
-    //      height: 100px;
-    // }
-    @media (min-width: 99rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('max') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
     }
 
-    @media (min-width: 66rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('lg') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
     }
 
-    @media (min-width: 42rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('md') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
@@ -336,7 +330,7 @@ $feature-flags: (
     .toolHelp {
         background-color: #be95ff;
 
-        .bx--list--unordered {
+        .cds--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -344,7 +338,7 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        .bx--list--ordered {
+        .cds--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -352,12 +346,12 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        > .bx--grid {
+        > .cds--grid {
             max-width: 100%;
             padding-bottom: 0px;
         }
 
-        .bx--row {
+        .cds--row {
             margin: 0px;
         }
 
@@ -406,34 +400,34 @@ $feature-flags: (
         }
 
         .toolLeft {
-            @include carbon--type-style('body-long-01');
+            @include type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
 
 
-            .bx--list__item {
+            .cds--list__item {
                 color: black;
                 font-size: 12px;
                 line-height: 16px;
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-01');
+                @include type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-01');
+                @include type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             p {
-                @include carbon--type-style('body-long-01');
+                @include type-style('body-long-01');
 
                 margin-top: 0px;
                 margin-bottom: 14px;
@@ -451,14 +445,14 @@ $feature-flags: (
             }
 
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include type-style('productive-heading-03');
 
                 margin-top: 2rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-03');
+                @include type-style('productive-heading-03');
                 font-size: 16px;
                 font-weight: 600;
                 margin-top: 14px;
@@ -466,14 +460,14 @@ $feature-flags: (
                 line-height: 20px;
             }
             p {
-                @include carbon--type-style('body-long-01');
+                @include type-style('body-long-01');
                 font-size: 12px;
                 line-height: 16px;
                 margin-top: 0px;
             }
 
             .issueLevel {
-                @include carbon--type-style('heading-01');
+                @include type-style('heading-01');
                 font-weight: 600;
                 font-size: 12px;
 
@@ -494,19 +488,19 @@ $feature-flags: (
         padding-bottom: 1rem;
 
         .summaryTitle {
-            @include carbon--type-style('productive-heading-02');
+            @include type-style('productive-heading-02');
             color: #171717;
         }
 
         .summaryTitleDetail {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
             color: #000000;
         }
 
         .reportButton {
             margin-top: 1rem;
 
-            @media only screen and (min-width: 66rem) {
+            @include breakpoint('lg') {
                 margin-top: 0rem;
                 position: relative;
 
@@ -522,23 +516,23 @@ $feature-flags: (
         }
         
         .tile-title {
-            @include carbon--type-style('productive-heading-01');            
+            @include type-style('productive-heading-01');            
             color: #121619;
         }
 
         .tile-score {
-            @include carbon--type-style('display-01');
+            @include type-style('heading-07');
             margin-top: 8px;
             color: #161616;
         }
 
         .tile-description {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
             color: #000000;
         }
         
         .tile-description2 {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
             color: #000000;
         }
 
@@ -555,7 +549,7 @@ $feature-flags: (
             border: solid #8A3FFC 1px;
             background-color: #E8DAFF;
             margin-top: 18px;
-            height: 190px
+            height: 154px
         }
 
         .count-tile {
@@ -574,22 +568,22 @@ $feature-flags: (
         padding-bottom: 1rem;
 
         .title {
-            @include carbon--type-style('productive-heading-04');
+            @include type-style('productive-heading-04');
             color: #252525;
         }
 
         .subtitle {
-            @include carbon--type-style('productive-heading-03');
+            @include type-style('productive-heading-03');
             color: #252525;
         }
 
         .version {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
             color: #6F6F6F;
         }
 
         .description {
-            @include carbon--type-style('body-long-01');
+            @include type-style('body-long-01');
             margin-top: 33px;
             color: #161616;
         }
@@ -607,7 +601,7 @@ $feature-flags: (
         background-color: white;
         top: 1rem;
 
-        .bx--grid {
+        .cds--grid {
             padding: 0rem 0rem;
         }
 
@@ -622,13 +616,13 @@ $feature-flags: (
         }
 
         .issueList {
-            .bx--row {
+            .cds--row {
                 margin-left: 0px;
                 margin-right: 0px;
-                .bx--col-sm-4 {
+                .cds--col-sm-4 {
                     padding-left: 0px;
                     padding-right: 0px;
-                    .tabpanel, .bx--tab-content {
+                    .tabpanel, .cds--tab-content {
                         padding-left: 0px;
                         padding-right: 1rem;
                         .reportContainer {
@@ -647,34 +641,34 @@ $feature-flags: (
         padding: 1rem 1rem;
 
         .helpCpTitle {
-            @include carbon--type-style('productive-heading-03');
+            @include type-style('productive-heading-03');
         }
 
         .helpCpSumm {
-            @include carbon--type-style('helper-text-01');
+            @include type-style('helper-text-01');
         }
     }
 
 
-    .toolHelp, .toolHelp .bx--row:nth-child(1) {
+    .toolHelp, .toolHelp .cds--row:nth-child(1) {
         background-color: #be95ff;
     }
-    @media (min-width: 99rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('max') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
     }
 
-    @media (min-width: 66rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('lg') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
     }
 
-    @media (min-width: 42rem) {
-        .toolHelp .bx--grid {
+    @include breakpoint('md') {
+        .toolHelp .cds--grid {
             padding-left: 0rem;
             padding-right: 0rem;
         }
@@ -683,7 +677,7 @@ $feature-flags: (
     .toolHelp {
         background-color: #be95ff;
 
-        .bx--list--unordered {
+        .cds--list--unordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -691,7 +685,7 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        .bx--list--ordered {
+        .cds--list--ordered {
             margin-top: .5rem;
             margin-left: 1rem;
             margin-bottom: 1rem;
@@ -699,12 +693,12 @@ $feature-flags: (
             line-height: 16px;
         }
 
-        > .bx--grid {
+        > .cds--grid {
             max-width: 100%;
             padding-bottom: 0px;
         }
 
-        .bx--row {
+        .cds--row {
             margin: 0px;
         }
 
@@ -753,34 +747,34 @@ $feature-flags: (
         }
 
         .toolLeft {
-            @include carbon--type-style('body-long-01');
+            @include type-style('body-long-01');
             padding: 1rem;
             background-color: #E8DAFF;
             color: black;
 
 
-            .bx--list__item {
+            .cds--list__item {
                 color: black;
                 font-size: 12px;
                 line-height: 16px;
             }
             
             h2 {
-                @include carbon--type-style('productive-heading-01');
+                @include type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-01');
+                @include type-style('productive-heading-01');
 
                 margin-top: 0rem;
                 margin-bottom: .5rem;
             }
 
             p {
-                @include carbon--type-style('body-long-01');
+                @include type-style('body-long-01');
                 margin-top: 0px;
                 margin-bottom: 12px;
             }
@@ -797,14 +791,14 @@ $feature-flags: (
             }
 
             h2 {
-                @include carbon--type-style('productive-heading-03');
+                @include type-style('productive-heading-03');
 
                 margin-top: 2rem;
                 margin-bottom: .5rem;
             }
 
             h3 {
-                @include carbon--type-style('productive-heading-03');
+                @include type-style('productive-heading-03');
                 font-size: 16px;
                 font-weight: 600;
                 margin-top: 14px;
@@ -812,14 +806,14 @@ $feature-flags: (
                 line-height: 20px;
             }
             p {
-                @include carbon--type-style('body-long-01');
+                @include type-style('body-long-01');
                 font-size: 12px;
                 line-height: 16px;
                 margin-top: 16px;
             }
 
             .issueLevel {
-                @include carbon--type-style('heading-01');
+                @include type-style('heading-01');
                 font-weight: 600;
                 font-size: 12px;
 
@@ -847,10 +841,6 @@ main {
     overflow-y: scroll;
     margin-right: 0rem;
     height: 100%;
-
-    >div {
-        padding-right: 1rem;
-    }
 
     .reportContainer {
         margin-left:-2rem;

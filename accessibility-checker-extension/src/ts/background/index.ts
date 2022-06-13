@@ -18,47 +18,99 @@ import BackgroundMessaging from "../util/backgroundMessaging";
 import EngineCache from './helper/engineCache';
 import Config from "./helper/config";
 import { ACMetricsLogger } from "../util/ACMetricsLogger";
+import OptionMessaging from "../util/optionMessaging";
 
 let metrics = new ACMetricsLogger("ac-extension");
+
+function myExecuteScript(
+    params: any, 
+    pCB?: (any) | undefined): void
+{
+    if (chrome && chrome.scripting && chrome.scripting.executeScript) {
+        chrome.scripting.executeScript(params, pCB);
+    } else {
+        if (params.func) {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    code: `(${params.func.toString()})()`,
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    if (!res) {
+                        pCB && pCB(res);
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
+        } else {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    file: params.files[0],
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    if (params.files[0].includes("ace.js")) {
+                        chrome.tabs.executeScript(
+                            params.target.tabId as number,
+                            { 
+                                code: `window.ace = ace`,
+                                frameId: params.target.frameIds[0],
+                                matchAboutBlank: true
+                            },
+                            (res) => {
+                                if (!res) {
+                                    pCB && pCB(res);
+                                } else {
+                                    pCB && pCB(res.map(item => ({ result: item })));
+                                }
+                            })
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
+        }
+    }
+}
 
 async function initTab(tabId: number, archiveId: string) {
     // Determine if we've ever loaded any engine
     let isLoaded = await new Promise((resolve, reject) => {
-        chrome.tabs.executeScript(tabId, {
-            code: "typeof window.ace",
-            frameId: 0,
-            matchAboutBlank: true
-        }, function (res) {
+        myExecuteScript({
+            target: { tabId: tabId, frameIds: [0] },
+            func: () => (typeof (window as any).ace)
+        }, function (res: any) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
-            resolve(res[0] !== "undefined");
+            resolve(res[0].result !== "undefined");
         })
     });
 
     // Switch to the appropriate engine for this archiveId
-    let engineCode = await EngineCache.getEngine(archiveId);
+    let engineFile = await EngineCache.getEngine(archiveId);
     await new Promise((resolve, reject) => {
-        chrome.tabs.executeScript(tabId, {
-            code: engineCode + "window.ace = ace;",
-            frameId: 0,
-            matchAboutBlank: true
-        }, function (_res) {
+        myExecuteScript({
+            target: { tabId: tabId, frameIds: [0] },
+            files: [engineFile]
+        }, function (res: any) {
             if (chrome.runtime.lastError) {
                 reject(chrome.runtime.lastError.message);
             }
-            resolve(_res);
-        })
+            resolve(res);
+        });
     });
 
     // Initialize the listeners once
     if (!isLoaded) {
         await new Promise((resolve, reject) => {
-            chrome.tabs.executeScript(tabId, {
-                file: "tabListeners.js",
-                frameId: 0,
-                matchAboutBlank: true
-            }, function (_res) {
+            myExecuteScript({
+                target: { tabId: tabId, frameIds: [0] },
+                files: ["/tabListeners.js"]
+            }, function (_res: any) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
                 }
@@ -95,11 +147,11 @@ BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
                 policyId = result.OPTIONS.selected_ruleset.id;
             }
 
-            await initTab(message.tabId, archiveId);
             await BackgroundMessaging.sendToTab(message.tabId, "DAP_SCAN_TAB", {
                 tabId: message.tabId,
                 tabURL: message.tabURL,
                 archiveId: archiveId,
+                archiveVersion: selectedArchive.version,
                 policyId: policyId,
                 origin: message.origin
             });
@@ -131,11 +183,10 @@ BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
             //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
             let canScan = await new Promise((resolve, _reject) => {
                 if (tab.id < 0) return resolve(false);
-                chrome.tabs.executeScript(tab.id, {
-                    code: "typeof window.ace",
-                    frameId: 0,
-                    matchAboutBlank: true
-                }, function (res) {
+                myExecuteScript({
+                    target: { tabId: tab.id, frameIds: [0] },
+                    func: () => (typeof (window as any).ace)
+                }, function (res: any) {
                     resolve(!!res);
                 })
             });
@@ -163,18 +214,18 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
 
             if (result.OPTIONS) {
                 archiveId = result.OPTIONS.selected_archive.id;
-            } try {
-                await initTab(message.tabId, archiveId);
-
-                chrome.tabs.executeScript(message.tabId, {
-                    code: "new window.ace.Checker().rulesets;",
-                    frameId: 0,
-                    matchAboutBlank: true
-                }, function (res) {
+            } 
+            await initTab(message.tabId, archiveId);
+            try {
+                myExecuteScript({
+                    target: { tabId: message.tabId, frameIds: [0] },
+                    func: () => (new (window as any).ace.Checker().rulesets)
+                }, function (res: any) {
                     if (chrome.runtime.lastError) {
                         reject(chrome.runtime.lastError.message);
+                    } else {
+                        resolve(res[0].result);
                     }
-                    resolve(res[0]);
                 })
             } catch (err) {
                 reject(err);
@@ -183,6 +234,9 @@ BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
     });
 });
 
+BackgroundMessaging.addListener("OPTIONS", async (message: any) => {
+    return await OptionMessaging.optionMessageHandling(message);
+ });
 
 // TODO: TAB: I broke this in making sure to not change all panels. Need to revisit
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {

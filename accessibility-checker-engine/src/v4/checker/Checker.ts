@@ -32,13 +32,7 @@ function _initialize() {
     for (let rulename in checkRulesV4) {
         // Convert rule
         let v4Rule: RuleV4 = checkRulesV4[rulename];
-        let v2Rule: RuleV2 = {
-            id: v4Rule.id,
-            context: v4Rule.context,
-            dependencies: v4Rule.dependencies,
-            run: v4Rule.run
-        };
-        checkRules.push(v2Rule);
+        checkRules.push(v4Rule);
         for (const langId of langs) {
             if (langId in v4Rule.messages) {
                 checkNls[v4Rule.id] = v4Rule.messages[langId];
@@ -83,11 +77,13 @@ export type Ruleset = {
     type?: eRulesetType,
     checkpoints: Array<{
         num: string,
+        // See https://github.com/act-rules/act-tools/blob/main/src/data/sc-urls.json
+        scId?: string,
         // JCH: add name of checkpoint and summary description
         name: string,
         wcagLevel: string,
         summary: string,
-        rules?: Array<{id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel}>
+        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
     }>
 }
 

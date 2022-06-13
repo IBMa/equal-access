@@ -19,7 +19,7 @@ const fs = require("fs");
             request.continue();
     });
     pupPage.on('console', message =>
-        console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+        !message.text().includes("interest-cohort") && console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
     await pupPage.setCacheEnabled(true);
     await pupPage.setViewport({ width: 1280, height: 1024 });
 
@@ -27,14 +27,35 @@ const fs = require("fs");
         console.group(`* ${ruleTestInfo[ruleId].label}`);
         for (const testcase of ruleTestInfo[ruleId].testcases) {
             let ext = testcase.url.substring(testcase.url.lastIndexOf("."));
-            if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969") {
+            // if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969") {
                 // Skip
-            } else if (ext === ".html" || ext === ".xhtml") {
+            // } else 
+            if (ext === ".html" || ext === ".xhtml") {
                 try {
+                    // If no tests, don't bother loading the testcase
                     if (ruleTestInfo[ruleId].aceRules.length > 0) {
                         console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
-                        // If no tests, don't bother loading the testcase
-                        await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
+                        // Special handling for meta refresh
+                        if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
+                            || testcase.testcaseId === "beeaf6f49d37ef2d771effd40bcb3bfc9655fbf4"
+                            || testcase.testcaseId === "d1bbcc895f6e11010b033578d073138e7c4fc57e"
+                            || testcase.testcaseId === "d789ff3d0c087c77117a02527e71a646a343d4a3")
+                        {
+                            let succeeded = false;
+                            while (!succeeded) {
+                                try {
+                                    await pupPage.goto(testcase.url, { waitUntil: 'domcontentloaded' });
+                                    await pupPage._client.send("Page.stopLoading");
+                                    let win = await pupPage.evaluate("document");
+                                    if (win) {
+                                        succeeded = true;
+                                    }
+                                } catch (err) {
+                                }
+                            }
+                        } else {
+                            await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
+                        }
                     } else {
                         console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
                     }

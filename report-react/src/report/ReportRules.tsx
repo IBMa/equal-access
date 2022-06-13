@@ -16,11 +16,9 @@
 
 import React from "react";
 
-import {
-} from 'carbon-components-react';
-
 import { IReport, IReportItem, valueMap } from "../IReport";
 import ReportRow from "./ReportRow";
+import { Grid, Column } from "@carbon/react";
 
 interface IReportRulesState {
 }
@@ -65,15 +63,15 @@ export default class ReportRules extends React.Component<IReportRulesProps, IRep
             groups.push(groupMap[ruleId]);
         }
 
-        return <div className="bx--grid report" role="rowgroup">
-            <div className="bx--row reportHeader">
-                <div className="bx--col-sm-1 bx--col-md-2 bx--col-lg-4">
+        return <div className="report" role="rowgroup">
+            <Grid className="reportHeader">
+                <Column sm={1} md={2} lg={4}>
                     <div className="label" style={{ marginLeft: "2rem" }}>Issues</div>
-                </div>
-                <div className="bx--col-sm-3 bx--col-md-6 bx--col-lg-8">
+                </Column>
+                <Column sm={3} md={6} lg={8}>
                     <div className="label">Rules</div>
-                </div>
-            </div>
+                </Column>
+            </Grid>
             {groups.map(group => {
                 return <ReportRow report={this.props.report} selectItem={this.props.selectItem} group={group} />;
             })}

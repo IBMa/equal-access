@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Either HMTL 5 attributes or Aria attibutes</title>
+</head>
+<body>
+	<form>
+		User name: <input id="a" type="text" name="usrname" required aria-required="true">
+		<input type="submit">
+	</form>
+	<form id="b" autocomplete="on" aria-autocomplete="inline">
+		First name:<input type="text" name="fname"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+	<form>
+		Country: <input id="c" type="text" name="country" value="Norway" readonly aria-readonly="true"><br>
+  		<input type="submit" value="Submit">
+	</form>
+	<form>
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" disabled aria-disabled="true"><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<form hidden disabled>
+		First name: <input type="text" name="fname"><br>
+		Last name: <input id="d" type="text" name="lname" aria-disabled="false"><br>
+		<input type="submit" value="Submit">
+	</form>
+
+	<form id="b" hidden autocomplete="on">
+		First name:<input type="text" name="fname" aria-autocomplete="none"><br>
+		Last name: <input type="text" name="lname"><br>
+		<input type="submit">
+	</form>
+
+  <div aria-valuemax="10" max='5' ></div>
+	<div aria-valuemin="0" min='0' ></div>
+  <div aria-colspan="3" colspan="3" ></div>
+	<div aria-rowspan="3" rowspan="3" ></div>
+
+
+	<script>
+		UnitTest = {
+			ruleIds: ["aria_attribute_redundant"],
+			results: [
+			{
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[1]/input[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The ARIA attribute \"aria-required\" is redundant with the HTML attribute \"required\"",
+            "messageArgs": [
+              "aria-required",
+              "required"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[3]/input[1]",
+              "aria": "/document[1]/textbox[4]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The ARIA attribute \"aria-readonly\" is redundant with the HTML attribute \"readonly\"",
+            "messageArgs": [
+              "aria-readonly",
+              "readonly"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/form[4]/input[2]",
+              "aria": "/document[1]/textbox[6]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The ARIA attribute \"aria-disabled\" is redundant with the HTML attribute \"disabled\"",
+            "messageArgs": [
+              "aria-disabled",
+              "disabled"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The ARIA attribute \"aria-colspan\" is redundant with the HTML attribute \"colspan\"",
+            "messageArgs": [
+              "aria-colspan",
+              "colspan"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_redundant",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_redundant",
+            "message": "The ARIA attribute \"aria-rowspan\" is redundant with the HTML attribute \"rowspan\"",
+            "messageArgs": [
+              "aria-rowspan",
+              "rowspan"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+		  ]
+		}
+	  </script>
+</body>
+</html>

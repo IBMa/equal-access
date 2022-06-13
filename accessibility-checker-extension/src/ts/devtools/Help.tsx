@@ -17,12 +17,13 @@
 import React from "react";
 
 import { IReportItem, ICheckpoint, IReport } from './Report';
-
+import { InlineLoading } from "@carbon/react";
 // import HelpFileSwitcher from "../help/helpSwitcher";
 
 // const Violation16 = "/assets/Violation16.png";
 
 interface IHelpState {
+    loading: boolean
 }
 
 interface IHelpProps {
@@ -32,13 +33,24 @@ interface IHelpProps {
 }
 
 export default class Help extends React.Component<IHelpProps, IHelpState> {
-    state: IHelpState = {};
+    state: IHelpState = {
+        loading: true
+    };
+
+    onHelpLoaded() {
+        this.setState({loading: false});
+    }
 
     render() {
         return <div id="help" style={{position: "relative", height: "100%", width: "100%", padding: "0rem"}}>
-            {this.props.report && 
-                <iframe title="Accessibility Checker Help" style={{position: "absolute", width: "100%", height: "100%"}} src={this.props.item.help} />
+            {this.props.report && <>
+                <iframe onLoad={this.onHelpLoaded.bind(this)} title="Accessibility Checker Help" style={{position: "absolute", width: "100%", height: "100%"}} src={this.props.item.help} />
+                {this.state.loading && 
+                    <div style={{margin: "1rem"}}><InlineLoading /></div>
+                }
+                </>
             }
+
         </div>
     }
 }

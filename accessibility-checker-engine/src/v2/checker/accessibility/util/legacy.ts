@@ -365,6 +365,25 @@ export class RPTUtil {
         }
         return false;
     }
+
+    /**
+     * get number of tabbable children
+     * @param element 
+     */
+    public static getTabbableChildren(element) {
+        let count = 0;
+        // If node has children, look for tab stops in the children
+        if (element.firstChild) {
+            let nw = new NodeWalker(element);
+            while (nw.nextNode() && nw.node != element) {
+                if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
     //TODO: function does not handle equivalents for roles: row, link, header, button
     // But it may not have to.  Bug reports have been about radio buttons and checkboxes.
     public static isHtmlEquiv(node, htmlEquiv) {
@@ -667,7 +686,7 @@ export class RPTUtil {
     }
     /**
      * This function is responsible for retrieving element's roles.
-     * This function aslo finds implicit roles.
+     * This function also finds implicit roles.
      * @parm {HTMLElement} ele - element for which to find role.
      * @parm {bool} considerImplicitRoles - true or false based on if implicit roles setting should be considered.
      *
@@ -1374,7 +1393,7 @@ export class RPTUtil {
             while (nw.nextNode()) {
                 if (formElements.includes(nw.node.nodeName.toLowerCase())) {
                     if (RPTUtil.isNodeDisabled(nw.node))
-                       return true;
+                        return true;
                     return false;
                 }
             }
@@ -1947,7 +1966,7 @@ export class RPTUtil {
         return cacheObj.aceCache[keyName]
     }
 
-    public static setCache(cacheSpot: Document | Element | ShadowRoot, globalName, value) : any {
+    public static setCache(cacheSpot: Document | Element | DocumentFragment | ShadowRoot, globalName, value) : any {
         let cacheObj = (cacheSpot.nodeType === 9 /* Node.DOCUMENT_NODE */ || cacheSpot.nodeType === 11 /* Node.DOCUMENT_FRAGMENT_NODE */) ? cacheSpot as CacheDocument : cacheSpot as CacheElement;
         if (cacheObj.aceCache === undefined) {
             cacheObj.aceCache = {}
@@ -2338,30 +2357,23 @@ export class RPTUtil {
     public static getAllowedAriaAttributes(ruleContext, permittedRoles, properties) {
         let tagName = ruleContext.tagName.toLowerCase();
         let allowedAttributes = [];
-        /*These needs to be handled first since its applicable to all elements*/
-        if (ruleContext.hasAttribute("disabled") && ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) === -1) {
-            /*Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
-                Use the disabled attribute on any element that is allowed the disabled attribute in HTML5. aria-disabled="true"
-                Only use the aria-disabled attribute for elements that are not allowed to have a disabled attribute in HTML5 */
+        let prohibitedAttributes = [];
+        // Element with a disabled attribute  https://www.w3.org/TR/html5/disabled-elements.html
+        if (ARIADefinitions.elementsAllowedDisabled.indexOf(tagName) > -1) {
+            // Use the aria-disabled attribute on any element that is allowed the disabled attribute in HTML5.
             allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-disabled", allowedAttributes);
         }
-        if (ruleContext.hasAttribute("required") && ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
-            /*Element with a required attribute  // http://www.the-art-of-web.com/html/html5-form-validation/
-                * aria-required="true" Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
-                * MAY also be used for elements that have an attached ARIA role which allows the aria-required attribute.*/
+        // Element with a required attribute http://www.the-art-of-web.com/html/html5-form-validation/
+        if (ARIADefinitions.elementsAllowedRequired.indexOf(tagName) > -1) {
+            // Use the aria-required attribute on any element that is allowed the required attribute in HTML5.
             allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-required", allowedAttributes);
         }
-        if (ruleContext.hasAttribute("readonly") && ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) === -1) {
-            /*Element with a readonly attribute* aria-readonly="true" * Use the readonly attribute on any element that is allowed the readonly attribute in HTML5.
-                Only use the aria-readonly attribute for elements that are not allowed to have a readonly attribute in HTML5 */
+
+        if (ARIADefinitions.elementsAllowedReadOnly.indexOf(tagName) > -1) {
+            // Use the aria-readonly attribute on any element that is allowed the readonly attribute in HTML5.
             allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-readonly", allowedAttributes);
         }
-        if (ruleContext.hasAttribute("hidden")) {
-            /*Element with a hidden attribute Use the aria-hidden attribute on any HTML element.
-                Note: If an element has a hidden attribute, an aria-hidden attribute is not required.*/
-            allowedAttributes = RPTUtil.concatUniqueArrayItem("aria-hidden", allowedAttributes);
-        }
-
+        
         let tagProperty = null;
         if (properties != null && properties !== undefined)
             tagProperty = properties;
@@ -2387,6 +2399,10 @@ export class RPTUtil {
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                         properties = RPTUtil.getRoleRequiredProperties(tagProperty.implicitRole[i], ruleContext);
                         RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                        let prohibitedProps = roleProperty.prohibitedProps;
+                        if (prohibitedProps && prohibitedProps.length > 0) 
+                            RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
+                           
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                             RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2408,6 +2424,10 @@ export class RPTUtil {
             }
         }
 
+        // adding the other role to the allowed roles for the attributes
+        if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);
+
         // adding the specified role properties to the allowed attribute list
         for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
@@ -2416,6 +2436,9 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                 properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                let prohibitedProps = roleProperties.prohibitedProps;
+                if (prohibitedProps && prohibitedProps.length>0)
+                    RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
                 // special case for separator
                 if (permittedRoles[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
                     RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
@@ -2425,19 +2448,107 @@ export class RPTUtil {
 
         // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
         if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
-             let index = -1;
-             if ((index = allowedAttributes.indexOf("aria-level")) > -1)
+            let index = -1;
+            if ((index = allowedAttributes.indexOf("aria-level")) > -1)
                 allowedAttributes.splice(index, 1);
 
-             if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
+            if ((index = allowedAttributes.indexOf("aria-setsize")) > -1)
                 allowedAttributes.splice(index, 1);
 
-             if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
+            if ((index = allowedAttributes.indexOf("aria-posinset")) > -1)
                 allowedAttributes.splice(index, 1);
 
         }
 
+        // add the other allowed attributes for the element
+        if (tagProperty && tagProperty.otherAllowedAriaAttributes && tagProperty.otherAllowedAriaAttributes.length > 0) {
+            // check attribute-value pair if exists
+            let allowed = [];
+            for (let p=0; p < tagProperty.otherAllowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherAllowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("=");
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        allowed.push(pair[0]);
+                } else
+                    allowed.push(attr);
+            } 
+            if (allowed.length > 0)    
+                RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
+        } 
+        // add the other prohibitted attributes for the element
+        if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
+            // check attribute-value pair if exists
+            let disallowed = [];
+            for (let p=0; p < tagProperty.otherDisallowedAriaAttributes.length; p++) {
+                const attr = tagProperty.otherDisallowedAriaAttributes[p];
+                if (attr.includes("=")) {
+                    const pair = attr.split("="); 
+                    if (ruleContext.getAttribute(pair[0]) === pair[1])
+                        disallowed.push(pair[0]);
+                } else
+                    disallowed.push(attr);
+            }
+            if (disallowed.length > 0)
+                RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
+        }
+        //exclude the prohibitedAttributes from the allowedAttributes
+        if (prohibitedAttributes.length > 0) {
+            allowedAttributes = allowedAttributes.filter((value) =>  {
+                return !prohibitedAttributes.includes(value);
+            });
+        } 
         return allowedAttributes;
+    }
+    /**
+     * 
+     * @param ariaAttr 
+     * @param htmlAttrs 
+     * @type: conflict or overlapping
+     * @returns htmlAttrName, 'Pass' or null
+     *         htmlAttrName that conflicts with the ariaAttr, 
+     *         'Pass' with no conflict with the ariaAttr, 
+     *         or null where ariaAttr won't cause conflict
+     */
+    public static getConflictOrOverlappingHtmlAttribute(ariaAttr, htmlAttrs, type): any[] | null {
+        let exist = ARIADefinitions.relatedAriaHtmlAttributes[ariaAttr['name']];
+        if (exist) { 
+            let examinedHtmlAtrNames = [];
+            let ariaAttrValue = '';
+            if (type === 'conflict') {
+                if (!exist.conflict) return null;
+                ariaAttrValue = exist.conflict.ariaAttributeValue;
+            } else if (type === 'overlapping')  {
+                if (!exist.overlapping) return null;
+                ariaAttrValue = exist.overlapping.ariaAttributeValue; 
+            } else
+                return null;    
+            if (ariaAttrValue === null || ariaAttrValue === 'VALUE' || ariaAttrValue === ariaAttr['value']) {
+                let htmlAttrNames = [];
+                let htmlAttrValues = [];
+                if (type === 'conflict') {
+                     htmlAttrNames = exist.conflict.htmlAttributeNames;
+                     htmlAttrValues = exist.conflict.htmlAttributeValues;
+                }  else {
+                     htmlAttrNames = exist.overlapping.htmlAttributeNames;
+                     htmlAttrValues = exist.overlapping.htmlAttributeValues;
+                }    
+                for (let i = 0; i < htmlAttrs.length; i++) { 
+                    let index = htmlAttrNames.indexOf(htmlAttrs[i]['name']); 
+                    if (index !== -1) { 
+                        if (htmlAttrValues === null
+                            || (ariaAttrValue === 'VALUE' && htmlAttrValues[index] === 'VALUE' && htmlAttrs[i]['value'] !== ariaAttr['value'])
+                            || htmlAttrs[i]['value'] === htmlAttrValues[index]) {
+                               examinedHtmlAtrNames.push({result: 'Failed', 'attr': htmlAttrs[i]['name']});
+                               continue;
+                        } else 
+                            examinedHtmlAtrNames.push({result: 'Pass', 'attr': htmlAttrs[i]['name']});
+                    }         
+                }
+            }
+            return examinedHtmlAtrNames;
+        } else
+            return null;
     }
 
     public static CSS(element) {
@@ -3455,21 +3566,22 @@ export class NodeWalker {
             {
                 let ownerElement = this.node;
                 this.node = iframeNode.contentDocument.documentElement;
-                (this.node as any).ownerElement = ownerElement;
+                (this.node as any).nwOwnerElement = ownerElement;
             } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */
                 && elementNode.shadowRoot
                 && elementNode.shadowRoot.firstChild)
             {
                 let ownerElement = this.node;
                 this.node = elementNode.shadowRoot;
-                (this.node as any).ownerElement = ownerElement;
+                (this.node as any).nwOwnerElement = ownerElement;
             } else if (this.node.nodeType === 1
                 && elementNode.nodeName.toLowerCase() === "slot"
                 && slotElement.assignedNodes().length > 0)
             {
                 let slotOwner = this.node;
                 this.node = slotElement.assignedNodes()[0];
-                (this.node as any).slotOwner = slotOwner;
+                (this.node as any).nwSlotOwner = slotOwner;
+                (this.node as any).nwSlotIndex = 0;
             } else if (this.node.firstChild) {
                 this.node = this.node.firstChild;
             } else {
@@ -3477,33 +3589,26 @@ export class NodeWalker {
                 return this.nextNode();
             }
         } else {
-            if (this.node.nextSibling) {
-                this.node = this.node.nextSibling;
-                this.bEndTag = false;
-            } else if ((this.node as any).ownerElement) {
-                this.node = (this.node as any).ownerElement;
-                this.bEndTag = true;
-            } else if ((this.node as any).slotOwner) {
-                if (this.node.nodeType !== 1 || !(this.node as HTMLElement).hasAttribute("slot")) {
-                    // If this wasn't a named slot, look for the next unnamed node to put in the slot
-                    let n = this.node.nextSibling;
-                    while (n && this.node.nodeType === 1 && (this.node as HTMLElement).hasAttribute("slot")) {
-                        n = this.node.nextSibling;
-                    }
-                    if (n) {
-                        // We found another unnamed slot
-                        let slotOwner = (this.node as any).slotOwner;
-                        this.node = n;
-                        (this.node as any).slotOwner = slotOwner;
-                        this.bEndTag = false;
-                    } else {
-                        this.node = (this.node as any).slotOwner;
-                        this.bEndTag = true;
-                    }
+            if ((this.node as any).nwSlotOwner) {
+                let slotOwner = (this.node as any).nwSlotOwner;
+                let nextSlotIndex = (this.node as any).nwSlotIndex+1;
+                delete (this.node as any).nwSlotOwner;
+                delete (this.node as any).nwSlotIndex;
+                if (nextSlotIndex < slotOwner.assignedNodes().length) {
+                    this.node = slotOwner.assignedNodes()[nextSlotIndex];
+                    (this.node as any).nwSlotOwner = slotOwner;
+                    (this.node as any).nwSlotIndex = nextSlotIndex;    
+                    this.bEndTag = false;
                 } else {
-                    this.node = (this.node as any).slotOwner;
+                    this.node = slotOwner;
                     this.bEndTag = true;
                 }
+            } else if ((this.node as any).nwOwnerElement) {
+                this.node = (this.node as any).nwOwnerElement;
+                this.bEndTag = true;
+            } else if (this.node.nextSibling) {
+                this.node = this.node.nextSibling;
+                this.bEndTag = false;
             } else if (this.node.parentNode) {
                 this.node = this.node.parentNode;
                 this.bEndTag = true;

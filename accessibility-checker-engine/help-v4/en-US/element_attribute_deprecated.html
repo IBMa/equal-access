@@ -30,11 +30,11 @@
         <div class="bx--row">
             <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
                 <!-- Group message injected here -->
-                <h3 id="groupLabel"></h3>
+                <h3 id="ruleMessage"></h3>
                 <!-- Severity level injected here -->
                 <div id="locLevel"></div>
                 <!-- Rule specific message injected here -->
-                <p id="ruleMessage"></p>
+                <p id="groupLabel"></p>
             </div>
         </div>
         <div class="bx--row">
@@ -44,11 +44,20 @@
 
 ### Why is this important?
 
-When specifications are updated, some elements and attributes become outdated. These deprecated 
-features may become obsolete and be removed in future versions, and should not be used in new projects. 
-As well, a deprecated feature is usually replaced by an improvement in the newer specification, 
-so it is prudent to update code to avoid deprecated features. Finally, although existing projects using 
-deprecated features should work, browsers may not continue to support them.
+Browsers and assistive technology must be able to accurately interpret the markup of the content.
+If the code is ambiguous or incorrect, then it may be interpreted differently by browsers and assistive technology and the content will not be accessible to the user.
+
+As technology evolves, 
+sometimes new ways to meet a use case become available, that work better than a feature that was previously defined in a specification.
+When specifications are updated, some elements and attributes become "deprecated" because of existing implementations of the older feature.
+This indicates that the feature is allowed and expected to be supported by conforming browsers.
+However, those deprecated features may soon become obsolete, will be removed in future specifications,
+and will no longer be expected to be supported by browsers and assistive technology used by persons with disabilities.
+So, it is prudent to update the code to avoid deprecated features. 
+
+For example, 
+developers should not specify a `border` attribute on an `<img>` element in [HTML 5](https://dev.w3.org/html5/pf-summary/obsolete.html).
+[CSS](https://www.w3.org/Style/CSS/Overview.en.html) should be used instead.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -69,8 +78,11 @@ Replace deprecated elements and attributes with those preferred in the current v
 ### About this requirement
 
 * [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
-* [HTML5 obsolete features](https://dev.w3.org/html5/pf-summary/obsolete.html)
-* [ARIA deprecated requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
+* [HTML 5 - Obsolete Features](https://dev.w3.org/html5/pf-summary/obsolete.html)
+
+### Who does this affect?
+
+* People using assistive technologies that expose accessibility information 
 
 </script></mark-down>
 <!-- End side panel -->

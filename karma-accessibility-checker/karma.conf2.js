@@ -42,8 +42,8 @@ module.exports = function (config) {
         // If you want to use html files in js make sure to load them first.
         files: [
             // 'test/client/baseline/**/*.json',
-            { pattern: '../accessibility-checker-engine/test/**/*_ruleunit/*.html' },
-            { pattern: '../accessibility-checker-engine/test/**/*_ruleunit/*.htm' },
+            { pattern: '../accessibility-checker-engine/test/**/[a-rA-R]*_ruleunit/*.html' },
+            { pattern: '../accessibility-checker-engine/test/**/[a-rA-R]*_ruleunit/*.htm' },
             // 'dependencies/tools-rules-html/v2/a11y/test/**/*.html',
             'test/client/htmlFiles/**/*.html',
             'test/client/baseline/**/*.json',
@@ -94,7 +94,9 @@ module.exports = function (config) {
         customLaunchers: {
             ChromeCustom: {
                 base: 'ChromeHeadless',
-                flags: ['--disable-web-security']
+                flags: [
+                    '--disable-web-security'
+                ]
             }
         },
 
@@ -199,7 +201,7 @@ module.exports = function (config) {
         browserDisconnectTimeout: 8000,
 
         // How long will Karma wait for a message from a browser before disconnecting from it (in ms).
-        browserNoActivityTimeout: 400000,
+        browserNoActivityTimeout: 600000,
 
         // Timeout for capturing a browser (in ms).
         captureTimeout: 100000,

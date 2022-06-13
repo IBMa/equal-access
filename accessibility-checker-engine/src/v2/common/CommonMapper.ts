@@ -18,13 +18,11 @@ import { IMapper, IMapResult, Bounds } from "../api/IMapper";
 import { DOMUtil } from "../dom/DOMUtil";
 
 export abstract class CommonMapper implements IMapper {
-    abstract childrenHaveRole(node: Node, role: string) : boolean;
     abstract getRole(node: Node) : string;
     abstract getNamespace() : string;
     abstract getAttributes(node: Node) : { [key:string]: string };
 
     protected hierarchyRole : string[] = null;
-    protected hierarchyChildrenHaveRole: boolean[] = null;
     protected hierarchyPath: Array<{
         rolePath: string,
         roleCount: {
@@ -40,7 +38,6 @@ export abstract class CommonMapper implements IMapper {
     reset(node: Node) {
         this.hierarchyRole = [];
         this.hierarchyResults = [];
-        this.hierarchyChildrenHaveRole = [];
         this.hierarchyPath = [{
             rolePath: "",
             roleCount: {}
@@ -52,7 +49,7 @@ export abstract class CommonMapper implements IMapper {
             ancestors.push(parent);
             parent = DOMUtil.parentNode(parent);
         }
-        ancestors = ancestors.reverse();  
+        ancestors = ancestors.reverse();
         for (const ancestor of ancestors) {
             let siblings = [];
             let sibling = ancestor.previousSibling;
@@ -69,16 +66,8 @@ export abstract class CommonMapper implements IMapper {
         }
     }
 
-    pushHierarchy(node: Node) {
-        let role : string;
-        let presentationalContainer = this.hierarchyChildrenHaveRole.length > 0 && !this.hierarchyChildrenHaveRole[this.hierarchyChildrenHaveRole.length-1];
-        if (presentationalContainer) {
-            role = "none";
-            this.hierarchyChildrenHaveRole.push(false);
-        } else {
-            role = this.getRole(node) || "none";
-            this.hierarchyChildrenHaveRole.push(this.childrenHaveRole(node, role));
-        }
+    protected pushHierarchy(node: Node) {
+        let role : string = this.getRole(node) || "none";
         this.hierarchyRole.push(role);
         if (role !== "none") {
             let parentPathInfo = this.hierarchyPath[this.hierarchyPath.length-1];
@@ -103,9 +92,8 @@ export abstract class CommonMapper implements IMapper {
         })
     }
 
-    private popHierarchy() {
+    protected popHierarchy() {
         let role = this.hierarchyRole.pop();
-        this.hierarchyChildrenHaveRole.pop();
         if (role !== "none") {
             this.hierarchyPath.pop();
         }

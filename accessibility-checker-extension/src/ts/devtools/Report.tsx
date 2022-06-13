@@ -17,9 +17,9 @@
 import React from "react";
 
 import {
-    Tabs,
-    Tab
-} from 'carbon-components-react';
+    Column, Grid, Tabs,
+    Tab, TabList, TabPanels, TabPanel
+} from '@carbon/react';
 
 import ReportElements from "./ReportElements";
 import ReportRules from "./ReportRules";
@@ -34,7 +34,7 @@ export interface IReport {
     timestamp: number,
     filterstamp: number,
     results: IReportItem[],
-
+    passUniqueElements: string[],
     counts: { 
         "total": { [key: string]: number },
         "filtered": { [key: string]: number }
@@ -172,40 +172,41 @@ export default class Report extends React.Component<IReportProps, IReportState> 
         }
 
         return <React.Fragment>
-             <div className="bx--grid" >
-                <div className="bx--row" >
-                    <div className="bx--col-sm-4" >
+             <div style={{backgroundColor: "white"}}>
+                <Grid fullWidth style={{padding: "0rem"}}>
+                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}}>
                         <Tabs
                             // ariaLabel="Report options"
                             role="navigation"
                             selected={this.props.tabs.indexOf(this.props.selectedTab)}
                             tabContentClassName="tab-content"
                         >
-                        {this.props.tabs.map(tabId => {
-                            return <Tab key={tabId}
-                                href="#"
-                                id={"tab-"+tabId}
-                                label={tabLabels[tabId]}
-                                role="presentation"
-                                className={"tab-content-"+tabId}
-                                style={{paddingTop:"6px"}}
-                            >
-                                <div>
-                                    {tabId === 'element' && <div className="reportContainer">
-                                        <ReportElements layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
-                                    </div>}
-                                    {tabId === 'rule' && <div className="reportContainer">
-                                        <ReportRules layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
-                                    </div>}
-                                    {tabId === 'checklist' && ruleset && <div className="reportContainer">
-                                    <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
-                                    </div>}
-                                </div>
-                            </Tab>
-                        })}
+                            <TabList>
+                                {this.props.tabs.map(tabId => (
+                                    <Tab key={tabId}>{tabLabels[tabId]}</Tab>
+                                ))}
+                            </TabList>
+                            <TabPanels>
+                                {this.props.tabs.map(tabId => (
+                                    <TabPanel>
+                                        <div>
+                                            {tabId === 'element' && <div className="reportContainer">
+                                                <ReportElements layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
+                                            </div>}
+                                            {tabId === 'rule' && <div className="reportContainer">
+                                                <ReportRules layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem}  selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
+                                            </div>}
+                                            {tabId === 'checklist' && ruleset && <div className="reportContainer">
+                                            <ReportChecklist layout={this.props.layout} getItem={this.props.getItem} getSelectedItem={this.props.getSelectedItem} learnItem={this.props.learnItem} selectItem={this.props.selectItem} selectedIssue={this.props.selectedIssue} report={this.props.report} ruleset={ruleset} dataFromParent={this.props.dataFromParent} focusedViewFilter={this.props.focusedViewFilter}/>
+                                            </div>}
+                                        </div>
+
+                                    </TabPanel>
+                                ))}
+                            </TabPanels>
                         </Tabs>
-                    </div>
-                </div>
+                    </Column>
+                </Grid>
             </div>
         </React.Fragment>
     }

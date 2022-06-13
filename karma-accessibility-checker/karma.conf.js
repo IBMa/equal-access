@@ -94,7 +94,11 @@ module.exports = function (config) {
         customLaunchers: {
             ChromeCustom: {
                 base: 'ChromeHeadless',
-                flags: ['--disable-web-security']
+                flags: [
+                    '--disable-web-security',
+                    '--disable-gpu',
+                    '--no-sandbox'
+                ]
             }
         },
         // Preprocess matching files before serving them to the browser

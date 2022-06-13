@@ -15,7 +15,6 @@
   *****************************************************************************/
  
 import Fetch from "./fetch";
-import Config from "./config";
 
 export interface IPolicyDefinition {
     id: string,
@@ -26,41 +25,71 @@ export interface IArchiveDefinition {
     id: string,
     name: string,
     path: string,
+    version: string,
     latest?: boolean,
     sunset?: boolean,
     policies: IPolicyDefinition[]
 }
 
 export default class EngineCache {
-    public static archives : IArchiveDefinition[] = [];
-    public static engines : {
-        [archiveId: string] : string
-    } = {}
-
-    public static clearCache() {
-        EngineCache.archives = [];
-        EngineCache.engines = {};
-    }
-
     public static async getArchives() {
-        if (EngineCache.archives.length === 0) {
-            EngineCache.archives = <IArchiveDefinition[]>await Fetch.json(Config.engineEndpoint+"/archives.json");
+        try {
+            let archiveInfo = ((await chrome.storage.local.get(['archiveInfo'])) || {}).archiveInfo || { archives: [], ts: 0 };
+            // If archive info is older than 30 minutes, or not there at all
+            let archives : IArchiveDefinition[] = archiveInfo.archives;
+            if (archives.length === 0 || new Date().getTime()-new Date(archiveInfo.ts).getTime() >= 30*60*1000) {
+                archives = <IArchiveDefinition[]>await Fetch.json(chrome.runtime.getURL("archives.json"));
+            }
+            await chrome.storage.local.set({ archiveInfo: { archives }, ts: new Date().getTime() });
+            return archives;
+        } catch (err) {
+            console.error(err);
+            return []
         }
-
-        // console.log('---EngineCache.EngineCache----', EngineCache);
-        return EngineCache.archives;
     }
 
     public static async getEngine(archiveId: string) : Promise<string> {
-        if (archiveId in EngineCache.engines) {
-            return EngineCache.engines[archiveId];
+        let engineInfo = ((await chrome.storage.local.get(['engineInfo'])) || {}).engineInfo || { engines: {}, ts: 0 };
+        let engines = engineInfo.engines;
+        if (archiveId in engines && new Date().getTime()-new Date(engineInfo.ts).getTime() >= 30*60*1000) {
+            return engines[archiveId];
         } else {
             let archiveDefs = await this.getArchives();
-            for (const archiveDef of archiveDefs) {
-                if (archiveDef.id === archiveId) {
-                    let engineURL = `${Config.engineEndpoint}${archiveDef.path}/js/ace.js`;
-                    return EngineCache.engines[archiveId] = <string>await Fetch.content(engineURL);
+            if (archiveId === "latest") {
+                let latestVersion;
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id === "latest") {
+                        latestVersion = archiveDef.version;
+                        break;
+                    }
                 }
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id !== "latest" && archiveDef.version === latestVersion) {
+                        let engineFile = `${archiveDef.path}/js/ace.js`;
+                        engines[archiveId] = engineFile;
+                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+                        return engineFile;
+                    }
+                }
+            } else {
+                for (const archiveDef of archiveDefs) {
+                    if (archiveDef.id === archiveId) {
+                        let engineFile = `${archiveDef.path}/js/ace.js`;
+                        engines[archiveId] = engineFile;
+                        await chrome.storage.local.set({ engineInfo: { engines }, ts: new Date().getTime() });
+                        return engineFile;
+                    }
+                }
+            }
+        }
+        return Promise.reject("Invalid Archive ID");
+    }
+
+    public static async getVersion(archiveId: string) : Promise<string> {
+        let archiveDefs = await this.getArchives();
+        for (const archiveDef of archiveDefs) {
+            if (archiveDef.id === archiveId) {                
+                return archiveDef.version;
             }
         }
         return Promise.reject("Invalid Archive ID");

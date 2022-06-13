@@ -212,6 +212,10 @@ export async function getRulesets() {
     return ACEngineManager.getRulesets();
 };
 
+export async function getRules() {
+    return ACEngineManager.getRules();
+}
+
 export const ruleIdToLegacyId = {
     "RPT_List_Misuse": "3",
     "RPT_Marquee_Trigger": "5",
