@@ -1,6 +1,6 @@
 import TabMessaging from "../util/tabMessaging";
 
-console.log("Content Script for drawing tab stops has loaded")
+console.log("Content Script for drawing tab stops has loaded");
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
@@ -131,7 +131,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // console.log("regularTabstops " + regularTabstops.length)
     // console.log("errorTabstops " + errorTabstops)
     // console.log("errorTabstops " + errorTabstops.length)
-    // console.log("errorsMisc " + errorsMisc)
+    console.log("errorsMisc " + errorsMisc)
 
 
     let regularTabstops: any = JSON.parse(JSON.stringify(message.tabStopsResults));
@@ -166,13 +166,26 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         
     });
 
-    window.addEventListener('resize', function () {
-        deleteDrawing(".deleteMe");
-        redraw(regularTabstops, errorsMisc, message.tabStopLines, message.tabStopOutlines);
-        redrawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
-        let resize = true;
-        TabMessaging.sendToBackground("TABSTOP_RESIZE", { resize: resize })
-    });
+
+
+    // Here is what needs to happen:
+    // 1. Catch window resize events (they come in bunches)
+    // 2. When there is a "reasonable" since the last event
+    // 3. Turn off window resize event listener
+    // ---- Make sure the following happen sequentially using promises -------
+    // 4. Delete drawing
+    // 5. Scan (make sure scan cannot be started from anywhere else)
+    //    we can update the tabstops and tabstop errors
+    // 6. When scan finished make sure page is at the top
+    // 7. draw tabstops regular and with errors
+    // 8. Turn back on window resize event listener
+
+
+    window.addEventListener("resize", debounce( resizeContent, 250 ));
+
+
+
+
 
     // Tab key listener
     window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
@@ -281,6 +294,29 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     return true;
 });
 
+// Debounce
+function debounce(func:any, time:any) {
+    console.log("debounce so got resize event");
+    // turn off resize event
+    var time = time || 100; // 100 by default if no param
+    var timer: any;
+    return function(event:any) {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(func, time, event);
+    };
+}
+
+// Function with stuff to execute
+function resizeContent() {
+    // Do loads of stuff once window has resized
+    let resize = true;
+    console.log("Message TABSTOP_RESIZE send to background");
+    TabMessaging.sendToBackground("TABSTOP_RESIZE", { resize: resize } );
+
+    // Turn resize listener back on
+    console.log('resized');
+}
+
 function getXPathForElement(element: any) {
     const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
     const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
@@ -325,6 +361,7 @@ function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 }
 
 function deleteDrawing(classToRemove: string) {
+    console.log("deleteDrawing");
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
@@ -387,8 +424,15 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
                 // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
                 let triangleLegLength = 27;
-                let triangleXShifted = x;  // Shift 1 px to center the ! we draw
-                let triangleYShifted = y+1;
+                let triangleXShifted = x;  
+                let triangleYShifted = y+1; // Shift 1 px to center the ? we draw
+                // If the triangle is being drawn slighly off of the screen move it into the screen
+                if (triangleXShifted >= -10 && triangleXShifted <= 6) {
+                    triangleXShifted = 14;
+                }
+                if (triangleYShifted >= -10 && triangleYShifted <= 6) {
+                    triangleYShifted = 14;
+                }
                 makeTriangle(  
                             triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                             triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
@@ -455,6 +499,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
 
+                    // offset to stay away from the outline?
                     let x = nodes[i].getBoundingClientRect().x - offset;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
@@ -529,6 +574,19 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     // console.log("before make triangle ",i);
                     // console.log("triangleXShifted = ",triangleXShifted);
                     // console.log("triangleYShifted = ",triangleYShifted);
+
+                    
+
+                    // center of the triangle is triangleXShifted, triangleYShifted
+
+                    // What if triangle is is bumping up against top of viewport, or left of viewport or right of viewport
+                    // If the triangle is being drawn slighly off of the screen move it into the screen
+                    if (triangleXShifted >= -10 && triangleXShifted <= 6) {
+                        triangleXShifted = 14;
+                    }
+                    if (triangleYShifted >= -10 && triangleYShifted <= 6) {
+                        triangleYShifted = 14;
+                    }
 
                     makeTriangle(  
                                 triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
@@ -676,6 +734,9 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
     //  <polygon points="0,0 100,0 50,100"/>
     // </svg>
 
+    // <polygon points="x1,y1 x2,y2 x3,y3"
+    // x1,y1 represents the starting point of the
+
     // .svg-triangle{
     //     margin: 0 auto;
     //     width: 100px;
@@ -689,13 +750,7 @@ function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number,
     // }
 
     // TODO: Find possible better way to deal with this (Talk to design)
-    // If the circle is being drawn slighly off of the screen move it into the screen
-    if (x1 >= -10 && x1 <= 6) {
-        x1 = 12;
-    }
-    if (y1 >= -10 && y1 <= 6) {
-        y1 = 12;
-    }
+   
     var triangleClone = createSVGTriangleTemplate();
     triangleClone.removeAttribute("id");
     triangleClone.classList.add("deleteMe");
