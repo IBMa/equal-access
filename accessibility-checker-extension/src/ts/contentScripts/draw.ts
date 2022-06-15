@@ -114,7 +114,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         `
     );
 
-    // Create nodes for errors (that are not tabstops) -  We are using warning icons here
+    // Create nodes for errors (that are not tabstops) -  they will get a triangle
     //    1. To to this remove any regular tabstops from the errors list
     let errorsMisc = JSON.parse(JSON.stringify(message.tabStopsErrors));
     for (let index = 0; index < message.tabStopsErrors.length; index++) {
