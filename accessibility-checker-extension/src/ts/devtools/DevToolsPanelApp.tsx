@@ -560,7 +560,7 @@
     
                 this.setState({ tabStopsResults: tabbable });
                 this.setState({ tabStopsErrors: tabbableErrors });
-                // console.log("tabbableErrors = ", tabbableErrors);
+                console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
                 if (this.state.showHideTabStops === false ) {
                     // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
