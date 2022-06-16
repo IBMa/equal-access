@@ -247,6 +247,7 @@
                     this.selectItem(result);
                 }
             });
+            // JCH the selected item needs to scroll into view
             this.state.tabStopsErrors.map((result: any) => {
                 if (message.xpath === result.path.dom) {
                     // console.log("result xpath = ",result.path.dom);

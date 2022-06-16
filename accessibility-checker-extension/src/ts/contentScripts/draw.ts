@@ -4,7 +4,6 @@ console.log("Content Script for drawing tab stops has loaded");
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("Message DRAW_TABS_TO_CONTEXT_SCRIPTS received in foreground")
-    // console.log(message.tabStopsResults);
     
     injectCSS(
         `
@@ -79,14 +78,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
         `
     );
-    // position: absolute;
-    // pointer-events: none;
-    // z-index: 1000;
-    // top: 0;
-    // left: 0;
-    // width: 100%;
-    // height: 100%;
-    // overflow: visible;
 
     injectCSS(
         `#svgLine{
@@ -127,12 +118,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             }
         });
     }
-    // console.log("regularTabstops " + regularTabstops)
-    // console.log("regularTabstops " + regularTabstops.length)
-    // console.log("errorTabstops " + errorTabstops)
-    // console.log("errorTabstops " + errorTabstops.length)
-    console.log("errorsMisc " + errorsMisc)
-
 
     let regularTabstops: any = JSON.parse(JSON.stringify(message.tabStopsResults));
     for (let index = 0; index < message.tabStopsResults.length; index++) {
@@ -149,17 +134,12 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         });
         if (flagMatchFound) {
             regularTabstops[index].nodeHasError = true
-        }
-        else { 
-
-        }
+        } 
     }
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
         setTimeout(() => {
-            console.log("message.tabStopLines = ", message.tabStopLines);
-            console.log("message.tabStopOutlines = ", message.tabStopOutlines);
             draw(regularTabstops, errorsMisc, message.tabStopLines, message.tabStopOutlines);
             drawErrors(errorsMisc, regularTabstops, message.tabStopOutlines);
         }, 1000)
@@ -168,7 +148,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
 
 
-    // Here is what needs to happen:
+    // Here is a possibile approach to window resize events:
     // 1. Catch window resize events (they come in bunches)
     // 2. When there is a "reasonable" since the last event
     // 3. Turn off window resize event listener
@@ -181,10 +161,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // 8. Turn back on window resize event listener
 
 
+    // For softlaunch use notification or just help
     window.addEventListener("resize", debounce( resizeContent, 250 ));
-
-
-
 
 
     // Tab key listener
