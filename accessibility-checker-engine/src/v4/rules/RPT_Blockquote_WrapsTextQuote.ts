@@ -40,18 +40,24 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        // ignore the check if the node is hidden
+        if (!RPTUtil.isNodeVisible(ruleContext) ) return null;
+        
         const validateParams = {
             minWords: {
                 value: 3,
                 type: "integer"
             }
         }
-        const ruleContext = context["dom"].node as Element;
+        
         let minWords = validateParams.minWords.value;
 
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
         let violatedtext = null;
+        // ignore the check for the text of the following elements
+        const ignored = ["blockquote", "q", "script", "style", "pre", "code", "ruby", "samp"];
         while (passed && walkNode) {
             // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
             // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
@@ -71,7 +77,7 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
                 // we're not already marked up
                 // Also skip if we're in a script - there's lots of quotes used in scripts
                 if ((dblQuotes != null || snglQuotes != null) &&
-                    RPTUtil.getAncestor(walkNode, ["blockquote", "q", "script", "style"]) == null) {
+                    RPTUtil.getAncestor(walkNode, ignored) == null) {
                     if (dblQuotes != null) {
                         for (let i = 0; passed && i < dblQuotes.length; ++i)
                             passed = RPTUtil.wordCount(dblQuotes[i]) < minWords;
@@ -98,9 +104,9 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
         }
 
         if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script or code segment
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
+            // Don't trigger if we're not in the body
+            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body"]);
+            passed = checkAncestor == null;
         }
 
         //if the violatedtext is longer than 69 chars, only keep the first 32, the " ... ", and the last 32 chars 
