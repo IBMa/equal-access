@@ -43,6 +43,8 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
         const ruleContext = context["dom"].node as Element;
         // ignore the check if the node is hidden
         if (!RPTUtil.isNodeVisible(ruleContext) ) return null;
+        // Don't trigger if the element is not in the body
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) == null) return null;
         
         const validateParams = {
             minWords: {
@@ -101,12 +103,6 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
                 }
             }
             walkNode = walkNode.nextSibling;
-        }
-
-        if (!passed) {
-            // Don't trigger if we're not in the body
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body"]);
-            passed = checkAncestor == null;
         }
 
         //if the violatedtext is longer than 69 chars, only keep the first 32, the " ... ", and the last 32 chars 
