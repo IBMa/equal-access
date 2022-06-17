@@ -121,13 +121,19 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
 
     // @ts-ignore
     itemSelectedRef(item: IReportItem) {
+        console.log("itemSelectedRef");
         // this function runs many times per click
         var selectedIssue = this.props.selectedIssue;
-        
+        console.log("selectedIssue = ", selectedIssue);
+        console.log("item.path.dom ",item.path.dom," === ", "selectedIssue?.path.dom ",selectedIssue?.path.dom);
+        console.log("item.ruleId ",item.ruleId," === ", "selectedIssue.ruleId ",selectedIssue?.ruleId);
         if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
+            console.log("this.selectedRef.current = ", this.selectedRef.current);
             if (this.selectedRef.current) {
+                console.log("this.selectedRef.current = ",this.selectedRef.current);
                 if (this.selectedRef.current) {
                     // TODO Get rid of doubles ?
+                    console.log("classList.add('selectedItem') = ",this.selectedRef.current?.classList.add("selectedItem"))
                     this.selectedRef.current?.classList.add("selectedItem");
                 }
                 let mythis = this;
