@@ -238,7 +238,7 @@
         }
     
         async xpathFromTabstops(message: any) {
-            // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+            console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
             // JCH take xpath and match to item with same item.path.dom
             this.state.tabStopsResults.map((result: any) => {
                 if (message.xpath === result.path.dom) {
@@ -370,20 +370,20 @@
     
                             PanelMessaging.addListener("TABSTOP_XPATH_ONCLICK", async message => {self.xpathFromTabstops(message)} );
     
-                            PanelMessaging.addListener("TABSTOP_RESIZE", async message => {
-                                console.log("Message TABSTOP_RESIZE received in Panel");
-                                console.log("Start SCAN");
-                                await self.startScan();
-                                console.log("SCAN Done");
-                                console.log("Send Message to draw");
-                                await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
-                                        { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopsResults: this.state.tabStopsResults, tabStopsErrors: this.state.tabStopsErrors, 
-                                            tabStopLines: this.state.tabStopLines, tabStopOutlines: this.state.tabStopOutlines });
-                                //        setTimeout(() => {
-                                //             this.setTabStopsShowHide();
-                                //         }, 1000);
-                                console.log("Got message.resize = ",message.resize);
-                            } );
+                            // PanelMessaging.addListener("TABSTOP_RESIZE", async message => {
+                            //     console.log("Message TABSTOP_RESIZE received in Panel");
+                            //     console.log("Start SCAN");
+                            //     await self.startScan();
+                            //     console.log("SCAN Done");
+                            //     console.log("Send Message to draw");
+                            //     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
+                            //             { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopsResults: this.state.tabStopsResults, tabStopsErrors: this.state.tabStopsErrors, 
+                            //                 tabStopLines: this.state.tabStopLines, tabStopOutlines: this.state.tabStopOutlines });
+                            //     //        setTimeout(() => {
+                            //     //             this.setTabStopsShowHide();
+                            //     //         }, 1000);
+                            //     console.log("Got message.resize = ",message.resize);
+                            // } );
     
                         }
                         if (self.props.layout === "sub") {

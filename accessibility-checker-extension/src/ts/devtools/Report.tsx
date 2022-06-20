@@ -73,6 +73,7 @@ export interface IRuleset {
 }
 
 interface IReportState {
+    renderFromTabCircleClick: boolean
 }
 
 interface IReportProps {
@@ -161,7 +162,9 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
 }
 
 export default class Report extends React.Component<IReportProps, IReportState> {
-    state: IReportState = {};
+    state: IReportState = {
+        renderFromTabCircleClick: false
+    };
     
     render() {
         const tabLabels : { [key: string] : string }= {
