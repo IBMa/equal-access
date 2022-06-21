@@ -1327,7 +1327,7 @@
                             tabStopFirstTime={this.state.tabStopFirstTime}
                             tabStopsSetFirstTime={this.tabStopsSetFirstTime.bind(this)}
                         />
-                         <div style={{ backgroundColor: "white", marginTop: "9rem", height: "calc(100% - 9rem)" }}>
+                         <div style={{ backgroundColor: "white", marginTop: "9.1rem", height: "calc(100% - 9.1rem)" }}>
                             <div role="region" aria-label="issue list" className="issueList">
                                 {this.state.numScanning > 0 ? <Loading /> : <></>}
                                 {this.state.report && <Report

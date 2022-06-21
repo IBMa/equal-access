@@ -128,8 +128,12 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
             setTimeout(function() {
                 if (mythis.selectedRef.current) {
                     mythis.selectedRef.current?.firstElementChild!.classList.add("selectedItem");
+                    // @ts-ignore
                     mythis.selectedRef.current?.scrollIntoView({
-                        block: 'center'
+                        // @ts-ignore
+                        block: 'nearest',
+                        behavior: 'smooth',
+                        inline: 'start'
                     });
                 }
             }, 0);
