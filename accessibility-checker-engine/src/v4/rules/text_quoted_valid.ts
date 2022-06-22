@@ -15,14 +15,14 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let RPT_Blockquote_WrapsTextQuote: Rule = {
-    id: "RPT_Blockquote_WrapsTextQuote",
+export let text_quoted_valid: Rule = {
+    id: "text_quoted_valid",
     context: "dom:*",
     help: {
         "en-US": {
-            "Pass_0": "RPT_Blockquote_WrapsTextQuote.html",
-            "Potential_1": "RPT_Blockquote_WrapsTextQuote.html",
-            "group": "RPT_Blockquote_WrapsTextQuote.html"
+            "Pass_0": "text_quoted_valid.html",
+            "Potential_1": "text_quoted_valid.html",
+            "group": "text_quoted_valid.html"
         }
     },
     messages: {
@@ -77,7 +77,6 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
                 let snglQuotes = txtVal.match(/('[^']+')/g);
                 // Walk the parents - only continue testing if we found a quote, but
                 // we're not already marked up
-                // Also skip if we're in a script - there's lots of quotes used in scripts
                 if ((dblQuotes != null || snglQuotes != null) &&
                     RPTUtil.getAncestor(walkNode, ignored) == null) {
                     if (dblQuotes != null) {
