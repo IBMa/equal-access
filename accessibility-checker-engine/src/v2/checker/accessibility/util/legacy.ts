@@ -3177,16 +3177,9 @@ export class RPTUtil {
 
         var ancestors = [];
         let walkNode : Element = ruleContext;
-        let withOpacity = false;
         while (walkNode) {
-            if (walkNode.nodeType === 1) {
+            if (walkNode.nodeType === 1) 
                 ancestors.push(walkNode);
-                if (!withOpacity) {
-                     let opacityStyle = win.getComputedStyle(walkNode).opacity;
-                     if (!opacityStyle || opacityStyle.length == 0 || parseFloat(opacityStyle) < 1.0 )
-                        withOpacity = true;
-                } 
-            }    
             walkNode = DOMUtil.parentElement(walkNode);
         }
         
@@ -3201,21 +3194,10 @@ export class RPTUtil {
         var cStyle = win.getComputedStyle(ruleContext);
         var compStyleColor = cStyle.color;
         var compStyleBgColor = cStyle.backgroundColor;
-        console.log("node=" + ruleContext.nodeName + ", withOpacity=" + withOpacity +", " + compStyleBgColor);    
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = RPTUtil.Color(compStyleColor);
         var bg = RPTUtil.Color(compStyleBgColor);
-        
-        // handle most common case for text content where the element's background color has no transparent and no background images, 
-        if ((compStyleBgColor && compStyleBgColor !== "transparent" && compStyleBgColor !== "rgba(0, 0, 0, 0)" && (!bg.alpha || bg.alpha >  0.95)) 
-            && (!cStyle.backgroundImage || cStyle.backgroundImage === 'none') && !withOpacity) {
-            console.log("node=" + ruleContext.nodeName + ", return");    
-            retVal.fg = fg;
-            retVal.bg = bg;
-            return retVal;  
-        }    
-        // end
         
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
@@ -3322,6 +3304,7 @@ export class RPTUtil {
                     delete thisStackBG.alpha;
                 } else {
                     thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
+                    thisStackAlpha = thisBgColor.alpha || 1.0
                 }
                 // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
                 // We can't wipe out the gradient info if this layer was transparent
