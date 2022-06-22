@@ -266,7 +266,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -500,7 +500,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -736,7 +736,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -944,7 +944,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1152,7 +1152,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1360,7 +1360,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1672,7 +1672,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2018,7 +2018,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2308,7 +2308,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2594,7 +2594,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -2888,7 +2888,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3204,7 +3204,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3464,7 +3464,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "ext_quoted_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3571,7 +3571,7 @@
         "WCAG20_Text_LetterSpacing": {
             "Pass_0": "Rule Passed"
         },
-        "RPT_Blockquote_WrapsTextQuote": {
+        "ext_quoted_valid": {
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {

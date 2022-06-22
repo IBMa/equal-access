@@ -11153,18 +11153,18 @@ exports.RPT_Blockquote_HasCite = {
   limitations under the License.
 *****************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.RPT_Blockquote_WrapsTextQuote = void 0;
+exports.ext_quoted_valid = void 0;
 var IRule_1 = __webpack_require__(4377);
 var IRule_2 = __webpack_require__(4377);
 var legacy_1 = __webpack_require__(8422);
-exports.RPT_Blockquote_WrapsTextQuote = {
-    id: "RPT_Blockquote_WrapsTextQuote",
+exports.ext_quoted_valid = {
+    id: "ext_quoted_valid",
     context: "dom:*",
     help: {
         "en-US": {
-            "Pass_0": "RPT_Blockquote_WrapsTextQuote.html",
-            "Potential_1": "RPT_Blockquote_WrapsTextQuote.html",
-            "group": "RPT_Blockquote_WrapsTextQuote.html"
+            "Pass_0": "ext_quoted_valid.html",
+            "Potential_1": "ext_quoted_valid.html",
+            "group": "ext_quoted_valid.html"
         }
     },
     messages: {

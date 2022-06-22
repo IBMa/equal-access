@@ -10941,9 +10941,9 @@ exports.RPT_Blockquote_HasCite = {
 
 /***/ }),
 
-/***/ "./src/v4/rules/RPT_Blockquote_WrapsTextQuote.ts":
+/***/ "./src/v4/rules/ext_quoted_valid.ts":
 /*!*******************************************************!*\
-  !*** ./src/v4/rules/RPT_Blockquote_WrapsTextQuote.ts ***!
+  !*** ./src/v4/rules/ext_quoted_valid.ts ***!
   \*******************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -10961,18 +10961,18 @@ exports.RPT_Blockquote_HasCite = {
   limitations under the License.
 *****************************************************************************/
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.RPT_Blockquote_WrapsTextQuote = void 0;
+exports.ext_quoted_valid = void 0;
 var IRule_1 = __webpack_require__(/*! ../api/IRule */ "./src/v4/api/IRule.ts");
 var IRule_2 = __webpack_require__(/*! ../api/IRule */ "./src/v4/api/IRule.ts");
 var legacy_1 = __webpack_require__(/*! ../../v2/checker/accessibility/util/legacy */ "./src/v2/checker/accessibility/util/legacy.ts");
-exports.RPT_Blockquote_WrapsTextQuote = {
-    id: "RPT_Blockquote_WrapsTextQuote",
+exports.ext_quoted_valid = {
+    id: "ext_quoted_valid",
     context: "dom:*",
     help: {
         "en-US": {
-            "Pass_0": "RPT_Blockquote_WrapsTextQuote.html",
-            "Potential_1": "RPT_Blockquote_WrapsTextQuote.html",
-            "group": "RPT_Blockquote_WrapsTextQuote.html"
+            "Pass_0": "ext_quoted_valid.html",
+            "Potential_1": "ext_quoted_valid.html",
+            "group": "ext_quoted_valid.html"
         }
     },
     messages: {
@@ -24086,7 +24086,7 @@ __exportStar(__webpack_require__(/*! ./Rpt_Aria_WidgetLabels_Implicit */ "./src/
 __exportStar(__webpack_require__(/*! ./RPT_Blink_CSSTrigger1 */ "./src/v4/rules/RPT_Blink_CSSTrigger1.ts"), exports);
 __exportStar(__webpack_require__(/*! ./RPT_Block_ShouldBeHeading */ "./src/v4/rules/RPT_Block_ShouldBeHeading.ts"), exports);
 __exportStar(__webpack_require__(/*! ./RPT_Blockquote_HasCite */ "./src/v4/rules/RPT_Blockquote_HasCite.ts"), exports);
-__exportStar(__webpack_require__(/*! ./RPT_Blockquote_WrapsTextQuote */ "./src/v4/rules/RPT_Blockquote_WrapsTextQuote.ts"), exports);
+__exportStar(__webpack_require__(/*! ./ext_quoted_valid */ "./src/v4/rules/ext_quoted_valid.ts"), exports);
 __exportStar(__webpack_require__(/*! ./RPT_Elem_EventMouseAndKey */ "./src/v4/rules/RPT_Elem_EventMouseAndKey.ts"), exports);
 __exportStar(__webpack_require__(/*! ./RPT_Elem_UniqueId */ "./src/v4/rules/RPT_Elem_UniqueId.ts"), exports);
 __exportStar(__webpack_require__(/*! ./RPT_Embed_AutoStart */ "./src/v4/rules/RPT_Embed_AutoStart.ts"), exports);

@@ -1597,7 +1597,7 @@ let aChecker = {
         "RPT_Media_ImgColorUsage": "245",
         "WCAG20_Meta_RedirectZero": "254",
         "RPT_Elem_Deprecated": "256",
-        "RPT_Blockquote_WrapsTextQuote": "263",
+        "ext_quoted_valid": "263",
         "RPT_Elem_EventMouseAndKey": "269",
         "WCAG20_Doc_HasTitle": "273",
         "RPT_Block_ShouldBeHeading": "322",

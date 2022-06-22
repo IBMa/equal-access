@@ -105,7 +105,7 @@ var skipList = [
     // path.join(testRoot, "RPT_Title_Valid_ruleunit","Title-empty.html"),
     // path.join(testRoot, "RPT_Title_Valid_ruleunit", "Title-invalidSpaces.html"),
     path.join(testRoot, "HAAC_Aria_Or_HTML5_Attr_ruleunit", "Fail.html"),
-    path.join(testRoot, "RPT_Blockquote_WrapsTextQuote_ruleunit", "BlockquoteQ-validHidden.html"),
+    path.join(testRoot, "ext_quoted_valid_ruleunit", "BlockquoteQ-validHidden.html"),
     path.join(testRoot, "RPT_Elem_UniqueId_ruleunit", "Identifiers-notUniqueHidden.html"),
     path.join(testRoot, "RPT_Style_ColorSemantics1_ruleunit", "D543.html"),
     path.join(testRoot, "RPT_Text_SensoryReference_ruleunit", "Content-notSensoryHidden.html"),

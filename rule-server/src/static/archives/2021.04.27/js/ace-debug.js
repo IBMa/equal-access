@@ -3023,10 +3023,10 @@ var a11yHelp = {
         "Potential_1": Config_1.Config.helpRoot + "/RPT_Elem_Deprecated"
     },
     // JCH - DONE
-    "RPT_Blockquote_WrapsTextQuote": {
-        0: Config_1.Config.helpRoot + "/RPT_Blockquote_WrapsTextQuote",
-        "Pass_0": Config_1.Config.helpRoot + "/RPT_Blockquote_WrapsTextQuote",
-        "Potential_1": Config_1.Config.helpRoot + "/RPT_Blockquote_WrapsTextQuote"
+    "ext_quoted_valid": {
+        0: Config_1.Config.helpRoot + "/ext_quoted_valid",
+        "Pass_0": Config_1.Config.helpRoot + "/ext_quoted_valid",
+        "Potential_1": Config_1.Config.helpRoot + "/ext_quoted_valid"
     },
     // JCH - DONE
     "RPT_Elem_EventMouseAndKey": {
@@ -3929,7 +3929,7 @@ var a11yHelpOld = {
     "RPT_Media_ImgColorUsage": ["idhi_accessibility_check_g245.html"],
     "WCAG20_Meta_RedirectZero": ["idhi_accessibility_check_g254.html"],
     "RPT_Elem_Deprecated": ["idhi_accessibility_check_g256.html"],
-    "RPT_Blockquote_WrapsTextQuote": ["idhi_accessibility_check_g263.html"],
+    "ext_quoted_valid": ["idhi_accessibility_check_g263.html"],
     "RPT_Elem_EventMouseAndKey": ["idhi_accessibility_check_g269.html"],
     "WCAG20_Doc_HasTitle": ["idhi_accessibility_check_g273.html"],
     "RPT_Block_ShouldBeHeading": ["idhi_accessibility_check_g322.html"],
@@ -4199,7 +4199,7 @@ var a11yNls = {
         "Potential_1": "Obsolete language features are being used"
     },
     // JCH - DONE
-    "RPT_Blockquote_WrapsTextQuote": {
+    "ext_quoted_valid": {
         0: "Quotations should be marked with <q> or <blockquote> elements",
         "Pass_0": "Rule Passed",
         "Potential_1": "If the following text is a quotation, mark it as a <q> or <blockquote> element: {0}"
@@ -7710,7 +7710,7 @@ var a11yRulesBlockquote = [
          * Description: Trigger if quotes are used that are not in <q> or <blockquote> or <script>
          * Origin: RPT 5.6 G263
          */
-        id: "RPT_Blockquote_WrapsTextQuote",
+        id: "ext_quoted_valid",
         context: "dom:*",
         run: function (context, options) {
             var validateParams = {
@@ -14217,7 +14217,7 @@ var a11yRulesets = [
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
                     {
-                        id: "RPT_Blockquote_WrapsTextQuote",
+                        id: "ext_quoted_valid",
                         level: IEngine_1.eRulePolicy.VIOLATION,
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
@@ -15370,7 +15370,7 @@ var a11yRulesets = [
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
                     {
-                        id: "RPT_Blockquote_WrapsTextQuote",
+                        id: "ext_quoted_valid",
                         level: IEngine_1.eRulePolicy.VIOLATION,
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
@@ -16523,7 +16523,7 @@ var a11yRulesets = [
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
                     {
-                        id: "RPT_Blockquote_WrapsTextQuote",
+                        id: "ext_quoted_valid",
                         level: IEngine_1.eRulePolicy.VIOLATION,
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
@@ -17587,7 +17587,7 @@ var a11yRulesets = [
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
                     {
-                        id: "RPT_Blockquote_WrapsTextQuote",
+                        id: "ext_quoted_valid",
                         level: IEngine_1.eRulePolicy.VIOLATION,
                         toolkitLevel: IEngine_1.eToolkitLevel.LEVEL_THREE
                     },
