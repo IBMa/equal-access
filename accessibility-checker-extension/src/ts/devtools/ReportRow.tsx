@@ -125,19 +125,15 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
         var selectedIssue = this.props.selectedIssue;
         
         if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
-            if (this.selectedRef.current) {
-                if (this.selectedRef.current) {
-                    // TODO Get rid of doubles ?
-                    this.selectedRef.current?.classList.add("selectedItem");
-                }
-                let mythis = this;
-                setTimeout(function() {
-                    //mythis.selectedRef.current?.scrollIntoView();
+            let mythis = this;
+            setTimeout(function() {
+                if (mythis.selectedRef.current) {
+                    mythis.selectedRef.current?.firstElementChild!.classList.add("selectedItem");
                     mythis.selectedRef.current?.scrollIntoView({
                         block: 'center'
                     });
-                },0)
-            }
+                }
+            }, 0);
             return this.selectedRef;
         } 
         return null;
@@ -241,33 +237,35 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                         return <React.Fragment>
                         {!this.props.focusedViewFilter || (focusedView && (item.selected || item.selectedChild)) ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
-                            (<Grid data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")} ref={this.itemSelectedRef(item)} onClick={(event: any) => this.itemSelectedClickHandler(event, item)}  onKeyDown={this.onKeyDown.bind(this)}>
-                                <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}} role="cell" style={{paddingLeft:"28px"}}>
-                                    <div className="itemMessage" style={{paddingLeft:"4px"}}>
-                                        { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 
-                                        <React.Fragment>
-                                        <span ><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Violation" /></span>
-                                        <span style={{fontSize:"12px"}}>{item.message}</span>
-                                        {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
-                                        </React.Fragment>
-                                        }
-                                        { (this.props.dataFromParent[0] || this.props.dataFromParent[2]) && val === "Needs review" && 
-                                        <React.Fragment>
-                                        <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Needs review" /></span>
-                                        <span style={{fontSize:"12px"}}>{item.message}</span>
-                                        {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
-                                        </React.Fragment>
-                                        }
-                                        { (this.props.dataFromParent[0] || this.props.dataFromParent[3]) && val === "Recommendation" && 
-                                        <React.Fragment>
-                                        <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Recommendation" /></span>
-                                        <span style={{fontSize:"12px"}}>{item.message}</span>
-                                        {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
-                                        </React.Fragment>
-                                        }
-                                    </div>
-                                </Column>
-                            </Grid>)
+                            (<div ref={this.itemSelectedRef(item)}>
+                                <Grid data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")}  onClick={(event: any) => this.itemSelectedClickHandler(event, item)}  onKeyDown={this.onKeyDown.bind(this)}>
+                                    <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}} role="cell" style={{paddingLeft:"28px"}}>
+                                        <div className="itemMessage" style={{paddingLeft:"4px"}}>
+                                            { (this.props.dataFromParent[0] || this.props.dataFromParent[1]) && val === "Violation" && 
+                                            <React.Fragment>
+                                            <span ><img src={Violation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Violation" /></span>
+                                            <span style={{fontSize:"12px"}}>{item.message}</span>
+                                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
+                                            </React.Fragment>
+                                            }
+                                            { (this.props.dataFromParent[0] || this.props.dataFromParent[2]) && val === "Needs review" && 
+                                            <React.Fragment>
+                                            <span><img src={NeedsReview16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Needs review" /></span>
+                                            <span style={{fontSize:"12px"}}>{item.message}</span>
+                                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
+                                            </React.Fragment>
+                                            }
+                                            { (this.props.dataFromParent[0] || this.props.dataFromParent[3]) && val === "Recommendation" && 
+                                            <React.Fragment>
+                                            <span><img src={Recommendation16} style={{verticalAlign:"middle",marginBottom:"0px"}} alt="Recommendation" /></span>
+                                            <span style={{fontSize:"12px"}}>{item.message}</span>
+                                            {this.props.layout === "sub" ? (<React.Fragment><span> </span><a className="helpLink" href="#" style={{cursor:'default'}} onKeyDown={(event) =>{this.learnMoreKeyDownHandler(event, item)}} onClick={(event) =>{this.learnMoreClickHandler(event, item)}} ref={this.learnMoreRef(item)}>Learn more</a></React.Fragment>) : ""}
+                                            </React.Fragment>
+                                            }
+                                        </div>
+                                    </Column>
+                                </Grid>
+                            </div>)
                             : ""
                         : "" }
                         
