@@ -84,7 +84,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/head[1]/title[1]",
@@ -210,7 +210,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/head[1]/meta[2]",
@@ -336,7 +336,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/head[1]/meta[1]",
@@ -462,7 +462,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/head[1]",
@@ -651,7 +651,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/h1[1]",
@@ -861,7 +861,7 @@
 		"ignored": false,
 		"level": "violation"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[2]",
@@ -1071,7 +1071,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[1]",
@@ -1260,7 +1260,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/a[1]",
@@ -1428,7 +1428,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]",
@@ -1743,7 +1743,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]/a[1]",
@@ -1995,7 +1995,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]",
@@ -2331,7 +2331,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]",
@@ -2541,7 +2541,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]",
@@ -2643,7 +2643,7 @@
 			"0": "Background images that convey important information must have a text alternative that describes the image",
 			"Pass_0": "Rule Passed"
 		},
-		"RPT_Blockquote_WrapsTextQuote": {
+		"text_quoted_correctly": {
 			"0": "Quotations should be marked with <q> or <blockquote> elements",
 			"Pass_0": "Rule Passed"
 		},

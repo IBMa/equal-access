@@ -24,7 +24,7 @@
 			"0": "Heading text must use a heading element",
 			"Pass_0": "Rule Passed"
 		},
-		"RPT_Blockquote_WrapsTextQuote": {
+		"text_quoted_correctly": {
 			"0": "Quotations should be marked with <q> or <blockquote> elements",
 			"Pass_0": "Rule Passed"
 		},
@@ -227,7 +227,7 @@
 			"dom": "/html[1]/head[1]/title[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<title>",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -353,7 +353,7 @@
 			"dom": "/html[1]/head[1]/meta[2]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<meta content=\"text\" name=\"Description\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -479,7 +479,7 @@
 			"dom": "/html[1]/head[1]/meta[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<meta charset=\"utf-8\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -605,7 +605,7 @@
 			"dom": "/html[1]/head[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<head>",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -794,7 +794,7 @@
 			"dom": "/html[1]/body[1]/div[2]/h1[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<h1>",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -1004,7 +1004,7 @@
 			"dom": "/html[1]/body[1]/div[2]/div[2]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<div id=\"firstDiv\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -1214,7 +1214,7 @@
 			"dom": "/html[1]/body[1]/div[2]/div[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<div id=\"firstDiv\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -1403,7 +1403,7 @@
 			"dom": "/html[1]/body[1]/div[2]/a[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<a name=\"navskip\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -1571,7 +1571,7 @@
 			"dom": "/html[1]/body[1]/div[2]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<div role=\"main\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -1886,7 +1886,7 @@
 			"dom": "/html[1]/body[1]/div[1]/a[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -2138,7 +2138,7 @@
 			"dom": "/html[1]/body[1]/div[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<div role=\"navigation\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -2474,7 +2474,7 @@
 			"dom": "/html[1]/body[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<body>",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
@@ -2684,7 +2684,7 @@
 			"dom": "/html[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "RPT_Blockquote_WrapsTextQuote",
+		"ruleId": "text_quoted_correctly",
 		"snippet": "<html lang=\"en\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,
