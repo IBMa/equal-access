@@ -3193,11 +3193,9 @@ export class RPTUtil {
         // start
         var cStyle = win.getComputedStyle(ruleContext);
         var compStyleColor = cStyle.color;
-        var compStyleBgColor = cStyle.backgroundColor;
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = RPTUtil.Color(compStyleColor);
-        var bg = RPTUtil.Color(compStyleBgColor);
         
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
