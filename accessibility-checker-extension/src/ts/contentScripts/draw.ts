@@ -108,16 +108,16 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // Create nodes for errors (that are not tabstops) -  they will get a triangle
     //    1. To to this remove any regular tabstops from the errors list
     let tabStopsErrors = JSON.parse(JSON.stringify(message.tabStopsErrors));
-    for (let index = 0; index < message.tabStopsErrors.length; index++) {
-        const tabElem = message.tabStopsErrors[index];
-        message.tabStopsResults.forEach((errorElem: any) => {
-            if (tabElem.path.dom === errorElem.path.dom) {
-                // console.log(errorElem.path.dom)
-                // console.log(tabElem.path.dom)
-                tabStopsErrors.splice(index, 1)
-            }
-        });
-    }
+    // for (let index = 0; index < message.tabStopsErrors.length; index++) {
+    //     const tabElem = message.tabStopsErrors[index];
+    //     message.tabStopsResults.forEach((errorElem: any) => {
+    //         if (tabElem.path.dom === errorElem.path.dom) {
+    //             // console.log(errorElem.path.dom)
+    //             // console.log(tabElem.path.dom)
+    //             tabStopsErrors.splice(index, 1)
+    //         }
+    //     });
+    // }
 
     console.log(tabStopsErrors);
 
@@ -356,29 +356,35 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
         
-        console.log("redrawErrors nodeXpaths = ", nodeXpaths);
+        console.log("tabStopsErrors = ", tabStopsErrors);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
             return el != null;
         });
         let offset = 0;
 
         // console.log("nodes = ",nodes);
-        let skipErrorNode = false;
+        
         console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
+            console.log("nodes[",i,"] = ",nodes[i]);
             // Check if already taken care of in the tabbable elements
+            let skipErrorNode = false;
             for (let j=0; j < tabbableNodesXpaths.length; j++) {
                 if (nodeXpaths[i] === tabbableNodesXpaths[j]) {
-                    // console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
-                    // console.log("tabbableNodesXpaths[",i,"] = ",tabbableNodesXpaths[j]);
+                    console.log("Already in Tab Chain");
+                    console.log(tabStopsErrors[i].ruleId);
                     skipErrorNode = true; // JCH - already taken care of in redraw
+                } else {
+                    console.log("Not in Tab Chain");
+                    console.log(tabStopsErrors[i].ruleId);
                 }
             }
             if (skipErrorNode === true) {
-                // console.log("JCH - skip out");
+                console.log("JCH - skip out");
                 continue; // JCH - don't put up non triangle for an element if already done in redraw
             }
             if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
+                console.log("2 nodes[",i,"] = ",nodes[i]);
                 let x = nodes[i].getBoundingClientRect().x - offset;
                 let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
