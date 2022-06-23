@@ -44,7 +44,7 @@ export let text_quoted_correctly: Rule = {
         // ignore the check if the node is hidden
         if (!RPTUtil.isNodeVisible(ruleContext) ) return null;
         // Don't trigger if the element is not in the body
-        if (RPTUtil.getAncestor(ruleContext, ["body"]) == null) return null;
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) return null;
 
         const validateParams = {
             minWords: {
@@ -66,7 +66,7 @@ export let text_quoted_correctly: Rule = {
             // a node walk only on siblings so it would not get text nodes from other siblings at all.
             // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
             // if.
-            if (walkNode.nodeName == "#text") {
+            if (walkNode.nodeName === "#text") {
                 let txtVal = walkNode.nodeValue;
                 // Do the regex tests first - should be fast
 
@@ -77,8 +77,8 @@ export let text_quoted_correctly: Rule = {
                 // Walk the parents - only continue testing if we found a quote, but
                 // we're not already marked up
                 // Also skip if we're in a script - there's lots of quotes used in scripts
-                if ((dblQuotes != null || snglQuotes != null) &&
-                    RPTUtil.getAncestor(walkNode, ignored) == null) {
+                if ((dblQuotes !== null || snglQuotes !== null) &&
+                    RPTUtil.getAncestor(walkNode, ignored) === null) {
                     if (dblQuotes != null) {
                         for (let i = 0; passed && i < dblQuotes.length; ++i)
                             passed = RPTUtil.wordCount(dblQuotes[i]) < minWords;
@@ -90,10 +90,10 @@ export let text_quoted_correctly: Rule = {
 
                     // Remove any linefeed inside the quote
                     // violatedtext = txtVal.replace(new RegExp("\\r?\\n|\\r","g"),"");
-                    if (dblQuotes == null) {
+                    if (dblQuotes === null) {
                         violatedtext = snglQuotes.join(", ").replace(new RegExp("\\r?\\n|\\r", "g"), "");
                     }
-                    else if (snglQuotes == null) {
+                    else if (snglQuotes === null) {
                         violatedtext = dblQuotes.join(", ").replace(new RegExp("\\r?\\n|\\r", "g"), "");
                     }
                     else {
