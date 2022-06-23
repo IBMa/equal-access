@@ -100,6 +100,9 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
     }
     let results = await aChecker.getCompliance(page, `${ruleId}_${testcaseId}`);
     let ruleIds = {};
+    for (const aceRule of aceRules) {
+        ruleIds[aceRule.ruleId] = true;
+    }
     let issuesFailMap = {};
     let issuesReviewMap = {};
     let issuesPassMap = {};
@@ -110,17 +113,14 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
                     let earlResult = aceRule.remap[result.reasonId];
                     switch (earlResult) {
                         case "pass":
-                            ruleIds[result.ruleId] = true;
                             issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
                             issuesPassMap[result.ruleId].push(result);
                             break;
                         case "fail":
-                            ruleIds[result.ruleId] = true;
                             issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
                             issuesFailMap[result.ruleId].push(result);
                             break;
                         case "cantTell":
-                            ruleIds[result.ruleId] = true;
                             issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
                             issuesReviewMap[result.ruleId].push(result);
                             break;
@@ -129,15 +129,12 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
                     }
                 } else if (!aceRule.remap) {
                     if (result.value[1] === "FAIL") {
-                        ruleIds[result.ruleId] = true;
                         issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
                         issuesFailMap[result.ruleId].push(result);
                     } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
-                        ruleIds[result.ruleId] = true;
                         issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
                         issuesReviewMap[result.ruleId].push(result);
                     } else if (result.value[1] === "PASS") {
-                        ruleIds[result.ruleId] = true;
                         issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
                         issuesPassMap[result.ruleId].push(result);
                     }
