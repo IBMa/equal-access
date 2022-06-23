@@ -91,7 +91,7 @@ export let element_tabbable_visible: Rule = {
             }    
         }
         
-        if (top > 0 && left > 0)
+        if (top >= 0 && left >= 0)
             return RulePass("pass");
         else
             return RulePotential("potential_visible", []);

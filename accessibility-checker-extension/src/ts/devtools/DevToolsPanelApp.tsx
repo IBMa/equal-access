@@ -561,6 +561,7 @@
     
                 this.setState({ tabStopsResults: tabbable });
                 this.setState({ tabStopsErrors: tabbableErrors });
+                console.log("tabbable = ", tabbable);
                 console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
                 if (this.state.showHideTabStops === false ) {
