@@ -287,7 +287,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -521,7 +521,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -729,7 +729,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -989,7 +989,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1249,7 +1249,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "RPT_Blockquote_WrapsTextQuote",
+            "ruleId": "text_quoted_correctly",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -1356,7 +1356,7 @@
         "WCAG20_Text_LetterSpacing": {
             "Pass_0": "Rule Passed"
         },
-        "RPT_Blockquote_WrapsTextQuote": {
+        "text_quoted_correctly": {
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
