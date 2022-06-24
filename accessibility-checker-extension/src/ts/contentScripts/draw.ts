@@ -366,21 +366,21 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
         
         console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
-            console.log("nodes[",i,"] = ",nodes[i]);
+            // console.log("nodes[",i,"] = ",nodes[i]);
             // Check if already taken care of in the tabbable elements
             let skipErrorNode = false;
             for (let j=0; j < tabbableNodesXpaths.length; j++) {
                 if (nodeXpaths[i] === tabbableNodesXpaths[j]) {
-                    console.log("Already in Tab Chain");
-                    console.log(tabStopsErrors[i].ruleId);
+                    // console.log("Already in Tab Chain");
+                    // console.log(tabStopsErrors[i].ruleId);
                     skipErrorNode = true; // JCH - already taken care of in redraw
                 } else {
-                    console.log("Not in Tab Chain");
-                    console.log(tabStopsErrors[i].ruleId);
+                    // console.log("Not in Tab Chain");
+                    // console.log(tabStopsErrors[i].ruleId);
                 }
             }
             if (skipErrorNode === true) {
-                console.log("JCH - skip out");
+                // console.log("JCH - skip out");
                 continue; // JCH - don't put up non triangle for an element if already done in redraw
             }
             if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
