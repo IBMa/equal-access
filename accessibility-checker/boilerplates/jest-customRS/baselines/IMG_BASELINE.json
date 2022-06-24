@@ -49,7 +49,7 @@
             "0": "Use CSS 'letter-spacing' to control spacing within a word",
             "Pass_0": "Rule Passed"
         },
-        "RPT_Blockquote_WrapsTextQuote": {
+        "text_quoted_correctly": {
             "0": "Quotations should be marked with <q> or <blockquote> elements",
             "Pass_0": "Rule Passed"
         },
