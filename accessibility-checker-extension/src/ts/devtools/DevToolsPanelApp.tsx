@@ -365,10 +365,7 @@
                             });
     
                             
-                            PanelMessaging.addListener("DAP_SCAN_COMPLETE", async message => {
-                                console.log("PanelMessaging Listener - DAP_SCAN_COMPLETE: tabId = ", message.tabId);
-                                self.onReport.bind(self);
-                            });
+                            PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
     
                             PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
     
