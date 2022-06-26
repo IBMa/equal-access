@@ -355,6 +355,7 @@
     
                         if (!self.state.listenerRegistered) {
                             PanelMessaging.addListener("TAB_UPDATED", async message => {
+                                console.log("PanelMessaging Listener - TAB_UPDATED: tabId = ", message.tabId);
                                 self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                                 if (message.tabId === self.state.tabId && message.status === "loading") {
                                     if (message.tabUrl && message.tabUrl != self.state.tabURL) {
@@ -364,7 +365,10 @@
                             });
     
                             
-                            PanelMessaging.addListener("DAP_SCAN_COMPLETE", self.onReport.bind(self));
+                            PanelMessaging.addListener("DAP_SCAN_COMPLETE", async message => {
+                                console.log("PanelMessaging Listener - DAP_SCAN_COMPLETE: tabId = ", message.tabId);
+                                self.onReport.bind(self);
+                            });
     
                             PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
     
@@ -564,6 +568,7 @@
                 console.log("tabbable = ", tabbable);
                 console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
+                console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
                 if (this.state.showHideTabStops === false ) {
                     // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
@@ -666,6 +671,7 @@
             } catch (err) {
                 console.error(err);
             }
+            console.log("this.state.showHideTabStops = ",this.state.showHideTabStops);
             console.log("Function: onReport DONE");
             return true;
         }
@@ -1084,7 +1090,7 @@
         }
     
         setTabStopsShowHide() {
-            if(this.state.showHideTabStops) {
+            if (this.state.showHideTabStops) {
                 this.setState({ showHideTabStops: false });
             } else {
                 this.setState({ showHideTabStops: true });

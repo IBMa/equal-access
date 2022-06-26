@@ -131,6 +131,7 @@
     BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             try {
+                console.log("BackgroundMessaging Listener - DAP_SCAN: tabId = ", message.tabId);
                 // Determine which archive we're scanning with
                 let archiveId = Config.defaultArchiveId + "";
                 const archives = await EngineCache.getArchives();
@@ -168,6 +169,7 @@
     
     BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) => {
         try {
+            console.log("BackgroundMessaging Listener - DAP_SCAN_TAB_COMPLETE: tabId = ", message.tabId);
             await BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
             if (message.archiveId && message.policyId) {
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
@@ -255,7 +257,7 @@
     });
     
     BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
-        console.log("Message DRAW_TABS_TO_BACKGROUND recieved in background")
+        console.log("BackgroundMessaging Listener - DRAW_TABS_TO_BACKGROUND: tabId = ", message.tabId);
         await BackgroundMessaging.sendToTab(message.tabId,
             "DRAW_TABS_TO_CONTEXT_SCRIPTS", 
             { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, 
@@ -267,14 +269,14 @@
     });
     
     BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
-        // console.log("Message HIGHLIGHT_TABSTOP_TO_BACKGROUND received in background")
+        console.log("BackgroundMessaging Listener - HIGHLIGHT_TABSTOP_TO_BACKGROUND: tabId = ", message.tabId);
         await BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
     
         return true;
     });
     
     BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-        // console.log("Message DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS received in background")
+        console.log("BackgroundMessaging Listener - DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
         await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
     
         return true;
