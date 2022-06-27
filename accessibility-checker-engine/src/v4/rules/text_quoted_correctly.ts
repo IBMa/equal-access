@@ -15,14 +15,14 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let RPT_Blockquote_WrapsTextQuote: Rule = {
-    id: "RPT_Blockquote_WrapsTextQuote",
+export let text_quoted_correctly: Rule = {
+    id: "text_quoted_correctly",
     context: "dom:*",
     help: {
         "en-US": {
-            "Pass_0": "RPT_Blockquote_WrapsTextQuote.html",
-            "Potential_1": "RPT_Blockquote_WrapsTextQuote.html",
-            "group": "RPT_Blockquote_WrapsTextQuote.html"
+            "Pass_0": "text_quoted_correctly.html",
+            "Potential_1": "text_quoted_correctly.html",
+            "group": "text_quoted_correctly.html"
         }
     },
     messages: {
@@ -40,18 +40,25 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
+        const ruleContext = context["dom"].node as Element;
+        // ignore the check if the node is hidden
+        if (!RPTUtil.isNodeVisible(ruleContext) ) return null;
+        // Don't trigger if the element is not in the body
+        if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) return null;
+
         const validateParams = {
             minWords: {
                 value: 3,
                 type: "integer"
             }
         }
-        const ruleContext = context["dom"].node as Element;
         let minWords = validateParams.minWords.value;
 
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
         let violatedtext = null;
+        // ignore the check for the text of the following elements
+        const ignored = ["blockquote", "q", "script", "style", "pre", "code", "ruby", "samp"];
         while (passed && walkNode) {
             // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
             // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
@@ -59,7 +66,7 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
             // a node walk only on siblings so it would not get text nodes from other siblings at all.
             // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
             // if.
-            if (walkNode.nodeName == "#text") {
+            if (walkNode.nodeName === "#text") {
                 let txtVal = walkNode.nodeValue;
                 // Do the regex tests first - should be fast
 
@@ -70,8 +77,8 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
                 // Walk the parents - only continue testing if we found a quote, but
                 // we're not already marked up
                 // Also skip if we're in a script - there's lots of quotes used in scripts
-                if ((dblQuotes != null || snglQuotes != null) &&
-                    RPTUtil.getAncestor(walkNode, ["blockquote", "q", "script", "style"]) == null) {
+                if ((dblQuotes !== null || snglQuotes !== null) &&
+                    RPTUtil.getAncestor(walkNode, ignored) === null) {
                     if (dblQuotes != null) {
                         for (let i = 0; passed && i < dblQuotes.length; ++i)
                             passed = RPTUtil.wordCount(dblQuotes[i]) < minWords;
@@ -83,10 +90,10 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
 
                     // Remove any linefeed inside the quote
                     // violatedtext = txtVal.replace(new RegExp("\\r?\\n|\\r","g"),"");
-                    if (dblQuotes == null) {
+                    if (dblQuotes === null) {
                         violatedtext = snglQuotes.join(", ").replace(new RegExp("\\r?\\n|\\r", "g"), "");
                     }
-                    else if (snglQuotes == null) {
+                    else if (snglQuotes === null) {
                         violatedtext = dblQuotes.join(", ").replace(new RegExp("\\r?\\n|\\r", "g"), "");
                     }
                     else {
@@ -95,12 +102,6 @@ export let RPT_Blockquote_WrapsTextQuote: Rule = {
                 }
             }
             walkNode = walkNode.nextSibling;
-        }
-
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script or code segment
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
         }
 
         //if the violatedtext is longer than 69 chars, only keep the first 32, the " ... ", and the last 32 chars 
