@@ -131,8 +131,6 @@
     BackgroundMessaging.addListener("DAP_SCAN", async (message: any) => {
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             try {
-                console.log("BackgroundMessaging Listener - DAP_SCAN: tabId = ", message.tabId);
-                console.log(message);
                 // Determine which archive we're scanning with
                 let archiveId = Config.defaultArchiveId + "";
                 const archives = await EngineCache.getArchives();
@@ -170,8 +168,6 @@
     
     BackgroundMessaging.addListener("DAP_SCAN_TAB_COMPLETE", async (message: any) => {
         try {
-            console.log("BackgroundMessaging Listener - DAP_SCAN_TAB_COMPLETE: tabId = ", message.tabId);
-            console.log(message);
             await BackgroundMessaging.sendToPanel("DAP_SCAN_COMPLETE", message);
             if (message.archiveId && message.policyId) {
                 let browser = (navigator.userAgent.match(/\) ([^)]*)$/) || ["", "Unknown"])[1];
@@ -186,8 +182,6 @@
     });
     
     BackgroundMessaging.addListener("TAB_INFO", async (message: any) => {
-        console.log("BackgroundMessaging Listener - TAB_INFO: tabId = ", message.tabId);
-        console.log(message);
         return await new Promise((resolve, _reject) => {
             chrome.tabs.get(message.tabId, async function (tab: any) {
                 //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
@@ -217,8 +211,6 @@
     });
     
     BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
-        console.log("BackgroundMessaging Listener - DAP_Rulesets: tabId = ", message.tabId);
-        console.log(message);
         return await new Promise((resolve, reject) => {
     
             chrome.storage.local.get("OPTIONS", async function (result: any) {
@@ -263,8 +255,6 @@
     });
     
     BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
-        console.log("BackgroundMessaging Listener - DRAW_TABS_TO_BACKGROUND: tabId = ", message.tabId);
-        console.log(message);
         await BackgroundMessaging.sendToTab(message.tabId,
             "DRAW_TABS_TO_CONTEXT_SCRIPTS", 
             { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, 
@@ -276,15 +266,12 @@
     });
     
     BackgroundMessaging.addListener("HIGHLIGHT_TABSTOP_TO_BACKGROUND", async (message: any) => {
-        console.log("BackgroundMessaging Listener - HIGHLIGHT_TABSTOP_TO_BACKGROUND: tabId = ", message.tabId);
-        console.log(message);
         await BackgroundMessaging.sendToTab(message.tabId, "HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL, tabStopId: message.tabStopId});
     
         return true;
     });
     
     BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-        console.log("BackgroundMessaging Listener - DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
         await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
     
         return true;
@@ -298,15 +285,5 @@
         });
     
         return true;
-    }); 
-    
-    // BackgroundMessaging.addListener("TABSTOP_RESIZE", async (message: any) => {
-    //     console.log("Message TABSTOP_RESIZE received in background, resize: "+ message.resize)
-    //     await BackgroundMessaging.sendToPanel("TABSTOP_RESIZE", {
-    //         resize: message.resize,
-    //     });
-    
-    //     return true;
-    // }); 
-    
+    });
     

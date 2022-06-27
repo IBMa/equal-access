@@ -238,7 +238,7 @@
         }
     
         async xpathFromTabstops(message: any) {
-            console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+            // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
             // JCH take xpath and match to item with same item.path.dom
             this.state.tabStopsResults.map((result: any) => {
                 if (message.xpath === result.path.dom) {
@@ -258,14 +258,14 @@
         }
     
         async componentDidMount() {
-            console.log("Function: componentDidMount START");
-            console.log("this.state.tabId = ", this.state.tabId);
+            // console.log("Function: componentDidMount START");
+            // console.log("this.state.tabId = ", this.state.tabId);
             await this.readOptionsData();
-            console.log("Function: componentDidMount DONE");
+            // console.log("Function: componentDidMount DONE");
         }
     
         async readOptionsData() {
-            console.log("Function: readOptionsData START");
+            // console.log("Function: readOptionsData START");
             await new Promise<void>((resolve, _reject) => {
                 var self = this;
                 chrome.storage.local.get("OPTIONS", async  (result: any) => {
@@ -357,8 +357,6 @@
     
                         if (!self.state.listenerRegistered) {
                             PanelMessaging.addListener("TAB_UPDATED", async message => {
-                                console.log("PanelMessaging Listener - TAB_UPDATED: tabId = ", message.tabId);
-                                console.log(message);
                                 self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                                 if (message.tabId === self.state.tabId && message.status === "loading") {
                                     if (message.tabUrl && message.tabUrl != self.state.tabURL) {
@@ -373,22 +371,6 @@
                             PanelMessaging.sendToBackground("DAP_CACHED", { tabId: tab.id, tabURL: tab.url, origin: self.props.layout })
     
                             PanelMessaging.addListener("TABSTOP_XPATH_ONCLICK", async message => {self.xpathFromTabstops(message)} );
-    
-                            // PanelMessaging.addListener("TABSTOP_RESIZE", async message => {
-                            //     console.log("Message TABSTOP_RESIZE received in Panel");
-                            //     console.log("Start SCAN");
-                            //     await self.startScan();
-                            //     console.log("SCAN Done");
-                            //     console.log("Send Message to draw");
-                            //     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
-                            //             { tabId: this.state.tabId, tabURL: this.state.tabURL, tabStopsResults: this.state.tabStopsResults, tabStopsErrors: this.state.tabStopsErrors, 
-                            //                 tabStopLines: this.state.tabStopLines, tabStopOutlines: this.state.tabStopOutlines });
-                            //     //        setTimeout(() => {
-                            //     //             this.setTabStopsShowHide();
-                            //     //         }, 1000);
-                            //     console.log("Got message.resize = ",message.resize);
-                            // } );
-    
                         }
                         if (self.props.layout === "sub") {
                             self.selectElementInElements();
@@ -406,7 +388,7 @@
                             tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
     
                         });
-                        console.log("Function: readOptionsData DONE");
+                        // console.log("Function: readOptionsData DONE");
                     }
                     resolve();
                 });
@@ -442,7 +424,7 @@
         }
     
         async startScan() {
-            console.log("Function: startScan START");
+            // console.log("Function: startScan START");
             let tabURL = this.state.tabURL;
             let tabId = this.state.tabId;
     
@@ -475,7 +457,7 @@
                     console.error(err);
                 }
             }
-            console.log("Function: startScan DONE");
+            // console.log("Function: startScan DONE");
         }
     
         // JCH - not used
@@ -487,7 +469,7 @@
         async onReport(message: any): Promise<any> {               
             if (this.state.tabId !== message.tabId) return;
             
-            console.log("Function: onReport START");
+            // console.log("Function: onReport START");
             try {
                 if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
                     let blob_url = message.blob_url;
@@ -568,10 +550,10 @@
     
                 this.setState({ tabStopsResults: tabbable });
                 this.setState({ tabStopsErrors: tabbableErrors });
-                console.log("tabbable = ", tabbable);
-                console.log("tabbableErrors = ", tabbableErrors);
+                // console.log("tabbable = ", tabbable);
+                // console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
-                console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
+                // console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
                 if (this.state.showHideTabStops === false ) {
                     // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
@@ -584,8 +566,6 @@
                 this.setState({ scanning: false }); // scan done
                 // console.log("SCAN DONE");
     
-    
-                
                 // Cases for storage
                 // Note: if scanStorage false not storing scans, if true storing scans
                 // console.log("storedScans.length = ", this.state.storedScans.length, "   scanStorage = ", this.state.scanStorage);
@@ -674,8 +654,8 @@
             } catch (err) {
                 console.error(err);
             }
-            console.log("this.state.showHideTabStops = ",this.state.showHideTabStops);
-            console.log("Function: onReport DONE");
+            // console.log("this.state.showHideTabStops = ",this.state.showHideTabStops);
+            // console.log("Function: onReport DONE");
             return true;
         }
     
@@ -1104,10 +1084,10 @@
         }
     
         tabStopsSetFirstTime () {
-            console.log("tabStopsSetFirstTime");
+            // console.log("tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {
-                console.log("setState tabStopFirstTime to false");
+                // console.log("setState tabStopFirstTime to false");
                 this.setState({ tabStopFirstTime: false }); 
             }
     

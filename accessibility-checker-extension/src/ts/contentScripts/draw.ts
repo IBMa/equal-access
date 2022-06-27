@@ -1,10 +1,6 @@
 import TabMessaging from "../util/tabMessaging";
 
-console.log("Content Script for drawing tab stops has loaded");
-
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("TabMessaging Listener - DRAW_TABS_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
-    console.log(message);
     injectCSS(
         `
         .line {
@@ -105,32 +101,16 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         `
     );
 
-    // Create nodes for errors (that are not tabstops) -  they will get a triangle
-    //    1. To to this remove any regular tabstops from the errors list
+    // Create nodes that have keyboard errors
     let tabStopsErrors = JSON.parse(JSON.stringify(message.tabStopsErrors));
-    // for (let index = 0; index < message.tabStopsErrors.length; index++) {
-    //     const tabElem = message.tabStopsErrors[index];
-    //     message.tabStopsResults.forEach((errorElem: any) => {
-    //         if (tabElem.path.dom === errorElem.path.dom) {
-    //             // console.log(errorElem.path.dom)
-    //             // console.log(tabElem.path.dom)
-    //             tabStopsErrors.splice(index, 1)
-    //         }
-    //     });
-    // }
 
-    console.log(tabStopsErrors);
-
+    // Create nodes that are tabbable, i.e., in the tab chain
     let regularTabstops: any = JSON.parse(JSON.stringify(message.tabStopsResults));
     for (let index = 0; index < message.tabStopsResults.length; index++) {
         const tabElem = message.tabStopsResults[index];
         let flagMatchFound = false;
         message.tabStopsErrors.forEach((errorElem: any) => {
             if (tabElem.path.dom === errorElem.path.dom) {
-                // console.log("============123===================")
-                // console.log(errorElem.path.dom)
-                // console.log(tabElem.path.dom)
-                // console.log("=============123==================")
                 flagMatchFound = true;
             }
         });
@@ -278,7 +258,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
 // Debounce
 function debounce(func:any, time:any) {
-    console.log("debounce so got resize event");
     // turn off resize event
     var time = time || 100; // 100 by default if no param
     var timer: any;
@@ -292,11 +271,9 @@ function debounce(func:any, time:any) {
 function resizeContent() {
     // Do loads of stuff once window has resized
     let resize = true;
-    console.log("Message TABSTOP_RESIZE send to background");
     TabMessaging.sendToBackground("TABSTOP_RESIZE", { resize: resize } );
 
     // Turn resize listener back on
-    console.log('resized');
 }
 
 function getXPathForElement(element: any) {
@@ -306,9 +283,6 @@ function getXPathForElement(element: any) {
 }
 
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("TabMessaging Listener - HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
-    console.log(message);
-
     // Clearing any that are already highlighted
     document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
     // Highlighting any that are "clicked"
@@ -318,9 +292,6 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
 
 //@ts-ignore
 TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-    console.log("TabMessaging Listener - DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
-    console.log(message)
-
     deleteDrawing(".deleteMe");
     return true;
 });
@@ -343,14 +314,14 @@ async function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean)
 }
 
 function deleteDrawing(classToRemove: string) {
-    console.log("Function: deleteDrawing");
+    // console.log("Function: deleteDrawing");
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
 }
 
 
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-    console.log("Function: redrawErrors");
+    // console.log("Function: redrawErrors");
     setTimeout(() => {
         let tabbableNodesXpaths = getNodesXpaths(tabStops);
         
@@ -364,9 +335,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
         });
         let offset = 0;
 
-        // console.log("nodes = ",nodes);
-        
-        console.log("nodes.length = ",nodes.length);
+        // console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
             // console.log("nodes[",i,"] = ",nodes[i]);
             // Check if already taken care of in the tabbable elements
@@ -440,7 +409,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
 
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean) {
-    console.log("Function: redraw");
+    // console.log("Function: redraw");
 
     setTimeout(() => { 
         let offset = 3;
