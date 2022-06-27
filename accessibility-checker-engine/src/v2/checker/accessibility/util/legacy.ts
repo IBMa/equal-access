@@ -3178,22 +3178,25 @@ export class RPTUtil {
         var ancestors = [];
         let walkNode : Element = ruleContext;
         while (walkNode) {
-            if (walkNode.nodeType === 1)
+            if (walkNode.nodeType === 1) 
                 ancestors.push(walkNode);
             walkNode = DOMUtil.parentElement(walkNode);
         }
-
+        
         var retVal = {
             "hasGradient": false,
             "hasBGImage": false,
             "fg": null,
             "bg": null
         };
-        var compStyleColor = win.getComputedStyle(ruleContext).color;
+        
+        // start
+        var cStyle = win.getComputedStyle(ruleContext);
+        var compStyleColor = cStyle.color;
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = RPTUtil.Color(compStyleColor);
-
+        
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
             try {
@@ -3299,6 +3302,7 @@ export class RPTUtil {
                     delete thisStackBG.alpha;
                 } else {
                     thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
+                    thisStackAlpha = thisBgColor.alpha || 1.0
                 }
                 // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
                 // We can't wipe out the gradient info if this layer was transparent
@@ -3315,6 +3319,7 @@ export class RPTUtil {
                 }
             }
         }
+
         if (thisStackBG != null) {
             fg = fg.getOverlayColor(thisStackBG);
             delete fg.alpha;
