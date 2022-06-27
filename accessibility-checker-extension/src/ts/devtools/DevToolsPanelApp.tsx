@@ -484,7 +484,9 @@
             this.startScan();
         }
     
-        async onReport(message: any): Promise<any> {
+        async onReport(message: any): Promise<any> {               
+            if (this.state.tabId !== message.tabId) return;
+            
             console.log("Function: onReport START");
             try {
                 if( BrowserDetection.isChrome() && !message.tabURL.startsWith("file:")){
