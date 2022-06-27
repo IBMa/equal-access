@@ -4,6 +4,7 @@ console.log("Content Script for drawing tab stops has loaded");
 
 TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
     console.log("TabMessaging Listener - DRAW_TABS_TO_CONTEXT_SCRIPTS: tabId = ", message.tabId);
+    console.log(message);
     injectCSS(
         `
         .line {

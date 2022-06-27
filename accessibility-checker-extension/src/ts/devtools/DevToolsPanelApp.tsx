@@ -258,12 +258,14 @@
         }
     
         async componentDidMount() {
-            // console.log("componentDidMount");
+            console.log("Function: componentDidMount START");
+            console.log("this.state.tabId = ", this.state.tabId);
             await this.readOptionsData();
+            console.log("Function: componentDidMount DONE");
         }
     
         async readOptionsData() {
-            // console.log("readOptionsData");
+            console.log("Function: readOptionsData START");
             await new Promise<void>((resolve, _reject) => {
                 var self = this;
                 chrome.storage.local.get("OPTIONS", async  (result: any) => {
@@ -356,6 +358,7 @@
                         if (!self.state.listenerRegistered) {
                             PanelMessaging.addListener("TAB_UPDATED", async message => {
                                 console.log("PanelMessaging Listener - TAB_UPDATED: tabId = ", message.tabId);
+                                console.log(message);
                                 self.setState({ tabTitle: message.tabTitle }); // added so titles updated
                                 if (message.tabId === self.state.tabId && message.status === "loading") {
                                     if (message.tabUrl && message.tabUrl != self.state.tabURL) {
@@ -403,6 +406,7 @@
                             tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
     
                         });
+                        console.log("Function: readOptionsData DONE");
                     }
                     resolve();
                 });
