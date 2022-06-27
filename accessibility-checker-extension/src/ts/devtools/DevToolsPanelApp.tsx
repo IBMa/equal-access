@@ -466,7 +466,8 @@
             this.startScan();
         }
     
-        async onReport(message: any): Promise<any> {               
+        async onReport(message: any): Promise<any> {  
+            // only accept messages that are for the tab / website that we are currently on             
             if (this.state.tabId !== message.tabId) return;
             
             // console.log("Function: onReport START");
