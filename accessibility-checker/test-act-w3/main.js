@@ -70,7 +70,7 @@ const fs = require("fs");
                     let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.ruleId, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
                     earlResult["@graph"].push({
                         "@type": "TestSubject",
-                        "source": `https://act-rules.github.io/testcases/${ruleId}/${testcase.testcaseId}.html`,
+                        "source": `https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases/${ruleId}/${testcase.testcaseId}.html`,
                         "assertions": assertions
                     });
                     if (result === "earl:cantTell" && (testcase.expected === "passed" || testcase.expected === "failed")) {

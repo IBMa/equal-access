@@ -37,7 +37,7 @@ const mapRuleToG = {
     "RPT_Media_ImgColorUsage": "245",
     "WCAG20_Meta_RedirectZero": "254",
     "element_attribute_deprecated": "256",
-    "RPT_Blockquote_WrapsTextQuote": "263",
+    "text_quoted_correctly": "263",
     "RPT_Elem_EventMouseAndKey": "269",
     "WCAG20_Doc_HasTitle": "273",
     "RPT_Block_ShouldBeHeading": "322",
