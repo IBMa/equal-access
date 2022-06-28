@@ -1084,7 +1084,7 @@
             }, 10);
         }
     
-        tabStopsSetFirstTime () {
+        tabStopsSetFirstTime() {
             // console.log("tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {

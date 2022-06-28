@@ -225,7 +225,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
-            tabStopFirstTime: true
+            tabStopFirstTime: false
         });
     };
 
