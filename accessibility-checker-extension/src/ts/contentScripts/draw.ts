@@ -421,8 +421,9 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         let slope: number;
 
         // JCH - need for last line to return to first node
-        console.log("nodes.length = ",nodes.length);
+        // console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
+            // console.log("nodes[",i,"]");
             if (nodes[i] != null) { // JCH - tabbable nodes
                 // console.log(tabstops[i].ruleID);
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
@@ -467,29 +468,74 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     let xIntercept: number;
                     let xOffScreenShift = false; let yOffScreenShift = false;
                     tabStopsErrors.map((result: any) => {
-                        if (result.ruleId === "element_tabbable_visible") {
+                        if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[i]) {
+                            
+                            // console.log("getBoundingClientRect().x = ",nodes[i].getBoundingClientRect().x);
+                            // console.log("getBoundingClientRect().y = ",nodes[i].getBoundingClientRect().y);
+                            
                             if (nodeXpaths[i] === result.path.dom) {
-                                // console.log("Adjustments for element_tabbable_visible for when element off page");
-                                if (triangleXShifted < 0) { // need to get y intercept
-                                    // find y intercept y = mx + c or c = y - mx
-                                    yIntercept = triangleYShifted - slope * triangleXShifted;
-                                    // console.log("yIntercept = ",yIntercept);
-                                    triangleXShifted = 20;
-                                    triangleYShifted = yIntercept + 15;
-                                    xOffScreenShift = true;
-                                } else if (triangleYShifted < 0) { // need to get x intercept
-                                    // find x intercept y = mx + c or c = y - mx
-                                    yIntercept = triangleYShifted - slope * triangleXShifted;
-                                    // console.log("yIntercept = ",yIntercept);
-                                    // 0 = slope * x + yIntercept
-                                    // xIntercept = yIntercept / slope
-                                    xIntercept = -yIntercept / slope;
-                                    // console.log("xIntercept = ", xIntercept);
-                                    triangleYShifted = 25;
-                                    triangleXShifted = xIntercept + 10;
-                                    yOffScreenShift = true;
+                                if (nodes[i].getBoundingClientRect().x < -10 || nodes[i].getBoundingClientRect().y < -10) {
+                                    console.log("Adjustments for element_tabbable_visible for when element off page");
+                                    if (triangleXShifted < 0) { // need to get y intercept
+                                        // find y intercept y = mx + c or c = y - mx
+                                        yIntercept = triangleYShifted - slope * triangleXShifted;
+                                        // console.log("yIntercept = ",yIntercept);
+                                        triangleXShifted = 20;
+                                        triangleYShifted = yIntercept + 15;
+                                        xOffScreenShift = true;
+                                    } else if (triangleYShifted < 0) { // need to get x intercept
+                                        // find x intercept y = mx + c or c = y - mx
+                                        yIntercept = triangleYShifted - slope * triangleXShifted;
+                                        // console.log("yIntercept = ",yIntercept);
+                                        // 0 = slope * x + yIntercept
+                                        // xIntercept = yIntercept / slope
+                                        xIntercept = -yIntercept / slope;
+                                        // console.log("xIntercept = ", xIntercept);
+                                        triangleYShifted = 25;
+                                        triangleXShifted = xIntercept + 10;
+                                        yOffScreenShift = true;
+                                    }
                                 }
-                                
+                            }
+                        }         
+                    });
+
+                    // Now deal with x2 line end for nodes[i+1]
+                    let y2Intercept: number;
+                    let x2Intercept: number;
+                    let x2OffScreenShift = false; let y2OffScreenShift = false;
+                    let triangleX2Shifted = nodes[i+1].getBoundingClientRect().x - offset;
+                    let triangleY2Shifted = nodes[i+1].getBoundingClientRect().y - offset;
+                    let slope2 = (nodes[i + 2].getBoundingClientRect().y - offset - nodes[i+1].getBoundingClientRect().y - offset) / (nodes[i + 2].getBoundingClientRect().x - offset - nodes[i+1].getBoundingClientRect().x - offset);
+                    tabStopsErrors.map((result: any) => {
+                        if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[i+1]) {
+                            
+                            // console.log("getBoundingClientRect().x = ",nodes[i+1].getBoundingClientRect().x);
+                            // console.log("getBoundingClientRect().y = ",nodes[i+1].getBoundingClientRect().y);
+                            
+                            if (nodeXpaths[i+1] === result.path.dom) {
+                                if (nodes[i+1].getBoundingClientRect().x < -10 || nodes[i+1].getBoundingClientRect().y < -10) {
+                                    // console.log("Adjustments for element_tabbable_visible for when element off page");
+                                    if (triangleXShifted < 0) { // need to get y intercept
+                                        // find y intercept y = mx + c or c = y - mx
+                                        y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
+                                        // console.log("yIntercept = ",yIntercept);
+                                        triangleX2Shifted = 20;
+                                        triangleY2Shifted = yIntercept + 15;
+                                        x2OffScreenShift = true;
+                                    } else if (triangleYShifted < 0) { // need to get x intercept
+                                        // find x intercept y = mx + c or c = y - mx
+                                        y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
+                                        // console.log("yIntercept = ",yIntercept);
+                                        // 0 = slope * x + yIntercept
+                                        // xIntercept = yIntercept / slope
+                                        x2Intercept = -y2Intercept / slope2;
+                                        // console.log("xIntercept = ", xIntercept);
+                                        triangleY2Shifted = 25;
+                                        triangleX2Shifted = x2Intercept + 10;
+                                        y2OffScreenShift = true;
+                                    }
+                                }
                             }
                         }         
                     });
@@ -498,6 +544,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     // What if triangle is is bumping up against top of viewport, or left of viewport or right of viewport
                     // If the triangle is being drawn slighly off of the screen move it into the screen
+                    
                     let xShifted = false; let yShifted = false;
                     if (triangleXShifted >= -10 && triangleXShifted <= 6 && xOffScreenShift === false) {
                         // console.log("X Adjustment if tab element circle or triangle very close to top or left but within viewport");
@@ -509,7 +556,21 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         triangleYShifted = 14;
                         yShifted = true;
                     }
+                    
+                    let x2Shifted = false; let y2Shifted = false;
+                    if (triangleX2Shifted >= -10 && triangleX2Shifted <= 6 && x2OffScreenShift === false) {
+                        // console.log("X Adjustment if tab element circle or triangle very close to top or left but within viewport");
+                        triangleX2Shifted = 14;
+                        x2Shifted = true;
+                    }
+                    if (triangleY2Shifted >= -10 && triangleY2Shifted <= 6 && y2OffScreenShift === false) {
+                        // console.log("Y Adjustment if tab element circle or triangle very close to top or left but within viewport");
+                        triangleY2Shifted = 14;
+                        y2Shifted = true;
+                    }
 
+                    
+                    // console.log("Draw Lines");
                     if (lines) {
                         if (i < nodes.length - 1) {
                             // Create basic black line
@@ -521,25 +582,51 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                                 x1 = x1 + 14;
                                 // console.log("Line shift x1 = ", x1);
                                 xShifted = false;
-                            } else if (yShifted === true) {
+                            } if (yShifted === true) {
                                 y1 = y1 + 14;
                                 // console.log("Line shift y1 = ", y1);
                                 yShifted = false;
                             //@ts-ignore   
-                            } else if (xOffScreenShift === true) {
+                            } if (xOffScreenShift === true) {
                                 x1 = x1 + triangleXShifted;
                                 y1 = y1 + triangleYShifted;
                                 // console.log("off screen line shift x1 = ", x1, "   y1 = ",y1);
                                 xOffScreenShift = false;
                             //@ts-ignore
-                            } else if (yOffScreenShift === true) {
+                            }  if (yOffScreenShift === true) {
                                 x1 = x1 + triangleXShifted;
                                 y1 = y1 + triangleYShifted;
                                 // console.log("off screen line shift x1 = ", x1, "   y1 = ",y1);
                                 yOffScreenShift = false;
                             }
+
+                            if (x2Shifted === true) {
+                                x2 = x2 + 14;
+                                // console.log("Line shift x2 = ", x2);
+                                x2Shifted = false;
+                            } if (y2Shifted === true) {
+                                y2 = y2 + 14;
+                                // console.log("Line shift y2 = ", y2);
+                                yShifted = false;
+                            //@ts-ignore   
+                            } if (xOffScreenShift === true) {
+                                x2 = x2 + triangleX2Shifted;
+                                y2 = y2 + triangleY2Shifted;
+                                // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
+                                xOffScreenShift = false;
+                            //@ts-ignore
+                            }  if (y2OffScreenShift === true) {
+                                x2 = x2 + triangleXShifted;
+                                y2 = y2 + triangleYShifted;
+                                // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
+                                y2OffScreenShift = false;
+                            }
                             
                             // console.log("x1 - offset = ", x1 - offset, "   y1 - offset = ",y1 - offset);
+                            // console.log("x2 - offset = ", x2 - offset, "   y2 - offset = ",y2 - offset);
+                            // console.log("------------------");
+
+
                             makeLine(x1 - offset, y1 - offset, x2 - offset, y2 - offset, ["line"]);
 
                             // Create white outline
