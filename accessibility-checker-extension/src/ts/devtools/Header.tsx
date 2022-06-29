@@ -562,7 +562,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             </Grid>
             {this.props.badURL ? 
                     <React.Fragment>
-                    <div style={{marginTop: 16, marginLeft: 16}}>IBM Equal Access Accesibility Check cannot run on this URL.
+                    <div style={{marginTop: 16, marginLeft: 16}}>IBM Equal Access Accessibility Checker cannot run on this URL.
                         Please go to a different page.</div>
                             </React.Fragment>
                     : ""
