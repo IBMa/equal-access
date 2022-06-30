@@ -7,7 +7,7 @@
   <body style="color: #161616; background-color: #fff;">
     <main>
       <div id="host">
-        <span id='myspan'>this text is not rendered</span>
+        <span id='myspan'>this text is rendered in shadow dom slot</span>
       </div>
     </main>
     <script type="text/javascript">
@@ -24,7 +24,7 @@
       shadow.appendChild(slot);
 
       let style = document.createElement("style");  
-      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { background-color:gray; }';
+      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { color:gray; background-color:black; }';
       shadow.appendChild(style);
       
     </script>
