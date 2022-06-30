@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Shadow DOM test</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body style="color: #161616; background-color: #fff;">
+    <main>
+      <div id="host">
+        <span id='myspan'>this text is not rendered</span>
+      </div>
+    </main>
+    <script type="text/javascript">
+      let shadow = document
+        .getElementById("host")
+        .attachShadow({ mode: "open" });
+      /**let input = document.createElement("input");
+      input.setAttribute("type", "checkbox");
+      shadow.appendChild(input);
+      let text = document.createTextNode(" checkbox in shadow dom");
+      shadow.appendChild(text);
+      */
+      let slot = document.createElement("slot");
+      shadow.appendChild(slot);
+
+      let style = document.createElement("style");  
+      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { background-color:gray; }';
+      shadow.appendChild(style);
+      
+    </script>
+    
+  </body>
+</html>
