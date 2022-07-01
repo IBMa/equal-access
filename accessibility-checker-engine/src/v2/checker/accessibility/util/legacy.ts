@@ -1727,10 +1727,23 @@ export class RPTUtil {
     public static isShadowHostElement(element: Element) {
         let walkNode : Element = element;
         while (walkNode) {
-            if (walkNode.shadowRoot) return true;
             if (walkNode.toString() === "[object ShadowRoot]")
+            //if (walkNode instanceof ShadowRoot)
                 return false;
+            if (walkNode.shadowRoot) return true;
+                
             walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
+    //check if an element is in a shadow tree
+    public static isShadowElement(element: Element) {
+        let walkNode : Element = element;
+        while (walkNode) {
+            if (walkNode.toString() === "[object ShadowRoot]")
+                return true;
+            walkNode = walkNode.parentElement;
         }
         return false;
     }

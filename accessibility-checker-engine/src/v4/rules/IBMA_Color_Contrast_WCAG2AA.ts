@@ -63,11 +63,12 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (childStr.trim().length == 0)
             return null;
 
+        console.log("nodeName=" + nodeName +", parent=" + ruleContext.parentNode.nodeName +", in shadow root=" + RPTUtil.isShadowElement(ruleContext) +", doc = " + ruleContext.ownerDocument +", text=" +childStr);
         let doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
         }
-
+    
         // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
         // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
         if (RPTUtil.isShadowHostElement(ruleContext))
