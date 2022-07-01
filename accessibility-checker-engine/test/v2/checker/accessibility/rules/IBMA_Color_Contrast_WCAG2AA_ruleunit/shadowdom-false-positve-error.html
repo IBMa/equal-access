@@ -14,17 +14,20 @@
       let shadow = document
         .getElementById("host")
         .attachShadow({ mode: "open" });
-      /**let input = document.createElement("input");
-      input.setAttribute("type", "checkbox");
-      shadow.appendChild(input);
-      let text = document.createTextNode(" checkbox in shadow dom");
-      shadow.appendChild(text);
-      */
+      let div1 = document.createElement("div");
+      //div1.setAttribute("style", "color:white");
+      let div2 = document.createElement("div");
+      div2.setAttribute("style", "color:white;");
+      div1.appendChild(div2);
+      shadow.appendChild(div1);
+      //let text = document.createTextNode(" checkbox in shadow dom");
+      //shadow.appendChild(text);
+      
       let slot = document.createElement("slot");
-      shadow.appendChild(slot);
+      div2.appendChild(slot);
 
       let style = document.createElement("style");  
-      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { color:gray; background-color:black; }';
+      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { font-size: 16px; background-color:black; }';
       shadow.appendChild(style);
       
     </script>
