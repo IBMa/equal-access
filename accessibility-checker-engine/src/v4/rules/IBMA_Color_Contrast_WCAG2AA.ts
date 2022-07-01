@@ -51,7 +51,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
             return null;
         }
-
+        
         // Ensure that this element has children with actual text.
         let childStr = "";
         let childNodes = ruleContext.childNodes;
@@ -67,6 +67,12 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (!doc) {
             return null;
         }
+
+        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
+        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
+        if (RPTUtil.isShadowHostElement(ruleContext))
+            return null;
+
         let win = doc.defaultView;
         if (!win) {
             return null;
@@ -188,7 +194,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        console.log("nodeName=" + nodeName+ ", fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
+        console.log("nodeName=" + nodeName +", parent=" + ruleContext.parentNode.nodeName +", slef shadow root=" + (ruleContext.shadowRoot ? ruleContext.shadowRoot.host : null)+", parent shadow root=" + (ruleContext.parentElement.shadowRoot ? ruleContext.parentElement.shadowRoot.host : null) + ", fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
         let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
         let size = RPTUtilStyle.getFontInPixels(style.fontSize);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;

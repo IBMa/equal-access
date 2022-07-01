@@ -1723,6 +1723,18 @@ export class RPTUtil {
         return false;
     }
 
+    // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host(may assign to shadow slot)  
+    public static isShadowHostElement(element: Element) {
+        let walkNode : Element = element;
+        while (walkNode) {
+            if (walkNode.shadowRoot) return true;
+            if (walkNode.toString() === "[object ShadowRoot]")
+                return false;
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
     public static removeAllFormElementsFromLabel(element) {
         let formElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
         let childNodes = element.childNodes;

@@ -7,7 +7,8 @@
   <body style="color: #161616; background-color: #fff;">
     <main>
       <div id="host">
-        <span id='myspan'>this text is rendered in shadow dom slot</span>
+        this text is directly in div
+        <span>this text is in span</span>
       </div>
     </main>
     <script type="text/javascript">
@@ -20,8 +21,8 @@
       div2.setAttribute("style", "color:white;");
       div1.appendChild(div2);
       shadow.appendChild(div1);
-      //let text = document.createTextNode(" checkbox in shadow dom");
-      //shadow.appendChild(text);
+      let text = document.createTextNode(" text in div shadow dom");
+      div2.appendChild(text);
       
       let slot = document.createElement("slot");
       div2.appendChild(slot);
