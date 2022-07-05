@@ -16,10 +16,10 @@ export interface IConfig {
     ruleArchive?: "latest" | "preview" | string
 
     ruleArchiveLabel?: string
-    
+
     /**
      * (optional) Specify one or many policies to scan.
-     * 
+     *
      * Run `npx achecker archives` for a list of valid ruleArchive ids and policy ids
      * Default: ["IBM_Accessibility"]
      */
@@ -28,7 +28,7 @@ export interface IConfig {
 
     /**
      * (optional) Specify one or many violation levels on which to fail the test
-     * 
+     *
      * i.e. If specified violation then the testcase will only fail if
      * a violation is found during the scan.
      * Default: ["violation", "review"]
@@ -37,7 +37,7 @@ export interface IConfig {
 
     /**
      * (optional) Specify one or many violation levels which should be reported
-     * 
+     *
      * i.e. If specified violation then in the report it would only contain
      * results which are level of violation.
      * Default: ["violation", "review"]
@@ -93,7 +93,7 @@ export type IConfigUnsupported = IConfig & {
      * (optional) If the tool allows, should we capture screenshots
      */
     captureScreenshots?: boolean
-    
+
     /**
      * (optional) If the tool allows, should we run headless
      */
@@ -131,12 +131,15 @@ export interface ICheckerResult {
     // reference to a puppeteer object if Puppeteer was used for the scan
     // Puppeteer is used for string, URL, and file scans
     puppeteer?: any,
-    report: ICheckerReport | ICheckerError
+    report: ReportResult;
 }
 
 export type ICheckerReportCounts = {
     [key in eRuleLevel]?: number
 }
+
+export type ReportResult = ICheckerReport | ICheckerError
+
 
 export interface ICheckerReport {
     scanID: string

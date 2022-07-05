@@ -1,4 +1,4 @@
-import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger } from "./api/IChecker";
+import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger, ReportResult } from "./api/IChecker";
 import { ACConfigManager } from "./ACConfigManager";
 import { ACMetricsLogger } from "./log/ACMetricsLogger";
 import * as path from "path";
@@ -940,9 +940,9 @@ export class ACReportManager {
         let differences = DeepDiff.diff(actual, expected);
         if (differences) {
             differences = differences.filter(difference => !(
-                difference.kind === "E" 
-                && difference.path.length === 4 
-                && difference.path[2] === "bounds" 
+                difference.kind === "E"
+                && difference.path.length === 4
+                && difference.path[2] === "bounds"
                 && Math.abs(difference.lhs-difference.rhs) <= 1));
             if (differences.length === 0) return undefined;
         }
@@ -1082,7 +1082,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static stringifyResults(report: ICheckerReport) : string {
+    static stringifyResults(report: ReportResult) : string {
         // console.log(report);
         // Variable Decleration
         let resultsString = `Scan: ${report.label}\n`;

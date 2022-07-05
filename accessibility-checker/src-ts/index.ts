@@ -19,7 +19,7 @@ import { ACConfigManager } from "./lib/ACConfigManager";
 import { ACEngineManager } from "./lib/ACEngineManager";
 import { getComplianceHelper } from "./lib/ACHelper";
 import { ACReportManager } from "./lib/ACReportManager";
-import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported } from "./lib/api/IChecker";
+import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker";
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
  * the supported context type:
@@ -37,8 +37,8 @@ import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, 
  * @param {Function} callback - (optional) Provide callback function which will be executed once the results are extracted.
  * @return Promise with the ICheckerResult
  */
-export function getCompliance(content: any, 
-    label: string, 
+export function getCompliance(content: any,
+    label: string,
     callback?: (report: ICheckerReport | ICheckerError, webdriver) => void) : Promise<ICheckerResult>
 {
     if (callback) {
@@ -57,7 +57,7 @@ export function getCompliance(content: any,
  * be used to perform the check, in the case no baseline is provided then we comply with only failing if
  * there is a sinble violation which falls into failLevels.
  *
- * @param {ICheckerReport} actual - the actual results object provided by the user, this object should follow the
+ * @param {ReportResult} actual - the actual results object provided by the user, this object should follow the
  *                          same format as outlined in the return of aChecker.buildReport function.
  *
  * @return {int} - return 0 in the case actual matches baseline or no violations fall into failsLevels,
@@ -65,7 +65,7 @@ export function getCompliance(content: any,
  *                 return 2 in the case that there is a failure based on failLevels (this means no baseline found).
  *                 return -1 in the case that there is an exception that occured in the results object which came from the scan engine.
  */
-export function assertCompliance(report: ICheckerReport) : eAssertResult {
+export function assertCompliance(report: ReportResult) : eAssertResult {
     return ACReportManager.assertCompliance(report)
 }
 
