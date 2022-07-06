@@ -1,0 +1,123 @@
+<html lang="en-US">
+<head>
+    <title>element_tabbable_visible - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"A tabbable element should be visible on the screen when it has keyboard focus","pass":"The tabbable element is visible on the screen","potential_visible":"Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus"}};
+        RULE_ID = "element_tabbable_visible"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Keyboard users navigate through the operable elements on the page by pressing the Tab key.
+All sighted keyboard users (and those relying on the keyboard interface, such as voice-command and switch users) need to be able to see the element that has keyboard focus,
+otherwise, they have no context about where they are or what to do.
+
+An off-screen or invisible (zero-sized or clipped) keyboard-focusable element has been found.
+In some cases, the Checker can't detect where JavaScript is repositioning or resizing elements when they have keyboard focus.
+This requires some human review to confirm that the element should receive keyboard focus, and if so, doesn't remain off-screen or impossible to see when it does get keyboard focus.
+If it should not be operable with the keyboard and is not removed from the tab order,
+people using a screen reader will "see" the element even though it's invisible, which will cause confusion. 
+
+Normally, keyboard-focusable (tabbable) elements should be visible, 
+but there are situations where it is acceptable to "hide" and then reveal the element when it receives keyboard focus,
+as in the '**Skip to main content**' example below. 
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+- If users _should not_ be able to interact with this element using the keyboard, set the `tabindex="-1"` attribute to remove the element from the tab order
+- **Or**, if users _should_ be able to interact with this element using the keyboard, use the Tab key to confirm it is visible on screen when it has keyboard focus
+- **And**, if the interactive element is off-screen when it receives keyboard focus, use the pseudo class `:focus` or adjust the position style (see example)
+- **And**, ensure the focus is visible as specified in [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+
+
+Example: this "**_Skip to main content_**" tabbable element uses CSS positioning to ensure it is visible when the element has keyboard focus:
+
+```
+    <style>
+    .skip {
+        position: absolute; background-color: white; padding: 0.5rem;
+        left: -1000px;
+    }
+    .skip:focus {
+        left: 1rem;
+    }
+    </style>
+    <a class="skip" href="#main">Skip to main content</a>   
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [2.4.7 Focus Visible](https://www.ibm.com/able/requirements/requirements/#2_4_7)
+* [Unit test - check tab order](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#check-tab-order)
+* [Unit test - confirm component keyboard interaction](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#confirm-component-keyboard-interaction) 
+
+### Who does this affect?
+
+* People who rely on keyboard control
+* People with dexterity impairment using voice control or a keyboard-like switch device
+* People with low vision who use screen magnification with keyboard control
+* People using a screen reader, including blind, low vision and neurodivergent people
+* Neurodivergent people who use the keyboard
+* Older adults who use the keyboard
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
