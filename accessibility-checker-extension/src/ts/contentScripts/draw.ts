@@ -898,6 +898,7 @@ function createSVGTriangleTemplate() {
     elemCircle.classList.add("noHighlightSVGtriangle");
     elemCircle.setAttribute("stroke", "grey");
     elemCircle.setAttribute("stroke-width", "1");
+    elemCircle.setAttribute("stroke-linejoin", "round");
     return elemCircle
 }
 
