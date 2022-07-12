@@ -1726,7 +1726,7 @@ export class RPTUtil {
     // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host(may assign to shadow slot)  
     public static isShadowHostElement(element: Element) {
         let walkNode : Element = element;
-        while (walkNode) {
+        while (walkNode) { console.log("in host: walk node="+element.nodeName +', id=' + element.getAttribute('id'));
             if (walkNode.toString() === "[object ShadowRoot]")
             //if (walkNode instanceof ShadowRoot)
                 return false;
@@ -1740,8 +1740,8 @@ export class RPTUtil {
     //check if an element is in a shadow tree
     public static isShadowElement(element: Element) {
         let walkNode : Element = element;
-        while (walkNode) {
-            if (walkNode.toString() === "[object ShadowRoot]")
+        while (walkNode) { console.log("in shadow: walk node="+element.nodeName +', id=' + element.getAttribute('id') +" is shadow root:" + walkNode.shadowRoot +", string="+ walkNode.toString());
+            if (walkNode.shadowRoot || walkNode.toString() === "[object ShadowRoot]")
                 return true;
             walkNode = walkNode.parentElement;
         }
