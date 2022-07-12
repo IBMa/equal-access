@@ -63,7 +63,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (childStr.trim().length == 0)
             return null;
 
-        console.log("nodeName=" + nodeName +", id=" + ruleContext.getAttribute("id") +", parent=" + ruleContext.parentNode.nodeName +", in shadow root=" + RPTUtil.isShadowElement(ruleContext) +", doc = " + ruleContext.ownerDocument +", text=" +childStr);
+        console.log("nodeName=" + nodeName +", id=" + ruleContext.getAttribute("id") +", parent=" + ruleContext.parentNode.nodeName +", in shadow root=" + RPTUtil.isShadowElement(ruleContext) +", in shadow host = " + RPTUtil.isShadowHostElement(ruleContext) +", text=" +childStr);
         let doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
@@ -195,7 +195,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        console.log("nodeName=" + nodeName + ", id=" + ruleContext.getAttribute("id") +", parent=" + ruleContext.parentNode.nodeName +", slef shadow root=" + (ruleContext.shadowRoot ? ruleContext.shadowRoot.host : null)+", parent shadow root=" + (ruleContext.parentElement.shadowRoot ? ruleContext.parentElement.shadowRoot.host : null) + ", fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
+        console.log("nodeName=" + nodeName + ", id=" + ruleContext.getAttribute("id") +", parent=" + ruleContext.parentNode.nodeName + ", fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
         let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
         let size = RPTUtilStyle.getFontInPixels(style.fontSize);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;

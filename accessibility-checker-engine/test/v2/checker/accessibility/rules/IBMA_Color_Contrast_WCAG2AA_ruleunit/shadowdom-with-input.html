@@ -11,8 +11,7 @@
         <span id="no-host-span">this text is in span in regular div</span>
       </div>
       <div id="host">
-        this text is directly in host div<p>
-        <span id="host-span">this text is in span in host div</span>
+        <input id='input' type='text' value='' />
       </div>
     </main>
     <script type="text/javascript">
@@ -23,20 +22,21 @@
       div1.setAttribute("id", "shadow-div1");
       let div2 = document.createElement("div");
       div2.setAttribute("id", "shadow-div2");
-      div2.setAttribute("style", "color:white;");
+      //div2.setAttribute("style", "color:white;");
       div1.appendChild(div2);
       shadow.appendChild(div1);
-      let text = document.createTextNode(" text in div shadow dom");
-      div2.appendChild(text);
+      let label = document.createElement("label");
+      //label.setAttribute("for", 'input');
+      label.innerHTML = "Name: ";
+      div2.appendChild(label);
       //let para = document.createElement('p');
       //div2.appendChild(para);
       let slot = document.createElement("slot");
       slot.setAttribute("id", "shadow-slot");
-      slot.setAttribute("name", "");
-      div2.appendChild(slot);
+      label.appendChild(slot);
 
       let style = document.createElement("style");  
-      style.innerHTML = '::slotted(span) { font-weight: bold; } :host { font-size: 16px; background-color:black; }';
+      //style.innerHTML = '::slotted(span) { font-weight: bold; } :host { font-size: 16px; background-color:black; }';
       shadow.appendChild(style);
       
     </script>

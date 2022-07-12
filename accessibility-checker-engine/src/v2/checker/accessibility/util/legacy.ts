@@ -1723,15 +1723,13 @@ export class RPTUtil {
         return false;
     }
 
-    // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host(may assign to shadow slot)  
+    // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host (to be assigned to shadow slot or ignored)  
     public static isShadowHostElement(element: Element) {
+        if (RPTUtil.isShadowElement(element)) 
+            return false;
         let walkNode : Element = element;
-        while (walkNode) { console.log("in host: walk node="+element.nodeName +', id=' + element.getAttribute('id'));
-            if (walkNode.toString() === "[object ShadowRoot]")
-            //if (walkNode instanceof ShadowRoot)
-                return false;
+        while (walkNode) {
             if (walkNode.shadowRoot) return true;
-                
             walkNode = DOMUtil.parentElement(walkNode);
         }
         return false;
@@ -1739,13 +1737,37 @@ export class RPTUtil {
 
     //check if an element is in a shadow tree
     public static isShadowElement(element: Element) {
-        let walkNode : Element = element;
-        while (walkNode) { console.log("in shadow: walk node="+element.nodeName +', id=' + element.getAttribute('id') +" is shadow root:" + walkNode.shadowRoot +", string="+ walkNode.toString());
-            if (walkNode.shadowRoot || walkNode.toString() === "[object ShadowRoot]")
-                return true;
-            walkNode = walkNode.parentElement;
-        }
+        let root  = element.getRootNode();
+        if (root.toString() === "[object ShadowRoot]")
+            return true;
         return false;
+    }
+
+    //check the corresponding slot element
+    public static getSlotElement(element: Element) {
+        let walkNode : Element = element;
+        let shadowRoot = null;
+        while (walkNode) {
+            if (walkNode.shadowRoot) {
+                shadowRoot = walkNode;
+                break;
+            }    
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+        if (shadowRoot === null) return null;
+        let slot = null; 
+        let slotName = element.getAttribute("slot");
+        if (slotName) {
+            slot = shadowRoot.querySelector('slot[name='+ slotName +']'); 
+        } else {
+            let slots =  shadowRoot.querySelector('slot');
+            for (let i=0; i < slots.length; i++) {
+                let slotAttr = slots[i].getAttribute("slot");
+                if (!slotAttr || slotAttr.trim() === '')
+                    slot = slot[i];
+            }
+        }
+        return slot;
     }
 
     public static removeAllFormElementsFromLabel(element) {
