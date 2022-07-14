@@ -6,14 +6,14 @@
                 <label for="m">my input</label>
                 <input id='m' list="f" />
                 <datalist id="f">
-                    <option>test</option>
+                    <option required="true">test</option>
                     <option>actually selected</option>
                 </datalist>
             </div>
         </main>
         <script>
             UnitTest = {
-                ruleIds: ["aria_semantics_attribute"],
+                ruleIds: ["aria_semantics_attribute", "WCAG20_Input_ExplicitLabel", "IBMA_Focus_Tabbable"],
                 results: [
                 
           ],
