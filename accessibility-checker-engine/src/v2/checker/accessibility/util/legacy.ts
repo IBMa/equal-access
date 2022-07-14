@@ -1743,33 +1743,14 @@ export class RPTUtil {
         return false;
     }
 
-    //check the corresponding slot element
-    public static getSlotElement(element: Element) {
-        let walkNode : Element = element;
-        let shadowRoot = null;
-        while (walkNode) {
-            if (walkNode.shadowRoot) {
-                shadowRoot = walkNode;
-                break;
-            }    
-            walkNode = DOMUtil.parentElement(walkNode);
-        }
-        if (shadowRoot === null) return null;
-        let slot = null; 
-        let slotName = element.getAttribute("slot");
-        if (slotName) {
-            slot = shadowRoot.querySelector('slot[name='+ slotName +']'); 
-        } else {
-            let slots =  shadowRoot.querySelector('slot');
-            for (let i=0; i < slots.length; i++) {
-                let slotAttr = slots[i].getAttribute("slot");
-                if (!slotAttr || slotAttr.trim() === '')
-                    slot = slot[i];
-            }
-        }
-        return slot;
+    //get host of a shadow DOM from an element in a shadow tree
+    public static getShadowHost(element: Element) {
+        let root  = element.getRootNode();
+        if (root.toString() === "[object ShadowRoot]")
+            return (root as ShadowRoot).host;
+        return null;
     }
-
+    
     public static removeAllFormElementsFromLabel(element) {
         let formElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
         let childNodes = element.childNodes;
@@ -3212,7 +3193,8 @@ export class RPTUtil {
         //    return null; // Unreachable
     };
 
-    public static ColorCombo(ruleContext : HTMLElement) {
+ public static ColorCombo(ruleContext : HTMLElement) {
+    try { 
         var doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
@@ -3380,7 +3362,11 @@ export class RPTUtil {
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
-    };
+    } catch (err) {
+        // something happened, then...
+        return null;
+    } 
+ };
 
     public static hasAttribute(element, attributeName) {
         var hasAttribute = false;
