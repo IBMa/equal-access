@@ -1743,14 +1743,6 @@ export class RPTUtil {
         return false;
     }
 
-    //get host of a shadow DOM from an element in a shadow tree
-    public static getShadowHost(element: Element) {
-        let root  = element.getRootNode();
-        if (root.toString() === "[object ShadowRoot]")
-            return (root as ShadowRoot).host;
-        return null;
-    }
-    
     public static removeAllFormElementsFromLabel(element) {
         let formElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
         let childNodes = element.childNodes;
