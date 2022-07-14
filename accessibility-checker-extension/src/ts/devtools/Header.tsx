@@ -201,10 +201,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
         });
     }
 
-    
-
-
-
     render() {
         let counts = this.props.counts;
         let noScan = counts ? true : false;
@@ -399,9 +395,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
                                 if (this.props.showHideTabStops) {
-                                    // console.log("Header: DRAW_TABS_TO_BACKGROUND");
-                                    // console.log("this.props.tabStopLines = ", this.props.tabStopLines);
-                                    // console.log("this.props.tabStopOutlines = ", this.props.tabStopOutlines);
                                     await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
                                         { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors, 
                                             tabStopLines: this.props.tabStopLines, tabStopOutlines: this.props.tabStopOutlines });
@@ -410,11 +403,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                     }, 1000);
                                     this.keyboardModalHandler();
                                 } else {
-                                    // console.log("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
                                     this.props.setTabStopsShowHide();
                                 }
-                                
                             }}>
                         </Button>
                         {this.state.openKeyboardMode && this.props.tabStopFirstTime ?
