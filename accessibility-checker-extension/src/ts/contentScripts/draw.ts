@@ -329,7 +329,7 @@ function deleteDrawing(classToRemove: string) {
 
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-    // console.log("Function: redrawErrors");
+    console.log("Function: redrawErrors");
     setTimeout(() => {
         let tabbableNodesXpaths = getNodesXpaths(tabStops);
         
@@ -342,6 +342,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
             return el != null;
         });
         let offset = 0;
+
 
         // console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
@@ -362,8 +363,31 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                 // console.log("JCH - skip out");
                 continue; // JCH - don't put up non triangle for an element if already done in redraw
             }
+
             if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
                 // console.log("Non tabbable nodes[",i,"] = ",nodes[i]);
+                
+                if (nodes[i] != null ) { // JCH - tabbable nodes
+                    if (nodes[i] != null ) { // JCH - tabbable nodes
+                        console.log("NON Tabbable nodes[",i+1,"]   element exists");
+                    } else {
+                        console.log("NON Tabbable nodes[",i+1,"] is null $$$$$");
+                    }
+    
+                    if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
+                        console.log("NON Tabbable nodes[",i+1,"]   tagName is ",nodes[i].tagName);
+                    } else {
+                        console.log("NON Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                    }
+                   
+                    if (nodes[i].getBoundingClientRect !=null) {
+                        console.log("Has bounding rect");
+                    } else {
+                        console.log("NO bounding rect");
+                    }
+                }
+                console.log("--------------------------------");
+
                 let x = nodes[i].getBoundingClientRect().x - offset;
                 let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
@@ -402,6 +426,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                 if (triangleYShifted >= -10 && triangleYShifted <= 6) {
                     triangleYShifted = 14;
                 }
+                // console.log("Not Tabbable ERROR i = ",i," so makeTriangle");
                 makeTriangle(  
                             triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
                             triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
@@ -417,7 +442,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
 
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean) {
-    // console.log("Function: redraw");
+    console.log("Function: redraw");
 
     setTimeout(() => { 
         let offset = 3;
@@ -428,25 +453,43 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         nodes = convertXpathsToHtmlElements(nodes);
         let slope: number;
 
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i] != null ) { // JCH - tabbable nodes
+                if (nodes[i] != null ) { // JCH - tabbable nodes
+                    console.log("Tabbable nodes[",i+1,"]   element exists");
+                } else {
+                    console.log("Tabbable nodes[",i+1,"] is null $$$$$");
+                }
+
+                if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
+                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i].tagName);
+                } else {
+                    console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                }
+               
+                if (nodes[i].getBoundingClientRect !=null) {
+                    console.log("Has bounding rect");
+                } else {
+                    console.log("NO bounding rect");
+                }
+                console.log("--------------------------------");
+            }
+        }
+
         // JCH - need for last line to return to first node
-        // console.log("nodes.length = ",nodes.length);
+        console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
-            // console.log("nodes[",i,"]");
-            if (nodes[i] != null) { // JCH - tabbable nodes
+            // console.log("i = ", i, "   i+1 = ",i+1, "   i+2 = ",i+2);
+            if (nodes[i] != null ) { // JCH - tabbable nodes
+                
                 // console.log(tabstops[i].ruleID);
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
-                    // console.log("*** Tabbable Error Node ",i,"***");
-                    if (i != nodes.length -1) {
+                    console.log("*** Tabbable Error Node ",i,"***");
+                    if (i != nodes.length - 1) {
                         slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset);
                     } else {
                         slope = 1;
                     }
-
-                    // console.log("x = ",nodes[i].getBoundingClientRect().x,"   y = ",nodes[i].getBoundingClientRect().y);
-                    // console.log("top = ",nodes[i].getBoundingClientRect().top,"   bottom = ",nodes[i].getBoundingClientRect().bottom);
-                    // console.log("left = ",nodes[i].getBoundingClientRect().left," right = ", nodes[i].getBoundingClientRect().right);
-                    // console.log("width = ",nodes[i].getBoundingClientRect().width," height = ", nodes[i].getBoundingClientRect().height);
-
                     
                     // offset to stay away from the outline?
                     let x = nodes[i].getBoundingClientRect().x - offset;
@@ -508,45 +551,54 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }         
                     });
 
-                    // Now deal with x2 line end for nodes[i+1]
+                    // // Now deal with x2 line end for nodes[i+1]
                     let y2Intercept: number;
                     let x2Intercept: number;
                     let x2OffScreenShift = false; let y2OffScreenShift = false;
-                    let triangleX2Shifted = nodes[i+1].getBoundingClientRect().x - offset;
-                    let triangleY2Shifted = nodes[i+1].getBoundingClientRect().y - offset;
-                    let slope2 = (nodes[i + 2].getBoundingClientRect().y - offset - nodes[i+1].getBoundingClientRect().y - offset) / (nodes[i + 2].getBoundingClientRect().x - offset - nodes[i+1].getBoundingClientRect().x - offset);
-                    tabStopsErrors.map((result: any) => {
-                        if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[i+1]) {
-                            
-                            // console.log("getBoundingClientRect().x = ",nodes[i+1].getBoundingClientRect().x);
-                            // console.log("getBoundingClientRect().y = ",nodes[i+1].getBoundingClientRect().y);
-                            
-                            if (nodeXpaths[i+1] === result.path.dom) {
-                                if (nodes[i+1].getBoundingClientRect().x < -10 || nodes[i+1].getBoundingClientRect().y < -10) {
-                                    // console.log("Adjustments for element_tabbable_visible for when element off page");
-                                    if (triangleXShifted < 0) { // need to get y intercept
-                                        // find y intercept y = mx + c or c = y - mx
-                                        y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
-                                        // console.log("yIntercept = ",yIntercept);
-                                        triangleX2Shifted = 20;
-                                        triangleY2Shifted = yIntercept + 15;
-                                        x2OffScreenShift = true;
-                                    } else if (triangleYShifted < 0) { // need to get x intercept
-                                        // find x intercept y = mx + c or c = y - mx
-                                        y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
-                                        // console.log("yIntercept = ",yIntercept);
-                                        // 0 = slope * x + yIntercept
-                                        // xIntercept = yIntercept / slope
-                                        x2Intercept = -y2Intercept / slope2;
-                                        // console.log("xIntercept = ", xIntercept);
-                                        triangleY2Shifted = 25;
-                                        triangleX2Shifted = x2Intercept + 10;
-                                        y2OffScreenShift = true;
+                    let triangleX2Shifted = 0;
+                    let triangleY2Shifted = 0;
+                    if (nodes[i+1] != null && nodes[i+2] != null) {
+                        
+                        
+                        triangleX2Shifted = nodes[i+1].getBoundingClientRect().x - offset;
+                        triangleY2Shifted = nodes[i+1].getBoundingClientRect().y - offset;
+                        if (i+2 < nodes.length) {
+                            let slope2 = (nodes[i + 2].getBoundingClientRect().y - offset - nodes[i+1].getBoundingClientRect().y - offset) / (nodes[i + 2].getBoundingClientRect().x - offset - nodes[i+1].getBoundingClientRect().x - offset);
+            
+                            tabStopsErrors.map((result: any) => {
+                                if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[i+1]) {
+                                    
+                                    // console.log("getBoundingClientRect().x = ",nodes[i+1].getBoundingClientRect().x);
+                                    // console.log("getBoundingClientRect().y = ",nodes[i+1].getBoundingClientRect().y);
+                                    
+                                    if (nodeXpaths[i+1] === result.path.dom) {
+                                        if (nodes[i+1].getBoundingClientRect().x < -10 || nodes[i+1].getBoundingClientRect().y < -10) {
+                                            // console.log("Adjustments for element_tabbable_visible for when element off page");
+                                            if (triangleXShifted < 0) { // need to get y intercept
+                                                // find y intercept y = mx + c or c = y - mx
+                                                y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
+                                                // console.log("yIntercept = ",yIntercept);
+                                                triangleX2Shifted = 20;
+                                                triangleY2Shifted = yIntercept + 15;
+                                                x2OffScreenShift = true;
+                                            } else if (triangleYShifted < 0) { // need to get x intercept
+                                                // find x intercept y = mx + c or c = y - mx
+                                                y2Intercept = triangleY2Shifted - slope2 * triangleX2Shifted;
+                                                // console.log("yIntercept = ",yIntercept);
+                                                // 0 = slope * x + yIntercept
+                                                // xIntercept = yIntercept / slope
+                                                x2Intercept = -y2Intercept / slope2;
+                                                // console.log("xIntercept = ", xIntercept);
+                                                triangleY2Shifted = 25;
+                                                triangleX2Shifted = x2Intercept + 10;
+                                                y2OffScreenShift = true;
+                                            }
+                                        }
                                     }
-                                }
-                            }
-                        }         
-                    });
+                                }         
+                            });
+                        }
+                    }
 
                     // center of the triangle is triangleXShifted, triangleYShifted
 
@@ -566,20 +618,22 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                     
                     let x2Shifted = false; let y2Shifted = false;
-                    if (triangleX2Shifted >= -10 && triangleX2Shifted <= 6 && x2OffScreenShift === false) {
-                        // console.log("X Adjustment if tab element circle or triangle very close to top or left but within viewport");
-                        triangleX2Shifted = 14;
-                        x2Shifted = true;
+                    if (nodes[i+1] != null && nodes[i+2] != null) {
+                        
+                        if (triangleX2Shifted >= -10 && triangleX2Shifted <= 6 && x2OffScreenShift === false) {
+                            // console.log("X Adjustment if tab element circle or triangle very close to top or left but within viewport");
+                            triangleX2Shifted = 14;
+                            x2Shifted = true;
+                        }
+                        if (triangleY2Shifted >= -10 && triangleY2Shifted <= 6 && y2OffScreenShift === false) {
+                            // console.log("Y Adjustment if tab element circle or triangle very close to top or left but within viewport");
+                            triangleY2Shifted = 14;
+                            y2Shifted = true;
+                        }
                     }
-                    if (triangleY2Shifted >= -10 && triangleY2Shifted <= 6 && y2OffScreenShift === false) {
-                        // console.log("Y Adjustment if tab element circle or triangle very close to top or left but within viewport");
-                        triangleY2Shifted = 14;
-                        y2Shifted = true;
-                    }
-
                     
-                    // console.log("Draw Lines");
                     if (lines) {
+                        console.log("Triangle line ",i," to ",i+1);
                         if (i < nodes.length - 1) {
                             // Create basic black line
                             let x1 = nodes[i].getBoundingClientRect().x;   let y1 = nodes[i].getBoundingClientRect().y;
@@ -608,28 +662,29 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                                 yOffScreenShift = false;
                             }
 
-                            if (x2Shifted === true) {
-                                x2 = x2 + 14;
-                                // console.log("Line shift x2 = ", x2);
-                                x2Shifted = false;
-                            } if (y2Shifted === true) {
-                                y2 = y2 + 14;
-                                // console.log("Line shift y2 = ", y2);
-                                yShifted = false;
-                            //@ts-ignore   
-                            } if (xOffScreenShift === true) {
-                                x2 = x2 + triangleX2Shifted;
-                                y2 = y2 + triangleY2Shifted;
-                                // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
-                                xOffScreenShift = false;
-                            //@ts-ignore
-                            }  if (y2OffScreenShift === true) {
-                                x2 = x2 + triangleXShifted;
-                                y2 = y2 + triangleYShifted;
-                                // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
-                                y2OffScreenShift = false;
+                            if (nodes[i+1] != null && nodes[i+2] != null) {
+                                if (x2Shifted === true) {
+                                    x2 = x2 + 14;
+                                    // console.log("Line shift x2 = ", x2);
+                                    x2Shifted = false;
+                                } if (y2Shifted === true) {
+                                    y2 = y2 + 14;
+                                    // console.log("Line shift y2 = ", y2);
+                                    yShifted = false;
+                                //@ts-ignore   
+                                } if (xOffScreenShift === true) {
+                                    x2 = x2 + triangleX2Shifted;
+                                    y2 = y2 + triangleY2Shifted;
+                                    // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
+                                    xOffScreenShift = false;
+                                //@ts-ignore
+                                }  if (y2OffScreenShift === true) {
+                                    x2 = x2 + triangleXShifted;
+                                    y2 = y2 + triangleYShifted;
+                                    // console.log("off screen line shift x2 = ", x2, "   y2 = ",y2);
+                                    y2OffScreenShift = false;
+                                }
                             }
-                            
                             // console.log("x1 - offset = ", x1 - offset, "   y1 - offset = ",y1 - offset);
                             // console.log("x2 - offset = ", x2 - offset, "   y2 - offset = ",y2 - offset);
                             // console.log("------------------");
@@ -650,16 +705,18 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
 
                     // console.log("triangleXShifted = ",triangleXShifted, "   triangleYShifted",triangleYShifted);
+                    if (i < nodes.length) {
+                        // console.log("Tabbable i = ",i," so makeTriangle");
+                        makeTriangle(  
+                                    triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                                    triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                    triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                    i.toString(), nodeXpaths[i])
+                        
+                        // makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
 
-                    makeTriangle(  
-                                triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
-                                triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                                triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                                i.toString(), nodeXpaths[i])
-                    
-                    // makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
-
-                    makeTextSmall(triangleXShifted, triangleYShifted, (i + 1).toString(), "textColorBlack");
+                        makeTextSmall(triangleXShifted, triangleYShifted, (i + 1).toString(), "textColorBlack");
+                    }
 
                     if (outlines) {
 
@@ -683,11 +740,22 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     }
-                }
-                else { // This is the defalt case were we just draw a circle
-                    // console.log("*** Tabbable Node ",i,"***");
+                } else { // This is the defalt case were we just draw a circle
+                    console.log("*** Tabbable Node ",i,"***");
                     if (lines) {
+                        console.log("Circle line ",i," to ",i+1);
                         if (i < nodes.length - 1) {
+                            if (nodes[i].getBoundingClientRect !=null) {
+                                console.log("Has bounding rect");
+                            } else {
+                                console.log("NO bounding rect");
+                            }
+                            if (nodes[i+1].getBoundingClientRect !=null) {
+                                console.log("Has bounding rect");
+                            } else {
+                                console.log("NO bounding rect");
+                            }
+
                             let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
                             let x1 = nodes[i].getBoundingClientRect().x;
                             let y1 = nodes[i].getBoundingClientRect().y;
@@ -719,13 +787,11 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     if (outlines) {
 
-                        
                         // Make box around active component
                         makeLine(x, y, xPlusWidth, y, ["line", "lineTop", "lineNumber" + i]);
                         makeLine(x, y, x, yPlusHeight, ["line", "lineLeft", "lineNumber" + i]);
                         makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["line", "lineRight", "lineNumber" + i]);
                         makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["line", "lineBottom", "lineNumber" + i]);
-
 
                         // Make white stroke around active component outline
                         makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmboss"]);
