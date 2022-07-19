@@ -44,6 +44,11 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
+        let nodeName = ruleContext.nodeName.toLowerCase();
+        //ignore datalist element check since it will be part of a input element or hidden by default
+        if (nodeName === 'datalist')
+            return null;
+            
         let passed = true;
         let savedPassed = passed;
         let doc = ruleContext.ownerDocument;
