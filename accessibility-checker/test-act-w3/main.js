@@ -94,7 +94,7 @@ All: ${JSON.stringify(issuesAll
         }
         console.groupEnd();
     }
-    fs.writeFileSync("./earlResultW3.json", JSON.stringify(earlResult, null, 2));
+    fs.writeFileSync("./act-report-v2.json", JSON.stringify(earlResult, null, 2));
     await browser.close();
 })();
 
