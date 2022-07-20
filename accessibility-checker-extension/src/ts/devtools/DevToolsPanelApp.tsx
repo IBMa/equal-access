@@ -551,7 +551,7 @@
     
                 this.setState({ tabStopsResults: tabbable });
                 this.setState({ tabStopsErrors: tabbableErrors });
-                // console.log("tabbable = ", tabbable);
+                console.log("tabbable = ", tabbable);
                 // console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
                 // console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")

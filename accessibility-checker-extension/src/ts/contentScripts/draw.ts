@@ -355,8 +355,9 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                     // console.log(tabStopsErrors[i].ruleId);
                     skipErrorNode = true; // JCH - already taken care of in redraw
                 } else {
-                    // console.log("Not in Tab Chain");
-                    // console.log(tabStopsErrors[i].ruleId);
+                    console.log("Not in Tab Chain");
+                    console.log(tabStopsErrors[i].ruleId);
+                    console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
                 }
             }
             if (skipErrorNode === true) {
@@ -380,60 +381,66 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                         console.log("NON Tabbable nodes[",i+1,"].tagName is null $$$$$");
                     }
                    
-                    if (nodes[i].getBoundingClientRect !=null) {
+                    if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
                         console.log("Has bounding rect");
-                    } else {
+                    }
+                    else {
                         console.log("NO bounding rect");
                     }
                 }
                 console.log("--------------------------------");
 
-                let x = nodes[i].getBoundingClientRect().x - offset;
-                let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
+                if (nodes[i] != null ) { // JCH - if node exists
 
-                let y = nodes[i].getBoundingClientRect().y - offset;
-                let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+                    let x = nodes[i].getBoundingClientRect().x - offset;
+                    let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
 
-                if (outlines) {
+                    let y = nodes[i].getBoundingClientRect().y - offset;
+                    let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
 
-                    // MAKE BOX AROUND ACTIVE COMPONENT
-                    makeLine(x, y, xPlusWidth, y, ["lineError"]);
-                    makeLine(x, y, x, yPlusHeight, ["lineError"]);
-                    makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
-                    makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
+                    if (outlines) {
 
-                    // Make white stroke around active component outline
-                    makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
-                    makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
-                    makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-                    makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                        // MAKE BOX AROUND ACTIVE COMPONENT
+                        makeLine(x, y, xPlusWidth, y, ["lineError"]);
+                        makeLine(x, y, x, yPlusHeight, ["lineError"]);
+                        makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
+                        makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
 
-                    // Make white stroke inside active component outline
-                    makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
-                    makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
-                    makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-                    makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                        // Make white stroke around active component outline
+                        makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
+                        makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
+                        makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                        makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+
+                        // Make white stroke inside active component outline
+                        makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
+                        makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
+                        makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                        makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                    }
+
+                    // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
+                    let triangleLegLength = 27;
+                    let triangleXShifted = x;  
+                    let triangleYShifted = y+1; // Shift 1 px to center the ? we draw
+                    // If the triangle is being drawn slighly off of the screen move it into the screen
+                    if (triangleXShifted >= -10 && triangleXShifted <= 6) {
+                        triangleXShifted = 14;
+                    }
+                    if (triangleYShifted >= -10 && triangleYShifted <= 6) {
+                        triangleYShifted = 14;
+                    }
+                    // console.log("Not Tabbable ERROR i = ",i," so makeTriangle");
+                    makeTriangle(  
+                                triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
+                                triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
+                                "Error"+i.toString(), nodeXpaths[i])
+                    
+                    makeTextSmall(x, y, "?", "textColorBlack");
+                } else {
+                    continue;
                 }
-
-                // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
-                let triangleLegLength = 27;
-                let triangleXShifted = x;  
-                let triangleYShifted = y+1; // Shift 1 px to center the ? we draw
-                // If the triangle is being drawn slighly off of the screen move it into the screen
-                if (triangleXShifted >= -10 && triangleXShifted <= 6) {
-                    triangleXShifted = 14;
-                }
-                if (triangleYShifted >= -10 && triangleYShifted <= 6) {
-                    triangleYShifted = 14;
-                }
-                // console.log("Not Tabbable ERROR i = ",i," so makeTriangle");
-                makeTriangle(  
-                            triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
-                            triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                            triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                            "Error"+i.toString(), nodeXpaths[i])
-                
-                makeTextSmall(x, y, "?", "textColorBlack");
             }
         }
     }, 1);
@@ -455,25 +462,25 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null ) { // JCH - tabbable nodes
-                if (nodes[i] != null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i+1,"]   element exists");
-                } else {
-                    console.log("Tabbable nodes[",i+1,"] is null $$$$$");
-                }
-
+                console.log("Tabbable nodes[",i+1,"]   element exists");
+            } else {
+                console.log("Tabbable nodes[",i+1,"] is null $$$$$");
+            }
+            if (nodes[i] != null) {
                 if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
                     console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i].tagName);
                 } else {
                     console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
                 }
-               
-                if (nodes[i].getBoundingClientRect !=null) {
+                
+                if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
                     console.log("Has bounding rect");
-                } else {
+                }
+                else {
                     console.log("NO bounding rect");
                 }
-                console.log("--------------------------------");
             }
+            console.log("--------------------------------");
         }
 
         // JCH - need for last line to return to first node
@@ -481,16 +488,33 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             // console.log("i = ", i, "   i+1 = ",i+1, "   i+2 = ",i+2);
             if (nodes[i] != null ) { // JCH - tabbable nodes
-                
-                // console.log(tabstops[i].ruleID);
+                console.log("Tabbable nodes[",i,"]   element exists");
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
                     console.log("*** Tabbable Error Node ",i,"***");
-                    if (i != nodes.length - 1) {
-                        slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset);
-                    } else {
-                        slope = 1;
+                    let nextTabbableElement;
+                    let k = i;
+                    for (let j = i+1; j < nodes.length; j++) {
+                        if (nodes[j] != null) {
+                            k = j;
+                            nextTabbableElement = nodes[j];
+                            break;
+                        }
+                    }
+                    if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                        console.log("nodes[",i,"] has bounding rect");
+                    }
+                    else {
+                        console.log("nodes[",i,"] has NO bounding rect");
+                    }
+                    if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
+                        console.log("nextTabbableElement has bounding rect");
+                    }
+                    else {
+                        console.log("nextTabbableElement has NO bounding rect");
                     }
                     
+                    slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+
                     // offset to stay away from the outline?
                     let x = nodes[i].getBoundingClientRect().x - offset;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width + offset;
@@ -557,16 +581,14 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     let x2OffScreenShift = false; let y2OffScreenShift = false;
                     let triangleX2Shifted = 0;
                     let triangleY2Shifted = 0;
-                    if (nodes[i+1] != null && nodes[i+2] != null) {
-                        
-                        
-                        triangleX2Shifted = nodes[i+1].getBoundingClientRect().x - offset;
-                        triangleY2Shifted = nodes[i+1].getBoundingClientRect().y - offset;
-                        if (i+2 < nodes.length) {
-                            let slope2 = (nodes[i + 2].getBoundingClientRect().y - offset - nodes[i+1].getBoundingClientRect().y - offset) / (nodes[i + 2].getBoundingClientRect().x - offset - nodes[i+1].getBoundingClientRect().x - offset);
+                    if (nextTabbableElement != null && nodes[i+2] != null) {
+                        triangleX2Shifted = nextTabbableElement.getBoundingClientRect().x - offset;
+                        triangleY2Shifted = nextTabbableElement.getBoundingClientRect().y - offset;
+                        if (k+1 < nodes.length) {
+                            let slope2 = (nodes[k+1].getBoundingClientRect().y - offset - nextTabbableElement.getBoundingClientRect().y - offset) / (nodes[k+1].getBoundingClientRect().x - offset - nextTabbableElement.getBoundingClientRect().x - offset);
             
                             tabStopsErrors.map((result: any) => {
-                                if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[i+1]) {
+                                if (result.ruleId === "element_tabbable_visible" && result.path.dom === nodeXpaths[k]) {
                                     
                                     // console.log("getBoundingClientRect().x = ",nodes[i+1].getBoundingClientRect().x);
                                     // console.log("getBoundingClientRect().y = ",nodes[i+1].getBoundingClientRect().y);
@@ -618,7 +640,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                     
                     let x2Shifted = false; let y2Shifted = false;
-                    if (nodes[i+1] != null && nodes[i+2] != null) {
+                    if (nextTabbableElement != null && nodes[k+1] != null) {
                         
                         if (triangleX2Shifted >= -10 && triangleX2Shifted <= 6 && x2OffScreenShift === false) {
                             // console.log("X Adjustment if tab element circle or triangle very close to top or left but within viewport");
@@ -633,11 +655,11 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                     
                     if (lines) {
-                        console.log("Triangle line ",i," to ",i+1);
+                        console.log("Triangle line ",i," to ",k);
                         if (i < nodes.length - 1) {
                             // Create basic black line
                             let x1 = nodes[i].getBoundingClientRect().x;   let y1 = nodes[i].getBoundingClientRect().y;
-                            let x2 = nodes[i+1].getBoundingClientRect().x; let y2 = nodes[i+1].getBoundingClientRect().y;
+                            let x2 = nextTabbableElement.getBoundingClientRect().x; let y2 = nextTabbableElement.getBoundingClientRect().y;
                             // console.log("x1 = ", x1, "   y1 = ", y1);
                             // console.log("x2 = ", x2, "   y2 = ", y2);
                             if (xShifted === true) {
@@ -662,7 +684,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                                 yOffScreenShift = false;
                             }
 
-                            if (nodes[i+1] != null && nodes[i+2] != null) {
+                            if (nextTabbableElement != null && nodes[k+1] != null) {
                                 if (x2Shifted === true) {
                                     x2 = x2 + 14;
                                     // console.log("Line shift x2 = ", x2);
@@ -742,25 +764,37 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                 } else { // This is the defalt case were we just draw a circle
                     console.log("*** Tabbable Node ",i,"***");
+                    // for line to next tabbable element find next tabbable element that exists
+                    let nextTabbableElement;
+                    let k;
+                    for (let j = i+1; j < nodes.length; j++) {
+                        if (nodes[j] != null) {
+                            k = j;
+                            nextTabbableElement = nodes[j];
+                            break;
+                        }
+                    }
                     if (lines) {
-                        console.log("Circle line ",i," to ",i+1);
+                        console.log("Circle line ",i," to ",k);
                         if (i < nodes.length - 1) {
-                            if (nodes[i].getBoundingClientRect !=null) {
-                                console.log("Has bounding rect");
-                            } else {
-                                console.log("NO bounding rect");
+                            if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                                console.log("nodes[",i,"] has bounding rect");
                             }
-                            if (nodes[i+1].getBoundingClientRect !=null) {
-                                console.log("Has bounding rect");
-                            } else {
-                                console.log("NO bounding rect");
+                            else {
+                                console.log("nodes[",i,"] has NO bounding rect");
+                            }
+                            if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
+                                console.log("nextTabbableElement has bounding rect");
+                            }
+                            else {
+                                console.log("nextTabbableElement has NO bounding rect");
                             }
 
-                            let slope = (nodes[i + 1].getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nodes[i + 1].getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
+                            let slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
                             let x1 = nodes[i].getBoundingClientRect().x;
                             let y1 = nodes[i].getBoundingClientRect().y;
-                            let x2 = nodes[i+1].getBoundingClientRect().x;
-                            let y2 = nodes[i+1].getBoundingClientRect().y;
+                            let x2 = nextTabbableElement.getBoundingClientRect().x;
+                            let y2 = nextTabbableElement.getBoundingClientRect().y;
 
                             makeLine(x1 - offset, y1 - offset, x2 - offset, y2 - offset, ["line"]);
 
@@ -806,6 +840,8 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     }
                 }
+            } else {
+                continue;
             }
         }
 
