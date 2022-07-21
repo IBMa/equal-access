@@ -45,6 +45,10 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
+        //skip the check if the element is hidden
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext))
+            return;
+            
         let passed = false;
         let designPatterns = ARIADefinitions.designPatterns;
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
