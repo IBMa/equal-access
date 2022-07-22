@@ -355,9 +355,9 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                     // console.log(tabStopsErrors[i].ruleId);
                     skipErrorNode = true; // JCH - already taken care of in redraw
                 } else {
-                    console.log("Not in Tab Chain");
-                    console.log(tabStopsErrors[i].ruleId);
-                    console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
+                    // console.log("Not in Tab Chain");
+                    // console.log(tabStopsErrors[i].ruleId);
+                    // console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
                 }
             }
             if (skipErrorNode === true) {
@@ -370,22 +370,22 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                 
                 if (nodes[i] != null ) { // JCH - tabbable nodes
                     if (nodes[i] != null ) { // JCH - tabbable nodes
-                        console.log("NON Tabbable nodes[",i+1,"]   element exists");
+                        console.log("NON Tabbable nodes[",i,"]   element exists");
                     } else {
-                        console.log("NON Tabbable nodes[",i+1,"] is null $$$$$");
+                        console.log("NON Tabbable nodes[",i,"] is null $$$$$");
                     }
     
                     if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                        console.log("NON Tabbable nodes[",i+1,"]   tagName is ",nodes[i].tagName);
+                        console.log("NON Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                     } else {
-                        console.log("NON Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                        console.log("NON Tabbable nodes[",i,"].tagName is null $$$$$");
                     }
                    
                     if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("Has bounding rect");
+                        console.log("NON Tabbable nodes[",i,"] Has bounding rect");
                     }
                     else {
-                        console.log("NO bounding rect");
+                        console.log("NON Tabbable nodes[",i,"] NO bounding rect");
                     }
                 }
                 console.log("--------------------------------");
@@ -458,7 +458,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
-        let slope: number;
+        let slope: number = -1;
 
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null ) { // JCH - tabbable nodes
@@ -506,14 +506,18 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     else {
                         console.log("nodes[",i,"] has NO bounding rect");
                     }
-                    if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
-                        console.log("nextTabbableElement has bounding rect");
-                    }
-                    else {
-                        console.log("nextTabbableElement has NO bounding rect");
+                    
+                    if (nextTabbableElement != null) {
+                        if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
+                            console.log("nextTabbableElement has bounding rect");
+                        }
+                        else {
+                            console.log("nextTabbableElement has NO bounding rect");
+                        }
+                        
+                        slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
                     }
                     
-                    slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
 
                     // offset to stay away from the outline?
                     let x = nodes[i].getBoundingClientRect().x - offset;
@@ -654,7 +658,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
                     
-                    if (lines) {
+                    if (lines && nextTabbableElement != null) {
                         console.log("Triangle line ",i," to ",k);
                         if (i < nodes.length - 1) {
                             // Create basic black line
