@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import {inspect} from 'util';
 
 export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
     id: "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
@@ -48,15 +49,7 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         //skip the check if the element is hidden
         if (RPTUtil.isNodeHiddenFromAT(ruleContext))
             return;
-            
-        let passed = false;
-        let designPatterns = ARIADefinitions.designPatterns;
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
-        let doc = ruleContext.ownerDocument;
-        let roleNameArr = new Array();
-        let requiredChildren = new Array();
-        let nodeName = ruleContext.nodeName.toLowerCase();
-        console.log("contextHierarchies=" + JSON.stringify(context));
+        
         // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
         //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
         //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
@@ -65,8 +58,15 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
             return RulePass("Pass_0");
         }
 
+        let passed = false;
+        let designPatterns = ARIADefinitions.designPatterns;
+        let roles = RPTUtil.getRoles(ruleContext, true);
+        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);
+        let requiredChildren = new Array();
+        let violateElemRoles = {};
+        
+        let withOne = false;
         for (let j = 0, length = roles.length; j < length; ++j) {
-
             if (roles[j] === "combobox") {
                 //  For combobox, we have g1193 ... g1199 to check the values etc.
                 //  We don't want to trigger 1152 again. So, we bypass it here.
@@ -75,45 +75,33 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
             }
 
             if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null) {
-                requiredChildren = designPatterns[roles[j]].reqChildren;
-                let roleMissingReqChild = false;
+                requiredChildren.push(designPatterns[roles[j]].reqChildren);
                 for (let i = 0, requiredChildrenLength = requiredChildren.length; i < requiredChildrenLength; i++) {
                     passed = RPTUtil.getDescendantWithRoleHidden(ruleContext, requiredChildren[i], true, true) || RPTUtil.getAriaOwnsWithRoleHidden(ruleContext, requiredChildren[i], true);
-                    if (!passed) {
-                        // See if an html equivalent child meets the requirement (e.g., radiogroup contains html radio buttons)
-                        let htmlEquiv = designPatterns[requiredChildren[i]].htmlEquiv;
-                        if (htmlEquiv) {
-                            let nw = new NodeWalker(ruleContext);
-                            while (!passed && nw.nextNode() && nw.node != ruleContext) {
-                                // Following are the steps that are executed at this stage to determine if the node should be classified as hidden
-                                // or not.
-                                //  1. Only run isNodeVisible check if hidden content should NOT be checked. In the case that hidden content is to,
-                                //     be scanned then we can just scan everything as normal. In the case that the current node is hidden we do not
-                                //     add it to the roleToElems hash at all or even do any checking for it at all.
-                                //
-                                // Note: The if conditions uses short-circuiting so if the first condition is not true it will not check the next one,
-                                //       so on and so forth.
-                                if (RPTUtil.shouldNodeBeSkippedHidden(nw.node)) {
-                                    continue;
-                                }
-
-                                //Check if the element has explicit role specified. If so, honor the role
-                                if (!RPTUtil.hasAnyRole(nw.node, false)) {
-                                    passed = RPTUtil.isHtmlEquiv(nw.node, htmlEquiv);
-                                }
-                            }
-                            if (passed) break; // break incrementing over required children. At least one required child was found.
-                        }
-                    } else break; // break incrementing over required children. At least one required child was found.
+                    for (let j=0; j < directATChildren.length; j++) {
+                        let roles = RPTUtil.getRoles(directATChildren[j], true);
+                        if (roles !== null && roles.includes(requiredChildren[i])) {
+                            withOne = true;
+                        } else {
+                            violateElemRoles[directATChildren[j].nodeName.toLowerCase()] = roles.join(", "); 
+                        }    
+                    }    
                 }
-            } else passed = true; // No required children for this role
-            if (!passed) {
-                roleNameArr.push(roles[j]);
-            }
+            } 
         }
-        let retToken = new Array();
-        retToken.push(roleNameArr.join(", "));
-        retToken.push(requiredChildren.join(", "));
-        return passed ? RulePass("Pass_0") : RulePotential("Potential_1", retToken);
+        if (!withOne) {
+            let retToken = new Array();
+            retToken.push(roles.join(", "));
+            retToken.push(requiredChildren.join(", "));
+            return RuleFail("Fail_no_child", retToken);
+        } 
+        for (let violateElem in violateElemRoles) {
+            let retToken = new Array();
+            retToken.push(violateElem);
+            retToken.push(violateElemRoles[violateElem]);
+            retToken.push(roles.join(", "));
+            retToken.push(roles.join(", "));
+            return RuleFail("Fail_no_child", retToken);
+        } 
     }
 }

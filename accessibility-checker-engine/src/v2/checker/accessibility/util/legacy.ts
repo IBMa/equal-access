@@ -1537,6 +1537,52 @@ export class RPTUtil {
     }
 
     /**
+     * This function is responsible for getting All direct children in AT tree with a role (exclude none and presentation)
+     *
+     * @parm {element} element - parent element for which we will be checking children for
+     * @return {node} - The direct child elements in AT tree that has a role
+     *
+     * @memberOf RPTUtil
+     */
+     public static getDirectATChildren(element) {
+        // Variable Decleration
+        let direct: Array<HTMLElement> = [];
+        RPTUtil.retrieveDirectATChildren(element, direct);
+        return direct;
+    }
+
+    /**
+     * This function is responsible for recursively any child path till either no child or a child with a role is found (exclude none and presentation)
+     *
+     * @parm {element} element - parent element for which we will be checking children for
+     * @return {node} - The direct child elements in AT tree
+     *
+     * @memberOf RPTUtil
+     */
+     public static retrieveDirectATChildren(element, direct: Array<HTMLElement>) {
+        // Variable Decleration
+        let children = element.children;
+        if (children !== null && children.length > 0) {
+            for (let i=0; i < children.length; i++) {
+                //ignore hidden or disabled child
+                if (RPTUtil.isNodeHiddenFromAT(children[i]) || RPTUtil.isNodeDisabled(children[i])) continue;
+                let roles = RPTUtil.getRoles(children[i], true);
+                if (roles !== null && roles.length > 0) {
+                    //remove 'none' and 'presentation'
+                    roles = roles.filter(function(item) {
+                        return item !== "none" && item !== 'presentation';
+                    })
+                }
+                if (roles !== null && roles.length > 0) 
+                    direct.push(children[i]);
+                else
+                    // recursive until get a return value, 
+                    RPTUtil.retrieveDirectATChildren(children[i], direct);    
+            }
+        }
+    }
+
+    /**
      * This function is responsible for getting an element referenced by aria-owns and has the
      * role that was specified.
      *
