@@ -56,7 +56,7 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         let roleNameArr = new Array();
         let requiredChildren = new Array();
         let nodeName = ruleContext.nodeName.toLowerCase();
-
+        console.log("contextHierarchies=" + JSON.stringify(context));
         // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
         //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
         //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
