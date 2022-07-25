@@ -126,6 +126,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             regularTabstops[index].nodeHasError = true
         } 
     }
+
+    console.log("----------------");
+    console.log(regularTabstops);
+    console.log(tabStopsErrors);
+    console.log("----------------");
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
@@ -370,22 +375,20 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                 
                 if (nodes[i] != null ) { // JCH - tabbable nodes
                     if (nodes[i] != null ) { // JCH - tabbable nodes
-                        console.log("NON Tabbable nodes[",i,"]   element exists");
+                        console.log("Non tabbable nodes[",i,"]   element exists");
+                        if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
+                            console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                            if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                                console.log("Non tabbable nodes[",i,"] has bounding rect");
+                            }
+                            else {
+                                console.log("Non tabbable nodes[",i,"] has NO bounding rect");
+                            }
+                        } else {
+                            console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
+                        }
                     } else {
-                        console.log("NON Tabbable nodes[",i,"] is null $$$$$");
-                    }
-    
-                    if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                        console.log("NON Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
-                    } else {
-                        console.log("NON Tabbable nodes[",i,"].tagName is null $$$$$");
-                    }
-                   
-                    if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("NON Tabbable nodes[",i,"] Has bounding rect");
-                    }
-                    else {
-                        console.log("NON Tabbable nodes[",i,"] NO bounding rect");
+                        console.log("Non tabbable nodes[",i,"] is null $$$$$");
                     }
                 }
                 console.log("--------------------------------");
@@ -458,26 +461,38 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodes);
+        console.log("After convertXpathsToHtmlElements ", nodes);
         let slope: number = -1;
 
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null ) { // JCH - tabbable nodes
-                console.log("Tabbable nodes[",i+1,"]   element exists");
-            } else {
-                console.log("Tabbable nodes[",i+1,"] is null $$$$$");
-            }
-            if (nodes[i] != null) {
+                console.log("Tabbable nodes[",i,"]   element exists");
                 if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i].tagName);
+                    console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                    if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                        console.log("Tabbable nodes[",i,"] has bounding rect");
+                    }
+                    else {
+                        console.log("Tabbable nodes[",i,"] has NO bounding rect");
+                    }
+                } else {
+                    console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
+                }
+            } else {
+                console.log("Tabbable nodes[",i,"] is null $$$$$");
+            }
+            if (nodes[i+1] != null) {
+                console.log("Tabbable nodes[",i+1,"]   element exists");
+                if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
+                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
+                    if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
+                        console.log("Tabbable nodes[",i+1,"] has bounding rect");
+                    }
+                    else {
+                        console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
+                    }
                 } else {
                     console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
-                }
-                
-                if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                    console.log("Has bounding rect");
-                }
-                else {
-                    console.log("NO bounding rect");
                 }
             }
             console.log("--------------------------------");
@@ -1055,10 +1070,21 @@ function createSVGLineTemplate() {
 }
 
 
+// function convertXpathsToHtmlElements(nodes: any) {
+//     let results: any = [];
+//     nodes.map((elem: any) => {
+//         results.push(document.evaluate(elem, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue);
+//     });
+//     return results;
+// }
+
 function convertXpathsToHtmlElements(nodes: any) {
     let results: any = [];
     nodes.map((elem: any) => {
-        results.push(document.evaluate(elem, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue);
+        let element;
+        element = selectPath(elem)
+        console.log(elem);
+        results.push(element);
     });
     return results;
 }
@@ -1081,4 +1107,56 @@ async function goToTop() {
         left: 0,
         behavior: 'smooth'
       });
+}
+
+function lookup(doc: any, xpath:string) {
+    console.log("Function: lookup");
+    if (doc.nodeType === 11) {
+        let selector = ":scope" + xpath.replace(/\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
+        let element = doc.querySelector(selector);
+        return element;
+    } else {
+        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+        let element = nodes.iterateNext();
+        if (element) {
+            return element;
+        } else {
+            return null;
+        }
+    }
+}
+
+// @ts-ignore
+function selectPath(srcPath: any) {
+    console.log("Function: selectPath");
+    let doc = document;
+    let element = null;
+    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
+        if (srcPath.includes("iframe")) {
+            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+            let iframe = lookup(doc, parts[1]);
+            element = iframe || element;
+            if (iframe && iframe.contentDocument) {
+                doc = iframe.contentDocument;
+                srcPath = parts[2];
+            } else {
+                srcPath = null;
+            }
+        } else if (srcPath.includes("#document-fragment")) {
+            let parts = srcPath.match(/(.*?)\/#document-fragment\\[\\d+\\](.*)/);
+            let fragment = lookup(doc, parts[1]);
+            element = fragment || element;
+            if (fragment && fragment.shadowRoot) {
+                doc = fragment.shadowRoot;
+                srcPath = parts[2];
+            } else {
+                srcPath = null;
+            }
+        }
+    }
+    if (srcPath) {
+        element = lookup(doc, srcPath) || element;
+    }
+    return element;
+    
 }
