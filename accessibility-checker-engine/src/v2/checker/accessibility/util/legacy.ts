@@ -1569,8 +1569,8 @@ export class RPTUtil {
                 let roles = RPTUtil.getRoles(children[i], true);
                 if (roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
-                    roles = roles.filter(function(item) {
-                        return item !== "none" && item !== 'presentation';
+                    roles = roles.filter(function(role) {
+                        return role !== "none" && role !== 'presentation' && role !== 'group';
                     })
                 }
                 if (roles !== null && roles.length > 0) 

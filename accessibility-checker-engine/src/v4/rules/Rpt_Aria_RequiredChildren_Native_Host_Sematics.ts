@@ -25,14 +25,16 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         "en-US": {
             "group": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
             "Pass_0": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
-            "Potential_1": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
+            "Fail_no_child": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
+            "Fail_invalid_child": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html"
         }
     },
     messages: {
         "en-US": {
-            "group": "An element with a ARIA role must contain required children",
-            "Pass_0": "Rule Passed",
-            "Potential_1": "The element with role \"{0}\" does not contain or own at least one child element with each of the following roles: \"{1}\""
+            "group": "An element with a ARIA role must own a required child",
+            "Pass_0": "An element with a ARIA role owns a required child",
+            "Fail_no_child": "The element with role \"{0}\" does not own at least one child element with any of the following role(s): \"{1}\"",
+            "Fail_invalid_child": "The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""
         }
     },
     rulesets: [{
@@ -90,18 +92,26 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
             } 
         }
         if (!withOne) {
-            let retToken = new Array();
-            retToken.push(roles.join(", "));
-            retToken.push(requiredChildren.join(", "));
-            return RuleFail("Fail_no_child", retToken);
+            /**
+             * When a widget is missing required owned elements due to script execution or loading, 
+             * authors MUST mark a containing element with 'aria-busy' equal to true. 
+             */
+            let busy = ruleContext.getAttribute("aria-busy");
+            if (!busy || busy !== 'true') {
+                let retToken = new Array();
+                retToken.push(roles.join(", "));
+                retToken.push(requiredChildren.join(", "));
+                return RuleFail("Fail_no_child", retToken);
+            }
         } 
+        let retValues = [];
         for (let violateElem in violateElemRoles) {
             let retToken = new Array();
             retToken.push(violateElem);
             retToken.push(violateElemRoles[violateElem]);
             retToken.push(roles.join(", "));
-            retToken.push(roles.join(", "));
-            return RuleFail("Fail_no_child", retToken);
+            retValues.push(RuleFail("Fail_no_child", retToken));
         } 
+        return retValues;
     }
 }
