@@ -463,6 +463,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         nodes = convertXpathsToHtmlElements(nodes);
         console.log("After convertXpathsToHtmlElements ", nodes);
         let slope: number = -1;
+        let iframes: any = [];
 
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null ) { // JCH - tabbable nodes
@@ -470,7 +471,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                 if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
                     console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                     if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i,"] has bounding rect");
+                        console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
                     }
                     else {
                         console.log("Tabbable nodes[",i,"] has NO bounding rect");
@@ -486,7 +487,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                 if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
                     console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
                     if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i+1,"] has bounding rect");
+                        console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
                     }
                     else {
                         console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
@@ -782,7 +783,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     }
                 } else { // This is the defalt case were we just draw a circle
-                    console.log("*** Tabbable Node ",i,"***");
+                    console.log("********* Tabbable Node ",i,"*********");
                     // for line to next tabbable element find next tabbable element that exists
                     let nextTabbableElement;
                     let k;
@@ -834,9 +835,47 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     let y = nodes[i].getBoundingClientRect().y - offset;
                     let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height + offset;
+        
+                    // adjustment for iframes
+                    // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
+                    console.log("xpath = ",nodeXpaths[i]);
+                    
+                    if (nodeXpaths[i].includes("iframe")) {
+                        
+                        // find and store iframe
+                        let iframeStartIndex = nodeXpaths[i].indexOf("iframe");
+                        let iframeString = nodeXpaths[i].slice(iframeStartIndex);
+                       
+                        let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
+                        
+                        if (lastElement.includes("iframe")) { // this is for the iframe element
+                            console.log("We Have an iframe");
+                            const iframe = {element: nodes[i], name: iframeString, x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
+                            iframes.push(iframe);
+                            console.log(iframes);
+                        } else { // this is for elements that are within an iframe
+                            // get the iframe string iframe[n]
+                            console.log("We have and element in an iframe");
+                            let elementIframe = iframeString.slice(0,iframeString.indexOf('/'));
+                            // find the iframe in iframes
+                            const iframesObj = iframes.find((e:any) => e.name === elementIframe);
+                            console.log("iframesObj = ",iframesObj);
+                            // add elements coords to iframe coords
+                            console.log("iframesObj.x = ", iframesObj.x);
+                            console.log("iframesObj.y = ", iframesObj.y);
+                            console.log(nodes[i].getBoundingClientRect().x);
+                            console.log(nodes[i].getBoundingClientRect().y);
+                            x = iframesObj.x + nodes[i].getBoundingClientRect().x;
+                            y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+
+                        }
+                    }
+                    
+                    console.log("last iframes before circle: ",iframes);
 
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
+
 
                     if (outlines) {
 
@@ -1112,13 +1151,14 @@ async function goToTop() {
 function lookup(doc: any, xpath:string) {
     console.log("Function: lookup");
     if (doc.nodeType === 11) {
-        let selector = ":scope" + xpath.replace(/\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
+        let selector = ":scope" + xpath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-child($1)");
         let element = doc.querySelector(selector);
         return element;
     } else {
         let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
         let element = nodes.iterateNext();
         if (element) {
+            console.log("element = ",element);
             return element;
         } else {
             return null;
@@ -1133,7 +1173,9 @@ function selectPath(srcPath: any) {
     let element = null;
     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
         if (srcPath.includes("iframe")) {
-            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+            console.log("srcPath = ",srcPath);
+            let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
+            console.log("parts = ",parts);
             let iframe = lookup(doc, parts[1]);
             element = iframe || element;
             if (iframe && iframe.contentDocument) {
