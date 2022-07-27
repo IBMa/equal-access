@@ -127,15 +127,15 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         } 
     }
 
-    console.log("----------------");
-    console.log(regularTabstops);
-    console.log(tabStopsErrors);
-    console.log("----------------");
+    // console.log("----------------");
+    // console.log(regularTabstops);
+    // console.log(tabStopsErrors);
+    // console.log("----------------");
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
         setTimeout(() => {
-            draw(regularTabstops, tabStopsErrors, message.tabStopLines, message.tabStopOutlines).then(function() {
+                draw(regularTabstops, tabStopsErrors, message.tabStopLines, message.tabStopOutlines).then(function() {
                 drawErrors(tabStopsErrors, regularTabstops, message.tabStopOutlines);
             });
             
@@ -162,19 +162,57 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     window.addEventListener("resize", debounce( resizeContent, 250 ));
 
 
-    // Tab key listener
-    window.addEventListener('keyup', function (event) { // JCH - keydown does NOT work
+    // Tab key listener for main window
+    window.addEventListener('keyup', function(event:any) {
+        // console.log("---------------------------------------");
+        // console.log("main doc key catcher");
+        handleTabHighlight(event,regularTabstops,document,false,"");
+    
+    });
+    // Find all iframes nodes 
+    let frames = document.getElementsByTagName("iframe");
+    for (let i = 0; i < frames.length; ++i) {
+        if (frames[i] != null) {
+            frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
+                // console.log("---------------------------------------");
+                // console.log("iframe key catcher");
+                handleTabHighlight(event,regularTabstops,frames[i].contentWindow?.document,true,"iframe["+(i+1)+"]");
+            })
+        }
+    }
+    
+    return true;
+});
+
+function handleTabHighlight(event:any,regularTabstops:any,doc:any,iframe:boolean,iframeStr:string) {
+    // console.log("Tab key listener");
+    let elementXpath = "";
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            let element = this.document.activeElement;  // get element just tabbed to which has focus
-            // get xpath for active element
-            let elementXpath = getXPathForElement(element);
+            // console.log("Got TAB Key");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            // console.log("Active element = ", element);
+            elementXpath = getXPathForElement(element);
+            // console.log("elementXpath = ",elementXpath);
+            // Let's try node match
+            let nodes = getNodesXpaths(regularTabstops);
+            let nodeXpaths = nodes;
+            nodes = convertXpathsToHtmlElements(nodes);
+            // do node match
+            for (let i=0; i < nodeXpaths.length; i++) {
+                if (iframe && nodeXpaths[i].includes(iframeStr) && nodeXpaths[i].includes(elementXpath) ) {
+                    elementXpath = nodeXpaths[i];
+                }
+            }
+            // console.log("matching xpath = ",elementXpath);
+
             // get circle or polygon with matching xpath
-            let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
-            let polygon = this.document.querySelector('polygon[xpath="'+elementXpath+'"]');
+            let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+            // console.log("circle = ", circle);
+            let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
             let prevHighlightedElement;
-            if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0]) {
+            if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
                 // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-            } else if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVGtriangle")[0]) {
+            } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
                 // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
             }
             // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
@@ -208,22 +246,29 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
-            // Inspect active element
-            // console.log("circle.xpath = ", circle?.getAttribute("xpath"));
-            // console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
-            // TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
-            // Returm from elements tab to browse page tab
-        } else if (event.shiftKey && event.key === "Tab") { // catch only SHIFT TAB
-            let element = this.document.activeElement;  // get element just tabbed to which has focus
-            // get xpath for active element
-            let elementXpath = getXPathForElement(element);
+        } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
+            // console.log("Got SHIFT TAB Key");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            // console.log("Active element = ", element);
+            elementXpath = getXPathForElement(element);
+            // console.log("elementXpath = ",elementXpath);
+            // Let's try node match
+            let nodes = getNodesXpaths(regularTabstops);
+            let nodeXpaths = nodes;
+            nodes = convertXpathsToHtmlElements(nodes);
+            // do node match
+            for (let i=0; i < nodeXpaths.length; i++) {
+                if (iframe && nodeXpaths[i].includes(iframeStr) && nodeXpaths[i].includes(elementXpath) ) {
+                    elementXpath = nodeXpaths[i];
+                }
+            }
             // get circle or polygon with matching xpath
-            let circle = this.document.querySelector('circle[xpath="'+elementXpath+'"]');
-            let polygon = this.document.querySelector('polygon[xpath="'+elementXpath+'"]');
+            let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+            let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
             let prevHighlightedElement;
-            if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVG")[0]) {
+            if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
                 // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-            } else if (prevHighlightedElement = this.document.getElementsByClassName("highlightSVGtriangle")[0]) {
+            } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
                 // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
             }
             // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
@@ -263,11 +308,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             // TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
             // Returm from elements tab to browse page tab
         }
-        
-    });
-
-    return true;
-});
+}
 
 // Debounce
 function debounce(func:any, time:any) {
@@ -340,7 +381,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
         
         let nodes = getNodesXpaths(tabStopsErrors);
         let nodeXpaths = nodes;
-        nodes = convertXpathsToHtmlElements(nodes);
+        nodes = convertXpathsToHtmlElements(nodeXpaths);
         
         // console.log("tabStopsErrors = ", tabStopsErrors);
         nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
@@ -375,23 +416,23 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
                 
                 if (nodes[i] != null ) { // JCH - tabbable nodes
                     if (nodes[i] != null ) { // JCH - tabbable nodes
-                        console.log("Non tabbable nodes[",i,"]   element exists");
+                        // console.log("Non tabbable nodes[",i,"]   element exists");
                         if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                            console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                            // console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                             if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                                console.log("Non tabbable nodes[",i,"] has bounding rect");
+                                // console.log("Non tabbable nodes[",i,"] has bounding rect");
                             }
                             else {
-                                console.log("Non tabbable nodes[",i,"] has NO bounding rect");
+                                // console.log("Non tabbable nodes[",i,"] has NO bounding rect");
                             }
                         } else {
-                            console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
+                            // console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
                         }
                     } else {
-                        console.log("Non tabbable nodes[",i,"] is null $$$$$");
+                        // console.log("Non tabbable nodes[",i,"] is null $$$$$");
                     }
                 }
-                console.log("--------------------------------");
+                // console.log("--------------------------------");
 
                 if (nodes[i] != null ) { // JCH - if node exists
 
@@ -452,7 +493,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean) {
 
 
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean) {
-    console.log("Function: redraw");
+    // console.log("Function: redraw");
 
     setTimeout(() => { 
         let offset = 3;
@@ -460,53 +501,52 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         let nodes = getNodesXpaths(tabstops);
         // console.log(tabstopErrors)
         let nodeXpaths = nodes;
-        nodes = convertXpathsToHtmlElements(nodes);
-        console.log("After convertXpathsToHtmlElements ", nodes);
+        nodes = convertXpathsToHtmlElements(nodeXpaths);
         let slope: number = -1;
         let iframes: any = [];
 
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null ) { // JCH - tabbable nodes
-                console.log("Tabbable nodes[",i,"]   element exists");
+                // console.log("Tabbable nodes[",i,"]   element exists");
                 if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                    // console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                     if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
+                        // console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
                     }
                     else {
-                        console.log("Tabbable nodes[",i,"] has NO bounding rect");
+                        // console.log("Tabbable nodes[",i,"] has NO bounding rect");
                     }
                 } else {
-                    console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
+                    // console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
                 }
             } else {
-                console.log("Tabbable nodes[",i,"] is null $$$$$");
+                // console.log("Tabbable nodes[",i,"] is null $$$$$");
             }
             if (nodes[i+1] != null) {
-                console.log("Tabbable nodes[",i+1,"]   element exists");
+                // console.log("Tabbable nodes[",i+1,"]   element exists");
                 if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
+                    // console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
                     if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
+                        // console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
                     }
                     else {
-                        console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
+                        // console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
                     }
                 } else {
-                    console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                    // console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
                 }
             }
-            console.log("--------------------------------");
+            // console.log("--------------------------------");
         }
 
         // JCH - need for last line to return to first node
-        console.log("nodes.length = ",nodes.length);
+        // console.log("nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             // console.log("i = ", i, "   i+1 = ",i+1, "   i+2 = ",i+2);
             if (nodes[i] != null ) { // JCH - tabbable nodes
-                console.log("Tabbable nodes[",i,"]   element exists");
+                // console.log("Tabbable nodes[",i,"]   element exists");
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if this is true we should draw a triangle instead of a circle
-                    console.log("*** Tabbable Error Node ",i,"***");
+                    // console.log("*** Tabbable Error Node ",i,"***");
                     let nextTabbableElement;
                     let k = i;
                     for (let j = i+1; j < nodes.length; j++) {
@@ -517,18 +557,18 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
                     if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("nodes[",i,"] has bounding rect");
+                        // console.log("nodes[",i,"] has bounding rect");
                     }
                     else {
-                        console.log("nodes[",i,"] has NO bounding rect");
+                        // console.log("nodes[",i,"] has NO bounding rect");
                     }
                     
                     if (nextTabbableElement != null) {
                         if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
-                            console.log("nextTabbableElement has bounding rect");
+                            // console.log("nextTabbableElement has bounding rect");
                         }
                         else {
-                            console.log("nextTabbableElement has NO bounding rect");
+                            // console.log("nextTabbableElement has NO bounding rect");
                         }
                         
                         slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
@@ -570,7 +610,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                             
                             if (nodeXpaths[i] === result.path.dom) {
                                 if (nodes[i].getBoundingClientRect().x < -10 || nodes[i].getBoundingClientRect().y < -10) {
-                                    console.log("Adjustments for element_tabbable_visible for when element off page");
+                                    // console.log("Adjustments for element_tabbable_visible for when element off page");
                                     if (triangleXShifted < 0) { // need to get y intercept
                                         // find y intercept y = mx + c or c = y - mx
                                         yIntercept = triangleYShifted - slope * triangleXShifted;
@@ -675,7 +715,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                     
                     if (lines && nextTabbableElement != null) {
-                        console.log("Triangle line ",i," to ",k);
+                        // console.log("Triangle line ",i," to ",k);
                         if (i < nodes.length - 1) {
                             // Create basic black line
                             let x1 = nodes[i].getBoundingClientRect().x;   let y1 = nodes[i].getBoundingClientRect().y;
@@ -783,31 +823,29 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     }
                 } else { // This is the defalt case were we just draw a circle
-                    console.log("********* Tabbable Node ",i,"*********");
+                    // console.log("********* Tabbable Node ",i,"*********");
                     // for line to next tabbable element find next tabbable element that exists
                     let nextTabbableElement;
-                    let k;
                     for (let j = i+1; j < nodes.length; j++) {
                         if (nodes[j] != null) {
-                            k = j;
                             nextTabbableElement = nodes[j];
                             break;
                         }
                     }
                     if (lines) {
-                        console.log("Circle line ",i," to ",k);
+                        console.log("Circle line ",i," to ",i+1);
                         if (i < nodes.length - 1) {
                             if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                                console.log("nodes[",i,"] has bounding rect");
+                                // console.log("nodes[",i,"] has bounding rect");
                             }
                             else {
-                                console.log("nodes[",i,"] has NO bounding rect");
+                                // console.log("nodes[",i,"] has NO bounding rect");
                             }
                             if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
-                                console.log("nextTabbableElement has bounding rect");
+                                // console.log("nextTabbableElement has bounding rect");
                             }
                             else {
-                                console.log("nextTabbableElement has NO bounding rect");
+                                // console.log("nextTabbableElement has NO bounding rect");
                             }
 
                             let slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset)
@@ -838,7 +876,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         
                     // adjustment for iframes
                     // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
-                    console.log("xpath = ",nodeXpaths[i]);
+                    // console.log("xpath = ",nodeXpaths[i]);
                     
                     if (nodeXpaths[i].includes("iframe")) {
                         
@@ -849,29 +887,29 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
                         
                         if (lastElement.includes("iframe")) { // this is for the iframe element
-                            console.log("We Have an iframe");
+                            // console.log("We Have an iframe");
                             const iframe = {element: nodes[i], name: iframeString, x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
                             iframes.push(iframe);
-                            console.log(iframes);
+                            // console.log(iframes);
                         } else { // this is for elements that are within an iframe
                             // get the iframe string iframe[n]
                             console.log("We have and element in an iframe");
                             let elementIframe = iframeString.slice(0,iframeString.indexOf('/'));
                             // find the iframe in iframes
                             const iframesObj = iframes.find((e:any) => e.name === elementIframe);
-                            console.log("iframesObj = ",iframesObj);
+                            // console.log("iframesObj = ",iframesObj);
                             // add elements coords to iframe coords
-                            console.log("iframesObj.x = ", iframesObj.x);
-                            console.log("iframesObj.y = ", iframesObj.y);
-                            console.log(nodes[i].getBoundingClientRect().x);
-                            console.log(nodes[i].getBoundingClientRect().y);
+                            // console.log("iframesObj.x = ", iframesObj.x);
+                            // console.log("iframesObj.y = ", iframesObj.y);
+                            // console.log(nodes[i].getBoundingClientRect().x);
+                            // console.log(nodes[i].getBoundingClientRect().y);
                             x = iframesObj.x + nodes[i].getBoundingClientRect().x;
                             y = iframesObj.y + nodes[i].getBoundingClientRect().y;
 
                         }
                     }
                     
-                    console.log("last iframes before circle: ",iframes);
+                    // console.log("last iframes before circle: ",iframes);
 
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
@@ -1094,9 +1132,6 @@ function createSVGCircleTextTemplate() {
     return elemText
 }
 
-
-
-
 function createSVGLineTemplate() {
     // This is what we are creating:
     // <svg id="svgLine">
@@ -1108,21 +1143,12 @@ function createSVGLineTemplate() {
     return elemLine
 }
 
-
-// function convertXpathsToHtmlElements(nodes: any) {
-//     let results: any = [];
-//     nodes.map((elem: any) => {
-//         results.push(document.evaluate(elem, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue);
-//     });
-//     return results;
-// }
-
-function convertXpathsToHtmlElements(nodes: any) {
+function convertXpathsToHtmlElements(xpaths: any) {
     let results: any = [];
-    nodes.map((elem: any) => {
+    xpaths.map((xpath: any) => {
         let element;
-        element = selectPath(elem)
-        console.log(elem);
+        element = selectPath(xpath)
+        // console.log(xpath);
         results.push(element);
     });
     return results;
@@ -1149,7 +1175,7 @@ async function goToTop() {
 }
 
 function lookup(doc: any, xpath:string) {
-    console.log("Function: lookup");
+    // console.log("Function: lookup");
     if (doc.nodeType === 11) {
         let selector = ":scope" + xpath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-child($1)");
         let element = doc.querySelector(selector);
@@ -1158,7 +1184,7 @@ function lookup(doc: any, xpath:string) {
         let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
         let element = nodes.iterateNext();
         if (element) {
-            console.log("element = ",element);
+            // console.log("element = ",element);
             return element;
         } else {
             return null;
@@ -1168,14 +1194,14 @@ function lookup(doc: any, xpath:string) {
 
 // @ts-ignore
 function selectPath(srcPath: any) {
-    console.log("Function: selectPath");
+    // console.log("Function: selectPath");
     let doc = document;
     let element = null;
     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
         if (srcPath.includes("iframe")) {
-            console.log("srcPath = ",srcPath);
+            // console.log("srcPath = ",srcPath);
             let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
-            console.log("parts = ",parts);
+            // console.log("parts = ",parts);
             let iframe = lookup(doc, parts[1]);
             element = iframe || element;
             if (iframe && iframe.contentDocument) {
