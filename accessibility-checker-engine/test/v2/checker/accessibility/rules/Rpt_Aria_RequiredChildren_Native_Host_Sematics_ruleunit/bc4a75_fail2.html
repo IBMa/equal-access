@@ -41,7 +41,25 @@
         UnitTest = {
             ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
             results: [
-              
+            {
+                "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
+                "value": [
+                "INFORMATION",
+                "FAIL"
+                ],
+                "path": {
+                "dom": "/html[1]/body[1]/ol[1]",
+                "aria": "/document[1]/tablist[1]"
+                },
+                "reasonId": "Fail_no_child",
+                "message": "The element with role \"tablist\" does not own at least one child element with any of the following role(s): \"tab\"",
+                "messageArgs": [
+                "tablist",
+                "tab"
+                ],
+                "apiArgs": [],
+                "category": "Accessibility"
+          }
             ]
         };
     </script>

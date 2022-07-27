@@ -40,16 +40,31 @@
     </div>
     <a name="navskip"></a>
 
-    <script type="text/javascript">
-        //<![CDATA[
-        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-        OpenAjax.a11y.ruleCoverage = [{
-            ruleId: "1152",
-            passedXpaths: [],
-            failedXpaths: []
-        }, ];
-        //]]>
+    <script>
+        UnitTest = {
+            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            results: [
+            {
+            "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/list[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"list\" does not own at least one child element with any of the following role(s): \"listitem\"",
+            "messageArgs": [
+              "list",
+              "listitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        };
     </script>
 </body>
 

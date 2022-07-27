@@ -47,7 +47,46 @@
         UnitTest = {
             ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
             results: [
-              
+            {
+            "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"menu\" owns the child element with the role \"treeitem\" that is not one of the allowed role(s): \"group, menuitem, menuitemcheckbox, menuitemradio\"",
+            "messageArgs": [
+              "menu",
+              "treeitem",
+              "group, menuitem, menuitemcheckbox, menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"menu\" owns the child element with the role \"treeitem\" that is not one of the allowed role(s): \"group, menuitem, menuitemcheckbox, menuitemradio\"",
+            "messageArgs": [
+              "menu",
+              "treeitem",
+              "group, menuitem, menuitemcheckbox, menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         };
     </script>

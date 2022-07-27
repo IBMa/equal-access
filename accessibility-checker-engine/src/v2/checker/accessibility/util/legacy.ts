@@ -723,7 +723,7 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getImplicitRole(ele) {
+    public static getImplicitRole(ele) : string[] {
         let tagProperty = RPTUtil.getElementAriaProperty(ele);
         //check if there are any implicit roles for this element.
         if (tagProperty) {
@@ -1560,13 +1560,32 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
      public static retrieveDirectATChildren(element, direct: Array<HTMLElement>) {
-        // Variable Decleration
-        let children = element.children;
+        let children : HTMLElement[] = [];
+        if (element.children !== null && element.children.length > 0) {
+            for (let i=0; i < element.children.length; i++)
+                children.push(element.children[i]);
+        }    
+        // if the element contains "aria-own" attribute, then the aria-owned children need to be included too
+        let owned = element.getAttribute("aria-owns");
+        if (owned) {
+            let doc = element.ownerDocument;
+            if (doc) {
+                let ownedIds = owned.split(" ");
+                for (let i=0; i < ownedIds.length; i++) {
+                    let ownedElem = doc.getElementById(ownedIds[i]);
+                    if (ownedElem)
+                        children.push(ownedElem);
+                }    
+            }
+        }
         if (children !== null && children.length > 0) {
             for (let i=0; i < children.length; i++) {
                 //ignore hidden or disabled child
-                if (RPTUtil.isNodeHiddenFromAT(children[i]) || RPTUtil.isNodeDisabled(children[i])) continue;
-                let roles = RPTUtil.getRoles(children[i], true);
+                if (RPTUtil.isNodeHiddenFromAT(children[i]) || !RPTUtil.isNodeVisible(children[i])) continue;
+                let roles = RPTUtil.getRoles(children[i], false);
+                if (!roles || roles.length == 0) 
+                    roles =  RPTUtil.getImplicitRole(children[i]);
+
                 if (roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
                     roles = roles.filter(function(role) {
