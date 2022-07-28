@@ -32,18 +32,34 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <table role="grid">
-        <tr role="row">
-            <td role="cell">Item 1</td>
-        </tr>
-    </table>
+    <ol role="tablist">
+        <li role="listitem">Item 1</li>
+    </ol>
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            ruleIds: ["aria_child_valid"],
             results: [
-              
+            {
+                "ruleId": "aria_child_valid",
+                "value": [
+                "INFORMATION",
+                "FAIL"
+                ],
+                "path": {
+                "dom": "/html[1]/body[1]/ol[1]",
+                "aria": "/document[1]/tablist[1]"
+                },
+                "reasonId": "Fail_no_child",
+                "message": "The element with role \"tablist\" does not own at least one child element with any of the following role(s): \"tab\"",
+                "messageArgs": [
+                "tablist",
+                "tab"
+                ],
+                "apiArgs": [],
+                "category": "Accessibility"
+          }
             ]
         };
     </script>

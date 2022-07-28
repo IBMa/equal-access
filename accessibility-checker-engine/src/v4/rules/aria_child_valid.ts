@@ -17,16 +17,16 @@ import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy"
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import {inspect} from 'util';
 
-export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
-    id: "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
+export let aria_child_valid: Rule = {
+    id: "aria_child_valid",
     context: "dom:*[role]",
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
-            "group": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
-            "Pass_0": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
-            "Fail_no_child": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html",
-            "Fail_invalid_child": "Rpt_Aria_RequiredChildren_Native_Host_Sematics.html"
+            "group": "aria_child_valid.html",
+            "Pass_0": "aria_child_valid.html",
+            "Fail_no_child": "aria_child_valid.html",
+            "Fail_invalid_child": "aria_child_valid.html"
         }
     },
     messages: {
@@ -86,46 +86,47 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
 
         let directATChildren = RPTUtil.getDirectATChildren(ruleContext);//console.log("directATChildren="+directATChildren);
         let requiredChildRoles: string[] = new Array();
-        let violateElemRoles = new Array();
         
-        let withOne = false; //at least with one valid child
+        //get all the required child roles
         for (let j = 0; j < roles.length; ++j) {
             /**
-             * get all the required child roles
              * When multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
-             * This specification does not require an instance of each of the listed owned roles.
+             * The specification does not require an instance of each of the listed owned roles.
              */
             if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null)
                 requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
-            
-            /**  
-             * ignore if a role doesn't require a child with any specific role
-             * not the reverse child - parent will be checked in Rpt_Aria_RequiredParent_Native_Host_Sematics rule
-            */
-            if (requiredChildRoles.length == 0)
-                return null;
-
-            for (let j=0; j < directATChildren.length; j++) {
-                let childRoles = RPTUtil.getRoles(directATChildren[j], false);
-                // if explicit role doesn't exist, get the implicit one
-                if (!childRoles || childRoles.length == 0) 
-                    childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
-                //console.log("requiredChildRoles="+ requiredChildRoles + ", childRoles[0]="+childRoles);
-                if (childRoles !== null && childRoles.length > 0) {
-                    /**
-                     * for each direct child in AT tree, 
-                     * the requirement is met if it has any one of the required roles.   
-                     */    
-                    const found = childRoles.some(r=> requiredChildRoles.includes(r));
-                    if (found) 
-                        withOne = true;
-                    else
-                        violateElemRoles.push({"role" : childRoles.join(", "), "requiredRole" : requiredChildRoles.join(", ")}); 
-                } else {
-                   // ignore the element since it's no semantic 
-                }     
-            }
         }
+        
+        /**  
+         * ignore if a role doesn't require a child with any specific role
+         * not the reverse child - parent will be checked in Rpt_Aria_RequiredParent_Native_Host_Sematics rule
+        */
+         if (requiredChildRoles.length == 0)
+            return null;
+
+        let violateElemRoles = new Array();
+        let withOne = false; //at least with one valid child
+        for (let j=0; j < directATChildren.length; j++) {
+            let childRoles = RPTUtil.getRoles(directATChildren[j], false);
+            // if explicit role doesn't exist, get the implicit one
+            if (!childRoles || childRoles.length == 0) 
+                childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
+            //console.log("requiredChildRoles="+ requiredChildRoles + ", childRoles[0]="+childRoles);
+            if (childRoles !== null && childRoles.length > 0) {
+                /**
+                 * for each direct child in AT tree, 
+                 * the requirement is met if it has any one of the required roles.   
+                 */    
+                const found = childRoles.some(r=> requiredChildRoles.includes(r));
+                if (found) 
+                    withOne = true;
+                else
+                    violateElemRoles.push(childRoles.join(", ")); 
+            } else {
+                // ignore the element since it's not semantic 
+            }     
+        } 
+        
         if (!withOne) {
             /**
              * When a widget is missing required owned elements due to script execution or loading, 
@@ -143,8 +144,8 @@ export let Rpt_Aria_RequiredChildren_Native_Host_Sematics: Rule = {
         for (let i=0; i < violateElemRoles.length; i++) {
             let retToken = new Array();
             retToken.push(roles.join(", "));
-            retToken.push(violateElemRoles[i]['role']);
-            retToken.push(violateElemRoles[i]['requiredRole']);
+            retToken.push(violateElemRoles[i]);
+            retToken.push(requiredChildRoles.join(", "));
             retValues.push(RuleFail("Fail_invalid_child", retToken));
         } 
         return retValues;

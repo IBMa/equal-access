@@ -131,7 +131,7 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "IBMA_Color_Contrast_WCAG2AA_PV": "1149",
     "WCAG20_Body_FirstASkips_Native_Host_Sematics": "1150",
     "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": "1151",
-    "Rpt_Aria_RequiredChildren_Native_Host_Sematics": "1152",
+    "aria_child_valid": "1152",
     "Rpt_Aria_RequiredParent_Native_Host_Sematics": "1153",
     "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics": "1154",
     "Rpt_Aria_WidgetLabels_Implicit": "1156",

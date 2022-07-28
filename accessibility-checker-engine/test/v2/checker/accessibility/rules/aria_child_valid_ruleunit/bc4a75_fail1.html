@@ -33,16 +33,33 @@
     <h3>WAI-ARIA role valid children test</h3>
 
     <div role="list">
-        <span role="listitem">Item 1</span>
-        <span role="listitem">Item 2</span>
+        <span>Item 1</span>
     </div>
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            ruleIds: ["aria_child_valid"],
             results: [
-               
+            {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/list[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"list\" does not own at least one child element with any of the following role(s): \"listitem\"",
+            "messageArgs": [
+              "list",
+              "listitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         };
     </script>

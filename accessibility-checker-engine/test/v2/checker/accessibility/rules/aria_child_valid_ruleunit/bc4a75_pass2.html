@@ -32,36 +32,18 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <div role="grid">
-        <div role="row">
-            <span>Item 1</span>
-        </div>
-    </div>
+    <table role="grid">
+        <tr role="row">
+            <td role="cell">Item 1</td>
+        </tr>
+    </table>
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            ruleIds: ["aria_child_valid"],
             results: [
-            {
-            "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]/div[1]",
-              "aria": "/document[1]/grid[1]/row[1]"
-            },
-            "reasonId": "Fail_no_child",
-            "message": "The element with role \"row\" does not own at least one child element with any of the following role(s): \"cell, columnheader, gridcell, rowheader\"",
-            "messageArgs": [
-              "row",
-              "cell, columnheader, gridcell, rowheader"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+              
             ]
         };
     </script>

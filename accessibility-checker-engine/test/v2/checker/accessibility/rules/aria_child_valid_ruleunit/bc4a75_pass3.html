@@ -32,36 +32,19 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <div role="list">
-        <li>Item 1</li>
-        <span role="link">Item 2</span>
+    <div role="menu">
+        <li role="none"></li>
+        <li role="menuitem">Item 1</li>
+        <div role="menuitemradio" aria-checked="false">Item 2</div>
+        <div role="menuitemcheckbox" aria-checked="false">Item 3</div>
     </div>
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            ruleIds: ["aria_child_valid"],
             results: [
-            {
-            "ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
-            "value": [
-              "INFORMATION",
-              "FAIL"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/list[1]"
-            },
-            "reasonId": "Fail_invalid_child",
-            "message": "The element with role \"list\" owns the child element with the role \"link\" that is not one of the allowed role(s): \"listitem\"",
-            "messageArgs": [
-              "list",
-              "link",
-              "listitem"
-            ],
-            "apiArgs": [],
-            "category": "Accessibility"
-          }
+              
             ]
         };
     </script>

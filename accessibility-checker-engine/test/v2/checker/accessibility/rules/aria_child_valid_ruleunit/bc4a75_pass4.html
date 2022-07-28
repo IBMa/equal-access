@@ -32,22 +32,18 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <div role="menu">
-        <div role="group">
-            <span role="menuitem">Item 1</span>
-            <div role="group">
-                <span role="menuitem">Item 2</span>
-                <span role="menuitem">Item 3</span>
-            </div>
-        </div>
-    </div>
+    <ul role="tablist">
+        <li role="none">
+            <span role="tab">Tab 1</span>
+        </li>
+    </ul>
     <a name="navskip"></a>
 
     <script>
         UnitTest = {
-            ruleIds: ["Rpt_Aria_RequiredChildren_Native_Host_Sematics"],
+            ruleIds: ["aria_child_valid"],
             results: [
-              
+               
             ]
         };
     </script>
