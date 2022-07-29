@@ -767,7 +767,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static assertCompliance(actualResults: ICheckerReport | ICheckerError) : eAssertResult {
+    static assertCompliance(actualResults: ReportResult) : eAssertResult {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
@@ -1082,7 +1082,11 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static stringifyResults(report: ReportResult) : string {
+    static stringifyResults(reportP: ReportResult) : string {
+        if (!(reportP as any).results) {
+            return `ERROR: ${JSON.stringify(reportP)}`;
+        }
+        const report = reportP as ICheckerReport;
         // console.log(report);
         // Variable Decleration
         let resultsString = `Scan: ${report.label}\n`;

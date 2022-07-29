@@ -19,7 +19,7 @@ import { ACConfigManager } from "./lib/ACConfigManager";
 import { ACEngineManager } from "./lib/ACEngineManager";
 import { getComplianceHelper } from "./lib/ACHelper";
 import { ACReportManager } from "./lib/ACReportManager";
-import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker";
+import { eAssertResult, ICheckerReport, ICheckerResult, IConfig, IConfigUnsupported, ReportResult } from "./lib/api/IChecker";
 /**
  * This function is responsible performing a scan based on the context that is provided, following are
  * the supported context type:
@@ -39,7 +39,7 @@ import { eAssertResult, ICheckerError, ICheckerReport, ICheckerResult, IConfig, 
  */
 export function getCompliance(content: any,
     label: string,
-    callback?: (report: ICheckerReport | ICheckerError, webdriver) => void) : Promise<ICheckerResult>
+    callback?: (report: ReportResult, webdriver) => void) : Promise<ICheckerResult>
 {
     if (callback) {
         getComplianceHelper(content, label)
