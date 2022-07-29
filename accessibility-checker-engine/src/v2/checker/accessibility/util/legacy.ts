@@ -1545,9 +1545,9 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
      public static getDirectATChildren(element) {
-        // Variable Decleration
+        let requiredChildRoles = RPTUtil.getRequiredChildRoles(element, true);
         let direct: Array<HTMLElement> = [];
-        RPTUtil.retrieveDirectATChildren(element, direct);
+        RPTUtil.retrieveDirectATChildren(element, requiredChildRoles, direct);
         return direct;
     }
 
@@ -1559,7 +1559,7 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-     public static retrieveDirectATChildren(element, direct: Array<HTMLElement>) {
+     public static retrieveDirectATChildren(element, requiredChildRoles, direct: Array<HTMLElement>) {console.log(element.nodeName, element.getAttribute('role'), direct);
         let children : HTMLElement[] = [];
         if (element.children !== null && element.children.length > 0) {
             for (let i=0; i < element.children.length; i++)
@@ -1589,16 +1589,62 @@ export class RPTUtil {
                 if (roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
                     roles = roles.filter(function(role) {
-                        return role !== "none" && role !== 'presentation' && role !== 'group';
+                        return role !== "none" && role !== 'presentation';
                     })
+
+                    // a 'group' role is alloed but not required for some elements so remove it if exists
+                    if (roles.includes("group") && requiredChildRoles && requiredChildRoles.includes('group')) {
+                        roles = roles.filter(function(role) {
+                            return role !== 'group';
+                        })
+                    }
                 }
                 if (roles !== null && roles.length > 0) 
                     direct.push(children[i]);
                 else
                     // recursive until get a return value, 
-                    RPTUtil.retrieveDirectATChildren(children[i], direct);    
+                    RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);    
             }
         }
+    }
+
+    /**
+     * this function returns null or required child roles for a given element with one more roles,
+     * return null if the role is 'none' or 'presentation'
+     * @param element 
+     * @param includeImplicit include implicit roles if no role is explicitly provided
+     * @returns 
+     */
+    public static getRequiredChildRoles(element, includeImplicit: boolean) : string[] {
+        let designPatterns = ARIADefinitions.designPatterns;
+        let roles = RPTUtil.getRoles(element, false);
+        // if explicit role doesn't exist, get the implicit one
+        if ((!roles || roles.length == 0) && includeImplicit) 
+            roles =  RPTUtil.getImplicitRole(element);
+        
+        /**  
+         * ignore if the element doesn't have any explicit or implicit role, shouldn't happen
+        */
+        if (!roles || roles.length == 0) 
+            return null;
+        
+        /**  
+         * ignore if the element contains none or presentation role
+        */
+        let presentationRoles = ["none", "presentation"];
+        const found = roles.some(r=> presentationRoles.includes(r));
+        if (found) return null;
+
+        let requiredChildRoles: string[] = new Array();
+        for (let j = 0; j < roles.length; ++j) {
+            /**
+             * When multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
+             * The specification does not require an instance of each of the listed owned roles.
+             */
+            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null)
+                requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
+        }
+        return requiredChildRoles;
     }
 
     /**

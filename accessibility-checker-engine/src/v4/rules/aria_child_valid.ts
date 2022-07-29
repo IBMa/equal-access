@@ -15,7 +15,6 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleC
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
-import {inspect} from 'util';
 
 export let aria_child_valid: Rule = {
     id: "aria_child_valid",
@@ -24,7 +23,7 @@ export let aria_child_valid: Rule = {
     help: {
         "en-US": {
             "group": "aria_child_valid.html",
-            "Pass_0": "aria_child_valid.html",
+            "Pass": "aria_child_valid.html",
             "Fail_no_child": "aria_child_valid.html",
             "Fail_invalid_child": "aria_child_valid.html"
         }
@@ -32,8 +31,8 @@ export let aria_child_valid: Rule = {
     messages: {
         "en-US": {
             "group": "An element with a ARIA role must own a required child",
-            "Pass_0": "An element with a ARIA role owns a required child",
-            "Fail_no_child": "The element with role \"{0}\" does not own at least one child element with any of the following role(s): \"{1}\"",
+            "Pass": "An element with a ARIA role owns a required child",
+            "Fail_no_child": "The element with role \"{0}\" does not own any child element with any of the following role(s): \"{1}\"",
             "Fail_invalid_child": "The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""
         }
     },
@@ -60,52 +59,57 @@ export let aria_child_valid: Rule = {
             return null;
         }
 
-        let designPatterns = ARIADefinitions.designPatterns;
         let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length == 0) 
             roles =  RPTUtil.getImplicitRole(ruleContext);
         
-        /**  
-         * ignore if the element doesn't have any explicit or implicit role
-        */
+        //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
         if (!roles || roles.length == 0) 
             return null;
         
-        /**  
-         * ignore if the element contains none or presentation role
-        */
+        // ignore if the element contains none or presentation role
         let presentationRoles = ["none", "presentation"];
         const found = roles.some(r=> presentationRoles.includes(r));
         if (found) return null;
 
+        /**
         //  For combobox, we have g1193 ... g1199 to check the values etc.
         //  We don't want to trigger 1152 again. So, we bypass it here.
         if (roles.includes("combobox"))
             return null;
-
-        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);//console.log("directATChildren="+directATChildren);
-        let requiredChildRoles: string[] = new Array();
-        
+            
+        let designPatterns = ARIADefinitions.designPatterns;
         //get all the required child roles
+        let requiredChildRoles: string[] = new Array();
         for (let j = 0; j < roles.length; ++j) {
-            /**
-             * When multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
-             * The specification does not require an instance of each of the listed owned roles.
-             */
+            // When multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
+            // The specification does not require an instance of each of the listed owned roles.
             if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null)
                 requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
+        }
+        */
+        
+        let requiredChildRoles = RPTUtil.getRequiredChildRoles(ruleContext, true); //console.log("node="+ruleContext.nodeName+", requiredChildRoles="+requiredChildRoles);
+        // a 'group' role is alloed but not required for some elements so remove it if exists
+        if (requiredChildRoles.includes('group')) {
+            let index = requiredChildRoles.indexOf('group');
+            if (index > -1)
+                requiredChildRoles.splice(index, 1);
         }
         
         /**  
          * ignore if a role doesn't require a child with any specific role
-         * not the reverse child - parent will be checked in Rpt_Aria_RequiredParent_Native_Host_Sematics rule
+         * the reverse might be not true - parent will be checked in Rpt_Aria_RequiredParent_Native_Host_Sematics rule
         */
          if (requiredChildRoles.length == 0)
             return null;
 
+        // get all the children from accessibility tree, including ones with aria-owns    
+        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);//console.log("directATChildren="+directATChildren);
+        
         let violateElemRoles = new Array();
-        let withOne = false; //at least with one valid child
+        let withOne = false; //at least one child is valid
         for (let j=0; j < directATChildren.length; j++) {
             let childRoles = RPTUtil.getRoles(directATChildren[j], false);
             // if explicit role doesn't exist, get the implicit one
@@ -123,7 +127,7 @@ export let aria_child_valid: Rule = {
                 else
                     violateElemRoles.push(childRoles.join(", ")); 
             } else {
-                // ignore the element since it's not semantic 
+                // ignore the element since it's not semantic, shouldn't happen 
             }     
         } 
         
@@ -140,14 +144,19 @@ export let aria_child_valid: Rule = {
                 return RuleFail("Fail_no_child", retToken);
             }
         } 
-        let retValues = [];
-        for (let i=0; i < violateElemRoles.length; i++) {
-            let retToken = new Array();
-            retToken.push(roles.join(", "));
-            retToken.push(violateElemRoles[i]);
-            retToken.push(requiredChildRoles.join(", "));
-            retValues.push(RuleFail("Fail_invalid_child", retToken));
-        } 
-        return retValues;
+
+        if (violateElemRoles.length > 0) {
+            let retValues = [];
+            for (let i=0; i < violateElemRoles.length; i++) {
+                let retToken = new Array();
+                retToken.push(roles.join(", "));
+                retToken.push(violateElemRoles[i]);
+                retToken.push(requiredChildRoles.join(", "));
+                retValues.push(RuleFail("Fail_invalid_child", retToken));
+            } 
+            return retValues;
+        }
+
+        return RulePass("Pass");
     }
 }
