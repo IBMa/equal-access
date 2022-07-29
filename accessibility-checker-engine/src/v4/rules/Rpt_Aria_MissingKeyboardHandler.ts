@@ -49,9 +49,17 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
         let doc = ruleContext.ownerDocument;
         let designPatterns = ARIADefinitions.designPatterns;
         let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        
+        let nodeName = ruleContext.nodeName.toLowerCase();
+        //if an explicit role is specified, the 'aria_role_redundant' rule should be triggered and addressed first,
+        // and the current rule should be ignored
+        if (nodeName === 'datalist' && roles && roles.includes("listbox"))
+            return null;
+            
         let hasAttribute = RPTUtil.hasAttribute;
         // Composite user interface widget roles. They act as containers that manage other, contained widgets.
         let roleContainers = ["combobox", "grid", "listbox", "menu", "menubar", "radiogroup", "tablist", "tree", "treegrid"];
+        
         let roleNameArr = new Array();
 
         for (let j = 0; j < roles.length; ++j) {
