@@ -3,17 +3,19 @@
     <body>
         <main>
             <div class="testcase">
-                <label for="m">my input</label>
-                <input id='m' list="f" />
-                <datalist id="f">
-                    <option required="true">test</option>
-                    <option>actually selected</option>
-                </datalist>
+                <label>
+                      Animal:
+                      <input name=animal list=animals>
+                      <datalist id=animals role="listbox">
+                        <option aria-required='true' value="Cat">
+                        <option value="Dog">
+                      </datalist>
+                </label>
             </div>
         </main>
         <script>
             UnitTest = {
-                ruleIds: ["aria_semantics_attribute", "WCAG20_Input_ExplicitLabel", "IBMA_Focus_Tabbable"],
+                ruleIds: ["aria_semantics_attribute", "WCAG20_Input_ExplicitLabel", "IBMA_Focus_Tabbable", "Rpt_Aria_MissingKeyboardHandler"],
                 results: [
                 {
             "ruleId": "IBMA_Focus_Tabbable",
@@ -22,7 +24,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/div[1]/input[1]",
+              "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
             "reasonId": "Pass_0",
@@ -38,7 +40,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/div[1]/input[1]",
+              "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
             "reasonId": "Pass_0",
