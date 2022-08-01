@@ -1723,6 +1723,26 @@ export class RPTUtil {
         return false;
     }
 
+    // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host (to be assigned to shadow slot or ignored)  
+    public static isShadowHostElement(element: Element) {
+        if (RPTUtil.isShadowElement(element)) 
+            return false;
+        let walkNode : Element = element;
+        while (walkNode) {
+            if (walkNode.shadowRoot) return true;
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
+    //check if an element is in a shadow tree
+    public static isShadowElement(element: Element) {
+        let root  = element.getRootNode();
+        if (root.toString() === "[object ShadowRoot]")
+            return true;
+        return false;
+    }
+
     public static removeAllFormElementsFromLabel(element) {
         let formElements = ["input", "textarea", "select", "button", "datalist", "optgroup", "option", "keygen", "output", "progress", "meter"];
         let childNodes = element.childNodes;
@@ -3165,7 +3185,8 @@ export class RPTUtil {
         //    return null; // Unreachable
     };
 
-    public static ColorCombo(ruleContext : HTMLElement) {
+ public static ColorCombo(ruleContext : HTMLElement) {
+    try { 
         var doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
@@ -3333,7 +3354,11 @@ export class RPTUtil {
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
-    };
+    } catch (err) {
+        // something happened, then...
+        return null;
+    } 
+ };
 
     public static hasAttribute(element, attributeName) {
         var hasAttribute = false;

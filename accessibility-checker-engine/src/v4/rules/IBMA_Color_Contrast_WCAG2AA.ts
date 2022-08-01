@@ -51,7 +51,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
             return null;
         }
-
+        
         // Ensure that this element has children with actual text.
         let childStr = "";
         let childNodes = ruleContext.childNodes;
@@ -67,6 +67,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (!doc) {
             return null;
         }
+    
         let win = doc.defaultView;
         if (!win) {
             return null;
@@ -183,18 +184,39 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             // Corner case where item is hidden (accessibility hiding technique)
             return null;
         }
+
+        let elem = ruleContext;
+        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
+        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
+        if (RPTUtil.isShadowHostElement(ruleContext)) {
+            // if it's direct text of a shadow host
+            if (ruleContext.shadowRoot) {
+                for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
+                    if (node.nodeType==3) {
+                       //if multiple texts exist, only need to check one 
+                       elem = (node as Text).assignedSlot;
+                       break;
+                    }   
+                }
+            }
+            if (elem === null) return;
+        }
         // First determine the color contrast ratio
-        let colorCombo = RPTUtil.ColorCombo(ruleContext);
+        let colorCombo = RPTUtil.ColorCombo(elem);
+        if (colorCombo === null) {
+            //some exception occurred, or not able to get color combo for some reason
+            console.log("unable to get color combo for element: " + elem.nodeName);
+            return;
+        }
         let fg = colorCombo.fg;
         let bg = colorCombo.bg;
         let ratio = fg.contrastRatio(bg);
-        // console.log("fg = ", fg, "   bg = ", bg, "   ratio = ", ratio);
         let weight = RPTUtilStyle.getWeightNumber(style.fontWeight);
         let size = RPTUtilStyle.getFontInPixels(style.fontSize);
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
-
+        
         let isDisabled = RPTUtil.isNodeDisabled(ruleContext);
         if (!isDisabled) {
             let control = RPTUtil.getControlOfLabel(ruleContext);
