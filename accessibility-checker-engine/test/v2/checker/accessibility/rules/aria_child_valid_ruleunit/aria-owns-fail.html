@@ -32,9 +32,9 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <div role="list" aria-owns="id2"></div>
-    <div id="id2" role="tab">Tab 1</div>
-
+    <div role="list" aria-owns="id2   id3"></div>
+    <div id="id2" role="listitem">Tab 1</div>
+    <div id="id3" role="menuitem">Tab 2</div>
     <script>
         UnitTest = {
             ruleIds: ["aria_child_valid"],
@@ -50,10 +50,10 @@
               "aria": "/document[1]/list[1]"
             },
             "reasonId": "Fail_invalid_child",
-            "message": "The element with role \"list\" owns the child element with the role \"tab\" that is not one of the allowed role(s): \"listitem\"",
+            "message": "The element with role \"list\" owns the child element with the role \"menuitem\" that is not one of the allowed role(s): \"listitem\"",
             "messageArgs": [
               "list",
-              "tab",
+              "menuitem",
               "listitem"
             ],
             "apiArgs": [],

@@ -73,25 +73,13 @@ export let aria_child_valid: Rule = {
         const found = roles.some(r=> presentationRoles.includes(r));
         if (found) return null;
 
-        /**
         //  For combobox, we have g1193 ... g1199 to check the values etc.
         //  We don't want to trigger 1152 again. So, we bypass it here.
         if (roles.includes("combobox"))
             return null;
-            
-        let designPatterns = ARIADefinitions.designPatterns;
-        //get all the required child roles
-        let requiredChildRoles: string[] = new Array();
-        for (let j = 0; j < roles.length; ++j) {
-            // When multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
-            // The specification does not require an instance of each of the listed owned roles.
-            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null)
-                requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
-        }
-        */
         
         let requiredChildRoles = RPTUtil.getRequiredChildRoles(ruleContext, true); //console.log("node="+ruleContext.nodeName+", requiredChildRoles="+requiredChildRoles);
-        // a 'group' role is alloed but not required for some elements so remove it if exists
+        // a 'group' role is allowed but not required for some elements so remove it if exists
         if (requiredChildRoles.includes('group')) {
             let index = requiredChildRoles.indexOf('group');
             if (index > -1)
@@ -108,43 +96,44 @@ export let aria_child_valid: Rule = {
         // get all the children from accessibility tree, including ones with aria-owns    
         let directATChildren = RPTUtil.getDirectATChildren(ruleContext);//console.log("directATChildren="+directATChildren);
         
+        if (!directATChildren || directATChildren.length == 0) {
+            // the element with at least one required role dosen't contain any accessible child
+            /**
+             * When a widget is missing required owned elements due to script execution or loading, 
+             * authors MUST mark a containing element with 'aria-busy' equal to true. 
+             */
+             let busy = ruleContext.getAttribute("aria-busy");
+             if (!busy || busy !== 'true') {
+                 let retToken = new Array();
+                 retToken.push(roles.join(", "));
+                 retToken.push(requiredChildRoles.join(", "));
+                 return RuleFail("Fail_no_child", retToken);
+             } 
+             // it's 'busy' loading, ignore it 
+             return null;
+        }
+
         let violateElemRoles = new Array();
-        let withOne = false; //at least one child is valid
         for (let j=0; j < directATChildren.length; j++) {
             let childRoles = RPTUtil.getRoles(directATChildren[j], false);
             // if explicit role doesn't exist, get the implicit one
             if (!childRoles || childRoles.length == 0) 
                 childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
             //console.log("requiredChildRoles="+ requiredChildRoles + ", childRoles[0]="+childRoles);
-            if (childRoles !== null && childRoles.length > 0) {
+            if (childRoles && childRoles.length > 0) {
                 /**
-                 * for each direct child in AT tree, 
-                 * the requirement is met if it has any one of the required roles.   
+                 * when multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
+                 * the specification does not require an instance of each of the listed owned roles.
+                 * therefore, the requirement is met if it has any one of the required roles.   
                  */    
                 const found = childRoles.some(r=> requiredChildRoles.includes(r));
-                if (found) 
-                    withOne = true;
-                else
+                if (!found) 
                     violateElemRoles.push(childRoles.join(", ")); 
             } else {
                 // ignore the element since it's not semantic, shouldn't happen 
             }     
         } 
         
-        if (!withOne) {
-            /**
-             * When a widget is missing required owned elements due to script execution or loading, 
-             * authors MUST mark a containing element with 'aria-busy' equal to true. 
-             */
-            let busy = ruleContext.getAttribute("aria-busy");
-            if (!busy || busy !== 'true') {
-                let retToken = new Array();
-                retToken.push(roles.join(", "));
-                retToken.push(requiredChildRoles.join(", "));
-                return RuleFail("Fail_no_child", retToken);
-            }
-        } 
-
         if (violateElemRoles.length > 0) {
             let retValues = [];
             for (let i=0; i < violateElemRoles.length; i++) {
@@ -156,7 +145,6 @@ export let aria_child_valid: Rule = {
             } 
             return retValues;
         }
-
         return RulePass("Pass");
     }
 }

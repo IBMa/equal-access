@@ -33,11 +33,19 @@
     <h3>WAI-ARIA role valid children test</h3>
 
     <div role="menu">
-      <div role="'none">
+      <div role="none">
         <div>
-          <div role="group">
-                <span role="listitem">Item 1</span>
-                <span role="menuitem">Item 2</span>
+          <div role="presentation">
+            <div>
+                <div role="group">
+                    <div> 
+                      <span>
+                          <span role="listitem">Item 1</span>
+                          <span role="menuitem">Item 2</span>
+                      </span>
+                    </div>  
+                </div>
+            </div>
           </div>
         </div>
       </div> 

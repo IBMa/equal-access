@@ -52,10 +52,31 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/menu[1]"
             },
-            "reasonId": "Fail_no_child",
-            "message": "The element with role \"menu\" does not own at least one child element with any of the following role(s): \"menuitem, menuitemcheckbox, menuitemradio\"",
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"menu\" owns the child element with the role \"listitem\" that is not one of the allowed role(s): \"menuitem, menuitemcheckbox, menuitemradio\"",
             "messageArgs": [
               "menu",
+              "listitem",
+              "menuitem, menuitemcheckbox, menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"menu\" owns the child element with the role \"listitem\" that is not one of the allowed role(s): \"menuitem, menuitemcheckbox, menuitemradio\"",
+            "messageArgs": [
+              "menu",
+              "listitem",
               "menuitem, menuitemcheckbox, menuitemradio"
             ],
             "apiArgs": [],

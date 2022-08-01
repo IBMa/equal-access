@@ -42,23 +42,24 @@
             ruleIds: ["aria_child_valid"],
             results: [
             {
-                "ruleId": "aria_child_valid",
-                "value": [
-                "INFORMATION",
-                "FAIL"
-                ],
-                "path": {
-                "dom": "/html[1]/body[1]/ol[1]",
-                "aria": "/document[1]/tablist[1]"
-                },
-                "reasonId": "Fail_no_child",
-                "message": "The element with role \"tablist\" does not own at least one child element with any of the following role(s): \"tab\"",
-                "messageArgs": [
-                "tablist",
-                "tab"
-                ],
-                "apiArgs": [],
-                "category": "Accessibility"
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]",
+              "aria": "/document[1]/tablist[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"tablist\" owns the child element with the role \"listitem\" that is not one of the allowed role(s): \"tab\"",
+            "messageArgs": [
+              "tablist",
+              "listitem",
+              "tab"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
           }
             ]
         };
