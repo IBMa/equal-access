@@ -42,6 +42,12 @@ export let IBMA_Focus_Tabbable: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        let nodeName = ruleContext.nodeName.toLowerCase();
+        //ignore datalist element check since it will be part of a input element or hidden by default
+        if (nodeName === 'datalist')
+            return null;
+            
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
         if (RPTUtil.isTabbable(ruleContext)) {
