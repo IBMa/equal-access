@@ -1598,7 +1598,7 @@ export class RPTUtil {
                             return role !== 'group';
                         })
                     }
-                } //console.log(element.nodeName, element.getAttribute('role'), direct, "roles=" +roles);
+                } 
                 if (roles !== null && roles.length > 0) 
                     direct.push(children[i]);
                 else

@@ -78,7 +78,7 @@ export let aria_child_valid: Rule = {
         if (roles.includes("combobox"))
             return null;
         
-        let requiredChildRoles = RPTUtil.getRequiredChildRoles(ruleContext, true); //console.log("node="+ruleContext.nodeName+", requiredChildRoles="+requiredChildRoles);
+        let requiredChildRoles = RPTUtil.getRequiredChildRoles(ruleContext, true);
         // a 'group' role is allowed but not required for some elements so remove it if exists
         if (requiredChildRoles.includes('group')) {
             let index = requiredChildRoles.indexOf('group');
@@ -93,8 +93,9 @@ export let aria_child_valid: Rule = {
          if (requiredChildRoles.length == 0)
             return null;
 
-        // get all the children from accessibility tree, including ones with aria-owns    
-        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);//console.log("directATChildren="+directATChildren);
+        // get all the children from accessibility tree, 
+        // including ones with aria-owns    
+        let directATChildren = RPTUtil.getDirectATChildren(ruleContext);
         
         if (!directATChildren || directATChildren.length == 0) {
             // the element with at least one required role dosen't contain any accessible child
@@ -119,7 +120,7 @@ export let aria_child_valid: Rule = {
             // if explicit role doesn't exist, get the implicit one
             if (!childRoles || childRoles.length == 0) 
                 childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
-            //console.log("requiredChildRoles="+ requiredChildRoles + ", childRoles[0]="+childRoles);
+            
             if (childRoles && childRoles.length > 0) {
                 /**
                  * when multiple roles are specified as required owned elements for a role, at least one instance of one required owned element is expected. 
