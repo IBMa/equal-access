@@ -46,7 +46,8 @@
 
 If an ARIA `role` attribute is specified for an element, the child elements required for that role must also be present. 
 Child elements' implied (native HTML) roles may satisfy the requirement - the role does not have to be explicitly set by ARIA. 
-Without the required child element roles, assistive technologies may not be able to accurately represent or interact with the element.
+Any incorrect child element roles also need to be removed. For example, `role="group"` is not a valid child of `list`.
+Without the correct required child element roles, assistive technologies may not be able to accurately represent the context or be able to interact with the element.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
@@ -54,9 +55,9 @@ Without the required child element roles, assistive technologies may not be able
 ### What to do
 
  * Add the appropriate required child element(s) to this element
- * *Or*, remove any incorrect child element(s). For example, `role="group"` is not a valid child of `list`
+ * *Or*, remove any incorrect child element(s)
 
-Example, the `"radiogroup"` role requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
+Example with a `"radiogroup"` that requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
 
 ```
 <div role="radiogroup">
@@ -90,6 +91,7 @@ Example with an implicit role:
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
 * [ARIA specification - Required Owned Elements](https://w3c.github.io/aria/#mustContain)
 
 ### Who does this affect?
