@@ -44,16 +44,19 @@
 
 ### Why is this important?
 
-If a ARIA `role` attribute is specified for an element, any ARIA child elements required for that role must also be present. Child elements' native ARIA roles satisfy the requirement - the role does not have to be explicitly set. Without the required child elements, assistive technologies may not be able to accurately represent or interact with the element.
+If an ARIA `role` attribute is specified for an element, the child elements required for that role must also be present. 
+Child elements' implied (native HTML) roles may satisfy the requirement - the role does not have to be explicitly set by ARIA. 
+Without the required child element roles, assistive technologies may not be able to accurately represent or interact with the element.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Add the appropriate required child element(s) to this element.
+ * Add the appropriate required child element(s) to this element
+ * *Or*, remove any incorrect child element(s). For example, `role="group"` is not a valid child of `list`
 
-For example, the following element uses the `"radiogroup"` role. The `"radiogroup"` role requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button.
+Example, the `"radiogroup"` role requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
 
 ```
 <div role="radiogroup">
@@ -68,8 +71,8 @@ Example with an implicit role:
 <table role= "treegrid">
      <tr>
          <td>
-            element with role= "treegrid" requires child element with role="row".
-            TR has implicit ARIA role="row", so the condition is met
+            element with role="treegrid" requires child element with role="row".
+            TR has implicit ARIA role="row", so the condition is met.
          <td>
      <tr>
 </table>
@@ -87,7 +90,7 @@ Example with an implicit role:
 ### About this requirement
 
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
-* [ARIA practices - Required Owned Elements](https://w3c.github.io/aria-practices/#mustContain)
+* [ARIA specification - Required Owned Elements](https://w3c.github.io/aria/#mustContain)
 
 ### Who does this affect?
 
