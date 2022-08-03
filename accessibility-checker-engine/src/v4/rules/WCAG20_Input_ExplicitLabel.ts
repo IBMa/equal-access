@@ -38,7 +38,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["1.1.1", "4.1.2"],
+        "num": ["4.1.2"], /* remove 1.1.1 mapping, keep 4.1.2 */
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
@@ -57,9 +57,13 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
             return null;
         }
 
+        let nodeName = ruleContext.nodeName.toLowerCase();
+        //ignore datalist element check since it will be part of a input element or hidden by default
+        if (nodeName === 'datalist')
+            return null;
+        
         // Determine the input type
         let passed = true;
-        let nodeName = ruleContext.nodeName.toLowerCase();
         let type = "text";
         if (nodeName == "input" && ruleContext.hasAttribute("type")) {
             type = ruleContext.getAttribute("type").toLowerCase();
