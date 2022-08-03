@@ -38,7 +38,7 @@ export let HAAC_Aria_SvgAlt: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["4.1.2"],
+        "num": ["1.1.1"], /*Change mapping to 1.1.1 from 4.1.2 */
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
