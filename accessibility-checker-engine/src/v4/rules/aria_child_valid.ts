@@ -14,7 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let aria_child_valid: Rule = {
     id: "aria_child_valid",
