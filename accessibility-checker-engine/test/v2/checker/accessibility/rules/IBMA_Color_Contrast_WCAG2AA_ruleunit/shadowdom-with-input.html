@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Shadow DOM test</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body style="color: #161616; background-color: #fff;">
+    <main id="main">
+      <div id="no-host">
+        this text is in a regular div<p>
+        <span id="no-host-span">this text is in span in regular div</span>
+      </div>
+      <div id="host">
+        <input id='input' type='text' value='' />
+      </div>
+    </main>
+    <script type="text/javascript">
+      let shadow = document
+        .getElementById("host")
+        .attachShadow({ mode: "open" });
+      let div1 = document.createElement("div");
+      div1.setAttribute("id", "shadow-div1");
+      let div2 = document.createElement("div");
+      div2.setAttribute("id", "shadow-div2");
+      //div2.setAttribute("style", "color:white;");
+      div1.appendChild(div2);
+      shadow.appendChild(div1);
+      let label = document.createElement("label");
+      //label.setAttribute("for", 'input');
+      label.innerHTML = "Name: ";
+      div2.appendChild(label);
+      //let para = document.createElement('p');
+      //div2.appendChild(para);
+      let slot = document.createElement("slot");
+      slot.setAttribute("id", "shadow-slot");
+      label.appendChild(slot);
+
+      let style = document.createElement("style");  
+      //style.innerHTML = '::slotted(span) { font-weight: bold; } :host { font-size: 16px; background-color:black; }';
+      shadow.appendChild(style);
+      
+    </script>
+    
+  </body>
+</html>
