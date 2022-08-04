@@ -75,12 +75,12 @@ describe("Baseline testing", function () {
                     var unitTestDataFileContent = unitTestcaseHTML[unitTestFile];
                     var labelName = unitTestFile.substring(Math.max(unitTestFile.lastIndexOf("/"), unitTestFile.lastIndexOf("\\")) + 1);
                     // Perform the accessibility scan using the IBMaScan Wrapper
-                    let result = await aChecker.getCompliance(unitTestDataFileContent, "Baseline_" + labelName);
+                    let result = await aChecker.getCompliance(unitTestDataFileContent, "Baseline_" + labelName);console.log("report="+JSON.stringify(result.report) +" \n Done");
                     let assertVal = aChecker.assertCompliance(result.report);
                     if (assertVal !== codes[unitTestFile]) {
                         console.log(util.inspect(result, null, 6));
-                    }
-                    expect(assertVal).to.equal(codes[unitTestFile]);
+                    } console.log("assertVal="+assertVal); console.log("codes[unitTestFile]=" + codes[unitTestFile]);
+                    expect(assertVal).to.equal(codes[unitTestFile]); 
                 });
             });
         }(unitTestFile));
