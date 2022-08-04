@@ -1757,7 +1757,7 @@ export class ARIADefinitions {
         "datalist": {
             implicitRole: ["listbox"],
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: false
         },
         "dd": {
             implicitRole: ["definition"],
