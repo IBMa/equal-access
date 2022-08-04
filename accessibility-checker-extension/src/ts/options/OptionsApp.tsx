@@ -61,7 +61,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         modalGuidelines: false,
          // Keyboard Checker Mode options
         tabStopLines: true,
-        tabStopOutlines: true,
+        tabStopOutlines: false,
         tabStopAlerts: true,
         tabStopFirstTime: true,
     };
@@ -81,7 +81,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             var currentRuleset: any = null;
             // Keyboard Mode options
             var tabStopLines: any = true;
-            var tabStopOutlines: any = true;
+            var tabStopOutlines: any = false;
             var tabStopAlerts: any = true;
             var tabStopFirstTime: any = true;
 

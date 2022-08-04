@@ -157,7 +157,7 @@
             tabStopLines: false, 
             tabStopOutlines: false,
             tabStopAlerts: false,
-            tabStopFirstTime: false,
+            tabStopFirstTime: true,
         }
     
         ignoreNext = false;
@@ -1085,10 +1085,10 @@
         }
     
         tabStopsSetFirstTime() {
-            // console.log("tabStopsSetFirstTime");
+            console.log("tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {
-                // console.log("setState tabStopFirstTime to false");
+                console.log("setState tabStopFirstTime to false");
                 this.setState({ tabStopFirstTime: false }); 
             }
     
