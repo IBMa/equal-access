@@ -771,7 +771,7 @@ export class ACReportManager {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
-        if ((actualResults as ICheckerError).details instanceof Error) {console.log("details="+(actualResults as ICheckerError).details);
+        if ((actualResults as ICheckerError).details instanceof Error) {
             return eAssertResult.ERROR;
         }
 
@@ -791,7 +791,7 @@ export class ACReportManager {
             // Run the diff algo to get the list of differences
             let differences = ACReportManager.diffResultsWithExpected(actualResults, expected, true);
 
-            //console.log(JSON.stringify(differences, null, '    '));
+            console.log("difference=" + JSON.stringify(differences, null, '    '));
 
             // In the case that there are no differences then that means it passed
             if (differences === null || typeof (differences) === "undefined") {
