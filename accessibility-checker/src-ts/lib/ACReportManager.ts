@@ -767,7 +767,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static assertCompliance(actualResults: ICheckerReport | ICheckerError) : eAssertResult {console.log("actualResults=" + JSON.stringify(actualResults));
+    static assertCompliance(actualResults: ICheckerReport | ICheckerError) : eAssertResult {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
@@ -782,7 +782,7 @@ export class ACReportManager {
         let label = actualResults.label;
 
         // Fetch the baseline object based on the label provided
-        let expected = ACReportManager.getBaseline(label); console.log("expected="+JSON.stringify(expected));
+        let expected = ACReportManager.getBaseline(label); 
 
         // In the case there are no baseline found then run a different assertion algo,
         // when there is baseline compare the baselines in the case there is no baseline then
