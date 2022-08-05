@@ -38,7 +38,7 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        "num": ["1.1.1", "4.1.2"],
+        "num": ["4.1.2"], /* remove 1.1.1 mapping, keep 4.1.2 */
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
