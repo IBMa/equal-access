@@ -30,6 +30,9 @@ const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
+// import KCM_On from "../../assets/KCM_button_on.svg";
+// import KCM_Off from "../../assets/KCM_button_on.svg";
+// import KCM_disabled from "../../assets/KCM_button_disabled.svg";
 
 interface IHeaderState {
     deleteModal: boolean,

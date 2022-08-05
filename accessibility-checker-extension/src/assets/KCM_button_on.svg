@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 8</title>
+    <defs>
+        <filter color-interpolation-filters="auto" id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Archive" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Colors-and-icons" transform="translate(-16.000000, -439.000000)">
+            <g id="Group-8" transform="translate(16.000000, 439.000000)">
+                <g id="black" fill="#000000">
+                    <rect x="0" y="0" width="40" height="40"></rect>
+                </g>
+                <g filter="url(#filter-1)" id="keyboard-copy">
+                    <g transform="translate(11.000000, 10.000000)">
+                        <path d="M15.8571429,15 L2.14285714,15 C1.51167457,15 1,14.5025386 1,13.8888889 L1,6.11111111 C1,5.49746139 1.51167457,5 2.14285714,5 L15.8571429,5 C16.4883254,5 17,5.49746139 17,6.11111111 L17,13.8888889 C17,14.5025386 16.4883254,15 15.8571429,15 Z M2.14285714,6.11111111 L2.14285714,13.8888889 L15.8571429,13.8888889 L15.8571429,6.11111111 L2.14285714,6.11111111 Z" id="Shape" fill="#000000" fill-rule="nonzero"></path>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="6" y="11" width="6" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="3" y="7" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="6" y="7" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="8" y="7" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="10" y="7" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="3" y="11" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="3" y="9" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="6" y="9" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="8" y="9" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="13" y="7" width="2" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="13" y="9" width="2" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="10" y="9" width="1" height="1"></rect>
+                        <rect id="Rectangle" fill="#000000" fill-rule="nonzero" x="13" y="11" width="2" height="1"></rect>
+                        <rect id="_Transparent_Rectangle_" x="0" y="0" width="18" height="18"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

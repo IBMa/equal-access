@@ -50,31 +50,31 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
 
         .noHighlightSVG{
-            fill: purple;
+            fill: #E6D6FF;
             stroke-width: 1px;
-            stroke: lightblue;
+            stroke: black;
         }
         
         .highlightSVG{
-            fill: #0f62fe;
+            fill: #B76CFF;
             stroke-width: 3px;
             stroke: black;
         }
 
         .noHighlightSVGtriangle{
-            fill: darkorange;
+            fill: #FFB077;
             stroke-width: 1px;
             stroke: grey;
         }
         
         .highlightSVGtriangle{
-            fill: yellow;
+            fill: #FC7B1E;
             stroke-width: 3px;
             stroke: black;
         }
 
         .textColorWhite{
-            fill: white
+            fill: black
         }
 
         .textColorBlack{
@@ -163,14 +163,25 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // For softlaunch use notification or just help
     window.addEventListener("resize", debounce( resizeContent, 250 ));
 
+    // left mouse click listener for the circles and triangles
+    window.addEventListener('click', function(event:any) {
+        // console.log("---------------------------------------");
+        console.log("main doc left mouse click catcher");
+        console.log("event.target = ",event.target);
+        handleTabHighlight(event,document,false,"");
+    
+    });
+
 
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
         // console.log("---------------------------------------");
         // console.log("main doc key catcher");
-        handleTabHighlight(event,regularTabstops,document,false,"");
+        handleTabHighlight(event, document, false, "");
     
     });
+
+
     // Find all iframes nodes 
     let frames = document.getElementsByTagName("iframe");
     
@@ -180,28 +191,143 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
                 let iframePath = getXPathForElement(frames[i]); // since iframes in main doc
                 // console.log("---------------------------------------");
                 // console.log("iframe key catcher");
-                handleTabHighlight(event,regularTabstops,frames[i].contentWindow?.document,true,iframePath);
+                handleTabHighlight(event,frames[i].contentWindow?.document,true,iframePath);
             })
         }
     }
     return true;
 });
 
-function handleTabHighlight(event:any,regularTabstops:any,doc:any,iframe:boolean,iframeStr:string) {
+function handleTabHighlight(event:any,doc:any,iframe:boolean,iframeStr:string) {
     let elementXpath = "";
-        if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            // console.log("Got TAB Key");
-            let element = doc.activeElement;  // get element just tabbed to which has focus
-            elementXpath = getXPathForElement(element); // get doc path
-            
+    
+    if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
+        // console.log("Got TAB Key");
+        let element = doc.activeElement;  // get element just tabbed to which has focus
+        elementXpath = getXPathForElement(element); // get doc path
+        
+        // if we have iframe
+        if (iframe) {
+            elementXpath = iframeStr + elementXpath;
+        }
+
+        // get circle or polygon with matching xpath
+        let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+        let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+        let prevHighlightedElement;
+        if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
+            // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+        } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
+            // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+        }
+        // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+        
+        if (prevHighlightedElement) {
+            // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+            if (prevHighlightedElement.tagName === "circle") {
+                prevHighlightedElement.classList.remove("highlightSVG");
+                prevHighlightedElement.classList.add("noHighlightSVG");
+            } 
+            else if (prevHighlightedElement.tagName === "polygon") {
+                prevHighlightedElement.classList.remove("highlightSVGtriangle");
+                prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+            }
+            // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+        } else {
+            // console.log("No prevHighlightedElement to highlight")
+        }
+        // Highlight circle
+        if (circle) {
+            circle?.classList.remove("noHighlightSVG");
+            circle?.classList.add("highlightSVG");
+            // console.log("circle highlighted = ",circle);
+        } else {
+            // console.log("No circle to highlight = ",circle);
+        }
+        if (polygon) {
+            polygon?.classList.remove("noHighlightSVGtriangle");
+            polygon?.classList.add("highlightSVGtriangle");
+            // console.log("polygon highlighted = ",polygon);
+        } else {
+            // console.log("No circle to highlight = ",circle);
+        }
+    } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
+        // console.log("Got SHIFT TAB Key");
+        let element = doc.activeElement;  // get element just tabbed to which has focus
+        // console.log("Active element = ", element);
+        elementXpath = getXPathForElement(element); // path if not in iframe
+        // console.log("elementXpath = ",elementXpath);
+
+        // if we have iframe
+        if (iframe) {
+            elementXpath = iframeStr + elementXpath;
+        }
+
+        // get circle or polygon with matching xpath
+        let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+        let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+        let prevHighlightedElement;
+        if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
+            // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+        } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
+            // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+        }
+        // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+        
+        if (prevHighlightedElement) {
+            // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+            if (prevHighlightedElement.tagName === "circle") {
+                prevHighlightedElement.classList.remove("highlightSVG");
+                prevHighlightedElement.classList.add("noHighlightSVG");
+            } 
+            else if (prevHighlightedElement.tagName === "polygon") {
+                prevHighlightedElement.classList.remove("highlightSVGtriangle");
+                prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+            }
+            // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+        } else {
+            // console.log("No prevHighlightedElement to highlight")
+        }
+        // Highlight circle
+        if (circle) {
+            circle?.classList.remove("noHighlightSVG");
+            circle?.classList.add("highlightSVG");
+            // console.log("circle highlighted = ",circle);
+        } else {
+            // console.log("No circle to highlight = ",circle);
+        }
+        if (polygon) {
+            polygon?.classList.remove("noHighlightSVGtriangle");
+            polygon?.classList.add("highlightSVGtriangle");
+            // console.log("polygon highlighted = ",polygon);
+        } else {
+            // console.log("No circle to highlight = ",circle);
+        }
+    } else if (event.target) {
+        if (event.target.tagName === "circle" || event.target.tagName === "polygon") {
+            let circle;
+            if (event.target.tagName === "circle") {
+                circle = event.target;
+            }
+            let polygon;
+            if (event.target.tagName === "polygon") {
+                polygon = event.target;
+            }
+
+            let element = selectPath(event.target.getAttribute("xpath")); // circle's element that we want to have focus
+
+            // console.log("Active element = ", element);
+            elementXpath = getXPathForElement(element); // path if not in iframe
+            // console.log("elementXpath = ",elementXpath);
+
             // if we have iframe
             if (iframe) {
                 elementXpath = iframeStr + elementXpath;
             }
-
+            
             // get circle or polygon with matching xpath
-            let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-            let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+            // let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+            // let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
             let prevHighlightedElement;
             if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
                 // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
@@ -239,68 +365,8 @@ function handleTabHighlight(event:any,regularTabstops:any,doc:any,iframe:boolean
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
-        } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
-            // console.log("Got SHIFT TAB Key");
-            let element = doc.activeElement;  // get element just tabbed to which has focus
-            // console.log("Active element = ", element);
-            elementXpath = getXPathForElement(element); // path if not in iframe
-            // console.log("elementXpath = ",elementXpath);
-            // Let's try node match
-            let nodes = getNodesXpaths(regularTabstops);
-            let nodeXpaths = nodes;
-            nodes = convertXpathsToHtmlElements(nodes);
-            // do node match
-            for (let i=0; i < nodeXpaths.length; i++) {
-                if (iframe && nodeXpaths[i].includes(iframeStr) && nodeXpaths[i].includes(elementXpath) ) {
-                    elementXpath = nodeXpaths[i];
-                }
-            }
-            // get circle or polygon with matching xpath
-            let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-            let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
-            let prevHighlightedElement;
-            if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
-                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-            } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
-                // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
-            }
-            // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
-            
-            if (prevHighlightedElement) {
-                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
-                if (prevHighlightedElement.tagName === "circle") {
-                    prevHighlightedElement.classList.remove("highlightSVG");
-                    prevHighlightedElement.classList.add("noHighlightSVG");
-                } 
-                else if (prevHighlightedElement.tagName === "polygon") {
-                    prevHighlightedElement.classList.remove("highlightSVGtriangle");
-                    prevHighlightedElement.classList.add("noHighlightSVGtriangle");
-                }
-                // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
-            } else {
-                // console.log("No prevHighlightedElement to highlight")
-            }
-            // Highlight circle
-            if (circle) {
-                circle?.classList.remove("noHighlightSVG");
-                circle?.classList.add("highlightSVG");
-                // console.log("circle highlighted = ",circle);
-            } else {
-                // console.log("No circle to highlight = ",circle);
-            }
-            if (polygon) {
-                polygon?.classList.remove("noHighlightSVGtriangle");
-                polygon?.classList.add("highlightSVGtriangle");
-                // console.log("polygon highlighted = ",polygon);
-            } else {
-                // console.log("No circle to highlight = ",circle);
-            }
-            // Inspect active element
-            // console.log("circle.xpath = ", circle?.getAttribute("xpath"));
-            // console.log("circle?.getAttribute('circleNumber')", circle?.getAttribute("circleNumber"));
-            // TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: circle?.getAttribute("xpath"), circleNumber: circle?.getAttribute("circleNumber")! + 1 });
-            // Returm from elements tab to browse page tab
         }
+    }
 }
 
 // Debounce

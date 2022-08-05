@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 9</title>
+    <g id="Archive" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Colors-and-icons" transform="translate(-16.000000, -493.000000)">
+            <g id="Group-7" transform="translate(16.000000, 493.000000)">
+                <g id="button-/-01-primary-/-small-/-03-icon-/-03-active-copy-3" fill="#6F6F6F">
+                    <rect id="Background" x="0" y="0" width="40" height="40"></rect>
+                </g>
+                <g id="Group-6" transform="translate(12.000000, 13.000000)">
+                    <rect id="Rectangle" fill="#FFFFFF" x="2" y="4" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-4" fill="#FFFFFF" x="2" y="6" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-5" fill="#FFFFFF" x="2" y="8" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-6" fill="#FFFFFF" x="5" y="4" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-8" fill="#FFFFFF" x="7" y="4" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-15" fill="#FFFFFF" x="9" y="6" width="1" height="1"></rect>
+                    <rect id="Rectangle-Copy-9" fill="#FFFFFF" x="12" y="4" width="2" height="1"></rect>
+                    <rect id="Rectangle-Copy-10" fill="#FFFFFF" x="12" y="6" width="2" height="1"></rect>
+                    <rect id="Rectangle-Copy-11" fill="#FFFFFF" x="12" y="8" width="2" height="1"></rect>
+                    <polygon id="Rectangle-Copy-12" fill="#FFFFFF" points="7 8 11 8 11 9 6.21983811 9"></polygon>
+                    <rect id="Rectangle-Copy-7" fill="#FFFFFF" x="5" y="6" width="1" height="1"></rect>
+                    <polygon id="Rectangle-Copy-13" fill="#FFFFFF" points="7 6 7.5 6 7 6.5"></polygon>
+                    <polygon id="Rectangle-Copy-16" fill="#FFFFFF" points="5 8 5.5 8 5 8.5"></polygon>
+                    <polygon id="Rectangle-Copy-14" fill="#FFFFFF" points="9 4 9.5 4 9 4.5"></polygon>
+                    <line x1="15" y1="0" x2="0.857864376" y2="14.1421356" id="Path-3" stroke="#FFFFFF" transform="translate(7.928932, 7.071068) rotate(-0.000000) translate(-7.928932, -7.071068) "></line>
+                    <path d="M1.00210566,10.9906185 L2.49831655,10.9906185 C1.73129647,11.6565902 1.34778643,11.9895761 1.34778643,11.9895761 C1.34778643,11.9895761 0,12.1740802 0,10.9906185 C0,8.35169915 0,5.6878122 0,2.99895761 C0.0365290104,2.33298587 0.370564231,2 1.00210566,2 C4.24402278,2 7.67665422,2 11.3,2 L10.2680013,2.99895761 L1.00210566,2.99895761 L1.00210566,10.9906185 Z" id="Path-4" fill="#FFFFFF"></path>
+                    <path d="M4.63321686,11.0088039 L7.09360981,11.0088039 C6.3406633,11.6765578 5.96419004,12.0104348 5.96419004,12.0104348 C5.96419004,12.0104348 4.63321686,12.0104348 4.63321686,12.0104348 C4.63321686,12.0104348 3.63321686,11.9738693 3.63321686,11.0088039 C3.63321686,7.05157692 3.63321686,6.91383236 3.63321686,3.0103645 C3.63321686,3.0103645 3.63321686,2.0103645 4.63321686,2.0103645 C5.29988352,2.0103645 9.08881124,2.00688623 16,1.99992968 L14.9811234,3.0103645 L4.63321686,3.0103645 L4.63321686,11.0088039 Z" id="Path-4" fill="#FFFFFF" transform="translate(9.816608, 7.005182) scale(-1, -1) translate(-9.816608, -7.005182) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
