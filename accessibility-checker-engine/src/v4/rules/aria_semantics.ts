@@ -113,16 +113,16 @@ export let aria_semantics_role: Rule = {
 // This rule is in the same file because there is a dependency that aria_semantics_role runs first,
 // and the info is passed by cache, but there isn't a dependency in the Fail_2 scenario, so regular
 // dependency cannot be used
-export let aria_semantics_attribute: Rule = {
-    id: "aria_semantics_attribute",
+export let aria_attribute_allowed: Rule = {
+    id: "aria_attribute_allowed",
     context: "dom:*",
     // Partially depends on aria_semantics_role
     dependencies: [],
     help: {
         "en-US": {
-            "group": "aria_semantics_attribute.html",
-            "Pass_0": "aria_semantics_attribute.html",
-            "Fail_1": "aria_semantics_attribute.html"
+            "group": "aria_attribute_allowed.html",
+            "Pass_0": "aria_attribute_allowed.html",
+            "Fail_1": "aria_attribute_allowed.html"
         }
     },
     messages: {
@@ -195,7 +195,7 @@ export let aria_semantics_attribute: Rule = {
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
+            RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail_1");
             return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
