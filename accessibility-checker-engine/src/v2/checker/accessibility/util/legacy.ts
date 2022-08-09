@@ -1638,13 +1638,13 @@ export class RPTUtil {
          * ignore if the element contains none or presentation role
         */
         let presentationRoles = ["none", "presentation"];
-        const found = roles.some(r=> presentationRoles.includes(r));
+        const found = roles.some(r => presentationRoles.includes(r));
         if (found) return null;
 
         let designPatterns = ARIADefinitions.designPatterns;
         let requiredChildRoles: string[] = new Array();
         for (let j = 0; j < roles.length; ++j) {
-            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null) {
+            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren !== null) {
                 requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
             }
         }
