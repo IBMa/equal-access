@@ -1562,8 +1562,9 @@ export class RPTUtil {
      public static retrieveDirectATChildren(element, requiredChildRoles, direct: Array<HTMLElement>) {
         let children : HTMLElement[] = [];
         if (element.children !== null && element.children.length > 0) {
-            for (let i=0; i < element.children.length; i++)
+            for (let i=0; i < element.children.length; i++) {
                 children.push(element.children[i]);
+            }
         }    
         // if the element contains "aria-own" attribute, then the aria-owned children need to be included too
         let owned = element.getAttribute("aria-owns");
@@ -1573,8 +1574,9 @@ export class RPTUtil {
                 let ownedIds = owned.split(" ");
                 for (let i=0; i < ownedIds.length; i++) {
                     let ownedElem = doc.getElementById(ownedIds[i]);
-                    if (ownedElem)
+                    if (ownedElem) {
                         children.push(ownedElem);
+                    }
                 }    
             }
         }
@@ -1583,8 +1585,9 @@ export class RPTUtil {
                 //ignore hidden and invisible child
                 if (RPTUtil.isNodeHiddenFromAT(children[i]) || !RPTUtil.isNodeVisible(children[i])) continue;
                 let roles = RPTUtil.getRoles(children[i], false);
-                if (roles == null || roles.length == 0) 
-                    roles =  RPTUtil.getImplicitRole(children[i]);
+                if (roles === null || roles.length === 0) {
+                    roles = RPTUtil.getImplicitRole(children[i]);
+                }
 
                 if (roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
@@ -1599,11 +1602,12 @@ export class RPTUtil {
                         })
                     }
                 } 
-                if (roles !== null && roles.length > 0) 
+                if (roles !== null && roles.length > 0) {
                     direct.push(children[i]);
-                else
+                } else {
                     // recursive until get a return value, 
-                    RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);    
+                    RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);
+                }
             }
         } 
         return null;
@@ -1619,14 +1623,16 @@ export class RPTUtil {
     public static getRequiredChildRoles(element, includeImplicit: boolean) : string[] {
         let roles = RPTUtil.getRoles(element, false);
         // if explicit role doesn't exist, get the implicit one
-        if ((!roles || roles.length == 0) && includeImplicit) 
-            roles =  RPTUtil.getImplicitRole(element);
+        if ((!roles || roles.length === 0) && includeImplicit) {
+            roles = RPTUtil.getImplicitRole(element);
+        }
         
         /**  
          * ignore if the element doesn't have any explicit or implicit role
         */
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length == 0) {
             return null;
+        }
         
         /**  
          * ignore if the element contains none or presentation role
@@ -1638,8 +1644,9 @@ export class RPTUtil {
         let designPatterns = ARIADefinitions.designPatterns;
         let requiredChildRoles: string[] = new Array();
         for (let j = 0; j < roles.length; ++j) {
-            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null)
+            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren != null) {
                 requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
+            }
         }
         return requiredChildRoles;
     }
