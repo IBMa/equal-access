@@ -49,16 +49,88 @@
 
     <a name="navskip"></a>
 
-    <script type="text/javascript">
-        //<![CDATA[
-        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-        OpenAjax.a11y.ruleCoverage = [{
-            ruleId: "1152",
-            passedXpaths: [],
-            failedXpaths: ["/html[1]/body[1]/table[1]/tbody[1]/tr[1]"]
-        }, ];
-        //]]>
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_child_valid"],
+            results: [
+            {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/table[1]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"rowgroup\" owns the child element with the role \"radiogroup\" that is not one of the allowed role(s): \"row\"",
+            "messageArgs": [
+              "rowgroup",
+              "radiogroup",
+              "row"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"radiogroup\" owns the child element with the role \"cell\" that is not one of the allowed role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "cell",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"radiogroup\" owns the child element with the role \"cell\" that is not one of the allowed role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "cell",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        };
     </script>
 </body>
 

@@ -88,26 +88,196 @@
 
     <a name="navskip"></a>
 
-    <script type="text/javascript">
-        //<![CDATA[
-        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-        OpenAjax.a11y.ruleCoverage = [{
-            ruleId: "1152",
-            passedXpaths: [],
-            failedXpaths: [
-                "/html/body/ul[1]",
-                "/html/body/div[1]",
-                "/html/body/ul[2]",
-                "/html/body/ul[3]",
-                "/html/body/div[3]/div",
-                "/html/body/div[4]",
-                "/html/body/div[5]/div",
-                "/html/body/div[6]",
-                "/html/body/div[2]"
-            ]
-        }, ];
-        //]]>
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_child_valid"],
+            results: [
+            {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]",
+              "aria": "/document[1]/tree[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"tree\" does not own any child element with any of the following role(s): \"treeitem\"",
+            "messageArgs": [
+              "tree",
+              "treeitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"radiogroup\" does not own any child element with any of the following role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]/radiogroup[2]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"radiogroup\" does not own any child element with any of the following role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[3]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"menu\" does not own any child element with any of the following role(s): \"menuitem, menuitemcheckbox, menuitemradio\"",
+            "messageArgs": [
+              "menu",
+              "menuitem, menuitemcheckbox, menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/grid[1]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/div[1]",
+              "aria": "/document[1]/grid[1]/row[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"row\" does not own any child element with any of the following role(s): \"cell, columnheader, gridcell, rowheader\"",
+            "messageArgs": [
+              "row",
+              "cell, columnheader, gridcell, rowheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/grid[2]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"grid\" does not own any child element with any of the following role(s): \"row, rowgroup\"",
+            "messageArgs": [
+              "grid",
+              "row, rowgroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]",
+              "aria": "/document[1]/grid[3]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]/div[1]",
+              "aria": "/document[1]/grid[3]/row[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"row\" does not own any child element with any of the following role(s): \"cell, columnheader, gridcell, rowheader\"",
+            "messageArgs": [
+              "row",
+              "cell, columnheader, gridcell, rowheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[6]",
+              "aria": "/document[1]/grid[4]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"grid\" does not own any child element with any of the following role(s): \"row, rowgroup\"",
+            "messageArgs": [
+              "grid",
+              "row, rowgroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ],
+        };
     </script>
 </body>
 

@@ -17,8 +17,10 @@ import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy"
 
 export let aria_child_valid: Rule = {
     id: "aria_child_valid",
-    context: "dom:*[role]",
-    dependencies: ["Rpt_Aria_ValidRole"],
+    //context: "dom:*[role]",
+    //dependencies: ["Rpt_Aria_ValidRole"],
+    context: "dom:*",
+    dependencies: ["aria_semantics_role"],
     help: {
         "en-US": {
             "group": "aria_child_valid.html",
@@ -45,7 +47,7 @@ export let aria_child_valid: Rule = {
     act: ["bc4a75"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-
+        
         //skip the check if the element is hidden
         if (RPTUtil.isNodeHiddenFromAT(ruleContext))
             return;
@@ -56,6 +58,18 @@ export let aria_child_valid: Rule = {
         // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
         if (RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
+        }
+
+        //skip if it's an element of a presentational table (role='none' or 'presentation')
+        //if the element contains invalid role, this will be caught by the aria_sementic_role rule
+        let tableElements = ["th", "tr", "td", "tbody", "thead", "tfoot"];
+        if (tableElements.includes(ruleContext.nodeName.toLocaleLowerCase())) {
+            let table = RPTUtil.getAncestor(ruleContext, "table");
+            if (table) {
+                let tableRoles = RPTUtil.getRoles(table, false);
+                if (tableRoles && (tableRoles.includes("none") || tableRoles.includes("presentation")))
+                    return null;
+            }    
         }
 
         let roles = RPTUtil.getRoles(ruleContext, false);
@@ -112,7 +126,7 @@ export let aria_child_valid: Rule = {
              // it's 'busy' loading, ignore it 
              return null;
         }
-
+        
         let violateElemRoles = new Array();
         for (let j=0; j < directATChildren.length; j++) {
             let childRoles = RPTUtil.getRoles(directATChildren[j], false);

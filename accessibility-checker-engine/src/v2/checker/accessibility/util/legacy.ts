@@ -1191,7 +1191,6 @@ export class RPTUtil {
                 }
             } else if (tagNames.length) {
                 for (let idx in tagNames) {
-                    //                        Packages.java.lang.System.err.println(thisTag + ":" + tagNames[idx] + ":" + (tagNames[idx] === thisTag));
                     if (tagNames[idx] === thisTag)
                         return walkNode;
                 }
@@ -1608,7 +1607,7 @@ export class RPTUtil {
                     // recursive until get a return value, 
                     RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);
                 }
-            }
+            } 
         } 
         return null;
     }

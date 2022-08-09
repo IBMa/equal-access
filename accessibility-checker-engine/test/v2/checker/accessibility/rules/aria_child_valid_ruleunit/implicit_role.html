@@ -32,11 +32,18 @@
 
     <h3>WAI-ARIA role valid children test</h3>
 
-    <table role="grid">
-        <tr role="row">
-            <td role="cell">Item 1</td>
-        </tr>
-    </table>
+  <ul role="rowgroup">
+      <li role="menuitem">xx</li>
+  </ul>
+
+    <ul>
+        <li role="menuitem">xx</li>
+    </ul>
+    
+    <ul>
+         <li>xx</li>
+    </ul>
+
     <a name="navskip"></a>
 
     <script>
@@ -47,15 +54,19 @@
             "ruleId": "aria_child_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]",
-              "aria": "/document[1]/grid[1]"
+              "dom": "/html[1]/body[1]/ul[2]",
+              "aria": "/document[1]/list[1]"
             },
-            "reasonId": "Pass",
-            "message": "An element with a ARIA role owns a required child",
-            "messageArgs": [],
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"list\" owns the child element with the role \"menuitem\" that is not one of the allowed role(s): \"listitem\"",
+            "messageArgs": [
+              "list",
+              "menuitem",
+              "listitem"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },
@@ -66,24 +77,8 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]",
-              "aria": "/document[1]/grid[1]/rowgroup[1]"
-            },
-            "reasonId": "Pass",
-            "message": "An element with a ARIA role owns a required child",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_child_valid",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/grid[1]/rowgroup[1]/row[1]"
+              "dom": "/html[1]/body[1]/ul[3]",
+              "aria": "/document[1]/list[2]"
             },
             "reasonId": "Pass",
             "message": "An element with a ARIA role owns a required child",
