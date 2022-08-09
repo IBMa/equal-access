@@ -775,14 +775,14 @@ export class ACReportManager {
             return eAssertResult.ERROR;
         }
 
-        actualResults = actualResults as ICheckerReport; 
+        actualResults = actualResults as ICheckerReport;
 
         // Get the label directly from the results object, the same label has to match
         // the baseline object which is available in the global space.
         let label = actualResults.label;
 
         // Fetch the baseline object based on the label provided
-        let expected = ACReportManager.getBaseline(label); 
+        let expected = ACReportManager.getBaseline(label);
 
         // In the case there are no baseline found then run a different assertion algo,
         // when there is baseline compare the baselines in the case there is no baseline then
@@ -791,7 +791,7 @@ export class ACReportManager {
             // Run the diff algo to get the list of differences
             let differences = ACReportManager.diffResultsWithExpected(actualResults, expected, true);
 
-            console.log("difference=" + JSON.stringify(differences, null, '    '));
+            // console.log("difference=" + JSON.stringify(differences, null, '    '));
 
             // In the case that there are no differences then that means it passed
             if (differences === null || typeof (differences) === "undefined") {
