@@ -56,7 +56,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         
         .highlightSVG{
-            fill: #B76CFF;
+            fill: #BB8EFF;
             stroke-width: 3px;
             stroke: black;
         }
@@ -608,21 +608,36 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         nodes = convertXpathsToHtmlElements(nodeXpaths);
 
         for (let i = 0; i < nodes.length; i++) {
-            if (nodes[i+1] != null) {
-                // console.log("Tabbable nodes[",i+1,"]   element exists");
-                if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
-                    // console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
-                    if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
-                        // console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
+            if (nodes[i] != null) {
+                console.log("Tabbable nodes[",i,"]   element exists");
+                if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
+                    console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                    if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                        console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
                     }
                     else {
-                        // console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
+                        console.log("Tabbable nodes[",i,"] has NO bounding rect");
                     }
                 } else {
-                    // console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                    console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
                 }
             }
-            // console.log("--------------------------------");
+            console.log("--------------------------------");
+            if (nodes[i+1] != null && i+1 < nodes.length) {
+                console.log("Tabbable nodes[",i+1,"]   element exists");
+                if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
+                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
+                    if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
+                        console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
+                    }
+                    else {
+                        console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
+                    }
+                } else {
+                    console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                }
+            }
+            console.log("--------------------------------");
         }
 
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
