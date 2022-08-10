@@ -24,7 +24,9 @@ export interface IDocumentConformanceRequirement {
     globalAriaAttributesValid: boolean,
     otherAllowedAriaAttributes?: string[], 
     otherDisallowedAriaAttributes?: string[],
-    otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed   
+    otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed
+    // a few elements (such as datalist, html, caption) that have an implicit role but disallow some or all attributes allowed for the role.
+    allowAttributesForImplicitRole?: boolean  
 }
 
 export class ARIADefinitions {
@@ -1650,7 +1652,7 @@ export class ARIADefinitions {
         * documentConformanceRequirement contains properties of the tags related to role without any additional attribute value
         * documentConformanceRequirementSpecialTags contains those tags that require special considerations
         */
-    static documentConformanceRequirement: { 
+    static documentConformanceRequirement: {
         [role: string]: IDocumentConformanceRequirement
     } = {
         "abbr": {

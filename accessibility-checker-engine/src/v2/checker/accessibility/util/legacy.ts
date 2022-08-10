@@ -2219,6 +2219,11 @@ export class RPTUtil {
         return arr;
     }
 
+    /**
+     * this function is responsible for resolving ARIA requirements for an HTML element per ARIA in HTML
+     * @param ruleContext the HTML element to be examined
+     * @returns 
+     */
     public static getElementAriaProperty(ruleContext) {
         let tagName = null;
         let name = null;

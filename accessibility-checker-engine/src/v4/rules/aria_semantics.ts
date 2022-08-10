@@ -116,8 +116,8 @@ export let aria_semantics_role: Rule = {
 export let aria_attribute_allowed: Rule = {
     id: "aria_attribute_allowed",
     context: "dom:*",
-    // Partially depends on aria_semantics_role
-    dependencies: [],
+    // The the ARIA role is completely invalid, skip this check
+    dependencies: ["aria_semantics_role"],
     help: {
         "en-US": {
             "group": "aria_attribute_allowed.html",
@@ -128,8 +128,9 @@ export let aria_attribute_allowed: Rule = {
     messages: {
         "en-US": {
             "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The ARIA attribute '{0}' is not valid for the element <{1}> with ARIA role '{2}'"
+            "Pass_0": "ARIA attributes are valid for the element and ARIA role",
+            "Fail_invalid_role_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with ARIA role '{2}'",
+            "Fail_invalid_elem_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with implicit ARIA role '{2}'"
         }
     },
     rulesets: [{
@@ -141,8 +142,7 @@ export let aria_attribute_allowed: Rule = {
     act: "5c01ea",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // The the ARIA role is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        
         let role = ARIAMapper.nodeToRole(ruleContext);
         if (!role) {
             role = "none";
