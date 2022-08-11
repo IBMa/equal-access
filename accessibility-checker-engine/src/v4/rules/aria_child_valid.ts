@@ -60,18 +60,6 @@ export let aria_child_valid: Rule = {
             return null;
         }
 
-        //skip if it's an element of a presentational table (role='none' or 'presentation')
-        //if the element contains invalid role, this will be caught by the aria_sementic_role rule
-        let tableElements = ["th", "tr", "td", "tbody", "thead", "tfoot"];
-        if (tableElements.includes(ruleContext.nodeName.toLocaleLowerCase())) {
-            let table = RPTUtil.getAncestor(ruleContext, "table");
-            if (table) {
-                let tableRoles = RPTUtil.getRoles(table, false);
-                if (tableRoles && (tableRoles.includes("none") || tableRoles.includes("presentation")))
-                    return null;
-            }    
-        }
-
         let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length == 0) 
