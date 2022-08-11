@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to main content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA role valid children test</h3>
+
+    <table>
+        <tbody>
+            <tr id="restrictOption_row" role="radiogroup" aria-labelledby="systemsSearchPost_restrictOption_span">
+                <td valign="top"><span id="systemsSearchPost_restrictOption_span"> * Restrict search</span></td>
+                <td valign="top"><input type="radio" checked="checked" name="restrictOption" id="restrictOptionreadonly" value="readonly">
+                    <label for="restrictOptionreadonly">All systems (read only)</label> <br>
+                    <input type="radio" name="restrictOption" id="restrictOptionown" value="own">
+                    <label for="restrictOptionown">Systems I own</label> <br>
+                    <input type="radio" name="restrictOption" id="restrictOptionedit" value="edit">
+                    <label for="restrictOptionedit">Systems I can edit</label> <br>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a name="navskip"></a>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_child_valid"],
+            results: [
+            {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]",
+              "aria": "/document[1]/table[1]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"rowgroup\" owns the child element with the role \"radiogroup\" that is not one of the allowed role(s): \"row\"",
+            "messageArgs": [
+              "rowgroup",
+              "radiogroup",
+              "row"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"radiogroup\" owns the child element with the role \"cell\" that is not one of the allowed role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "cell",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
+              "aria": "/document[1]/table[1]/rowgroup[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_invalid_child",
+            "message": "The element with role \"radiogroup\" owns the child element with the role \"cell\" that is not one of the allowed role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "cell",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        };
+    </script>
+</body>
+
+</html>

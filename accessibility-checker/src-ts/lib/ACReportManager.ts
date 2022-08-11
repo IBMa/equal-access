@@ -791,7 +791,7 @@ export class ACReportManager {
             // Run the diff algo to get the list of differences
             let differences = ACReportManager.diffResultsWithExpected(actualResults, expected, true);
 
-            //console.log(JSON.stringify(differences, null, '    '));
+            // console.log("difference=" + JSON.stringify(differences, null, '    '));
 
             // In the case that there are no differences then that means it passed
             if (differences === null || typeof (differences) === "undefined") {
