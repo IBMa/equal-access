@@ -80,7 +80,29 @@ async function getTestcases() {
     });
 }
 
-async function getResult(page, ruleId, testcaseId, aceRules) {
+async function getAssertion(ruleId, aceRules, result) {
+    const ruleset = await rulesetP;
+    let ruleTitle = "";
+    for (let aceRule of aceRules) {
+        if (aceRule.ruleId === ruleId) {
+            ruleTitle = `${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`;
+        }
+    }
+    return {
+        "@type": "Assertion",
+        "test": { 
+            "title": ruleTitle,
+            "isPartOf": ruleset.checkpoints
+                // Get checkpoints that have this rule
+                .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
+                // Replace with the scId
+                .map(cp => cp.scId)
+        },
+        "result": { "outcome": result }
+    }
+}
+
+async function getResult(page, actRuleId, testcaseId, aceRules, bSkip) {
     const ruleset = await rulesetP;
     let assertions = [];
     if (aceRules.length === 0) {
@@ -98,7 +120,10 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
             issuesAll: []    
         }
     }
-    let results = await aChecker.getCompliance(page, `${ruleId}_${testcaseId}`);
+    let results = [];
+    if (!bSkip) {
+        results = await aChecker.getCompliance(page, `${actRuleId}_${testcaseId}`);
+    }
     let ruleIds = {};
     for (const aceRule of aceRules) {
         ruleIds[aceRule.ruleId] = true;
@@ -106,37 +131,39 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
     let issuesFailMap = {};
     let issuesReviewMap = {};
     let issuesPassMap = {};
-    for (const result of results.report.results) {
-        for (const aceRule of aceRules) {
-            if (result.ruleId === aceRule.ruleId) {
-                if (aceRule.remap && result.reasonId in aceRule.remap) {
-                    let earlResult = aceRule.remap[result.reasonId];
-                    switch (earlResult) {
-                        case "pass":
-                            issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
-                            issuesPassMap[result.ruleId].push(result);
-                            break;
-                        case "fail":
+    if (results && results.report && results.report.results) {
+        for (const result of results.report.results) {
+            for (const aceRule of aceRules) {
+                if (result.ruleId === aceRule.ruleId) {
+                    if (aceRule.remap && result.reasonId in aceRule.remap) {
+                        let earlResult = aceRule.remap[result.reasonId];
+                        switch (earlResult) {
+                            case "pass":
+                                issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
+                                issuesPassMap[result.ruleId].push(result);
+                                break;
+                            case "fail":
+                                issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
+                                issuesFailMap[result.ruleId].push(result);
+                                break;
+                            case "cantTell":
+                                issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
+                                issuesReviewMap[result.ruleId].push(result);
+                                break;
+                            case "inapplicable":
+                                break;
+                        }
+                    } else if (!aceRule.remap) {
+                        if (result.value[1] === "FAIL") {
                             issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
                             issuesFailMap[result.ruleId].push(result);
-                            break;
-                        case "cantTell":
+                        } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
                             issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
                             issuesReviewMap[result.ruleId].push(result);
-                            break;
-                        case "inapplicable":
-                            break;
-                    }
-                } else if (!aceRule.remap) {
-                    if (result.value[1] === "FAIL") {
-                        issuesFailMap[result.ruleId] = issuesFailMap[result.ruleId] || [];
-                        issuesFailMap[result.ruleId].push(result);
-                    } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
-                        issuesReviewMap[result.ruleId] = issuesReviewMap[result.ruleId] || [];
-                        issuesReviewMap[result.ruleId].push(result);
-                    } else if (result.value[1] === "PASS") {
-                        issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
-                        issuesPassMap[result.ruleId].push(result);
+                        } else if (result.value[1] === "PASS") {
+                            issuesPassMap[result.ruleId] = issuesPassMap[result.ruleId] || [];
+                            issuesPassMap[result.ruleId].push(result);
+                        }
                     }
                 }
             }
@@ -148,13 +175,7 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
     let issuesFail = [];
     let issuesReview = [];
     for (const ruleId in ruleIds) {
-        let ruleTitle = "";
         aChecker.getRuleset("")
-        for (let aceRule of aceRules) {
-            if (aceRule.ruleId === ruleId) {
-                ruleTitle = `${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`;
-            }
-        }
         let result = "";
         const hasFail = ruleId in issuesFailMap && issuesFailMap[ruleId].length > 0;
         const hasReview = ruleId in issuesReviewMap && issuesReviewMap[ruleId].length > 0;
@@ -168,18 +189,7 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
         } else {
             result = "earl:passed";
         }
-        assertions.push({
-            "@type": "Assertion",
-            "test": { 
-                "title": ruleTitle,
-                "isPartOf": ruleset.checkpoints
-                    // Get checkpoints that have this rule
-                    .filter(cp => cp.rules && cp.rules.filter(rule => rule.id === ruleId).length > 0)
-                    // Replace with the scId
-                    .map(cp => cp.scId)
-            },
-            "result": { "outcome": result }
-        })
+        assertions.push(await getAssertion(ruleId, aceRules, result));
         if (hasFail) { 
             issuesFail = issuesFail.concat(issuesFailMap[ruleId]); 
         }
@@ -208,7 +218,7 @@ async function getResult(page, ruleId, testcaseId, aceRules) {
         issuesPass: issuesPass,
         issuesFail: issuesFail,
         issuesReview: issuesReview,
-        issuesAll: results.report.results
+        issuesAll: bSkip ? [] : results.report.results
     }
 }
 
