@@ -26,7 +26,7 @@ export interface IDocumentConformanceRequirement {
     otherDisallowedAriaAttributes?: string[],
     otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed
     // a few elements (such as datalist, html, caption) that have an implicit role but disallow some or all attributes allowed for the role.
-    allowAttributesForImplicitRole?: boolean  
+    allowAttributesFromImplicitRole?: boolean  
 }
 
 export class ARIADefinitions {
@@ -1727,9 +1727,10 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "caption": {
-            implicitRole: null,
+            implicitRole: ['caption'],
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            allowAttributesFromImplicitRole: false
         },
         "cite": {
             implicitRole: null,
@@ -1759,7 +1760,8 @@ export class ARIADefinitions {
         "datalist": {
             implicitRole: ["listbox"],
             validRoles: null,
-            globalAriaAttributesValid: false
+            globalAriaAttributesValid: false,
+            allowAttributesFromImplicitRole: false
         },
         "dd": {
             implicitRole: ["definition"],
@@ -1869,7 +1871,8 @@ export class ARIADefinitions {
         "html": {
             implicitRole: ["document"],
             validRoles: null,
-            globalAriaAttributesValid: false
+            globalAriaAttributesValid: false,
+            allowAttributesFromImplicitRole: false
         },
         "i": {
             implicitRole: null,
@@ -1945,7 +1948,8 @@ export class ARIADefinitions {
             implicitRole: null,
             validRoles: null,
             globalAriaAttributesValid: true,
-            otherDisallowedAriaAttributes: ['aria-valuemax', 'aria-valuemin']
+            otherDisallowedAriaAttributes: ['aria-valuemax', 'aria-valuemin'],
+            allowAttributesFromImplicitRole: false
         },
         "nav": {
             implicitRole: ["navigation"],

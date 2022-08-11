@@ -2406,17 +2406,17 @@ export class RPTUtil {
             tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
 
         let skipImplicitRoleCheck = false;
-        if (tagName === "form" || tagName === "section") {
-            // special case: form has an implicit role only if it has an accessible name
+        if (tagName === "section") {
+            // special case for section: section has an implicit role only if it has an accessible name
             skipImplicitRoleCheck = !ruleContext.hasAttribute("aria-label") &&
                 !ruleContext.hasAttribute("aria-labelledby") &&
                 !ruleContext.hasAttribute("title");
-        }
+        }console.log("node="+tagName +", tagProperty.allowAttributesFromImplicitRole="+tagProperty.allowAttributesFromImplicitRole);
         if (tagProperty !== null && tagProperty !== undefined) {
             // add the implicit role allowed attributes to the allowed role list if there is no specified role
             if (tagProperty.implicitRole !== null &&
                 (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0) &&
-                !skipImplicitRoleCheck) {
+                !skipImplicitRoleCheck && (tagProperty.allowAttributesFromImplicitRole && !tagProperty.allowAttributesFromImplicitRole)) {
                 for (let i = 0; i < tagProperty.implicitRole.length; i++) {
                     let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
                     if (roleProperty !== null && roleProperty !== undefined) {
