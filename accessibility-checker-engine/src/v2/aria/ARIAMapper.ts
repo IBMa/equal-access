@@ -859,7 +859,15 @@ export class ARIAMapper extends CommonMapper {
             "summary": "button",
             "svg": "graphics-document",
             "table": "table",
-            "tbody": "rowgroup",
+            "tbody": function(element) {
+                let parent = DOMUtil.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    if (role === "table" || role === "grid" || role === "treegrid") return "rowgroup";
+                    parent = DOMUtil.parentNode(parent);
+                }
+                return null;
+            },
             "textarea": "textbox",
             "td": function(element) {
                 let parent = DOMUtil.parentNode(element);
@@ -918,7 +926,15 @@ export class ARIAMapper extends CommonMapper {
             },
             "tfoot": "rowgroup",
             "thead": "rowgroup",
-            "tr": "row",
+            "tr": function(element) {
+                let parent = DOMUtil.parentNode(element);
+                while (parent) {
+                    let role = ARIAMapper.nodeToRole(parent);
+                    if (role === "table" || role === "grid" || role === "treegrid") return "row";
+                    parent = DOMUtil.parentNode(parent);
+                }
+                return null;
+            },
             "ul": "list"
         }
     })()

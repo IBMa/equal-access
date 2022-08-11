@@ -2451,6 +2451,7 @@ export class RPTUtil {
                     else
                         tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
                     break;
+                case "tbody":
                 case "td":
                 case "th":
                 case "tr":
