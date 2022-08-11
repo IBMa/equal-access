@@ -1,0 +1,108 @@
+<html lang="en-US">
+<head>
+    <title>aria_attribute_conflict - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"Rule Passed","fail_conflict":"The ARIA attribute \"{0}\" is in conflict with the corresponding HTML attribute \"{1}\"","group":"An ARIA attribute must not conflict with the corresponding HTML attribute"}};
+        RULE_ID = "aria_attribute_conflict"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Avoid conflicting and confusing assistive technology behavior.
+Using **both** an HTML _attribute_ and the associated ARIA _attribute_ with the same semantic meaning on an element can cause a conflict 
+that allows one of the attributes to override the other. 
+As stated in the [ARIA 1.2 specification](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict),
+when HTML elements use both ARIA attributes and their HTML equivalents, 
+browsers (user agents) **must** ignore the ARIA attributes – the native HTML attribute with the same implicit ARIA semantics takes precedence.
+
+Developers may use ARIA _attributes_ in place of their HTML equivalent _attributes_ on certain elements where the ARIA semantics would be expected. 
+For example, developers may specify `aria-disabled=true` on a button element, 
+while also implementing the necessary scripting to functionally disable the button, rather than the use the HTML `disabled` attribute.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Remove one of the conflicting HTML or ARIA _attributes_ from the element. 
+* Review the "[Rules of ARIA attribute usage by HTML feature](https://w3c.github.io/html-aria/#docconformance-attr)" table to help determine which attribute to correctly use.
+
+
+Example correctly using an element with only an ARIA attribute:
+
+```
+<label for="phone">* Phone number: </label>
+<input type="text" id="phone" name="phone" aria-required="true">
+```
+    
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA 1.2 specification - Conflicts with Host Language Semantics](https://www.w3.org/TR/wai-aria-1.2/#host_general_conflict)
+* [ARIA in HTML](https://w3c.github.io/html-aria/#docconformance-attr)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People using text only browser with Braille display
+* People with dexterity impairment using voice control
+* People using other assistive technologies that expose accessibility information 
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
