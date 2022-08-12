@@ -129,8 +129,9 @@ export let aria_attribute_allowed: Rule = {
         "en-US": {
             "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
             "Pass": "ARIA attributes are valid for the element and ARIA role",
-            "Fail_invalid_role_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with ARIA role '{2}'",
-            "Fail_invalid_elem_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with implicit ARIA role '{2}'"
+            "Fail_invalid_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with ARIA role \"{2}\"",
+            "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\"",
+            "Fail_invalid_elem_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}>"
         }
     },
     rulesets: [{
@@ -149,10 +150,13 @@ export let aria_attribute_allowed: Rule = {
         //}
         // get roles from RPTUtil because multiple explicit roles are allowed
         let roles = RPTUtil.getRoles(ruleContext, false);
-        let implicit = false;
+        let type = "role_attr";
         if (!roles || roles.length == 0) {
             roles =  RPTUtil.getImplicitRole(ruleContext);
-            implicit = true;
+            if (roles && roles.length > 0)
+                type = "implicit_role_attr";
+            else
+                type = "elem_attr";    
         }
         let tagName = ruleContext.tagName.toLowerCase();
 
@@ -181,13 +185,16 @@ export let aria_attribute_allowed: Rule = {
             }
         }
         
-        console.log("node=" + tagName + ", allowedAttributes="+allowedAttributes.length + ", domAttributes="+domAttributes.length);
+        console.log("node=" + tagName + ", allowedAttributes="+ JSON.stringify(allowedAttributes) + ", domAttributes="+ JSON.stringify(domAttributes));
         if (failAttributeTokens.length > 0) {
             RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail");
-            if (implicit)
-                return RuleFail("Fail_invalid_elem_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            if (type === "role_attr")
+                return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            else if (type === "implicit_role_attr")
+                return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);    
             else
-                return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);    
+                return RuleFail("Fail_invalid_elem_attr", [failAttributeTokens.join(", "), tagName]);    
+            
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass", [passAttributeTokens.join(", "), tagName, roles.join(", ")]);
         } else {

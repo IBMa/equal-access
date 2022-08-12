@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<!-- saved from url=(0062)https://w3c.github.io/html-aria/tests/datalist-aria-attrs.html -->
 <html lang="en">
         <div>
-          <wbr aria-details="detail">my label</label>
-          <title aria-details="detail">xxx</track>
-          <template aria-details="detail">xxx</template>
-          <var aria-checked="true">xxx</var>
-          <legend aria-checked="true">xxx</legend>
-          <script aria-details="detail" aria-checked="detail">xxx</script>
-          <picture aria-details="detail" aria-checked="detail">xxx</picture>
+            <wbr aria-keyshortcuts="xxx">my label</wbr>
+            <title aria-keyshortcuts="xxx1">xxx</title>
+            <template aria-keyshortcuts="xxx2">xxx</template>
+            <var aria-checked="false">xxx</var>
+            <legend aria-checked="true">xxx</legend>
+            <script aria-keyshortcuts="xxx3" aria-checked="false">xxx</script>
+            <picture aria-keyshortcuts="xxx4" aria-checked="false">xxx</picture>
         </div>
 
     </div>
@@ -17,7 +16,82 @@
 		UnitTest = {
 			ruleIds: ["aria_attribute_allowed"],
 			results: [
-			
+      {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/wbr[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_elem_attr",
+            "message": "The ARIA attributes \"aria-keyshortcuts\" are not valid for the element <wbr>",
+            "messageArgs": [
+              "aria-keyshortcuts",
+              "wbr"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/var[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_elem_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <var>",
+            "messageArgs": [
+              "aria-checked",
+              "var"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/legend[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_elem_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <legend>",
+            "messageArgs": [
+              "aria-checked",
+              "legend"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/picture[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_elem_attr",
+            "message": "The ARIA attributes \"aria-keyshortcuts, aria-checked\" are not valid for the element <picture>",
+            "messageArgs": [
+              "aria-keyshortcuts, aria-checked",
+              "picture"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
 		  ]
 		}
 	  </script>
