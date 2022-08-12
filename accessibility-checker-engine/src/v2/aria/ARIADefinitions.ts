@@ -1823,6 +1823,11 @@ export class ARIADefinitions {
             validRoles: ["group", "none", "presentation"],
             globalAriaAttributesValid: true
         },
+        "form": {
+            implicitRole: ["form"],
+            validRoles: ["none", "presentation", "search"],
+            globalAriaAttributesValid: true
+        },
         "head": {
             implicitRole: null,
             validRoles: null,
@@ -2236,20 +2241,6 @@ export class ARIADefinitions {
                 implicitRole: ["contentinfo"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
-                globalAriaAttributesValid: true
-            }
-        },
-        "form": {
-            "with-name": {
-                implicitRole: ["form"],
-                //roleCondition: " when accessible name is present",
-                validRoles: ["none", "presentation", "search"],
-                globalAriaAttributesValid: true
-            },
-            "without-name": {
-                implicitRole: null,
-                //roleCondition: " when accessible name is not present",
-                validRoles: ["none", "presentation", "search"],
                 globalAriaAttributesValid: true
             }
         },

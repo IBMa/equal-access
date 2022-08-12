@@ -2405,18 +2405,12 @@ export class RPTUtil {
         else
             tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
 
-        let skipImplicitRoleCheck = false;
-        if (tagName === "section") {
-            // special case for section: section has an implicit role only if it has an accessible name
-            skipImplicitRoleCheck = !ruleContext.hasAttribute("aria-label") &&
-                !ruleContext.hasAttribute("aria-labelledby") &&
-                !ruleContext.hasAttribute("title");
-        }console.log("node="+tagName +", tagProperty.allowAttributesFromImplicitRole="+tagProperty.allowAttributesFromImplicitRole);
+        console.log("node="+tagName +", permittedRoles=" + permittedRoles +", tagProperty.allowAttributesFromImplicitRole=" + !tagProperty.allowAttributesFromImplicitRole +", allowAttributesFromImplicitRole=" + tagProperty.allowAttributesFromImplicitRole);
         if (tagProperty !== null && tagProperty !== undefined) {
             // add the implicit role allowed attributes to the allowed role list if there is no specified role
             if (tagProperty.implicitRole !== null &&
                 (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0) &&
-                !skipImplicitRoleCheck && (tagProperty.allowAttributesFromImplicitRole && !tagProperty.allowAttributesFromImplicitRole)) {
+                tagProperty.allowAttributesFromImplicitRole === 'undefined') {
                 for (let i = 0; i < tagProperty.implicitRole.length; i++) {
                     let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
                     if (roleProperty !== null && roleProperty !== undefined) {
@@ -2448,19 +2442,22 @@ export class RPTUtil {
                 }
             }
         }
-
+        console.log("node=" + tagName + ", allowedAttributes1="+allowedAttributes);
         // adding the other role to the allowed roles for the attributes
         if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
             RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);
-
+        console.log("node=" + tagName + ", allowedAttributes2="+allowedAttributes);
         // adding the specified role properties to the allowed attribute list
         for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
             if (roleProperties !== null && roleProperties !== undefined) {
-                let properties = roleProperties.props; // allowed properties
-                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-                properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
-                RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                // ignore the properties if the element doesn't allow attributes from implicit role
+                if ((tagProperty.implicitRole !== null && !tagProperty.implicitRole.includes(permittedRoles[i])) || tagProperty.allowAttributesFromImplicitRole === 'undefined') {
+                    let properties = roleProperties.props; // allowed properties
+                    RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                    properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
+                    RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
+                }
                 let prohibitedProps = roleProperties.prohibitedProps;
                 if (prohibitedProps && prohibitedProps.length>0)
                     RPTUtil.concatUniqueArrayItemList(prohibitedProps, prohibitedAttributes);
@@ -2470,7 +2467,7 @@ export class RPTUtil {
                 }
             }
         }
-
+        console.log("node=" + tagName + ", allowedAttributes3="+allowedAttributes);
         // ignore aria-level, aria-setsize or aria-posinset if "row" is not in treegrid
         if (permittedRoles.includes("row") && RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) == null ) {
             let index = -1;
@@ -2500,7 +2497,7 @@ export class RPTUtil {
             } 
             if (allowed.length > 0)    
                 RPTUtil.concatUniqueArrayItemList(allowed, allowedAttributes);
-        } 
+        } console.log("node=" + tagName + ", allowedAttributes4="+allowedAttributes);
         // add the other prohibitted attributes for the element
         if (tagProperty && tagProperty.otherDisallowedAriaAttributes && tagProperty.otherDisallowedAriaAttributes.length > 0) {
             // check attribute-value pair if exists
@@ -2516,13 +2513,13 @@ export class RPTUtil {
             }
             if (disallowed.length > 0)
                 RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
-        }
+        } console.log("node=" + tagName + ", allowedAttributes5="+allowedAttributes);
         //exclude the prohibitedAttributes from the allowedAttributes
         if (prohibitedAttributes.length > 0) {
             allowedAttributes = allowedAttributes.filter((value) =>  {
                 return !prohibitedAttributes.includes(value);
             });
-        } 
+        } console.log("node=" + tagName + ", allowedAttributes6="+allowedAttributes);
         return allowedAttributes;
     }
     /**

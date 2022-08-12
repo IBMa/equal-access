@@ -157,7 +157,7 @@ export let aria_attribute_allowed: Rule = {
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
         let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
-        
+        console.log("node=" + tagName + ", allowedAttributes="+allowedAttributes.length);
         // input type="password" has no role but it can take an aria-required. This is the only case like this.
         // So we add it in the code instead of adding new mechanism to the aria-definition.js
         // covered in aria definition
@@ -166,13 +166,13 @@ export let aria_attribute_allowed: Rule = {
         }*/
 
         let domAttributes = ruleContext.attributes;
-        
+        console.log("node=" + tagName + ", domAttributes="+domAttributes.length);
         if (domAttributes) {
             for (let i = 0; i < domAttributes.length; i++) {
                 let attrName = domAttributes[i].name.trim().toLowerCase(); 
                 let isAria = attrName.substring(0, 5) === 'aria-';
                 if (isAria) {
-                    if (!allowedAttributes.includes(attrName)) {
+                    if (allowedAttributes.length ===0 || !allowedAttributes.includes(attrName)) { console.log("node=" + tagName + ", attrName="+attrName);
                         //valid attributes can be none also which is covered here
                         !failAttributeTokens.includes(attrName) ? failAttributeTokens.push(attrName) : false;
                     } else {
@@ -194,9 +194,10 @@ export let aria_attribute_allowed: Rule = {
         //	    }
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
+        console.log("node=" + tagName + ", failAttributeTokens="+failAttributeTokens.length);
         if (failAttributeTokens.length > 0) {
             RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail_1");
-            return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
+            return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
         } else {
