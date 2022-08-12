@@ -34,13 +34,13 @@ const fs = require("fs");
             // if (testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969") {
                 // Skip
             // } else 
-            if (ext === ".html" || ext === ".xhtml") {
-                try {
-                    // First, load the page
-                    if (ruleTestInfo[ruleId].aceRules.length > 0) {
-                        // This rule has testcases, run the test
-                        console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
-                        // Special handling for meta refresh
+            try {
+                // First, load the page
+                if (ruleTestInfo[ruleId].aceRules.length > 0) {
+                    // This rule has testcases, run the test
+                    console.group(`+ ${testcase.testcaseTitle}: ${testcase.url}`);
+                    // Special handling for meta refresh
+                    if (ext === ".html" || ext === ".xhtml") {
                         if (testcase.ruleId === "bisz58" || testcase.ruleId === "bc659a") 
                         {
                         //     testcase.testcaseId === "cbf6409b0df0b3b6437ab3409af341587b144969"
@@ -63,33 +63,33 @@ const fs = require("fs");
                         } else {
                             await pupPage.goto(testcase.url, { waitUntil: 'networkidle2' });
                         }
-                    } else {
-                        // If no tests, don't bother loading the testcase
-                        console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
                     }
-                    let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.ruleId, testcase.testcaseId, ruleTestInfo[ruleId].aceRules);
-                    earlResult["@graph"].push({
-                        "@type": "TestSubject",
-                        "source": `https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases/${ruleId}/${testcase.testcaseId}.html`,
-                        "assertions": assertions
-                    });
-                    if (result === "earl:cantTell" && (testcase.expected === "passed" || testcase.expected === "failed")) {
-                        console.log("--Can't tell");
-                    } else if (`earl:${testcase.expected}` !== result) {
-                        if (result !== "earl:untested") {
-                            console.log(`\x1b[31m--Expected ${testcase.expected}, but returned ${result}
+                } else {
+                    // If no tests, don't bother loading the testcase
+                    console.group(`? ${testcase.testcaseTitle}: ${testcase.url}`);
+                }
+                let { assertions, result, issuesFail, issuesPass, issuesReview, issuesAll } = await getResult(pupPage, testcase.ruleId, testcase.testcaseId, ruleTestInfo[ruleId].aceRules, !(ext === ".html" || ext === ".htm"));
+                earlResult["@graph"].push({
+                    "@type": "TestSubject",
+                    "source": `${testcase.url}`,
+                    "assertions": assertions
+                });
+                if (result === "earl:cantTell" && (testcase.expected === "passed" || testcase.expected === "failed")) {
+                    console.log("--Can't tell");
+                } else if (`earl:${testcase.expected}` !== result) {
+                    if (result !== "earl:untested") {
+                        console.log(`\x1b[31m--Expected ${testcase.expected}, but returned ${result}
 Failures: ${JSON.stringify(issuesFail, null, 2)}
 Review: ${JSON.stringify(issuesReview, null, 2)}
 Pass: ${JSON.stringify(issuesPass, null, 2)}
 All: ${JSON.stringify(issuesAll
-                                .filter(result => result.value[1] !== "PASS")
-                                .map(result => result.ruleId + ":" + result.reasonId + ":" + result.value[1]), null, 2)}\x1b[0m`);
-                        }
+                            .filter(result => result.value[1] !== "PASS")
+                            .map(result => result.ruleId + ":" + result.reasonId + ":" + result.value[1]), null, 2)}\x1b[0m`);
                     }
-                    console.groupEnd();
-                } catch (err) {
-                    console.error(err);
                 }
+                console.groupEnd();
+            } catch (err) {
+                console.error(err);
             }
         }
         console.groupEnd();

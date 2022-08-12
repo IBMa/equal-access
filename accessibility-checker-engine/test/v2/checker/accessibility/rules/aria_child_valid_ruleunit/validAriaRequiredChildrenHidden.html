@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en">
+
+<head>
+
+    <title>RPT Test Suite</title>
+</head>
+
+<body>
+
+    <a href="#navskip">skip to main content</a>
+
+    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+
+    <h3>WAI-ARIA role valid children test</h3>
+
+    <!-- Tree role has required child: treeitem -->
+    <ul id="id1" role="tree">
+        <li role="treeitem" hidden>Content</li>
+    </ul>
+
+    <!-- Radiogroup role has required child: radio  -->
+    <div id="id2" role="radiogroup">
+        <div role="radio" style="display: none">Radio button content</div>
+    </div>
+
+    <!-- Radiogroup role has required native radio button  -->
+    <div id="id3" role="radiogroup">
+        <input type="radio" id="radio1" name="radio1" style="visibility: hidden">
+    </div>
+
+    <!-- Multi-role element with tree role has required child: treeitem -->
+    <ul id="id4" role="navigation tree">
+        <li role="treeitem" hidden>Content</li>
+    </ul>
+
+    <!-- Menu role has required child: menuitem -->
+    <ul id="id5" role="menu">
+        <li role="menuitem" style="display: none">Content</li>
+    </ul>
+
+    <div role="grid">
+        <div role="row">
+            <div role="columnheader" style="visibility: hidden"></div>
+        </div>
+    </div>
+
+    <div role="grid">
+        <div role="row" hidden>
+            <div role="rowheader"></div>
+        </div>
+    </div>
+
+    <div role="grid">
+        <div role="row">
+            <div role="gridcell" style="display: none"></div>
+        </div>
+    </div>
+
+    <!-- Nested gridcell -->
+    <div role="grid">
+        <div role="row" hidden>
+            <div>
+                <div>
+                    <div role="gridcell">...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a name="navskip"></a>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["aria_child_valid"],
+            results: [
+            {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]",
+              "aria": "/document[1]/tree[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"tree\" does not own any child element with any of the following role(s): \"treeitem\"",
+            "messageArgs": [
+              "tree",
+              "treeitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/radiogroup[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"radiogroup\" does not own any child element with any of the following role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[2]",
+              "aria": "/document[1]/radiogroup[2]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"radiogroup\" does not own any child element with any of the following role(s): \"radio\"",
+            "messageArgs": [
+              "radiogroup",
+              "radio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[3]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"menu\" does not own any child element with any of the following role(s): \"menuitem, menuitemcheckbox, menuitemradio\"",
+            "messageArgs": [
+              "menu",
+              "menuitem, menuitemcheckbox, menuitemradio"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]",
+              "aria": "/document[1]/grid[1]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[3]/div[1]",
+              "aria": "/document[1]/grid[1]/row[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"row\" does not own any child element with any of the following role(s): \"cell, columnheader, gridcell, rowheader\"",
+            "messageArgs": [
+              "row",
+              "cell, columnheader, gridcell, rowheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[4]",
+              "aria": "/document[1]/grid[2]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"grid\" does not own any child element with any of the following role(s): \"row, rowgroup\"",
+            "messageArgs": [
+              "grid",
+              "row, rowgroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]",
+              "aria": "/document[1]/grid[3]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[5]/div[1]",
+              "aria": "/document[1]/grid[3]/row[1]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"row\" does not own any child element with any of the following role(s): \"cell, columnheader, gridcell, rowheader\"",
+            "messageArgs": [
+              "row",
+              "cell, columnheader, gridcell, rowheader"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[6]",
+              "aria": "/document[1]/grid[4]"
+            },
+            "reasonId": "Fail_no_child",
+            "message": "The element with role \"grid\" does not own any child element with any of the following role(s): \"row, rowgroup\"",
+            "messageArgs": [
+              "grid",
+              "row, rowgroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ],
+        };
+    </script>
+</body>
+
+</html>

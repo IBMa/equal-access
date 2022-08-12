@@ -78,9 +78,9 @@ describe("Baseline testing", function () {
                     let result = await aChecker.getCompliance(unitTestDataFileContent, "Baseline_" + labelName);
                     let assertVal = aChecker.assertCompliance(result.report);
                     if (assertVal !== codes[unitTestFile]) {
-                        console.log(util.inspect(result, null, 6));
-                    }
-                    expect(assertVal).to.equal(codes[unitTestFile]);
+                        console.log("inspect result", util.inspect(result, null, 6));
+                    } 
+                    expect(assertVal).to.equal(codes[unitTestFile]); 
                 });
             });
         }(unitTestFile));

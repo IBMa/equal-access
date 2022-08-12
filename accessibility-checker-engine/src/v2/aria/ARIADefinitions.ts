@@ -2109,11 +2109,6 @@ export class ARIADefinitions {
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
-        "tbody": {
-            implicitRole: ["rowgroup"],
-            validRoles: ["any"],
-            globalAriaAttributesValid: true
-        },
         "template": {
             implicitRole: null,
             validRoles: null,
@@ -2521,6 +2516,28 @@ export class ARIADefinitions {
                 otherDisallowedAriaAttributes: ["aria-multiselectable"]
             }
         },
+        "tbody": {
+            "des-table": {
+                implicitRole: ["rowgroup"],
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            },
+            "des-grid": {
+                implicitRole: ["rowgroup"],
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            },
+            "des-treegrid": {
+                implicitRole: ["rowgroup"],
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            },
+            "des-other": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            }
+        },
         "td": {
             "des-table": {
                 implicitRole: ["cell"],
@@ -2582,7 +2599,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             },
             "des-other": {
-                implicitRole: ["row"],
+                implicitRole: null,
                 validRoles: ["any"],
                 globalAriaAttributesValid: true
             }
