@@ -128,7 +128,7 @@ export let aria_attribute_allowed: Rule = {
     messages: {
         "en-US": {
             "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
-            "Pass_0": "ARIA attributes are valid for the element and ARIA role",
+            "Pass": "ARIA attributes are valid for the element and ARIA role",
             "Fail_invalid_role_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with ARIA role '{2}'",
             "Fail_invalid_elem_attr": "The ARIA attributes '{0}' are not valid for the element <{1}> with implicit ARIA role '{2}'"
         }
@@ -143,9 +143,16 @@ export let aria_attribute_allowed: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         
-        let role = ARIAMapper.nodeToRole(ruleContext);
-        if (!role) {
-            role = "none";
+        //let role = ARIAMapper.nodeToRole(ruleContext);
+        //if (!role) {
+        //    role = ["none"];
+        //}
+        // get roles from RPTUtil because multiple explicit roles are allowed
+        let roles = RPTUtil.getRoles(ruleContext, false);
+        let implicit = false;
+        if (!roles || roles.length == 0) {
+            roles =  RPTUtil.getImplicitRole(ruleContext);
+            implicit = true;
         }
         let tagName = ruleContext.tagName.toLowerCase();
 
@@ -156,23 +163,15 @@ export let aria_attribute_allowed: Rule = {
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
-        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
-        console.log("node=" + tagName + ", allowedAttributes="+allowedAttributes.length);
-        // input type="password" has no role but it can take an aria-required. This is the only case like this.
-        // So we add it in the code instead of adding new mechanism to the aria-definition.js
-        // covered in aria definition
-        /**if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
-            allowedAttributes.push("aria-required");
-        }*/
-
+        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, roles, tagProperty);
+        
         let domAttributes = ruleContext.attributes;
-        console.log("node=" + tagName + ", domAttributes="+domAttributes.length);
         if (domAttributes) {
             for (let i = 0; i < domAttributes.length; i++) {
                 let attrName = domAttributes[i].name.trim().toLowerCase(); 
                 let isAria = attrName.substring(0, 5) === 'aria-';
                 if (isAria) {
-                    if (allowedAttributes.length ===0 || !allowedAttributes.includes(attrName)) { console.log("node=" + tagName + ", attrName="+attrName);
+                    if (!allowedAttributes.includes(attrName)) {
                         //valid attributes can be none also which is covered here
                         !failAttributeTokens.includes(attrName) ? failAttributeTokens.push(attrName) : false;
                     } else {
@@ -182,24 +181,15 @@ export let aria_attribute_allowed: Rule = {
             }
         }
         
-        //		if(!passed){
-        //			  if(roleTokens.length !== 0){ // Rule failure is present
-        //		   			allowedRoleTokens = allowedRoleTokens.concat(allowedRoles); // This can be concatenating empty list
-        //			  }
-        //
-        //	    	  if(attributeTokens.length !== 0){ // Attribute failure is present
-        //	    		  allowedAttributeTokens = allowedAttributeTokens.concat(allowedAttributes);
-        //	    	  }
-        //
-        //	    }
-
-        //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
-        console.log("node=" + tagName + ", failAttributeTokens="+failAttributeTokens.length);
+        console.log("node=" + tagName + ", allowedAttributes="+allowedAttributes.length + ", domAttributes="+domAttributes.length);
         if (failAttributeTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail_1");
-            return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, role]);
+            RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail");
+            if (implicit)
+                return RuleFail("Fail_invalid_elem_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            else
+                return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);    
         } else if (passAttributeTokens.length > 0) {
-            return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
+            return RulePass("Pass", [passAttributeTokens.join(", "), tagName, roles.join(", ")]);
         } else {
             return null;
         }
