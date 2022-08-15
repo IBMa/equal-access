@@ -121,8 +121,10 @@ export let aria_attribute_allowed: Rule = {
     help: {
         "en-US": {
             "group": "aria_attribute_allowed.html",
-            "Pass_0": "aria_attribute_allowed.html",
-            "Fail_1": "aria_attribute_allowed.html"
+            "Pass": "aria_attribute_allowed.html",
+            "Fail_invalid_role_attr": "aria_attribute_allowed.html",
+            "Fail_invalid_implicit_role_attr": "aria_attribute_allowed.html",
+            "Fail_invalid_elem_attr": "aria_attribute_allowed.html"
         }
     },
     messages: {
@@ -185,7 +187,7 @@ export let aria_attribute_allowed: Rule = {
             }
         }
         
-        console.log("node=" + tagName + ", allowedAttributes="+ JSON.stringify(allowedAttributes) + ", domAttributes="+ JSON.stringify(domAttributes));
+        console.log("node=" + tagName +", type=" + type + ", allowedAttributes="+ JSON.stringify(allowedAttributes) + ", domAttributes="+ JSON.stringify(domAttributes));
         if (failAttributeTokens.length > 0) {
             RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail");
             if (type === "role_attr")
