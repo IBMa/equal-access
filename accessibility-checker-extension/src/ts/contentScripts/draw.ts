@@ -1135,9 +1135,12 @@ function createSVGLineTemplate() {
 }
 
 function convertXpathsToHtmlElements(xpaths: any) {
+    console.log("Function: convertXpathsToHtmlElements: ")
     let results: any = [];
-    xpaths.map((xpath: any) => {
+    xpaths.map((xpath: any, index:any) => {
+        console.log("xpath ",index);
         let element;
+        console.log("xpath = ",xpath);
         element = selectPath(xpath);
         results.push(element);
     });
@@ -1165,16 +1168,14 @@ async function goToTop() {
 }
 
 function lookup(doc: any, xpath:string) {
-    // console.log("Function: lookup");
-    if (doc.nodeType === 11) {
-        let selector = ":scope" + xpath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-child($1)");
+    if (doc.nodeType === 11) { // document fragment 
+        let selector = ":host" + xpath.replace(/\//g, " > ").replace(/\[(\d+)\]/g, ":nth-of-type($1)"); // fixed from original
         let element = doc.querySelector(selector);
         return element;
-    } else {
+    } else { // regular doc type = 9
         let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
         let element = nodes.iterateNext();
         if (element) {
-            // console.log("element = ",element);
             return element;
         } else {
             return null;
@@ -1184,14 +1185,11 @@ function lookup(doc: any, xpath:string) {
 
 // @ts-ignore
 function selectPath(srcPath: any) {
-    // console.log("Function: selectPath");
     let doc = document;
     let element = null;
     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
         if (srcPath.includes("iframe")) {
-            // console.log("srcPath = ",srcPath);
             let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
-            // console.log("parts = ",parts);
             let iframe = lookup(doc, parts[1]);
             element = iframe || element;
             if (iframe && iframe.contentDocument) {
@@ -1201,8 +1199,8 @@ function selectPath(srcPath: any) {
                 srcPath = null;
             }
         } else if (srcPath.includes("#document-fragment")) {
-            let parts = srcPath.match(/(.*?)\/#document-fragment\\[\\d+\\](.*)/);
-            let fragment = lookup(doc, parts[1]);
+            let parts = srcPath.match(/(.*?)\/#document-fragment\[\d+\](.*)/);
+            let fragment = lookup(doc, parts[1]); // get fragment which is in main document
             element = fragment || element;
             if (fragment && fragment.shadowRoot) {
                 doc = fragment.shadowRoot;
@@ -1210,11 +1208,12 @@ function selectPath(srcPath: any) {
             } else {
                 srcPath = null;
             }
+        } else {
+            srcPath = null;
         }
     }
     if (srcPath) {
         element = lookup(doc, srcPath) || element;
     }
     return element;
-    
 }

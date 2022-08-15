@@ -932,7 +932,7 @@
                         var script =
                         `function lookup(doc, xpath) {
                             if (doc.nodeType === 11) {
-                                let selector = ":scope" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-child($1)");
+                                let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
                                 let element = doc.querySelector(selector);
                                 return element;
                             } else {
