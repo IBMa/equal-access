@@ -168,62 +168,114 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         // console.log("---------------------------------------");
         console.log("main doc left mouse click catcher");
         console.log("event.target = ",event.target);
-        handleTabHighlight(event,document,false,"");
+        handleTabHighlight(event,document,"click","");
     
     });
 
 
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
-        // console.log("---------------------------------------");
         // console.log("main doc key catcher");
-        handleTabHighlight(event, document, false, "");
-    
+        if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
+            // console.log("CALL FUNCTION handleTabHighlight for main doc");
+            handleTabHighlight(event, document, "main", "");
+        }
     });
 
 
     // Find all iframes nodes 
     let frames = document.getElementsByTagName("iframe");
     
-    for (let i = 0; i < frames.length; ++i) {
+    for (let i = 0; i < frames.length; i++) {
         if (frames[i] != null) {
             frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
-                let iframePath = getXPathForElement(frames[i]); // since iframes in main doc
-                // console.log("---------------------------------------");
                 // console.log("iframe key catcher");
-                handleTabHighlight(event,frames[i].contentWindow?.document,true,iframePath);
+                let iframePath = getXPathForElement(frames[i]); // since iframes in main doc
+                handleTabHighlight(event,frames[i].contentWindow?.document,"iframe",iframePath);
             })
         }
     }
+    
+    // Find all shadow dom host nodes
+    let shadowDoms:any = [];
+    let allNodes = document.querySelectorAll("*");
+    for (let i = 0; i < allNodes.length; i++) {
+        if (allNodes[i].shadowRoot) {
+            shadowDoms.push(allNodes[i]);
+        }
+    }
+    // console.log(shadowDoms.length);
+
+    for (let i = 0; i < shadowDoms.length; i++) {
+        if (shadowDoms[i] != null) {
+            // console.log("Got shadow dom: ",shadowDoms[i]);
+            shadowDoms[i].shadowRoot?.addEventListener('keyup', function(event:any) {
+                // console.log("shadow dom key catcher");
+                let focusElement = shadowDoms[i].shadowRoot?.activeElement;
+                let focusElementPath = getXPathForElement(focusElement);
+                // JCH TODO 1 for the doc frag ONLY works for 1 level doc frags
+                focusElementPath = "/#document-fragment"+"["+"1"+"]"+ focusElementPath;
+                handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath);
+            })
+        }
+    }
+
     return true;
 });
 
-function handleTabHighlight(event:any,doc:any,iframe:boolean,iframeStr:string) {
+function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
+    // console.log("Function: handleTabHighlight");
     let elementXpath = "";
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
         // console.log("Got TAB Key");
-        let element = doc.activeElement;  // get element just tabbed to which has focus
-        elementXpath = getXPathForElement(element); // get doc path
+        // console.log("TAB doc = ", doc);
+        if (docType === "main") {
+            // console.log("Got main doc element");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+        }
         
         // if we have iframe
-        if (iframe) {
+        if (docType === "iframe") {
+            // console.log("Got iframe element");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
             elementXpath = iframeStr + elementXpath;
         }
 
+        // if we have shadow dom no need to do anything special
+        if (docType === "shadowdom") {
+            console.log("we have an element in a shadow dom");
+            let sdXpath = getXPathForElement(doc);
+            console.log("sdXpath = ",sdXpath);
+            let element = doc.shadowRoot.activeElement;
+            console.log("element = ", element);
+            console.log("focusElementPath = ", iframeStr);
+            elementXpath = getXPathForElement(element);
+            // need #document-fragment[n]
+            elementXpath = sdXpath+iframeStr;
+            console.log("elementXpath = ",elementXpath);
+        }
+
+        console.log("elementXpath right before matching = ",elementXpath);
         // get circle or polygon with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
         let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+
+        // console.log("circle = ",circle);
+        // console.log("polygon = ",polygon);
+        
         let prevHighlightedElement;
-        if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
+        // find previouse highlighted element which is either a circle or triangle so will be within document
+        if (prevHighlightedElement = document.getElementsByClassName("highlightSVG")[0]) {
             // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-        } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
+        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGtriangle")[0]) {
             // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
         }
         // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
-        
         if (prevHighlightedElement) {
-            // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+            console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
             if (prevHighlightedElement.tagName === "circle") {
                 prevHighlightedElement.classList.remove("highlightSVG");
                 prevHighlightedElement.classList.add("noHighlightSVG");
@@ -249,27 +301,49 @@ function handleTabHighlight(event:any,doc:any,iframe:boolean,iframeStr:string) {
             polygon?.classList.add("highlightSVGtriangle");
             // console.log("polygon highlighted = ",polygon);
         } else {
-            // console.log("No circle to highlight = ",circle);
+            // console.log("No polygon to highlight = ",circle);
         }
     } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
-        // console.log("Got SHIFT TAB Key");
-        let element = doc.activeElement;  // get element just tabbed to which has focus
-        // console.log("Active element = ", element);
-        elementXpath = getXPathForElement(element); // path if not in iframe
-        // console.log("elementXpath = ",elementXpath);
-
+        console.log("Got SHIFT TAB Key");
+        console.log("TAB doc = ", doc);
+        if (docType === "main") {
+            console.log("Got main doc element");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+        }
+        
         // if we have iframe
-        if (iframe) {
+        if (docType === "iframe") {
+            console.log("Got iframe element");
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
             elementXpath = iframeStr + elementXpath;
         }
 
+        // if we have shadow dom no need to do anything special
+        if (docType === "shadowdom") {
+            console.log("Got shadow dom element");
+            let sdXpath = getXPathForElement(doc);
+            let element = doc.shadowRoot.activeElement;
+            elementXpath = getXPathForElement(element);
+            // need #document-fragment[n]
+            elementXpath = sdXpath+iframeStr;
+        }
+
+        console.log("elementXpath right before matching = ",elementXpath);
         // get circle or polygon with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
         let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+
+        // console.log("circle = ",circle);
+        // console.log("polygon = ",polygon);
+        
         let prevHighlightedElement;
-        if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
+        // find previouse highlighted element which is either a circle or triangle so will be within document
+        
+        if (prevHighlightedElement = document.getElementsByClassName("highlightSVG")[0]) {
             // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-        } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
+        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGtriangle")[0]) {
             // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
         }
         // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
@@ -301,9 +375,9 @@ function handleTabHighlight(event:any,doc:any,iframe:boolean,iframeStr:string) {
             polygon?.classList.add("highlightSVGtriangle");
             // console.log("polygon highlighted = ",polygon);
         } else {
-            // console.log("No circle to highlight = ",circle);
+            // console.log("No polygon to highlight = ",circle);
         }
-    } else if (event.target) {
+    } else if (event.detail !== 0) {
         if (event.target.tagName === "circle" || event.target.tagName === "polygon") {
             let circle;
             if (event.target.tagName === "circle") {
@@ -316,12 +390,11 @@ function handleTabHighlight(event:any,doc:any,iframe:boolean,iframeStr:string) {
 
             let element = selectPath(event.target.getAttribute("xpath")); // circle's element that we want to have focus
 
-            // console.log("Active element = ", element);
             elementXpath = getXPathForElement(element); // path if not in iframe
             // console.log("elementXpath = ",elementXpath);
 
             // if we have iframe
-            if (iframe) {
+            if (docType === "iframe") {
                 elementXpath = iframeStr + elementXpath;
             }
             
