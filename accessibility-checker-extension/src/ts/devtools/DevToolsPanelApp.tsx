@@ -310,13 +310,13 @@
                     }
     
                     let tabStopLines:boolean = true;
-                    let tabStopOutlines:boolean = true;
+                    let tabStopOutlines:boolean = false;
                     let tabStopAlerts:boolean = true;
                     let tabStopFirstTime:boolean = true;
     
                     // Get the Keyboard Mode OPTIONS
                     if (result.OPTIONS) {
-                        // console.log("Get Keyboard Mode OPTIONS");
+                        console.log("Get Keyboard Mode OPTIONS",result.OPTIONS);
                         tabStopLines = result.OPTIONS.tabStopLines;
                         tabStopOutlines = result.OPTIONS.tabStopOutlines;
                         tabStopAlerts = result.OPTIONS.tabStopAlerts;
@@ -1150,13 +1150,13 @@
     
         
         render() {
-            // console.log("render");
-            // console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
-            // console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
-            // console.log("this.state.tabStopLines = ",this.state.tabStopLines);
-            // console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
-            // console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
-            // console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
+            console.log("render");
+            console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
+            console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
+            console.log("this.state.tabStopLines = ",this.state.tabStopLines);
+            console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
+            console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
+            console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
     
             let error = this.state.error;
     
