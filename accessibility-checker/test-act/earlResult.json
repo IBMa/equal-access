@@ -153,7 +153,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/6cfa84/7ca22500f92a856f5edadfb482a073f3dba47d3b.html",
+      "source": "https://act-rules.github.io/testcases/6cfa84/4cfb71fcbfb617bb32540826847a8d6af7890fd4.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -162,6 +162,21 @@
           },
           "result": {
             "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/6cfa84/0567a6c937cc508606af0ab2854d8a7d059ea2e2.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
+          },
+          "result": {
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -228,7 +243,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/6cfa84/0567a6c937cc508606af0ab2854d8a7d059ea2e2.html",
+      "source": "https://act-rules.github.io/testcases/6cfa84/1d19581eebfa0f92c17dd772ca67623cb3ad3bdb.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -236,14 +251,14 @@
             "title": "aria_hidden_focus_misuse:Pass_0,Fail_1"
           },
           "result": {
-            "outcome": "earl:passed"
+            "outcome": "earl:failed"
           }
         }
       ]
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/6cfa84/1d19581eebfa0f92c17dd772ca67623cb3ad3bdb.html",
+      "source": "https://act-rules.github.io/testcases/6cfa84/237081473ffc97a08ded45307d2b2c99660c1380.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -543,7 +558,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/bc4a75/f856c5c937245a233973c5d5aea15995355226d9.html",
+      "source": "https://act-rules.github.io/testcases/bc4a75/b2d47a491cf45c05994eea84bdfc219dfd3c6d16.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -558,7 +573,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/bc4a75/c26f9f87576ea7fbeb2db67a559e78501d1d232a.html",
+      "source": "https://act-rules.github.io/testcases/bc4a75/3a5d473387bb357dd253b7b1d34cceb33e4016a1.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -566,14 +581,14 @@
             "title": "Rpt_Aria_RequiredChildren_Native_Host_Sematics:Pass_0,Potential_1"
           },
           "result": {
-            "outcome": "earl:cantTell"
+            "outcome": "earl:passed"
           }
         }
       ]
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/bc4a75/3a5d473387bb357dd253b7b1d34cceb33e4016a1.html",
+      "source": "https://act-rules.github.io/testcases/bc4a75/ffccdd105b667979899159937d6d4148a063c283.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -1369,6 +1384,21 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/6a7281/f62aa620f2747aa0b37013bdee40e1b9913dff7c.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "Rpt_Aria_ValidIdRef:Pass_0,Fail_1|Rpt_Aria_ValidPropertyValue:Pass_0,Fail_1"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/6a7281/88b2def4afd3f627fc5ee33f40694c3f3126f83b.xml",
       "assertions": [
         {
           "@type": "Assertion",
@@ -2703,6 +2733,36 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/b5c3f8/190e6aec2df43e234c468b187d427c32d5d942c1.svg",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/b5c3f8/580a61d57084cdbbe6b27c3dc35d4cc51d078c41.xml",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1|WCAG20_Html_HasLang:Pass_0,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/bf051a/420078615633798993938edd512033d9a88020bb.html",
       "assertions": [
         {
@@ -2793,6 +2853,21 @@
     },
     {
       "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/bf051a/059ada2b641d9bc6989b2c0c69809311f65f2a39.svg",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/5b7ae0/36d59e8a65d283c335b9acbe8e55b77a527b82ca.html",
       "assertions": [
         {
@@ -2868,7 +2943,52 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/5b7ae0/24fd835bb3314fafe0c822f640869bb93dae23d3.html",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/a90ff0d9b336c69de45dd9d0633df61c4fc2ab71.svg",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Html_HasLang:Pass_0,Fail_4,Fail_5"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/29dbe4d1cc0497bb95e19be6e6bd0c8a9ed42cc5.svg",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Html_HasLang:Pass_0,Fail_4,Fail_5"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/02d1b673b395a741734d8516491be54f74d8a783.xml",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Html_HasLang:Pass_0,Fail_4,Fail_5"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/5b7ae0/24fd835bb3314fafe0c822f640869bb93dae23d3.xhtml",
       "assertions": [
         {
           "@type": "Assertion",
@@ -3072,6 +3192,21 @@
           },
           "result": {
             "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/2779a5/39be33320e28784dabe83c32689346ce51b552e5.svg",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "WCAG20_Doc_HasTitle:Pass_0,Fail_1,Fail_2,Fail_3"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -4803,21 +4938,6 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/b4f0c3/dc6c5a33d7f24964195701ffb835f1978fedc446.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "meta_viewport_zoom:Pass_0,Potential_1"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/b4f0c3/83fc038ee6995b0318fc97bc2750d9604b544c82.html",
       "assertions": [
         {
@@ -4833,7 +4953,7 @@
     },
     {
       "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/b4f0c3/5279bbeb99fcae99b30471a30680db5fd5f9d676.html",
+      "source": "https://act-rules.github.io/testcases/b4f0c3/11d699d2a733bf2306a766ec31c4caa06522e16d.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -4842,21 +4962,6 @@
           },
           "result": {
             "outcome": "earl:passed"
-          }
-        }
-      ]
-    },
-    {
-      "@type": "TestSubject",
-      "source": "https://act-rules.github.io/testcases/b4f0c3/e4de67808dbc7c2dd303d83ad99ed303141305fc.html",
-      "assertions": [
-        {
-          "@type": "Assertion",
-          "test": {
-            "title": "meta_viewport_zoom:Pass_0,Potential_1"
-          },
-          "result": {
-            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -4954,6 +5059,36 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/b4f0c3/a3e4172be1332a16e9856b83dc82a4db1c749394.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "meta_viewport_zoom:Pass_0,Potential_1"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/b4f0c3/dc6c5a33d7f24964195701ffb835f1978fedc446.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "meta_viewport_zoom:Pass_0,Potential_1"
+          },
+          "result": {
+            "outcome": "earl:inapplicable"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/b4f0c3/e4de67808dbc7c2dd303d83ad99ed303141305fc.html",
       "assertions": [
         {
           "@type": "Assertion",
@@ -5569,6 +5704,21 @@
     {
       "@type": "TestSubject",
       "source": "https://act-rules.github.io/testcases/a25f45/de7be114aef0050e7e9b0eb5cc114c2dead9a2ed.html",
+      "assertions": [
+        {
+          "@type": "Assertion",
+          "test": {
+            "title": "table_headers_ref_valid:Pass_0,Fail_1,Fail_2,Fail_3,Fail_4"
+          },
+          "result": {
+            "outcome": "earl:failed"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "TestSubject",
+      "source": "https://act-rules.github.io/testcases/a25f45/5299339c3196acea1ca2091e1ecefc8678ab8e50.html",
       "assertions": [
         {
           "@type": "Assertion",

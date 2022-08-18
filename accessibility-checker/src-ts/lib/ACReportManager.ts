@@ -1,4 +1,4 @@
-import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger } from "./api/IChecker";
+import { eAssertResult, ICheckerError, ICheckerReport, ICheckerReportCounts, ICheckerResult, IConfigUnsupported, ILogger, ReportResult } from "./api/IChecker";
 import { ACConfigManager } from "./ACConfigManager";
 import { ACMetricsLogger } from "./log/ACMetricsLogger";
 import * as path from "path";
@@ -767,7 +767,7 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static assertCompliance(actualResults: ICheckerReport | ICheckerError) : eAssertResult {
+    static assertCompliance(actualResults: ReportResult) : eAssertResult {
 
         // In the case that the details object contains Error object, this means that the scan engine through an
         // exception, therefore we should not compare results just fail instead.
@@ -791,7 +791,7 @@ export class ACReportManager {
             // Run the diff algo to get the list of differences
             let differences = ACReportManager.diffResultsWithExpected(actualResults, expected, true);
 
-            //console.log(JSON.stringify(differences, null, '    '));
+            // console.log("difference=" + JSON.stringify(differences, null, '    '));
 
             // In the case that there are no differences then that means it passed
             if (differences === null || typeof (differences) === "undefined") {
@@ -940,9 +940,9 @@ export class ACReportManager {
         let differences = DeepDiff.diff(actual, expected);
         if (differences) {
             differences = differences.filter(difference => !(
-                difference.kind === "E" 
-                && difference.path.length === 4 
-                && difference.path[2] === "bounds" 
+                difference.kind === "E"
+                && difference.path.length === 4
+                && difference.path[2] === "bounds"
                 && Math.abs(difference.lhs-difference.rhs) <= 1));
             if (differences.length === 0) return undefined;
         }
@@ -1082,7 +1082,11 @@ export class ACReportManager {
      *
      * @memberOf this
      */
-    static stringifyResults(report: ICheckerReport) : string {
+    static stringifyResults(reportP: ReportResult) : string {
+        if (!(reportP as any).results) {
+            return `ERROR: ${JSON.stringify(reportP)}`;
+        }
+        const report = reportP as ICheckerReport;
         // console.log(report);
         // Variable Decleration
         let resultsString = `Scan: ${report.label}\n`;

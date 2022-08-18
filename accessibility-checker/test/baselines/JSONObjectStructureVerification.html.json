@@ -1407,27 +1407,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/body[1]/div[2]",
-			"aria": "/document[1]/main[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 8,
-			"top": 48,
-			"height": 74,
-			"width": 784
-		},
-		"snippet": "<div role=\"main\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "Rpt_Aria_MissingKeyboardHandler",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -1974,27 +1953,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "Rpt_Aria_RequiredChildren_Native_Host_Sematics",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/body[1]/div[1]",
-			"aria": "/document[1]/navigation[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 8,
-			"top": 8,
-			"height": 19,
-			"width": 784
-		},
-		"snippet": "<div role=\"navigation\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "Rpt_Aria_MissingKeyboardHandler",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2520,7 +2478,7 @@
 		"ignored": false,
 		"level": "pass"
 	}],
-	"numExecuted": 120,
+	"numExecuted": 118,
 	"nls": {
 		"RPT_Html_SkipNav": {
 			"0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
@@ -2610,10 +2568,6 @@
 			"0": "Interactive WAI_ARIA UI components must provide keyboard access",
 			"Pass_0": "Rule Passed"
 		},
-		"Rpt_Aria_RequiredChildren_Native_Host_Sematics": {
-			"0": "An element with a ARIA role must contain required children",
-			"Pass_0": "Rule Passed"
-		},
 		"IBMA_Color_Contrast_WCAG2AA": {
 			"0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
 			"Pass_0": "Rule Passed"
@@ -2655,7 +2609,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 119,
+			"pass": 117,
 			"ignored": 0
 		},
 		"scanTime": 999,

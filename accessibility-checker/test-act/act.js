@@ -79,7 +79,7 @@ async function getTestcases() {
     });
 }
 
-async function getResult(page, testcaseId, aceRules) {
+async function getResult(page, testcaseId, aceRules, bSkip) {
     if (aceRules.length === 0) {
         return {
             title: "",
@@ -90,42 +90,47 @@ async function getResult(page, testcaseId, aceRules) {
             issuesAll: []    
         }
     }
-    let results = await aChecker.getCompliance(page, testcaseId);
+    let results = [];
+    if (!bSkip) {
+        results = await aChecker.getCompliance(page, testcaseId);
+    }
     let issuesFail = [];
     let issuesReview = [];
     let issuesPass = [];
-    for (const result of results.report.results) {
-        for (const aceRule of aceRules) {
-            if (result.ruleId === aceRule.ruleId) {
-                if (aceRule.remap && result.reasonId in aceRule.remap) {
-                    let earlResult = aceRule.remap[result.reasonId];
-                    switch (earlResult) {
-                        case "pass":
-                            issuesPass.push(result);
-                            break;
-                        case "fail":
+    if (results && results.report && results.report.results) {
+        for (const result of results.report.results) {
+            for (const aceRule of aceRules) {
+                if (result.ruleId === aceRule.ruleId) {
+                    if (aceRule.remap && result.reasonId in aceRule.remap) {
+                        let earlResult = aceRule.remap[result.reasonId];
+                        switch (earlResult) {
+                            case "pass":
+                                issuesPass.push(result);
+                                break;
+                            case "fail":
+                                issuesFail.push(result);
+                                break;
+                            case "cantTell":
+                                issuesReview.push(result);
+                                break;
+                            case "inapplicable":
+                                break;
+                        }
+                    } else if (!aceRule.remap) {
+                        if (result.value[1] === "FAIL") {
                             issuesFail.push(result);
-                            break;
-                        case "cantTell":
+                        } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
                             issuesReview.push(result);
-                            break;
-                        case "inapplicable":
-                            break;
-                    }
-                } else if (!aceRule.remap) {
-                    if (result.value[1] === "FAIL") {
-                        issuesFail.push(result);
-                    } else if (["POTENTIAL", "MANUAL"].includes(result.value[1])) {
-                        issuesReview.push(result);
-                    } else if (result.value[1] === "PASS") {
-                        issuesPass.push(result);
+                        } else if (result.value[1] === "PASS") {
+                            issuesPass.push(result);
+                        }
                     }
                 }
             }
         }
     }
 
-    let issues2 = results.report.results;
+    let issues2 = results && results.report && results.report.results ? results.report.results : [];
     let ruleStrs = [];
     for (let aceRule of aceRules) {
         ruleStrs.push(`${aceRule.ruleId}:${aceRule.reasonIds.join(",")}`)

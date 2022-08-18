@@ -13,7 +13,7 @@ let page: Puppeteer.Page;
 before(async () => {
     try {
         browser = await Puppeteer.launch();
-        page = await browser.newPage();  
+        page = await browser.newPage();
     } catch (e) {
         console.log(e);
     }
@@ -32,14 +32,14 @@ describe("Hello World Basics", function () {
         await page.goto(`file://${sample}`);
 
         const result = await getCompliance(page, "HOME");
-        const report = result!.report as ICheckerReport;
+        const report = result!.report;
         expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
     }).timeout(10000);
 
     it("Homepage, Show Card", async() => {
         await page.click("#clickMe");
         const result = await getCompliance(page, "HOME_CARD");
-        const report = result!.report as ICheckerReport;
+        const report = result!.report;
         expect(assertCompliance(report)).to.equal(0, stringifyResults(report));
     }).timeout(10000);
 });

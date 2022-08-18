@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+        <main>
+            <div class="testcase">
+                  <label>
+                        Animal:
+                        <input name=animal list=animals>
+                   </label>
+                   <datalist id=animals>
+                    <label>
+                        or select from the list:
+                        <select name=animal role="xx">
+                        <option value="">
+                        <option>Cat
+                        <option>Dog
+                        </select>
+                    </label>
+                   </datalist>
+            </div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_semantics_attribute", "WCAG20_Input_ExplicitLabel", "IBMA_Focus_Tabbable", "Rpt_Aria_MissingKeyboardHandler"],
+                results: [
+                {
+            "ruleId": "IBMA_Focus_Tabbable",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+              "aria": "/document[1]/main[1]/combobox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_Input_ExplicitLabel",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/label[1]/input[1]",
+              "aria": "/document[1]/main[1]/combobox[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ],
+      };
+        </script>
+    </body>
+</html>

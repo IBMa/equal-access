@@ -723,7 +723,7 @@ export class RPTUtil {
      *
      * @memberOf RPTUtil
      */
-    public static getImplicitRole(ele) {
+    public static getImplicitRole(ele) : string[] {
         let tagProperty = RPTUtil.getElementAriaProperty(ele);
         //check if there are any implicit roles for this element.
         if (tagProperty) {
@@ -1191,7 +1191,6 @@ export class RPTUtil {
                 }
             } else if (tagNames.length) {
                 for (let idx in tagNames) {
-                    //                        Packages.java.lang.System.err.println(thisTag + ":" + tagNames[idx] + ":" + (tagNames[idx] === thisTag));
                     if (tagNames[idx] === thisTag)
                         return walkNode;
                 }
@@ -1537,6 +1536,121 @@ export class RPTUtil {
     }
 
     /**
+     * This function is responsible for getting All direct children in AT tree with a role (exclude none and presentation)
+     *
+     * @parm {element} element - parent element for which we will be checking children for
+     * @return {node} - The direct child elements in AT tree that has a role
+     *
+     * @memberOf RPTUtil
+     */
+     public static getDirectATChildren(element) {
+        let requiredChildRoles = RPTUtil.getRequiredChildRoles(element, true);
+        let direct: Array<HTMLElement> = [];
+        RPTUtil.retrieveDirectATChildren(element, requiredChildRoles, direct);
+        return direct;
+    }
+
+    /**
+     * This function is responsible for recursively any child path till either no child or a child with a role is found (exclude none and presentation)
+     *
+     * @parm {element} element - parent element for which we will be checking children for
+     * @return {node} - The direct child elements in AT tree
+     *
+     * @memberOf RPTUtil
+     */
+     public static retrieveDirectATChildren(element, requiredChildRoles, direct: Array<HTMLElement>) {
+        let children : HTMLElement[] = [];
+        if (element.children !== null && element.children.length > 0) {
+            for (let i=0; i < element.children.length; i++) {
+                children.push(element.children[i]);
+            }
+        }    
+        // if the element contains "aria-own" attribute, then the aria-owned children need to be included too
+        let owned = element.getAttribute("aria-owns");
+        if (owned) {
+            let doc = element.ownerDocument;
+            if (doc) {
+                let ownedIds = owned.split(" ");
+                for (let i=0; i < ownedIds.length; i++) {
+                    let ownedElem = doc.getElementById(ownedIds[i]);
+                    if (ownedElem) {
+                        children.push(ownedElem);
+                    }
+                }    
+            }
+        }
+        if (children.length > 0) {
+            for (let i=0; i < children.length; i++) {
+                //ignore hidden and invisible child
+                if (RPTUtil.isNodeHiddenFromAT(children[i]) || !RPTUtil.isNodeVisible(children[i])) continue;
+                let roles = RPTUtil.getRoles(children[i], false);
+                if (roles === null || roles.length === 0) {
+                    roles = RPTUtil.getImplicitRole(children[i]);
+                }
+
+                if (roles !== null && roles.length > 0) {
+                    //remove 'none' and 'presentation'
+                    roles = roles.filter(function(role) {
+                        return role !== "none" && role !== "presentation";
+                    })
+
+                    // a 'group' role is allowed but not required for some elements so remove it if exists
+                    if (roles.includes("group") && requiredChildRoles && requiredChildRoles.includes('group')) {
+                        roles = roles.filter(function(role) {
+                            return role !== 'group';
+                        })
+                    }
+                } 
+                if (roles !== null && roles.length > 0) {
+                    direct.push(children[i]);
+                } else {
+                    // recursive until get a return value, 
+                    RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);
+                }
+            } 
+        } 
+        return null;
+    }
+
+    /**
+     * this function returns null or required child roles for a given element with one more roles,
+     * return null if the role is 'none' or 'presentation'
+     * @param element 
+     * @param includeImplicit include implicit roles if no role is explicitly provided
+     * @returns 
+     */
+    public static getRequiredChildRoles(element, includeImplicit: boolean) : string[] {
+        let roles = RPTUtil.getRoles(element, false);
+        // if explicit role doesn't exist, get the implicit one
+        if ((!roles || roles.length === 0) && includeImplicit) {
+            roles = RPTUtil.getImplicitRole(element);
+        }
+        
+        /**  
+         * ignore if the element doesn't have any explicit or implicit role
+        */
+        if (!roles || roles.length == 0) {
+            return null;
+        }
+        
+        /**  
+         * ignore if the element contains none or presentation role
+        */
+        let presentationRoles = ["none", "presentation"];
+        const found = roles.some(r => presentationRoles.includes(r));
+        if (found) return null;
+
+        let designPatterns = ARIADefinitions.designPatterns;
+        let requiredChildRoles: string[] = new Array();
+        for (let j = 0; j < roles.length; ++j) {
+            if (designPatterns[roles[j]] && designPatterns[roles[j]].reqChildren !== null) {
+                requiredChildRoles = RPTUtil.concatUniqueArrayItemList(designPatterns[roles[j]].reqChildren, requiredChildRoles);
+            }
+        }
+        return requiredChildRoles;
+    }
+
+    /**
      * This function is responsible for getting an element referenced by aria-owns and has the
      * role that was specified.
      *
@@ -1720,6 +1834,26 @@ export class RPTUtil {
                 }
             }
         }
+        return false;
+    }
+
+    // check if the element is a shadow host or descendant of a shadow host, but not a descedant of the shadow root of the host (to be assigned to shadow slot or ignored)  
+    public static isShadowHostElement(element: Element) {
+        if (RPTUtil.isShadowElement(element)) 
+            return false;
+        let walkNode : Element = element;
+        while (walkNode) {
+            if (walkNode.shadowRoot) return true;
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
+    //check if an element is in a shadow tree
+    public static isShadowElement(element: Element) {
+        let root  = element.getRootNode();
+        if (root.toString() === "[object ShadowRoot]")
+            return true;
         return false;
     }
 
@@ -2317,6 +2451,7 @@ export class RPTUtil {
                     else
                         tagProperty = specialTagProperties["no-multiple-attr-size-gt1"];
                     break;
+                case "tbody":
                 case "td":
                 case "th":
                 case "tr":
@@ -3165,7 +3300,8 @@ export class RPTUtil {
         //    return null; // Unreachable
     };
 
-    public static ColorCombo(ruleContext : HTMLElement) {
+ public static ColorCombo(ruleContext : HTMLElement) {
+    try { 
         var doc = ruleContext.ownerDocument;
         if (!doc) {
             return null;
@@ -3333,7 +3469,11 @@ export class RPTUtil {
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
-    };
+    } catch (err) {
+        // something happened, then...
+        return null;
+    } 
+ };
 
     public static hasAttribute(element, attributeName) {
         var hasAttribute = false;
