@@ -182,8 +182,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/document[1]/document[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-relevant, aria-label",
               "div",
@@ -221,8 +221,8 @@
               "dom": "/html[1]/body[1]/a[2]",
               "aria": "/document[1]/document[1]/tab[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-expanded",
               "a",
@@ -260,8 +260,8 @@
               "dom": "/html[1]/body[1]/a[3]",
               "aria": "/document[1]/document[1]/option[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-checked",
               "a",
@@ -299,8 +299,8 @@
               "dom": "/html[1]/body[1]/address[1]",
               "aria": "/document[1]/document[1]/contentinfo[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-pressed' is not valid for the element <address> with ARIA role 'contentinfo'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <address> with ARIA role \"contentinfo\"",
             "messageArgs": [
               "aria-pressed",
               "address",
@@ -338,8 +338,8 @@
               "dom": "/html[1]/body[1]/map[1]/area[1]",
               "aria": "/document[1]/document[1]/link[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-selected' is not valid for the element <area> with ARIA role 'link'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-selected\" are not valid for the element <area> with ARIA role \"link\"",
             "messageArgs": [
               "aria-selected",
               "area",
@@ -377,8 +377,8 @@
               "dom": "/html[1]/body[1]/article[1]",
               "aria": "/document[1]/document[1]/main[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "article",
@@ -391,14 +391,14 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/article[1]/header[1]",
               "aria": "/document[1]/document[1]/main[1]"
             },
-            "reasonId": "Fail_2",
-            "message": "The ARIA role 'presentation' is not valid for the element <header> and may be ignored by the browser since the element is focusable",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "presentation",
               "header"
@@ -410,18 +410,18 @@
             "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/article[1]/header[1]",
               "aria": "/document[1]/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-busy, aria-atomic' is not valid for the element <header> with ARIA role 'none'",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-busy, aria-atomic",
               "header",
-              "none"
+              "presentation"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -455,8 +455,8 @@
               "dom": "/html[1]/body[1]/article[1]/header[1]/h1[1]",
               "aria": "/document[1]/document[1]/main[1]/tab[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-selected",
               "h1",
@@ -494,8 +494,8 @@
               "dom": "/html[1]/body[1]/aside[1]",
               "aria": "/document[1]/document[1]/complementary[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-pressed' is not valid for the element <aside> with ARIA role 'complementary'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <aside> with ARIA role \"complementary\"",
             "messageArgs": [
               "aria-pressed",
               "aside",
@@ -609,8 +609,8 @@
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]/dialog[1]",
               "aria": "/document[1]/document[1]/table[1]/rowgroup[1]/row[1]/rowheader[1]/alertdialog[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "dialog",
@@ -648,10 +648,10 @@
               "dom": "/html[1]/body[1]/form[1]/datalist[1]",
               "aria": "/document[1]/document[1]/listbox[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-pressed' is not valid for the element <datalist> with ARIA role 'listbox'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-required, aria-activedescendant, aria-pressed\" are not valid for the element <datalist> with ARIA role \"listbox\"",
             "messageArgs": [
-              "aria-pressed",
+              "aria-required, aria-activedescendant, aria-pressed",
               "datalist",
               "listbox"
             ],
@@ -687,8 +687,8 @@
               "dom": "/html[1]/body[1]/dl[1]",
               "aria": "/document[1]/document[1]/list[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "dl",
@@ -707,8 +707,8 @@
               "dom": "/html[1]/body[1]/dl[1]/dt[1]",
               "aria": "/document[1]/document[1]/list[1]/term[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-busy",
               "dt",
@@ -727,12 +727,12 @@
               "dom": "/html[1]/body[1]/dl[1]/dd[1]",
               "aria": "/document[1]/document[1]/list[1]/definition[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-activedescendant' is not valid for the element <dd> with ARIA role 'definition'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-activedescendant\" are not valid for the element <dd> with ARIA role \"none\"",
             "messageArgs": [
               "aria-activedescendant",
               "dd",
-              "definition"
+              "none"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -766,8 +766,8 @@
               "dom": "/html[1]/body[1]/details[1]",
               "aria": "/document[1]/document[1]/group[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "details",
@@ -805,8 +805,8 @@
               "dom": "/html[1]/body[1]/details[1]/hr[1]",
               "aria": "/document[1]/document[1]/group[1]/separator[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-valuetext",
               "hr",
@@ -844,8 +844,8 @@
               "dom": "/html[1]/body[1]/embed[1]",
               "aria": "/document[1]/document[1]/img[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "embed",
@@ -883,8 +883,8 @@
               "dom": "/html[1]/body[1]/form[2]",
               "aria": "/document[1]/document[1]/search[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-orientation' is not valid for the element <form> with ARIA role 'search'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-orientation\" are not valid for the element <form> with ARIA role \"search\"",
             "messageArgs": [
               "aria-orientation",
               "form",
@@ -922,8 +922,8 @@
               "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
               "aria": "/document[1]/document[1]/search[1]/group[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "fieldset",
@@ -961,8 +961,8 @@
               "dom": "/html[1]/body[1]/figure[1]",
               "aria": "/document[1]/document[1]/group[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "figure",
@@ -1000,8 +1000,8 @@
               "dom": "/html[1]/body[1]/footer[1]",
               "aria": "/document[1]/document[1]/contentinfo[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "footer",
@@ -1039,8 +1039,8 @@
               "dom": "/html[1]/body[1]/input[1]",
               "aria": "/document[1]/document[1]/menuitem[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "input",
@@ -1078,8 +1078,8 @@
               "dom": "/html[1]/body[1]/input[2]",
               "aria": "/document[1]/document[1]/switch[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'switch'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"switch\"",
             "messageArgs": [
               "aria-checked",
               "input",
@@ -1117,8 +1117,8 @@
               "dom": "/html[1]/body[1]/ol[1]/li[1]",
               "aria": "/document[1]/document[1]/list[2]/listitem[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-level",
               "li",
@@ -1137,8 +1137,8 @@
               "dom": "/html[1]/body[1]/h6[1]",
               "aria": "/document[1]/document[1]/heading[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded, aria-colcount' is not valid for the element <h6> with ARIA role 'heading'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded, aria-colcount\" are not valid for the element <h6> with implicit ARIA role \"heading\"",
             "messageArgs": [
               "aria-expanded, aria-colcount",
               "h6",

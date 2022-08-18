@@ -14,7 +14,6 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
 export let aria_semantics_role: Rule = {
@@ -123,8 +122,7 @@ export let aria_attribute_allowed: Rule = {
             "group": "aria_attribute_allowed.html",
             "Pass": "aria_attribute_allowed.html",
             "Fail_invalid_role_attr": "aria_attribute_allowed.html",
-            "Fail_invalid_implicit_role_attr": "aria_attribute_allowed.html",
-            "Fail_invalid_elem_attr": "aria_attribute_allowed.html"
+            "Fail_invalid_implicit_role_attr": "aria_attribute_allowed.html"
         }
     },
     messages: {
@@ -132,8 +130,7 @@ export let aria_attribute_allowed: Rule = {
             "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
             "Pass": "ARIA attributes are valid for the element and ARIA role",
             "Fail_invalid_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with ARIA role \"{2}\"",
-            "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\"",
-            "Fail_invalid_elem_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}>"
+            "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\""
         }
     },
     rulesets: [{
@@ -152,13 +149,21 @@ export let aria_attribute_allowed: Rule = {
         //}
         // get roles from RPTUtil because multiple explicit roles are allowed
         let roles = RPTUtil.getRoles(ruleContext, false);
-        let type = "role_attr";
-        if (!roles || roles.length == 0) {
+
+        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        // for mutiple roles, skip if any role is invalid
+        let designPatterns = ARIADefinitions.designPatterns;
+        for (const role of roles) 
+            if (!(role.toLowerCase() in designPatterns)) 
+                return null;
+
+        let type = "";
+        if (roles && roles.length > 0)
+            type = "role_attr";
+        else {    
             roles =  RPTUtil.getImplicitRole(ruleContext);
             if (roles && roles.length > 0)
                 type = "implicit_role_attr";
-            else
-                type = "elem_attr";    
         }
         let tagName = ruleContext.tagName.toLowerCase();
 
@@ -187,23 +192,18 @@ export let aria_attribute_allowed: Rule = {
             }
         }
         
-        console.log("node=" + tagName +", type=" + type + ", allowedAttributes="+ JSON.stringify(allowedAttributes) + ", domAttributes="+ JSON.stringify(domAttributes));
         if (failAttributeTokens.length > 0) {
             RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail");
-            if (type === "role_attr")
+            if (type === "implicit_role_attr")
+                return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            else {
+                if (!roles || roles.length == 0) roles = ["none"];
                 return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
-            else if (type === "implicit_role_attr")
-                return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);    
-            else
-                return RuleFail("Fail_invalid_elem_attr", [failAttributeTokens.join(", "), tagName]);    
-            
+            }    
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass", [passAttributeTokens.join(", "), tagName, roles.join(", ")]);
         } else {
             return null;
         }
-
-        // below for listing all allowed role and attributes.  We can delete it if we are not using it next year (2018) #283
-        //      return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName, allowedRoleOrAttributeTokens]);
     }
 }
