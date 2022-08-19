@@ -2534,7 +2534,7 @@ export class RPTUtil {
                            
                         // special case of separator
                         if (tagProperty.implicitRole[i] === "separator" && RPTUtil.isFocusable(ruleContext)) {
-                            RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
+                            RPTUtil.concatUniqueArrayItemList(["aria-disabled", "aria-valuenow", "aria-valuemax", "aria-valuemin", "aria-valuetext"], allowedAttributes);
                         }
                     }
                 }
@@ -2543,14 +2543,7 @@ export class RPTUtil {
             if (tagProperty.globalAriaAttributesValid) {
                 let properties = ARIADefinitions.globalProperties; // global properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
-            } else {
-                // special case: <img> with alt="" allows only aria-hidden
-                if (tagName === "img" &&
-                    ruleContext.hasAttribute("alt") &&
-                    ruleContext.getAttribute("alt").trim() === "") {
-                    RPTUtil.concatUniqueArrayItemList(["aria-hidden"], allowedAttributes);
-                }
-            }
+            } 
         }    
         // adding the other role to the allowed roles for the attributes
         if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
