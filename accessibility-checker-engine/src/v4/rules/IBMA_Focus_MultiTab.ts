@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { setCache } from "../util/CacheUtil";
 
 export let IBMA_Focus_MultiTab: Rule = {
     id: "IBMA_Focus_MultiTab",
@@ -58,7 +59,7 @@ export let IBMA_Focus_MultiTab: Rule = {
         }
         let passed = count < 2;
         if (!passed)
-            RPTUtil.setCache(ruleContext, "IBMA_Focus_MultiTab", "Potential_1");
+            setCache(ruleContext, "IBMA_Focus_MultiTab", "Potential_1");
         return passed ? RulePass("Pass_0") : RulePotential("Potential_1", [role]);
     }
 }

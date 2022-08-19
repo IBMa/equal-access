@@ -14,8 +14,6 @@
     limitations under the License.
  *****************************************************************************/
 
-import { DOMUtil } from "./DOMUtil";
-
 /**
  * Walks in a DOM order
  * 
@@ -30,6 +28,53 @@ export class DOMWalker {
         this.root = root || element;
         this.node = element;
         this.bEndTag = (bEnd == undefined ? false : bEnd == true);
+    }
+
+    static parentNode(node: Node) : Node | null {
+        let p : Node = node.parentNode;
+        if ((node as any).slotOwner) {
+            p = (node as any).slotOwner;
+        } else if ((node as any).ownerElement) {
+            p = (node as any).ownerElement;
+        } else if (p && p.nodeType === 11) {
+            if ((p as ShadowRoot).host) {
+                p = (p as ShadowRoot).host;
+            } else {
+                p = null;
+            }
+        }
+        return p;
+    }
+
+    static parentElement(node: Node) : Element | null {
+        let elem : Element = node as Element;
+        do {
+            elem = DOMWalker.parentNode(elem) as Element;
+        } while (elem && elem.nodeType !== 1);
+        return elem;
+    }
+    
+    static isNodeVisible(node: Node) {
+        try {
+            let vis = null;
+            while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
+                node = DOMWalker.parentElement(node);
+            }
+            let elem = node as Element;
+            let w = elem.ownerDocument.defaultView;
+            do {
+                let cs = w.getComputedStyle(elem);
+                if (cs.display === "none") return false;
+                if (vis === null && cs.visibility) {
+                    vis = cs.visibility;
+                    if (vis === "hidden") return false;
+                }
+                elem = DOMWalker.parentElement(elem);
+            } while (elem);
+            return true;
+        } catch (err) {
+            return false;
+        }
     }
 
     atRoot() : boolean {
@@ -55,7 +100,7 @@ export class DOMWalker {
                 let slotElement = (this.node as HTMLSlotElement)
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMUtil.isNodeVisible(iframeNode)
+                    && DOMWalker.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement)
                 {
@@ -63,7 +108,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMUtil.isNodeVisible(elementNode)
+                    && DOMWalker.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.firstChild)
                 {
@@ -127,7 +172,7 @@ export class DOMWalker {
                 let elementNode = (this.node as HTMLElement);
                 if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
                     && this.node.nodeName.toUpperCase() === "IFRAME"
-                    && DOMUtil.isNodeVisible(iframeNode)
+                    && DOMWalker.isNodeVisible(iframeNode)
                     && iframeNode.contentDocument
                     && iframeNode.contentDocument.documentElement) 
                 {
@@ -135,7 +180,7 @@ export class DOMWalker {
                     this.node = iframeNode.contentDocument.documentElement;
                     (this.node as any).ownerElement = ownerElement;
                 } else if (this.node.nodeType === 1 /* Node.ELEMENT_NODE */ 
-                    && DOMUtil.isNodeVisible(elementNode)
+                    && DOMWalker.isNodeVisible(elementNode)
                     && elementNode.shadowRoot
                     && elementNode.shadowRoot.lastChild) 
                 {

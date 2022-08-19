@@ -21,6 +21,8 @@ import { RPTUtil } from "../checker/accessibility/util/legacy"
 import { FragmentUtil } from "../checker/accessibility/util/fragment";
 import { IMapResult } from "../../v4/api/IMapper";
 import { ARIAWalker } from "./ARIAWalker";
+import { getCache, setCache } from "../../v4/util/CacheUtil";
+import { DOMWalker } from "../dom/DOMWalker";
 type ElemCalc = (elem: Element) => string;
 type NodeCalc = (node: Node) => string;
 
@@ -82,7 +84,7 @@ export class ARIAMapper extends CommonMapper {
 
     static getAriaOwnedBy(elem: HTMLElement) : HTMLElement | null {
         const doc = FragmentUtil.getOwnerFragment(elem);
-        if (!RPTUtil.getCache(doc, "ARIAMapper::precalcOwned", false)) {
+        if (!getCache(doc, "ARIAMapper::precalcOwned", false)) {
             const owners = doc.querySelectorAll("[aria-owns]");
             for (let iOwner = 0; iOwner < owners.length; ++iOwner) {
                 const owner = owners[iOwner];
@@ -90,19 +92,19 @@ export class ARIAMapper extends CommonMapper {
                 for (let iId=0; iId < ownIds.length; ++iId) {
                     const owned = doc.getElementById(ownIds[iId]);
                     if (owned) {
-                        RPTUtil.setCache(owned, "aria-owned", owner);
+                        setCache(owned, "aria-owned", owner);
                     }
                 }
             }
-            RPTUtil.setCache(doc, "ARIAMapper::precalcOwned", true);
+            setCache(doc, "ARIAMapper::precalcOwned", true);
         }
-        return RPTUtil.getCache(elem, "aria-owned", null);
+        return getCache(elem, "aria-owned", null);
     }
 
     private getNodeHierarchy(node: Node) {
         if (!node) return [];
         if (node.nodeType !== 1) {
-            let parentHierarchy = this.getNodeHierarchy(DOMUtil.parentElement(node));
+            let parentHierarchy = this.getNodeHierarchy(DOMWalker.parentElement(node));
             let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
                 role: "",
                 rolePath: "",
@@ -134,17 +136,17 @@ export class ARIAMapper extends CommonMapper {
                     [role: string]: number
                 }
                 childrenCanHaveRole: boolean
-            }> = RPTUtil.getCache(elem, "ARIAMapper::getNodeHierarchy", null);
+            }> = getCache(elem, "ARIAMapper::getNodeHierarchy", null);
             if (!nodeHierarchy) {
                 // This element hasn't been processed yet - but ::reset processes them all in the right order
 
                 // Get details about the correct parent first
                 let parent = ARIAMapper.getAriaOwnedBy(elem);
                 if (!parent) {
-                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                    parent = DOMWalker.parentElement(elem) as HTMLElement;
                 }
                 while (parent && parent.nodeType !== 1) {
-                    parent = DOMUtil.parentElement(elem) as HTMLElement;
+                    parent = DOMWalker.parentElement(elem) as HTMLElement;
                 }
                 let parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
                 let parentInfo = parentHierarchy.length > 0 ? parentHierarchy[parentHierarchy.length-1] : {
@@ -154,7 +156,7 @@ export class ARIAMapper extends CommonMapper {
                     childrenCanHaveRole: true
                 };
                 while (parentInfo.role === "none" || parentInfo.role === "/none") {
-                    parent = ARIAMapper.getAriaOwnedBy(parent) || DOMUtil.parentElement(parent) as HTMLElement;
+                    parent = ARIAMapper.getAriaOwnedBy(parent) || DOMWalker.parentElement(parent) as HTMLElement;
                     parentHierarchy = parent ? this.getNodeHierarchy(parent) : [];
                     parentInfo = parentHierarchy[parentHierarchy.length-1];
                 }
@@ -207,7 +209,7 @@ export class ARIAMapper extends CommonMapper {
                     nodeHierarchy.push(item);
                 }
                 nodeHierarchy.push(nodeInfo);
-                RPTUtil.setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
+                setCache(elem, "ARIAMapper::getNodeHierarchy", nodeHierarchy);
             }
             return nodeHierarchy;
         }
@@ -224,7 +226,7 @@ export class ARIAMapper extends CommonMapper {
         // Get to the topmost node
         let goodNode = node;
         let next;
-        while (next = DOMUtil.parentNode(goodNode)) {
+        while (next = DOMWalker.parentNode(goodNode)) {
             goodNode = next;
         };
         // Walk the tree and set the hierarchies in the right order
@@ -275,8 +277,8 @@ export class ARIAMapper extends CommonMapper {
         }
         if (retVal.length > 0) {
             retVal[retVal.length-1].role = "/"+retVal[retVal.length-1].role
-            let parent = DOMUtil.parentElement(node);
-            this.hierarchyResults = parent ? RPTUtil.getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
+            let parent = DOMWalker.parentElement(node);
+            this.hierarchyResults = parent ? getCache(parent as HTMLElement, "ARIAMapper::getNodeInfo", []) : [];
         }
         return retVal;
     }
@@ -410,12 +412,12 @@ export class ARIAMapper extends CommonMapper {
 
         const elem = cur as Element;
         // We've been here before - prevent recursion
-        if (RPTUtil.getCache(elem, "data-namewalk", null) === ""+walkId) return "";
-        RPTUtil.setCache(elem, "data-namewalk", ""+walkId);
+        if (getCache(elem, "data-namewalk", null) === ""+walkId) return "";
+        setCache(elem, "data-namewalk", ""+walkId);
         // See https://www.w3.org/TR/html-aam-1.0/#input-type-text-input-type-password-input-type-search-input-type-tel-input-type-url-and-textarea-element
 
         // 2a. Only show hidden content if it's referenced by a labelledby
-        if (!labelledbyTraverse && !DOMUtil.isNodeVisible(cur)) {
+        if (!labelledbyTraverse && !DOMWalker.isNodeVisible(cur)) {
             return "";
         }
 
@@ -672,12 +674,12 @@ export class ARIAMapper extends CommonMapper {
     }
 
     public static hasParentRole(element, role) : boolean {
-        let parent = DOMUtil.parentNode(element);
+        let parent = DOMWalker.parentNode(element);
         // If link is in a menu, it's a menuitem
         while (parent) {
             if (ARIAMapper.nodeToRole(parent) === role)
                 return true;
-            parent = DOMUtil.parentNode(parent);
+            parent = DOMWalker.parentNode(parent);
         }
         return false;
     }
@@ -788,7 +790,7 @@ export class ARIAMapper extends CommonMapper {
             "fieldset": "group",
             "figure": "figure",
             "footer": function(element) {
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
                     let role = (parent.nodeType === 1 && (parent as HTMLElement).getAttribute("role")) || ""
@@ -796,7 +798,7 @@ export class ARIAMapper extends CommonMapper {
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "contentinfo" : null;
                     }
-                    parent = DOMUtil.parentNode(parent);
+                    parent = DOMWalker.parentNode(parent);
                 }
                 return null;
             },
@@ -812,7 +814,7 @@ export class ARIAMapper extends CommonMapper {
             "h5": "heading",
             "h6": "heading",
             "header": function(element) {
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 // If nearest sectioningRoot or sectioningContent is body
                 while (parent && parent.nodeType === 1) {
                     let nodeName = parent.nodeName.toLowerCase();
@@ -820,7 +822,7 @@ export class ARIAMapper extends CommonMapper {
                     if (sectioningRoots[nodeName] || sectioningContent[nodeName] || sectioningRole[role]) {
                         return (nodeName === "body") ? "banner" : null;
                     }
-                    parent = DOMUtil.parentNode(parent);
+                    parent = DOMWalker.parentNode(parent);
                 }
                 return null;
             },
@@ -860,22 +862,22 @@ export class ARIAMapper extends CommonMapper {
             "svg": "graphics-document",
             "table": "table",
             "tbody": function(element) {
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table" || role === "grid" || role === "treegrid") return "rowgroup";
-                    parent = DOMUtil.parentNode(parent);
+                    parent = DOMWalker.parentNode(parent);
                 }
                 return null;
             },
             "textarea": "textbox",
             "td": function(element) {
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table") return "cell";
                     if (role === "grid" || role === "treegrid") return "gridcell";
-                    parent = DOMUtil.parentNode(parent);
+                    parent = DOMWalker.parentNode(parent);
                 }
                 return null;
             },
@@ -894,12 +896,12 @@ export class ARIAMapper extends CommonMapper {
                  */
                 // Note: auto is default scope
                 
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     
                     if (role !== "table" && role !== "grid" && role !== "treegrid") {
-                         parent = DOMUtil.parentNode(parent);
+                         parent = DOMWalker.parentNode(parent);
                          continue; 
                     }     
                     // Easiest answer is if scope is specified
@@ -927,11 +929,11 @@ export class ARIAMapper extends CommonMapper {
             "tfoot": "rowgroup",
             "thead": "rowgroup",
             "tr": function(element) {
-                let parent = DOMUtil.parentNode(element);
+                let parent = DOMWalker.parentNode(element);
                 while (parent) {
                     let role = ARIAMapper.nodeToRole(parent);
                     if (role === "table" || role === "grid" || role === "treegrid") return "row";
-                    parent = DOMUtil.parentNode(parent);
+                    parent = DOMWalker.parentNode(parent);
                 }
                 return null;
             },

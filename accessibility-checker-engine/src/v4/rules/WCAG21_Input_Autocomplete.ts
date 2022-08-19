@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG21_Input_Autocomplete: Rule = {
     id: "WCAG21_Input_Autocomplete",
@@ -159,7 +160,7 @@ export let WCAG21_Input_Autocomplete: Rule = {
         const ruleContext = context["dom"].node as Element;
         let foundMandatoryToken = false;
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (!RPTUtil.isNodeVisible(ruleContext) ||
+        if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }

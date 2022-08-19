@@ -11,9 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy, eRuleConfidence } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { LangUtil } from "../../v2/checker/accessibility/util/lang";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
 const validateLang = (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
     const ruleContext = context["dom"].node as Element;
@@ -103,17 +106,17 @@ export let html_lang_valid: Rule = {
     run: validateLang
 }
 
-export let elem_lang_valid: Rule = {
-    id: "elem_lang_valid",
+export let element_lang_valid: Rule = {
+    id: "element_lang_valid",
     context: "dom:*[lang], dom:*[xml:lang]",
     help: {
         "en-US": {
-            "Pass_0": "elem_lang_valid.html",
-            "Fail_1": "elem_lang_valid.html",
-            "Fail_2": "elem_lang_valid.html",
-            "Fail_3": "elem_lang_valid.html",
-            "Fail_4": "elem_lang_valid.html",
-            "group": "elem_lang_valid.html"
+            "Pass_0": "element_lang_valid.html",
+            "Fail_1": "element_lang_valid.html",
+            "Fail_2": "element_lang_valid.html",
+            "Fail_3": "element_lang_valid.html",
+            "Fail_4": "element_lang_valid.html",
+            "group": "element_lang_valid.html"
         }
     },
     messages: {
@@ -161,6 +164,30 @@ export let elem_lang_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
         if (nodeName === "html") return null;
-        return validateLang(context, options, contextHierarchies);
+        let retVal = validateLang(context, options, contextHierarchies) as RuleResult;
+        if (retVal.value[1] !== eRuleConfidence.PASS) {
+            // Ensure that there's actually content of this element - skip subtrees that have other lang attributes
+            let hasContent = false;
+            if (ruleContext.firstChild !== null) {
+                let nw = new DOMWalker(ruleContext);
+                while (!hasContent && nw.nextNode()) {
+                    // Skip hidden
+                    if (nw.node.nodeType === 1) {
+                        let element = nw.node as Element;
+                        if (!VisUtil.isNodeVisible(element) || element.hasAttribute("lang")) {
+                            nw.bEndTag = true;
+                        } else {
+                            hasContent = hasContent 
+                                || element.nodeName.toLowerCase() === "img" && ARIAMapper.computeName(element).trim().length > 0;
+                        }
+                    } else {
+                        hasContent = hasContent 
+                            || nw.node.nodeType === 3 && nw.node.nodeValue.trim().length > 0;
+                    }
+                }
+            }
+            if (!hasContent) return null;
+        }
+        return retVal;
     }
 }

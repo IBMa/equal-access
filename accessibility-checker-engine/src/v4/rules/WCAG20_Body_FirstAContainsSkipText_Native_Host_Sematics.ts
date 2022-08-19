@@ -14,6 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics: Rule = {
     id: "WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics",
@@ -53,18 +55,18 @@ export let WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics: Rule = {
 
         // Check for landmarks first
         let passed;
-        if (RPTUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
-            RPTUtil.setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
+        if (getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
+            setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
                 "form", "main", "navigation", "search"
             ], true, true).length > 0);
         }
-        passed = RPTUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
+        passed = getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
 
         if (!passed) { // No landmarks, check for skip links
             let links = doc.links;
             // Skip link should be the first one on the page with an href attribute (i.e., links[0])
             // also if the first link is hidden then we should also trigger a violation.
-            if (links && links.length > 0 && RPTUtil.isNodeVisible(links[0])) {
+            if (links && links.length > 0 && VisUtil.isNodeVisible(links[0])) {
                 let testText = RPTUtil.getInnerText(doc.links[0]).toLowerCase();
                 for (let i = 0; !passed && i < validateParams.paramSkipText.value.length; ++i) {
                     passed = testText.indexOf(validateParams.paramSkipText.value[i]) != -1;

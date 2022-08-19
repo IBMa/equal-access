@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let HAAC_Accesskey_NeedLabel: Rule = {
     id: "HAAC_Accesskey_NeedLabel",
@@ -53,7 +53,7 @@ export let HAAC_Accesskey_NeedLabel: Rule = {
             // assume the validity of the id (of aria-labelledby) is checked by a different rule
             passed = true;
         } else if (ruleContext.nodeName.toLowerCase() === "input"
-            && DOMUtil.parentNode(ruleContext).nodeName.toLowerCase() === "label") {
+            && DOMWalker.parentNode(ruleContext).nodeName.toLowerCase() === "label") {
             // assume the validity of the label, e.g. empty label, is checked by a different rule
             passed = true;
         }

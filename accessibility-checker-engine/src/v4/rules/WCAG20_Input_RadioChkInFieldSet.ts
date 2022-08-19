@@ -15,6 +15,8 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Input_RadioChkInFieldSet: Rule = {
     id: "WCAG20_Input_RadioChkInFieldSet",
@@ -86,7 +88,7 @@ export let WCAG20_Input_RadioChkInFieldSet: Rule = {
 
         // Get data about all of the visible checkboxes and radios in the scope of this form
         // and cache it for all of the other inputs in this scope
-        let formCache = RPTUtil.getCache(ctxForm, "WCAG20_Input_RadioChkInFieldSet", null);
+        let formCache = getCache(ctxForm, "WCAG20_Input_RadioChkInFieldSet", null);
         if (!formCache) {
             formCache = {
                 checkboxByName: {},
@@ -106,7 +108,7 @@ export let WCAG20_Input_RadioChkInFieldSet: Rule = {
                 if (!cWalker.bEndTag
                     && cWalker.node.nodeType === 1
                     && cWalker.node.nodeName.toLowerCase() === "input"
-                    && RPTUtil.isNodeVisible(cWalker.node)) {
+                    && VisUtil.isNodeVisible(cWalker.node)) {
                     let type = (cWalker.node as Element).getAttribute("type");
                     if (type === "checkbox") {
                         checkboxQ.push(cWalker.node);
@@ -143,7 +145,7 @@ export let WCAG20_Input_RadioChkInFieldSet: Rule = {
                     ++formCache.numRadios;
                 }
             }
-            RPTUtil.setCache(ctxForm, "WCAG20_Input_RadioChkInFieldSet", formCache);
+            setCache(ctxForm, "WCAG20_Input_RadioChkInFieldSet", formCache);
         }
 
         ///////////// Calculated everything, now check the various cases

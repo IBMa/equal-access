@@ -14,6 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let RPT_Text_SensoryReference: Rule = {
     id: "RPT_Text_SensoryReference",
@@ -50,7 +52,7 @@ export let RPT_Text_SensoryReference: Rule = {
             }
         }
         const ruleContext = context["dom"].node as Element;
-        if (RPTUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
+        if (VisUtil.hiddenByDefaultElements.includes(ruleContext.nodeName.toLowerCase())) {
             return null;
         }
 
@@ -65,7 +67,7 @@ export let RPT_Text_SensoryReference: Rule = {
 
         let violatedtextArray = null;
         let violatedtext = null;
-        let sensoryRegex = RPTUtil.getCache(ruleContext.ownerDocument, "RPT_Text_SensoryReference", null);
+        let sensoryRegex = getCache(ruleContext.ownerDocument, "RPT_Text_SensoryReference", null);
         if (sensoryRegex == null) {
             let sensoryText = validateParams.sensoryText.value;
             let regexStr = "(" + sensoryText[0];
@@ -73,7 +75,7 @@ export let RPT_Text_SensoryReference: Rule = {
                 regexStr += "|" + sensoryText[j];
             regexStr += ")\\W";
             sensoryRegex = new RegExp(regexStr, "gi");
-            RPTUtil.setCache(ruleContext.ownerDocument, "RPT_Text_SensoryReference", sensoryRegex);
+            setCache(ruleContext.ownerDocument, "RPT_Text_SensoryReference", sensoryRegex);
         }
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
