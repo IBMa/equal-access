@@ -2517,9 +2517,10 @@ export class RPTUtil {
 
         if (tagProperty !== null && tagProperty !== undefined) {
             // add the implicit role allowed attributes to the allowed role list if there is no specified role
+            // ignore if the element doesn't allow the attributes from the implicit roles
             if (tagProperty.implicitRole !== null &&
-                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0) &&
-                tagProperty.allowAttributesFromImplicitRole === undefined) {
+                (permittedRoles === null || permittedRoles === undefined || permittedRoles.length === 0)
+                && tagProperty.allowAttributesFromImplicitRole === undefined) {
                 for (let i = 0; i < tagProperty.implicitRole.length; i++) {
                     let roleProperty = ARIADefinitions.designPatterns[tagProperty.implicitRole[i]];
                     if (roleProperty !== null && roleProperty !== undefined) {
@@ -2550,18 +2551,16 @@ export class RPTUtil {
                     RPTUtil.concatUniqueArrayItemList(["aria-hidden"], allowedAttributes);
                 }
             }
-        }
-        
+        }    
         // adding the other role to the allowed roles for the attributes
         if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
-            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);
-        
+            RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);       
         // adding the specified role properties to the allowed attribute list
         for (let i = 0; permittedRoles !== null && i < permittedRoles.length; i++) {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
             if (roleProperties !== null && roleProperties !== undefined) {
-                // ignore the properties if the element doesn't allow attributes from implicit role
-                if (tagProperty === null || tagProperty === undefined || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || tagProperty.allowAttributesFromImplicitRole === undefined) {
+                // ignore the properties if the element doesn't allow attributes from the implicit role
+                if (!tagProperty || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || (tagProperty.implicitRole.includes(permittedRoles[i]) && tagProperty.allowAttributesFromImplicitRole === undefined)) {
                     let properties = roleProperties.props; // allowed properties
                     RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                     properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
