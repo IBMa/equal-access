@@ -278,7 +278,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                     and each update has a date of deployment. If you need to replicate an earlier test, 
                                     choose the deployment date of the original test.
                                     <br/><br/>
-                                    For more in-dept guidance, see  <a
+                                    For more in-depth guidance, see  <a
                                     href={chrome.runtime.getURL("usingAC.html")}
                                     target="_blank"
                                     rel="noopener noreferred"
