@@ -674,7 +674,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -692,7 +692,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -710,7 +710,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -728,13 +728,13 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:passed"
           }
         }
       ]
@@ -746,7 +746,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -764,7 +764,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -782,7 +782,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -800,7 +800,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -818,7 +818,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -836,7 +836,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -854,7 +854,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -872,7 +872,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -890,7 +890,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -908,7 +908,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -926,13 +926,13 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
           },
           "result": {
-            "outcome": "earl:passed"
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -944,7 +944,7 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
@@ -962,13 +962,13 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -980,13 +980,13 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -998,13 +998,13 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2",
+            "title": "element_lang_valid:Pass_0,Fail_1,Fail_2",
             "isPartOf": [
               "WCAG2:language-of-parts"
             ]
           },
           "result": {
-            "outcome": "earl:failed"
+            "outcome": "earl:inapplicable"
           }
         }
       ]
@@ -1322,9 +1322,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1352,9 +1352,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1382,9 +1382,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1412,9 +1412,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1442,9 +1442,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1472,9 +1472,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1502,9 +1502,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1",
+            "title": "html_lang_valid:Pass_0,Fail_1",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1532,9 +1532,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1550,9 +1550,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1568,9 +1568,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1586,9 +1586,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1604,9 +1604,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1622,9 +1622,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
@@ -1640,9 +1640,9 @@
         {
           "@type": "Assertion",
           "test": {
-            "title": "WCAG20_Elem_Lang_Valid:Pass_0,Fail_1,Fail_2,Fail_3",
+            "title": "html_lang_valid:Pass_0,Fail_1,Fail_2,Fail_3",
             "isPartOf": [
-              "WCAG2:language-of-parts"
+              "WCAG2:language-of-page"
             ]
           },
           "result": {
