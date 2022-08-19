@@ -316,7 +316,7 @@
     
                     // Get the Keyboard Mode OPTIONS
                     if (result.OPTIONS) {
-                        console.log("Get Keyboard Mode OPTIONS",result.OPTIONS);
+                        // console.log("Get Keyboard Mode OPTIONS",result.OPTIONS);
                         tabStopLines = result.OPTIONS.tabStopLines;
                         tabStopOutlines = result.OPTIONS.tabStopOutlines;
                         tabStopAlerts = result.OPTIONS.tabStopAlerts;
@@ -388,7 +388,7 @@
                             tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
     
                         });
-                        // console.log("Function: readOptionsData DONE");
+                        console.log("Function: readOptionsData DONE");
                     }
                     resolve();
                 });
@@ -551,7 +551,7 @@
     
                 this.setState({ tabStopsResults: tabbable });
                 this.setState({ tabStopsErrors: tabbableErrors });
-                console.log("tabbable = ", tabbable);
+                // console.log("tabbable = ", tabbable);
                 // console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
                 // console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
@@ -1085,10 +1085,10 @@
         }
     
         tabStopsSetFirstTime() {
-            console.log("tabStopsSetFirstTime");
+            console.log("Function: tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {
-                console.log("setState tabStopFirstTime to false");
+                // console.log("setState tabStopFirstTime to false");
                 this.setState({ tabStopFirstTime: false }); 
             }
     
@@ -1099,14 +1099,14 @@
                 tabStopOutlines: this.state.tabStopOutlines,
                 tabStopAlerts: this.state.tabStopAlerts,
                 tabStopFirstTime: false,
-             });
-            this.save_options_to_storage(this.state);
+            }, () => {
+                this.save_options_to_storage(this.state);
+            });
         }
     
         save_options_to_storage = async (state: any) => {
-            // console.log("save_options_to_storage");
+            // console.log("Function: save_options_to_storage");
             var options = { OPTIONS: state };
-            // console.log(options);
             await chrome.storage.local.set(options, function () {
                 // console.log("options is set to ", options);
             });
@@ -1150,13 +1150,13 @@
     
         
         render() {
-            console.log("render");
-            console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
-            console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
-            console.log("this.state.tabStopLines = ",this.state.tabStopLines);
-            console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
-            console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
-            console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
+            // console.log("render --------------");
+            // console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
+            // console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
+            // console.log("this.state.tabStopLines = ",this.state.tabStopLines);
+            // console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
+            // console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
+            // console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
     
             let error = this.state.error;
     

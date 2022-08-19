@@ -411,7 +411,6 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 }
                             }}>
                         </Button>
-                        {console.log("openKeyboardMode = ",this.state.openKeyboardMode,"tabStopFirstTime = ",this.props.tabStopFirstTime)}
                         {this.state.openKeyboardMode && this.props.tabStopFirstTime ?
                             <div style={{position:"fixed",width: "100%", height: "100%", top:"200px", left:"0px", right:"0px", bottom:"0px", zIndex:"2"}}>
                                 <ToastNotification
