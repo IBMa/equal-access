@@ -387,17 +387,37 @@
             "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/article[1]/header[1]",
               "aria": "/document[1]/document[1]/main[1]"
             },
-            "reasonId": "Fail_2",
-            "message": "The ARIA role 'presentation' is not valid for the element <header> and may be ignored by the browser since the element is focusable",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
               "presentation",
               "header"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]",
+              "aria": "/document[1]/document[1]/main[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-busy, aria-atomic",
+              "header",
+              "presentation"
             ],
             "apiArgs": [],
             "category": "Accessibility"

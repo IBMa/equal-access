@@ -275,6 +275,26 @@
             "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/article[1]/header[1]",
+              "aria": "/document[1]/article[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-busy, aria-atomic",
+              "header",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
               "FAIL"
             ],
             "path": {

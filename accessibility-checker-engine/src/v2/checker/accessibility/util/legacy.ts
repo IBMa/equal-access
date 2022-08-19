@@ -2561,7 +2561,7 @@ export class RPTUtil {
             let roleProperties = ARIADefinitions.designPatterns[permittedRoles[i]];
             if (roleProperties !== null && roleProperties !== undefined) {
                 // ignore the properties if the element doesn't allow attributes from implicit role
-                if (!tagProperty || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || tagProperty.allowAttributesFromImplicitRole === undefined) {
+                if (tagProperty === null || tagProperty === undefined || tagProperty.implicitRole === null || !tagProperty.implicitRole.includes(permittedRoles[i]) || tagProperty.allowAttributesFromImplicitRole === undefined) {
                     let properties = roleProperties.props; // allowed properties
                     RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
                     properties = RPTUtil.getRoleRequiredProperties(permittedRoles[i], ruleContext); // required properties
