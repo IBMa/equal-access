@@ -166,8 +166,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     // left mouse click listener for the circles and triangles
     window.addEventListener('click', function(event:any) {
         // console.log("---------------------------------------");
-        console.log("main doc left mouse click catcher");
-        console.log("event.target = ",event.target);
+        // console.log("main doc left mouse click catcher");
+        // console.log("event.target = ",event.target);
         handleTabHighlight(event,document,"click","");
     
     });
@@ -248,17 +248,12 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         if (docType === "shadowdom") {
             console.log("we have an element in a shadow dom");
             let sdXpath = getXPathForElement(doc);
-            console.log("sdXpath = ",sdXpath);
             let element = doc.shadowRoot.activeElement;
-            console.log("element = ", element);
-            console.log("focusElementPath = ", iframeStr);
             elementXpath = getXPathForElement(element);
             // need #document-fragment[n]
             elementXpath = sdXpath+iframeStr;
-            console.log("elementXpath = ",elementXpath);
         }
 
-        console.log("elementXpath right before matching = ",elementXpath);
         // get circle or polygon with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
         let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
@@ -275,7 +270,7 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         }
         // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
         if (prevHighlightedElement) {
-            console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+            // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
             if (prevHighlightedElement.tagName === "circle") {
                 prevHighlightedElement.classList.remove("highlightSVG");
                 prevHighlightedElement.classList.add("noHighlightSVG");
@@ -304,8 +299,8 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             // console.log("No polygon to highlight = ",circle);
         }
     } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
-        console.log("Got SHIFT TAB Key");
-        console.log("TAB doc = ", doc);
+        // console.log("Got SHIFT TAB Key");
+        // console.log("TAB doc = ", doc);
         if (docType === "main") {
             console.log("Got main doc element");
             let element = doc.activeElement;  // get element just tabbed to which has focus
@@ -314,7 +309,7 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         
         // if we have iframe
         if (docType === "iframe") {
-            console.log("Got iframe element");
+            // console.log("Got iframe element");
             let element = doc.activeElement;  // get element just tabbed to which has focus
             elementXpath = getXPathForElement(element); // in main doc so just get xpath
             elementXpath = iframeStr + elementXpath;
@@ -322,7 +317,7 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
 
         // if we have shadow dom no need to do anything special
         if (docType === "shadowdom") {
-            console.log("Got shadow dom element");
+            // console.log("Got shadow dom element");
             let sdXpath = getXPathForElement(doc);
             let element = doc.shadowRoot.activeElement;
             elementXpath = getXPathForElement(element);
@@ -401,21 +396,21 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
                 console.log("iframeStr = ",iframeStr)
             }
 
-            console.log("elementXpath = ",elementXpath);
+            // console.log("elementXpath = ",elementXpath);
             
             // get circle or polygon with matching xpath
             // let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
             // let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
             let prevHighlightedElement;
             if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
-                console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
             } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
-                console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+                // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
             }
             // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
             
             if (prevHighlightedElement) {
-                console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
                 if (prevHighlightedElement.tagName === "circle") {
                     prevHighlightedElement.classList.remove("highlightSVG");
                     prevHighlightedElement.classList.add("noHighlightSVG");
@@ -424,24 +419,24 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
                     prevHighlightedElement.classList.remove("highlightSVGtriangle");
                     prevHighlightedElement.classList.add("noHighlightSVGtriangle");
                 }
-                console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+                // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
-                console.log("No prevHighlightedElement to highlight")
+                // console.log("No prevHighlightedElement to highlight")
             }
             // Highlight circle
             if (circle) {
                 circle?.classList.remove("noHighlightSVG");
                 circle?.classList.add("highlightSVG");
-                console.log("circle highlighted = ",circle);
+                // console.log("circle highlighted = ",circle);
             } else {
-                console.log("No circle to highlight = ",circle);
+                // console.log("No circle to highlight = ",circle);
             }
             if (polygon) {
                 polygon?.classList.remove("noHighlightSVGtriangle");
                 polygon?.classList.add("highlightSVGtriangle");
-                console.log("polygon highlighted = ",polygon);
+                // console.log("polygon highlighted = ",polygon);
             } else {
-                console.log("No circle to highlight = ",circle);
+                // console.log("No circle to highlight = ",circle);
             }
         }
     }
@@ -547,7 +542,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
             }
 
             if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
-                console.log("Non tabbable nodes[",i,"] = ",nodes[i]);
+                // console.log("Non tabbable nodes[",i,"] = ",nodes[i]);
                 
                 if (nodes[i] != null ) { // JCH - tabbable nodes
                     if (nodes[i] != null ) { // JCH - tabbable nodes
@@ -685,38 +680,38 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodeXpaths);
 
-        console.log("Tabbable elements: nodes.length = ",nodes.length);
+        // console.log("Tabbable elements: nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null) {
-                console.log("Tabbable nodes[",i,"]   element exists");
+                // console.log("Tabbable nodes[",i,"]   element exists");
                 if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                    // console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                     if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
+                        // console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
                     }
                     else {
-                        console.log("Tabbable nodes[",i,"] has NO bounding rect");
+                        // console.log("Tabbable nodes[",i,"] has NO bounding rect");
                     }
                 } else {
-                    console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
+                    // console.log("Tabbable nodes[",i,"].tagName is null $$$$$");
                 }
             }
-            console.log("--------------------------------");
+            // console.log("--------------------------------");
             if (nodes[i+1] != null && i+1 < nodes.length) {
-                console.log("Tabbable nodes[",i+1,"]   element exists");
+                // console.log("Tabbable nodes[",i+1,"]   element exists");
                 if (typeof nodes[i+1].tagName !== 'undefined' ||  nodes[i+1].tagName !== null ) { // JCH - tabbable nodes
-                    console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
+                    // console.log("Tabbable nodes[",i+1,"]   tagName is ",nodes[i+1].tagName);
                     if (typeof nodes[i+1].getBoundingClientRect !== 'undefined' || nodes[i+1].getBoundingClientRect != null) {
-                        console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
+                        // console.log("Tabbable nodes[",i+1,"] has bounding rect", nodes[i+1].getBoundingClientRect().x,",",nodes[i+1].getBoundingClientRect().y);
                     }
                     else {
-                        console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
+                        // console.log("Tabbable nodes[",i+1,"] has NO bounding rect");
                     }
                 } else {
-                    console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
+                    // console.log("Tabbable nodes[",i+1,"].tagName is null $$$$$");
                 }
             }
-            console.log("--------------------------------");
+            // console.log("--------------------------------");
         }
 
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
@@ -1213,12 +1208,12 @@ function createSVGLineTemplate() {
 }
 
 function convertXpathsToHtmlElements(xpaths: any) {
-    console.log("Function: convertXpathsToHtmlElements: ")
+    // console.log("Function: convertXpathsToHtmlElements: ")
     let results: any = [];
-    xpaths.map((xpath: any, index:any) => {
-        console.log("xpath ",index);
+    xpaths.map((xpath: any) => {
+        // console.log("xpath ",index);
         let element;
-        console.log("xpath = ",xpath);
+        // console.log("xpath = ",xpath);
         element = selectPath(xpath);
         results.push(element);
     });
