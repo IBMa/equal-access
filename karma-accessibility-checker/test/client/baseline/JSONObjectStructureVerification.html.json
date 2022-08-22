@@ -110,7 +110,7 @@
             "level": "pass"
         },
         {
-            "ruleId": "WCAG20_Elem_Lang_Valid",
+            "ruleId": "html_lang_valid",
             "value": [
                 "VIOLATION",
                 "PASS"
@@ -3553,7 +3553,7 @@
         "WCAG20_Doc_HasTitle": {
             "Pass_0": "Rule Passed"
         },
-        "WCAG20_Elem_Lang_Valid": {
+        "html_lang_valid": {
             "Pass_0": "Rule Passed"
         },
         "HAAC_BackgroundImg_HasTextOrTitle": {

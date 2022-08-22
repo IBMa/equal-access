@@ -269,7 +269,6 @@ export const ruleIdToLegacyId = {
     "RPT_Text_SensoryReference": "502",
     "RPT_Embed_AutoStart": "503",
     "RPT_Style_HinderFocus1": "506",
-    "WCAG20_Elem_Lang_Valid": "507",
     "WCAG20_Img_LinkTextNotRedundant": "1000",
     "RPT_Style_ExternalStyleSheet": "1073",
     "RPT_Header_Trigger": "1002",
