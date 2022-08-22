@@ -70,14 +70,14 @@ export let html_lang_valid: Rule = {
             "Fail_2": "Specified 'lang' attribute does not conform to BCP 47",
             "Fail_3": "Specified 'xml:lang' attribute does not include a valid primary language",
             "Fail_4": "Specified 'xml:lang' attribute does not conform to BCP 47",
-            "group": "The language of content must be valid and specified in accordance with BCP 47"
+            "group": "The default human language of the page must be valid and specified in accordance with BCP 47"
         }
     },
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["3.1.1"],
         "level": eRulePolicy.VIOLATION,
-        "toolkitLevel": eToolkitLevel.LEVEL_THREE
+        "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     act: [{
         "b5c3f8": {
@@ -126,7 +126,7 @@ export let element_lang_valid: Rule = {
             "Fail_2": "Specified 'lang' attribute does not conform to BCP 47",
             "Fail_3": "Specified 'xml:lang' attribute does not include a valid primary language",
             "Fail_4": "Specified 'xml:lang' attribute does not conform to BCP 47",
-            "group": "The language of content must be valid and specified in accordance with BCP 47"
+            "group": "The change in language of specific content must be valid and specified in accordance with BCP 47"
         }
     },
     rulesets: [{
