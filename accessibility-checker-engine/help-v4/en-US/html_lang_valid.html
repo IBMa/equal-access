@@ -44,14 +44,14 @@
 
 ### Why is this important?
 
-When language attributes are used to identify the language of a page or specific content within a page, the attribute values must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). This ensures that user agents can correctly present the content using the correct presentation and pronunciation rules for that language.
+When the language attribute is used to identify the human language of the page, the attribute value must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). This ensures that user agents and text-to-speech (TTS) synthesizers can correctly present the page's default content using the correct presentation and pronunciation rules for that language.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language.
+* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the page's default human language.
 
 For example:
 
@@ -84,6 +84,7 @@ For example:
 * People using a screen reader, including blind, low vision and neurodivergent people
 * People with low vision
 * People with dexterity impairment using voice control
+* People using text-to-speech (TTS) synthesizer technoogies
 
 </script></mark-down>
 <!-- End side panel -->
