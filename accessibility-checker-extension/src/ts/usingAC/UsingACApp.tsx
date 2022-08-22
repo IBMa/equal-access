@@ -138,6 +138,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                         8. Feedback
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="#troubleshooting" title="troubleshooting">
+                                        9. Troubleshooting
+                                    </a>
+                                </li>
                             </ul>
                             <div>
                             <p>For bite-sized guidance, see <a href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">quick guide</a>
@@ -194,7 +199,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <p>
                         <strong>For Firefox:</strong>
                             <ol className="number">
-                                <li>Open the Firefox browser.</li>
+                                <li>Open the Firefox browser</li>
                                 <li>
                                     Go to the{" "}
                                     <a
@@ -203,10 +208,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     >
                                         IBM Equal Access Accessibility Checker
                                     </a>{" "}
-                                    in Firefox Browser Add-on.
+                                    in Firefox Browser Add-on
                                 </li>
                                 <li>
-                                    Click 'Add To Firefox' button.
+                                    Click 'Add To Firefox' button
                                 </li>
                             </ol>
                        </p>
@@ -351,10 +356,10 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                 <p>Select an element in the Checker, in the DOM, or use the ‘Inspect element’ command on the web page for the Checker to:</p>
                         </div>
                         <ul>
-                            <li className="unorder"><p>show number of issues of each type within selected element and its children</p></li>
-                            <li className="unorder"><p>open and highlight all issues in element, if any (dark purple highlight)</p></li>
-                            <li className="unorder"><p>open and highlight all issues in element’s children, if any (light purple highlight)</p></li>
-                            <li className="unorder"><p>show the same set of highlighted issues in the different tabs</p></li>
+                            <li className="unorder"><p>Show number of issues of each type within selected element and its children</p></li>
+                            <li className="unorder"><p>Open and highlight all issues in element, if any (dark purple highlight)</p></li>
+                            <li className="unorder"><p>Open and highlight all issues in element’s children, if any (light purple highlight)</p></li>
+                            <li className="unorder"><p>Show the same set of highlighted issues in the different tabs</p></li>
                         </ul>
                         <div className="pa">
                             <p><strong>Hidden content scanning</strong></p>
@@ -425,11 +430,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                 <p>You can open the ‘Reports’ dropdown menu and select ‘View stored scans’ to:</p>
                         </div>
                         <ul>
-                            <li className="unorder">select or unselect scans you want in the report with the checkboxes</li>
-                            <li className="unorder">select all scans with the checkbox in the first column of the header row</li>
-                            <li className="unorder">edit scan labels to differentiate the scans</li>
-                            <li className="unorder">select ‘Download’ in the header row to download the multi-scan report</li>
-                            <li className="unorder">select ‘Back to list view’ to return to main Checker view</li>
+                            <li className="unorder">Select or unselect scans you want in the report with the checkboxes</li>
+                            <li className="unorder">Select all scans with the checkbox in the first column of the header row</li>
+                            <li className="unorder">Edit scan labels to differentiate the scans</li>
+                            <li className="unorder">Select ‘Download’ in the header row to download the multi-scan report</li>
+                            <li className="unorder">Select ‘Back to list view’ to return to main Checker view</li>
                         </ul>
 
                         <h3 id="focus_view">3.4. Focus view</h3>
@@ -511,29 +516,29 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         <ol className="number">
                             <li className="numbers"><p>Make sure every interactive element is a tab stop*</p>
                                 <ol className="alpha">
-                                    <li className="indent"><p>no tab stops on non-interactive or non-visible elements**</p></li>
-                                    <li className="indent"><p>tab order matches the visual flow of the page</p></li>
-                                    <li className="indent"><p>inspect elements with found issues (select the triangle icons)</p></li>
+                                    <li className="indent"><p>No tab stops on non-interactive or non-visible elements**</p></li>
+                                    <li className="indent"><p>Tab order matches the visual flow of the page</p></li>
+                                    <li className="indent"><p>Inspect elements with found issues (select the triangle icons)</p></li>
                                 </ol>
                             </li>
                             <br />
                             <li className="numbers">Test interactive elements
                                 <ol className="alpha">
-                                    <li className="indent"><p>start from browser URL bar, or click just above the part of page of interest</p></li>
-                                    <li className="indent"><p>press tab key to move keyboard focus through interactive elements</p></li>
-                                    <li className="indent"><p>you shouldn’t get stuck in a keyboard trap (try the Esc key)</p></li>
-                                    <li className="indent"><p>operate the controls using standard keys</p></li>
-                                    <li className="indent"><p>focus should not jump to an unexpected place when operating controls</p></li>
-                                    <li className="indent"><p>when dismissing or deleting items, focus should move to sensible location</p></li>
+                                    <li className="indent"><p>Start from browser URL bar, or click just above the part of page of interest</p></li>
+                                    <li className="indent"><p>Press tab key to move keyboard focus through interactive elements</p></li>
+                                    <li className="indent"><p>You shouldn’t get stuck in a keyboard trap (try the Esc key)</p></li>
+                                    <li className="indent"><p>Operate the controls using standard keys</p></li>
+                                    <li className="indent"><p>Focus should not jump to an unexpected place when operating controls</p></li>
+                                    <li className="indent"><p>When dismissing or deleting items, focus should move to sensible location</p></li>
                                 </ol>
                             </li>
                         </ol>
                         </div>
                         <div className="pa">
-                        <p>* it may be acceptable to skip interactive elements if the UI provides another keyboard accessible way to perform the same function</p>
+                        <p>* It may be acceptable to skip interactive elements if the UI provides another keyboard accessible way to perform the same function</p>
                         </div>
                         <div className="pa">
-                        <p>** it may be acceptable if the first tab stop of the page is “skip to main content” link that is not visible until it has keyboard focus</p>
+                        <p>** It may be acceptable if the first tab stop of the page is “skip to main content” link that is not visible until it has keyboard focus</p>
                         </div>
                         <div className="pa">
                         <p><strong>Keys to use for testing</strong></p>
@@ -691,7 +696,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             <li>
                                 <p>
                                     In the browser tool bar, select the IBM Equal Access
-                                    Accessibility Checker icon, shown as a purple bee{" "}
+                                    Accessibility Checker icon as shown {" "}
                                     <img
                                         src={beeLogoUrl}
                                         width="16px"
@@ -699,14 +704,14 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                         alt="Accessibility checker application icon"
                                     />
                                     . This will usually be located in the upper right of the
-                                    browser window. An overlay will appear.
+                                    browser window. 
                                 </p>
                             </li>
                             <br />
                             <li>
                                 <p>
                                 In the overlay that appears, select 'Options’ and the options will open in a new browser tab. 
-                                <strong> Note:</strong> In the Firefox browser when the Enhanced Tracking Protection option is set to Strict, this causes some sites or content to break and may prevent the Options page from opening. Change the browser privacy settings to Standard.
+                                <strong> Note:</strong> In Firefox, the Options page may fail to open if the Enhanced Tracking Protection option is set to Strict. To avoid this, change the browser privacy settings to Standard. 
                                 </p>
                             </li>
                         </ol>
@@ -787,6 +792,15 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                         </p>
                         </div>
 
+                        <h3 id="rule_deploy">Keyboard checker mode</h3>
+                        <p>
+                        By default, the keyboard visualization options has the 'Lines connecting tab stops'  checkbox selected. Select the 'Element outlines' checkbox to see bounding boxes for each interactive element in the tab order.
+                        </p>
+                        <br />
+                        <p>
+                        The 'Alert notifications' toggles on and off the pop-up notification that appears every time you turn on the keyboard checker mode.
+                        </p>
+
                         <h2 id="the_report">6. Accessibility Checker reports</h2>
                         <div className="pa">
                             <p>
@@ -809,11 +823,11 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             />
                         <div className="pa">
                         <ol className="number">
-                            <li className="numbers">the scan date and time</li>
-                            <li className="numbers">the scanned URL</li>
-                            <li className="numbers">percentage of elements with no detected violations or items to review</li>
-                            <li className="numbers">a summary of test results </li>
-                            <li className="numbers">issue details organized by requirements, element roles, and rules</li>
+                            <li className="numbers">The scan date and time</li>
+                            <li className="numbers">The scanned URL</li>
+                            <li className="numbers">Percentage of elements with no detected violations or items to review</li>
+                            <li className="numbers">A summary of test results </li>
+                            <li className="numbers">Issue details organized by requirements, element roles, and rules</li>
                             <li className="numbers">‘Learn more’ link with detailed description for each issue</li>
                         </ol>
                         </div>
@@ -841,11 +855,13 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     ruleset, guidelines and platform used for the scan, and a summary of the overall results across all included scans.
                                 </p>
                             </li>
+                            <br />
                             <li>
                                 <p>
                                     <strong>Scan summary</strong> provides an overview of the set of scans within the report.
                                 </p>
                             </li>
+                            <br />
                             <li>
                                 <p>
                                     <strong>Issue Summary</strong> provides an overview of the issues found across all the scans.
@@ -856,6 +872,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     and Recommendations. Counts are provided for each type of issue.
                                 </p>
                             </li>
+                            <br />
                             <li>
                                 <p>
                                     <strong>Issues</strong> has the details of the individual issues. This includes the scan label
@@ -863,6 +880,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                     and toolkit levels.
                                 </p>
                             </li>
+                            <br />
                             <li>
                                 <p>
                                     <strong>Definition of fields</strong> defines the columns in the other sheets.
@@ -901,20 +919,20 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                         </p>
                                     </li>
                                     <li className="abc">   
-                                        <p>issue filter checkboxes, 
+                                        <p>Issue filter checkboxes, 
                                             <img
                                                 src={enter}
                                                 alt="enter key"
                                                 />{" "}  selects checkbox
                                         </p></li>
                                     <li className="abc">
-                                        <p>issue view tab list, <img
+                                        <p>Issue view tab list, <img
                                                 src={leftRight}
                                                 alt="left right arrow keys"
                                                 />{" "} navigates between tabs 
                                         </p>
                                     </li>             
-                                    <li className="abc">issue groupings associated with each requirement (element role or rule)</li>
+                                    <li className="abc">Issue groupings associated with each requirement (element role or rule)</li>
                                         <ul>
                                             <li className="indent">
                                                 <p>
@@ -950,21 +968,23 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                 <br />
                             </li>
                             <li className="abc">Use the heading hierarchy or implemented landmarks to navigate:</li>
+                            <br />
                             <div className="pa">
                             <ul>
                                 <li>The Assessment or Checker view’s main landmark includes:
+                                <br />
                                 <div className="pa">
                                     <ul className="dashed">
-                                        <li className="dashed"><p>- Issue count region (by issue type and the total number of issues found)</p></li>
-                                        <li className="dashed"><p>- Issue list region (issues grouped by element roles/requirements/rules)</p></li>
+                                        <li className="dashed"><p>- <strong>Issue count</strong> region (by issue type and the total number of issues found)</p></li>
+                                        <li className="dashed"><p>- <strong>Issue list</strong> region (issues grouped by element roles/requirements/rules)</p></li>
 		                                <li className="dashed"><p>- In the Checker view, the main landmark also contains issue help and the overview of stored scans, when those are requested by the user</p></li>
                                     </ul>
                                 </div>
                                 </li>
                                 <br />
-                                <li><p>The Assessment view Scan Summary aside or the complementary landmark contains the scan summary, after the scan completes or shows the issue help when any issue is selected.</p></li>
+                                <li><p>The Assessment view <strong>Scan Summary</strong> aside or the complementary landmark contains the scan summary, after the scan completes or shows the issue help when any issue is selected.</p></li>
                                 <br />
-                                <li><p>The Assessment view Issue Help aside or the complementary landmark contains the issue help when any issue is selected.</p></li>
+                                <li><p>The Assessment view <strong>Issue Help</strong> aside or the complementary landmark contains the issue help when any issue is selected.</p></li>
                             </ul>
                             </div>
                         </ol>
@@ -975,6 +995,7 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                             Visit the{" "}
                             <a href="https://github.com/IBMa/equal-access/issues">
                                 Equal Access git repository</a> to:
+                                <br /><br />
                             <ul>
                                 <li className="unorder">
                                     <p>
@@ -993,6 +1014,18 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
                                 </li>
                             </ul>
                         </div>
+                        <h2 id="troubleshooting">9. Troubleshooting</h2>
+                            <p>
+                            If the Accessibility Checker appears unresponsive:
+                            <br /><br />
+                                <ul>
+                                    <li>Close the browser DevTools</li>
+                                    <li>Clear browser cookies</li>
+                                    <li>Refresh the page</li>
+                                    <li>Reopen the browser DevTools</li>
+                                    <li>Click the 'Scan' button</li>
+                                </ul>
+                            </p>
                     </Column>
                 </Grid>
             </div>
