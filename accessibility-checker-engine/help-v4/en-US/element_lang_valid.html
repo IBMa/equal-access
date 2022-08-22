@@ -44,7 +44,8 @@
 
 ### Why is this important?
 
-When the language attribute is used to identify the human language of specific content within a page, the attribute values must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). This ensures that user agents and text-to-speech (TTS) synthesizers can correctly present the specific content using the correct presentation and in the appropriate accent with proper pronunciation for that language.
+When the language attribute is used to identify the human language of specific content within a page, the attribute value must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). 
+This ensures that user agents and text-to-speech (TTS) synthesizers can correctly present the specific content using the correct presentation and in the appropriate accent with proper pronunciation for that language.
 
 A valid language attribute also allows the following:
 - Braille translation software to substitute control codes for accented characters for example and prevent erroneous creation of Grade 2 braille contractions
@@ -56,13 +57,15 @@ A valid language attribute also allows the following:
 
 ### What to do
 
-* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language.
+* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the language
 
 For example:
 
 ```
 <blockquote lang="fr">
-  Prouver que j’ai raison serait accorder que je puis avoir tort.
+    <p>
+        Prouver que j’ai raison serait accorder que je puis avoir tort.
+    </p>  
 </blockquote>
 ```
 
@@ -88,7 +91,7 @@ For example:
 * People using text-to-speech (TTS) synthesizer technologies
 * People who find it difficult to read written material with fluency and accuracy, such as recognizing characters and alphabets, or decoding words
 * People with certain cognitive, language, and learning disabilities
-* People who rely on captions for synchronized media.
+* People who rely on captions for synchronized media
 
 </script></mark-down>
 <!-- End side panel -->
