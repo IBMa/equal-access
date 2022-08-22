@@ -49,22 +49,28 @@
 
 <a name="navskip"></a>
 
-
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "507",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-        "/html/body/p"
-      ]
-    }
-  ];
-//]]>
-</script></body>
-
+<script>
+    UnitTest = {
+        ruleIds: ["element_lang_valid"],
+        results: [
+          {
+            "ruleId": "element_lang_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Specified 'lang' attribute does not include a valid primary language",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    };
+</script>
+</body>
 </html>
