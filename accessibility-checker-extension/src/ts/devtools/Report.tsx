@@ -73,6 +73,7 @@ export interface IRuleset {
 }
 
 interface IReportState {
+    renderFromTabCircleClick: boolean
 }
 
 interface IReportProps {
@@ -100,6 +101,12 @@ export const valueMap: { [key: string]: { [key2: string]: string } } = {
     "RECOMMENDATION": {
         "POTENTIAL": "Recommendation",
         "FAIL": "Recommendation",
+        "PASS": "Pass",
+        "MANUAL": "Recommendation"
+    },
+    "INFORMATION": {
+        "POTENTIAL": "Needs review",
+        "FAIL": "Violation",
         "PASS": "Pass",
         "MANUAL": "Recommendation"
     }
@@ -155,7 +162,9 @@ export function preprocessReport(report: IReport, filter: string | null, scroll:
 }
 
 export default class Report extends React.Component<IReportProps, IReportState> {
-    state: IReportState = {};
+    state: IReportState = {
+        renderFromTabCircleClick: false
+    };
     
     render() {
         const tabLabels : { [key: string] : string }= {
