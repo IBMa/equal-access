@@ -617,7 +617,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                     }
 
                     // see below lines as we draw triangle after lines
-                    console.log("Triangle x,y = ",x,",",y);
+                    // console.log("Triangle x,y = ",x,",",y);
 
                     if (outlines) {
 
