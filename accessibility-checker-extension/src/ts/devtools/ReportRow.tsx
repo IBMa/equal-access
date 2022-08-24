@@ -123,14 +123,17 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
     itemSelectedRef(item: IReportItem) {
         // this function runs many times per click
         var selectedIssue = this.props.selectedIssue;
-        
         if (selectedIssue && item.path.dom === selectedIssue?.path.dom && item.ruleId == selectedIssue.ruleId) {
             let mythis = this;
             setTimeout(function() {
                 if (mythis.selectedRef.current) {
                     mythis.selectedRef.current?.firstElementChild!.classList.add("selectedItem");
+                    // @ts-ignore
                     mythis.selectedRef.current?.scrollIntoView({
-                        block: 'center'
+                        // @ts-ignore
+                        block: 'nearest',
+                        behavior: 'smooth',
+                        inline: 'start'
                     });
                 }
             }, 0);
@@ -237,7 +240,7 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                         return <React.Fragment>
                         {!this.props.focusedViewFilter || (focusedView && (item.selected || item.selectedChild)) ?
                             (this.props.dataFromParent[0] || this.props.dataFromParent[1] && val === "Violation" || this.props.dataFromParent[2] && val === "Needs review" || this.props.dataFromParent[3] && val === "Recommendation") ?
-                            (
+                            (<div ref={this.itemSelectedRef(item)}>
                                 <Grid data-tip data-for={item.selected ? "selectedTip" : "selectedChildTip" } tabIndex={0} role="row" style={{cursor:'pointer'}} aria-rowindex={++rowindex} aria-selected={!!item.selected} className={"itemDetail"+(item.selected ? " selected": "")+(item.selectedChild ? " selectedChild": "")}  onClick={(event: any) => this.itemSelectedClickHandler(event, item)}  onKeyDown={this.onKeyDown.bind(this)}>
                                     <Column sm={{span: 4}} md={{span: 8}} lg={{span: 16}} role="cell" style={{paddingLeft:"28px"}}>
                                         <div className="itemMessage" style={{paddingLeft:"4px"}}>
@@ -265,7 +268,8 @@ export default class ReportRow extends React.Component<IReportRowProps, IReportR
                                         </div>
                                     </Column>
                                 </Grid>
-                            )
+                            </div>)
+                            
                             : ""
                         : "" }
                         

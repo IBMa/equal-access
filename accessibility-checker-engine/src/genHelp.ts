@@ -79,6 +79,12 @@ const valueMap = {
         "Fail": "Recommendation",
         "Pass": "Pass",
         "Manual": "Recommendation"
+    },
+    "INFORMATION": {
+        "POTENTIAL": "Needs review",
+        "FAIL": "Violation",
+        "PASS": "Pass",
+        "MANUAL": "Recommendation"
     }
 };
 

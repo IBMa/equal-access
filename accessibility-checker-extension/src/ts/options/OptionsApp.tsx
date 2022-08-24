@@ -19,7 +19,7 @@ limitations under the License.
 import React from "react";
 import {
     Column, Grid, Dropdown,
-    Button,
+    Button, Checkbox, Toggle,
     Modal,
     Theme
 } from "@carbon/react";
@@ -40,7 +40,11 @@ interface OptionsAppState {
     show_reset_notif: boolean;
     modalRuleSet: boolean;
     modalGuidelines: boolean;
-
+    // Keyboard Checker Mode options
+    tabStopLines: boolean;
+    tabStopOutlines: boolean;
+    tabStopAlerts: boolean;
+    tabStopFirstTime: boolean;
 }
 
 class OptionsApp extends React.Component<{}, OptionsAppState> {
@@ -55,12 +59,18 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         show_reset_notif: false,
         modalRuleSet: false,
         modalGuidelines: false,
+         // Keyboard Checker Mode options
+        tabStopLines: true,
+        tabStopOutlines: false,
+        tabStopAlerts: true,
+        tabStopFirstTime: true,
     };
 
     async componentDidMount() {
+        console.log("Options App ComponentDidMount");
         var self = this;
 
-        //get the selected_archive from storage
+        // get OPTIONS from storage
         chrome.storage.local.get("OPTIONS", async function (result: any) {
             //always sync archives with server
             var archives = await self.getArchives();
@@ -69,19 +79,39 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             var rulesets: any = null;
             var selected_ruleset: any = null;
             var currentRuleset: any = null;
+            // Keyboard Mode options
+            var tabStopLines: any = true;
+            var tabStopOutlines: any = false;
+            var tabStopAlerts: any = true;
+            var tabStopFirstTime: any = true;
 
-            //OPTIONS are not in storage
-            if (result != null && result.OPTIONS == undefined) {
+            console.log("_____________");
+            console.log(result.OPTIONS);
+            console.log("_____________");
+
+            // OPTIONS are not in storage
+            // JCH make this test stronger
+            if (result == null || result.OPTIONS == undefined || 
+                result.OPTIONS.selected_archive == undefined || 
+                result.OPTIONS.selected_ruleset == undefined) {
+                // OPTIONS are NOT in storage
+                console.log("OPTIONS are NOT in storage");
                 //find the latest archive
                 selected_archive = self.getLatestArchive(archives);
 
                 rulesets = await self.getRulesets(selected_archive);
                 selected_ruleset = rulesets[0];
+                // leave all Keyboard mode options to true, i.e., show all
             } else {
                 //OPTIONS are in storage
+                console.log("OPTIONS ARE in storage");
                 selected_archive = result.OPTIONS.selected_archive;
                 rulesets = result.OPTIONS.rulesets;
                 selected_ruleset = result.OPTIONS.selected_ruleset;
+                tabStopLines = result.OPTIONS.tabStopLines;
+                tabStopOutlines = result.OPTIONS.tabStopOutlines;
+                tabStopAlerts = result.OPTIONS.tabStopAlerts;
+                tabStopFirstTime = result.OPTIONS.tabStopFirstTime;
 
                 if (selected_archive) {
                     if (archives.some((archive: any) => (archive.id === selected_archive.id && archive.name === selected_archive.name))) {
@@ -104,12 +134,12 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
             currentArchive = selected_archive.name;
             currentRuleset = selected_ruleset.name;
-
-            // self.setState({ archives, selected_archive, rulesets, selected_ruleset });
+            
             self.setState({
                 archives: archives, selected_archive: selected_archive, rulesets: rulesets,
                 selected_ruleset: selected_ruleset, currentArchive: currentArchive,
-                currentRuleset: currentRuleset
+                currentRuleset: currentRuleset, tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
+                tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
             });
             self.save_options_to_storage(self.state);
         });
@@ -132,13 +162,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         return selected_archive.policies;
     };
 
-    //save options into browser's storage
-    save_options_to_storage = async (state: any) => {
-        var options = { OPTIONS: state };
-        await chrome.storage.local.set(options, function () {
-            console.log("options is set to ", options);
-        });
-    };
+    
 
     handleArchiveSelect = async (item: any) => {
         var rulesets = await this.getRulesets(item.selectedItem);
@@ -160,12 +184,36 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         //      modal choices  
         //            delete scans and update ruleset
         //            keep stored scans and don't update rulset (ali says don't give this choice)
-        this.setState({ currentArchive: this.state.selected_archive.name, currentRuleset: this.state.selected_ruleset.name })
+        console.log("handleSave");
+        console.log("this.state.selected_archive.name = ",this.state.selected_archive.name);
+        console.log("this.state.selected_ruleset.name = ",this.state.selected_ruleset.name,);
+        console.log("this.state.tabStopLines = ",this.state.tabStopLines);
+        console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
+        console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
+        console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
+
+        this.setState({ 
+            currentArchive: this.state.selected_archive.name, 
+            currentRuleset: this.state.selected_ruleset.name,
+            tabStopLines: this.state.tabStopLines,
+            tabStopOutlines: this.state.tabStopOutlines,
+            tabStopAlerts: this.state.tabStopAlerts,
+            tabStopFirstTime: false,
+         })
         this.save_options_to_storage(this.state);
         this.setState({ show_notif: true, show_reset_notif: false, });
     };
 
-    handlReset = () => {
+    //save options into browser's storage
+    save_options_to_storage = async (state: any) => {
+        var options = { OPTIONS: state };
+        await chrome.storage.local.set(options, function () {
+            // console.log("options is set to ", options);
+        });
+        
+    };
+
+    handleReset = () => {
         var selected_archive: any = this.getLatestArchive(this.state.archives);
         var selected_ruleset: any = this.state.rulesets[0];
 
@@ -174,6 +222,10 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
             selected_ruleset,
             show_reset_notif: true,
             show_notif: false,
+            tabStopLines: true,
+            tabStopOutlines: true,
+            tabStopAlerts: true,
+            tabStopFirstTime: false
         });
     };
 
@@ -186,6 +238,11 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
         } = {
             ...this.state,
         };
+
+        // only show keyboard first time notification on first time 
+        // user uses the keyboard visualization - note it is can be 
+        // reset with "Reset to defaults"
+        
 
         const manifest = chrome.runtime.getManifest();
         function displayVersion() {
@@ -204,22 +261,31 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <Theme theme="g10">
                                 <div role="banner">
                                     <img src={beeLogoUrl} alt="purple bee icon" className="icon" />
-                                    <h2>
-                                        IBM <strong>Accessibility</strong>
-                                        <br /> Equal Access Toolkit:
-                                        <br /> Accessibility Checker
-                                    </h2>
+                                    <div style={{marginTop:"2rem"}}>
+                                        <span className="ibm">IBM</span> <span className="accessibility">Accessibility</span>
+                                        <br /> <span className="equal-access-toolkit">Equal Access Toolkit:</span>
+                                        <br /> <span className="equal-access-toolkit">Accessibility Checker</span>
+                                    </div>
                                 </div>
                                 <aside aria-label="About Accessibility Checker Options">
                                     <div className="op_version" style={{ marginTop: "8px" }}>
                                         Version {displayVersion()}
                                     </div>
                                     <p>
-                                        By default, the Accessibility Checker uses a set of rules that
-                                        correspond to the most recent WCAG guidelines plus some
-                                        additional IBM requirements. Rule sets for specific WCAG
-                                        versions are also available. The rule sets are updated
-                                        regularly to continuously improve coverage and accuracy.
+                                    By default, the Accessibility Checker uses a set of rules that correspond to 
+                                    the most recent WCAG standards plus some additional IBM requirements. Rule sets 
+                                    for specific WCAG versions are also available. The rule sets are updated regularly, 
+                                    and each update has a date of deployment. If you need to replicate an earlier test, 
+                                    choose the deployment date of the original test.
+                                    <br/><br/>
+                                    For more in-depth guidance, see  <a
+                                    href={chrome.runtime.getURL("usingAC.html")}
+                                    target="_blank"
+                                    rel="noopener noreferred"
+                                    >
+                                    user guide
+                                    </a>
+                                    .
                                     </p>
                                 </aside>
                             </Theme>
@@ -228,10 +294,12 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                         <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}} className="rightPanel">
                             <Theme theme="white">
                                 <main aria-labelledby="options">
-                                    <h1 id="options">IBM Accessibility Checker options</h1>
+                                    <div id="options" className="checker-options">IBM Accessibility Checker options</div>
+
+                                    <div className="rule-sets">Rule sets</div>
 
                                     <div>
-                                        <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                                        <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
                                             Select a rule set deployment date
                                             <Button
                                                 renderIcon={Information}
@@ -239,7 +307,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                                 hasIconOnly iconDescription="Rule set info" tooltipPosition="top"
                                                 style={{
                                                     color: "black", border: "none", verticalAlign: "baseline", minHeight: "28px",
-                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px"
+                                                    paddingTop: "8px", paddingLeft: "8px", paddingRight: "8px", paddingBottom:"8px"
                                                 }}
                                                 onClick={(() => {
                                                     this.setState({ modalRuleSet: true });
@@ -282,7 +350,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                                     </div>
 
-                                    <div className="rulesetDate" style={{ marginTop: "1rem" }}>
+                                    <div className="select-a-rule-set" style={{ marginTop: "1rem" }}>
                                         Select accessibility guidelines
                                         <Button
                                             renderIcon={Information}
@@ -327,11 +395,50 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                         <p style={{ maxWidth: "100%" }}><strong>WCAG 2.0 (A, AA): </strong> Referenced by US Section 508, but not the latest W3C recommendation</p>
                                     </Modal>
 
+                                    <div className="rule-sets" style={{marginTop:"57px"}}>Keyboard checker mode</div>
+                                    <div style={{marginBottom:"2rem"}}>
+                                        <fieldset className="cds--fieldset" style={{marginBottom:"24px"}}>
+                                            <legend className="cds--label">Visualization options</legend>
+                                            <Checkbox 
+                                                labelText="Lines connecting tab stops" 
+                                                id="checked"
+                                                checked={this.state.tabStopLines}
+                                                //@ts-ignore
+                                                onChange={(value: any, id: any) => {
+                                                    // console.log("lines checkbox id.checked = ",id.checked);
+                                                    this.setState({ tabStopLines: id.checked });
+                                                }} 
+
+                                            />
+                                            <Checkbox 
+                                                labelText="Element outlines" 
+                                                id="checked-2"
+                                                checked={this.state.tabStopOutlines}
+                                                //@ts-ignore
+                                                onChange={(value: any, id: any) => {
+                                                    // console.log("lines checkbox id.checked = ",id.checked);
+                                                    this.setState({ tabStopOutlines: id.checked });
+                                                }} 
+                                            />
+                                        </fieldset>
+
+                                        <Toggle
+                                            aria-label="toggle button"
+                                            labelText="Alert Notifications"
+                                            id="alertToggle"
+                                            toggled={this.state.tabStopAlerts}
+                                            onToggle={(value: any) => {
+                                                // console.log("lines checkbox value = ",value);
+                                                this.setState({ tabStopAlerts: value });
+                                            }} 
+                                        />
+                                    </div>
+
                                     <div className="buttonRow">
                                         <Button
                                             disabled={false}
                                             kind="tertiary"
-                                            onClick={this.handlReset}
+                                            onClick={this.handleReset}
                                             renderIcon={Restart}
                                             size="default"
                                             tabIndex={0}
@@ -351,6 +458,7 @@ class OptionsApp extends React.Component<{}, OptionsAppState> {
                                             Save
                                         </Button>
                                     </div>
+                                    
                                 </main>
                             </Theme>
                         </Column>
