@@ -64,6 +64,7 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * than when the pseudoClass does not match.
  */
 export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
+    console.log("Function: getDefinedStyles");
     let definedStyles = {}
     let definedStylePseudo = {}
 
@@ -90,7 +91,9 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
         try {
             if (sheet && sheet.cssRules) {
+                console.log("Got sheet");
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                    console.log("Got rule: ", sheet.cssRules[rIndex]);
                     const rule = sheet.cssRules[rIndex] as CSSStyleRule;
                     const fullRuleSelector = rule.selectorText;
                     if (fullRuleSelector) {
