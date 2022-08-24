@@ -37,6 +37,7 @@ module.exports = {
         devtools: path.join(sourceRootPath, 'ts', 'devtools', 'index.tsx'),
         devtoolsPanel: path.join(sourceRootPath, 'ts', 'devtoolsPanel', 'index.tsx'),
         devtoolsSubpanel: path.join(sourceRootPath, 'ts', 'devtoolsSubpanel', 'index.tsx'),
+        draw: path.join(sourceRootPath, 'ts', 'contentScripts', 'index.ts'),
         tabListeners: path.join(sourceRootPath, 'ts', 'tab', 'tabListeners.ts'),
         usingAC: path.join(sourceRootPath, 'ts', 'usingAC', 'index.tsx'),
         ...contentScripts,
