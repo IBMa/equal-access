@@ -22,6 +22,9 @@ import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 import violation from "../../assets/Violation16.svg";
 import needsReview from "../../assets/NeedsReview16.svg";
 import recommendation from "../../assets/Recommendation16.svg";
+import tabStop from "../../assets/tab_stop.svg";
+import kbIssues from "../../assets/keyboard_issue.svg";
+import element from "../../assets/element.svg";
 
 interface quickGuideACAppState { }
 
@@ -82,6 +85,11 @@ class quickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                                 <li>
                                     <a href="#keyboard" title="keyboard checker mode">
                                         5. Keyboard checker mode
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#troubleshooting" title="troubleshooting">
+                                        6. Troubleshooting
                                     </a>
                                 </li>
                             </ul>
@@ -219,7 +227,77 @@ class quickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                                     src="assets/img/5_Keyboard.png"
                                     alt="IBM checker tool highlighting 'keyboard checker mode' icon button"
                                 />
+                                <div className="pa">
+                                    <p>Select 'Keyboard checker mode' icon to turn on/off keyboard visualization.</p>
+                                </div>
+                                <p>
+
+                                </p>
+                                <img 
+                                className="rectangle-image"
+                                src="assets/img/3.5Keyboard1.png"
+                                alt="IBM Checker tool highlighting 'keyboard checker mode' icon button"
+                            />
+                        <div className="pa">
+                            <p>
+                            Select 'Keyboard checker mode' icon to turn on/off keyboard visualization.
+                            </p>
                         </div>
+                        <div className="pa">
+                            <p><strong>Important note:</strong> the keyboard checker mode does not track page changes. Turn the mode off and on again to update the visualization.
+                            </p>
+                        </div>
+                        <img 
+                                className="rectangle-image"
+                                src="assets/img/3.5Keyboard2.png"
+                                alt="webpage with keyboard visualization overlay"
+                            />
+                        <div className="pa"><p>Select these icons or tab through the page to see code and keyboard access issues:</p></div>
+                        <div className="pa">
+                        <ul>
+                            <li>
+                                <p>
+                                    <img
+                                        src={tabStop}
+                                        alt="tab stop icon"
+                                    />{" "}
+                                    tab stops numbered by tab order of the page
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <img
+                                        src={kbIssues}
+                                        alt="keyboard issues icon"
+                                    />{" "}
+                                    keyboard access issue with tab stop number
+                                </p>
+                            </li>
+                            <li>
+                                <p>
+                                    <img
+                                        src={element}
+                                        alt="element issues icon"
+                                    />{" "}
+                                    element with keyboard access issue (not a tab stop)
+                                </p>
+                            </li>
+                        </ul>
+                        </div>
+                        </div>
+
+                        <h2 id="troubleshooting">9. Troubleshooting</h2>
+                            <p>
+                                If the Accessibility Checker appears unresponsive:
+                                <br />
+                                <ul>
+                                    <li>Close the browser DevTools</li>
+                                    <li>Clear browser cookies</li>
+                                    <li>Refresh the page</li>
+                                    <li>Reopen the browser DevTools</li>
+                                    <li>Click the 'Scan' button</li>
+                                </ul>
+                            </p>
                     </Column>
                 </Grid>
             </div>

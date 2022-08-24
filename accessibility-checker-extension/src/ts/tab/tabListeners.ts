@@ -33,9 +33,10 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
     try {
         let checker = new (<any>window).ace.Checker();
 
-        console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
+        // console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
 
-        let report = await checker.check(window.document, [message.policyId]);
+        let report = await checker.check(window.document, [message.policyId, "EXTENSIONS"]);
+        // console.log(report);
         (window as any).aceReportCache = {
             archiveId: message.archiveId,
             policyId: message.policyId,
@@ -43,13 +44,13 @@ TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
         };
         if (report) {
             let passResults = report.results.filter((result: any) => {
-                return result.value[1] === "PASS";
+                return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
             })
             let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
 
             report.passUniqueElements = Array.from(new Set(passXpaths));
 
-            report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS");
+            report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
             for (let result of report.results) {
                 let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, message.archiveId);
                 let version = message.archiveVersion || "latest";
