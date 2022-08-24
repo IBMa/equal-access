@@ -388,7 +388,7 @@
                             tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
     
                         });
-                        console.log("Function: readOptionsData DONE");
+                        // console.log("Function: readOptionsData DONE");
                     }
                     resolve();
                 });
