@@ -2686,6 +2686,27 @@ export class RPTUtil {
             return null;
     }
 
+    public static isPresentationalChildren(elem : HTMLElement) : boolean {
+        let roles = RPTUtil.getRoles(elem, false);
+        // if explicit role doesn't exist, get the implicit one
+        if (!roles || roles.length == 0) 
+            roles =  RPTUtil.getImplicitRole(elem);
+        
+        //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
+        if (!roles || roles.length == 0) 
+            return false;
+        
+        for (let i = 0; roles !== null && i < roles.length; i++) {
+            let roleProperties = ARIADefinitions.designPatterns[roles[i]];
+            if (roleProperties !== null && roleProperties !== undefined) {
+                let presentional = roleProperties.presentationalChildren;
+                if (presentional === true) 
+                    return true;
+            }
+        }                    
+        return false;
+    }
+
     public static CSS(element) {
         let styleText = "";
         if (element === null) return [];
