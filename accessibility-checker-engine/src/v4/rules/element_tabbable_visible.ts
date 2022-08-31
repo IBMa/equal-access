@@ -67,6 +67,7 @@ export let element_tabbable_visible: Rule = {
         
         let top = bounds['top'];
         let left = bounds['left'];     
+       
         if (Object.keys(onfocus_styles).length === 0 ) {
             // no onfocus position change, but could be changed from js 
             return RulePotential("potential_visible", []);
@@ -91,7 +92,7 @@ export let element_tabbable_visible: Rule = {
             }    
         }
         
-        if (top > 0 && left > 0)
+        if (top >= 0 && left >= 0)
             return RulePass("pass");
         else
             return RulePotential("potential_visible", []);
