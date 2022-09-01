@@ -45,7 +45,7 @@ export let aria_attribute_redundant: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_attribute_allowed", "") === "Fail_1") return null;
+        if (RPTUtil.getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
         // if conflict already reported, ignore reporting overlap
         if (RPTUtil.getCache(ruleContext, "aria_attribute_conflict", "") === "fail_conflict") return null;
          
