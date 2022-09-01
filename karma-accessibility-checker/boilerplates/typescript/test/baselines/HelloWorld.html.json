@@ -1,0 +1,223 @@
+{
+    "results": [
+        {
+            "ruleId": "WCAG20_Html_HasLang",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_3",
+            "message": "Page detected as HTML, but does not have a 'lang' attribute",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 2340,
+                "width": 2370
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation"
+        },
+        {
+            "ruleId": "WCAG20_Doc_HasTitle",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_2",
+            "message": "Missing <title> element in <head> element",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 2340,
+                "width": 2370
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation"
+        },
+        {
+            "ruleId": "WCAG20_Body_FirstASkips_Native_Host_Sematics",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_1",
+            "message": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 16,
+                "top": 16,
+                "height": 2308,
+                "width": 2338
+            },
+            "snippet": "<body>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation"
+        },
+        {
+            "ruleId": "WCAG20_Img_HasAlt",
+            "value": [
+                "VIOLATION",
+                "FAIL"
+            ],
+            "path": {
+                "dom": "/html[1]/body[1]/img[1]",
+                "aria": "/document[1]/img[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Fail_2",
+            "message": "Image does not have an 'alt' attribute short text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 16,
+                "top": 16,
+                "height": 32,
+                "width": 32
+            },
+            "snippet": "<img src=\"somfile.png\">",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "violation"
+        },
+        {
+            "ruleId": "RPT_Html_SkipNav",
+            "value": [
+                "VIOLATION",
+                "POTENTIAL"
+            ],
+            "path": {
+                "dom": "/html[1]",
+                "aria": "/document[1]"
+            },
+            "ruleTime": 0,
+            "reasonId": "Potential_1",
+            "message": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages",
+            "messageArgs": [],
+            "apiArgs": [],
+            "bounds": {
+                "left": 0,
+                "top": 0,
+                "height": 2340,
+                "width": 2370
+            },
+            "snippet": "<html>",
+            "category": "Accessibility",
+            "ignored": false,
+            "level": "potentialviolation"
+        }
+    ],
+    "numExecuted": 40,
+    "nls": {
+        "WCAG20_Html_HasLang": {
+            "0": "Page must identify the default language of the document with a 'lang' attribute",
+            "Fail_3": "Page detected as HTML, but does not have a 'lang' attribute"
+        },
+        "RPT_Html_SkipNav": {
+            "0": "Provide a way to bypass blocks of content that are repeated on multiple Web pages",
+            "Potential_1": "Verify there is a way to bypass blocks of content that are repeated on multiple Web pages"
+        },
+        "WCAG20_Doc_HasTitle": {
+            "0": "The page should have a title that correctly identifies the subject of the page",
+            "Fail_2": "Missing <title> element in <head> element"
+        },
+        "HAAC_BackgroundImg_HasTextOrTitle": {
+            "0": "Background images that convey important information must have a text alternative that describes the image",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_List_UseMarkup": {
+            "0": "Use proper HTML list elements to create lists",
+            "Pass_0": "Rule Passed"
+        },
+        "RPT_Text_SensoryReference": {
+            "0": "Instructions must be meaningful without shape or location words",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_Emoticons": {
+            "0": "Emoticons must have a short text alternative that describes their purpose",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Text_LetterSpacing": {
+            "0": "Use CSS 'letter-spacing' to control spacing within a word",
+            "Pass_0": "Rule Passed"
+        },
+        "text_quoted_correctly": {
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
+            "Pass_0": "Rule Passed"
+        },
+        "IBMA_Color_Contrast_WCAG2AA_PV": {
+            "0": "The contrast ratio of text with its background (i.e. background with a color gradient or a background image) must meet WCAG 2.1 AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
+            "0": "All content must reside within an element with a landmark role",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Body_FirstASkips_Native_Host_Sematics": {
+            "0": "Pages must provide a way to skip directly to the main content",
+            "Fail_1": "The page does not provide a way to quickly navigate to the main content (WAI-ARIA \"main\" landmark or a skip link)"
+        },
+        "IBMA_Color_Contrast_WCAG2AA": {
+            "0": "The contrast ratio of text with its background must meet WCAG 2.1 AA requirements",
+            "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_HasAlt": {
+            "0": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
+            "Fail_2": "Image does not have an 'alt' attribute short text alternative"
+        },
+        "RPT_Img_AltCommonMisuse": {
+            "0": "'alt' attribute value must be a good inline replacement for the image",
+            "Pass_0": "Rule Passed"
+        }
+    },
+    "summary": {
+        "counts": {
+            "violation": 4,
+            "potentialviolation": 1,
+            "recommendation": 0,
+            "potentialrecommendation": 0,
+            "manual": 0,
+            "ignored": 0
+        },
+        "scanTime": 14,
+        "ruleArchive": "Latest Deployment (latest)",
+        "policies": [
+            "IBM_Accessibility"
+        ],
+        "reportLevels": [
+            "violation",
+            "potentialviolation",
+            "recommendation",
+            "potentialrecommendation",
+            "manual"
+        ],
+        "startScan": 1600281306332
+    },
+    "scanID": "155337f9-c88a-4d6f-939f-dd1f1b30c93b",
+    "toolID": "karma-accessibility-checker-v3.0.8",
+    "label": "src/HelloWorld.html"
+}
