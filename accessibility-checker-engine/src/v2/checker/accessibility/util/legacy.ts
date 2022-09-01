@@ -2686,7 +2686,7 @@ export class RPTUtil {
             return null;
     }
 
-    public static isPresentationalChildren(elem : HTMLElement) : boolean {
+    public static containsPresentationalChildrenOnly(elem : HTMLElement) : boolean {
         let roles = RPTUtil.getRoles(elem, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length == 0) 
