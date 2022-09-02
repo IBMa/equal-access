@@ -2707,6 +2707,15 @@ export class RPTUtil {
         return false;
     }
 
+    public static shouldBePresentationalChild(element : HTMLElement) : boolean {
+        let walkNode : Element = DOMUtil.parentElement(element);
+        while (walkNode) {
+            if (RPTUtil.containsPresentationalChildrenOnly(element)) return true;
+            walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
     public static CSS(element) {
         let styleText = "";
         if (element === null) return [];

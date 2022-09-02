@@ -20,7 +20,7 @@ export let aria_child_valid: Rule = {
     //context: "dom:*[role]",
     //dependencies: ["Rpt_Aria_ValidRole"],
     context: "dom:*",
-    dependencies: ["aria_semantics_role"],
+    dependencies: ["aria_semantics_role", "aria_descendant_valid"],
     help: {
         "en-US": {
             "group": "aria_child_valid.html",

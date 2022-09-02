@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let aria_descendant_valid: Rule = {
     id: "aria_descendant_valid",
@@ -29,9 +29,10 @@ export let aria_descendant_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "An element with a ARIA role must own a required child",
-            "Pass": "An element with a ARIA role owns a required child",
-            "fail_with_no_presentation_child": "The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""
+            "group": "Browsers ignore the explicit and implicit ARIA roles of the descendants of certain elements",
+            "pass": "The element contains valid descendants",
+            "potential_child_implicit_role": "The element with role \"{0}\" contains descendants with implicit roles \"{1}\" which are ignored by browsers",
+            "fail_child_explicit_role": "The element with role \"{0}\" contains descendants with roles \"{1}\" which are ignored by browsers"
         }
     },
     rulesets: [{
@@ -41,7 +42,7 @@ export let aria_descendant_valid: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     // TODO: ACT: Verify mapping
-    act: [],
+    act: ["307n5z"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         
@@ -49,6 +50,11 @@ export let aria_descendant_valid: Rule = {
         if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
+        let roles = RPTUtil.getRoles(ruleContext, true);
+        //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
+        if (!roles || roles.length == 0) 
+            return null;
+
         let tagName = ruleContext.tagName.toLowerCase();
         // get all the children from accessibility tree, 
         // including ones with aria-owns    
@@ -56,8 +62,48 @@ export let aria_descendant_valid: Rule = {
         
         if (directATChildren && directATChildren.length > 0) {
             // the element with at least one non-presentational children
-            return RuleFail("fail_with_no_presentation_child", [tagName]);
-        }
-        return RulePass("Pass");
+            let explicitRoles = new Array();
+            let implicitRoles = new Array();
+            for (let j=0; j < directATChildren.length; j++) {
+                // ignore <img> and <svg>
+                const tag = directATChildren[j].nodeName.toLowerCase();
+                if (tag === 'img' || tag === 'svg') continue;
+                
+                // get explicit role if exists
+                let childRoles = RPTUtil.getRoles(directATChildren[j], false);
+                if (childRoles && childRoles.length > 0) {
+                    explicitRoles.push(childRoles.join(", "));
+                } else {
+                    // get implicit role if exists
+                    childRoles =  RPTUtil.getImplicitRole(ruleContext);
+                    if (childRoles && childRoles.length > 0)
+                        implicitRoles.push(childRoles.join(", "));
+                }
+            } 
+            
+            if (explicitRoles.length > 0) {
+                let retValues = [];
+                for (let i=0; i < explicitRoles.length; i++) {
+                    let retToken = new Array();
+                    retToken.push(roles.join(", "));
+                    retToken.push(explicitRoles[i]);
+                    retValues.push(RuleFail("fail_child_explicit_role", retToken));
+                } 
+                return retValues;
+            }
+
+            if (implicitRoles.length > 0) {
+                let retValues = [];
+                for (let i=0; i < implicitRoles.length; i++) {
+                    let retToken = new Array();
+                    retToken.push(roles.join(", "));
+                    retToken.push(implicitRoles[i]);
+                    retValues.push(RulePotential("potential_child_implicit_role", retToken));
+                } 
+                return retValues;
+            }
+
+        } else
+            return RulePass("pass");       
     }
 }

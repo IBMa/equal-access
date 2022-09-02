@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     id: "Rpt_Aria_RequiredParent_Native_Host_Sematics",
@@ -42,7 +43,12 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     // TODO: ACT: Check Fail 3
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
+
+        //skip the check if the element requires presentational children only haddled in aria_decendant_valid
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext))
+            return;
+
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
