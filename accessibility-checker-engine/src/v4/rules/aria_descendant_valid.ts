@@ -54,7 +54,11 @@ export let aria_descendant_valid: Rule = {
         if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
-        let roles = RPTUtil.getRoles(ruleContext, true);
+        let roles = RPTUtil.getRoles(ruleContext, false);
+        // if explicit role doesn't exist, get the implicit one
+        if (!roles || roles.length == 0) 
+            roles =  RPTUtil.getImplicitRole(ruleContext);
+        
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
         if (!roles || roles.length == 0) 
             return null;
@@ -63,7 +67,6 @@ export let aria_descendant_valid: Rule = {
         // get all the children from accessibility tree, 
         // including ones with aria-owns    
         let directATChildren = RPTUtil.getDirectATChildren(ruleContext);
-        
         if (directATChildren && directATChildren.length > 0) {
             // the element with at least one non-presentational children
             let explicitRoles = new Array();
@@ -79,7 +82,7 @@ export let aria_descendant_valid: Rule = {
                     explicitRoles.push(childRoles.join(", "));
                 } else {
                     // get implicit role if exists
-                    childRoles =  RPTUtil.getImplicitRole(ruleContext);
+                    childRoles =  RPTUtil.getImplicitRole(directATChildren[j]);
                     if (childRoles && childRoles.length > 0)
                         implicitRoles.push(childRoles.join(", "));
                 }

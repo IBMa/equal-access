@@ -1564,7 +1564,7 @@ export class RPTUtil {
             for (let i=0; i < element.children.length; i++) {
                 children.push(element.children[i]);
             }
-        }    
+        }
         // if the element contains "aria-own" attribute, then the aria-owned children need to be included too
         let owned = element.getAttribute("aria-owns");
         if (owned) {
@@ -1588,7 +1588,7 @@ export class RPTUtil {
                     roles = RPTUtil.getImplicitRole(children[i]);
                 }
 
-                if (roles !== null && roles.length > 0) {
+                if (roles && roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
                     roles = roles.filter(function(role) {
                         return role !== "none" && role !== "presentation";
@@ -1601,15 +1601,16 @@ export class RPTUtil {
                         })
                     }
                 } 
-                if (roles !== null && roles.length > 0) {
+                if (roles && roles !== null && roles.length > 0) {
                     direct.push(children[i]);
                 } else {
                     // recursive until get a return value, 
                     RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);
                 }
             } 
-        } 
-        return null;
+            return null;
+        } else
+            return null;
     }
 
     /**

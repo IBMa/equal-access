@@ -12,7 +12,22 @@
     UnitTest = {
         ruleIds: ["aria_descendant_valid"],
         results: [
-        
+        {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]/span[1]",
+              "aria": "/document[1]/checkbox[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
     }
   </script>

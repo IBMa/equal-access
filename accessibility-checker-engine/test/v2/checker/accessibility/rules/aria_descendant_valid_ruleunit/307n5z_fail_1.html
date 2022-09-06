@@ -9,7 +9,41 @@
     UnitTest = {
         ruleIds: ["aria_descendant_valid"],
         results: [
-        
+        {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "fail_child_explicit_role",
+            "message": "The element with role \"button\" contains descendants with roles \"button\" which are ignored by browsers",
+            "messageArgs": [
+              "button",
+              "button"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]/span[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
     }
   </script>

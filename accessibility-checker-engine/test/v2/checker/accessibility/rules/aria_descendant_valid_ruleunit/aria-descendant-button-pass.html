@@ -31,14 +31,29 @@
           <li role="none">
             <button type="button" role="none">Test</button>
           </li>
-        <ul>
+        </ul>
       </div>
     </main>
     <script>
       UnitTest = {
           ruleIds: ["aria_descendant_valid"],
           results: [
-          
+          {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
         ]
       }
     </script>
