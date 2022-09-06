@@ -46,20 +46,16 @@ export let aria_child_valid: Rule = {
     // TODO: ACT: Verify mapping
     act: ["bc4a75"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
         
-        //skip the check if the element is hidden
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext))
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
-        //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
-        //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
-        // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
-        if (RPTUtil.isNodeDisabled(ruleContext)) {
-            return null;
-        }
-
+        //skip the check if the element doesn't require presentational children only or should be a presentational child of an element
+        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
+        
         let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
         if (!roles || roles.length == 0) 

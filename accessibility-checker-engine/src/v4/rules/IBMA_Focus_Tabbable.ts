@@ -41,8 +41,16 @@ export let IBMA_Focus_Tabbable: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
 
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+        
+        //skip the check if the element doesn't require presentational children only or should be a presentational child of an element
+        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
+        
         let nodeName = ruleContext.nodeName.toLowerCase();
         //ignore datalist element check since it will be part of a input element or hidden by default
         if (nodeName === 'datalist')

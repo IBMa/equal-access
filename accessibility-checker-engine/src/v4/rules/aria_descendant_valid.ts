@@ -46,8 +46,12 @@ export let aria_descendant_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         
-        //skip the check if the element doesn't require presentational children only or is hidden or disabled
-        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+        
+        //skip the check if the element doesn't require presentational children only or should be a presentational child of an element
+        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let roles = RPTUtil.getRoles(ruleContext, true);

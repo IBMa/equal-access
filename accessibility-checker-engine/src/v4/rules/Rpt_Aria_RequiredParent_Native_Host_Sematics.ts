@@ -45,10 +45,14 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
 
-        //skip the check if the element requires presentational children only haddled in aria_decendant_valid
-        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext))
+        //skip the check if the element is hidden or disabled
+        if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
-
+        
+        //skip the check if the element doesn't require presentational children only or should be a presentational child of an element
+        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
+        
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
