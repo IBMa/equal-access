@@ -535,7 +535,7 @@
                         result.ruleId === "IBMA_Focus_Tabbable" ||
                         result.ruleID === "element_tabbable_role_invalid" ||
                         // 2.4.7 Focus Visible
-                        result.ruleId === "RPT_Style_HinderFocus1" ||
+                        // result.ruleId === "RPT_Style_HinderFocus1" ||
                         result.ruleId === "WCAG20_Script_FocusBlurs" ||
                         result.ruleId === "element_tabbable_visible" ||
                         // 3.2.1 On Focus
