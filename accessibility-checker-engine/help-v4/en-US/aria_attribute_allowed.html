@@ -47,11 +47,11 @@
 Functionally, ARIA roles, states, and properties are analogous to CSS for assistive technologies. 
 For screen reader users, ARIA controls the rendering of their non-visual experience. 
 Incorrect ARIA misrepresents the visual experience, with potentially devastating effects on their corresponding non-visual experience. 
-Incorrect ARIA misrepresents the intended expereince to _*all*_ assistive technology users, with potentially devastating effects. 
+Incorrect ARIA misrepresents the intended experience to _*all*_ assistive technology users, with potentially devastating effects.
 
 Many HTML elements have native semantics that map, by default, to implied ARIA semantics (roles). 
-Other elements specified has having _*No corresponding role*_ do not have implicit ARIA semantics. 
-Although they still have meaning its not provided by ARIA. 
+Other elements specified as having _*No corresponding role*_ do not have implicit ARIA semantics. 
+Although they still have meaning it's not provided by ARIA. 
 In order for assistive technologies to predictably represent the context and behavior of these elements (UI controls), 
 these implicit semantics should not be overridden as defined in the [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) specification. 
 It is therefore recommended that developers only add a role attribute to a semantically neutral and allowed HTML element such as a `<div>` or `<span>`, rather than incorrectly attempting to override the semantics of the detected element. 
