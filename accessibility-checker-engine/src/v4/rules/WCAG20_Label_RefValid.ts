@@ -13,8 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Label_RefValid: Rule = {
     id: "WCAG20_Label_RefValid",
@@ -70,7 +70,7 @@ export let WCAG20_Label_RefValid: Rule = {
 
             // Add one more check to make sure the target element is NOT hidden, in the case the target is hidden
             // flag a violation regardless of what the Check Hidden Content setting is.
-            if (passed && !RPTUtil.isNodeVisible(target)) {
+            if (passed && !VisUtil.isNodeVisible(target)) {
                 passed = false;
             }
         }

@@ -14,7 +14,9 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { getCache, setCache } from "../util/CacheUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_OrphanedContent_Native_Host_Sematics: Rule = {
     id: "Rpt_Aria_OrphanedContent_Native_Host_Sematics",
@@ -47,7 +49,7 @@ export let Rpt_Aria_OrphanedContent_Native_Host_Sematics: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        let params = RPTUtil.getCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", null);
+        let params = getCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", null);
         if (!params) {
             params = {
                 landmarks: {
@@ -98,14 +100,14 @@ export let Rpt_Aria_OrphanedContent_Native_Host_Sematics: Rule = {
                 params.mapNoLandmarkedRoles[params.noLandmarkedRoles.value[i]] = true;
             }
 
-            RPTUtil.setCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", params);
+            setCache(context.dom.node.ownerDocument, "Rpt_Aria_OrphanedContent_Native_Host_Sematics", params);
         }
         const ruleContext = context["dom"].node as Element;
         let nodeName = ruleContext.nodeName.toLowerCase();
-        if (!RPTUtil.isNodeVisible(ruleContext) ||  // avoid diagnosing g1157 for non-visible nodes
-            (RPTUtil.hiddenByDefaultElements != null &&
-                RPTUtil.hiddenByDefaultElements != undefined &&
-                RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
+        if (!VisUtil.isNodeVisible(ruleContext) ||  // avoid diagnosing g1157 for non-visible nodes
+            (VisUtil.hiddenByDefaultElements != null &&
+                VisUtil.hiddenByDefaultElements != undefined &&
+                VisUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
             return RulePass("Pass_0");
         }
 
@@ -136,31 +138,31 @@ export let Rpt_Aria_OrphanedContent_Native_Host_Sematics: Rule = {
             passed = parentRoles.filter(role => role in params.mapLandmarks).length > 0
             if (!passed) {
                 // Don't fail elements when a parent or sibling has failed - causes too many messages.
-                let walkElement = DOMUtil.parentElement(ruleContext);
+                let walkElement = DOMWalker.parentElement(ruleContext);
                 while (!passed && walkElement != null) {
-                    passed = RPTUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
-                    walkElement = DOMUtil.parentElement(walkElement);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    walkElement = DOMWalker.parentElement(walkElement);
                 }
                 walkElement = ruleContext.nextElementSibling;
                 while (!passed && walkElement != null) {
-                    passed = RPTUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
                     walkElement = walkElement.nextElementSibling;
                 }
                 walkElement = ruleContext.previousElementSibling;
                 while (!passed && walkElement != null) {
-                    passed = RPTUtil.getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
+                    passed = getCache(walkElement, "Rpt_Aria_OrphanedContent", false);
                     walkElement = walkElement.previousElementSibling;
                 }
                 if (!passed) {
-                    RPTUtil.setCache(ruleContext, "Rpt_Aria_OrphanedContent", true);
+                    setCache(ruleContext, "Rpt_Aria_OrphanedContent", true);
 
                     // Don't trigger rule if element is a stand-alone widget
-                    passed = RPTUtil.getCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", false) ||
+                    passed = getCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", false) ||
                         RPTUtil.hasRole(ruleContext, params.mapNoLandmarkedRoles, true) ||
                         RPTUtil.getAncestorWithRole(ruleContext, params.mapNoLandmarkedRoles, true);
 
                     if (passed) {
-                        RPTUtil.setCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", true);
+                        setCache(ruleContext, "Rpt_Aria_OrphanedContent_NoTrigger", true);
                         return null;
                     }
                 } else {

@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_ValidIdRef: Rule = {
     id: "Rpt_Aria_ValidIdRef",
@@ -102,7 +103,7 @@ export let Rpt_Aria_ValidIdRef: Rule = {
                                         // then perform a isNodeVisible check, in the case the node is not visible then we return
                                         // false and true otherwise.
                                         if (pass && !dataTypes.hiddenIDRefSupported) {
-                                            pass = RPTUtil.isNodeVisible(elementById);
+                                            pass = VisUtil.isNodeVisible(elementById);
                                         }
 
                                         if (!pass) {

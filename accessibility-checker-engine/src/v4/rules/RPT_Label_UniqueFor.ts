@@ -13,8 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { getCache } from "../util/CacheUtil";
 
 export let RPT_Label_UniqueFor: Rule = {
     id: "RPT_Label_UniqueFor",
@@ -43,7 +43,7 @@ export let RPT_Label_UniqueFor: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // JCH - NO OUT OF SCOPE hidden in context
-        let labelIds = RPTUtil.getCache(FragmentUtil.getOwnerFragment(ruleContext), "RPT_Label_Single", {})
+        let labelIds = getCache(FragmentUtil.getOwnerFragment(ruleContext), "RPT_Label_Single", {})
         let id = ruleContext.getAttribute("for");
         let passed = !(id in labelIds);
         labelIds[id] = true;

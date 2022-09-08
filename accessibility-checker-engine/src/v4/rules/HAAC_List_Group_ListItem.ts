@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let HAAC_List_Group_ListItem: Rule = {
     id: "HAAC_List_Group_ListItem",
@@ -42,7 +42,7 @@ export let HAAC_List_Group_ListItem: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let parent = DOMUtil.parentElement(ruleContext);
+        let parent = DOMWalker.parentElement(ruleContext);
         if (!RPTUtil.hasRoleInSemantics(parent, "list")) {
             return null;
         }

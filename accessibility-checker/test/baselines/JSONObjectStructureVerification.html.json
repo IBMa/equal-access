@@ -2331,7 +2331,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Elem_Lang_Valid",
+		"ruleId": "html_lang_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]",
@@ -2500,8 +2500,8 @@
 			"0": "Use proper HTML list elements to create lists",
 			"Pass_0": "Rule Passed"
 		},
-		"WCAG20_Elem_Lang_Valid": {
-			"0": "The language of content must be valid and specified in accordance with BCP 47",
+		"html_lang_valid": {
+			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
 			"Pass_0": "Lang has a valid primary lang and conforms to BCP 47"
 		},
 		"WCAG20_Text_Emoticons": {

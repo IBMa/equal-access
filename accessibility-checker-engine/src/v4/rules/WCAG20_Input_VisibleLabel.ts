@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Input_VisibleLabel: Rule = {
     id: "WCAG20_Input_VisibleLabel",
@@ -49,7 +50,7 @@ export let WCAG20_Input_VisibleLabel: Rule = {
         if (nodeName === 'datalist')
             return null;
 
-        if (!RPTUtil.isNodeVisible(ruleContext) ||
+        if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
@@ -119,7 +120,7 @@ export let WCAG20_Input_VisibleLabel: Rule = {
             let labelValues = theLabel.split(/\s+/);
             for (let j = 0; j < labelValues.length; ++j) {
                 let elementById = FragmentUtil.getById(ruleContext, labelValues[j]);
-                if (elementById && RPTUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
+                if (elementById && VisUtil.isNodeVisible(elementById) && RPTUtil.hasInnerContentHidden(elementById)) {
                     passed = true;
                     break;
                 }

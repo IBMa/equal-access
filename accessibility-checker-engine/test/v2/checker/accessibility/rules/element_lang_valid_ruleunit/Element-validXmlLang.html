@@ -29,7 +29,7 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: Element-NoXmlLang.html</h2>
+<h2>Test case: Element-validXmlLang.html</h2>
 
 
 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -39,31 +39,38 @@
 
 
 <ol>
-	<li>Test - Element no xml:lang attribute usage</li>
+	<li>Test - Valid element xml:lang attribute usage</li>
 </ol>
 
-<p>
+<p xml:lang="en-US">
    Test
 </p>
 
 
 <a name="navskip"></a>
 
-
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "507",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-      ]
-    },
-  ];
-//]]>
-</script></body>
-
+<script>
+    UnitTest = {
+        ruleIds: ["element_lang_valid"],
+        results: [
+          {
+            "ruleId": "element_lang_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Lang has a valid primary lang and conforms to BCP 47",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    };
+</script>
+</body>
 </html>
