@@ -14,6 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 function patternDetect(elem: Element): String {
     // check 'explicit' role combobox and that it is not <select>. 
@@ -61,7 +63,7 @@ export let combobox_version: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
         let pattern = patternDetect(ruleContext);
@@ -77,13 +79,13 @@ export let combobox_version: Rule = {
 
         let key = context["dom"].rolePath;
         if (key) {
-            let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+            let cache = getCache(ruleContext.ownerDocument, "combobox", {});
             cache[key] = {
                 "inputElement": editable ? ruleContext : null,
                 "pattern": pattern,
                 "expanded": expanded
             };
-            RPTUtil.setCache(ruleContext.ownerDocument, "combobox", cache);
+            setCache(ruleContext.ownerDocument, "combobox", cache);
         } else {
             // No xpath?
             return null;

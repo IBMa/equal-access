@@ -13,9 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { getCache } from "../util/CacheUtil";
 
 export let group_withInputs_hasName: Rule = {
     id: "group_withInputs_hasName",
@@ -46,7 +46,7 @@ export let group_withInputs_hasName: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
-        let formCache = RPTUtil.getCache(
+        let formCache = getCache(
             ruleContext.ownerDocument,
             "landmark_name_unique",
             null

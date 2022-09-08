@@ -13,8 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let combobox_popup_reference: Rule = {
     id: "combobox_popup_reference",
@@ -66,7 +67,7 @@ export let combobox_popup_reference: Rule = {
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        const cache = getCache(ruleContext.ownerDocument, "combobox", {});
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;
@@ -105,9 +106,9 @@ export let combobox_popup_reference: Rule = {
         cachedElem.popupElement = popupElement;
 
 
-        if (expanded && !RPTUtil.isNodeVisible(popupElement)) {
+        if (expanded && !VisUtil.isNodeVisible(popupElement)) {
             return RuleFail("Fail_combobox_expanded_hidden");
-        } else if (!expanded && RPTUtil.isNodeVisible(popupElement)) {
+        } else if (!expanded && VisUtil.isNodeVisible(popupElement)) {
             return RuleFail("Fail_combobox_collapsed_visible");
         }
 

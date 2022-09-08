@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let table_headers_ref_valid: Rule = {
     id: "table_headers_ref_valid",
@@ -50,7 +51,7 @@ export let table_headers_ref_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         let parentTable = RPTUtil.getAncestor(ruleContext, "table");
         // If this is a layout table or a simple table the rule does not apply.
-        if (parentTable == null || !RPTUtil.isNodeVisible(parentTable) || !RPTUtil.isDataTable(parentTable))
+        if (parentTable == null || !VisUtil.isNodeVisible(parentTable) || !RPTUtil.isDataTable(parentTable))
             return null;
 
         let nodeName = ruleContext.nodeName.toLowerCase();

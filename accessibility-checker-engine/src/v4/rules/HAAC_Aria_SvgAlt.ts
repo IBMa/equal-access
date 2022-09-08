@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let HAAC_Aria_SvgAlt: Rule = {
     id: "HAAC_Aria_SvgAlt",
@@ -54,7 +55,7 @@ export let HAAC_Aria_SvgAlt: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         //skip the rule
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
 
         if (!ruleContext.hasAttribute("role") || !ruleContext.getAttribute("role").includes("graphics-")) return null;
 
