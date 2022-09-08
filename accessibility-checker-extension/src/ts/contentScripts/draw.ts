@@ -478,6 +478,7 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
 
 //@ts-ignore
 TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    console.log("TabMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS call deleteDrawing");
     deleteDrawing(".deleteMe");
     return true;
 });
@@ -500,8 +501,9 @@ async function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean,
 }
 
 function deleteDrawing(classToRemove: string) {
-    // console.log("Function: deleteDrawing");
+    console.log("Function: deleteDrawing START");
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
+    console.log("Function: deleteDrawing DONE")
 }
 
 

@@ -533,9 +533,9 @@
                         // 2.4.3 Focus Order
                         result.ruleId === "IBMA_Focus_MultiTab" ||
                         result.ruleId === "IBMA_Focus_Tabbable" ||
-                        result.ruleID === "element_tabbable_role_invalid" ||
+                        result.ruleID === "element_tabbable_role_valid" ||
                         // 2.4.7 Focus Visible
-                        result.ruleId === "RPT_Style_HinderFocus1" ||
+                        // result.ruleId === "RPT_Style_HinderFocus1" ||
                         result.ruleId === "WCAG20_Script_FocusBlurs" ||
                         result.ruleId === "element_tabbable_visible" ||
                         // 3.2.1 On Focus
@@ -554,9 +554,9 @@
                 // console.log("tabbable = ", tabbable);
                 // console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
-                // console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
+                console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
                 if (this.state.showHideTabStops === false ) {
-                    // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                    console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
                 }
                 this.setState({ showHideTabStops: true });
@@ -1040,8 +1040,11 @@
         }
     
         selectElementInElements () {
+            console.log("Function: selectElementInElements START");
+            console.log("document.firstElementChild = ", document.firstElementChild);
             chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
                 (result:string, isException) => {
+                    console.log("result = ",result);
                     if (isException) {
                         console.error(isException);
                     }
@@ -1054,6 +1057,7 @@
                     }, 0);
                 }
             );
+            console.log("Function: selectElementInElements DONE");
         }
     
         getItem(item: IReportItem) {
@@ -1113,15 +1117,16 @@
         };
     
         tabStopsHandler() {
-            // console.log("tabStopsHandler");
+            console.log("tabStopsHandler START");
             // let mythis = this;
-    
+            console.log("PanelMessaging.sendToBackground DELETE_DRAW_TABS_TO_CONTEXT_SCRIPT")
             PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
             this.setState({ tabStopsPanel: false });
             setTimeout(function () {
                 // console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
             }, 1);
             this.selectElementInElements();
+            console.log("tabStopsHandler DONE");
         }
     
         tabStopsHighlight(index: number, result: any) {
