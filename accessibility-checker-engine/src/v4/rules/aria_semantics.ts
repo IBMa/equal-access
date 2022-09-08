@@ -196,7 +196,7 @@ export let aria_attribute_allowed: Rule = {
         
         if (failAttributeTokens.length > 0) {
 
-            RPTUtil.setCache(ruleContext, "aria_attribute_allowed", "Fail");
+            setCache(ruleContext, "aria_attribute_allowed", "Fail");
             if (type === "implicit_role_attr")
                 return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
             else {
