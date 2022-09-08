@@ -52,8 +52,8 @@ export let aria_child_valid: Rule = {
         if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        //skip the check if the element doesn't require presentational children only or should be a presentational child of an element
-        if (!RPTUtil.containsPresentationalChildrenOnly(ruleContext) && !RPTUtil.shouldBePresentationalChild(ruleContext))
+        //skip the check if the element requires presentational children only or should be a presentational child of an element
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let roles = RPTUtil.getRoles(ruleContext, false);
