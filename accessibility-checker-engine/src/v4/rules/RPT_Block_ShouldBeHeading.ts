@@ -14,7 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let RPT_Block_ShouldBeHeading: Rule = {
     id: "RPT_Block_ShouldBeHeading",
@@ -58,7 +58,7 @@ export let RPT_Block_ShouldBeHeading: Rule = {
         while (!passed &&
             nw.nextNode() &&
             nw.node !== ruleContext &&
-            nw.node !== DOMUtil.parentNode(ruleContext) &&
+            nw.node !== DOMWalker.parentNode(ruleContext) &&
             !["br", "div", "p"].includes(nw.node.nodeName.toLowerCase())) // Don't report twice
         {
             let nwName = nw.node.nodeName.toLowerCase();

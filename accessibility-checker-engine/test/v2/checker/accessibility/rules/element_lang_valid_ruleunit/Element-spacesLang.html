@@ -29,7 +29,7 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: Element-noLang.html</h2>
+<h2>Test case: Element-spacesLang.html</h2>
 
 
 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -39,31 +39,38 @@
 
 
 <ol>
-	<li>Test - Element no lang attribute usage</li>
+	<li>Test - Element lang attribute with only spaces</li>
 </ol>
 
-<p>
+<p lang="  ">
    Test
 </p>
 
 
 <a name="navskip"></a>
 
-
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "507",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-      ]
-    },
-  ];
-//]]>
-</script></body>
-
+<script>
+    UnitTest = {
+        ruleIds: ["element_lang_valid"],
+        results: [
+          {
+            "ruleId": "element_lang_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Specified 'lang' attribute does not include a valid primary language",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    };
+</script>
+</body>
 </html>

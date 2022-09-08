@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Img_HasAlt: Rule = {
     id: "WCAG20_Img_HasAlt",
@@ -46,7 +47,7 @@ export let WCAG20_Img_HasAlt: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // If not visible to the screen reader, ignore
-        if (!RPTUtil.isNodeVisible(ruleContext) || ruleContext.getAttribute("aria-hidden") === "true") {
+        if (!VisUtil.isNodeVisible(ruleContext) || ruleContext.getAttribute("aria-hidden") === "true") {
             return null;
         }
         // Images with different roles should be handled by other ARIA rules

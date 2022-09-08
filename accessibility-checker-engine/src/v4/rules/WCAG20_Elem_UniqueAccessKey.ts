@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
 
 export let WCAG20_Elem_UniqueAccessKey: Rule = {
     id: "WCAG20_Elem_UniqueAccessKey",
@@ -41,7 +41,7 @@ export let WCAG20_Elem_UniqueAccessKey: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let map = RPTUtil.getCache(ruleContext.ownerDocument, "WCAG20_Elem_UniqueAccessKey", {});
+        let map = getCache(ruleContext.ownerDocument, "WCAG20_Elem_UniqueAccessKey", {});
 
         let key = ruleContext.getAttribute("accesskey");
 

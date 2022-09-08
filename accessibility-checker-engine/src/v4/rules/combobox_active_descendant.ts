@@ -15,6 +15,8 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let combobox_active_descendant: Rule = {
     id: "combobox_active_descendant",
@@ -49,7 +51,7 @@ export let combobox_active_descendant: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupElement, popupId } = cachedElem;
@@ -74,7 +76,7 @@ export let combobox_active_descendant: Rule = {
         if (popupElement) {
             let nw = new NodeWalker(popupElement);
             while (!found && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
-                if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
+                if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                     found = nw.elem().getAttribute("id") === activeId;
                 }
             }

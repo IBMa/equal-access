@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -48,7 +49,7 @@ export let aria_semantics_role: Rule = {
         const ruleContext = context["dom"].node as Element;
         let tagName = ruleContext.tagName.toLowerCase();
         // dependency check: if it's already failed, then skip
-        if (["td", "th", "tr"].includes(tagName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
+        if (["td", "th", "tr"].includes(tagName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
         
         let domRoles: string[] = [];
@@ -97,7 +98,7 @@ export let aria_semantics_role: Rule = {
         if (failRoleTokens.includes("presentation") || failRoleTokens.includes("none") && RPTUtil.isTabbable(ruleContext)) {
             return RuleFail("Fail_2", [failRoleTokens.join(", "), tagName]);
         } else if (failRoleTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_semantics_role", "Fail_1");
+            setCache(ruleContext, "aria_semantics_role", "Fail_1");
             return RuleFail("Fail_1", [failRoleTokens.join(", "), tagName]);
         } else if (passRoleTokens.length > 0) {
             return RulePass("Pass_0", [passRoleTokens.join(", "), tagName]);
@@ -142,7 +143,7 @@ export let aria_semantics_attribute: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // The the ARIA role is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        if (getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
         let role = ARIAMapper.nodeToRole(ruleContext);
         if (!role) {
             role = "none";
@@ -195,7 +196,7 @@ export let aria_semantics_attribute: Rule = {
 
         //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
+            setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
             return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
         } else if (passAttributeTokens.length > 0) {
             return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);

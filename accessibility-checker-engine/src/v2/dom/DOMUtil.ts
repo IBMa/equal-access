@@ -14,45 +14,24 @@
     limitations under the License.
  *****************************************************************************/
 
+import { DOMWalker } from "./DOMWalker";
+
 export class DOMUtil {
     
     static hasParent(node: Node, names:string[]) {
-        let p = DOMUtil.parentElement(node);
+        let p = DOMWalker.parentElement(node);
         while (p && !names.includes(p.nodeName)) {
-            p = DOMUtil.parentElement(p);
+            p = DOMWalker.parentElement(p);
         }
         return !!p;
     }
 
     static getAncestor(node: Node, names:string[]) {
-        let p = DOMUtil.parentElement(node);
+        let p = DOMWalker.parentElement(node);
         while (p && !names.includes(p.nodeName.toLowerCase())) {
-            p = DOMUtil.parentElement(p);
+            p = DOMWalker.parentElement(p);
         }
         return p;
-    }
-
-    static isNodeVisible(node: Node) {
-        try {
-            let vis = null;
-            while (node && node.nodeType !== 1 /* Node.ELEMENT_NODE */) {
-                node = DOMUtil.parentElement(node);
-            }
-            let elem = node as Element;
-            let w = elem.ownerDocument.defaultView;
-            do {
-                let cs = w.getComputedStyle(elem);
-                if (cs.display === "none") return false;
-                if (vis === null && cs.visibility) {
-                    vis = cs.visibility;
-                    if (vis === "hidden") return false;
-                }
-                elem = DOMUtil.parentElement(elem);
-            } while (elem);
-            return true;
-        } catch (err) {
-            return false;
-        }
     }
 
     static sameNode(a: Node, b: Node) : boolean {
@@ -76,30 +55,6 @@ export class DOMUtil {
     static cleanSpace(s: string) : string {
         let retVal = s.replace(/ +/g," ");
         return retVal;
-    }
-
-    static parentNode(node: Node) : Node | null {
-        let p : Node = node.parentNode;
-        if ((node as any).slotOwner) {
-            p = (node as any).slotOwner;
-        } else if ((node as any).ownerElement) {
-            p = (node as any).ownerElement;
-        } else if (p && p.nodeType === 11) {
-            if ((p as ShadowRoot).host) {
-                p = (p as ShadowRoot).host;
-            } else {
-                p = null;
-            }
-        }
-        return p;
-    }
-
-    static parentElement(node: Node) : Element | null {
-        let elem : Element = node as Element;
-        do {
-            elem = DOMUtil.parentNode(elem) as Element;
-        } while (elem && elem.nodeType !== 1);
-        return elem;
     }
 
     // return true if element1 and element2 (cells) are in the same table
@@ -150,5 +105,15 @@ export class DOMUtil {
             }
             return retVal;
         }
+    }
+
+    public static getAncestorWithAttribute(element, attrName, attrValue) {
+        let walkNode = DOMWalker.parentNode(element);
+        while (walkNode !== null) {
+            if (walkNode.nodeType === Node.ELEMENT_NODE && (<Element>walkNode).getAttribute(attrName) === attrValue) 
+                return walkNode;
+            walkNode = DOMWalker.parentNode(walkNode);
+        }
+        return null;
     }
 }

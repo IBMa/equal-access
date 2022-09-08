@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let text_quoted_correctly: Rule = {
     id: "text_quoted_correctly",
@@ -42,7 +43,7 @@ export let text_quoted_correctly: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // ignore the check if the node is hidden
-        if (!RPTUtil.isNodeVisible(ruleContext) ) return null;
+        if (!VisUtil.isNodeVisible(ruleContext) ) return null;
         // Don't trigger if the element is not in the body
         if (RPTUtil.getAncestor(ruleContext, ["body"]) === null) return null;
 

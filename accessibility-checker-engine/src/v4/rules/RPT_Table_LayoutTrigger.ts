@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let RPT_Table_LayoutTrigger: Rule = {
     id: "RPT_Table_LayoutTrigger",
@@ -42,7 +43,7 @@ export let RPT_Table_LayoutTrigger: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let passed = !RPTUtil.isLayoutTable(ruleContext);
         if (passed) return RulePass("Pass_0");
         if (!passed) return RulePotential("Potential_1");

@@ -15,6 +15,8 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { AncestorUtil } from "../../v2/checker/accessibility/util/ancestor";
+import { getCache, setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Body_FirstASkips_Native_Host_Sematics: Rule = {
     id: "WCAG20_Body_FirstASkips_Native_Host_Sematics",
@@ -51,12 +53,12 @@ export let WCAG20_Body_FirstASkips_Native_Host_Sematics: Rule = {
 
         // Check for landmarks first
         let passed;
-        if (RPTUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
-            RPTUtil.setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
+        if (getCache(ruleContext, "IBM_hasLandmarks_Implicit", null) === null) {
+            setCache(ruleContext, "IBM_hasLandmarks_Implicit", RPTUtil.getElementsByRoleHidden(ruleContext.ownerDocument, ["application", "banner", "complementary", "contentinfo",
                 "form", "main", "navigation", "search"
             ], true, true).length > 0);
         }
-        passed = RPTUtil.getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
+        passed = getCache(ruleContext, "IBM_hasLandmarks_Implicit", false);
 
         if (!passed) { // No landmarks, check for skip links
             let anchors = RPTUtil.getDocElementsByTag(ruleContext, "a");
@@ -64,7 +66,7 @@ export let WCAG20_Body_FirstASkips_Native_Host_Sematics: Rule = {
             // Skip anchor should be the first one on the page with an href attribute
             let testAnchor = null;
             for (let i = 0; i < anchors.length; ++i) {
-                if (anchors[i].hasAttribute("href") && RPTUtil.isNodeVisible(anchors[i])) {
+                if (anchors[i].hasAttribute("href") && VisUtil.isNodeVisible(anchors[i])) {
                     testAnchor = anchors[i];
                     break;
                 }
