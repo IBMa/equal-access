@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "Run ACT testcases",
   "scripts": {
-    "test": "echo \"Results output to testOutput.txt\" && node main.js > testOutput.txt"
+    "test": "echo \"Results output to act-report-v2.txt\" && node main.js > act-report-v2.txt"
   }
 }
