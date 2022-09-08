@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let Valerie_Table_DataCellRelationships: Rule = {
     id: "Valerie_Table_DataCellRelationships",
@@ -47,7 +48,7 @@ export let Valerie_Table_DataCellRelationships: Rule = {
             return null;
 
         // If this table hasn't been preprocessed, process it.
-        if (RPTUtil.getCache(ruleContext, "Valerie_Table_DataCellRelationships", null) === null) {
+        if (getCache(ruleContext, "Valerie_Table_DataCellRelationships", null) === null) {
             // Build a grid that's actually usable (rowspan and colspan elements are duplicated)
             // This builds a real 2d table array.
             let grid = [];
@@ -56,7 +57,7 @@ export let Valerie_Table_DataCellRelationships: Rule = {
                 if (!grid[i]) grid[i] = [];
                 for (let j = 0; j < row.cells.length; ++j) {
                     let cell = row.cells[j];
-                    RPTUtil.setCache(cell, "Valerie_Table_DataCellRelationships", i + ":" + j);
+                    setCache(cell, "Valerie_Table_DataCellRelationships", i + ":" + j);
                     let width = parseInt(cell.getAttribute("colspan"));
                     if (!width) width = 1;
                     let height = parseInt(cell.getAttribute("rowspan"));
@@ -88,13 +89,13 @@ export let Valerie_Table_DataCellRelationships: Rule = {
                             // If there's an axis attribute, it must be referred to by headers,
                             // scope is not enough.
                             if (!RPTUtil.attributeNonEmpty(gridCell, "axis"))
-                                lookup[RPTUtil.getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
+                                lookup[getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
                         } else if (gridCell.getAttribute("scope") == "col") {
                             scopedCols[j] = true;
                             // If there's an axis attribute, it must be referred to by headers,
                             // scope is not enough.
                             if (!RPTUtil.attributeNonEmpty(gridCell, "axis"))
-                                lookup[RPTUtil.getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
+                                lookup[getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
                         }
                         // Headers can refer to other headers
                         if (RPTUtil.attributeNonEmpty(gridCell, "headers")) {
@@ -102,31 +103,31 @@ export let Valerie_Table_DataCellRelationships: Rule = {
                             for (let k = 0; k < hdrs.length; ++k) {
                                 let headElem = doc.getElementById(hdrs[k].trim());
                                 if (headElem && RPTUtil.getAncestor(headElem, "table") == parentTable) {
-                                    lookup[RPTUtil.getCache(headElem, "Valerie_Table_DataCellRelationships", null)] = true;
+                                    lookup[getCache(headElem, "Valerie_Table_DataCellRelationships", null)] = true;
                                 }
                             }
                         }
                     } else if (gridNodeName == "td") {
                         if (rowScoped || scopedCols[j]) {
-                            lookup[RPTUtil.getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
+                            lookup[getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
                         } else if (RPTUtil.attributeNonEmpty(gridCell, "headers")) {
                             let hdrs = gridCell.getAttribute("headers").split(" ");
                             for (let k = 0; k < hdrs.length; ++k) {
                                 let headElem = doc.getElementById(hdrs[k].trim());
                                 if (headElem && RPTUtil.getAncestor(headElem, "table") == parentTable) {
-                                    lookup[RPTUtil.getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
-                                    lookup[RPTUtil.getCache(headElem, "Valerie_Table_DataCellRelationships", null)] = true;
+                                    lookup[getCache(gridCell, "Valerie_Table_DataCellRelationships", null)] = true;
+                                    lookup[getCache(headElem, "Valerie_Table_DataCellRelationships", null)] = true;
                                 }
                             }
                         }
                     }
                 }
             }
-            RPTUtil.setCache(parentTable, "Valerie_Table_DataCellRelationships", lookup);
+            setCache(parentTable, "Valerie_Table_DataCellRelationships", lookup);
         }
 
-        let rcInfo = RPTUtil.getCache(ruleContext, "Valerie_Table_DataCellRelationships", null);
-        let tInfo = RPTUtil.getCache(parentTable, "Valerie_Table_DataCellRelationships", null);
+        let rcInfo = getCache(ruleContext, "Valerie_Table_DataCellRelationships", null);
+        let tInfo = getCache(parentTable, "Valerie_Table_DataCellRelationships", null);
         let passed = rcInfo !== null && tInfo !== null && rcInfo in tInfo;
 
         if (!passed && rcInfo === "0:0" &&
@@ -139,10 +140,10 @@ export let Valerie_Table_DataCellRelationships: Rule = {
         // table, which introduces a lot of noise.  In that case, only trigger this error
         // once per table.
         if (!passed && parentTable.getElementsByTagName("th").length == 0) {
-            if (RPTUtil.getCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", false) === true) {
+            if (getCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", false) === true) {
                 passed = true;
             } else {
-                RPTUtil.setCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", true);
+                setCache(parentTable, "Valerie_Table_DataCellRelationships_TrigOnce", true);
             }
         }
 

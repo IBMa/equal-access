@@ -14,8 +14,9 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { VisUtil } from "../../v2/dom/VisUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG21_Label_Accessible: Rule = {
     id: "WCAG21_Label_Accessible",
@@ -44,7 +45,7 @@ export let WCAG21_Label_Accessible: Rule = {
     act: "2ee8b8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (!RPTUtil.isNodeVisible(ruleContext) ||
+        if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
@@ -111,7 +112,7 @@ export let WCAG21_Label_Accessible: Rule = {
                 // look for a <label> element
                 let labelElem = RPTUtil.getLabelForElementHidden(ruleContext, true);
                 if (!labelElem) {
-                    let parentNode = DOMUtil.parentNode(ruleContext);
+                    let parentNode = DOMWalker.parentNode(ruleContext);
                     if (parentNode.nodeName.toLowerCase() === "label" /*&& RPTUtil.isFirstFormElement(parentNode, ruleContext)*/) {
                         let parentClone = parentNode.cloneNode(true);
                         // exclude all form elements from the label since they might also have inner content

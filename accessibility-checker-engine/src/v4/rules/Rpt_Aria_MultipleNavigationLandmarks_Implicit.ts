@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let Rpt_Aria_MultipleNavigationLandmarks_Implicit: Rule = {
     id: "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
@@ -52,14 +53,14 @@ export let Rpt_Aria_MultipleNavigationLandmarks_Implicit: Rule = {
             return null;
         }
 
-        let dupes = RPTUtil.getCache(
+        let dupes = getCache(
             ruleContext.ownerDocument,
             "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
             null
         );
         if (!dupes) {
             dupes = RPTUtil.findAriaLabelDupes(landmarks);
-            RPTUtil.setCache(
+            setCache(
                 ruleContext.ownerDocument,
                 "Rpt_Aria_MultipleNavigationLandmarks_Implicit",
                 dupes
