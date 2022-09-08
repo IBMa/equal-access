@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG20_Input_ExplicitLabel: Rule = {
     id: "WCAG20_Input_ExplicitLabel",
@@ -138,9 +138,9 @@ export let WCAG20_Input_ExplicitLabel: Rule = {
 
         // Rpt_Aria_ValidIdRef determines if the aria-labelledby id points to a valid element
         if (!passed && (buttonTypes.indexOf(type) !== -1)) {
-            if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMUtil.parentElement(ruleContext).hasAttribute("widgetid")) {
+            if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class") == "dijitOffScreen" && DOMWalker.parentElement(ruleContext).hasAttribute("widgetid")) {
                 // Special handling for dijit buttons
-                let labelId = DOMUtil.parentElement(ruleContext).getAttribute("widgetid") + "_label";
+                let labelId = DOMWalker.parentElement(ruleContext).getAttribute("widgetid") + "_label";
                 let label = FragmentUtil.getById(ruleContext, labelId);
                 if (label != null) {
                     passed = RPTUtil.hasInnerContentHidden(label);

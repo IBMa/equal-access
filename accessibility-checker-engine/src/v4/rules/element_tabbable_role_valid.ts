@@ -16,7 +16,8 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getDefinedStyles } from "../util/CSSUtil";
-import { DOMUtil } from "../../v2/dom/DOMUtil";
+import { DOMWalker } from "../../v2/dom/DOMWalker";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let element_tabbable_role_valid: Rule = {
     id: "element_tabbable_role_valid",
@@ -51,7 +52,7 @@ export let element_tabbable_role_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         
-        if (RPTUtil.isNodeDisabled(ruleContext) || RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (RPTUtil.isNodeDisabled(ruleContext) || VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         
         const nodeName = ruleContext.nodeName.toLowerCase();
         // if the elemen is tabbable by default with or without tabindex, let the other rules (such as IBMA_Focus_MultiTab) to handle it
@@ -79,7 +80,7 @@ export let element_tabbable_role_valid: Rule = {
                                "option", "radio", "switch", "tab"];
 
         const roles = RPTUtil.getRoles(ruleContext, true);
-        const parent = DOMUtil.parentNode(ruleContext);
+        const parent = DOMWalker.parentNode(ruleContext);
         const parent_roles = RPTUtil.getRoles(parent as Element, true);
         
         // ignore if one of the parent roles is in roles_no_interactive_child

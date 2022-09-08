@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let HAAC_Aria_ErrorMessage: Rule = {
     id: "HAAC_Aria_ErrorMessage",
@@ -59,7 +60,7 @@ export let HAAC_Aria_ErrorMessage: Rule = {
         }
 
         // POF1: Referenced element is not visible
-        if (!RPTUtil.isNodeVisible(msg_ele)) {
+        if (!VisUtil.isNodeVisible(msg_ele)) {
             return RuleFail("Fail_2");
         }
 

@@ -21,14 +21,7 @@ import { Config } from "../config/Config";
 import { IMapResult, IMapper } from "../api/IMapper";
 import { DOMMapper } from "../dom/DOMMapper";
 import { DOMUtil } from "../dom/DOMUtil";
-import { ARIAMapper } from "../..";
-
-export interface CacheDocument extends Document {
-    aceCache: { [key: string]: any }
-}
-export interface CacheElement extends Element {
-    aceCache: { [key: string]: any }
-}
+import { clearCaches } from "../../v4/util/CacheUtil";
 
 class WrappedRule {
     ns: string;
@@ -156,15 +149,6 @@ export class Engine implements IEngine {
         this.addMapper(new DOMMapper());
     }
 
-    private static clearCaches(cacheRoot : Node) : void {
-        delete (cacheRoot.ownerDocument as CacheDocument).aceCache;
-        let nw = new DOMWalker(cacheRoot);
-        do {
-            delete (nw.node as CacheElement).aceCache;
-            nw.node.ownerDocument && delete (nw.node.ownerDocument as CacheDocument).aceCache;
-        } while (nw.nextNode());
-    }
-
     run(root: Document | Node, options?: {}): Promise<Report> {
         if (root === null) {
             return Promise.reject("null document");
@@ -173,7 +157,7 @@ export class Engine implements IEngine {
             root = (root as Document).documentElement;
         }
         root.ownerDocument && ((root.ownerDocument as any).PT_CHECK_HIDDEN_CONTENT = false);
-        Engine.clearCaches(root);
+        clearCaches(root);
         const walker = new DOMWalker(root);
         const retVal : Report = {
             results: [],
@@ -209,7 +193,7 @@ export class Engine implements IEngine {
             }
 
             if (walker.node.nodeType !== 11 
-                && (DOMUtil.isNodeVisible(walker.node)
+                && (DOMWalker.isNodeVisible(walker.node)
                     || walker.node.nodeName.toLowerCase() === "style"
                     || walker.node.nodeName.toLowerCase() === "datalist"
                     || walker.node.nodeName.toLowerCase() === "param"
@@ -254,7 +238,7 @@ export class Engine implements IEngine {
                 }
             }
         } while (walker.nextNode());
-        Engine.clearCaches(root);
+        clearCaches(root);
         retVal.totalTime = new Date().getTime()-start;
         return Promise.resolve(retVal);
     }

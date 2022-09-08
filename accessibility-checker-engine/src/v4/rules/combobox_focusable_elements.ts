@@ -14,6 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let combobox_focusable_elements: Rule = {
     id: "combobox_focusable_elements",
@@ -44,7 +46,7 @@ export let combobox_focusable_elements: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupElement, expanded } = cachedElem;
@@ -71,7 +73,7 @@ export let combobox_focusable_elements: Rule = {
         if (popupElement) {
             let nw = new NodeWalker(popupElement);
             while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
-                if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
+                if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                     passed = !RPTUtil.isTabbable(nw.node) &&
                         !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
                 }

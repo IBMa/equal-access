@@ -29,7 +29,7 @@
 <a href="#navskip">skip to main content</a>
 
 
-<h2>Test case: Element-spacesXmlLang.html</h2>
+<h2>Test case: Element-invalidXmlLang.html</h2>
 
 
 <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
@@ -39,32 +39,38 @@
 
 
 <ol>
-	<li>Test - Element xml:lang attribute with only spaces</li>
+	<li>Test - Invalid element xml:lang attribute usage</li>
 </ol>
 
-<p xml:lang="  ">
+<p xml:lang="en+us">
    Test
 </p>
 
 
 <a name="navskip"></a>
 
-
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "507",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-        "/html[1]/body[1]/p[1]"          
-      ]
-    }
-  ];
-//]]>
-</script></body>
-
+<script>
+    UnitTest = {
+        ruleIds: ["element_lang_valid"],
+        results: [
+          {
+            "ruleId": "element_lang_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_3",
+            "message": "Specified 'xml:lang' attribute does not include a valid primary language",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+    };
+</script>
+</body>
 </html>

@@ -11,10 +11,10 @@
   limitations under the License.
 *****************************************************************************/
 
-import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
@@ -45,8 +45,9 @@ export let aria_attribute_conflict: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
+
         if (RPTUtil.getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
-        
+  
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
         let htmlAttrs = [];
@@ -69,7 +70,7 @@ export let aria_attribute_conflict: Rule = {
                 if (item['result'] === 'Pass') { //pass
                     ret.push(RulePass("pass"));
                 } else if (item['result'] === 'Failed') { //failed
-                    RPTUtil.setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
+                    setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
                     ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
                 }
             });    

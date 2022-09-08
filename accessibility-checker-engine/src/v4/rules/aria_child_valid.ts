@@ -13,7 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_child_valid: Rule = {
     id: "aria_child_valid",
@@ -49,7 +50,7 @@ export let aria_child_valid: Rule = {
         const ruleContext = context["dom"].node as Element;
         
         //skip the check if the element is hidden
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return;
         
         // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:

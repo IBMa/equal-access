@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
 
 export let combobox_haspopup: Rule = {
     id: "combobox_haspopup",
@@ -44,7 +45,7 @@ export let combobox_haspopup: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        const cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        const cache = getCache(ruleContext.ownerDocument, "combobox", {});
         const cacheKey = context["dom"].rolePath;
         const cachedElem = cache[cacheKey];
         if (!cachedElem) return null;

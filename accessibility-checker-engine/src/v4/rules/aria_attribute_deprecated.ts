@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { getCache } from "../util/CacheUtil";
 
 export let aria_attribute_deprecated: Rule = {
     id: "aria_attribute_deprecated",
@@ -47,7 +48,7 @@ export let aria_attribute_deprecated: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        if (getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
          
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
