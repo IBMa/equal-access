@@ -26,10 +26,10 @@
         </main>
         <script>
             UnitTest = {
-                ruleIds: ["aria_semantics_attribute"],
+                ruleIds: ["aria_attribute_allowed"],
                 results: [
                 {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -38,8 +38,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]",
               "aria": "/document[1]/main[1]/combobox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "select",
@@ -49,7 +49,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -58,8 +58,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/select[1]/option[1]",
               "aria": "/document[1]/main[1]/combobox[1]/option[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-selected' is not valid for the element <option> with ARIA role 'option'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-selected\" are not valid for the element <option> with implicit ARIA role \"option\"",
             "messageArgs": [
               "aria-selected",
               "option",
@@ -69,7 +69,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -78,8 +78,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]",
               "aria": "/document[1]/main[1]/listbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "select",
@@ -89,7 +89,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -98,8 +98,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[2]/select[1]/option[1]",
               "aria": "/document[1]/main[1]/listbox[1]/option[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-selected' is not valid for the element <option> with ARIA role 'option'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-selected\" are not valid for the element <option> with implicit ARIA role \"option\"",
             "messageArgs": [
               "aria-selected",
               "option",
@@ -108,7 +108,7 @@
             "apiArgs": [],
             "category": "Accessibility"
           }
-          ],
+          ]
       };
         </script>
     </body>

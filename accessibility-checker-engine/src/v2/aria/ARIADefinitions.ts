@@ -24,7 +24,9 @@ export interface IDocumentConformanceRequirement {
     globalAriaAttributesValid: boolean,
     otherAllowedAriaAttributes?: string[], 
     otherDisallowedAriaAttributes?: string[],
-    otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed   
+    otherRolesForAttributes?: string[], //roles, other than implicit and valid roles, whose attributes are also allowed
+    // a few elements (such as datalist, html, caption) that have an implicit role but disallow some or all attributes allowed for the role.
+    allowAttributesFromImplicitRole?: boolean  
 }
 
 export class ARIADefinitions {
@@ -1650,7 +1652,7 @@ export class ARIADefinitions {
         * documentConformanceRequirement contains properties of the tags related to role without any additional attribute value
         * documentConformanceRequirementSpecialTags contains those tags that require special considerations
         */
-    static documentConformanceRequirement: { 
+    static documentConformanceRequirement: {
         [role: string]: IDocumentConformanceRequirement
     } = {
         "abbr": {
@@ -1699,7 +1701,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "blockquote": {
-            implicitRole: null,
+            implicitRole: ["blockquote"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1725,9 +1727,10 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "caption": {
-            implicitRole: null,
+            implicitRole: ['caption'],
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: true,
+            allowAttributesFromImplicitRole: false
         },
         "cite": {
             implicitRole: null,
@@ -1735,7 +1738,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "code": {
-            implicitRole: null,
+            implicitRole: ["code"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1757,15 +1760,16 @@ export class ARIADefinitions {
         "datalist": {
             implicitRole: ["listbox"],
             validRoles: null,
-            globalAriaAttributesValid: true
+            globalAriaAttributesValid: false,
+            allowAttributesFromImplicitRole: false
         },
         "dd": {
-            implicitRole: ["definition"],
+            implicitRole: null,
             validRoles: null,
             globalAriaAttributesValid: true
         },
         "del": {
-            implicitRole: null,
+            implicitRole: ["deletion"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1785,6 +1789,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "div": {
+            //TODO: conditional 'Any', otherwise 'presentation | none'
             implicitRole: null,
             validRoles: ["any"],
             globalAriaAttributesValid: true
@@ -1817,6 +1822,11 @@ export class ARIADefinitions {
         "figcaption": {
             implicitRole: null,
             validRoles: ["group", "none", "presentation"],
+            globalAriaAttributesValid: true
+        },
+        "form": {
+            implicitRole: ["form"],
+            validRoles: ["none", "presentation", "search"],
             globalAriaAttributesValid: true
         },
         "head": {
@@ -1867,7 +1877,8 @@ export class ARIADefinitions {
         "html": {
             implicitRole: ["document"],
             validRoles: null,
-            globalAriaAttributesValid: false
+            globalAriaAttributesValid: false,
+            allowAttributesFromImplicitRole: false
         },
         "i": {
             implicitRole: null,
@@ -1880,7 +1891,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "ins": {
-            implicitRole: null,
+            implicitRole: ["insertion"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -1940,10 +1951,11 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "meter": {
-            implicitRole: null,
+            implicitRole: ["meter"],
             validRoles: null,
             globalAriaAttributesValid: true,
-            otherDisallowedAriaAttributes: ['aria-valuemax', 'aria-valuemin']
+            otherDisallowedAriaAttributes: ['aria-valuemax', 'aria-valuemin'],
+            allowAttributesFromImplicitRole: false
         },
         "nav": {
             implicitRole: ["navigation"],
@@ -1982,7 +1994,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "p": {
-            implicitRole: null,
+            implicitRole: ["paragraph"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2064,7 +2076,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "strong": {
-            implicitRole: null,
+            implicitRole: ["strong"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2074,7 +2086,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: false
         },
         "sub": {
-            implicitRole: null,
+            implicitRole: ["subscript"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2084,7 +2096,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "sup": {
-            implicitRole: null,
+            implicitRole: ["superscript"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2119,7 +2131,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "time": {
-            implicitRole: null,
+            implicitRole: ["time"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2156,7 +2168,7 @@ export class ARIADefinitions {
         "wbr": {
             implicitRole: null,
             validRoles: ["none", "presentation"],
-            globalAriaAttributesValid: true,
+            globalAriaAttributesValid: false,
             otherAllowedAriaAttributes: ["aria-hidden"]
         }
     } // end documentConformanceRequirement
@@ -2228,20 +2240,6 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             }
         },
-        "form": {
-            "with-name": {
-                implicitRole: ["form"],
-                //roleCondition: " when accessible name is present",
-                validRoles: ["none", "presentation", "search"],
-                globalAriaAttributesValid: true
-            },
-            "without-name": {
-                implicitRole: null,
-                //roleCondition: " when accessible name is not present",
-                validRoles: ["none", "presentation", "search"],
-                globalAriaAttributesValid: true
-            }
-        },
 // TODO
 //        "form-associated custom element": {
 //            implicitRole: ["Role exposed from author defined ElementInternals. Otherwise no corresponding role."],
@@ -2310,13 +2308,11 @@ export class ARIADefinitions {
             },
             "color": {
                 implicitRole: null,
-                //roleCondition: " with type=color",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "date": {
                 implicitRole: null,
-                //roleCondition: " with type=date",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
@@ -2324,7 +2320,6 @@ export class ARIADefinitions {
             },
             "datetime-local": {
                 implicitRole: null,
-                //roleCondition: " with type=datetime",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required", "aria-readonly"],
@@ -2340,32 +2335,27 @@ export class ARIADefinitions {
             },
             "email-with-list": {
                 implicitRole: ["combobox"],
-                //roleCondition: " with type=email and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "file": {
                 implicitRole: null,
-                //roleCondition: " with type=file",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required"],
             },
             "hidden": {
                 implicitRole: null,
-                //roleCondition: " with type=hidden",
                 validRoles: null,
                 globalAriaAttributesValid: false
             },
             "image": {
                 implicitRole: ["button"],
-                //roleCondition: " with type=image",
                 validRoles: ["link", "menuitem", "menuitemcheckbox", "menuitemradio", "radio", "switch"],
                 globalAriaAttributesValid: true
             },
             "month": {
                 implicitRole: null,
-                //roleCondition: " with type=month",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-readonly"],
@@ -2373,14 +2363,12 @@ export class ARIADefinitions {
             },
             "number": {
                 implicitRole: ["spinbutton"],
-                //roleCondition: " with type=number",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
             },
             "password": {
                 implicitRole: null,
-                //roleCondition: " with type=password",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"],
@@ -2388,7 +2376,6 @@ export class ARIADefinitions {
             },
             "radio": {
                 implicitRole: ["radio"],
-                //roleCondition: " with type=radio",
                 validRoles: ["menuitemradio"],
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-required"],
@@ -2396,66 +2383,56 @@ export class ARIADefinitions {
             },
             "range": {
                 implicitRole: ["slider"],
-                //roleCondition: " with type=radio",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherDisallowedAriaAttributes: ["aria-valuemax", "aria-valuemin"]
             },
             "reset": {
                 implicitRole: ["button"],
-                //roleCondition: " with type=reset",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "search-no-list": {
                 implicitRole: ["searchbox"],
-                //roleCondition: " with type=search and no list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "search-with-list": {
                 implicitRole: ["combobox"],
-                //roleCondition: " with type=search and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "submit": {
                 implicitRole: ["button"],
-                //roleCondition: " with type=submit",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "tel-no-list": {
                 implicitRole: ["textbox"],
-                //roleCondition: " with type=tel and no list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "tel-with-list": {
                 implicitRole: ["combobox"],
-                //roleCondition: " with type=tel and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "text-no-list": {
                 implicitRole: ["textbox"],
-                //roleCondition: " with type=text and no list attribute is present",
                 validRoles: ["combobox", "searchbox", "spinbutton"],
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "text-with-list": {
                 implicitRole: ["combobox"],
-                //roleCondition: " with type=text and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
                 // otherDisallowedAriaAttributes: ["aria-haspopup"]  // covered in a different rule
             },
             "time": {
                 implicitRole: null,
-                //roleCondition: " with type=time",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-readonly"],
@@ -2463,20 +2440,17 @@ export class ARIADefinitions {
             },
             "url-no-list": {
                 implicitRole: ["textbox"],
-                //roleCondition: " with type=url and no list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-placeholder", "aria-required", "aria-readonly"]
             },
             "url-with-list": {
                 implicitRole: ["combobox"],
-                //roleCondition: " with type=url and a list attribute is present",
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
             "week": {
                 implicitRole: null,
-                //roleCondition: " with type=week",
                 validRoles: null,
                 globalAriaAttributesValid: true,
                 otherAllowedAriaAttributes: ["aria-readonly"],
@@ -2492,13 +2466,11 @@ export class ARIADefinitions {
         "section": {
             "with-name": {
                 implicitRole: ["region"],
-                //roleCondition: " when accessible name is present",
                 validRoles: ["alert", "alertdialog", "application", "banner", "complementary", "contentinfo", "dialog", "doc-abstract", "doc-acknowledgments", "doc-afterword", "doc-appendix", "doc-bibliography", "doc-chapter", "doc-colophon", "doc-conclusion", "doc-credit", "doc-credits", "doc-dedication", "doc-endnotes", "doc-epigraph", "doc-epilogue", "doc-errata", "doc-example", "doc-foreword", "doc-glossary", "doc-index", "doc-introduction", "doc-notice", "doc-pagelist", "doc-part", "doc-preface", "doc-prologue", "doc-pullquote", "doc-qna", "doc-toc", "document", "feed", "group", "log", "main", "marquee", "navigation", "none", "note", "presentation", "search", "status", "tabpanel"],
                 globalAriaAttributesValid: true
             },
             "without-name": {
                 implicitRole: null,
-                //roleCondition: " when accessible name is not present",
                 validRoles: ["alert", "alertdialog", "application", "banner", "complementary", "contentinfo", "dialog", "doc-abstract", "doc-acknowledgments", "doc-afterword", "doc-appendix", "doc-bibliography", "doc-chapter", "doc-colophon", "doc-conclusion", "doc-credit", "doc-credits", "doc-dedication", "doc-endnotes", "doc-epigraph", "doc-epilogue", "doc-errata", "doc-example", "doc-foreword", "doc-glossary", "doc-index", "doc-introduction", "doc-notice", "doc-pagelist", "doc-part", "doc-preface", "doc-prologue", "doc-pullquote", "doc-qna", "doc-toc", "document", "feed", "group", "log", "main", "marquee", "navigation", "none", "note", "presentation", "search", "status", "tabpanel"],
                 globalAriaAttributesValid: true
             }

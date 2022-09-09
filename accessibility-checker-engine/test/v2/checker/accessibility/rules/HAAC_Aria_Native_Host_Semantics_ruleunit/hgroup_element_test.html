@@ -40,184 +40,184 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]",
-                        "aria": "/document[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-atomic",
-                        "body",
-                        "none"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]",
-                        "aria": "/document[1]/region[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "region",
-                        "div"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]",
-                        "aria": "/document[1]/region[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label",
-                        "div",
-                        "region"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]",
-                        "aria": "/document[1]/region[1]/heading[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "heading",
-                        "hgroup"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]",
-                        "aria": "/document[1]/region[1]/heading[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label, aria-level",
-                        "hgroup",
-                        "heading"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h1[1]",
-                        "aria": "/document[1]/region[1]/heading[1]/heading[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "heading",
-                        "h1"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h1[1]",
-                        "aria": "/document[1]/region[1]/heading[1]/heading[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label, aria-level",
-                        "h1",
-                        "heading"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h2[1]",
-                        "aria": "/document[1]/region[1]/heading[1]/heading[2]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "heading",
-                        "h2"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h2[1]",
-                        "aria": "/document[1]/region[1]/heading[1]/heading[2]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label, aria-level",
-                        "h2",
-                        "heading"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-atomic",
+              "body",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "region",
+              "div"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "div",
+              "region"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]",
+              "aria": "/document[1]/region[1]/heading[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "heading",
+              "hgroup"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]",
+              "aria": "/document[1]/region[1]/heading[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-level",
+              "hgroup",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h1[1]",
+              "aria": "/document[1]/region[1]/heading[1]/heading[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "heading",
+              "h1"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h1[1]",
+              "aria": "/document[1]/region[1]/heading[1]/heading[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-level",
+              "h1",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h2[1]",
+              "aria": "/document[1]/region[1]/heading[1]/heading[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "heading",
+              "h2"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/hgroup[1]/h2[1]",
+              "aria": "/document[1]/region[1]/heading[1]/heading[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label, aria-level",
+              "h2",
+              "heading"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>
