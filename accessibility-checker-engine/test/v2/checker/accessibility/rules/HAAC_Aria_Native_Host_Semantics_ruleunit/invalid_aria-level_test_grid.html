@@ -48,10 +48,10 @@
 
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_attribute"],
+            ruleIds: ["aria_attribute_allowed"],
             results: [
             {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -60,8 +60,8 @@
               "dom": "/html[1]/body[1]/table[1]",
               "aria": "/document[1]/grid[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-readonly",
               "table",
@@ -71,7 +71,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -80,8 +80,8 @@
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
               "aria": "/document[1]/grid[1]/rowgroup[1]/row[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <tr> with ARIA role 'row'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "tr",
@@ -91,7 +91,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -100,8 +100,8 @@
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[2]",
               "aria": "/document[1]/grid[1]/rowgroup[1]/row[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <tr> with ARIA role 'row'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "tr",
@@ -111,7 +111,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -120,8 +120,8 @@
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[3]",
               "aria": "/document[1]/grid[1]/rowgroup[1]/row[3]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <tr> with ARIA role 'row'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with ARIA role \"row\"",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "tr",

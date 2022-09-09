@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <!--
    /******************************************************************************
      Copyright:: 2020- IBM, Inc
@@ -17,44 +17,31 @@
   *****************************************************************************/
 -->
 
-<html lang="en">
-
-<head>
-    <title>RPT Test Suite: Defect 225</title>
-</head>
+<html lang="en" id="id-32">
 
 <body>
 
-    <h2>Test case: aria-level_test_treegrid.html</h2>
-
-    <!-- ################################################################### -->
-
-    <table aria-label="test table">
-        <tr aria-level="1" aria-posinset="1" aria-setsize="1">
-            <td role="cell">header</td>
-            <td role="cell">h1</td>
-        </tr>
-    </table>
+    <address id="id-3" role="contentinfo" aria-pressed="true">address element</address>
+    
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_attribute_allowed"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
-            "ruleId": "aria_attribute_allowed",
+            "ruleId": "aria_semantics_role",
             "value": [
               "INFORMATION",
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]",
-              "aria": "/document[1]/table[1]"
+              "dom": "/html[1]/body[1]/address[1]",
+              "aria": "/document[1]/contentinfo[1]"
             },
-            "reasonId": "Pass",
-            "message": "ARIA attributes are valid for the element and ARIA role",
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
             "messageArgs": [
-              "aria-label",
-              "table",
-              "table"
+              "contentinfo",
+              "address"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -66,15 +53,15 @@
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]",
-              "aria": "/document[1]/table[1]/rowgroup[1]/row[1]"
+              "dom": "/html[1]/body[1]/address[1]",
+              "aria": "/document[1]/contentinfo[1]"
             },
-            "reasonId": "Fail_invalid_implicit_role_attr",
-            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <tr> with implicit ARIA role \"row\"",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <address> with ARIA role \"contentinfo\"",
             "messageArgs": [
-              "aria-level, aria-posinset, aria-setsize",
-              "tr",
-              "row"
+              "aria-pressed",
+              "address",
+              "contentinfo"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -82,6 +69,7 @@
             ]
         }
     </script>
+
 </body>
 
 </html>

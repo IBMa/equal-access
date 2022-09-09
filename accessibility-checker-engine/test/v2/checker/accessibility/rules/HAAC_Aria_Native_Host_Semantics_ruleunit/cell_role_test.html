@@ -83,10 +83,10 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -95,12 +95,12 @@
               "dom": "/html[1]/body[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "body",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -125,7 +125,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -134,8 +134,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "div",
@@ -164,7 +164,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -173,8 +173,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[1]",
               "aria": "/document[1]/region[1]/grid[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "table",
@@ -203,7 +203,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -212,8 +212,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[2]",
               "aria": "/document[1]/region[1]/grid[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "table",
@@ -242,7 +242,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -251,8 +251,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[3]",
               "aria": "/document[1]/region[1]/grid[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "table",
@@ -262,7 +262,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -271,8 +271,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[1]",
               "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-pressed' is not valid for the element <td> with ARIA role 'gridcell'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-pressed\" are not valid for the element <td> with ARIA role \"gridcell\"",
             "messageArgs": [
               "aria-pressed",
               "td",
@@ -282,7 +282,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -291,8 +291,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[3]/tbody[1]/tr[2]/td[2]",
               "aria": "/document[1]/region[1]/grid[3]/rowgroup[1]/row[2]/gridcell[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "td",
@@ -302,7 +302,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -311,8 +311,8 @@
               "dom": "/html[1]/body[1]/div[1]/table[4]",
               "aria": "/document[1]/region[1]/table[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "table",

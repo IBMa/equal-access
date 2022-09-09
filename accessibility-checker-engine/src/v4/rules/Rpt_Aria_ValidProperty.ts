@@ -43,6 +43,7 @@ export let Rpt_Aria_ValidProperty: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let contextAttributes = ruleContext.attributes;
+        
         // This gets all elements with attributes so we still have some
         // Out of Scope since not all attributes are aria 
 
