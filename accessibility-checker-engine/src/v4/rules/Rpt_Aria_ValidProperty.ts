@@ -70,8 +70,7 @@ export let Rpt_Aria_ValidProperty: Rule = {
             if (testedProperties == 0) {
                 return null;
             } else if (failedProperties.length != 0) {
-                //return new ValidationResult(false, [ruleContext], '', '', [failedProperties, ruleContext.tagName]);
-                return RuleFail("Fail_1", [failedProperties, ruleContext.tagName]);
+                return RuleFail("Fail_1", [failedProperties, ruleContext.nodeName.toLowerCase()]);
             } else {
                 //return RulePass(1);
                 return RulePass("Pass_0");

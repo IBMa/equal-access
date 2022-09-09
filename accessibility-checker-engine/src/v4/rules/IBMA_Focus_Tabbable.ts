@@ -47,8 +47,8 @@ export let IBMA_Focus_Tabbable: Rule = {
         if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        //skip the check if the element requires presentational children only or should be a presentational child of an element
-        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
+        //skip the check if the element should be a presentational child of an element
+        if (RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
         let nodeName = ruleContext.nodeName.toLowerCase();
@@ -62,7 +62,8 @@ export let IBMA_Focus_Tabbable: Rule = {
             ++count;
         }
         // If node has children, look for tab stops in the children
-        if (count < 1 && ruleContext.firstChild) {
+        // skip the count if the element requires presentational children only
+        if (count < 1 && !RPTUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
             let nw = new NodeWalker(ruleContext);
             while (count < 1 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {

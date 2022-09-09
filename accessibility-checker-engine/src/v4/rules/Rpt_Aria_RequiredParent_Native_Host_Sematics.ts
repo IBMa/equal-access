@@ -49,17 +49,23 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
         if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        //skip the check if the element requires presentational children only or should be a presentational child of an element
-        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
+        //skip the check if the element should be a presentational child of an element
+        if (RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
         
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        
+        // ignore if the element contains none or presentation role
+        let presentationRoles = ["none", "presentation"];
+        const found = roles.some(r=> presentationRoles.includes(r));
+        if (found) return null;
+
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
         let containerRoles = new Array();
         let testedContainer = 0;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         let ancestorRoles = contextHierarchies["aria"].map(info => info.role);
         let parentRole = ancestorRoles[ancestorRoles.length - 2];
         let count = 2;

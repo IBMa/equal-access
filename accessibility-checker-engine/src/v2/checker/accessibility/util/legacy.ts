@@ -2711,7 +2711,7 @@ export class RPTUtil {
     public static shouldBePresentationalChild(element : HTMLElement) : boolean {
         let walkNode : Element = DOMUtil.parentElement(element);
         while (walkNode) {
-            if (RPTUtil.containsPresentationalChildrenOnly(element)) return true;
+            if (RPTUtil.containsPresentationalChildrenOnly(walkNode as HTMLElement)) return true;
             walkNode = DOMUtil.parentElement(walkNode);
         }
         return false;
