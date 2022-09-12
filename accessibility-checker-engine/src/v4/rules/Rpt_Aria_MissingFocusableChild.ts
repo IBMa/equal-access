@@ -49,7 +49,7 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
             return;
         
         //skip the check if the element requires presentational children only
-        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext))
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
             return;
 
         // An ARIA list is not interactive
