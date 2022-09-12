@@ -39,125 +39,125 @@
 
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]",
-                        "aria": "/document[1]/menu[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "menu",
-                        "ol"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]",
-                        "aria": "/document[1]/menu[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label",
-                        "ol",
-                        "menu"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]/li[1]",
-                        "aria": "/document[1]/menu[1]/menuitem[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "menuitem",
-                        "li"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]/li[1]",
-                        "aria": "/document[1]/menu[1]/menuitem[1]"
-                    },
-                    "reasonId": "Fail_1",
-                    "message": "The ARIA attribute 'aria-level' is not valid for the element <li> with ARIA role 'menuitem'",
-                    "messageArgs": [
-                        "aria-level",
-                        "li",
-                        "menuitem"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]/li[2]",
-                        "aria": "/document[1]/menu[1]/menuitem[2]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "menuitem",
-                        "li"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/ol[1]/li[2]",
-                        "aria": "/document[1]/menu[1]/menuitem[2]"
-                    },
-                    "reasonId": "Fail_1",
-                    "message": "The ARIA attribute 'aria-level' is not valid for the element <li> with ARIA role 'menuitem'",
-                    "messageArgs": [
-                        "aria-level",
-                        "li",
-                        "menuitem"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menu",
+              "ol"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]",
+              "aria": "/document[1]/menu[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "ol",
+              "menu"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[1]",
+              "aria": "/document[1]/menu[1]/menuitem[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitem",
+              "li"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[1]",
+              "aria": "/document[1]/menu[1]/menuitem[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level\" are not valid for the element <li> with ARIA role \"menuitem\"",
+            "messageArgs": [
+              "aria-level",
+              "li",
+              "menuitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[2]",
+              "aria": "/document[1]/menu[1]/menuitem[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "menuitem",
+              "li"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ol[1]/li[2]",
+              "aria": "/document[1]/menu[1]/menuitem[2]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level\" are not valid for the element <li> with ARIA role \"menuitem\"",
+            "messageArgs": [
+              "aria-level",
+              "li",
+              "menuitem"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>

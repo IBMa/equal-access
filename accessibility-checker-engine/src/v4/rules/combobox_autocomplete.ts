@@ -13,7 +13,9 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { NodeWalker } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let combobox_autocomplete: Rule = {
     id: "combobox_autocomplete",
@@ -44,7 +46,7 @@ export let combobox_autocomplete: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        let cache = RPTUtil.getCache(ruleContext.ownerDocument, "combobox", {});
+        let cache = getCache(ruleContext.ownerDocument, "combobox", {});
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupId, popupElement } = cachedElem;
@@ -60,7 +62,7 @@ export let combobox_autocomplete: Rule = {
         if (popupElement) {
             let nw = new NodeWalker(popupElement);
             while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
-                if (nw.node.nodeType === 1 && RPTUtil.isNodeVisible(nw.node)) {
+                if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                     passed = !nw.elem().hasAttribute("aria-autocomplete");
                 }
             }

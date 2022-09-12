@@ -114,15 +114,18 @@
             "ruleId": "aria_role_redundant",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]",
               "aria": "/document[1]/form[1]"
             },
-            "reasonId": "pass",
-            "message": "An explicitly-assigned ARIA role is not redundant with the implicit role of the element",
-            "messageArgs": [],
+            "reasonId": "fail_redundant",
+            "message": "The explicitly-assigned ARIA role \"form\" is redundant with the implicit role of the element <form>",
+            "messageArgs": [
+              "form",
+              "form"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           },

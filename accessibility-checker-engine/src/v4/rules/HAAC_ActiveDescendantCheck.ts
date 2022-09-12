@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let HAAC_ActiveDescendantCheck: Rule = {
     id: "HAAC_ActiveDescendantCheck",
@@ -65,7 +66,7 @@ export let HAAC_ActiveDescendantCheck: Rule = {
             return null;
         }
 
-        if (!RPTUtil.isNodeVisible(descendant)) {
+        if (!VisUtil.isNodeVisible(descendant)) {
             // POF2: aria-activedescendant references a hidden node
             return RuleFail("Fail_2");
         }

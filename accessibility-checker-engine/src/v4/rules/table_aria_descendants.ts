@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { setCache } from "../util/CacheUtil";
 
 export let table_aria_descendants: Rule = {
     id: "table_aria_descendants",
@@ -41,7 +41,7 @@ export let table_aria_descendants: Rule = {
         const ruleContext = context["dom"].node as Element;
         let parentRole = contextHierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
         // cache the result
-        RPTUtil.setCache(ruleContext, "table_aria_descendants", "explicit_role");
+        setCache(ruleContext, "table_aria_descendants", "explicit_role");
         return RuleFail("explicit_role", [context["dom"].node.nodeName.toLowerCase(), parentRole[0].role]);
     }
 }

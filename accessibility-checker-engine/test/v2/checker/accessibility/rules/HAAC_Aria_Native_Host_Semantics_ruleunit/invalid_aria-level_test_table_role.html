@@ -41,7 +41,7 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
             "ruleId": "aria_semantics_role",
@@ -63,7 +63,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -72,8 +72,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "div",
@@ -102,7 +102,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -111,8 +111,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[1]",
               "aria": "/document[1]/table[1]/row[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <div> with ARIA role 'row'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <div> with ARIA role \"row\"",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "div",
@@ -141,7 +141,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -150,8 +150,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[1]/span[1]",
               "aria": "/document[1]/table[1]/row[1]/columnheader[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-sort",
               "span",
@@ -180,7 +180,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -189,8 +189,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[1]/span[2]",
               "aria": "/document[1]/table[1]/row[1]/columnheader[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-sort",
               "span",
@@ -219,7 +219,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -228,8 +228,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[2]",
               "aria": "/document[1]/table[1]/row[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-level, aria-posinset, aria-setsize' is not valid for the element <div> with ARIA role 'row'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-level, aria-posinset, aria-setsize\" are not valid for the element <div> with ARIA role \"row\"",
             "messageArgs": [
               "aria-level, aria-posinset, aria-setsize",
               "div",

@@ -42,202 +42,202 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]",
-                        "aria": "/document[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-atomic",
-                        "body",
-                        "none"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]",
-                        "aria": "/document[1]/region[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "region",
-                        "div"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]",
-                        "aria": "/document[1]/region[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label",
-                        "div",
-                        "region"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[2]",
-                        "aria": "/document[1]/region[1]/application[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "application",
-                        "iframe"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[2]",
-                        "aria": "/document[1]/region[1]/application[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label",
-                        "iframe",
-                        "application"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[3]",
-                        "aria": "/document[1]/region[1]/document[2]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "document",
-                        "iframe"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_attribute",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[3]",
-                        "aria": "/document[1]/region[1]/document[2]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "aria-label",
-                        "iframe",
-                        "document"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[4]",
-                        "aria": "/document[1]/region[1]/img[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "img",
-                        "iframe"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "PASS"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[5]",
-                        "aria": "/document[1]/region[1]"
-                    },
-                    "reasonId": "Pass_0",
-                    "message": "Rule Passed",
-                    "messageArgs": [
-                        "presentation",
-                        "iframe"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                },
-                {
-                    "ruleId": "aria_semantics_role",
-                    "value": [
-                        "INFORMATION",
-                        "FAIL"
-                    ],
-                    "path": {
-                        "dom": "/html[1]/body[1]/div[1]/iframe[6]",
-                        "aria": "/document[1]/region[1]/alert[1]"
-                    },
-                    "reasonId": "Fail_1",
-                    "message": "The ARIA role 'alert' is not valid for the element <iframe>",
-                    "messageArgs": [
-                        "alert",
-                        "iframe"
-                    ],
-                    "apiArgs": [],
-                    "category": "Accessibility"
-                }
+            {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-atomic",
+              "body",
+              ""
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "region",
+              "div"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "div",
+              "region"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[2]",
+              "aria": "/document[1]/region[1]/application[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "application",
+              "iframe"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[2]",
+              "aria": "/document[1]/region[1]/application[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "iframe",
+              "application"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[3]",
+              "aria": "/document[1]/region[1]/document[2]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "document",
+              "iframe"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[3]",
+              "aria": "/document[1]/region[1]/document[2]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "iframe",
+              "document"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[4]",
+              "aria": "/document[1]/region[1]/img[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "img",
+              "iframe"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[5]",
+              "aria": "/document[1]/region[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "presentation",
+              "iframe"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_semantics_role",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/iframe[6]",
+              "aria": "/document[1]/region[1]/alert[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The ARIA role 'alert' is not valid for the element <iframe>",
+            "messageArgs": [
+              "alert",
+              "iframe"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
             ]
         }
     </script>

@@ -13,7 +13,8 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let aria_child_valid: Rule = {
     id: "aria_child_valid",

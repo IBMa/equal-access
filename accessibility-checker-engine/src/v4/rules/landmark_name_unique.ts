@@ -13,10 +13,10 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let landmark_name_unique: Rule = {
     id: "landmark_name_unique",
@@ -74,7 +74,7 @@ export let landmark_name_unique: Rule = {
             navigationNodesComputedLabels: string[],
             navigationNodesParents: any[],
             navigationNodesMatchFound: string[]
-        } = RPTUtil.getCache(
+        } = getCache(
             ruleContext.ownerDocument,
             "landmark_name_unique",
             null
@@ -263,7 +263,7 @@ export let landmark_name_unique: Rule = {
             formCache.navigationNodes = navigationNodes;
             formCache.navigationNodesParents = navigationNodesParents;
             formCache.navigationNodesMatchFound = navigationNodesMatchFound;
-            RPTUtil.setCache(
+            setCache(
                 ruleContext.ownerDocument,
                 "landmark_name_unique",
                 formCache

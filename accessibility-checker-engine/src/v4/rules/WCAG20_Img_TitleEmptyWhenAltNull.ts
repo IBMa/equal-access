@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Img_TitleEmptyWhenAltNull: Rule = {
     id: "WCAG20_Img_TitleEmptyWhenAltNull",
@@ -42,7 +43,7 @@ export let WCAG20_Img_TitleEmptyWhenAltNull: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         if (ruleContext.getAttribute("alt").trim().length > 0) {
             return null;
         }

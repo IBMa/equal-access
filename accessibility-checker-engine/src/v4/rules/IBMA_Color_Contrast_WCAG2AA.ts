@@ -12,8 +12,10 @@
  *****************************************************************************/
 
 import { RPTUtil, RPTUtilStyle } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { setCache } from "../util/CacheUtil";
 
 export let IBMA_Color_Contrast_WCAG2AA: Rule = {
     id: "IBMA_Color_Contrast_WCAG2AA",
@@ -45,10 +47,10 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
         let nodeName = ruleContext.nodeName.toLowerCase();
         // avoid diagnosing elements that are not visible
-        if (!RPTUtil.isNodeVisible(ruleContext) ||
-            (RPTUtil.hiddenByDefaultElements != null &&
-                RPTUtil.hiddenByDefaultElements != undefined &&
-                RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
+        if (!VisUtil.isNodeVisible(ruleContext) ||
+            (VisUtil.hiddenByDefaultElements != null &&
+                VisUtil.hiddenByDefaultElements != undefined &&
+                VisUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
             return null;
         }
         
@@ -233,7 +235,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             isDisabled = true;
         }
 
-        RPTUtil.setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
+        setCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", {
             "ratio": ratio,
             "isLargeScale": isLargeScale,
             "weight": weight,
