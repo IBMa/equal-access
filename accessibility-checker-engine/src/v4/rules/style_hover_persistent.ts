@@ -187,7 +187,8 @@ export let style_hover_persistent: Rule = {
                                             let regIndex = trimRuleText2.indexOf(regExString);
                                             let afterCombinatorElementProperties = trimRuleText2.slice(regIndex).trim();
 
-                                            if (!afterCombinatorElementProperties.match(/margin/g)) {
+                                            //if (!afterCombinatorElementProperties.match(/margin/g)) {
+                                            if (!trimRuleText2.match(/margin/g)) {       
                                                 // console.log("No margin problem so continue on...");
                                                 // do we have a supporting element css definitions
                                                 let supportingHoverElement = ruleText2.split(":")[0];
