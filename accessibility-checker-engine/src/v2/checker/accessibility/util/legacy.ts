@@ -2712,7 +2712,28 @@ export class RPTUtil {
         let walkNode : Element = DOMUtil.parentElement(element);
         while (walkNode) {
             if (RPTUtil.containsPresentationalChildrenOnly(walkNode as HTMLElement)) return true;
+
+            //aria-own case: if the element is referred by an aria-won
+            const id =  walkNode.getAttribute("id");
+            if (id) {
+                const aria_owns_elem = walkNode.ownerDocument.querySelector('[aria-owns="' + id + '"]');
+            }
             walkNode = DOMUtil.parentElement(walkNode);
+        }
+        return false;
+    }
+
+    /**
+     * check if the element is referred to by aria-wons 
+     * @param element 
+     * @returns 
+     */
+    public static isElementAriaOwned(element : HTMLElement) : boolean {
+        const id =  element.getAttribute("id");
+        if (id) {
+            const aria_owns_elem = element.ownerDocument.querySelectorAll('[aria-owns="' + id + '"]');
+            if (aria_owns_elem && aria_owns_elem.length > 0)
+                return true;
         }
         return false;
     }
