@@ -2717,23 +2717,12 @@ export class RPTUtil {
             const id =  walkNode.getAttribute("id");
             if (id) {
                 const aria_owns_elem = walkNode.ownerDocument.querySelector('[aria-owns="' + id + '"]');
-            }
-            walkNode = DOMUtil.parentElement(walkNode);
-        }
-        return false;
-    }
-
-    /**
-     * check if the element is referred to by aria-wons 
-     * @param element 
-     * @returns 
-     */
-    public static isElementAriaOwned(element : HTMLElement) : boolean {
-        const id =  element.getAttribute("id");
-        if (id) {
-            const aria_owns_elem = element.ownerDocument.querySelectorAll('[aria-owns="' + id + '"]');
-            if (aria_owns_elem && aria_owns_elem.length > 0)
-                return true;
+                if (aria_owns_elem) 
+                    walkNode = aria_owns_elem;
+                else
+                    walkNode = DOMUtil.parentElement(walkNode);    
+            } else
+                walkNode = DOMUtil.parentElement(walkNode);
         }
         return false;
     }
