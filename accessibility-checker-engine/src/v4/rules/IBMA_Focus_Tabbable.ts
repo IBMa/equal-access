@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let IBMA_Focus_Tabbable: Rule = {
     id: "IBMA_Focus_Tabbable",
@@ -44,7 +45,7 @@ export let IBMA_Focus_Tabbable: Rule = {
         const ruleContext = context["dom"].node as HTMLElement;
 
         //skip the check if the element is hidden or disabled
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip the check if the element should be a presentational child of an element
