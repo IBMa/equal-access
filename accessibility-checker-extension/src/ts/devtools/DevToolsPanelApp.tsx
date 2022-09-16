@@ -238,11 +238,11 @@
         }
     
         async xpathFromTabstops(message: any) {
-            // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
+            console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
             // JCH take xpath and match to item with same item.path.dom
             this.state.tabStopsResults.map((result: any) => {
                 if (message.xpath === result.path.dom) {
-                    // console.log("result xpath = ",result.path.dom);
+                    console.log("result xpath = ",result.path.dom);
                     this.getSelectedItem(result);
                     this.selectItem(result);
                 }
@@ -250,7 +250,7 @@
             // JCH the selected item needs to scroll into view
             this.state.tabStopsErrors.map((result: any) => {
                 if (message.xpath === result.path.dom) {
-                    // console.log("result xpath = ",result.path.dom);
+                    console.log("result xpath = ",result.path.dom);
                     this.getSelectedItem(result);
                     this.selectItem(result);
                 }
@@ -895,6 +895,8 @@
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
+            console.log("Function: selectItem");
+            console.log("item = ",item);
             if (this.state.report) {
                 if (!item) {
                     for (const resultItem of this.state.report.results) {
@@ -922,6 +924,7 @@
                         }
                         this.setState({ selectedItem: item, report: this.state.report, selectedCheckpoint: checkpoint });
                     } else if (this.props.layout === "sub") {
+                        console.log("sub part of select item");
                         if (this.state.report) {
                             for (const resultItem of this.state.report.results) {
                                 resultItem.selected = resultItem.path.dom === item.path.dom;
@@ -975,6 +978,7 @@
                                 element = lookup(doc, srcPath) || element;
                             }
                             if (element) {
+                                // console.log("JCH inspect element: ",element);
                                 inspect(element);
                                 var elementRect = element.getBoundingClientRect();
                                 var absoluteElementTop = elementRect.top + window.pageYOffset;
@@ -996,6 +1000,8 @@
                             }
                             if (!result) {
                                 console.log('Could not select element, it may have moved');
+                            } else {
+                                console.log("result from selectItem = ",result);
                             }
                             // do focus after inspected Window script
                             setTimeout(() => {
@@ -1040,9 +1046,9 @@
         }
     
         selectElementInElements () {
-            console.log("Function: selectElementInElements START");
-            console.log("document.firstElementChild = ", document.firstElementChild);
-            chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
+            // console.log("Function: selectElementInElements START");
+            // console.log("document.firstElementChild = ", document.firstElementChild);
+            chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)",
                 (result:string, isException) => {
                     console.log("result = ",result);
                     if (isException) {
@@ -1057,7 +1063,7 @@
                     }, 0);
                 }
             );
-            console.log("Function: selectElementInElements DONE");
+            // console.log("Function: selectElementInElements DONE");
         }
     
         getItem(item: IReportItem) {
@@ -1065,6 +1071,8 @@
         }
     
         getSelectedItem(item: IReportItem) {
+            // console.log("Function: getSelectedItem");
+            console.log("item = ",item);
             this.setState({ selectedIssue: item });
         }
     
@@ -1089,7 +1097,7 @@
         }
     
         tabStopsSetFirstTime() {
-            console.log("Function: tabStopsSetFirstTime");
+            // console.log("Function: tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {
                 // console.log("setState tabStopFirstTime to false");

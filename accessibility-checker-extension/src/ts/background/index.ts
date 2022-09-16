@@ -255,6 +255,7 @@
     });
     
     BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+        
         await BackgroundMessaging.sendToTab(message.tabId,
             "DRAW_TABS_TO_CONTEXT_SCRIPTS", 
             { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, 
@@ -275,12 +276,12 @@
         console.log("BackgroundMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS")
         console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
-        console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS DONE");
+        console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         return true;
     });
     
     BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
-        // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
+        console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath);
         await BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
             xpath: message.xpath,
             circleNumber: message.circleNumber
