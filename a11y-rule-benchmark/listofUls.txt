@@ -1,0 +1,6 @@
+https://able-test.mybluemix.net/able/toolkit
+https://able-test.mybluemix.net/able/toolkit/plan/overview
+https://able-test.mybluemix.net/able/toolkit/design/overview
+https://able-test.mybluemix.net/able/toolkit/develop/overview
+https://able-test.mybluemix.net/able/toolkit/verify/overview
+https://able-test.mybluemix.net/able/toolkit/launch/overview

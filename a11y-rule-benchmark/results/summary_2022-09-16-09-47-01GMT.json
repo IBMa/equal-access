@@ -1,0 +1,70 @@
+{
+    "counts": {
+        "ignored": 0,
+        "violation": 3,
+        "potentialviolation": 189
+    },
+    "startReport": 1663339621092,
+    "endReport": 1663339673251,
+    "toolID": "accessibility-checker-v3.1.37",
+    "policies": "IBM_Accessibility",
+    "reportLevels": [
+        "violation",
+        "potentialviolation"
+    ],
+    "failLevels": [
+        "violation",
+        "potentialviolation"
+    ],
+    "scanID": "25275f9f-948c-4fbc-8a24-c857a8672f01",
+    "pageScanSummary": [
+        {
+            "label": "able-test.mybluemix.net/able/toolkit",
+            "counts": {
+                "violation": 3,
+                "potentialviolation": 25,
+                "ignored": 0
+            }
+        },
+        {
+            "label": "able-test.mybluemix.net/able/toolkit/plan/overview",
+            "counts": {
+                "violation": 0,
+                "potentialviolation": 36,
+                "ignored": 0
+            }
+        },
+        {
+            "label": "able-test.mybluemix.net/able/toolkit/design/overview",
+            "counts": {
+                "violation": 0,
+                "potentialviolation": 30,
+                "ignored": 0
+            }
+        },
+        {
+            "label": "able-test.mybluemix.net/able/toolkit/develop/overview",
+            "counts": {
+                "violation": 0,
+                "potentialviolation": 38,
+                "ignored": 0
+            }
+        },
+        {
+            "label": "able-test.mybluemix.net/able/toolkit/verify/overview",
+            "counts": {
+                "violation": 0,
+                "potentialviolation": 32,
+                "ignored": 0
+            }
+        },
+        {
+            "label": "able-test.mybluemix.net/able/toolkit/launch/overview",
+            "counts": {
+                "violation": 0,
+                "potentialviolation": 28,
+                "ignored": 0
+            }
+        }
+    ]
+}
