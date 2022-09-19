@@ -554,9 +554,9 @@
                 // console.log("tabbable = ", tabbable);
                 // console.log("tabbableErrors = ", tabbableErrors);
                 // JCH - clear visualization
-                console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
+                // console.log("Function: onReport - &&&& DELETE TABS after collecting TAB data &&&&")
                 if (this.state.showHideTabStops === false ) {
-                    console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
+                    // console.log("Function: onReport DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS");
                     await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
                 }
                 this.setState({ showHideTabStops: true });
@@ -1050,7 +1050,7 @@
             // console.log("document.firstElementChild = ", document.firstElementChild);
             chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)",
                 (result:string, isException) => {
-                    console.log("result = ",result);
+                    // console.log("result = ",result);
                     if (isException) {
                         console.error(isException);
                     }

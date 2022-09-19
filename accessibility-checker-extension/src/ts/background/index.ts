@@ -273,10 +273,10 @@
     });
     
     BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
-        console.log("BackgroundMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS")
-        console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
+        // console.log("BackgroundMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS")
+        // console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
-        console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
+        // console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         return true;
     });
     

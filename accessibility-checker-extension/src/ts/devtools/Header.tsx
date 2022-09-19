@@ -398,7 +398,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
                                 try {
-                                    console.log("onClick showHideTabStops = ", this.props.showHideTabStops);
+                                    // console.log("onClick showHideTabStops = ", this.props.showHideTabStops);
                                     if (this.props.showHideTabStops) {
                                         // console.log("1");
                                         // console.log("tabID = ",this.props.tabId,"   tabURL = ",this.props.tabURL, 
