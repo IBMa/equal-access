@@ -19,25 +19,24 @@
 
 <html lang="en-US">
 
-  <head>
-    <style>
-      div {
-        background-color: yellow;
-        display: none;
-      }
-    
-      span:hover ~ div {
-        display: block;
-      }
-      div:hover { display: block }
-      </style>
-    </head>
+<head>
+  <style>
+    div#second {
+      background-color: yellow;
+      display: none;
+    }
+  
+    div#first:hover + div#second {
+      display: block;
+    }
+    div#second:hover { display: block }
+    </style>
+</head>
 
 <body id="body">
 
-  <span>Hover over me!</span>
-  <div>I will show on hover</div>
-  <div style="margin:1rem;">I will show on hover TOO but no persist</div>
+  <div id="first">Hover over me!</div>
+  <div id="second">I will show on hover</div>
   
   <script>
     UnitTest = {
@@ -47,18 +46,19 @@
             "ruleId": "style_hover_persistent",
             "value": [
               "INFORMATION",
-              "POTENTIAL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/head[1]/style[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Potential_2",
-            "message": "Confirm the pointer can be positioned over all the information displayed on hover",
+            "reasonId": "Pass_0",
+            "message": "the hover: pseudo-class is not used to display content",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
           }
+          
       ]
 
     }

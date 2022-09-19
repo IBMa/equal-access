@@ -21,24 +21,28 @@
 
   <head>
     <style>
-      div {
+      div#second {
         background-color: yellow;
         display: none;
       }
     
-      span:hover ~ div {
-        display: block;
+      div#first:hover + div#second {
+         display: block;
       }
-      div:hover { display: block }
+
+      div#first {
+        margin: 1rem;
+      }
+
+      div#second:hover { display: block }
       </style>
-    </head>
-
-<body id="body">
-
-  <span>Hover over me!</span>
-  <div>I will show on hover</div>
-  <div style="margin:1rem;">I will show on hover TOO but no persist</div>
+  </head>
   
+  <body id="body">
+  
+    <div id="first">Hover over me!</div>
+    <div id="second">I will show on hover</div>
+    
   <script>
     UnitTest = {
       ruleIds: ["style_hover_persistent"],
@@ -53,8 +57,8 @@
               "dom": "/html[1]/head[1]/style[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Potential_2",
-            "message": "Confirm the pointer can be positioned over all the information displayed on hover",
+            "reasonId": "Potential_3",
+            "message": "Confirm the margin style attribute has not prevented the pointer from hovering over the displayed element, not just the trigger",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

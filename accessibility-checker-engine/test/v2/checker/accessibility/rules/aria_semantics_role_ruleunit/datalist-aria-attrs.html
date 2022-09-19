@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- saved from url=(0062)https://w3c.github.io/html-aria/tests/datalist-aria-attrs.html -->
+<html lang="en">
+<body>
+  <main>
+        <div class="testcase">
+          <label for="e">test</label>
+            <input id="e" list="f">
+            <datalist id="f" aria-atomic="false" aria-busy="false" aria-current="true" aria-disabled="true" aria-hidden="true" aria-label="tester" aria-orientation="vertical" aria-relevant="text" aria-roledescription="broken" aria-expanded="false" aria-invalid="true" aria-multiselectable="false" aria-readonly="true" aria-required="false">
+              <option>testing</option>
+            </datalist>
+          
+        </div>
+    </div>
+  </main>
+  <script>
+		UnitTest = {
+			ruleIds: ["aria_attribute_allowed"],
+			results: [
+      {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/datalist[1]",
+              "aria": "/document[1]/main[1]/listbox[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-atomic, aria-busy, aria-current, aria-disabled, aria-hidden, aria-label, aria-orientation, aria-relevant, aria-roledescription, aria-expanded, aria-invalid, aria-multiselectable, aria-readonly, aria-required\" are not valid for the element <datalist> with implicit ARIA role \"listbox\"",
+            "messageArgs": [
+              "aria-atomic, aria-busy, aria-current, aria-disabled, aria-hidden, aria-label, aria-orientation, aria-relevant, aria-roledescription, aria-expanded, aria-invalid, aria-multiselectable, aria-readonly, aria-required",
+              "datalist",
+              "listbox"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+		  ]
+		}
+	  </script>
+
+</body>
+</html>

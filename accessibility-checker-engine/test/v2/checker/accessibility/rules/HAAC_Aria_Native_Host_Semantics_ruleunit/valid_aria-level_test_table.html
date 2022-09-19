@@ -41,7 +41,7 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
             "ruleId": "aria_semantics_role",
@@ -63,7 +63,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -72,8 +72,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/table[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "div",
@@ -121,7 +121,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -130,8 +130,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[1]/span[1]",
               "aria": "/document[1]/table[1]/row[1]/columnheader[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-sort",
               "span",
@@ -160,7 +160,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -169,8 +169,8 @@
               "dom": "/html[1]/body[1]/div[1]/div[1]/span[2]",
               "aria": "/document[1]/table[1]/row[1]/columnheader[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-sort",
               "span",
