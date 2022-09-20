@@ -397,17 +397,30 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                             style={{background:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 
                             paddingTop:"7px", paddingLeft:"7px", paddingRight:"7px", paddingBottom:"7px", marginLeft: "8px"}}
                             onClick={ async() => {
-                                if (this.props.showHideTabStops) {
-                                    await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
+                                try {
+                                    // console.log("onClick showHideTabStops = ", this.props.showHideTabStops);
+                                    if (this.props.showHideTabStops) {
+                                        // console.log("1");
+                                        // console.log("tabID = ",this.props.tabId,"   tabURL = ",this.props.tabURL, 
+                                        //             "   tabStopsResults = ", this.props.tabStopsResults, "   tabStopsErrors = ",this.props.tabStopsErrors,"   tabStopLines = ", this.props.tabStopLines,
+                                        //             "   tabStopOutlines = ", this.props.tabStopOutlines);
+                                        await PanelMessaging.sendToBackground("DRAW_TABS_TO_BACKGROUND", 
                                         { tabId: this.props.tabId, tabURL: this.props.tabURL, tabStopsResults: this.props.tabStopsResults, tabStopsErrors: this.props.tabStopsErrors, 
                                             tabStopLines: this.props.tabStopLines, tabStopOutlines: this.props.tabStopOutlines });
-                                    setTimeout(() => {
+                                            // console.log("2");
+                                            setTimeout(() => {
+                                                // console.log("3");
+                                                this.props.setTabStopsShowHide();
+                                            }, 1000);
+                                            this.keyboardModalHandler();
+                                    } else {
+                                        // console.log("4");
+                                        await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
                                         this.props.setTabStopsShowHide();
-                                    }, 1000);
-                                    this.keyboardModalHandler();
-                                } else {
-                                    await PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.props.tabId, tabURL: this.props.tabURL });
-                                    this.props.setTabStopsShowHide();
+                                    }
+                                    
+                                } catch (error) {
+                                    console.log("My error stack",(error as any).stack);
                                 }
                             }}>
                         </Button>
