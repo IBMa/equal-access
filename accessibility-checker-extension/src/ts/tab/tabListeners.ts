@@ -31,7 +31,7 @@ TabMessaging.addListener("DAP_CACHED_TAB", async (message: any) => {
 
 TabMessaging.addListener("DAP_SCAN_TAB", async (message: any) => {
     try {
-        let checker = new (<any>window).ace.Checker();
+        let checker = new (<any>window).aceIBMa.Checker();
 
         // console.info(`Accessibility Checker - Scanning with archive ${message.archiveId} and policy ${message.policyId}`);
 
