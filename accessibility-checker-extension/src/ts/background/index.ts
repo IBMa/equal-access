@@ -57,7 +57,7 @@
                             chrome.tabs.executeScript(
                                 params.target.tabId as number,
                                 { 
-                                    code: `window.aceIBMa = ace`,
+                                    code: `window.ace = ace`,
                                     frameId: params.target.frameIds[0],
                                     matchAboutBlank: true
                                 },
@@ -81,7 +81,7 @@
         let isLoaded = await new Promise((resolve, reject) => {
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
-                func: () => (typeof (window as any).aceIBMa)
+                func: () => (typeof (window as any).ace)
             }, function (res: any) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
@@ -189,7 +189,7 @@
                     if (tab.id < 0) return resolve(false);
                     myExecuteScript({
                         target: { tabId: tab.id, frameIds: [0] },
-                        func: () => (typeof (window as any).aceIBMa)
+                        func: () => (typeof (window as any).ace)
                     }, function (res: any) {
                         resolve(!!res);
                     })
@@ -225,7 +225,7 @@
                 try {
                     myExecuteScript({
                         target: { tabId: message.tabId, frameIds: [0] },
-                        func: () => (new (window as any).aceIBMa.Checker().rulesets)
+                        func: () => (new (window as any).ace.Checker().rulesets)
                     }, function (res: any) {
                         if (chrome.runtime.lastError) {
                             reject(chrome.runtime.lastError.message);
