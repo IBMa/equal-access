@@ -149,7 +149,7 @@ let aChecker = {
 
     aChecker.getComplianceHelper = async function (content, label) {
 
-        aChecker.DEBUG && console.log("START 'aChecker.getCompliance' function");
+        aChecker.DEBUG && console.log("START 'aChecker.getComplianceHelper' function");
 
         // Variable Decleration
         let URL;
@@ -350,7 +350,9 @@ let aChecker = {
             if (policies) {
                 curPol = JSON.parse(JSON.stringify(policies));
             }
+            console.log("ACHelper.js call ace.Checker");
             let checker = new ace.Checker();
+            console.log("ACHelper.js call ace.Checker=", checker);
             let report = await checker.check(content, policies);
             for (const result of report.results) {
                 delete result.node;
