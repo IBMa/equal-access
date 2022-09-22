@@ -52,12 +52,20 @@ export class ACEngineManager {
                 let scriptStr =
 `let cb = arguments[arguments.length - 1];
 try {
-    if ('undefined' === typeof(ace)) {
+    var ace_backup_in_ibma;
+    if (ace || 'undefined' !== typeof(ace)) {
+        if (!ace || !ace.Checker) 
+            ace_backup_in_ibma = ace;
+        ace = null; 
+    } 
+    if (!ace || 'undefined' === typeof (ace) || ace === null) {
         let script = document.createElement('script');
         script.setAttribute('type', 'text/javascript');
         script.setAttribute('aChecker', 'ACE');
         script.setAttribute('src', '${config.rulePack}/ace.js');
         script.addEventListener('load', function() {
+            globalThis.ace_ibma = ace;
+            ace = ace_backup_in_ibma;
             cb();
         });
         let heads = document.getElementsByTagName('head');
