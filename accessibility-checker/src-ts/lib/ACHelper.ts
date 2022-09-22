@@ -310,7 +310,7 @@ cb(e);
     };
 }
 
-async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICheckerResult> {console.log("ACHelper.ts:getComplianceHelperPuppeteer" );
+async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICheckerResult> {
     try { 
         const startScan = Date.now();
         // NOTE: Engine should already be loaded
