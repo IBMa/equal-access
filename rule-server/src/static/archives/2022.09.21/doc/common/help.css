@@ -1,0 +1,154 @@
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+@import url('https://unpkg.com/carbon-components/css/carbon-components.min.css');
+
+bx-list-item>code, p>code, td>code {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    bottom: 0.0625em;
+    color: #161616;
+    display: inline;
+    font-size: .75rem;
+    font-size: .875em;
+    font-weight: 400;
+    letter-spacing: .32px;
+    line-height: 1.33333;
+    padding: 0 0.5em;
+    position: relative;
+}
+
+.toolHelp .toolMain p ~ p {
+    margin-top: .5rem;
+}
+
+.toolHelp .toolHead h3 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 600;
+}
+
+.toolHelp .toolHead .issueLevel {
+    font-weight: 600;
+}
+
+/* body-long-02 */
+.toolHelp .toolHead p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* productive-heading-03 */
+.toolHelp .toolMain h3 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+}
+
+/* body-long-02 */
+.toolHelp .toolMain p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+.toolHelp .toolSide .bx--list__item {
+    color: black;
+    font-size: 0.875rem;
+    line-height: 18px;
+}
+
+/* productive-heading-03 */
+.toolHelp .toolSide h3 {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+}
+.toolHelp .toolSide p {
+    font-size: 20px;
+    line-height: 28px;
+    font-weight: 400;
+}
+
+html, body, .toolHelp .bx--row:nth-child(2) {
+    height: 100%;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.toolHelp {
+    padding: 0px;
+    margin: 0px;
+    max-width: 100%;
+    background-color: #be95ff;
+}
+
+.toolHelp .bx--row {
+    margin: 0px;
+}
+
+.toolHelp .toolHead {
+    margin-bottom: 1rem;
+    padding-top: 1rem;
+}
+.toolHelp .toolMain {
+    background-color: #f4f4f4;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+.toolHelp .toolMain h2 {
+    margin-top: 32px;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolMain h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolMain p {
+    margin-top: 0px;
+}
+
+.toolHelp .toolSide {
+    padding: 16px 16px 16px 32px;
+    background-color: #e8daff;
+    color: black;
+}
+.toolHelp .toolSide h2 {
+    margin-top: 32px;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolSide h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.toolHelp .toolSide p {
+    margin-top: 0px;
+}
+@media (min-width: 66rem) {
+    .toolHelp .toolMain p, bx-list-item {
+        max-width: 66.66%;
+    }
+}
+bx-code-snippet[type="multi"]::after {
+    height: 0px;
+}
+
+#ruleInfo {
+    margin-top: 1rem;
+}
+
+#ruleInfo p {
+    font-size: 14px;
+}
