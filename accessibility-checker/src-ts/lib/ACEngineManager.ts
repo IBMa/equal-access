@@ -124,8 +124,8 @@ try {
             fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
                 try {
                     err && console.log(err);
-                    ace = require("./engine/ace-node");
-                    checker = new ace.Checker();
+                    var ace_ibma = require("./engine/ace-node");
+                    checker = new ace_ibma.Checker();
                 } catch (e) {
                     console.log(e);
                     return reject(e);
