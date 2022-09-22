@@ -94,6 +94,12 @@ Example with an implicit role:
 * [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
 * [ARIA specification - Required Owned Elements](https://w3c.github.io/aria/#mustContain)
 
+**Note**: this rule's level was lowered from a "Violation" to a "Recommendation" temporarily.
+In some cases, such as `listitems` only being allowed inside `lists`, 
+assistive technology works around the strict specification and correctly renders the child elements.
+An investigation of the AIRA specification is on-going to determine the strictness of the parent-child interpretation.
+In most cases this rule should be interpreted as a "Violation" and remediated as explained above. 
+
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
