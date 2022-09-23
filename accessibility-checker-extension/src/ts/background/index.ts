@@ -113,8 +113,8 @@
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
                 func: () => {
-                    ((window as any).aceIBMa =  (window as any).ace)
-                    (window as any).ace =  (window as any).aceIBMaTemp
+                    ((window as any).aceIBMa = (window as any).ace);
+                    (window as any).ace = (window as any).aceIBMaTemp;
                 }
             }, function (res: any) {
                 if (chrome.runtime.lastError) {
