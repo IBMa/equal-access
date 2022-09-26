@@ -17,12 +17,12 @@ export class ACEngineManager {
             await page.evaluate((scriptUrl) => {
                 try {
                     var ace_backup_in_ibma;
-                    if (ace || 'undefined' !== typeof(ace)) {
+                    if ('undefined' !== typeof(ace)) {
                         if (!ace || !ace.Checker) 
                             ace_backup_in_ibma = ace;
                         ace = null; 
                     } 
-                    if (!ace || 'undefined' === typeof (ace) || ace === null) {
+                    if ('undefined' === typeof (ace) || ace === null) {
                         return new Promise<void>((resolve, reject) => {
                             let script = document.createElement('script');
                             script.setAttribute('type', 'text/javascript');
@@ -30,7 +30,9 @@ export class ACEngineManager {
                             script.setAttribute('src', scriptUrl);
                             script.addEventListener('load', function () {
                                 globalThis.ace_ibma = ace;
-                                ace = ace_backup_in_ibma;
+                                if ('undefined' !== typeof(ace)) {
+                                    ace = ace_backup_in_ibma;
+                                }    
                                 resolve();
                             });
                             let heads = document.getElementsByTagName('head');
