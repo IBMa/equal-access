@@ -97,7 +97,7 @@ try {
             }
         } else {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected local");
-            if (ace) {
+            if (globalThis.ace_ibma) {
                 return Promise.resolve();
             } else {
                 return ACEngineManager.loadEngineLocal();
@@ -106,7 +106,7 @@ try {
     }
 
     static async loadEngineLocal() {
-        if (ace) {
+        if (globalThis.ace_ibma) {
             return Promise.resolve();
         }
         let config = await ACConfigManager.getConfigUnsupported();
