@@ -333,7 +333,8 @@ export class RPTUtil {
         if (RPTUtil.hasAttribute(elem, "tabindex")) {
             if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {
                 let tabindexValue = parseInt(elem.getAttribute("tabindex"));
-                return tabindexValue === 0 || tabindexValue === -1;
+                //return tabindexValue === 0 || tabindexValue === -1;
+                return tabindexValue >= 0;
             }
         }
         return false;

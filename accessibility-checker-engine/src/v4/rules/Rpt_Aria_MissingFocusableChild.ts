@@ -22,15 +22,15 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
-            "Pass_0": "Rpt_Aria_MissingFocusableChild.html",
-            "Fail_1": "Rpt_Aria_MissingFocusableChild.html",
+            "pass": "Rpt_Aria_MissingFocusableChild.html",
+            "fail_missing_child": "Rpt_Aria_MissingFocusableChild.html",
             "group": "Rpt_Aria_MissingFocusableChild.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The descendent <{0}> element with \"{1}\" role has no focusable child element",
+            "pass": "Rule Passed",
+            "fail_missing_child": "The descendent <{0}> element with \"{1}\" role has no focusable child element",
             "group": "UI component must have at least one focusable child element for keyboard access"
         }
     },
@@ -163,9 +163,9 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
         if (!inScope) {
             return null;
         } else if (!passed) {
-            return RuleFail("Fail_1", [retToken1.toString(), retToken2.toString()]);
+            return RuleFail("fail_missing_child", [retToken1.toString(), retToken2.toString()]);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }
