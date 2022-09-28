@@ -1086,13 +1086,15 @@
         }
     
         setTabStopsShowHide() {
+            // console.log("function: setTabStopsShowHide");
+            // let mythis = this;
             if (this.state.showHideTabStops) {
                 this.setState({ showHideTabStops: false });
             } else {
                 this.setState({ showHideTabStops: true });
             }
             setTimeout(function () {
-                // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+                // console.log("showHideTabStops = ", mythis.state.showHideTabStops);
             }, 10);
         }
     
@@ -1125,7 +1127,7 @@
         };
     
         tabStopsHandler() {
-            console.log("tabStopsHandler START");
+            console.log("Function: tabStopsHandler START");
             // let mythis = this;
             console.log("PanelMessaging.sendToBackground DELETE_DRAW_TABS_TO_CONTEXT_SCRIPT")
             PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
