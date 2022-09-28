@@ -69,7 +69,7 @@ export class ACReportManager {
      * @memberOf this
      */
     static isLabelUnique(label: string) {
-        ACReportManager.config.DEBUG && console.log("START 'aChecker.isLabelUnique' function");
+        ACReportManager.config.DEBUG && console.log("ACReportManager:START 'aChecker.isLabelUnique' function");
 
         // Variable Decleration
         let labelExists = false;
@@ -102,7 +102,7 @@ export class ACReportManager {
      * @memberOf this
      */
     static async sendResultsToReporter(unFilteredResults, results, profile) {
-        ACReportManager.config.DEBUG && console.log("sendResultsToReporter:", ACReportManager.config.outputFormat);
+        ACReportManager.config.DEBUG && console.log("ACReportManager:sendResultsToReporter:", ACReportManager.config.outputFormat);
         if (ACReportManager.config.outputFormat.indexOf("json") != -1) {
             ACReportManager.reporters.json.report(results);
         }
