@@ -892,7 +892,9 @@
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
+
             // console.log("Function: selectItem");
+
             if (this.state.report) {
                 if (!item) {
                     for (const resultItem of this.state.report.results) {
@@ -973,7 +975,6 @@
                                 element = lookup(doc, srcPath) || element;
                             }
                             if (element) {
-                                // console.log("JCH inspect element: ",element);
                                 inspect(element);
                                 var elementRect = element.getBoundingClientRect();
                                 var absoluteElementTop = elementRect.top + window.pageYOffset;

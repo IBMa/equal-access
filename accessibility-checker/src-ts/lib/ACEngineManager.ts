@@ -16,13 +16,23 @@ export class ACEngineManager {
             let page = content;
             await page.evaluate((scriptUrl) => {
                 try {
-                    if ('undefined' === typeof(ace)) {
+                    var ace_backup_in_ibma;
+                    if ('undefined' !== typeof(ace)) {
+                        if (!ace || !ace.Checker) 
+                            ace_backup_in_ibma = ace;
+                        ace = null; 
+                    } 
+                    if ('undefined' === typeof (ace) || ace === null) {
                         return new Promise<void>((resolve, reject) => {
                             let script = document.createElement('script');
                             script.setAttribute('type', 'text/javascript');
                             script.setAttribute('aChecker', 'ACE');
                             script.setAttribute('src', scriptUrl);
                             script.addEventListener('load', function () {
+                                globalThis.ace_ibma = ace;
+                                if ('undefined' !== typeof(ace)) {
+                                    ace = ace_backup_in_ibma;
+                                }    
                                 resolve();
                             });
                             let heads = document.getElementsByTagName('head');
@@ -44,12 +54,22 @@ export class ACEngineManager {
                 let scriptStr =
 `let cb = arguments[arguments.length - 1];
 try {
-    if ('undefined' === typeof(ace)) {
+    var ace_backup_in_ibma;
+        if ('undefined' !== typeof(ace)) {
+            if (!ace || !ace.Checker) 
+                ace_backup_in_ibma = ace;
+            ace = null; 
+        } 
+        if ('undefined' === typeof (ace) || ace === null) {
         let script = document.createElement('script');
         script.setAttribute('type', 'text/javascript');
         script.setAttribute('aChecker', 'ACE');
         script.setAttribute('src', '${config.rulePack}/ace.js');
         script.addEventListener('load', function() {
+            globalThis.ace_ibma = ace;
+            if ('undefined' !== typeof(ace)) {
+                ace = ace_backup_in_ibma;
+            } 
             cb();
         });
         let heads = document.getElementsByTagName('head');
@@ -81,7 +101,7 @@ try {
             }
         } else {
             config.DEBUG && console.log("[INFO] aChecker.loadEngine detected local");
-            if (ace) {
+            if (globalThis.ace_ibma) {
                 return Promise.resolve();
             } else {
                 return ACEngineManager.loadEngineLocal();
@@ -90,7 +110,7 @@ try {
     }
 
     static async loadEngineLocal() {
-        if (ace) {
+        if (globalThis.ace_ibma) {
             return Promise.resolve();
         }
         let config = await ACConfigManager.getConfigUnsupported();
@@ -108,8 +128,8 @@ try {
             fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
                 try {
                     err && console.log(err);
-                    ace = require("./engine/ace-node");
-                    checker = new ace.Checker();
+                    var ace_ibma = require("./engine/ace-node");
+                    checker = new ace_ibma.Checker();
                 } catch (e) {
                     console.log(e);
                     return reject(e);
