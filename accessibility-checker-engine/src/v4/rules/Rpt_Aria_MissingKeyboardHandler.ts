@@ -103,7 +103,7 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                                                     continue;
                                                 }
 
-                                                passed = RPTUtil.tabIndexLEZero(r2) &&
+                                                passed = RPTUtil.tabIndexGEZero(r2) &&
                                                     (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                                 if (!passed) {
@@ -153,7 +153,7 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                                         continue;
                                     }
 
-                                    passed = RPTUtil.tabIndexLEZero(r2) &&
+                                    passed = RPTUtil.tabIndexGEZero(r2) &&
                                         (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                     if (!passed) {

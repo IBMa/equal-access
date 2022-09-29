@@ -56,6 +56,14 @@
         <div role="tab" tabindex="-1">Tab 1</div>
         <div role="tab" tabindex="-1">Tab 2</div>
       </div>
+      <div role="tablist" tabindex="-1" aria-activedescendant="button2" id="tb3"
+          onkeypress="return optionKeyEvent(event);">
+          <div role='tab' id="button2">Tab 2</div>
+      </div>
+      <div role="tablist" tabindex="-2" aria-activedescendant="button3" id="tb4"
+          onkeypress="return optionKeyEvent(event);">
+          <div role='tab' id="button3">Tab 2</div>
+      </div>
     </main>
     <script>
       UnitTest = {
