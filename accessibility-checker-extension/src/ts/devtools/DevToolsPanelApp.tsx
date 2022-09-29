@@ -892,6 +892,9 @@
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
+
+            // console.log("Function: selectItem");
+
             if (this.state.report) {
                 if (!item) {
                     for (const resultItem of this.state.report.results) {
@@ -1079,13 +1082,15 @@
         }
     
         setTabStopsShowHide() {
+            // console.log("function: setTabStopsShowHide");
+            // let mythis = this;
             if (this.state.showHideTabStops) {
                 this.setState({ showHideTabStops: false });
             } else {
                 this.setState({ showHideTabStops: true });
             }
             setTimeout(function () {
-                // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+                // console.log("showHideTabStops = ", mythis.state.showHideTabStops);
             }, 10);
         }
     
@@ -1118,16 +1123,13 @@
         };
     
         tabStopsHandler() {
-            console.log("tabStopsHandler START");
-            // let mythis = this;
-            console.log("PanelMessaging.sendToBackground DELETE_DRAW_TABS_TO_CONTEXT_SCRIPT")
+            // console.log("Function: tabStopsHandler START");
             PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
             this.setState({ tabStopsPanel: false });
             setTimeout(function () {
                 // console.log("tabStopsPanel1 = ", mythis.state.tabStopsPanel);
             }, 1);
             this.selectElementInElements();
-            console.log("tabStopsHandler DONE");
         }
     
         tabStopsHighlight(index: number, result: any) {

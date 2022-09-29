@@ -298,6 +298,9 @@
     });
     
     BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
+
+       // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath);
+
         await BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
             xpath: message.xpath,
             circleNumber: message.circleNumber
