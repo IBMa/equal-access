@@ -57,6 +57,9 @@ export let Rpt_Aria_InvalidTabindexForActivedescendant: Rule = {
             return null;
         }
 
+        //check if the attribute 'aria-activedescendant' is valid for the role of the element
+        
+
         // If the tabindex attribute is provided then verify that it is 0 or -1
         passed = RPTUtil.isTabbable(ruleContext) || RPTUtil.tabIndexLEZero(ruleContext);
 
