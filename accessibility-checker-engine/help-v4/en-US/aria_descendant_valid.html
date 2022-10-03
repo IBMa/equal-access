@@ -44,40 +44,27 @@
 
 ### Why is this important?
 
-If an ARIA `role` attribute is specified for an element, the child elements required for that role must also be present. 
-Child elements' implied (native HTML) roles may satisfy the requirement - the role does not have to be explicitly set by ARIA. 
-Any incorrect child element roles also need to be removed. For example, `role="group"` is not a valid child of `list`.
-Without the correct required child element roles, assistive technologies may not be able to accurately represent the context or be able to interact with the element.
+This rule helps ensures that assistive technologies can gather the correct information about all the user interface components. 
+When certain elements that are specified in ARIA to have presentational descendants, browsers **_should not**_ expose the descendants through the platform accessibility API to assistive technologies. 
+If user agents do not hide the descendants contents and semantics in the accessibility tree, some information may be presented (spoken) twice and confuse the end user. 
+The content contained by the element, i.e., inner text, as well as contents of all its descendants remain visible to assistive technologies, 
+except, of course, when the text is explicitly hidden, e.g., styled with `display: none` or has `aria-hidden="true"`.
+
+This rule is triggered when one of the following elements contain more than presentational children: `button`, `checkbox`, `img`, `math`, `menuitemcheckbox`, `menuitemradio`, `option`, `progressbar`, `radio`, `scrollbar`, `separator`, `slider`, `switch`, and `tab`. 
+Refer to the table in [ARIA in HTML - Allowed descendants of ARIA roles](https://www.w3.org/TR/html-aria/#allowed-descendants-of-aria-roles) for the normative definition for each ARIA role, 
+the kinds of content categories for each role, and what [kinds of elements](https://html.spec.whatwg.org/multipage/dom.html#kinds-of-content) can be descendants.
+
+For example, a `<button>` allows text and images, 
+but does not allow [interactive content](https://html.spec.whatwg.org/multipage/dom.html#interactive-content-2) or descendants with a tabindex attribute because that would confuse assistive technology users as to the expected content or behavior of the button.
+
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Add the appropriate required child element(s) to this element
- * *Or*, remove any incorrect child element(s)
+ * Remove any incorrect descendant element(s)
 
-Example with a `"radiogroup"` that requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
-
-```
-<div role="radiogroup">
-    <div role="radio" aria-checked="false"></div>
-    <div role="radio" aria-checked="true"></div>
-</div>
-```
-
-Example with an implicit role:
-
-```
-<table role= "treegrid">
-     <tr>
-         <td>
-            element with role="treegrid" requires child element with role="row".
-            TR has implicit ARIA role="row", so the condition is met.
-         <td>
-     <tr>
-</table>
-```
 
 </script></mark-down>
 <!-- End main panel -->
@@ -93,7 +80,7 @@ Example with an implicit role:
 * [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
 * [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
 * [ARIA specification - Presentational Children](https://www.w3.org/TR/wai-aria-1.2/#childrenArePresentational)
-* [ARIA in HTML - Allowed descendants of ARIA roles](https://w3c.github.io/html-aria/#allowed-descendants-of-aria-roles)
+* [ARIA in HTML - Allowed descendants of ARIA roles](https://www.w3.org/TR/html-aria/#allowed-descendants-of-aria-roles)
 
 ### Who does this affect?
 
