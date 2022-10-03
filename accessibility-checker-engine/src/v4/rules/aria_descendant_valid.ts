@@ -23,9 +23,9 @@ export let aria_descendant_valid: Rule = {
     help: {
         "en-US": {
             "group": "aria_descendant_valid.html",
-            "Pass": "aria_descendant_valid.html",
-            "Fail_no_child": "aria_descendant_valid.html",
-            "Fail_invalid_child": "aria_descendant_valid.html"
+            "pass": "aria_descendant_valid.html",
+            "potential_child_implicit_role": "aria_descendant_valid.html",
+            "fail_child_explicit_role": "aria_descendant_valid.html"
         }
     },
     messages: {
