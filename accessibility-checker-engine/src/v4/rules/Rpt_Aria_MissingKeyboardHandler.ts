@@ -107,11 +107,6 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                                                     (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                                 if (!passed) {
-
-                                                    // No tabindex focusable element found with a key handler.  See if an element focusable by default has a handler.
-                                                    /**if (RPTUtil.isfocusableByDefault(r2)) {
-                                                        passed = (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
-                                                    */    
                                                         // Is this an action link?
                                                         if (r2.nodeName.toLowerCase() == "a" && r2.hasAttribute("href")) {
                                                             let href = r2.getAttribute("href");

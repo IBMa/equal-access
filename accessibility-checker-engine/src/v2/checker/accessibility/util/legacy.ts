@@ -329,16 +329,6 @@ export class RPTUtil {
         }
     }
 
-    public static tabIndexGEZero(elem) {
-        if (RPTUtil.hasAttribute(elem, "tabindex")) {
-            if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {
-                let tabindexValue = parseInt(elem.getAttribute("tabindex"));
-                return tabindexValue >= 0;
-            }
-        }
-        return false;
-    }
-
     public static tabIndexLEZero(elem) {
         if (RPTUtil.hasAttribute(elem, "tabindex")) {
             if (elem.getAttribute("tabindex").match(/^-?\d+$/)) {

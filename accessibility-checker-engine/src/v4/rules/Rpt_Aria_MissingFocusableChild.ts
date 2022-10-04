@@ -108,8 +108,7 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                             }
 
                             passed = RPTUtil.isTabbable(r);
-                           // if (!passed) passed = RPTUtil.isfocusableByDefault(r);
-
+                           
                             // Required child is not focusable via tabindex.  See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
                                 let xp2 = "descendant::*";
@@ -129,8 +128,6 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                                         continue;
                                     }
                                     passed = RPTUtil.isTabbable(r);
-                                    //passed = RPTUtil.tabIndexGEZero(r2);
-                                    //if (!passed) passed = RPTUtil.isfocusableByDefault(r2);
                                     r2 = xpathResult2.iterateNext();
                                 }
                             }
