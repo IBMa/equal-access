@@ -64,6 +64,9 @@
           onkeypress="return optionKeyEvent(event);">
           <div role='tab' id="button3">Tab 2</div>
       </div>
+      <div role="tree" tabindex="0" id="tree1">
+        <div id="item1" role="treeitem" tabindex="0">Tree item</div>
+      </div>
     </main>
     <script>
       UnitTest = {
@@ -144,7 +147,7 @@
               "aria": "/document[1]/main[1]/tablist[5]"
             },
             "reasonId": "fail_missing_child",
-            "message": "The descendent <div> element with \"tab\" role has no focusable child element",
+            "message": "None of the descendent elements with \"tab\" role is tabbable",
             "messageArgs": [
               "div",
               "tab"
@@ -163,7 +166,7 @@
               "aria": "/document[1]/main[1]/tablist[6]"
             },
             "reasonId": "fail_missing_child",
-            "message": "The descendent <div> element with \"tab\" role has no focusable child element",
+            "message": "None of the descendent elements with \"tab\" role is tabbable",
             "messageArgs": [
               "div",
               "tab"

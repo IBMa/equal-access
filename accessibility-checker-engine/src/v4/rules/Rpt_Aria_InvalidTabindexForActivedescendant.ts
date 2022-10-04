@@ -28,8 +28,8 @@ export let Rpt_Aria_InvalidTabindexForActivedescendant: Rule = {
     messages: {
         "en-US": {
             "pass": "Rule Passed",
-            "Fail_1": "The <{0}> element using 'aria-activedescendant' set to \"{1}\" does not have its 'tabindex' attribute value set to 0 or -1",
-            "group": "Element using 'aria-activedescendant' property must have its 'tabindex' attribute value set to 0 or -1 to be keyboard accessible"
+            "Fail_1": "The <{0}> element using 'aria-activedescendant' set to \"{1}\" is not tabbable",
+            "group": "Element using 'aria-activedescendant' property should be tabbable"
         }
     },
     rulesets: [{
@@ -61,7 +61,7 @@ export let Rpt_Aria_InvalidTabindexForActivedescendant: Rule = {
         
 
         // If the tabindex attribute is provided then verify that it is 0 or -1
-        passed = RPTUtil.isTabbable(ruleContext) || RPTUtil.tabIndexLEZero(ruleContext);
+        passed = RPTUtil.isTabbable(ruleContext);
 
         // Build array for node token
         let retToken1 = new Array();

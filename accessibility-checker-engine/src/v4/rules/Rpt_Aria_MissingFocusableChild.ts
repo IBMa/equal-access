@@ -30,8 +30,8 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
     messages: {
         "en-US": {
             "pass": "Rule Passed",
-            "fail_missing_child": "The descendent <{0}> element with \"{1}\" role has no focusable child element",
-            "group": "UI component must have at least one focusable child element for keyboard access"
+            "fail_missing_child": "None of the descendent elements with \"{1}\" role is tabbable",
+            "group": "UI component must have at least one tabbable descendant for keyboard access"
         }
     },
     rulesets: [{
@@ -45,7 +45,7 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
         const ruleContext = context["dom"].node as Element;
 
         // An ARIA list is not interactive
-        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true })) {
+        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true, "grid": true })) {
             return null;
         }
 
@@ -107,8 +107,8 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                                 continue;
                             }
 
-                            passed = RPTUtil.tabIndexGEZero(r);
-                            if (!passed) passed = RPTUtil.isfocusableByDefault(r);
+                            passed = RPTUtil.isTabbable(r);
+                           // if (!passed) passed = RPTUtil.isfocusableByDefault(r);
 
                             // Required child is not focusable via tabindex.  See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
@@ -128,8 +128,9 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                                         r2 = xpathResult2.iterateNext();
                                         continue;
                                     }
-                                    passed = RPTUtil.tabIndexGEZero(r2);
-                                    if (!passed) passed = RPTUtil.isfocusableByDefault(r2);
+                                    passed = RPTUtil.isTabbable(r);
+                                    //passed = RPTUtil.tabIndexGEZero(r2);
+                                    //if (!passed) passed = RPTUtil.isfocusableByDefault(r2);
                                     r2 = xpathResult2.iterateNext();
                                 }
                             }
