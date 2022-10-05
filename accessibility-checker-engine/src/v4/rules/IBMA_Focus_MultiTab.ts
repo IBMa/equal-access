@@ -22,14 +22,14 @@ export let IBMA_Focus_MultiTab: Rule = {
     context: "aria:button,aria:link,aria:menuitem,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:checkbox,aria:option,aria:radio,aria:slider,aria:spinbutton,aria:textbox,aria:columnheader,aria:rowheader,aria:slider,aria:tab",
     help: {
         "en-US": {
-            "Pass_0": "IBMA_Focus_MultiTab.html",
+            "pass": "IBMA_Focus_MultiTab.html",
             "fail_multiple_tabbable": "IBMA_Focus_MultiTab.html",
             "group": "IBMA_Focus_MultiTab.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass": "Rule Passed",
+            "pass": "Rule Passed",
             "fail_multiple_tabbable": "Component with \"{0}\" role has more than one tabbable element",
             "group": "Certain components must have no more than one tabbable element"
         }
@@ -60,6 +60,6 @@ export let IBMA_Focus_MultiTab: Rule = {
         let passed = count < 2;
         if (!passed)
             setCache(ruleContext, "IBMA_Focus_MultiTab", "fail_multiple_tabbable");
-        return passed ? RulePass("Pass_0") : RulePotential("fail_multiple_tabbable", [role]);
+        return passed ? RulePass("pass") : RulePotential("fail_multiple_tabbable", [role]);
     }
 }

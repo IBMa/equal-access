@@ -21,14 +21,14 @@ export let IBMA_Focus_Tabbable: Rule = {
     context: "aria:button,aria:link,aria:spinbutton,aria:tablist,aria:combobox,aria:listbox,aria:menu,aria:radiogroup,aria:tree,aria:checkbox,aria:slider,aria:spinbutton,aria:textbox,aria:scrollbar,aria:slider,aria:spinbutton",
     help: {
         "en-US": {
-            "Pass_0": "IBMA_Focus_Tabbable.html",
+            "pass": "IBMA_Focus_Tabbable.html",
             "fail_no_tabbable": "IBMA_Focus_Tabbable.html",
             "group": "IBMA_Focus_Tabbable.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
+            "pass": "Rule Passed",
             "fail_no_tabbable": "Component with \"{0}\" role does not have a tabbable element",
             "group": "Component must have at least one tabbable element"
         }
@@ -63,6 +63,6 @@ export let IBMA_Focus_Tabbable: Rule = {
             }
         }
         let passed = count >= 1;
-        return passed ? RulePass("Pass_0") : RulePotential("fail_no_tabbable", [role]);
+        return passed ? RulePass("pass") : RulePotential("fail_no_tabbable", [role]);
     }
 }
