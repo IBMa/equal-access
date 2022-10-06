@@ -204,7 +204,7 @@ describe("Rule Unit Tests from Selenium", function () {
                                 if (!result || !result.report) {
                                     try { expect(false).to.equal(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
                                 }
-                                report = result.report;
+                                report = result.report; //console.log("report= " + JSON.stringify(report));
                             })
                             .then(async () => {
                                 return browser.executeScript(
