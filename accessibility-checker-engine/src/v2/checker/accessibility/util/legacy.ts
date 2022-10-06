@@ -2642,15 +2642,7 @@ export class RPTUtil {
             if (RPTUtil.containsPresentationalChildrenOnly(walkNode as HTMLElement)) return true;
 
             //aria-own case: if the element is referred by an aria-won
-            const id =  walkNode.getAttribute("id");
-            if (id) {
-                const aria_owns_elem = walkNode.ownerDocument.querySelector('[aria-owns="' + id + '"]');
-                if (aria_owns_elem) 
-                    walkNode = aria_owns_elem;
-                else
-                    walkNode = DOMWalker.parentElement(walkNode);    
-            } else
-                walkNode = DOMWalker.parentElement(walkNode);
+            walkNode = ARIAMapper.getAriaOwnedBy(walkNode as HTMLElement) || DOMWalker.parentElement(walkNode);    
         }
         return false;
     }
