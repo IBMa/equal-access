@@ -1,13 +1,12 @@
 <!-- The title of this PR will be used for release notes, please provide a relevant title -->
 
-## This pull request is for the following: 
-
-- [ ] New Rule for the checker **without** a help file
-- [ ] New Rule for the checker **with** a help file
-- [ ] Updating a help file only. 
-- [ ] A bug within the UI
-- [ ] A bug with a rule
-- [ ] Other (Provide information): 
+<!-- Specify what this PR is doing. Remove all that do not apply -->
+* New Rule(s): **List rule IDs**
+* New or modified help files: **List rule IDs**
+* Rule bug: **List rule IDs**
+* Extension UI bug
+* Automated tool bug
+* Other (Provide information)
 
 ### This PR is related to the following issue(s): 
 - <!-- Provide each ticket on a new line with # -->
