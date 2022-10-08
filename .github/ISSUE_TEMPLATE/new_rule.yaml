@@ -122,6 +122,7 @@ body:
         - 10.6 Audio Description Timing
         - 11.5.2.3 Use of Accessibility Services
         - 11.8.4 Repair Assistance
+        - 41.2.1 Sign Language Widget
     validations:
       required: true  
   - type: markdown

@@ -934,5 +934,17 @@
       "handle": "Status Messages",
       "level": "AA",
       "wcagType": "2.1"
+    },
+    "41.2.1": {
+      "num": "41.2.1",
+      "url": "https://mindrocketsinc.com/main/",
+      "scId": "WCAG2:status-messages",
+      "scAltId": [],
+      "test": "WCAG2:WCAG2:status-messages",
+      "howToMeetUrl": "https://mindrocketsinc.com/main/",
+      "understandingUrl": "https://mindrocketsinc.com/main/",
+      "handle": "Sign Language Widget",
+      "level": "AA",
+      "wcagType": "2.1"
     }
   }
