@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <body>
+<ul role="menu">
+	<li role="menuitemcheckbox" aria-checked="true">
+		<input type="checkbox" role="none" disabled checked />
+		Sort by Last Modified
+	</li>
+</ul>
+
+<script>
+    UnitTest = {
+        ruleIds: ["aria_descendant_valid"],
+        results: [
+        {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/ul[1]/li[1]",
+              "aria": "/document[1]/menu[1]/menuitemcheckbox[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    }
+  </script>
+  </body>

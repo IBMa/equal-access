@@ -11,11 +11,12 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { setCache } from "../util/CacheUtil";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let IBMA_Focus_MultiTab: Rule = {
     id: "IBMA_Focus_MultiTab",
@@ -42,14 +43,24 @@ export let IBMA_Focus_MultiTab: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
+        
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+        
+        //skip the check if the element should be a presentational child of an element
+        if (RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
+        
         let role = ARIAMapper.nodeToRole(ruleContext);
         let count = 0;
         if (RPTUtil.isTabbable(ruleContext)) {
             ++count;
         }
         // If node has children, look for tab stops in the children
-        if (count < 2 && ruleContext.firstChild) {
+        //skip the count if the element requires presentational children only
+        if (count < 2 && !RPTUtil.containsPresentationalChildrenOnly(ruleContext) && ruleContext.firstChild) {
             let nw = new NodeWalker(ruleContext);
             while (count < 2 && nw.nextNode() && nw.node != ruleContext) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {

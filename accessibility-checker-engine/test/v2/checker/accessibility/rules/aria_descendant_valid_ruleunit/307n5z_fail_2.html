@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <p role="checkbox" aria-checked="false" tabindex="0">I agree to the <a href="/terms">terms of service</a></p>
+
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_descendant_valid"],
+                results: [
+                {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/checkbox[1]"
+            },
+            "reasonId": "potential_child_implicit_role",
+            "message": "The element with role \"checkbox\" contains descendants with implicit roles \"link\" which are ignored by browsers",
+            "messageArgs": [
+              "checkbox",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+              ]
+            }
+          </script>
+          </body>
