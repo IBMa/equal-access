@@ -1593,7 +1593,7 @@ export class RPTUtil {
         /**  
          * ignore if the element doesn't have any explicit or implicit role
         */
-        if (!roles || roles.length == 0) {
+        if (!roles || roles.length === 0) {
             return null;
         }
         
@@ -2618,11 +2618,11 @@ export class RPTUtil {
     public static containsPresentationalChildrenOnly(elem : HTMLElement) : boolean {
         let roles = RPTUtil.getRoles(elem, false);
         // if explicit role doesn't exist, get the implicit one
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             roles =  RPTUtil.getImplicitRole(elem);
         
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             return false;
         
         for (let i = 0; roles !== null && i < roles.length; i++) {

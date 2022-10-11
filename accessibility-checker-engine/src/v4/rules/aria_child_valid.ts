@@ -59,11 +59,11 @@ export let aria_child_valid: Rule = {
         
         let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             roles =  RPTUtil.getImplicitRole(ruleContext);
         
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             return null;
         
         // ignore if the element contains none or presentation role

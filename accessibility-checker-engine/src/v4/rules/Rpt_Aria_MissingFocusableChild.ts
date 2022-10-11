@@ -20,7 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let Rpt_Aria_MissingFocusableChild: Rule = {
     id: "Rpt_Aria_MissingFocusableChild",
     context: "dom:*[role]",
-    dependencies: ["Rpt_Aria_ValidRole", ],
+    dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
             "Pass_0": "Rpt_Aria_MissingFocusableChild.html",
