@@ -34,6 +34,6 @@ If you think you've found a bug, have questions or suggestions, please report th
 ## Known issues and workarounds
 
 1. If you see `TypeError: ace.Checker is not a constructor`: 
-    - Try to run your  tests serially using the configuration option in your framwork. For example, use `--runInBand` in Jest framwork. 
+    - Try to run your tests serially using the configuration option in your framwork. For example, use `--runInBand` in Jest framwork. 
 
 
