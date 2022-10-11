@@ -200,7 +200,7 @@ export let aria_attribute_allowed: Rule = {
             if (type === "implicit_role_attr")
                 return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
             else {
-                if (!roles || roles.length == 0) roles = ["none"];
+                if (!roles || roles.length === 0) roles = ["none"];
                 return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
             }    
 
