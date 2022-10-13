@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_MissingFocusableChild: Rule = {
     id: "Rpt_Aria_MissingFocusableChild",
@@ -42,7 +43,15 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
     }],
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
+
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+        
+        //skip the check if the element requires presentational children only
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext) || RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
 
         // An ARIA list is not interactive
         if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true, "grid": true })) {
@@ -51,14 +60,6 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
 
         // Not a valid message for mobile because all elements are focusable in iOS when VoiceOver is enabled.
         if (ruleContext.hasAttribute("class") && ruleContext.getAttribute("class").substring(0, 3) == "mbl") {
-            return null;
-        }
-
-        // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
-        //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
-        //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
-        // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
-        if (RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
 

@@ -14,6 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     id: "Rpt_Aria_RequiredParent_Native_Host_Sematics",
@@ -42,14 +44,29 @@ export let Rpt_Aria_RequiredParent_Native_Host_Sematics: Rule = {
     // TODO: ACT: Check Fail 3
     act: "ff89c9",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
+
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+        
+        //skip the check if the element should be a presentational child of an element
+        if (RPTUtil.shouldBePresentationalChild(ruleContext))
+            return;
+        
+        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
+        
+        // ignore if the element contains none or presentation role
+        let presentationRoles = ["none", "presentation"];
+        const found = roles.some(r=> presentationRoles.includes(r));
+        if (found) return null;
+
         let passed = true;
         let designPatterns = ARIADefinitions.designPatterns;
         let roleNameArr = new Array();
         let containerRoles = new Array();
         let testedContainer = 0;
 
-        let roles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/);
         let ancestorRoles = contextHierarchies["aria"].map(info => info.role);
         let parentRole = ancestorRoles[ancestorRoles.length - 2];
         let count = 2;
