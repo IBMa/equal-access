@@ -1,0 +1,99 @@
+<html lang="en-US">
+<head>
+    <title>aria_attribute_deprecated - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"The ARIA roles and attribute are used per specification","fail_aria_role":"The ARIA role \"{0}\" is deprecated in the ARIA specification","fail_aria_attr":"The ARIA attributes \"{0}\" are deprecated in the ARIA specification","fail_role_attr":"The ARIA attributes \"{0}\" are deprecated for the role \"{1}\" in the ARIA specification","group":"No deprecated ARIA role or attribute should be used"}};
+        RULE_ID = "aria_attribute_deprecated"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+Browsers and assistive technology must be able to accurately interpret the markup of the content.
+If the code is ambiguous or incorrect, then it may be interpreted differently by browsers and assistive technology and the content will not be accessible to users.
+
+As technology evolves, 
+sometimes new ways to meet a use case become available, that work better than a feature that was previously defined in a specification.
+When specifications are updated, some roles and attributes become "deprecated" because of existing implementations of the older feature.
+This indicates that the feature is allowed and expected to be supported by conforming browsers.
+However, those deprecated features may soon become obsolete, will be removed in future specifications,
+and will no longer be expected to be supported by browsers and assistive technology used by persons with disabilities.
+So, it is prudent to update the code to avoid deprecated features. 
+
+For example, 
+in [ARIA 1.2](https://www.w3.org/TR/wai-aria-1.2/#deprecated) the `role=directory` is being deprecated,
+and the `aria-disabled` state is being deprecated as a global state. 
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Replace deprecated roles and attributes with those preferred in the current version of the specification.
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.1 Parsing](https://www.ibm.com/able/requirements/requirements/#4_1_1)
+* [ARIA 1.2 - Deprecated Requirements](https://www.w3.org/TR/wai-aria-1.2/#deprecated)
+
+### Who does this affect?
+
+* People using assistive technologies that expose accessibility information 
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
