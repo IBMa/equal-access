@@ -1527,7 +1527,7 @@ export class RPTUtil {
             for (let i=0; i < element.children.length; i++) {
                 children.push(element.children[i]);
             }
-        }    
+        }
         // if the element contains "aria-own" attribute, then the aria-owned children need to be included too
         let owned = element.getAttribute("aria-owns");
         if (owned) {
@@ -1551,7 +1551,7 @@ export class RPTUtil {
                     roles = RPTUtil.getImplicitRole(children[i]);
                 }
 
-                if (roles !== null && roles.length > 0) {
+                if (roles && roles !== null && roles.length > 0) {
                     //remove 'none' and 'presentation'
                     roles = roles.filter(function(role) {
                         return role !== "none" && role !== "presentation";
@@ -1564,15 +1564,16 @@ export class RPTUtil {
                         })
                     }
                 } 
-                if (roles !== null && roles.length > 0) {
+                if (roles && roles !== null && roles.length > 0) {
                     direct.push(children[i]);
                 } else {
                     // recursive until get a return value, 
                     RPTUtil.retrieveDirectATChildren(children[i], requiredChildRoles, direct);
                 }
             } 
-        } 
-        return null;
+            return null;
+        } else
+            return null;
     }
 
     /**
@@ -1592,7 +1593,7 @@ export class RPTUtil {
         /**  
          * ignore if the element doesn't have any explicit or implicit role
         */
-        if (!roles || roles.length == 0) {
+        if (!roles || roles.length === 0) {
             return null;
         }
         
@@ -2612,6 +2613,38 @@ export class RPTUtil {
             return examinedHtmlAtrNames;
         } else
             return null;
+    }
+
+    public static containsPresentationalChildrenOnly(elem : HTMLElement) : boolean {
+        let roles = RPTUtil.getRoles(elem, false);
+        // if explicit role doesn't exist, get the implicit one
+        if (!roles || roles.length === 0) 
+            roles =  RPTUtil.getImplicitRole(elem);
+        
+        //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
+        if (!roles || roles.length === 0) 
+            return false;
+        
+        for (let i = 0; roles !== null && i < roles.length; i++) {
+            let roleProperties = ARIADefinitions.designPatterns[roles[i]];
+            if (roleProperties !== null && roleProperties !== undefined) {
+                let presentional = roleProperties.presentationalChildren;
+                if (presentional === true) 
+                    return true;
+            }
+        }                    
+        return false;
+    }
+
+    public static shouldBePresentationalChild(element : HTMLElement) : boolean {
+        let walkNode : Element = DOMWalker.parentElement(element);
+        while (walkNode) {
+            if (RPTUtil.containsPresentationalChildrenOnly(walkNode as HTMLElement)) return true;
+
+            //aria-own case: if the element is referred by an aria-won
+            walkNode = ARIAMapper.getAriaOwnedBy(walkNode as HTMLElement) || DOMWalker.parentElement(walkNode);    
+        }
+        return false;
     }
 
     public static CSS(element) {

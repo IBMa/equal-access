@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!--
+   /******************************************************************************
+     Copyright:: 2020- IBM, Inc
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+  *****************************************************************************/
+-->
+
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <div role="button">
+        <ul>
+          <li>
+            <button type="button">Test</button>
+          </li>
+        </ul>
+      </div>
+    </main>
+    <script>
+      UnitTest = {
+          ruleIds: ["aria_descendant_valid", "aria_child_valid", "Rpt_Aria_RequiredParent_Native_Host_Sematics", "IBMA_Focus_MultiTab.ts", "IBMA_Focus_Tabbable.ts","Rpt_Aria_MissingFocusableChild.ts"],
+          results: [
+          {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "potential_child_implicit_role",
+            "message": "The element with role \"button\" contains descendants with implicit roles \"list\" which are ignored by browsers",
+            "messageArgs": [
+              "button",
+              "list"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_child_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "Pass",
+            "message": "An element with a ARIA role owns a required child",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/ul[1]/li[1]/button[1]",
+              "aria": "/document[1]/main[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      }
+    </script>
+    </body>
+</html>

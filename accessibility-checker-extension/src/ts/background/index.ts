@@ -1,12 +1,9 @@
 /******************************************************************************
      Copyright:: 2020- IBM, Inc
-
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +54,7 @@
                             chrome.tabs.executeScript(
                                 params.target.tabId as number,
                                 { 
-                                    code: `window.ace = ace`,
+                                    code: `window.aceIBMa = ace`,
                                     frameId: params.target.frameIds[0],
                                     matchAboutBlank: true
                                 },
@@ -81,7 +78,10 @@
         let isLoaded = await new Promise((resolve, reject) => {
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
-                func: () => (typeof (window as any).ace)
+                func: () => {
+                    (window as any).aceIBMaTemp =  (window as any).ace;
+                    return(typeof (window as any).aceIBMa);
+                }
             }, function (res: any) {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError.message);
@@ -90,7 +90,20 @@
             })
         });
     
-        
+        await new Promise((resolve, reject) => {
+            myExecuteScript({
+                target: { tabId: tabId, frameIds: [0] },
+                func: () => {
+                    ((window as any).aceIBMa = (window as any).ace);
+                    (window as any).ace = (window as any).aceIBMaTemp;
+                }
+            }, function (res: any) {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError.message);
+                }
+                resolve(res);
+            })
+        });
     
         // Switch to the appropriate engine for this archiveId
         let engineFile = await EngineCache.getEngine(archiveId);
@@ -189,7 +202,7 @@
                     if (tab.id < 0) return resolve(false);
                     myExecuteScript({
                         target: { tabId: tab.id, frameIds: [0] },
-                        func: () => (typeof (window as any).ace)
+                        func: () => (typeof (window as any).aceIBMa)
                     }, function (res: any) {
                         resolve(!!res);
                     })
@@ -225,7 +238,7 @@
                 try {
                     myExecuteScript({
                         target: { tabId: message.tabId, frameIds: [0] },
-                        func: () => (new (window as any).ace.Checker().rulesets)
+                        func: () => (new (window as any).aceIBMa.Checker().rulesets)
                     }, function (res: any) {
                         if (chrome.runtime.lastError) {
                             reject(chrome.runtime.lastError.message);
@@ -255,6 +268,7 @@
     });
     
     BackgroundMessaging.addListener("DRAW_TABS_TO_BACKGROUND", async (message: any) => {
+        
         await BackgroundMessaging.sendToTab(message.tabId,
             "DRAW_TABS_TO_CONTEXT_SCRIPTS", 
             { tabId: message.tabId, tabURL: message.tabURL, tabStopsResults: message.tabStopsResults, 
@@ -272,13 +286,16 @@
     });
     
     BackgroundMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+        // console.log("BackgroundMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS")
+        // console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         await BackgroundMessaging.sendToTab(message.tabId, "DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: message.tabId, tabURL: message.tabURL });
-    
+        // console.log("BackgroundMessaging.sendToTab DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS START");
         return true;
     });
     
     BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
-        // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath)
+        // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath);
+        // console.log("BackgroundMessaging.sendToPanel TABSTOP_XPATH_ONCLICK");
         await BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
             xpath: message.xpath,
             circleNumber: message.circleNumber
@@ -286,4 +303,3 @@
     
         return true;
     });
-    

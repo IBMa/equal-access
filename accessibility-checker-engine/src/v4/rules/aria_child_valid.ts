@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
@@ -21,7 +21,7 @@ export let aria_child_valid: Rule = {
     //context: "dom:*[role]",
     //dependencies: ["Rpt_Aria_ValidRole"],
     context: "dom:*",
-    dependencies: ["aria_semantics_role"],
+    dependencies: ["aria_semantics_role", "aria_descendant_valid"],
     help: {
         "en-US": {
             "group": "aria_child_valid.html",
@@ -41,33 +41,29 @@ export let aria_child_valid: Rule = {
     rulesets: [{
         "id": ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
         "num": ["4.1.2"],
-        "level": eRulePolicy.VIOLATION,
+        "level": eRulePolicy.RECOMMENDATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
     // TODO: ACT: Verify mapping
     act: ["bc4a75"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
         
-        //skip the check if the element is hidden
-        if (VisUtil.isNodeHiddenFromAT(ruleContext))
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        // Handle the case where the element is hidden by disabled html5 attribute or aria-disabled:
-        //  1. In the case that this element has a disabled attribute and the element supports it, we mark this rule as passed.
-        //  2. In the case that this element has a aria-disabled attribute then, we mark this rule as passed.
-        // For both of the cases above we do not need to perform any further checks, as the element is disabled in some form or another.
-        if (RPTUtil.isNodeDisabled(ruleContext)) {
-            return null;
-        }
-
+        //skip the check if the element requires presentational children only
+        if (RPTUtil.containsPresentationalChildrenOnly(ruleContext))
+            return;
+        
         let roles = RPTUtil.getRoles(ruleContext, false);
         // if explicit role doesn't exist, get the implicit one
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             roles =  RPTUtil.getImplicitRole(ruleContext);
         
         //ignore if the element doesn't have any explicit or implicit role, shouldn't happen
-        if (!roles || roles.length == 0) 
+        if (!roles || roles.length === 0) 
             return null;
         
         // ignore if the element contains none or presentation role

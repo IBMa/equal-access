@@ -1,0 +1,119 @@
+<html lang="en-US">
+<head>
+    <title>aria_child_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"An element with a ARIA role must own a required child","Pass":"An element with a ARIA role owns a required child","Fail_no_child":"The element with role \"{0}\" does not own any child element with any of the following role(s): \"{1}\"","Fail_invalid_child":"The element with role \"{0}\" owns the child element with the role \"{1}\" that is not one of the allowed role(s): \"{2}\""}};
+        RULE_ID = "aria_child_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+If an ARIA `role` attribute is specified for an element, the child elements required for that role must also be present. 
+Child elements' implied (native HTML) roles may satisfy the requirement - the role does not have to be explicitly set by ARIA. 
+Any incorrect child element roles also need to be removed. For example, `role="group"` is not a valid child of `list`.
+Without the correct required child element roles, assistive technologies may not be able to accurately represent the context or be able to interact with the element.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+ * Add the appropriate required child element(s) to this element
+ * *Or*, remove any incorrect child element(s)
+
+Example with a `"radiogroup"` that requires child elements with `role="radio"` set in a manner that represents the checked or unchecked state of the radio button:
+
+```
+<div role="radiogroup">
+    <div role="radio" aria-checked="false"></div>
+    <div role="radio" aria-checked="true"></div>
+</div>
+```
+
+Example with an implicit role:
+
+```
+<table role= "treegrid">
+     <tr>
+         <td>
+            element with role="treegrid" requires child element with role="row".
+            TR has implicit ARIA role="row", so the condition is met.
+         <td>
+     <tr>
+</table>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
+* [ARIA specification - Required Owned Elements](https://w3c.github.io/aria/#mustContain)
+
+**Note**: this rule's level was lowered from a "Violation" to a "Recommendation" temporarily.
+In some cases, such as `listitems` only being allowed inside `lists`, 
+assistive technology works around the strict specification and correctly renders the child elements.
+An investigation of the AIRA specification is on-going to determine the strictness of the parent-child interpretation.
+In most cases this rule should be interpreted as a "Violation" and remediated as explained above. 
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
