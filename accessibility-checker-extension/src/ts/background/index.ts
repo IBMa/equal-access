@@ -90,6 +90,20 @@
             })
         });
     
+        // Switch to the appropriate engine for this archiveId
+        let engineFile = await EngineCache.getEngine(archiveId);
+        await new Promise((resolve, reject) => {
+            myExecuteScript({
+                target: { tabId: tabId, frameIds: [0] },
+                files: [engineFile]
+            }, function (res: any) {
+                if (chrome.runtime.lastError) {
+                    reject(chrome.runtime.lastError.message);
+                }
+                resolve(res);
+            });
+        });
+
         await new Promise((resolve, reject) => {
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
@@ -103,20 +117,6 @@
                 }
                 resolve(res);
             })
-        });
-    
-        // Switch to the appropriate engine for this archiveId
-        let engineFile = await EngineCache.getEngine(archiveId);
-        await new Promise((resolve, reject) => {
-            myExecuteScript({
-                target: { tabId: tabId, frameIds: [0] },
-                files: [engineFile]
-            }, function (res: any) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                }
-                resolve(res);
-            });
         });
     
         // Initialize the listeners once
