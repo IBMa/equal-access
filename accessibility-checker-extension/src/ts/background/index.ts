@@ -89,21 +89,23 @@
                 resolve(res[0].result !== "undefined");
             })
         });
-    
-        await new Promise((resolve, reject) => {
-            myExecuteScript({
-                target: { tabId: tabId, frameIds: [0] },
-                func: () => {
-                    ((window as any).aceIBMa = (window as any).ace);
-                    (window as any).ace = (window as any).aceIBMaTemp;
-                }
-            }, function (res: any) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                }
-                resolve(res);
-            })
-        });
+
+        if (!chrome && !chrome.scripting) {
+            await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    func: () => {
+                        ((window as any).aceIBMa = (window as any).ace);
+                        (window as any).ace = (window as any).aceIBMaTemp;
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res);
+                })
+            });
+        }
     
         // Switch to the appropriate engine for this archiveId
         let engineFile = await EngineCache.getEngine(archiveId);
@@ -118,6 +120,24 @@
                 resolve(res);
             });
         });
+
+        if (chrome && chrome.scripting) {
+            await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    func: () => {
+                        ((window as any).aceIBMa = (window as any).ace);
+                        (window as any).ace = (window as any).aceIBMaTemp;
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res);
+                })
+            });
+        }
+        
     
         // Initialize the listeners once
         if (!isLoaded) {
