@@ -30,3 +30,10 @@ $ npm test
 ### Reporting bugs 
 
 If you think you've found a bug, have questions or suggestions, please report the bug in [GitHub Issues](https://github.com/IBMa/equal-access/issues).
+
+## Known issues and workarounds
+
+1. If you see `TypeError: ace.Checker is not a constructor`: 
+    - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
+
+

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <body>
+<button>Save</button> <button aria-label="save options" aria-expanded="false">▼</button>
+
+<script>
+    UnitTest = {
+        ruleIds: ["aria_descendant_valid"],
+        results: [
+        {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_descendant_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[2]",
+              "aria": "/document[1]/button[2]"
+            },
+            "reasonId": "pass",
+            "message": "The element contains valid descendants",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+    }
+  </script>
+  </body>

@@ -1,12 +1,9 @@
 /******************************************************************************
      Copyright:: 2020- IBM, Inc
-
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
-
     http://www.apache.org/licenses/LICENSE-2.0
-
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,8 +79,8 @@
             myExecuteScript({
                 target: { tabId: tabId, frameIds: [0] },
                 func: () => {
-                    (window as any).aceIBMaTemp =  (window as any).ace
-                    return(typeof (window as any).aceIBMa)
+                    (window as any).aceIBMaTemp =  (window as any).ace;
+                    return(typeof (window as any).aceIBMa);
                 }
             }, function (res: any) {
                 if (chrome.runtime.lastError) {
@@ -92,8 +89,23 @@
                 resolve(res[0].result !== "undefined");
             })
         });
-    
-        
+
+        if (!chrome && !chrome.scripting) {
+            await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    func: () => {
+                        ((window as any).aceIBMa = (window as any).ace);
+                        (window as any).ace = (window as any).aceIBMaTemp;
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res);
+                })
+            });
+        }
     
         // Switch to the appropriate engine for this archiveId
         let engineFile = await EngineCache.getEngine(archiveId);
@@ -108,22 +120,25 @@
                 resolve(res);
             });
         });
-    
-        await new Promise((resolve, reject) => {
-            myExecuteScript({
-                target: { tabId: tabId, frameIds: [0] },
-                func: () => {
-                    ((window as any).aceIBMa = (window as any).ace);
-                    (window as any).ace = (window as any).aceIBMaTemp;
-                }
-            }, function (res: any) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                }
-                resolve(res);
-            })
-        });
 
+        if (chrome && chrome.scripting) {
+            await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    func: () => {
+                        ((window as any).aceIBMa = (window as any).ace);
+                        (window as any).ace = (window as any).aceIBMaTemp;
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res);
+                })
+            });
+        }
+        
+    
         // Initialize the listeners once
         if (!isLoaded) {
             await new Promise((resolve, reject) => {
@@ -230,6 +245,7 @@
     
     BackgroundMessaging.addListener("DAP_Rulesets", async (message: any) => {
         return await new Promise((resolve, reject) => {
+    
             chrome.storage.local.get("OPTIONS", async function (result: any) {
                 let archiveId = Config.defaultArchiveId + "";
                 // console.log("result.OPTIONS.selected_archive = ",(typeof(result.OPTIONS.selected_archive)));
@@ -298,9 +314,8 @@
     });
     
     BackgroundMessaging.addListener("TABSTOP_XPATH_ONCLICK", async (message: any) => {
-
-       // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath);
-
+        // console.log("Message TABSTOP_XPATH_ONCLICK received in background, xpath: "+ message.xpath);
+        // console.log("BackgroundMessaging.sendToPanel TABSTOP_XPATH_ONCLICK");
         await BackgroundMessaging.sendToPanel("TABSTOP_XPATH_ONCLICK", {
             xpath: message.xpath,
             circleNumber: message.circleNumber
@@ -308,4 +323,3 @@
     
         return true;
     });
-    
