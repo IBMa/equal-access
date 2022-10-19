@@ -181,7 +181,7 @@ export let WCAG21_Input_Autocomplete: Rule = {
             return null;
         }
         
-        if(tokens.every(r => valid_values.includes(r)))
+        if(!(tokens.every(r => valid_values.includes(r))))
             return RuleFail("Fail_attribute_incorrect");
 
         let tokensMandatoryGroup1 = [];
