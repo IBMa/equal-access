@@ -407,7 +407,7 @@ export class ARIAMapper extends CommonMapper {
         if (cur.nodeType === 11) return "";
         if (cur.nodeType !== 1 /* Node.ELEMENT_NODE */) {
             if (walkTraverse || labelledbyTraverse) return "";
-            throw new Error ("Can only compute name on Element and Text" + cur.nodeType);
+            throw new Error ("Can only compute name on Element and Text " + cur.nodeType);
         }
 
         const elem = cur as Element;
@@ -564,6 +564,11 @@ export class ARIAMapper extends CommonMapper {
             //     to that text alternative.
             //   Append the result to the accumulated text.
             if (elem.nodeName.toUpperCase() === "SLOT") {
+                //first calculate the its own text if any
+                let innerText = RPTUtil.getInnerText(elem);
+                if (innerText && innerText !== null && innerText.trim().length > 0)
+                    accumulated +=  " " + innerText;
+                // then calculate assigned text
                 for (const slotChild of (elem as HTMLSlotElement).assignedNodes()) {
                     let nextChildContent = ARIAMapper.computeNameHelp(walkId, slotChild, labelledbyTraverse, true);
                     accumulated += " " + nextChildContent;
