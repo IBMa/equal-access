@@ -2,6 +2,8 @@ module.exports = {
   // optional - Specify the rule archive
   // Default: latest
   // Run `npx aat archives` for a list of valid ruleArchive ids and policy ids
+  ruleServer: "https://localhost:9445/rules",
+  ignoreHTTPSErrors: true,
   ruleArchive: 'preview',
 
   // optional - Specify one or many policies to scan.
@@ -14,7 +16,7 @@ module.exports = {
   // i.e. failLevels: ["violation"]
   // i.e. failLevels: ["violation","potential violation"] or refer to below as a list
   // Default: ["violation","potential violation"]
-  failLevels: [ "violation","potential violation" ],
+  failLevels: [ 'violation' ],
 
   // optional - Specify one or many violation levels which should be reported
   //            i.e. If specified violation then in the report it would only contain
@@ -27,7 +29,8 @@ module.exports = {
       "potentialviolation",
       "recommendation",
       "potentialrecommendation",
-      "manual"
+      "manual",
+      "pass"
   ],
 
   // Optional - Which type should the results be outputted to
@@ -40,16 +43,15 @@ module.exports = {
   // i.e.
   //   label: ["Firefox","master","V12","Linux"]
   // Default: N/A
-  label: [
-      "Cucumber",
-      "Demo"
-  ],
+  label: ["RuleTest"],
 
   // optional - Where the scan results should be saved.
   // Default: results
-  outputFolder: "results",
+  // Rrb(rules test baselines)
+  outputFolder: ".rtb/results",
 
   // optional - Where the baseline results should be loaded from
   // Default: baselines
-  baselineFolder: "baselines",
+  // Rrb(rules test baselines)
+  baselineFolder: ".rtb/baselines",
 }
