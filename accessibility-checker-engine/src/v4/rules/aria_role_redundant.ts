@@ -14,6 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getCache } from "../util/CacheUtil";
 
 export let aria_role_redundant: Rule = {
     id: "aria_role_redundant",
@@ -44,9 +45,9 @@ export let aria_role_redundant: Rule = {
         let elemName = ruleContext.tagName.toLowerCase();
         
         // dependency check: if the ARIA attribute is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
+        if (getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
         // dependency check: if it's already failed in the parent relation, then skip this check
-        if (["td", "th", "tr"].includes(elemName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
+        if (["td", "th", "tr"].includes(elemName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
          
         let ariaRoles = RPTUtil.getRoles(ruleContext, false);

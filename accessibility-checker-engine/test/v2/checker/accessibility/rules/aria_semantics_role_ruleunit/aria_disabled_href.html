@@ -42,10 +42,10 @@
     </main>
     <script>
       UnitTest = {
-        ruleIds: ["aria_semantics_attribute"],
+        ruleIds: ["aria_attribute_allowed"],
         results: [
         {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -54,8 +54,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/a[1]",
               "aria": "/document[1]/main[1]/link[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-disabled' is not valid for the element <a> with ARIA role 'link'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-disabled\" are not valid for the element <a> with implicit ARIA role \"link\"",
             "messageArgs": [
               "aria-disabled",
               "a",
@@ -65,7 +65,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -74,8 +74,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[2]/a[1]",
               "aria": "/document[1]/main[1]/link[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-disabled",
               "a",
@@ -85,7 +85,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -94,8 +94,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/a[1]",
               "aria": "/document[1]/main[1]/link[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-disabled",
               "a",

@@ -13,7 +13,6 @@
     "test:server:mocha": "mocha test/server/**/*.spec.js --compilers js:babel/register",
     "test:server:ava": "ava --verbose",
     "startLocalRuleServer": "forever start RuleServerLocal.js",
-    "dependencies": "gulp --gulpfile gulp/gulpfile.js dependencies",
     "build:report": "(cd ../report-react && npm run build && cd ../karma-accessibility-checker && shx cp ../report-react/build/genReport.js ./src/lib/reporters/)",
     "build:doc": "gulp --gulpfile gulp/gulpfile.js build-doc",
     "build": "npm run build:report && gulp --gulpfile gulp/gulpfile.js build",

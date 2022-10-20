@@ -85,8 +85,8 @@
 			"0": "The page should have a title that correctly identifies the subject of the page",
 			"Pass_0": "Rule Passed"
 		},
-		"WCAG20_Elem_Lang_Valid": {
-			"0": "The language of content must be valid and specified in accordance with BCP 47",
+		"html_lang_valid": {
+			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
 			"Pass_0": "Lang has a valid primary lang and conforms to BCP 47"
 		},
 		"WCAG20_Html_HasLang": {
@@ -2470,7 +2470,7 @@
 			"dom": "/html[1]"
 		},
 		"reasonId": "Pass_0",
-		"ruleId": "WCAG20_Elem_Lang_Valid",
+		"ruleId": "html_lang_valid",
 		"snippet": "<html lang=\"en\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,

@@ -149,7 +149,7 @@ let aChecker = {
 
     aChecker.getComplianceHelper = async function (content, label) {
 
-        aChecker.DEBUG && console.log("START 'aChecker.getCompliance' function");
+        aChecker.DEBUG && console.log("START 'aChecker.getComplianceHelper' function");
 
         // Variable Decleration
         let URL;
@@ -350,7 +350,9 @@ let aChecker = {
             if (policies) {
                 curPol = JSON.parse(JSON.stringify(policies));
             }
+            console.log("ACHelper.js call ace.Checker");
             let checker = new ace.Checker();
+            console.log("ACHelper.js call ace.Checker=", checker);
             let report = await checker.check(content, policies);
             for (const result of report.results) {
                 delete result.node;
@@ -1631,7 +1633,6 @@ let aChecker = {
         "RPT_Text_SensoryReference": "502",
         "RPT_Embed_AutoStart": "503",
         "RPT_Style_HinderFocus1": "506",
-        "WCAG20_Elem_Lang_Valid": "507",
         "WCAG20_Img_LinkTextNotRedundant": "1000",
         "RPT_Style_ExternalStyleSheet": "1073",
         "RPT_Header_Trigger": "1002",

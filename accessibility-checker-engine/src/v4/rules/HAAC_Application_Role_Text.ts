@@ -12,6 +12,7 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
@@ -45,7 +46,7 @@ export let HAAC_Application_Role_Text: Rule = {
         let children = ruleContext.childNodes;
         for (let i = 0; passed && i < children.length; i++) {
             if (children[i].nodeType === 1) {
-                if (RPTUtil.isNodeVisible(children[i])) {
+                if (VisUtil.isNodeVisible(children[i])) {
                     passed = RPTUtil.hasRoleInSemantics(children[i], "document") || RPTUtil.hasRoleInSemantics(children[i], "article");
                 }
             } else if (children[i].nodeType === 3) {

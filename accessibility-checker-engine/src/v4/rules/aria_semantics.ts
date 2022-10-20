@@ -14,8 +14,8 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -48,7 +48,7 @@ export let aria_semantics_role: Rule = {
         const ruleContext = context["dom"].node as Element;
         let tagName = ruleContext.tagName.toLowerCase();
         // dependency check: if it's already failed, then skip
-        if (["td", "th", "tr"].includes(tagName) && RPTUtil.getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
+        if (["td", "th", "tr"].includes(tagName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
         
         let domRoles: string[] = [];
@@ -97,7 +97,7 @@ export let aria_semantics_role: Rule = {
         if (failRoleTokens.includes("presentation") || failRoleTokens.includes("none") && RPTUtil.isTabbable(ruleContext)) {
             return RuleFail("Fail_2", [failRoleTokens.join(", "), tagName]);
         } else if (failRoleTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_semantics_role", "Fail_1");
+            setCache(ruleContext, "aria_semantics_role", "Fail_1");
             return RuleFail("Fail_1", [failRoleTokens.join(", "), tagName]);
         } else if (passRoleTokens.length > 0) {
             return RulePass("Pass_0", [passRoleTokens.join(", "), tagName]);
@@ -113,23 +113,25 @@ export let aria_semantics_role: Rule = {
 // This rule is in the same file because there is a dependency that aria_semantics_role runs first,
 // and the info is passed by cache, but there isn't a dependency in the Fail_2 scenario, so regular
 // dependency cannot be used
-export let aria_semantics_attribute: Rule = {
-    id: "aria_semantics_attribute",
+export let aria_attribute_allowed: Rule = {
+    id: "aria_attribute_allowed",
     context: "dom:*",
-    // Partially depends on aria_semantics_role
-    dependencies: [],
+    // The the ARIA role is completely invalid, skip this check
+    dependencies: ["aria_semantics_role"],
     help: {
         "en-US": {
-            "group": "aria_semantics_attribute.html",
-            "Pass_0": "aria_semantics_attribute.html",
-            "Fail_1": "aria_semantics_attribute.html"
+            "group": "aria_attribute_allowed.html",
+            "Pass": "aria_attribute_allowed.html",
+            "Fail_invalid_role_attr": "aria_attribute_allowed.html",
+            "Fail_invalid_implicit_role_attr": "aria_attribute_allowed.html"
         }
     },
     messages: {
         "en-US": {
             "group": "ARIA attributes must be valid for the element and ARIA role to which they are assigned",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The ARIA attribute '{0}' is not valid for the element <{1}> with ARIA role '{2}'"
+            "Pass": "ARIA attributes are valid for the element and ARIA role",
+            "Fail_invalid_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with ARIA role \"{2}\"",
+            "Fail_invalid_implicit_role_attr": "The ARIA attributes \"{0}\" are not valid for the element <{1}> with implicit ARIA role \"{2}\""
         }
     },
     rulesets: [{
@@ -141,11 +143,29 @@ export let aria_semantics_attribute: Rule = {
     act: "5c01ea",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // The the ARIA role is completely invalid, skip this check
-        if (RPTUtil.getCache(ruleContext, "aria_semantics_role", "") === "Fail_1") return null;
-        let role = ARIAMapper.nodeToRole(ruleContext);
-        if (!role) {
-            role = "none";
+        
+        //let role = ARIAMapper.nodeToRole(ruleContext);
+        //if (!role) {
+        //    role = ["none"];
+        //}
+        // get roles from RPTUtil because multiple explicit roles are allowed
+        let roles = RPTUtil.getRoles(ruleContext, false);
+
+        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        // for mutiple roles, skip if any role is invalid
+        let designPatterns = ARIADefinitions.designPatterns;
+        for (const role of roles) 
+            if (!(role.toLowerCase() in designPatterns)) 
+                return null;
+
+        let type = "";
+        if (roles && roles.length > 0)
+            type = "role_attr";
+        else {    
+            roles =  RPTUtil.getImplicitRole(ruleContext);
+            if (roles && roles.length > 0)
+                type = "implicit_role_attr";
+
         }
         let tagName = ruleContext.tagName.toLowerCase();
 
@@ -156,17 +176,9 @@ export let aria_semantics_attribute: Rule = {
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
-        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, [role], tagProperty);
+        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, roles, tagProperty);
         
-        // input type="password" has no role but it can take an aria-required. This is the only case like this.
-        // So we add it in the code instead of adding new mechanism to the aria-definition.js
-        // covered in aria definition
-        /**if (ruleContext.nodeName.toLowerCase() === "input" && RPTUtil.attributeNonEmpty(ruleContext, "type") && ruleContext.getAttribute("type").trim().toLowerCase() === "password") {
-            allowedAttributes.push("aria-required");
-        }*/
-
         let domAttributes = ruleContext.attributes;
-        
         if (domAttributes) {
             for (let i = 0; i < domAttributes.length; i++) {
                 let attrName = domAttributes[i].name.trim().toLowerCase(); 
@@ -182,28 +194,20 @@ export let aria_semantics_attribute: Rule = {
             }
         }
         
-        //		if(!passed){
-        //			  if(roleTokens.length !== 0){ // Rule failure is present
-        //		   			allowedRoleTokens = allowedRoleTokens.concat(allowedRoles); // This can be concatenating empty list
-        //			  }
-        //
-        //	    	  if(attributeTokens.length !== 0){ // Attribute failure is present
-        //	    		  allowedAttributeTokens = allowedAttributeTokens.concat(allowedAttributes);
-        //	    	  }
-        //
-        //	    }
-
-        //return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName]);
         if (failAttributeTokens.length > 0) {
-            RPTUtil.setCache(ruleContext, "aria_semantics_attribute", "Fail_1");
-            return RuleFail("Fail_1", [failAttributeTokens.join(", "), tagName, role]);
+
+            setCache(ruleContext, "aria_attribute_allowed", "Fail");
+            if (type === "implicit_role_attr")
+                return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            else {
+                if (!roles || roles.length === 0) roles = ["none"];
+                return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
+            }    
+
         } else if (passAttributeTokens.length > 0) {
-            return RulePass("Pass_0", [passAttributeTokens.join(", "), tagName, role]);
+            return RulePass("Pass", [passAttributeTokens.join(", "), tagName, roles.join(", ")]);
         } else {
             return null;
         }
-
-        // below for listing all allowed role and attributes.  We can delete it if we are not using it next year (2018) #283
-        //      return new ValidationResult(passed, [ruleContext], '', '', passed == true ? [] : [roleOrAttributeTokens, tagName, allowedRoleOrAttributeTokens]);
     }
 }

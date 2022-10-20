@@ -157,10 +157,10 @@
     </div>
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -169,12 +169,12 @@
               "dom": "/html[1]/body[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "body",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -199,7 +199,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -208,8 +208,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "div",
@@ -219,7 +219,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -228,8 +228,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[1]",
               "aria": "/document[1]/region[1]/textbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -258,7 +258,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -267,8 +267,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[3]",
               "aria": "/document[1]/region[1]/button[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -316,7 +316,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -325,8 +325,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[5]",
               "aria": "/document[1]/region[1]/button[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -355,27 +355,27 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[6]",
               "aria": "/document[1]/region[1]/link[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'link'",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
-              "aria-checked",
+              "aria-label, aria-checked",
               "input",
-              "link"
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -384,8 +384,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[7]",
               "aria": "/document[1]/region[1]/checkbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -433,7 +433,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -442,8 +442,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[9]",
               "aria": "/document[1]/region[1]/checkbox[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'checkbox'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"checkbox\"",
             "messageArgs": [
               "aria-checked",
               "input",
@@ -472,7 +472,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -481,8 +481,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[10]",
               "aria": "/document[1]/region[1]/button[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-pressed",
               "input",
@@ -511,7 +511,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -520,18 +520,18 @@
               "dom": "/html[1]/body[1]/div[1]/input[11]",
               "aria": "/document[1]/region[1]/menuitemcheckbox[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'menuitemcheckbox'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemcheckbox, switch\"",
             "messageArgs": [
               "aria-checked",
               "input",
-              "menuitemcheckbox"
+              "menuitemcheckbox, switch"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -540,12 +540,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[12]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -570,7 +570,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -579,12 +579,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[14]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -609,7 +609,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -618,12 +618,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[16]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              "textbox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -648,7 +648,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -657,12 +657,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[18]",
               "aria": "/document[1]/region[1]/textbox[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "textbox"
+              "combobox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -706,7 +706,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -715,8 +715,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[20]",
               "aria": "/document[1]/region[1]/combobox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-expanded",
               "input",
@@ -726,7 +726,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -735,8 +735,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[21]",
               "aria": "/document[1]/region[1]/textbox[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -784,7 +784,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -793,8 +793,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[23]",
               "aria": "/document[1]/region[1]/textbox[4]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -804,7 +804,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -813,12 +813,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[24]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -843,7 +843,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -852,8 +852,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[28]",
               "aria": "/document[1]/region[1]/button[4]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -901,7 +901,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -910,8 +910,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[30]",
               "aria": "/document[1]/region[1]/button[5]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -940,7 +940,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -949,18 +949,18 @@
               "dom": "/html[1]/body[1]/div[1]/input[31]",
               "aria": "/document[1]/region[1]/link[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "link"
+              "link, menuitem, menuitemcheckbox, menuitemradio, radio, switch"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -969,12 +969,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[32]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -999,7 +999,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1008,8 +1008,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[34]",
               "aria": "/document[1]/region[1]/spinbutton[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1057,7 +1057,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1066,8 +1066,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[36]",
               "aria": "/document[1]/region[1]/spinbutton[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-valuemax, aria-valuemin, aria-valuenow",
               "input",
@@ -1077,7 +1077,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1086,12 +1086,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[37]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -1135,7 +1135,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1144,8 +1144,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[40]",
               "aria": "/document[1]/region[1]/radio[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1193,7 +1193,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -1202,8 +1202,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[42]",
               "aria": "/document[1]/region[1]/radio[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'radio'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"radio\"",
             "messageArgs": [
               "aria-checked",
               "input",
@@ -1232,7 +1232,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -1241,8 +1241,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[43]",
               "aria": "/document[1]/region[1]/menuitemradio[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'menuitemradio'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with ARIA role \"menuitemradio\"",
             "messageArgs": [
               "aria-checked",
               "input",
@@ -1252,7 +1252,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1261,8 +1261,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[44]",
               "aria": "/document[1]/region[1]/slider[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1310,7 +1310,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -1319,8 +1319,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[46]",
               "aria": "/document[1]/region[1]/slider[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemax, aria-valuemin' is not valid for the element <input> with ARIA role 'slider'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemax, aria-valuemin\" are not valid for the element <input> with ARIA role \"slider\"",
             "messageArgs": [
               "aria-valuemax, aria-valuemin",
               "input",
@@ -1330,7 +1330,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1339,8 +1339,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[47]",
               "aria": "/document[1]/region[1]/button[6]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1388,7 +1388,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1397,8 +1397,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[49]",
               "aria": "/document[1]/region[1]/button[7]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1408,7 +1408,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1417,8 +1417,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[50]",
               "aria": "/document[1]/region[1]/searchbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1466,7 +1466,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1475,8 +1475,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[52]",
               "aria": "/document[1]/region[1]/searchbox[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1486,7 +1486,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1495,12 +1495,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[53]",
               "aria": "/document[1]/region[1]/searchbox[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "searchbox"
+              "combobox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -1544,7 +1544,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1553,8 +1553,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[55]",
               "aria": "/document[1]/region[1]/combobox[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-expanded",
               "input",
@@ -1564,7 +1564,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1573,8 +1573,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[56]",
               "aria": "/document[1]/region[1]/button[8]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1622,7 +1622,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1631,8 +1631,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[58]",
               "aria": "/document[1]/region[1]/button[9]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1642,7 +1642,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1651,8 +1651,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[59]",
               "aria": "/document[1]/region[1]/textbox[6]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1700,7 +1700,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1709,8 +1709,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[61]",
               "aria": "/document[1]/region[1]/textbox[7]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1720,7 +1720,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1729,12 +1729,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[62]",
               "aria": "/document[1]/region[1]/textbox[8]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "textbox"
+              "combobox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -1778,7 +1778,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1787,8 +1787,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[64]",
               "aria": "/document[1]/region[1]/combobox[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-expanded",
               "input",
@@ -1798,7 +1798,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1807,8 +1807,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[65]",
               "aria": "/document[1]/region[1]/textbox[9]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1856,7 +1856,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1865,8 +1865,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[67]",
               "aria": "/document[1]/region[1]/textbox[10]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -1876,7 +1876,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1885,12 +1885,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[68]",
               "aria": "/document[1]/region[1]/textbox[11]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "textbox"
+              "combobox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -1934,7 +1934,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1943,8 +1943,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[70]",
               "aria": "/document[1]/region[1]/combobox[4]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-expanded",
               "input",
@@ -1954,7 +1954,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -1963,8 +1963,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[71]",
               "aria": "/document[1]/region[1]/textbox[12]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -2012,7 +2012,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2021,8 +2021,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[73]",
               "aria": "/document[1]/region[1]/textbox[13]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
@@ -2032,7 +2032,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2041,12 +2041,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[74]",
               "aria": "/document[1]/region[1]/textbox[14]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "textbox"
+              "combobox"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -2090,7 +2090,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2099,8 +2099,8 @@
               "dom": "/html[1]/body[1]/div[1]/input[76]",
               "aria": "/document[1]/region[1]/combobox[5]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-expanded",
               "input",
@@ -2110,7 +2110,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2119,12 +2119,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[77]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -2149,7 +2149,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2158,12 +2158,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[79]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -2188,7 +2188,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -2197,12 +2197,12 @@
               "dom": "/html[1]/body[1]/div[1]/input[81]",
               "aria": "/document[1]/region[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-label, aria-required",
               "input",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"

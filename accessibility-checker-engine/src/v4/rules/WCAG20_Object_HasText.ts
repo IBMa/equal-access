@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let WCAG20_Object_HasText: Rule = {
     id: "WCAG20_Object_HasText",
@@ -43,7 +44,7 @@ export let WCAG20_Object_HasText: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         // JCH - NO OUT OF SCOPE hidden in context
 
         // Detect if this object is of type text, by checking the object type in the case it is text then do not trigger this rule

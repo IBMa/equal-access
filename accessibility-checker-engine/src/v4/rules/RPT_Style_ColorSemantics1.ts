@@ -14,6 +14,7 @@
 import { NodeWalker, RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let RPT_Style_ColorSemantics1: Rule = {
     id: "RPT_Style_ColorSemantics1",
@@ -115,9 +116,9 @@ export let RPT_Style_ColorSemantics1: Rule = {
         }
         // Trigger only once
         if (!passed) {
-            let triggered = RPTUtil.getCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", false);
+            let triggered = getCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", false);
             passed = triggered;
-            RPTUtil.setCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", true);
+            setCache(ruleContext.ownerDocument, "RPT_Style_ColorSemantics1", true);
         }
 
         if (passed) return RulePass("Pass_0");

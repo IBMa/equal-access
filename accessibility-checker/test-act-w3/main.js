@@ -74,9 +74,12 @@ const fs = require("fs");
                     "source": `${testcase.url}`,
                     "assertions": assertions
                 });
+                let consistent = `earl:${testcase.expected}` === result 
+                    || testcase.expected === "inapplicable" && result === "earl:passed" 
+                    || testcase.expected === "passed" && result === "earl:inapplicable";
                 if (result === "earl:cantTell" && (testcase.expected === "passed" || testcase.expected === "failed")) {
                     console.log("--Can't tell");
-                } else if (`earl:${testcase.expected}` !== result) {
+                } else if (!consistent) {
                     if (result !== "earl:untested") {
                         console.log(`\x1b[31m--Expected ${testcase.expected}, but returned ${result}
 Failures: ${JSON.stringify(issuesFail, null, 2)}

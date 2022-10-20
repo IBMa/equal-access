@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head aria-keyshortcuts="xxx0">
+
+  </head>
+  <body>
+        <div>
+            <wbr aria-keyshortcuts="xxx">my label</wbr>
+            <var aria-checked="false">var text</var>
+            <legend aria-keyshortcuts="xxx3" aria-checked="true">legend</legend>
+            <picture aria-keyshortcuts="xxx4" aria-checked="false">picture text</picture>
+        </div>
+
+    </div>
+  </main>
+</body>
+  <script>
+		UnitTest = {
+			ruleIds: ["aria_attribute_allowed"],
+			results: [
+      {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/head[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-keyshortcuts\" are not valid for the element <head> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-keyshortcuts",
+              "head",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/wbr[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-keyshortcuts\" are not valid for the element <wbr> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-keyshortcuts",
+              "wbr",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/var[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <var> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-checked",
+              "var",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/legend[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <legend> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-checked",
+              "legend",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/picture[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-keyshortcuts, aria-checked\" are not valid for the element <picture> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-keyshortcuts, aria-checked",
+              "picture",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+		  ]
+		}
+	  </script>
+
+</body>
+</html>

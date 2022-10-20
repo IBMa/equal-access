@@ -129,10 +129,10 @@
 
     <script type="text/javascript">
         UnitTest = {
-            ruleIds: ["aria_semantics_role", "aria_semantics_attribute"],
+            ruleIds: ["aria_semantics_role", "aria_attribute_allowed"],
             results: [
             {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -141,18 +141,18 @@
               "dom": "/html[1]/body[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "body",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -161,8 +161,8 @@
               "dom": "/html[1]/body[1]/div[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <div> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <div> with ARIA role \"none\"",
             "messageArgs": [
               "aria-expanded",
               "div",
@@ -172,7 +172,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -181,8 +181,8 @@
               "dom": "/html[1]/body[1]/a[2]",
               "aria": "/document[1]/link[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-expanded",
               "a",
@@ -192,7 +192,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -201,8 +201,8 @@
               "dom": "/html[1]/body[1]/a[3]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <a> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <a> with ARIA role \"none\"",
             "messageArgs": [
               "aria-checked",
               "a",
@@ -212,7 +212,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -221,8 +221,8 @@
               "dom": "/html[1]/body[1]/address[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <address> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <address> with ARIA role \"none\"",
             "messageArgs": [
               "aria-expanded",
               "address",
@@ -232,7 +232,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -241,8 +241,8 @@
               "dom": "/html[1]/body[1]/map[1]/area[1]",
               "aria": "/document[1]/link[3]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-expanded",
               "area",
@@ -252,7 +252,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -261,8 +261,8 @@
               "dom": "/html[1]/body[1]/article[1]",
               "aria": "/document[1]/article[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <article> with ARIA role 'article'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <article> with implicit ARIA role \"article\"",
             "messageArgs": [
               "aria-expanded",
               "article",
@@ -272,27 +272,27 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/article[1]/header[1]",
               "aria": "/document[1]/article[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-busy, aria-atomic' is not valid for the element <header> with ARIA role 'none'",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-busy, aria-atomic",
               "header",
-              "none"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -301,8 +301,8 @@
               "dom": "/html[1]/body[1]/article[1]/header[1]/h1[1]",
               "aria": "/document[1]/article[1]/heading[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-selected' is not valid for the element <h1> with ARIA role 'heading'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-selected\" are not valid for the element <h1> with implicit ARIA role \"heading\"",
             "messageArgs": [
               "aria-selected",
               "h1",
@@ -312,7 +312,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -321,8 +321,8 @@
               "dom": "/html[1]/body[1]/aside[1]",
               "aria": "/document[1]/complementary[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <aside> with ARIA role 'complementary'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <aside> with implicit ARIA role \"complementary\"",
             "messageArgs": [
               "aria-expanded",
               "aside",
@@ -332,7 +332,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -341,8 +341,8 @@
               "dom": "/html[1]/body[1]/table[1]/tbody[1]/tr[1]/th[1]/dialog[1]",
               "aria": "/document[1]/table[1]/rowgroup[1]/row[1]/rowheader[1]/dialog[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <dialog> with ARIA role 'dialog'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <dialog> with implicit ARIA role \"dialog\"",
             "messageArgs": [
               "aria-expanded",
               "dialog",
@@ -352,17 +352,17 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/form[1]/datalist[1]",
               "aria": "/document[1]/listbox[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-required, aria-activedescendant\" are not valid for the element <datalist> with implicit ARIA role \"listbox\"",
             "messageArgs": [
               "aria-required, aria-activedescendant",
               "datalist",
@@ -372,7 +372,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -381,8 +381,8 @@
               "dom": "/html[1]/body[1]/dl[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <dl> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <dl> with ARIA role \"none\"",
             "messageArgs": [
               "aria-expanded",
               "dl",
@@ -392,7 +392,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -401,8 +401,8 @@
               "dom": "/html[1]/body[1]/dl[1]/dt[1]",
               "aria": "/document[1]/term[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-busy",
               "dt",
@@ -412,7 +412,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -421,18 +421,18 @@
               "dom": "/html[1]/body[1]/dl[1]/dd[1]",
               "aria": "/document[1]/definition[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "dd",
-              "definition"
+              ""
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -441,8 +441,8 @@
               "dom": "/html[1]/body[1]/details[1]",
               "aria": "/document[1]/group[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <details> with ARIA role 'group'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <details> with implicit ARIA role \"group\"",
             "messageArgs": [
               "aria-expanded",
               "details",
@@ -452,7 +452,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -461,8 +461,8 @@
               "dom": "/html[1]/body[1]/embed[1]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <embed> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <embed> with ARIA role \"none\"",
             "messageArgs": [
               "aria-expanded",
               "embed",
@@ -472,7 +472,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -481,18 +481,18 @@
               "dom": "/html[1]/body[1]/form[2]",
               "aria": "/document[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-orientation' is not valid for the element <form> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-orientation\" are not valid for the element <form> with implicit ARIA role \"form\"",
             "messageArgs": [
               "aria-orientation",
               "form",
-              "none"
+              "form"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -501,8 +501,8 @@
               "dom": "/html[1]/body[1]/form[2]/fieldset[1]",
               "aria": "/document[1]/group[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <fieldset> with ARIA role 'group'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <fieldset> with implicit ARIA role \"group\"",
             "messageArgs": [
               "aria-expanded",
               "fieldset",
@@ -512,7 +512,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -521,8 +521,8 @@
               "dom": "/html[1]/body[1]/figure[1]",
               "aria": "/document[1]/figure[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-colindex' is not valid for the element <figure> with ARIA role 'figure'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-colindex\" are not valid for the element <figure> with implicit ARIA role \"figure\"",
             "messageArgs": [
               "aria-colindex",
               "figure",
@@ -532,7 +532,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -541,8 +541,8 @@
               "dom": "/html[1]/body[1]/footer[1]",
               "aria": "/document[1]/contentinfo[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-expanded' is not valid for the element <footer> with ARIA role 'contentinfo'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-expanded\" are not valid for the element <footer> with implicit ARIA role \"contentinfo\"",
             "messageArgs": [
               "aria-expanded",
               "footer",
@@ -552,7 +552,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -561,8 +561,8 @@
               "dom": "/html[1]/body[1]/input[1]",
               "aria": "/document[1]/button[4]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-atomic",
               "input",
@@ -572,7 +572,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -581,8 +581,8 @@
               "dom": "/html[1]/body[1]/input[2]",
               "aria": "/document[1]/checkbox[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-checked' is not valid for the element <input> with ARIA role 'checkbox'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-checked\" are not valid for the element <input> with implicit ARIA role \"checkbox\"",
             "messageArgs": [
               "aria-checked",
               "input",
@@ -592,7 +592,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -601,8 +601,8 @@
               "dom": "/html[1]/body[1]/ol[1]/li[1]",
               "aria": "/document[1]/list[1]/listitem[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-level",
               "li",
@@ -612,7 +612,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -621,8 +621,8 @@
               "dom": "/html[1]/body[1]/hr[1]",
               "aria": "/document[1]/separator[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuetext' is not valid for the element <hr> with ARIA role 'separator'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuetext\" are not valid for the element <hr> with implicit ARIA role \"separator\"",
             "messageArgs": [
               "aria-valuetext",
               "hr",
@@ -651,7 +651,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -660,8 +660,8 @@
               "dom": "/html[1]/body[1]/div[2]",
               "aria": "/document[1]/separator[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuetext' is not valid for the element <div> with ARIA role 'separator'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuetext\" are not valid for the element <div> with ARIA role \"separator\"",
             "messageArgs": [
               "aria-valuetext",
               "div",

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="#1">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      Hello
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["html_lang_valid"],
+        results: [
+          {
+            "ruleId": "html_lang_valid",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Specified 'lang' attribute does not include a valid primary language",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>

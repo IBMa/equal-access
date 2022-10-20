@@ -57,10 +57,10 @@
     </main>
     <script>
       UnitTest = {
-        ruleIds: ["aria_semantics_attribute"],
+        ruleIds: ["aria_attribute_allowed"],
         results: [
         {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -69,8 +69,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -80,7 +80,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -89,8 +89,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[2]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -100,7 +100,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -109,8 +109,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[3]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -120,7 +120,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -129,8 +129,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[4]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -140,7 +140,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -149,8 +149,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[5]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -160,7 +160,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -169,8 +169,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[6]",
               "aria": "/document[1]/main[1]/spinbutton[1]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -180,7 +180,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -189,8 +189,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/input[7]",
               "aria": "/document[1]/main[1]/slider[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'slider'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with implicit ARIA role \"slider\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -200,7 +200,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -209,18 +209,18 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]/meter[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <meter> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <meter> with implicit ARIA role \"meter\"",
             "messageArgs": [
               "aria-valuemin",
               "meter",
-              "none"
+              "meter"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -229,8 +229,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -240,7 +240,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -249,8 +249,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[2]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -260,7 +260,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -269,8 +269,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[3]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -280,7 +280,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -289,8 +289,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[4]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -300,7 +300,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -309,8 +309,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[5]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with ARIA role \"none\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -320,7 +320,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "PASS"
@@ -329,8 +329,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[6]",
               "aria": "/document[1]/main[1]/spinbutton[2]"
             },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -340,7 +340,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -349,8 +349,8 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/input[7]",
               "aria": "/document[1]/main[1]/slider[2]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <input> with ARIA role 'slider'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <input> with implicit ARIA role \"slider\"",
             "messageArgs": [
               "aria-valuemin",
               "input",
@@ -360,7 +360,7 @@
             "category": "Accessibility"
           },
           {
-            "ruleId": "aria_semantics_attribute",
+            "ruleId": "aria_attribute_allowed",
             "value": [
               "INFORMATION",
               "FAIL"
@@ -369,12 +369,12 @@
               "dom": "/html[1]/body[1]/main[1]/div[1]/div[2]/div[1]/meter[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "The ARIA attribute 'aria-valuemin' is not valid for the element <meter> with ARIA role 'none'",
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-valuemin\" are not valid for the element <meter> with implicit ARIA role \"meter\"",
             "messageArgs": [
               "aria-valuemin",
               "meter",
-              "none"
+              "meter"
             ],
             "apiArgs": [],
             "category": "Accessibility"

@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let HAAC_BackgroundImg_HasTextOrTitle: Rule = {
     id: "HAAC_BackgroundImg_HasTextOrTitle",
@@ -42,7 +42,7 @@ export let HAAC_BackgroundImg_HasTextOrTitle: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
-        if (RPTUtil.isNodeHiddenFromAT(ruleContext)) return null;
+        if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
         let doc = ruleContext.ownerDocument;
         let style = doc.defaultView.getComputedStyle(ruleContext);
         if (style == null) {

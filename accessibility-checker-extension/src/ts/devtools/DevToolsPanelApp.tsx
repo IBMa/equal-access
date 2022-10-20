@@ -238,11 +238,9 @@
         }
     
         async xpathFromTabstops(message: any) {
-            // console.log("xpathFromTabstops XPath:", message.xpath, " circleNumber: ", message.circleNumber);
             // JCH take xpath and match to item with same item.path.dom
             this.state.tabStopsResults.map((result: any) => {
                 if (message.xpath === result.path.dom) {
-                    // console.log("result xpath = ",result.path.dom);
                     this.getSelectedItem(result);
                     this.selectItem(result);
                 }
@@ -250,7 +248,6 @@
             // JCH the selected item needs to scroll into view
             this.state.tabStopsErrors.map((result: any) => {
                 if (message.xpath === result.path.dom) {
-                    // console.log("result xpath = ",result.path.dom);
                     this.getSelectedItem(result);
                     this.selectItem(result);
                 }
@@ -388,7 +385,7 @@
                             tabStopOutlines: tabStopOutlines, tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
     
                         });
-                        console.log("Function: readOptionsData DONE");
+                        // console.log("Function: readOptionsData DONE");
                     }
                     resolve();
                 });
@@ -533,9 +530,9 @@
                         // 2.4.3 Focus Order
                         result.ruleId === "IBMA_Focus_MultiTab" ||
                         result.ruleId === "IBMA_Focus_Tabbable" ||
-                        result.ruleID === "element_tabbable_role_invalid" ||
+                        result.ruleID === "element_tabbable_role_valid" ||
                         // 2.4.7 Focus Visible
-                        result.ruleId === "RPT_Style_HinderFocus1" ||
+                        // result.ruleId === "RPT_Style_HinderFocus1" ||
                         result.ruleId === "WCAG20_Script_FocusBlurs" ||
                         result.ruleId === "element_tabbable_visible" ||
                         // 3.2.1 On Focus
@@ -895,6 +892,9 @@
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
+
+            // console.log("Function: selectItem");
+
             if (this.state.report) {
                 if (!item) {
                     for (const resultItem of this.state.report.results) {
@@ -996,6 +996,8 @@
                             }
                             if (!result) {
                                 console.log('Could not select element, it may have moved');
+                            } else {
+                                // console.log("result from selectItem = ",result);
                             }
                             // do focus after inspected Window script
                             setTimeout(() => {
@@ -1040,8 +1042,11 @@
         }
     
         selectElementInElements () {
-            chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)", 
+            // console.log("Function: selectElementInElements START");
+            // console.log("document.firstElementChild = ", document.firstElementChild);
+            chrome.devtools.inspectedWindow.eval("inspect(document.firstElementChild)",
                 (result:string, isException) => {
+                    // console.log("result = ",result);
                     if (isException) {
                         console.error(isException);
                     }
@@ -1054,6 +1059,7 @@
                     }, 0);
                 }
             );
+            // console.log("Function: selectElementInElements DONE");
         }
     
         getItem(item: IReportItem) {
@@ -1061,6 +1067,8 @@
         }
     
         getSelectedItem(item: IReportItem) {
+            // console.log("Function: getSelectedItem");
+            // console.log("item = ",item);
             this.setState({ selectedIssue: item });
         }
     
@@ -1074,18 +1082,20 @@
         }
     
         setTabStopsShowHide() {
+            // console.log("function: setTabStopsShowHide");
+            // let mythis = this;
             if (this.state.showHideTabStops) {
                 this.setState({ showHideTabStops: false });
             } else {
                 this.setState({ showHideTabStops: true });
             }
             setTimeout(function () {
-                // console.log("tabStopsPanel2 = ", mythis.state.tabStopsPanel);
+                // console.log("showHideTabStops = ", mythis.state.showHideTabStops);
             }, 10);
         }
     
         tabStopsSetFirstTime() {
-            console.log("Function: tabStopsSetFirstTime");
+            // console.log("Function: tabStopsSetFirstTime");
             
             if (this.state.tabStopFirstTime) {
                 // console.log("setState tabStopFirstTime to false");
@@ -1113,9 +1123,7 @@
         };
     
         tabStopsHandler() {
-            // console.log("tabStopsHandler");
-            // let mythis = this;
-    
+            // console.log("Function: tabStopsHandler START");
             PanelMessaging.sendToBackground("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", { tabId: this.state.tabId, tabURL: this.state.tabURL });
             this.setState({ tabStopsPanel: false });
             setTimeout(function () {

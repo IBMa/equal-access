@@ -43,6 +43,7 @@ export let Rpt_Aria_ValidProperty: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let contextAttributes = ruleContext.attributes;
+        
         // This gets all elements with attributes so we still have some
         // Out of Scope since not all attributes are aria 
 
@@ -70,8 +71,7 @@ export let Rpt_Aria_ValidProperty: Rule = {
             if (testedProperties == 0) {
                 return null;
             } else if (failedProperties.length != 0) {
-                //return new ValidationResult(false, [ruleContext], '', '', [failedProperties, ruleContext.tagName]);
-                return RuleFail("Fail_1", [failedProperties, ruleContext.tagName]);
+                return RuleFail("Fail_1", [failedProperties, ruleContext.nodeName.toLowerCase()]);
             } else {
                 //return RulePass(1);
                 return RulePass("Pass_0");

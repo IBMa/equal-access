@@ -39,7 +39,7 @@ const gulp = require("gulp"),
 gulp.task("build-uglify", function () {
     return gulp.src(["../src/**/lib/**/*.js", "../src/index.js", "!../src/node_modules/**"])
         .pipe(terser())
-        .pipe(greplace('if(void 0===ace)', "if('undefined' === typeof(ace))"))
+        .pipe(greplace('if(void 0===globalThis.ace_ibma)', "if('undefined' === typeof(globalThis.ace_ibma))"))
         .pipe(ginsert.prepend(notice("2016,2017,2018,2019")))
         .pipe(gulp.dest("../package"));
 

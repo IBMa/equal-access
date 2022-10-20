@@ -12,8 +12,10 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { getCache } from "../util/CacheUtil";
 
 export let IBMA_Color_Contrast_WCAG2AA_PV: Rule = {
     id: "IBMA_Color_Contrast_WCAG2AA_PV",
@@ -45,13 +47,13 @@ export let IBMA_Color_Contrast_WCAG2AA_PV: Rule = {
         let nodeName = ruleContext.nodeName.toLowerCase();
         // avoid diagnosing disabled nodes or those that are not visible.
         if (RPTUtil.isNodeDisabled(ruleContext) ||
-            !RPTUtil.isNodeVisible(ruleContext) ||
-            (RPTUtil.hiddenByDefaultElements != null &&
-                RPTUtil.hiddenByDefaultElements != undefined &&
-                RPTUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
+            !VisUtil.isNodeVisible(ruleContext) ||
+            (VisUtil.hiddenByDefaultElements != null &&
+                VisUtil.hiddenByDefaultElements != undefined &&
+                VisUtil.hiddenByDefaultElements.indexOf(nodeName) > -1)) {
             return null;
         }
-        let precalc = RPTUtil.getCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", null);
+        let precalc = getCache(ruleContext, "EXT_Color_Contrast_WCAG2AA", null);
         if (!precalc) return RulePass("Pass_0");
         let passed = precalc.ratio >= 4.5 || (precalc.ratio >= 3 && precalc.isLargeScale);
 

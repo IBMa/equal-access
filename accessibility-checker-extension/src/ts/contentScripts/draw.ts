@@ -109,7 +109,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
         `
     );
-
+    
     // Create nodes that have keyboard errors
     let tabStopsErrors = JSON.parse(JSON.stringify(message.tabStopsErrors));
 
@@ -127,7 +127,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             regularTabstops[index].nodeHasError = true
         } 
     }
-
+    
     // console.log("----------------");
     // console.log(regularTabstops);
     // console.log(tabStopsErrors);
@@ -144,8 +144,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }, 1000)
         
     });
-
-
 
     // Here is a possibile approach to window resize events:
     // 1. Catch window resize events (they come in bunches)
@@ -172,7 +170,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     
     });
 
-
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
         // console.log("main doc key catcher");
@@ -182,20 +179,26 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
     });
 
-
     // Find all iframes nodes 
     let frames = document.getElementsByTagName("iframe");
-    
+    // console.log("frames = ",frames);
+    // console.log("frames.length = ",frames.length);
     for (let i = 0; i < frames.length; i++) {
+        // console.log("frames[",i,"]=",frames[i]);
         if (frames[i] != null) {
-            frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
-                console.log("iframe key catcher");
-                let iframePath = getXPathForElement(frames[i]); // since iframes in main doc
-                handleTabHighlight(event,frames[i].contentWindow?.document,"iframe",iframePath);
-            })
+            if (frames[i].contentDocument) {
+                // console.log("add iframe listener");
+                frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
+                    console.log("iframe key catcher");
+                    let iframePath = getXPathForElement(frames[i]); // since iframes in main doc
+                    console.log("iframePath = ",iframePath);
+                    handleTabHighlight(event,frames[i].contentWindow?.document,"iframe",iframePath);
+                });
+            } else {
+                console.log("iframe cross-origin");
+            }
         }
     }
-    
     // Find all shadow dom host nodes
     let shadowDoms:any = [];
     let allNodes = document.querySelectorAll("*");
@@ -205,7 +208,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
     }
     // console.log(shadowDoms.length);
-
     for (let i = 0; i < shadowDoms.length; i++) {
         if (shadowDoms[i] != null) {
             // console.log("Got shadow dom: ",shadowDoms[i]);
@@ -219,7 +221,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             })
         }
     }
-
     return true;
 });
 
@@ -246,7 +247,7 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
 
         // if we have shadow dom no need to do anything special
         if (docType === "shadowdom") {
-            console.log("we have an element in a shadow dom");
+            // console.log("we have an element in a shadow dom");
             let sdXpath = getXPathForElement(doc);
             let element = doc.shadowRoot.activeElement;
             elementXpath = getXPathForElement(element);
@@ -478,6 +479,7 @@ TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message:
 
 //@ts-ignore
 TabMessaging.addListener("DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) => {
+    // console.log("TabMessaging.addListener DELETE_DRAW_TABS_TO_CONTEXT_SCRIPTS call deleteDrawing");
     deleteDrawing(".deleteMe");
     return true;
 });
@@ -500,8 +502,9 @@ async function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean,
 }
 
 function deleteDrawing(classToRemove: string) {
-    // console.log("Function: deleteDrawing");
+    // console.log("Function: deleteDrawing START");
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
+    // console.log("Function: deleteDrawing DONE")
 }
 
 
@@ -1034,6 +1037,8 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         elemSVG.setAttribute("id", "svgCircle");
         elemSVG.classList.add("dynamic");
+        elemSVG.setAttribute("width","1px");
+        elemSVG.setAttribute("height","1px");
         document.body.appendChild(elemSVG);
     }
     // console.log("Inject circle circleNumber" + circleNumber);
