@@ -176,14 +176,13 @@ export let WCAG21_Input_Autocomplete: Rule = {
         let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
 
         let tokens = autocompleteAttr.split(/\s+/);
-
         if (tokens.length === 0 || autocompleteAttr.length === 0) {
             return null;
         }
         
-        if(!(tokens.every(r => valid_values.includes(r))))
+        if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
             return RuleFail("Fail_attribute_incorrect");
-
+        
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
 
