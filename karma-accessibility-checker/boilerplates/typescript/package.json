@@ -21,7 +21,7 @@
     },
     "devDependencies": {
         "@types/es6-promise": "^3.3.0",
-        "karma-accessibility-checker": "^3.1.40",
+        "karma-accessibility-checker": "*",
         "karma-html2js-preprocessor": "^1.1.0"
     }
 }
