@@ -32,7 +32,7 @@ export let WCAG21_Input_Autocomplete: Rule = {
             "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
             "Pass_0": "Rule Passed",
             "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
-            "Fail_attribute_incorrect": "autocomplete attribute has an incorrect value"
+            "Fail_attribute_incorrect": "The 'autocomplete' attribute has an incorrect value"
         }
     },
     rulesets: [{
