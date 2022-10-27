@@ -70,12 +70,18 @@ export let combobox_focusable_elements: Rule = {
         let passed = true;
 
         // examine the children
-        if (popupElement) {
-            let nw = new NodeWalker(popupElement);
-            while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
-                if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
-                    passed = !RPTUtil.isTabbable(nw.node) &&
-                        !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
+        if (popupElement  && VisUtil.isNodeVisible(popupElement)) {
+            // if popupElement itself has "aria-activedescendant"
+            passed = !RPTUtil.isTabbable(popupElement) && !RPTUtil.getAriaAttribute(popupElement, "aria-activedescendant");;
+            // if any child of popupElement has "aria-autocomplete"
+            if (passed && popupElement.children && popupElement.children.length > 0) {
+                let nw = new NodeWalker(popupElement);
+                while (passed && nw.nextNode()) {
+                    if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
+                        passed = !RPTUtil.isTabbable(nw.node) &&
+                            !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
+                        if (nw.node === popupElement.lastElementChild) break;    
+                    }
                 }
             }
         }

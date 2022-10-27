@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker } from "../../v2/checker/accessibility/util/legacy";
 import { getCache } from "../util/CacheUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
-
+import {inspect} from 'util';
 export let combobox_autocomplete: Rule = {
     id: "combobox_autocomplete",
     context: "aria:combobox",
@@ -50,20 +50,25 @@ export let combobox_autocomplete: Rule = {
         let cachedElem = cache[context["dom"].rolePath];
         if (!cachedElem) return null;
         const { popupId, popupElement } = cachedElem;
-
         let retVal = [];
         if (ruleContext.getAttribute("aria-autocomplete") === "inline") {
             retVal.push(RuleFail("Fail_inline"));
         }
 
         let passed = true;
-
+        
         // examine the children
-        if (popupElement) {
-            let nw = new NodeWalker(popupElement);
-            while (passed && nw.nextNode() && nw.node != popupElement && nw.node != popupElement.nextSibling) {
-                if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
-                    passed = !nw.elem().hasAttribute("aria-autocomplete");
+        if (popupElement && VisUtil.isNodeVisible(popupElement)) {
+            // if popupElement itself has "aria-autocomplete"
+            passed = !popupElement.hasAttribute("aria-autocomplete");
+            // if any child of popupElement has "aria-autocomplete"
+            if (passed && popupElement.children && popupElement.children.length > 0) {
+                let nw = new NodeWalker(popupElement);
+                while (passed && nw.nextNode()) {
+                    if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
+                        passed = !nw.elem().hasAttribute("aria-autocomplete");
+                        if (nw.node === popupElement.lastElementChild) break;
+                    }
                 }
             }
         }
