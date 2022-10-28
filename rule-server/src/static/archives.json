@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "13October2022",
+        "name": "13 October 2022 Deployment",
+        "version": "3.1.39",
+        "path": "/archives/2022.10.13"
+    },
+    {
         "id": "21September2022",
         "name": "21 September 2022 Deployment",
         "version": "3.1.38",

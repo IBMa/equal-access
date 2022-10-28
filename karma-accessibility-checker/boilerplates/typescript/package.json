@@ -1,0 +1,27 @@
+{
+    "name": "karma-ibma-examples",
+    "version": "0.0.1",
+    "description": "Example on how to use karma-ibma plugin.",
+    "author": "IBMa",
+    "license": "SEE LICENSE IN README",
+    "scripts": {
+        "test": "karma start"
+    },
+    "dependencies": {
+        "@types/expect.js": "^0.3.29",
+        "@types/mocha": "^5.2.5",
+        "expect.js": "^0.3.1",
+        "karma": "^6.1.0",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-cli": "^2.0.0",
+        "karma-mocha": "^1.3.0",
+        "karma-typescript": "latest",
+        "mocha": "^6.2.0",
+        "typescript": "latest"
+    },
+    "devDependencies": {
+        "@types/es6-promise": "^3.3.0",
+        "karma-accessibility-checker": "*",
+        "karma-html2js-preprocessor": "^1.1.0"
+    }
+}
