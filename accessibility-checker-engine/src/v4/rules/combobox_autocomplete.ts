@@ -16,7 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { NodeWalker } from "../../v2/checker/accessibility/util/legacy";
 import { getCache } from "../util/CacheUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import {inspect} from 'util';
+
 export let combobox_autocomplete: Rule = {
     id: "combobox_autocomplete",
     context: "aria:combobox",
@@ -55,8 +55,7 @@ export let combobox_autocomplete: Rule = {
             retVal.push(RuleFail("Fail_inline"));
         }
 
-        let passed = true;
-        
+        let passed = true; 
         // examine the children
         if (popupElement && VisUtil.isNodeVisible(popupElement)) {
             // if popupElement itself has "aria-autocomplete"
