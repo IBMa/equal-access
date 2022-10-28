@@ -67,7 +67,7 @@ export let combobox_autocomplete: Rule = {
                 while (passed && nw.nextNode()) {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                         passed = !nw.elem().hasAttribute("aria-autocomplete");
-                        if (nw.node === popupElement.lastElementChild) break;
+                        if (nw.bEndTag && nw.node === popupElement.lastElementChild) break;
                     }
                 }
             }

@@ -80,7 +80,7 @@ export let combobox_focusable_elements: Rule = {
                     if (nw.node.nodeType === 1 && VisUtil.isNodeVisible(nw.node)) {
                         passed = !RPTUtil.isTabbable(nw.node) &&
                             !RPTUtil.getAriaAttribute(nw.node, "aria-activedescendant");
-                        if (nw.node === popupElement.lastElementChild) break;    
+                        if (nw.bEndTag && nw.node === popupElement.lastElementChild) break;    
                     }
                 }
             }
