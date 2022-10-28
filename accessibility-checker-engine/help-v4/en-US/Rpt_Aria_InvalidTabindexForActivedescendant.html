@@ -44,16 +44,23 @@
 
 ### Why is this important?
 
-Elements use `aria-activedescendant` property to manage the focus of their active descendants. 
-Setting the `tabindex` value to `"0"` or `"-1"`  ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access. 
-Using values greater than 0 should be avoided as it can break the logical tab order.
+Elements (component containers) use `aria-activedescendant` property to manage the focus of their active descendants.
+Assistive technologies do not require the developer to manipulate the `tabindex` attribute among [focusable elements within the container](https://w3c.github.io/aria-practices/#kbd_focus_activedescendant).
+Instead, only the container element needs to be included in the tab sequence.
+
+Setting the `tabindex` value to `"0"` or greater ensures the element will be included in the tab sequence and allows its descendants to receive focus for keyboard access.
+The `tabindex` value defines the order (sequence) in which elements will receive focus when users navigate via the keyboard:
+* `"-1"` will remove the element from the tab sequence (ignored during tabbing) but may remain focusable
+* `"0"` will be handled in the order (tab sequence) as it appears in the DOM source code order
+* `">0"` (positive number) [creates a relative ordering](https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute) that will be handled first from the element(s) with the lowest value (e.g.1) and then procees to the element(s) with the next higher value
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Set the value of the `tabindex` attribute equal to `"0"` or `"-1"` on the element using `aria-activedescendant` property to include the element in the tab sequence. 
+* Set the value of the `tabindex` attribute equal to `"0"` or greater on the element using `aria-activedescendant` property to include the element in the tab sequence. 
+* Ensure the tab sequence is in a logical order and the component is keyboard operable. 
 
  The following example shows a toolbar element using the `aria-activedescendant` property with a `tabindex` attribute set to zero:
 
@@ -77,6 +84,7 @@ Using values greater than 0 should be avoided as it can break the logical tab or
 
 * [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)  
 * [ARIA practices - Managing focus with aria-activedescendant](https://w3c.github.io/aria-practices/#kbd_focus_activedescendant)
+* [HTML - the tabindex attribute](https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
 
 ### Who does this affect?
 
