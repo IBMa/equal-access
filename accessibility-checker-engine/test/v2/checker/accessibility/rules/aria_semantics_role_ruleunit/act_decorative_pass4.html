@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+        <main>
+          <div>
+            <nav role="presentation">
+              <a href="https://act-rules.github.io/" aria-label="ACT rules">ACT rules</a>
+            </nav>
+					</div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_attribute_allowed"],
+                results: [
+                {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/nav[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "a",
+              "link"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ],
+      };
+        </script>
+    </body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+        <main>
+          <div>
+          <img src="/test-assets/shared/w3c-logo.png" alt="" aria-labelledby="label" /> 
+          <span hidden id="label">W3C logo</span>
+					</div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_attribute_allowed"],
+                results: [
+                {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/img[1]",
+              "aria": "/document[1]/main[1]/presentation[1]"
+            },
+            "reasonId": "Fail_invalid_implicit_role_attr",
+            "message": "The ARIA attributes \"aria-labelledby\" are not valid for the element <img> with implicit ARIA role \"presentation\"",
+            "messageArgs": [
+              "aria-labelledby",
+              "img",
+              "presentation"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ],
+      };
+        </script>
+    </body>
+</html>
