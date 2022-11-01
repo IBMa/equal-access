@@ -41,6 +41,7 @@
 
 <div role="toolbar" tabindex="0" aria-activedescendant="button2" id="tb2"
   onkeydown="return optionKeyEvent(event);">
+    <div id="button2" aria-active='true' ></div>
 </div>
 
 <div role="toolbar" tabindex="-1" aria-activedescendant="button2" id="tb3"
@@ -55,11 +56,10 @@
     {
       ruleId: "1084",
       passedXpaths: [
-		"/html/body/div[1]",
-		"/html/body/div[2]",
-		"/html/body/div[3]"
+		    "/html/body/div[2]"
       ],
       failedXpaths: [
+        "/html[1]/body[1]/div[3]"
       ]
     },
   ];
