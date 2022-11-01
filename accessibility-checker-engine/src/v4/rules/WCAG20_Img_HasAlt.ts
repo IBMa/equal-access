@@ -21,20 +21,20 @@ export let WCAG20_Img_HasAlt: Rule = {
     context: "dom:img",
     help: {
         "en-US": {
-            "Pass_0": "WCAG20_Img_HasAlt.html",
-            "Fail_1": "WCAG20_Img_HasAlt.html",
-            "Fail_2": "WCAG20_Img_HasAlt.html",
-            "Fail_3": "WCAG20_Img_HasAlt.html",
+            "pass": "WCAG20_Img_HasAlt.html",
+            "fail_blank_alt": "WCAG20_Img_HasAlt.html",
+            "fail_no_alt": "WCAG20_Img_HasAlt.html",
+            "fail_blank_title": "WCAG20_Img_HasAlt.html",
             "group": "WCAG20_Img_HasAlt.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Image 'alt' attribute value consists only of whitespace",
-            "Fail_2": "Image does not have an 'alt' attribute short text alternative",
-            "Fail_3": "Image does not have an 'alt' attribute and 'title' attribute value consists only of whitespace",
-            "group": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
+            "pass": "Images has required 'alt' attribute, ARIA label or title if they convey meaning, or 'alt=\"\" if decorative",
+            "fail_blank_alt": "Image 'alt' attribute value consists only of blank space(s)",
+            "fail_no_alt": "The image has neither an alt atttribute nor an ARIA label or title",
+            "fail_blank_title": "The image does not have an alt attribute or ARIA label and 'title' attribute value consists only of blank space(s)",
+            "group": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
         }
     },
     rulesets: [{
@@ -47,44 +47,46 @@ export let WCAG20_Img_HasAlt: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         // If not visible to the screen reader, ignore
-        if (!VisUtil.isNodeVisible(ruleContext) || ruleContext.getAttribute("aria-hidden") === "true") {
+        if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return null;
-        }
-        // Images with different roles should be handled by other ARIA rules
-        if (ruleContext.hasAttribute("role")) {
-            let role = ruleContext.getAttribute("role");
-            if (role === "presentation" || role === "none") {
-                if (RPTUtil.isTabbable(ruleContext)) {
-                    // Ignore the role
+        
+        //pass if images with a valid 'alt'    
+        let alt = ruleContext.getAttribute("alt");
+        if (alt) {
+            if (alt.trim().length > 0)
+                return RulePass("pass");   
+            else { 
+                // alt.trim().length === 0
+                if (alt.length > 0) {
+                    // alt contains blank space only (alt=" ")
+                    return RuleFail("fail_blank_alt");  
                 } else {
-                    return RulePass("Pass_0");
+                    // alt.length === 0, presentational image, title is optional, handled by other rule(s)
+                    return null;
                 }
-            } else {
-                return null;
-            }
-        }
-        // JCH - NO OUT OF SCOPE hidden in context
-        if (ruleContext.hasAttribute("alt")) {
-            let alt = ruleContext.getAttribute("alt");
-            if (alt.trim().length === 0 && alt.length !== 0) {
-                // Alt, but it's whitespace (alt=" ")
-                return RuleFail("Fail_1");
-            } else {
-                return RulePass("Pass_0");
-            }
-        } else if (ruleContext.hasAttribute("title")) {
-            let title = ruleContext.getAttribute("title");
-            if (title.length === 0) {
-                // Same as no alt
-                return RuleFail("Fail_2");
-            } else if (title.trim().length === 0) {
-                // title = " "
-                return RuleFail("Fail_3");
-            } else {
-                return RulePass("Pass_0");
             }
         } else {
-            return RuleFail("Fail_2");
+            // no alt
+            let label = RPTUtil.getAriaLabel(ruleContext);
+            if (label && label.trim().length > 0)
+                return RulePass("pass");
+            else {
+                let title = ruleContext.getAttribute("title");
+                if (title) {
+                    if (title.trim().length > 0)
+                        return RulePass("pass");   
+                    else { 
+                        // title.trim().length === 0
+                        if (title.length > 0) {
+                            // title contains blank space only (title=" ")
+                            return RuleFail("fail_blank_title");  
+                        }    
+                    }
+                } else {
+                    // neither alt nor aria label or title 
+                    return RuleFail("fail_no_alt"); 
+                }  
+            } 
         }
     }
 }
