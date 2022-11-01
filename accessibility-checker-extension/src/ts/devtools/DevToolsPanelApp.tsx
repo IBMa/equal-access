@@ -255,10 +255,33 @@
         }
     
         async componentDidMount() {
-            // console.log("Function: componentDidMount START");
-            // console.log("this.state.tabId = ", this.state.tabId);
             await this.readOptionsData();
-            // console.log("Function: componentDidMount DONE");
+        }
+
+        componentDidUpdate() {
+            
+            if (!this.state.learnMore) {
+                console.log("Function: DevToolsPanelApp componentDidMount START");
+                console.log("document.activeElement = ", document.activeElement);
+                console.log("document.activeElement = ", document.activeElement);
+                let button = document.getElementById('scanButton');
+                if (button) {
+                    button.focus();
+                }
+                console.log("document.activeElement = ", document.activeElement);
+                console.log("Function: DevToolsPanelApp componentDidMount DONE");
+            } else {
+                console.log("Function: DevToolsPanelApp componentDidMount START");
+                console.log("document.activeElement = ", document.activeElement);
+                // await this.readOptionsData();
+                console.log("document.activeElement = ", document.activeElement);
+                let button = document.getElementById('backToListView');
+                if (button) {
+                    button.focus();
+                }
+                console.log("document.activeElement = ", document.activeElement);
+                console.log("Function: DevToolsPanelApp componentDidMount DONE");
+            }
         }
     
         async readOptionsData() {
@@ -1158,7 +1181,8 @@
     
         
         render() {
-            // console.log("render --------------");
+            console.log("DevToolsPanelApp Render START");
+            
             // console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
             // console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
             // console.log("this.state.tabStopLines = ",this.state.tabStopLines);
@@ -1173,6 +1197,7 @@
             }
     
             else if (this.props.layout === "main") {
+                console.log("document.activeElement main START = ", document.activeElement);
                 return <React.Fragment>
                     <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
                         <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", width: "100%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
@@ -1240,9 +1265,10 @@
                             </div>
                         </div>  
                     </div>
+                    {console.log("document.activeElement main END = ", document.activeElement)}
                 </React.Fragment>
             } else if (this.props.layout === "sub") {
-    
+                console.log("document.activeElement sub START = ", document.activeElement);
                 return <React.Fragment>
                     {/* ok now need three way display for Report Manager so need reportManager state */}
                     <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
@@ -1346,6 +1372,7 @@
                             </div>
                         </div>
                     </div>
+                    {console.log("document.activeElement sub DONE = ", document.activeElement)}
                 </React.Fragment>
             } else {
                 return <React.Fragment>ERROR</React.Fragment>

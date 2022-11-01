@@ -38,10 +38,17 @@
         state: IReportManagerHeaderState = {};
         
         componentDidMount(){
-           var button = document.getElementById('backToListView');
-           if (button) {
-               button.focus();
-           }
+        }
+
+        componentDidUpdate() {
+            console.log("Function: ReportManagerHeader componentDidUpdate START");
+            console.log("document.activeElement = ", document.activeElement);
+            let button = document.getElementById('backToListView');
+            if (button) {
+                button.focus();
+            }
+            console.log("document.activeElement = ", document.activeElement);
+            console.log("Function: ReportManagerHeader componentDidUpdate DONE");
         }
    
         render() {
