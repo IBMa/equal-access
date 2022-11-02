@@ -14,6 +14,7 @@
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { VisUtil } from "../../v2/dom/VisUtil";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 
 export let WCAG20_A_HasText: Rule = {
@@ -43,9 +44,12 @@ export let WCAG20_A_HasText: Rule = {
     act: "c487ae",
     run: (context: RuleContext, options?: {}): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        if (ruleContext.hasAttribute("aria-hidden") && ruleContext.getAttribute("aria-hidden").toLowerCase() === "true") {
+
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
+        
         // Rule only passes if an element has inner content,
         // in the case that there is only hidden content under the the element it is a violation
         let passed =
