@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Slot content test</title>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <main id="main">
+      <div id="no-host">
+          <a href='http://google.com'>Google</a>
+      </div>
+      <div id="host"></div>
+    </main>
+    <script type="text/javascript">
+      let shadow = document
+        .getElementById("host")
+        .attachShadow({ mode: "open" });
+      let div1 = document.createElement("div");
+      div1.setAttribute("id", "shadow-div1");
+      let link = document.createElement("a");
+      link.setAttribute("href", "http://ibm.com");
+      div1.appendChild(link);
+      let span = document.createElement("span");
+      link.appendChild(span);
+      shadow.appendChild(div1);
+      let slot = document.createElement("slot");
+      slot.setAttribute("id", "shadow-slot");
+      span.appendChild(slot);
+      
+
+    </script>
+    <script>
+      UnitTest = {
+        ruleIds: ["WCAG20_A_HasText"],
+        results: [
+        {
+            "ruleId": "WCAG20_A_HasText",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Hyperlink has a description of its purpose",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG20_A_HasText",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/#document-fragment[1]/div[1]/a[1]",
+              "aria": "/document[1]/main[1]/link[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Hyperlink has no link text, label or image with a text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
