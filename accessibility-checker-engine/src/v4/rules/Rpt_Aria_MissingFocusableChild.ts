@@ -23,16 +23,16 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
-            "Pass_0": "Rpt_Aria_MissingFocusableChild.html",
-            "Fail_1": "Rpt_Aria_MissingFocusableChild.html",
+            "pass": "Rpt_Aria_MissingFocusableChild.html",
+            "fail_missing_child": "Rpt_Aria_MissingFocusableChild.html",
             "group": "Rpt_Aria_MissingFocusableChild.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The descendent <{0}> element with \"{1}\" role has no focusable child element",
-            "group": "UI component must have at least one focusable child element for keyboard access"
+            "pass": "Rule Passed",
+            "fail_missing_child": "None of the descendent elements with \"{1}\" role is tabbable",
+            "group": "UI component must have at least one tabbable descendant for keyboard access"
         }
     },
     rulesets: [{
@@ -54,7 +54,7 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
             return;
 
         // An ARIA list is not interactive
-        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true })) {
+        if (RPTUtil.hasRole(ruleContext, { "list": true, "row": true, "rowgroup": true, "table": true, "grid": true })) {
             return null;
         }
 
@@ -108,9 +108,8 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                                 continue;
                             }
 
-                            passed = RPTUtil.tabIndexLEZero(r);
-                            if (!passed) passed = RPTUtil.isfocusableByDefault(r);
-
+                            passed = RPTUtil.isTabbable(r);
+                           
                             // Required child is not focusable via tabindex.  See if there is a grandchild that is focusable by default or by tabindex.
                             if (!passed) {
                                 let xp2 = "descendant::*";
@@ -129,8 +128,7 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
                                         r2 = xpathResult2.iterateNext();
                                         continue;
                                     }
-                                    passed = RPTUtil.tabIndexLEZero(r2);
-                                    if (!passed) passed = RPTUtil.isfocusableByDefault(r2);
+                                    passed = RPTUtil.isTabbable(r);
                                     r2 = xpathResult2.iterateNext();
                                 }
                             }
@@ -164,9 +162,9 @@ export let Rpt_Aria_MissingFocusableChild: Rule = {
         if (!inScope) {
             return null;
         } else if (!passed) {
-            return RuleFail("Fail_1", [retToken1.toString(), retToken2.toString()]);
+            return RuleFail("fail_missing_child", [retToken1.toString(), retToken2.toString()]);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }
