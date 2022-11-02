@@ -52,7 +52,7 @@ export let WCAG20_Img_HasAlt: Rule = {
         
         //pass if images with a valid 'alt'    
         let alt = ruleContext.getAttribute("alt");
-        if (alt) {
+        if (alt !== null) {
             if (alt.trim().length > 0)
                 return RulePass("pass");   
             else { 
@@ -62,7 +62,7 @@ export let WCAG20_Img_HasAlt: Rule = {
                     return RuleFail("fail_blank_alt");  
                 } else {
                     // alt.length === 0, presentational image, title is optional, handled by other rule(s)
-                    return null;
+                    return  RulePass("pass");
                 }
             }
         } else {
