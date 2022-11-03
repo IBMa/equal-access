@@ -341,6 +341,7 @@ var ACCommon = {
                     }
                 });
             });
+            // TODO: Get this directory from a config file
             fs.writeFileSync(pathLib.join(__dirname, "archives.json"), archiveJson);
             let ACArchive = JSON.parse(archiveJson);
             let ruleArchive = ACConfig.ruleArchive;

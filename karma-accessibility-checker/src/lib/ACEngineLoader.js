@@ -34,6 +34,8 @@ var ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
 
 // Store the aChecker scan engine under ACEngine folder which will be under the root of the
 // karma-ibma node module. i.e. /home/devans/aChecker/karma-accessibility-checker/node_modules/karma-ibma/lib/
+
+// TODO: Get this directory from a config file
 var ACEngineRootFolder = __dirname;
 
 /**
