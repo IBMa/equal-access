@@ -23,14 +23,16 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "en-US": {
             "group": "WCAG21_Input_Autocomplete.html",
             "Pass_0": "WCAG21_Input_Autocomplete.html",
-            "Fail_1": "WCAG21_Input_Autocomplete.html"
+            "Fail_1": "WCAG21_Input_Autocomplete.html",
+            "Fail_attribute_incorrect": "WCAG21_Input_Autocomplete.html"
         }
     },
     messages: {
         "en-US": {
             "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field"
+            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "Fail_attribute_incorrect": "The 'autocomplete' attribute has an incorrect value"
         }
     },
     rulesets: [{
@@ -39,7 +41,7 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    // TODO: ACT: Pass example 8
+    
     act: "73f2c2",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const cache = {
@@ -157,6 +159,10 @@ export let WCAG21_Input_Autocomplete: Rule = {
                 "email",
                 "impp"]
         }
+        let valid_values = [];
+        for (var key in cache)
+            valid_values=valid_values.concat(cache[key]);
+        
         const ruleContext = context["dom"].node as Element;
         let foundMandatoryToken = false;
         let nodeName = ruleContext.nodeName.toLowerCase();
@@ -170,11 +176,13 @@ export let WCAG21_Input_Autocomplete: Rule = {
         let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
 
         let tokens = autocompleteAttr.split(/\s+/);
-
         if (tokens.length === 0 || autocompleteAttr.length === 0) {
             return null;
         }
-
+        
+        if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
+            return RuleFail("Fail_attribute_incorrect");
+        
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
 

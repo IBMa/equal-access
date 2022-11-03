@@ -14,11 +14,11 @@
 		},
 		"IBMA_Focus_MultiTab": {
 			"0": "Certain components must have no more than one tabbable element",
-			"Pass_0": "Rule Passed"
+			"pass": "Rule Passed"
 		},
 		"IBMA_Focus_Tabbable": {
 			"0": "Component must have at least one tabbable element",
-			"Pass_0": "Rule Passed"
+			"pass": "Rule Passed"
 		},
 		"RPT_Block_ShouldBeHeading": {
 			"0": "Heading text must use a heading element",
@@ -55,7 +55,7 @@
 		},
 		"Rpt_Aria_MissingKeyboardHandler": {
 			"0": "Interactive WAI_ARIA UI components must provide keyboard access",
-			"Pass_0": "Rule Passed"
+			"pass": "Rule Passed"
 		},
 		"Rpt_Aria_MultipleDocumentRoles": {
 			"0": "All elements with a \"document\" role must have unique labels",
@@ -85,10 +85,6 @@
 			"0": "The page should have a title that correctly identifies the subject of the page",
 			"Pass_0": "Rule Passed"
 		},
-		"html_lang_valid": {
-			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
-			"Pass_0": "Lang has a valid primary lang and conforms to BCP 47"
-		},
 		"WCAG20_Html_HasLang": {
 			"0": "Page must identify the default language of the document with a 'lang' attribute",
 			"Pass_0": "Page language detected as \"{0}\""
@@ -116,6 +112,10 @@
 		"element_tabbable_visible": {
 			"0": "A tabbable element should be visible on the screen when it has keyboard focus",
 			"pass": "The tabbable element is visible on the screen"
+		},
+		"html_lang_valid": {
+			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
+			"Pass_0": "Lang has a valid primary lang and conforms to BCP 47"
 		},
 		"text_quoted_correctly": {
 			"0": "Quotations should be marked with <q> or <blockquote> elements",
@@ -1545,7 +1545,7 @@
 			"aria": "/document[1]/main[1]",
 			"dom": "/html[1]/body[1]/div[2]"
 		},
-		"reasonId": "Pass_0",
+		"reasonId": "pass",
 		"ruleId": "Rpt_Aria_MissingKeyboardHandler",
 		"snippet": "<div role=\"main\">",
 		"value": ["VIOLATION", "PASS"],
@@ -1818,7 +1818,7 @@
 			"aria": "/document[1]/navigation[1]/link[1]",
 			"dom": "/html[1]/body[1]/div[1]/a[1]"
 		},
-		"reasonId": "Pass_0",
+		"reasonId": "pass",
 		"ruleId": "IBMA_Focus_Tabbable",
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"value": ["VIOLATION", "PASS"],
@@ -1839,7 +1839,7 @@
 			"aria": "/document[1]/navigation[1]/link[1]",
 			"dom": "/html[1]/body[1]/div[1]/a[1]"
 		},
-		"reasonId": "Pass_0",
+		"reasonId": "pass",
 		"ruleId": "IBMA_Focus_MultiTab",
 		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
 		"value": ["VIOLATION", "PASS"],
@@ -2091,7 +2091,7 @@
 			"aria": "/document[1]/navigation[1]",
 			"dom": "/html[1]/body[1]/div[1]"
 		},
-		"reasonId": "Pass_0",
+		"reasonId": "pass",
 		"ruleId": "Rpt_Aria_MissingKeyboardHandler",
 		"snippet": "<div role=\"navigation\">",
 		"value": ["VIOLATION", "PASS"],
@@ -2463,27 +2463,6 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "Lang has a valid primary lang and conforms to BCP 47",
-		"messageArgs": [],
-		"path": {
-			"aria": "/document[1]",
-			"dom": "/html[1]"
-		},
-		"reasonId": "Pass_0",
-		"ruleId": "html_lang_valid",
-		"snippet": "<html lang=\"en\">",
-		"value": ["VIOLATION", "PASS"],
-		"ignored": false,
-		"level": "pass"
-	}, {
-		"apiArgs": [],
-		"bounds": {
-			"height": 999,
-			"left": 0,
-			"top": 0,
-			"width": 999
-		},
-		"category": "Accessibility",
 		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
@@ -2576,6 +2555,27 @@
 		},
 		"reasonId": "Pass_0",
 		"ruleId": "IBMA_Color_Contrast_WCAG2AA_PV",
+		"snippet": "<html lang=\"en\">",
+		"value": ["VIOLATION", "PASS"],
+		"ignored": false,
+		"level": "pass"
+	}, {
+		"apiArgs": [],
+		"bounds": {
+			"height": 999,
+			"left": 0,
+			"top": 0,
+			"width": 999
+		},
+		"category": "Accessibility",
+		"message": "Lang has a valid primary lang and conforms to BCP 47",
+		"messageArgs": [],
+		"path": {
+			"aria": "/document[1]",
+			"dom": "/html[1]"
+		},
+		"reasonId": "Pass_0",
+		"ruleId": "html_lang_valid",
 		"snippet": "<html lang=\"en\">",
 		"value": ["VIOLATION", "PASS"],
 		"ignored": false,

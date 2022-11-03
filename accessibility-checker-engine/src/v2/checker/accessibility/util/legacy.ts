@@ -2102,6 +2102,7 @@ export class RPTUtil {
 
         let retVal = !(text !== null && text.trim().length > 0);
         if (element.nodeType === 1 && element.nodeName.toLowerCase() === "slot") {
+            //TODO: need to conside its own content, a slot may have its own content or assigned content
             for (const slotElem of element.assignedNodes()) {
                 retVal = retVal && RPTUtil.isInnerTextEmpty(slotElem);
             }

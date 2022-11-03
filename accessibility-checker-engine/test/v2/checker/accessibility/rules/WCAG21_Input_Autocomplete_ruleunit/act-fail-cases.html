@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+		<title>Checks that the HTML autocomplete attribute has an incorrect value </title>
+	</head>
+	<body>
+
+    <!-- Fail 1: an unknown term that is not a correct autocomplete field -->
+    <label>Username<input autocomplete="badname"/></label>
+
+    <!-- Fail 2: work can not be used with photo -->
+    <label>Photo<input autocomplete="work photo"/></label>
+
+    <!--Fail 3: the work token before the shipping token, instead of the other way around -->
+    <label>Email<input autocomplete="work shipping email"/></label>
+
+    <!--Fail 4: comma separated instead of space  -->
+    <label>Email<input autocomplete="work,email"/></label>
+
+    <!--Fail 5: input element that does not have a widget role but focusable with tabindex 0  -->
+    <label>Username<input role="banner" tabindex="0" autocomplete="banner"/></label>
+
+    <!--Add-on 1: input element that does not have a widget role,nore focusable  -->
+    <label>Username<input role="banner" autocomplete="banner"/></label>
+
+    <!--Add-on 2: input element that does not have a widget role,nore focusable  -->
+    <label>Username<input role="banner" autocomplete="work email"/></label>
+
+    <script>
+      UnitTest = {
+          ruleIds: ["WCAG21_Input_Autocomplete"],
+          results: [
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[1]/input[1]",
+              "aria": "/document[1]/textbox[1]"
+            },
+            "reasonId": "Fail_attribute_incorrect",
+            "message": "The 'autocomplete' attribute has an incorrect value",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[2]/input[1]",
+              "aria": "/document[1]/textbox[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[3]/input[1]",
+              "aria": "/document[1]/textbox[3]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[4]/input[1]",
+              "aria": "/document[1]/textbox[4]"
+            },
+            "reasonId": "Fail_attribute_incorrect",
+            "message": "The 'autocomplete' attribute has an incorrect value",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[5]/input[1]",
+              "aria": "/document[1]/banner[1]"
+            },
+            "reasonId": "Fail_attribute_incorrect",
+            "message": "The 'autocomplete' attribute has an incorrect value",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[6]/input[1]",
+              "aria": "/document[1]/banner[2]"
+            },
+            "reasonId": "Fail_attribute_incorrect",
+            "message": "The 'autocomplete' attribute has an incorrect value",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "WCAG21_Input_Autocomplete",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/label[7]/input[1]",
+              "aria": "/document[1]/banner[3]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ]
+      }
+    </script>
+	</body>
+	</html>
