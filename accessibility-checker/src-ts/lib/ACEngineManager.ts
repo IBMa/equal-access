@@ -121,10 +121,11 @@ try {
             fs.mkdirSync(engineDir, { recursive: true });
         }
         await new Promise<void>((resolve, reject) => {
-            fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
+            const nodePath = path.join(engineDir, "ace-node")
+            fs.writeFile(nodePath+".js", data, function (err) {
                 try {
                     err && console.log(err);
-                    var ace_ibma = require("./engine/ace-node");
+                    var ace_ibma = require(nodePath);
                     checker = new ace_ibma.Checker();
                 } catch (e) {
                     console.log(e);
