@@ -78,6 +78,7 @@ export class ARIAWalker {
                     && elementNode.nodeName.toLowerCase() === "slot"
                     && slotElement.assignedNodes().length > 0) 
                 {
+                    //TODO: need to conside its own content, a slot may have its own content or assigned content
                     let slotOwner = this.node;
                     this.node = slotElement.assignedNodes()[0];
                     (this.node as any).slotOwner = slotOwner;
