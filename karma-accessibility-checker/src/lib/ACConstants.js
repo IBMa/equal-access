@@ -20,11 +20,11 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
-const { tmpdir } = require('os');
-const pathLib = require('path');
+var os = require('os');
+var pathLib = require('path');
 
 // Used to specify all the constant
-let constants = {
+var constants = {
     DEBUG: true,
 
     policies: ["IBM_Accessibility"],
@@ -119,7 +119,7 @@ let constants = {
     customRuleServer: false,
 
     // Default cache folder (for ace-node.js / archives.json)
-    cacheFolder: `${tmpdir()}/accessibility-checker/`,
+    cacheFolder: os.tmpdir()+"/accessibility-checker/"
 
 };
 

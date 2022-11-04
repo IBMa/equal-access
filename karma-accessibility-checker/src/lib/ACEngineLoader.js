@@ -21,15 +21,15 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
-let pathLib = require('path');
-let fs = require('fs');
-//let Promise = require('promise');
-let YAML = require('js-yaml');
-let constants = require(pathLib.join(__dirname, 'ACConstants'));
+var pathLib = require('path');
+var fs = require('fs');
+//var Promise = require('promise');
+var YAML = require('js-yaml');
+var constants = require(pathLib.join(__dirname, 'ACConstants'));
 const request = require('request');
 
 // Load ACCommon module which contains all the common code for server side code
-let ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
+var ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
 
 /**
  * This function is responsible for downloading the accessibility-checker scan engine from a remote URL.
@@ -55,14 +55,8 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     ACCommon.log.debug("START 'ACEngineLoaderAndConfig' function");
 
-    // Store the aChecker scan engine under ACEngine folder which will be under the root of the
-    // karma-ibma node module. i.e. /home/devans/aChecker/karma-accessibility-checker/node_modules/karma-ibma/lib/
-
-    // TODO: Get this directory from a config file
-    let ACEngineRootFolder = config.client.ACConfig.cacheFolder;
-
     // Extract information that are needed from the karma config
-    let files = config.files;
+    var files = config.files;
 
     ACCommon.log.debug("Files before any changes: ");
     ACCommon.log.debug(files);
@@ -70,9 +64,12 @@ async function ACEngineLoaderAndConfig(logger, config) {
     // Process the Karma Configuration options that are needed for this module
     await ACCommon.processKarmaConfiguration(config);
 
+    // Store the aChecker scan engine under ACEngine folder
+    var ACEngineRootFolder = config.client.ACConfig.cacheFolder;
+
     // Extract the rule server and engine file names
-    let rulePackServer = config.client.ACConfig.rulePack;
-    let engineFileName = config.client.ACConfig.engineFileName;
+    var rulePackServer = config.client.ACConfig.rulePack;
+    var engineFileName = config.client.ACConfig.engineFileName;
 
     ACCommon.log.debug("Using Rule Server: " + rulePackServer);
     ACCommon.log.debug("Using engine file: " + engineFileName);
@@ -80,11 +77,11 @@ async function ACEngineLoaderAndConfig(logger, config) {
     // Only check if scanned is allowed or not rule server is https://aat
     if (rulePackServer && rulePackServer.indexOf("https://aat") === 0) {
         // Run regex which will extract the URL and account ID token from rulePack
-        let m = rulePackServer.match(/(https?:\/\/[^/]*)\/token\/([a-f0-9-]{36})/);
+        var m = rulePackServer.match(/(https?:\/\/[^/]*)\/token\/([a-f0-9-]{36})/);
 
         // Based on the accountID and tokenID build the check_scan_allowed API fill path
         // Format: https://<hostname>:<port>/api/pub/meter/check_scan_allowed?accountId=<accoundId>
-        let checkAllowedURL = m[1]+"/api/pub/meter/check_scan_allowed?accountId="+m[2];
+        var checkAllowedURL = m[1]+"/api/pub/meter/check_scan_allowed?accountId="+m[2];
 
         ACCommon.log.debug("Check Scan Allowed API: " + checkAllowedURL);
 
@@ -96,7 +93,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
             /* istanbul ignore next */
             if (!error && response.statusCode == 200) {
                 // Parse the repsonse body as JSON
-                let checkScanAllowedResponse = JSON.parse(body);
+                var checkScanAllowedResponse = JSON.parse(body);
 
                 // In the case that the scan is allowed response will be "allowed: true" and "message: ALLOWED_SCAN", otherwise do not allow the scan at all.
                 if (checkScanAllowedResponse && checkScanAllowedResponse.allowed && checkScanAllowedResponse.message === "ALLOWED_SCAN") {
@@ -116,21 +113,21 @@ async function ACEngineLoaderAndConfig(logger, config) {
     }
 
     // Build the engine download URL
-    let engineDownloadURL = rulePackServer + "/" + engineFileName;
+    var engineDownloadURL = rulePackServer + "/" + engineFileName;
 
 
     // Build the full location of the ACEngine
-    let ACEngineFullpath = pathLib.join(ACEngineRootFolder, engineFileName);
+    var ACEngineFullpath = pathLib.join(ACEngineRootFolder, engineFileName);
 
-    let stats = null;
+    var stats = null;
     try {
         stats = fs.statSync(ACEngineFullpath);
     } catch (e) {
     }
-    let engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
+    var engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
     if (engineAge > 5000) {
         ACCommon.log.debug("Starting download of: " + engineDownloadURL + " to " + ACEngineRootFolder);
-        let engine = await new Promise((resolve, reject) => {
+        var engine = await new Promise((resolve, reject) => {
             request.get({ 
                 url: engineDownloadURL, 
                 rejectUnauthorized: false
