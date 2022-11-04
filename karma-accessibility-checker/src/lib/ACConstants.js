@@ -20,6 +20,7 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
+const { tmpdir } = require('os');
 const pathLib = require('path');
 
 // Used to specify all the constant
