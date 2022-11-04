@@ -20,6 +20,7 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
+import { tmpdir } from "os";
 import * as pathLib from "path";
 import { IConfigUnsupported } from "./api/IChecker";
 import { eRuleLevel } from "./api/IEngine";
@@ -59,6 +60,9 @@ export const ACConstants : IConfigUnsupported = {
 
     // Specify default location where the baselines should be saved
     baselineFolder: "baselines",
+
+    // Default cache folder (for ace-node.js / archives.json)
+    cacheFolder: `${tmpdir()}/accessibility-checker/`,
 
     // Specify default value for Which file extensions should be checked
     extensions: ["html", "htm", "svg"],

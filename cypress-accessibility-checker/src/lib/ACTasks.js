@@ -202,8 +202,7 @@ let ACTasks = module.exports = {
                             console.log("Cannot read: " + ACTasks.Config.rulePack + "/ace-node.js");
                         }
                         data = data.body;
-                        // TODO: Get this directory from a config file
-                        let engineDir = path.join(__dirname, "engine");
+                        let engineDir = path.join(config.cacheFolder, "engine");
                         if (!fs.existsSync(engineDir)) {
                             fs.mkdirSync(engineDir);
                         }

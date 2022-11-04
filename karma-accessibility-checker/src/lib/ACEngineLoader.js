@@ -1,5 +1,5 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+    Copyright:: 2020- IBM, Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -12,31 +12,24 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-  *****************************************************************************/
+*****************************************************************************/
 
 /*******************************************************************************
  * NAME: ACEngineLoader.js
  * DESCRIPTION: Used by karma-ibma to load the engine/config files and also
  *              parse and verify the config files/options provided by user.
-
  *******************************************************************************/
 
 // Load all the modules that are needed
-var pathLib = require('path');
-var fs = require('fs');
-//var Promise = require('promise');
-var YAML = require('js-yaml');
-var constants = require(pathLib.join(__dirname, 'ACConstants'));
+let pathLib = require('path');
+let fs = require('fs');
+//let Promise = require('promise');
+let YAML = require('js-yaml');
+let constants = require(pathLib.join(__dirname, 'ACConstants'));
 const request = require('request');
 
 // Load ACCommon module which contains all the common code for server side code
-var ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
-
-// Store the aChecker scan engine under ACEngine folder which will be under the root of the
-// karma-ibma node module. i.e. /home/devans/aChecker/karma-accessibility-checker/node_modules/karma-ibma/lib/
-
-// TODO: Get this directory from a config file
-var ACEngineRootFolder = __dirname;
+let ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
 
 /**
  * This function is responsible for downloading the accessibility-checker scan engine from a remote URL.
@@ -62,8 +55,14 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     ACCommon.log.debug("START 'ACEngineLoaderAndConfig' function");
 
+    // Store the aChecker scan engine under ACEngine folder which will be under the root of the
+    // karma-ibma node module. i.e. /home/devans/aChecker/karma-accessibility-checker/node_modules/karma-ibma/lib/
+
+    // TODO: Get this directory from a config file
+    let ACEngineRootFolder = config.client.ACConfig.cacheFolder;
+
     // Extract information that are needed from the karma config
-    var files = config.files;
+    let files = config.files;
 
     ACCommon.log.debug("Files before any changes: ");
     ACCommon.log.debug(files);
@@ -72,8 +71,8 @@ async function ACEngineLoaderAndConfig(logger, config) {
     await ACCommon.processKarmaConfiguration(config);
 
     // Extract the rule server and engine file names
-    var rulePackServer = config.client.ACConfig.rulePack;
-    var engineFileName = config.client.ACConfig.engineFileName;
+    let rulePackServer = config.client.ACConfig.rulePack;
+    let engineFileName = config.client.ACConfig.engineFileName;
 
     ACCommon.log.debug("Using Rule Server: " + rulePackServer);
     ACCommon.log.debug("Using engine file: " + engineFileName);
@@ -81,11 +80,11 @@ async function ACEngineLoaderAndConfig(logger, config) {
     // Only check if scanned is allowed or not rule server is https://aat
     if (rulePackServer && rulePackServer.indexOf("https://aat") === 0) {
         // Run regex which will extract the URL and account ID token from rulePack
-        var m = rulePackServer.match(/(https?:\/\/[^/]*)\/token\/([a-f0-9-]{36})/);
+        let m = rulePackServer.match(/(https?:\/\/[^/]*)\/token\/([a-f0-9-]{36})/);
 
         // Based on the accountID and tokenID build the check_scan_allowed API fill path
         // Format: https://<hostname>:<port>/api/pub/meter/check_scan_allowed?accountId=<accoundId>
-        var checkAllowedURL = m[1]+"/api/pub/meter/check_scan_allowed?accountId="+m[2];
+        let checkAllowedURL = m[1]+"/api/pub/meter/check_scan_allowed?accountId="+m[2];
 
         ACCommon.log.debug("Check Scan Allowed API: " + checkAllowedURL);
 
@@ -97,7 +96,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
             /* istanbul ignore next */
             if (!error && response.statusCode == 200) {
                 // Parse the repsonse body as JSON
-                var checkScanAllowedResponse = JSON.parse(body);
+                let checkScanAllowedResponse = JSON.parse(body);
 
                 // In the case that the scan is allowed response will be "allowed: true" and "message: ALLOWED_SCAN", otherwise do not allow the scan at all.
                 if (checkScanAllowedResponse && checkScanAllowedResponse.allowed && checkScanAllowedResponse.message === "ALLOWED_SCAN") {
@@ -117,18 +116,18 @@ async function ACEngineLoaderAndConfig(logger, config) {
     }
 
     // Build the engine download URL
-    var engineDownloadURL = rulePackServer + "/" + engineFileName;
+    let engineDownloadURL = rulePackServer + "/" + engineFileName;
 
 
     // Build the full location of the ACEngine
-    var ACEngineFullpath = pathLib.join(ACEngineRootFolder, engineFileName);
+    let ACEngineFullpath = pathLib.join(ACEngineRootFolder, engineFileName);
 
-    var stats = null;
+    let stats = null;
     try {
         stats = fs.statSync(ACEngineFullpath);
     } catch (e) {
     }
-    var engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
+    let engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
     if (engineAge > 5000) {
         ACCommon.log.debug("Starting download of: " + engineDownloadURL + " to " + ACEngineRootFolder);
         let engine = await new Promise((resolve, reject) => {

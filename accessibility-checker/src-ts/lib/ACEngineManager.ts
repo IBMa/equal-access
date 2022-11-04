@@ -116,8 +116,7 @@ try {
         let config = await ACConfigManager.getConfigUnsupported();
         const response = await axios.get(`${config.rulePack}/ace-node.js`);
         const data = await response.data;
-        // TODO: Get this directory from a config file
-        let engineDir = path.join(__dirname, "engine");
+        let engineDir = path.join(config.cacheFolder, "engine");
         if (!fs.existsSync(engineDir)) {
             fs.mkdirSync(engineDir);
         }
