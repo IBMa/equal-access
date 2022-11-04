@@ -118,11 +118,7 @@ try {
         const data = await response.data;
         let engineDir = path.join(config.cacheFolder, "engine");
         if (!fs.existsSync(engineDir)) {
-            fs.mkdirSync(engineDir);
-        }
-        let cacheDir = path.join(engineDir, "cache");
-        if (!fs.existsSync(cacheDir)) {
-            fs.mkdirSync(cacheDir);
+            fs.mkdirSync(engineDir, { recursive: true });
         }
         await new Promise<void>((resolve, reject) => {
             fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {

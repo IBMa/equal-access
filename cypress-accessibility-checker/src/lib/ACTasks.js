@@ -204,11 +204,7 @@ let ACTasks = module.exports = {
                         data = data.body;
                         let engineDir = path.join(config.cacheFolder, "engine");
                         if (!fs.existsSync(engineDir)) {
-                            fs.mkdirSync(engineDir);
-                        }
-                        let cacheDir = path.join(engineDir, "cache");
-                        if (!fs.existsSync(cacheDir)) {
-                            fs.mkdirSync(cacheDir);
+                            fs.mkdirSync(engineDir, { recursive: true });
                         }
                         let engineFilename = path.join(engineDir, "ace-node.js");
                         // Only write the engine if it's different - can cause Cypress to trigger a file changed watch
