@@ -38,16 +38,6 @@
      componentDidMount() {
      }
 
-     componentDidUpdate() {
-        // console.log("Function: HelpHeader componentDidUpdate START");
-        // var button = document.getElementById('backToListView');
-        // if (button) {
-        //     button.focus();
-        // }
-        // {console.log("HelpHeader ComponenetDidMount: active element = ", document.activeElement)}
-        // console.log("Function: HelpHeader componentDidUpdate DONE");
-     }
-
     render() {
     {console.log("render HelpHeader START")}
         let headerContent = (<div style={{marginTop:"6px"}}>

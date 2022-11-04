@@ -43,7 +43,7 @@
         componentDidUpdate() {
             console.log("Function: ReportManagerHeader componentDidUpdate START");
             console.log("document.activeElement = ", document.activeElement);
-            let button = document.getElementById('backToListView');
+            let button = document.getElementById('backToListView1');
             if (button) {
                 button.focus();
             }
@@ -57,7 +57,7 @@
                 <div style={{paddingTop:"8px"}}>
                     <Grid style={{padding: "0rem"}}>
                         <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
-                            <Button id='backToListView' onClick={this.props.reportManagerHelp} kind='tertiary' size="sm" >Back to list view</Button>
+                            <Button id='backToListView1' onClick={this.props.reportManagerHelp} kind='tertiary' size="sm" >Back to list view</Button>
                         </Column>
                         <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{position: "relative", textAlign:"right", paddingRight:"0px", paddingTop:"2px"}}>
                             <div>

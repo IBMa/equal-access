@@ -270,18 +270,20 @@
                 }
                 console.log("document.activeElement = ", document.activeElement);
                 console.log("Function: DevToolsPanelApp componentDidMount DONE");
-            } else {
-                console.log("Function: DevToolsPanelApp componentDidMount START");
-                console.log("document.activeElement = ", document.activeElement);
-                // await this.readOptionsData();
-                console.log("document.activeElement = ", document.activeElement);
-                let button = document.getElementById('backToListView');
-                if (button) {
-                    button.focus();
-                }
-                console.log("document.activeElement = ", document.activeElement);
-                console.log("Function: DevToolsPanelApp componentDidMount DONE");
-            }
+            } 
+            
+            // else {
+            //     console.log("Function: DevToolsPanelApp componentDidMount START");
+            //     console.log("document.activeElement = ", document.activeElement);
+            //     // await this.readOptionsData();
+            //     console.log("document.activeElement = ", document.activeElement);
+            //     let button = document.getElementById('backToListView2');
+            //     if (button) {
+            //         button.focus();
+            //     }
+            //     console.log("document.activeElement = ", document.activeElement);
+            //     console.log("Function: DevToolsPanelApp componentDidMount DONE");
+            // }
         }
     
         async readOptionsData() {
