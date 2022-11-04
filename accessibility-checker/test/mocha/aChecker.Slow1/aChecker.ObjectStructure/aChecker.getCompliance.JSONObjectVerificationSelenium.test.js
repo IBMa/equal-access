@@ -180,7 +180,7 @@ describe("JSON Structure Verification Selenium", function () {
                                     })
                                     //console.log("report= " + JSON.stringify(report));
                                     // Run the diff algo to get the list of differences
-                                    differences = aChecker.diffResultsWithExpected(report, expected, false);console.log("report= " + report);
+                                    differences = aChecker.diffResultsWithExpected(report, expected, false);console.log("report= " + JSON.stringify(report));
                                 }
 
                                 expect(typeof differences).to.equal("undefined", "\nDoes not follow the correct JSON structure or can't load baselines" + JSON.stringify(differences, null, '  '));
