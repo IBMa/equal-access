@@ -64,6 +64,7 @@
         rulesets: IRuleset[] | null,
         selectedCheckpoint?: ICheckpoint,
         learnMore: boolean,
+        learnMoreReturn: boolean, // true if have return from learn more Back to list view
         learnItem: IReportItem | null,
         showIssueTypeFilter: boolean[],
         scanning: boolean,  // true when scan taking place
@@ -131,6 +132,7 @@
             selectedIssue: null,
             rulesets: null,
             learnMore: false,
+            learnMoreReturn: false,
             learnItem: null,
             showIssueTypeFilter: [true, true, true, true],
             scanning: false,
@@ -1099,6 +1101,10 @@
     
         learnHelp() {
             this.setState({ learnMore: false });
+        }
+
+        learnHelpReturn() {
+            this.setState({learnMoreReturn: true});
         }
     
         reportManagerHelp() {
