@@ -198,6 +198,7 @@ function initializeDefaults(config) {
     config.extensions = config.extensions || constants.extensions;
     config.engineFileName = config.engineFileName || constants.engineFileName;
     config.ruleArchive = config.ruleArchive || constants.ruleArchive;
+    config.cacheFolder = config.cacheFolder || constants.cacheFolder;
     // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
     // boolean which causes it to always comply with the default value and not user provided option
     if (config.captureScreenshots === null || config.captureScreenshots === undefined || typeof config.captureScreenshots === "undefined") {
