@@ -66,6 +66,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     // Store the aChecker scan engine under ACEngine folder
     var ACEngineRootFolder = config.client.ACConfig.cacheFolder;
+    var ACPackageRootFolder = __dirname;
 
     // Extract the rule server and engine file names
     var rulePackServer = config.client.ACConfig.rulePack;
@@ -200,7 +201,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     // Load in the ACWrapper into the Karma browsers, this Helper script is a script that will configure
     // the accessibility-checker Scan Engine before using/scanning any thing.
-    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACEngineRootFolder, "ACHelper.js")));
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ACHelper.js")));
 
     // Load a deep-diff util from a node module into the browser, so we can use a well defined diff tool
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(require.resolve('deep-diff'), '..','dist', 'deep-diff.min.js')));
