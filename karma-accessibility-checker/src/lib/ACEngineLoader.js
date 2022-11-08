@@ -127,7 +127,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
     var engineAge = (stats && (new Date().getTime()-stats.mtime)) || 10000;
     if (engineAge > 5000) {
         ACCommon.log.debug("Starting download of: " + engineDownloadURL + " to " + ACEngineRootFolder);
-        var engine = await new Promise((resolve, reject) => {
+        let engine = await new Promise((resolve, reject) => {
             request.get({ 
                 url: engineDownloadURL, 
                 rejectUnauthorized: false
@@ -141,6 +141,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
             });
         });
 
+        fs.mkdirSync(ACEngineRootFolder, { recursive: true});
         fs.writeFileSync(ACEngineFullpath, engine);
     } else {
         ACCommon.log.debug("Skipping download of : " + engineDownloadURL);
