@@ -509,7 +509,7 @@ Note: The valid policies will vary depending on the selected `ruleArchive`.
 
 ## Known Issues
 
-1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access document of generated iframe. This is due to cross domain frame access restrictions in browsers. On firefox there is no provided alternative, Chrome provides a way to override this. by adding the following to karma.config.js:
+1. Unable to scan URLs due to "permission denied to access property "document"" when trying to access document of generated iframe. This is due to cross domain frame access restrictions in browsers. On firefox there is no provided alternative, Chrome provides a way to override this by adding the following to karma.config.js:
 
 ```javascript
  module.exports = function (config) {
