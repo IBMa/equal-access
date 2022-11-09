@@ -38,14 +38,10 @@ export default class Help extends React.Component<IHelpProps, IHelpState> {
     };
 
     componentDidUpdate() {
-        console.log("Function: Help componentDidUpdate START");
-        console.log("HelpHeader ComponenetDidMount: BEFORE set focus active element = ", document.activeElement);
         var button = document.getElementById('backToListView2');
         if (button) {
             button.focus();
         }
-        console.log("HelpHeader ComponenetDidMount: AFTER set focus active element = ", document.activeElement);
-        console.log("Function: Help componentDidUpdate DONE");
      }
 
     onHelpLoaded() {

@@ -36,7 +36,6 @@
      state: IHeaderState = {};
 
     render() {
-    {console.log("render HelpHeader START")}
         let headerContent = (<div style={{marginTop:"6px"}}>
             <Grid style={{padding: "0rem"}}>
             <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
@@ -53,15 +52,11 @@
         if (this.props.layout === "main") {
             return <div className="fixed-header" 
                     style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)", left: "50%", width: "50%", top: "1rem"}}>
-                {headerContent} 
-
-                {console.log("render HelpHeader DONE")}                       
+                {headerContent}                      
             </div>
         } else {
             return <div className="fixed-header" style={{zIndex:1000, backgroundColor:"rgba(255, 255, 255, 1)", width: "100%", height:"56px"}}>
-                {headerContent} 
-                
-                {console.log("render HelpHeader DONE")}          
+                {headerContent}        
             </div>
         }
         

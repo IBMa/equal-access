@@ -65,7 +65,7 @@
         selectedCheckpoint?: ICheckpoint,
         learnMore: boolean,
         learnMoreLink: HTMLElement | null,
-        learnMoreReturn: boolean, // true if have return from learn more Back to list view
+        // learnMoreReturn: boolean, // true if have return from learn more Back to list view
         learnItem: IReportItem | null,
         showIssueTypeFilter: boolean[],
         scanning: boolean,  // true when scan taking place
@@ -134,7 +134,7 @@
             rulesets: null,
             learnMore: false,
             learnMoreLink: null,
-            learnMoreReturn: false,
+            // learnMoreReturn: false,
             learnItem: null,
             showIssueTypeFilter: [true, true, true, true],
             scanning: false,
@@ -259,33 +259,20 @@
         }
     
         async componentDidMount() {
-            console.log("Function: DevToolsPanelApp componentDidMount START");
             await this.readOptionsData();
-            console.log("Function: DevToolsPanelApp componentDidMount DONE");
         }
 
-        componentDidUpdate() {
-            console.log("Function: DevToolsPanelApp componentDidUpdate START");
-            console.log("this.state.learnMoreReturn = ",this.state.learnMoreReturn);
-            if (!this.state.learnMoreReturn) {
-                console.log("document.activeElement = ", document.activeElement);
-                console.log("document.activeElement = ", document.activeElement);
+        componentDidUpdate(_prevProps: any, prevState: any) {
+            if (!this.state.learnMore && prevState.learnMore) {
+                // If help is closing, focus the link and clear the link
+                prevState.learnMoreLink!.focus();
+            } else {
+                // If this update wasn't from clearing the link, focus scan button
                 let button = document.getElementById('scanButton');
                 if (button) {
                     button.focus();
                 }
-                console.log("document.activeElement = ", document.activeElement);
-            } 
-            // else {
-            //     if (this.state.learnMoreLink !== null) {
-            //         console.log("this.state.learnMoreLink = ", this.state.learnMoreLink);
-            //         console.log("document.activeElement = ", document.activeElement);
-            //         this.state.learnMoreLink.focus();
-            //         // this.setState({learnMoreReturn: false});
-            //         console.log("document.activeElement = ", document.activeElement);
-            //     }
-            // }
-            console.log("Function: DevToolsPanelApp componentDidUpdate DONE");
+            }
         }
     
         async readOptionsData() {
@@ -449,7 +436,6 @@
     
         async startScan() {
             // console.log("Function: startScan START");
-            this.setState({learnMoreReturn: false}); // JCH should this be here?
             let tabURL = this.state.tabURL;
             let tabId = this.state.tabId;
     
@@ -1100,25 +1086,12 @@
             this.setState({ selectedIssue: item });
         }
     
-        learnHelp() {
+        learnHelpClose() {
             this.setState({ learnMore: false });
-            if (this.state.learnMoreLink !== null) {
-                this.state.learnMoreLink.focus();
-            }
         }
 
         returnFromHelp(e: Element | null) {
-            console.log("element = ",e);
-            // (e as HTMLElement).focus();
-            this.setState({learnMoreLink: (e as HTMLElement)})
-            this.setState({learnMoreReturn: true});
-            if (this.state.learnMoreLink !== null) {
-                console.log("this.state.learnMoreLink = ", this.state.learnMoreLink);
-                console.log("document.activeElement = ", document.activeElement);
-                this.state.learnMoreLink.focus();
-                // this.setState({learnMoreReturn: false});
-                console.log("document.activeElement = ", document.activeElement);
-            }
+            this.setState({learnMoreLink: (e as HTMLElement)});
         }
     
         reportManagerHelp() {
@@ -1203,15 +1176,6 @@
     
         
         render() {
-            console.log("DevToolsPanelApp Render START");
-            
-            // console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
-            // console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
-            // console.log("this.state.tabStopLines = ",this.state.tabStopLines);
-            // console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
-            // console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
-            // console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
-    
             let error = this.state.error;
     
             if (error) {
@@ -1219,7 +1183,6 @@
             }
     
             else if (this.props.layout === "main") {
-                console.log("document.activeElement main START = ", document.activeElement);
                 return <React.Fragment>
                     <div style={{ display: "flex", height: "100%", maxWidth: "50%" }} className="mainPanel" role="aside" aria-label={!this.state.report?"About IBM Accessibility Checker":this.state.report && !this.state.selectedItem ? "Scan summary" : "Issue help"}>
                         <div ref={this.leftPanelRef} style={{ flex: "1 1 50%", width: "100%", height:"100%", position:"fixed", left:"50%", maxWidth:"50%", backgroundColor: "#f4f4f4", overflowY: this.state.report && this.state.selectedItem ? "scroll" : undefined }}>
@@ -1287,12 +1250,9 @@
                             </div>
                         </div>  
                     </div>
-                    {console.log("document.activeElement main END = ", document.activeElement)}
                 </React.Fragment>
             } else if (this.props.layout === "sub") {
-                console.log("document.activeElement sub START = ", document.activeElement);
                 if (document.activeElement?.innerHTML === "Learn more") {
-                    console.log("Have learn more", document.activeElement);
                     this.returnFromHelp(document.activeElement);
                 }
                 return <React.Fragment>
@@ -1315,7 +1275,7 @@
                         </ReportManagerTable>
                     </div>
                     <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
-                        <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
+                        <HelpHeader learnHelp={this.learnHelpClose.bind(this)} layout={this.props.layout}></HelpHeader>
                         <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                             <div style={{ marginTop: "56px", height: "calc(100% - 56px)" }}>
                                 <div style={{ height: "100%" }}>
@@ -1398,7 +1358,6 @@
                             </div>
                         </div>
                     </div>
-                    {console.log("document.activeElement sub DONE = ", document.activeElement)}
                 </React.Fragment>
             } else {
                 return <React.Fragment>ERROR</React.Fragment>
