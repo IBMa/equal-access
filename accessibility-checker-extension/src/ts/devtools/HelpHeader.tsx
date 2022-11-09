@@ -29,21 +29,18 @@
  
  interface IHeaderProps {
      layout: "main" | "sub",
-     learnHelp: () => void
+     learnHelp: () => void,
  }
  
  export default class HelpHeader extends React.Component<IHeaderProps, IHeaderState> {
      state: IHeaderState = {};
-     
-     componentDidMount() {
-     }
 
     render() {
     {console.log("render HelpHeader START")}
         let headerContent = (<div style={{marginTop:"6px"}}>
             <Grid style={{padding: "0rem"}}>
             <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}}>
-                    <Button id='backToListView' onClick={this.props.learnHelp} size="sm" kind='tertiary'>Back to list view</Button>
+                    <Button id='backToListView2' onClick={this.props.learnHelp} size="sm" kind='tertiary'>Back to list view</Button>
                 </Column>
                 <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{position: "relative"}}>
                     <div className="headerTools" >

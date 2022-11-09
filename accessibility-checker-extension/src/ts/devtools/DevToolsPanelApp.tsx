@@ -64,6 +64,7 @@
         rulesets: IRuleset[] | null,
         selectedCheckpoint?: ICheckpoint,
         learnMore: boolean,
+        learnMoreLink: HTMLElement | null,
         learnMoreReturn: boolean, // true if have return from learn more Back to list view
         learnItem: IReportItem | null,
         showIssueTypeFilter: boolean[],
@@ -132,6 +133,7 @@
             selectedIssue: null,
             rulesets: null,
             learnMore: false,
+            learnMoreLink: null,
             learnMoreReturn: false,
             learnItem: null,
             showIssueTypeFilter: [true, true, true, true],
@@ -257,13 +259,15 @@
         }
     
         async componentDidMount() {
+            console.log("Function: DevToolsPanelApp componentDidMount START");
             await this.readOptionsData();
+            console.log("Function: DevToolsPanelApp componentDidMount DONE");
         }
 
         componentDidUpdate() {
-            
-            if (!this.state.learnMore) {
-                console.log("Function: DevToolsPanelApp componentDidMount START");
+            console.log("Function: DevToolsPanelApp componentDidUpdate START");
+            console.log("this.state.learnMoreReturn = ",this.state.learnMoreReturn);
+            if (!this.state.learnMoreReturn) {
                 console.log("document.activeElement = ", document.activeElement);
                 console.log("document.activeElement = ", document.activeElement);
                 let button = document.getElementById('scanButton');
@@ -271,21 +275,17 @@
                     button.focus();
                 }
                 console.log("document.activeElement = ", document.activeElement);
-                console.log("Function: DevToolsPanelApp componentDidMount DONE");
             } 
-            
             // else {
-            //     console.log("Function: DevToolsPanelApp componentDidMount START");
-            //     console.log("document.activeElement = ", document.activeElement);
-            //     // await this.readOptionsData();
-            //     console.log("document.activeElement = ", document.activeElement);
-            //     let button = document.getElementById('backToListView2');
-            //     if (button) {
-            //         button.focus();
+            //     if (this.state.learnMoreLink !== null) {
+            //         console.log("this.state.learnMoreLink = ", this.state.learnMoreLink);
+            //         console.log("document.activeElement = ", document.activeElement);
+            //         this.state.learnMoreLink.focus();
+            //         // this.setState({learnMoreReturn: false});
+            //         console.log("document.activeElement = ", document.activeElement);
             //     }
-            //     console.log("document.activeElement = ", document.activeElement);
-            //     console.log("Function: DevToolsPanelApp componentDidMount DONE");
             // }
+            console.log("Function: DevToolsPanelApp componentDidUpdate DONE");
         }
     
         async readOptionsData() {
@@ -449,6 +449,7 @@
     
         async startScan() {
             // console.log("Function: startScan START");
+            this.setState({learnMoreReturn: false}); // JCH should this be here?
             let tabURL = this.state.tabURL;
             let tabId = this.state.tabId;
     
@@ -1101,10 +1102,23 @@
     
         learnHelp() {
             this.setState({ learnMore: false });
+            if (this.state.learnMoreLink !== null) {
+                this.state.learnMoreLink.focus();
+            }
         }
 
-        learnHelpReturn() {
+        returnFromHelp(e: Element | null) {
+            console.log("element = ",e);
+            // (e as HTMLElement).focus();
+            this.setState({learnMoreLink: (e as HTMLElement)})
             this.setState({learnMoreReturn: true});
+            if (this.state.learnMoreLink !== null) {
+                console.log("this.state.learnMoreLink = ", this.state.learnMoreLink);
+                console.log("document.activeElement = ", document.activeElement);
+                this.state.learnMoreLink.focus();
+                // this.setState({learnMoreReturn: false});
+                console.log("document.activeElement = ", document.activeElement);
+            }
         }
     
         reportManagerHelp() {
@@ -1277,6 +1291,10 @@
                 </React.Fragment>
             } else if (this.props.layout === "sub") {
                 console.log("document.activeElement sub START = ", document.activeElement);
+                if (document.activeElement?.innerHTML === "Learn more") {
+                    console.log("Have learn more", document.activeElement);
+                    this.returnFromHelp(document.activeElement);
+                }
                 return <React.Fragment>
                     {/* ok now need three way display for Report Manager so need reportManager state */}
                     <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
