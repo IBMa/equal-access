@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+        <main>
+          <div>
+            <img src="/test-assets/shared/w3c-logo.png" aria-label="W3C logo" />
+					</div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_attribute_allowed"],
+                results: [
+                {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/img[1]",
+              "aria": "/document[1]/main[1]/img[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-label",
+              "img",
+              "img"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ],
+      };
+        </script>
+    </body>
+</html>

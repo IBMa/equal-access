@@ -1,5 +1,5 @@
 /******************************************************************************
-     Copyright:: 2020- IBM, Inc
+    Copyright:: 2020- IBM, Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -12,13 +12,12 @@
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-  *****************************************************************************/
+*****************************************************************************/
 
 /*******************************************************************************
  * NAME: ACEngineLoader.js
  * DESCRIPTION: Used by karma-ibma to load the engine/config files and also
  *              parse and verify the config files/options provided by user.
-
  *******************************************************************************/
 
 // Load all the modules that are needed
@@ -31,10 +30,6 @@ const request = require('request');
 
 // Load ACCommon module which contains all the common code for server side code
 var ACCommon = require(pathLib.join(__dirname, 'ACCommon'));
-
-// Store the aChecker scan engine under ACEngine folder which will be under the root of the
-// karma-ibma node module. i.e. /home/devans/aChecker/karma-accessibility-checker/node_modules/karma-ibma/lib/
-var ACEngineRootFolder = __dirname;
 
 /**
  * This function is responsible for downloading the accessibility-checker scan engine from a remote URL.
@@ -68,6 +63,10 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     // Process the Karma Configuration options that are needed for this module
     await ACCommon.processKarmaConfiguration(config);
+
+    // Store the aChecker scan engine under ACEngine folder
+    var ACEngineRootFolder = config.client.ACConfig.cacheFolder;
+    var ACPackageRootFolder = __dirname;
 
     // Extract the rule server and engine file names
     var rulePackServer = config.client.ACConfig.rulePack;
@@ -143,6 +142,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
             });
         });
 
+        fs.mkdirSync(ACEngineRootFolder, { recursive: true});
         fs.writeFileSync(ACEngineFullpath, engine);
     } else {
         ACCommon.log.debug("Skipping download of : " + engineDownloadURL);
@@ -201,7 +201,7 @@ async function ACEngineLoaderAndConfig(logger, config) {
 
     // Load in the ACWrapper into the Karma browsers, this Helper script is a script that will configure
     // the accessibility-checker Scan Engine before using/scanning any thing.
-    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACEngineRootFolder, "ACHelper.js")));
+    files.unshift(ACCommon.createKarmaFileObject(pathLib.join(ACPackageRootFolder, "ACHelper.js")));
 
     // Load a deep-diff util from a node module into the browser, so we can use a well defined diff tool
     files.unshift(ACCommon.createKarmaFileObject(pathLib.join(require.resolve('deep-diff'), '..','dist', 'deep-diff.min.js')));

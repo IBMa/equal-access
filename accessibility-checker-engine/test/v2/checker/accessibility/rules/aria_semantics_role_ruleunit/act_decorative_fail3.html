@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <body>
+        <main>
+          <div>
+            <svg role="none" aria-label="Yellow circle">
+              <circle cx="50" cy="50" r="40" fill="yellow"></circle>
+            </svg>
+					</div>
+        </main>
+        <script>
+            UnitTest = {
+                ruleIds: ["aria_attribute_allowed"],
+                results: [
+                {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]/svg[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Fail_invalid_role_attr",
+            "message": "The ARIA attributes \"aria-label\" are not valid for the element <svg> with ARIA role \"none\"",
+            "messageArgs": [
+              "aria-label",
+              "svg",
+              "none"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+          ],
+      };
+        </script>
+    </body>
+</html>
