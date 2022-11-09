@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
 
 export let text_spacing_valid: Rule = {
     id: "text_spacing_valid",
@@ -46,35 +47,59 @@ export let text_spacing_valid: Rule = {
     }],
     act:['9e45ec', '24afc2'],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
+        let nodeName = ruleContext.nodeName.toLowerCase();
 
         //skip the check if the element is hidden or disabled
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
 
-        let passed = true;
-        let walkNode = ruleContext.firstChild as Node;
-        while (passed && walkNode) {
-            // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
-            // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
-            // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
-            // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
-            // if.
-            if (walkNode.nodeName == "#text") {
-                let txtVal = walkNode.nodeValue;
-                passed = !(/(^|\s)[a-zA-Z] [a-zA-Z] [a-zA-Z]($|\s)/.test(txtVal));
+        // Ensure that this element has children with actual text.
+        let childStr = "";
+        let childNodes = ruleContext.childNodes;
+        for (let i = 0; i < childNodes.length; ++i) {
+            if (childNodes[i].nodeType == 3) {
+                childStr += childNodes[i].nodeValue;
             }
-            walkNode = walkNode.nextSibling;
+        }
+        if (childStr.trim().length == 0)
+            return null;
+
+        const font_size_style = getComputedStyle(ruleContext).getPropertyValue('font-size');
+        var font_size = parseFloat(font_size_style); 
+        console.log("node=" + nodeName + ", font size= " + font_size);
+        const styles = getDefinedStyles(ruleContext);
+        if (Object.keys(styles).length === 0)
+            return null;
+        
+        let ret = [];    
+        const word_style = styles['word-spacing'];
+
+        //CSS units is a requirement for non-zero values, otherwise it's ignored
+        if (word_style) {
+            const wordStyle = parseInt(word_style);
+            if (wordStyle !== NaN && wordStyle/font_size < 0.16)
+                ret.push(RulePotential("potential_word_spacing_style"));
         }
 
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
+        const letter_style = styles['letter-spacing'];
+        if (letter_style) {
+            const letterStyle = parseInt(letter_style);
+            if (letterStyle !== NaN && letterStyle/font_size < 0.12)
+                ret.push(RulePotential("potential_letter_spacing_style"));
         }
-        if (passed) return RulePass("Pass_0");
-        if (!passed) return RulePotential("Potential_1");
 
-    }
+        const line_style = styles['line-height'];
+        if (line_style) {
+            const lineStyle = parseInt(line_style);
+            if (lineStyle !== NaN && lineStyle/font_size < 1.5)
+                ret.push(RulePotential("potential_line_spacing_style"));
+        }
+        console.log("node=" + nodeName + ", font size= " + font_size + ", word spacing= " + word_style + ", letter spacing= " + letter_style + ", line height= " + line_style + ", styles= " + JSON.stringify(styles));
+                
+
+        if (ret.length > 0) 
+            return ret;
+        return null; 
+    }    
 }
