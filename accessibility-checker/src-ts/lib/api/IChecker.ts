@@ -69,6 +69,12 @@ export interface IConfig {
     baselineFolder?: string
 
     /**
+     * (optional) Where the tool can read/write cached files (ace-node.js / archive.json)
+     * Default: `${os.tmpdir()}/accessibility-checker/`
+     */
+    cacheFolder?: string,
+
+    /**
      * (optional) For tools that scan files, which extensions should we include
      * Default: ["html", "htm", "svg"]
      */

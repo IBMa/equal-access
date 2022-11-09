@@ -20,6 +20,7 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
+const { tmpdir } = require('os');
 var pathLib = require('path');
 
 // Used to specify all the constant
@@ -57,6 +58,9 @@ var constants = {
 
     // Specify default location where the baselines should be saved
     baselineFolder: "baselines",
+
+    // Default cache folder (for ace-node.js / archives.json)
+    cacheFolder: `${tmpdir()}/accessibility-checker/`,
 
     // Specify default value if Hidden content be scanned or not.
     checkHiddenContent: false,

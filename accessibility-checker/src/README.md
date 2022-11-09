@@ -119,6 +119,10 @@ outputFolder: results
 # optional - Where the baseline results should be loaded from
 # Default: baselines
 baselineFolder: test/baselines
+
+# optional - Where the tool can read/write cached files (ace-node.js / archive.json)
+# Default: `${os.tmpdir()}/accessibility-checker/`
+cacheFolder: /tmp/accessibility-checker
 ```
 
 A similar `aceconfig.js` file can also be used:
@@ -140,6 +144,7 @@ module.exports = {
     label: [process.env.TRAVIS_BRANCH],
     outputFolder: "results",
     baselineFolder: "test/baselines",
+    cacheFolder: "/tmp/accessibility-checker"
 };
 ```
 

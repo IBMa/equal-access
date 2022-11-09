@@ -121,10 +121,6 @@
             "launcher:ChromeCustom": [
                 "factory",
                 null
-            ],
-            "launcher:PhantomJSCustom": [
-                "factory",
-                null
             ]
         }
     ],
@@ -246,14 +242,6 @@
             "flags": [
                 "--disable-web-security"
             ]
-        },
-        "PhantomJSCustom": {
-            "base": "PhantomJS",
-            "options": {
-                "settings": {
-                    "webSecurityEnabled": false
-                }
-            }
         }
     },
     "ACProfile": false,
