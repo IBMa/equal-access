@@ -152,3 +152,37 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         return definedStylePseudo;
     }
 }
+
+/**
+ * Convert absolute CSS numerical values to pixels.
+ *
+ * @param unitValue in string
+ * @param target element.
+ * @return value in pixels
+ */
+ export function convertUnit2Px(unit, unitValue, elem ) {
+
+    const supportedUnits = {
+
+        // absolute unit
+        'px': value => value,
+        'cm': value => value * 37.8,
+        'mm': value => value * 3.78,
+        'q': value => value * 0.95,
+        'in': value => value * 96,
+        'pc': value => value * 16,
+        'pt': value => value * 1.33,
+        
+        // relative unit
+        'rem': value => value * parseFloat( getComputedStyle(elem.ownerDocument.documentElement).getPropertyValue('font-size') ),
+        'em': value => value * parseFloat( getComputedStyle(elem).getPropertyValue('font-size') ),
+        'vw': value => value / 100 * elem.ownerDocument.defaultView.innerWidth,
+        'vh': value => value / 100 * elem.ownerDocument.defaultView.innerHeight
+    };
+
+    if ( unit in supportedUnits )
+        return supportedUnits[ unit ]( unitValue );
+    
+    return null;
+
+}

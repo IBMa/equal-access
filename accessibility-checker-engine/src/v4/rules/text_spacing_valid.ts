@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
+import { getDefinedStyles, getComputedStyle, convertUnit2Px } from "../util/CSSUtil";
 
 export let text_spacing_valid: Rule = {
     id: "text_spacing_valid",
@@ -26,8 +26,7 @@ export let text_spacing_valid: Rule = {
             "group": "text_spacing_valid.html",
             "potential_letter_spacing_style": "text_spacing_valid.html",
             "potential_word_spacing_style": "text_spacing_valid.html",
-            "potential_line_spacing_style": "text_spacing_valid.html",
-            "potential_paragraph_spacing_style": "text_spacing_valid.html"
+            "potential_line_height_style": "text_spacing_valid.html"
         }
     },
     messages: {
@@ -36,7 +35,7 @@ export let text_spacing_valid: Rule = {
             "group": "Use CSS to control letter or word spacing",
             "potential_letter_spacing_style": "Use CSS 'letter-spacing' to control spacing within a word",
             "potential_word_spacing_style": "Use CSS 'word-spacing' to control spacing between words",
-            "potential_line_spacing_style": "Use CSS 'line-spacing' to control spacing between lines"
+            "potential_line_height_style": "Use CSS 'line-spacing' to control spacing between lines"
         }
     },
     rulesets: [{
@@ -65,41 +64,71 @@ export let text_spacing_valid: Rule = {
         if (childStr.trim().length == 0)
             return null;
 
+        //font size always resolved to 'px'    
         const font_size_style = getComputedStyle(ruleContext).getPropertyValue('font-size');
         var font_size = parseFloat(font_size_style); 
-        console.log("node=" + nodeName + ", font size= " + font_size);
+        console.log("node=" + nodeName + ", font size style= " + font_size_style + ", font size= " + font_size);
+        
         const styles = getDefinedStyles(ruleContext);
         if (Object.keys(styles).length === 0)
             return null;
         
-        let ret = [];    
+        //note that CSS unit is a requirement for non-zero values, otherwise it's ignored
+        let ret = []; 
+        // matched string: original style, the style number, and unit
+        const regex = /(-?[\d.]+)([a-z%]*)/;
         const word_style = styles['word-spacing'];
 
-        //CSS units is a requirement for non-zero values, otherwise it's ignored
         if (word_style) {
-            const wordStyle = parseInt(word_style);
-            if (wordStyle !== NaN && wordStyle/font_size < 0.16)
-                ret.push(RulePotential("potential_word_spacing_style"));
+            let parsed = word_style.trim().match(regex);
+            const wordSpacing = parseFloat(word_style);
+            // ignore 'normal', 'inherit' or other
+            if (wordSpacing !== NaN) {
+                
+                //let parsed = word_style.trim().match(/(-?[\d.]+)([a-z%]*)/);
+                //let unit = word_style.trim().substring(wordSpacing.toString().length);
+                let pixels = convertUnit2Px(parsed[2], parsed[1], ruleContext);
+                console.log("word node=" + nodeName + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels + ", important= " + ruleContext.style.getPropertyPriority('word-spacing'));
+                if (pixels != null && pixels/font_size < 0.16 && ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('word-spacing') == 'important' )
+                    ret.push(RulePotential("potential_word_spacing_style"));
+            }    
         }
 
         const letter_style = styles['letter-spacing'];
         if (letter_style) {
-            const letterStyle = parseInt(letter_style);
-            if (letterStyle !== NaN && letterStyle/font_size < 0.12)
-                ret.push(RulePotential("potential_letter_spacing_style"));
+            let parsed = letter_style.trim().match(regex);
+            const letterSpacing = parseFloat(letter_style);
+            // ignore 'normal', 'inherit' or other
+            if (letterSpacing !== NaN) {
+                //the first part is number, and the second part is unit
+                //let parsed = word_style.trim().match(/(-?[\d.]+)([a-z%]*)/);
+                let unit = letter_style.trim().substring(letterSpacing.toString().length);
+                let pixels = convertUnit2Px(parsed[2], parsed[1], ruleContext);
+                console.log("letter node=" + nodeName + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels + ", important= " + ruleContext.style.getPropertyPriority('letter-spacing'));
+                if (pixels != null && pixels/font_size < 0.12 && ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('letter-spacing') == 'important' )
+                    ret.push(RulePotential("potential_letter_spacing_style"));
+            }
         }
 
         const line_style = styles['line-height'];
         if (line_style) {
-            const lineStyle = parseInt(line_style);
-            if (lineStyle !== NaN && lineStyle/font_size < 1.5)
-                ret.push(RulePotential("potential_line_spacing_style"));
+            let parsed = line_style.trim().match(regex);
+            const lineHeight = parseFloat(line_style);
+            // ignore 'normal', 'inherit' or other
+            if (lineHeight !== NaN) {
+                //the first part is number, and the second part is unit
+                //let parsed = word_style.trim().match(/(-?[\d.]+)([a-z%]*)/);
+                let unit = line_style.trim().substring(lineHeight.toString().length);
+                let pixels = convertUnit2Px(parsed[2], parsed[1], ruleContext);
+                console.log("line node=" + nodeName + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels + ", important= " + ruleContext.style.getPropertyPriority('line-height'));
+                if (pixels != null && pixels/font_size < 1.5 && ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('line-height') == 'important' )
+                    ret.push(RulePotential("potential_line_height_style"));
+            } 
         }
         console.log("node=" + nodeName + ", font size= " + font_size + ", word spacing= " + word_style + ", letter spacing= " + letter_style + ", line height= " + line_style + ", styles= " + JSON.stringify(styles));
-                
-
+         
         if (ret.length > 0) 
             return ret;
-        return null; 
+        return RulePass("pass"); 
     }    
 }
