@@ -42,7 +42,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: [],
+    act: ["afw4f7"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         let nodeName = ruleContext.nodeName.toLowerCase();
