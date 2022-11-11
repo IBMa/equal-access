@@ -7,14 +7,29 @@
 <title>word spacing</title>
 </head>
 <body role="main" id="ko2ru00253">
-    <p style="word-spacing: 0.1em !important; letter-spacing: 0.2em !important; line-height: 0.3em !important">
+    <p style="word-spacing: 0.1em !important;">
       The toy brought back fond memories of being lost in the rain forest.
     </p>
     <script type="text/javascript">
       UnitTest = {
           ruleIds: ["text_spacing_valid"],
           results: [
-
+          {
+            "ruleId": "text_spacing_valid",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "potential_word_spacing_style",
+            "message": "Use CSS 'word-spacing' to control spacing between words",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
           ]
       }
   </script>

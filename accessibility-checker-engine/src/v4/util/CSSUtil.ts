@@ -160,7 +160,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
  * @param target element.
  * @return value in pixels
  */
- export function convertUnit2Px(unit, unitValue, elem ) {
+ export function convertValue2Pixels(unit, unitValue, elem ) {
 
     const supportedUnits = {
 
