@@ -175,9 +175,10 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         
         // relative unit
         'rem': value => value * parseFloat( getComputedStyle(elem.ownerDocument.documentElement).getPropertyValue('font-size') ),
-        'em': value => value * parseFloat( getComputedStyle(elem).getPropertyValue('font-size') ),
+        'em': value => value * parseFloat( getComputedStyle(elem).getPropertyValue('font-size')),
         'vw': value => value / 100 * elem.ownerDocument.defaultView.innerWidth,
-        'vh': value => value / 100 * elem.ownerDocument.defaultView.innerHeight
+        'vh': value => value / 100 * elem.ownerDocument.defaultView.innerHeight,
+        '%':  value => value / 100 * parseFloat( getComputedStyle(elem).getPropertyValue('font-size'))
     };
 
     if ( unit in supportedUnits )

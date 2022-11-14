@@ -1219,6 +1219,32 @@ export class RPTUtil {
     }
 
     /**
+     * return the ancestor with the given style properties.
+     *
+     * @parm {element} element - The element to start the node walk on to find parent node
+     * @parm {[string]} styleProps - The style properties and values of the parent to search for.
+     *         such as {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll']}
+     * @return {node} walkNode - A parent node of the element, which has the style properties
+     * @memberOf RPTUtil
+     */
+     public static getAncestorWithStyles(elem, styleProps) {
+        const doc = elem.ownerDocument;
+        const win = doc.defaultView;
+        
+        let walkNode = elem;
+        while (walkNode !== null) {
+            const styles = win.getComputedStyle(elem); 
+            for (const style in styleProps.length) { 
+                let value = styles.getPropertyValue(style);  
+                if (value && styleProps[style].includes(value))
+                     return walkNode;
+            }
+            walkNode = DOMWalker.parentNode(walkNode);
+        }
+        return null;
+    }
+
+    /**
      * This function is responsible for finding a node which matches the role and is a sibling of the
      * provided element.
      *

@@ -19,7 +19,22 @@
       UnitTest = {
           ruleIds: ["text_spacing_valid"],
           results: [
-
+          {
+            "ruleId": "text_spacing_valid",
+            "value": [
+              "INFORMATION",
+              "POTENTIAL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "potential_letter_spacing_style",
+            "message": "Use CSS 'letter-spacing' to control letter spacing within a word",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
           ]
       }
   </script>
