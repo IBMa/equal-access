@@ -7,9 +7,9 @@
 <title>word spacing</title>
 </head>
 <body role="main" id="ko2ru00253">
-  <p style="line-height: 1.2em; max-width: 200px;">
-    The toy brought back fond memories of being lost in the rain forest.
-  </p>
+    <p style="word-spacing: 0 !important">
+      The toy brought back fond memories of being lost in the rain forest.
+    </p>
     <script type="text/javascript">
       UnitTest = {
           ruleIds: ["text_spacing_valid"],
@@ -18,18 +18,18 @@
             "ruleId": "text_spacing_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/p[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "pass",
-            "message": "CSS is not used to control letter or word spacing or line height",
+            "reasonId": "potential_word_spacing_style",
+            "message": "Use CSS 'word-spacing' to control spacing between words",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
-          }  
+          }
           ]
       }
   </script>

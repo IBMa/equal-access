@@ -7,7 +7,7 @@
 <title>word spacing</title>
 </head>
 <body role="main" id="ko2ru00253">
-  <p style="line-height: 1.2em; max-width: 200px;">
+  <p style="line-height: 0 !important; max-width: 200px;">
     The toy brought back fond memories of being lost in the rain forest.
   </p>
     <script type="text/javascript">
@@ -18,14 +18,14 @@
             "ruleId": "text_spacing_valid",
             "value": [
               "INFORMATION",
-              "PASS"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/p[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "pass",
-            "message": "CSS is not used to control letter or word spacing or line height",
+            "reasonId": "potential_line_height_style",
+            "message": "Use CSS 'line-spacing' to control spacing between lines",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

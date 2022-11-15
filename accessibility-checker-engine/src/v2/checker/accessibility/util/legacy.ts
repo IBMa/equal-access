@@ -20,6 +20,7 @@ import { ARIAMapper } from "../../../aria/ARIAMapper";
 import { DOMWalker } from "../../../dom/DOMWalker";
 import { VisUtil } from "../../../dom/VisUtil";
 import { FragmentUtil } from "./fragment";
+import { getDefinedStyles } from "../../../../v4/util/CSSUtil";
 
 export class RPTUtil {
 
@@ -1228,18 +1229,15 @@ export class RPTUtil {
      * @memberOf RPTUtil
      */
      public static getAncestorWithStyles(elem, styleProps) {
-        const doc = elem.ownerDocument;
-        const win = doc.defaultView;
-        
         let walkNode = elem;
         while (walkNode !== null) {
-            const styles = win.getComputedStyle(elem); 
-            for (const style in styleProps.length) { 
-                let value = styles.getPropertyValue(style);  
+            const styles = getDefinedStyles(walkNode);
+            for (const style in styleProps) {
+                let value = styles[style];
                 if (value && styleProps[style].includes(value))
                      return walkNode;
             }
-            walkNode = DOMWalker.parentNode(walkNode);
+            walkNode = DOMWalker.parentElement(walkNode);
         }
         return null;
     }

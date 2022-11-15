@@ -128,6 +128,8 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     // Handled the stylesheets, now handle the element defined styles
     fillStyle([definedStyles, definedStylePseudo], elem.style);
 
+    /**
+     * 'initial' sets the style back to default
     for (const key in definedStyles) {
         if (definedStyles[key] === "initial") {
             delete definedStyles[key];
@@ -138,6 +140,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             delete definedStylePseudo[key];
         }
     }
+    */
 
     if (!pseudoClass) {
         // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
@@ -161,9 +164,8 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
  * @return value in pixels
  */
  export function convertValue2Pixels(unit, unitValue, elem ) {
-
+    if (unitValue == 0) return 0;
     const supportedUnits = {
-
         // absolute unit
         'px': value => value,
         'cm': value => value * 37.8,

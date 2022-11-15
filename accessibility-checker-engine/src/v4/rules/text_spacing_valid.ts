@@ -78,81 +78,97 @@ export let text_spacing_valid: Rule = {
         //font size always resolved to 'px'    
         const font_size_style = getComputedStyle(ruleContext).getPropertyValue('font-size');
         var font_size = parseFloat(font_size_style); 
-        //console.log("node=" + nodeName + ", font size style= " + font_size_style + ", font size= " + font_size);
         
         const styles = getDefinedStyles(ruleContext);
-        console.log("defined style node=" + nodeName +", style length=" + ruleContext.style.length + ", priority=" + ruleContext.style.getPropertyPriority('word-spacing'));
         if (Object.keys(styles).length === 0)
             return null;
         
-        let implicable = false; 
         //note that CSS unit is a requirement for non-zero values, otherwise it's ignored
         let ret = []; 
-        // matched string: original style, the style number, and unit
+        // matched string: original style, the style value and unit
         const regex = /(-?[\d.]+)([a-z%]*)/;
-        if (ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('word-spacing') === 'important') { 
-            const word_style = styles['word-spacing'];
-            if (word_style) {
+        const word_style = styles['word-spacing'];
+        if (word_style) {
+            if (ruleContext.style.getPropertyPriority('word-spacing') === 'important') { 
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (word_style === 'initial' || word_style === 'normal')
                     ret.push(RulePotential("potential_word_spacing_style"));
-                const wordSpacing = parseFloat(word_style);
-                console.log("word style node=" + nodeName + ", font size= " + font_size + ", word style= " + word_style + ", word spacing= " + wordSpacing + ", styles= " + JSON.stringify(styles));
-                if (!isNaN(wordSpacing)) {
-                    let parsed = word_style.trim().match(regex);
-                    let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                    console.log("word node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('word-spacing'));
-                    if (pixels != null && pixels/font_size < 0.16)
-                        ret.push(RulePotential("potential_word_spacing_style"));
-                }    
-            }   
-        } else
-            if (!implicable) implicable = true;
+                else {
+                    const wordSpacing = parseFloat(word_style);
+                    if (!isNaN(wordSpacing)) {
+                        let parsed = word_style.trim().match(regex);
+                        if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
+                            let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            if (pixels != null && pixels/font_size < 0.16)
+                                ret.push(RulePotential("potential_word_spacing_style"));
+                            else
+                                ret.push(RulePass("pass")); 
+                        }  
+                    } else
+                        ret.push(RulePass("pass"));         
+                } 
+            } else
+                ret.push(RulePass("pass"));  
+        } 
 
-        if (ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('letter-spacing') === 'important') {
-            const letter_style = styles['letter-spacing'];
-            if (letter_style) {
+        const letter_style = styles['letter-spacing'];
+        if (letter_style) {
+            if (ruleContext.style.getPropertyPriority('letter-spacing') === 'important') {
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (letter_style === 'initial' || letter_style === 'normal')
                     ret.push(RulePotential("potential_letter_spacing_style"));
-                const letterSpacing = parseFloat(letter_style);
-                if (!isNaN(letterSpacing)) {
-                    let parsed = letter_style.trim().match(regex);
-                    let unit = letter_style.trim().substring(letterSpacing.toString().length);
-                    let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                    console.log("letter node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('letter-spacing'));
-                    if (pixels != null && pixels/font_size < 0.12)
-                         ret.push(RulePotential("potential_letter_spacing_style"));
-                }
-            } 
-        } else
-            if (!implicable) implicable = true; 
+                else {    
+                    const letterSpacing = parseFloat(letter_style);
+                    if (!isNaN(letterSpacing)) {
+                        let parsed = letter_style.trim().match(regex);
+                        if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
+                            let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            if (pixels != null && pixels/font_size < 0.12)
+                                ret.push(RulePotential("potential_letter_spacing_style"));
+                            else
+                                ret.push(RulePass("pass"));
+                        }    
+                    } else 
+                        ret.push(RulePass("pass"));
+                }        
+            } else
+                ret.push(RulePass("pass"));
+        } 
 
-        let overflow = {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll']};
-        if (!overflow && ruleContext.style.getPropertyPriority && ruleContext.style.getPropertyPriority('line-height') === 'important') {
-            const line_style = styles['line-height'];
-            if (line_style) {
+        const line_style = styles['line-height'];
+        let overflow = {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll'], "overflow-y":['auto', 'scroll']};
+        if (line_style && RPTUtil.getAncestorWithStyles(ruleContext, overflow) === null) {
+            if (ruleContext.style.getPropertyPriority('line-height') === 'important') {
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (line_style === 'initial' || line_style === 'normal')
                     ret.push(RulePotential("potential_line_height_style"));
-                const lineHeight = parseFloat(line_style);
-                if (!isNaN(lineHeight)) {
-                    let parsed = line_style.trim().match(regex);
-                    let unit = line_style.trim().substring(lineHeight.toString().length);
-                    let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                    console.log("line node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('line-height'));
-                    if (pixels != null && pixels/font_size < 1.5)
-                        ret.push(RulePotential("potential_line_height_style"));
-                } 
-            }  
-        } else
-            if (!implicable) implicable = true;
+                else {    
+                    const lineHeight = parseFloat(line_style);
+                    if (!isNaN(lineHeight)) {
+                        let parsed = line_style.trim().match(regex);
+                        if (parsed[2] === '') { //line-height is unitless
+                            if (parsed[1] < 1.5)
+                                ret.push(RulePotential("potential_line_height_style"));
+                            else
+                                ret.push(RulePass("pass"));
+                        } else {
+                            let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            if (pixels != null && pixels/font_size < 1.5)
+                                ret.push(RulePotential("potential_line_height_style"));
+                            else
+                                ret.push(RulePass("pass"));
+                        }    
+                    } else 
+                        ret.push(RulePass("pass"));
+                    }    
+            } else
+                ret.push(RulePass("pass")); 
+        } 
          
         if (ret.length > 0) 
             return ret;
-        if (implicable) 
-            return null;  //implicable
-        return RulePass("pass"); 
+       
+        return null;  //implicable or ignore
         
     }    
 }
