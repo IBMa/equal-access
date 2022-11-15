@@ -80,6 +80,7 @@ export let text_spacing_valid: Rule = {
         var font_size = parseFloat(font_size_style); 
         
         const styles = getDefinedStyles(ruleContext);
+        console.log("defined style node=" + nodeName +", defined styles=" + JSON.stringify(styles));
         if (Object.keys(styles).length === 0)
             return null;
         
@@ -87,18 +88,22 @@ export let text_spacing_valid: Rule = {
         let ret = []; 
         // matched string: original style, the style value and unit
         const regex = /(-?[\d.]+)([a-z%]*)/;
-        const word_style = styles['word-spacing'];
+        let word_style = styles['word-spacing'];console.log("word node=" + nodeName + ", font size= " + font_size + ", word_style=" + word_style);
         if (word_style) {
-            if (ruleContext.style.getPropertyPriority('word-spacing') === 'important') { 
+            if (word_style.endsWith("!important")) {
+                word_style = word_style.substring(0, word_style.length - "!important".length -1);
+                console.log("word spacing important, word_style=" + word_style);
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (word_style === 'initial' || word_style === 'normal')
                     ret.push(RulePotential("potential_word_spacing_style"));
                 else {
                     const wordSpacing = parseFloat(word_style);
+                    console.log("word style node=" + nodeName + ", font size= " + font_size + ", word style= " + word_style + ", word spacing= " + wordSpacing + ", styles= " + JSON.stringify(styles));
                     if (!isNaN(wordSpacing)) {
                         let parsed = word_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            console.log("word node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('word-spacing'));
                             if (pixels != null && pixels/font_size < 0.16)
                                 ret.push(RulePotential("potential_word_spacing_style"));
                             else
@@ -111,9 +116,11 @@ export let text_spacing_valid: Rule = {
                 ret.push(RulePass("pass"));  
         } 
 
-        const letter_style = styles['letter-spacing'];
+        let letter_style = styles['letter-spacing']; console.log("letter node=" + nodeName + ", font size= " + font_size + ", letter_style=" + letter_style);
         if (letter_style) {
-            if (ruleContext.style.getPropertyPriority('letter-spacing') === 'important') {
+            if (letter_style.endsWith("!important")) {
+                letter_style = letter_style.substring(0, letter_style.length - "!important".length -1);
+                console.log("letter spacing important, letter_style=" + letter_style);
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (letter_style === 'initial' || letter_style === 'normal')
                     ret.push(RulePotential("potential_letter_spacing_style"));
@@ -123,6 +130,7 @@ export let text_spacing_valid: Rule = {
                         let parsed = letter_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            console.log("letter node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('letter-spacing'));
                             if (pixels != null && pixels/font_size < 0.12)
                                 ret.push(RulePotential("potential_letter_spacing_style"));
                             else
@@ -135,10 +143,13 @@ export let text_spacing_valid: Rule = {
                 ret.push(RulePass("pass"));
         } 
 
-        const line_style = styles['line-height'];
+        let line_style = styles['line-height'];
         let overflow = {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll'], "overflow-y":['auto', 'scroll']};
+        console.log("line node=" + nodeName + ", overflow=" + RPTUtil.getAncestorWithStyles(ruleContext, overflow));
         if (line_style && RPTUtil.getAncestorWithStyles(ruleContext, overflow) === null) {
-            if (ruleContext.style.getPropertyPriority('line-height') === 'important') {
+            if (line_style.endsWith("!important")) {
+                line_style = line_style.substring(0, line_style.length - "!important".length -1);
+                console.log("line spacing important, line_style=" + line_style);
                 // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
                 if (line_style === 'initial' || line_style === 'normal')
                     ret.push(RulePotential("potential_line_height_style"));
@@ -153,6 +164,7 @@ export let text_spacing_valid: Rule = {
                                 ret.push(RulePass("pass"));
                         } else {
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
+                            console.log("line node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('line-height'));
                             if (pixels != null && pixels/font_size < 1.5)
                                 ret.push(RulePotential("potential_line_height_style"));
                             else

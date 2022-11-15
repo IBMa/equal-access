@@ -68,7 +68,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     let definedStyles = {}
     let definedStylePseudo = {}
 
-    function fillStyle(maps, style) {
+    function fillStyle(maps, style) { //console.log("style=" + JSON.stringify(style) +", priority=" + style.getPropertyPriority('word-spacing'));
         for (let sIndex=0; sIndex < style.length; ++sIndex) {
             if (style[sIndex] === "all" && style[style[sIndex]]) {
                 for (const map of maps) {
@@ -80,7 +80,8 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             } else {
                 const key = style[sIndex];
                 for (const map of maps) {
-                    map[key] = style[key];
+                    let priority = style.getPropertyPriority(key);
+                    map[key] = style[key] + (priority === 'important' ? " !important" : "");
                 }
             }
         }
