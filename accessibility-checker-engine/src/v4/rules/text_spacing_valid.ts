@@ -35,7 +35,7 @@ export let text_spacing_valid: Rule = {
             "group": "Use CSS to control letter or word spacing or line height",
             "potential_letter_spacing_style": "Use CSS 'letter-spacing' to control letter spacing within a word",
             "potential_word_spacing_style": "Use CSS 'word-spacing' to control spacing between words",
-            "potential_line_height_style": "Use CSS 'line-spacing' to control spacing between lines"
+            "potential_line_height_style": "Use CSS 'line-height' to control spacing between lines"
         }
     },
     rulesets: [{
@@ -84,7 +84,7 @@ export let text_spacing_valid: Rule = {
         if (Object.keys(styles).length === 0)
             return null;
         
-        //note that CSS unit is a requirement for non-zero values, otherwise it's ignored
+        //note that CSS unit is required for non-zero values, otherwise it's ignored
         let ret = []; 
         // matched string: original style, the style value and unit
         const regex = /(-?[\d.]+)([a-z%]*)/;
@@ -101,7 +101,7 @@ export let text_spacing_valid: Rule = {
                     console.log("word style node=" + nodeName + ", font size= " + font_size + ", word style= " + word_style + ", word spacing= " + wordSpacing + ", styles= " + JSON.stringify(styles));
                     if (!isNaN(wordSpacing)) {
                         let parsed = word_style.trim().match(regex);
-                        if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
+                        if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
                             console.log("word node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('word-spacing'));
                             if (pixels != null && pixels/font_size < 0.16)
@@ -128,7 +128,7 @@ export let text_spacing_valid: Rule = {
                     const letterSpacing = parseFloat(letter_style);
                     if (!isNaN(letterSpacing)) {
                         let parsed = letter_style.trim().match(regex);
-                        if (parsed[2] !== '' && parsed[1] !== 0) { //no unit which is considered as error, so implicable
+                        if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
                             console.log("letter node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('letter-spacing'));
                             if (pixels != null && pixels/font_size < 0.12)
@@ -157,7 +157,7 @@ export let text_spacing_valid: Rule = {
                     const lineHeight = parseFloat(line_style);
                     if (!isNaN(lineHeight)) {
                         let parsed = line_style.trim().match(regex);
-                        if (parsed[2] === '') { //line-height is unitless
+                        if (parsed[2] === '') { //line-height are allowed unitless when the valie is multiple (or fraction) of the font size
                             if (parsed[1] < 1.5)
                                 ret.push(RulePotential("potential_line_height_style"));
                             else

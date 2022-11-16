@@ -81,7 +81,16 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                 const key = style[sIndex];
                 for (const map of maps) {
                     let priority = style.getPropertyPriority(key);
-                    map[key] = style[key] + (priority === 'important' ? " !important" : "");
+                    if (key in map && map[key].endsWith("!important")) {
+                         if (priority === 'important')
+                            //override !important only if it is also !important
+                            map[key] = style[key] + " !important";
+                         else 
+                            //don't override !important if it is not !important
+                            continue;   
+                    } else
+                        //create/overide anyway
+                        map[key] = style[key] + (priority === 'important' ? " !important" : "");
                 }
             }
         }
