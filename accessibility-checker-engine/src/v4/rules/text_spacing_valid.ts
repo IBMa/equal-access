@@ -11,7 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleContext, RulePass, RuleFail, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
@@ -24,18 +24,18 @@ export let text_spacing_valid: Rule = {
         "en-US": {
             "pass": "text_spacing_valid.html",
             "group": "text_spacing_valid.html",
-            "potential_letter_spacing_style": "text_spacing_valid.html",
-            "potential_word_spacing_style": "text_spacing_valid.html",
-            "potential_line_height_style": "text_spacing_valid.html"
+            "fail_letter_spacing_style": "text_spacing_valid.html",
+            "fail_word_spacing_style": "text_spacing_valid.html",
+            "fail_line_height_style": "text_spacing_valid.html"
         }
     },
     messages: {
         "en-US": {
-            "pass": "CSS is not used to control letter or word spacing or line height",
-            "group": "Use CSS to control letter or word spacing or line height",
-            "potential_letter_spacing_style": "Use CSS 'letter-spacing' to control letter spacing within a word",
-            "potential_word_spacing_style": "Use CSS 'word-spacing' to control spacing between words",
-            "potential_line_height_style": "Use CSS 'line-height' to control spacing between lines"
+            "pass": "CSS !important is not used in inline style to control letter or word spacing or line height",
+            "group": "CSS !important should not be used in inline style to control letter or word spacing or line height",
+            "fail_letter_spacing_style": "CSS !important should not be used in inline ‘letter-spacing’ style",
+            "fail_word_spacing_style": "CSS !important should not be used in inline ‘word-spacing’ style",
+            "fail_line_height_style": "CSS !important should not be used in inline ‘line-height’ style"
         }
     },
     rulesets: [{
@@ -80,7 +80,6 @@ export let text_spacing_valid: Rule = {
         var font_size = parseFloat(font_size_style); 
         
         const styles = getDefinedStyles(ruleContext);
-        console.log("defined style node=" + nodeName +", defined styles=" + JSON.stringify(styles));
         if (Object.keys(styles).length === 0)
             return null;
         
@@ -88,24 +87,31 @@ export let text_spacing_valid: Rule = {
         let ret = []; 
         // matched string: original style, the style value and unit
         const regex = /(-?[\d.]+)([a-z%]*)/;
-        let word_style = styles['word-spacing'];console.log("word node=" + nodeName + ", font size= " + font_size + ", word_style=" + word_style);
+        let word_style = styles['word-spacing'];
         if (word_style) {
-            if (word_style.endsWith("!important")) {
+            if (word_style.startsWith('inherit') || word_style.startsWith('unset')) {
+                //get closet ancestor's word-spacing
+                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"word-spacing": ["*"]}, ['inherit', 'unset']);
+                if (ancestor !== null) {
+                    word_style = getDefinedStyles(ancestor)['word-spacing'];  
+                } else if (word_style.startsWith('unset')) {
+                    word_style = "initial";
+                }
+            }  
+               
+            if (ruleContext.style.getPropertyPriority("word-spacing") === 'important') {
                 word_style = word_style.substring(0, word_style.length - "!important".length -1);
-                console.log("word spacing important, word_style=" + word_style);
-                // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
+                // computed space is 0 for 'normal' or 'initial'.
                 if (word_style === 'initial' || word_style === 'normal')
-                    ret.push(RulePotential("potential_word_spacing_style"));
+                    ret.push(RuleFail("fail_word_spacing_style"));
                 else {
                     const wordSpacing = parseFloat(word_style);
-                    console.log("word style node=" + nodeName + ", font size= " + font_size + ", word style= " + word_style + ", word spacing= " + wordSpacing + ", styles= " + JSON.stringify(styles));
                     if (!isNaN(wordSpacing)) {
                         let parsed = word_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            console.log("word node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('word-spacing'));
                             if (pixels != null && pixels/font_size < 0.16)
-                                ret.push(RulePotential("potential_word_spacing_style"));
+                                ret.push(RuleFail("fail_word_spacing_style"));
                             else
                                 ret.push(RulePass("pass")); 
                         }  
@@ -116,23 +122,31 @@ export let text_spacing_valid: Rule = {
                 ret.push(RulePass("pass"));  
         } 
 
-        let letter_style = styles['letter-spacing']; console.log("letter node=" + nodeName + ", font size= " + font_size + ", letter_style=" + letter_style);
+        let letter_style = styles['letter-spacing']; 
         if (letter_style) {
-            if (letter_style.endsWith("!important")) {
+            if (letter_style.startsWith('inherit') || letter_style.startsWith('unset')) {
+                //get closet ancestor's word-spacing
+                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"letter-spacing": ["*"]}, ['inherit', 'unset']);
+                if (ancestor !== null) {
+                    letter_style = getDefinedStyles(ancestor)['letter-spacing'];  
+                } else if (letter_style.startsWith('unset')) {
+                    letter_style = "initial";
+                }
+            } 
+            
+            if (ruleContext.style.getPropertyPriority("letter-spacing") === 'important') {
                 letter_style = letter_style.substring(0, letter_style.length - "!important".length -1);
-                console.log("letter spacing important, letter_style=" + letter_style);
-                // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
+                // computed space is 0 for 'normal' or 'initial'.
                 if (letter_style === 'initial' || letter_style === 'normal')
-                    ret.push(RulePotential("potential_letter_spacing_style"));
+                    ret.push(RuleFail("fail_letter_spacing_style"));
                 else {    
                     const letterSpacing = parseFloat(letter_style);
                     if (!isNaN(letterSpacing)) {
                         let parsed = letter_style.trim().match(regex);
                         if (parsed[2] !== '' && parsed[1] !== 0) { //no zero value without unit which is considered as error, so implicable
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            console.log("letter node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('letter-spacing'));
                             if (pixels != null && pixels/font_size < 0.12)
-                                ret.push(RulePotential("potential_letter_spacing_style"));
+                                ret.push(RuleFail("fail_letter_spacing_style"));
                             else
                                 ret.push(RulePass("pass"));
                         }    
@@ -145,28 +159,36 @@ export let text_spacing_valid: Rule = {
 
         let line_style = styles['line-height'];
         let overflow = {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll'], "overflow-y":['auto', 'scroll']};
-        console.log("line node=" + nodeName + ", overflow=" + RPTUtil.getAncestorWithStyles(ruleContext, overflow));
         if (line_style && RPTUtil.getAncestorWithStyles(ruleContext, overflow) === null) {
-            if (line_style.endsWith("!important")) {
+            if (line_style.startsWith('inherit') || line_style.startsWith('unset')) {
+                //get closet ancestor's word-spacing
+                let ancestor = RPTUtil.getAncestorWithStyles(ruleContext.parentElement, {"line-height": ["*"]}, ['inherit', 'unset']);
+                if (ancestor !== null) {
+                    line_style = getDefinedStyles(ancestor)['line-height'];  
+                } else if (line_style.startsWith('unset')) {
+                    line_style = "initial";
+                }
+            }
+            
+            if (ruleContext.style.getPropertyPriority("line-height") === 'important') {
                 line_style = line_style.substring(0, line_style.length - "!important".length -1);
-                console.log("line spacing important, line_style=" + line_style);
-                // computed space is 0 for 'normal' or 'initial'. The 'inherit' will be checked in the parents
+                
+                // computed space is 0 for 'normal' or 'initial'.
                 if (line_style === 'initial' || line_style === 'normal')
-                    ret.push(RulePotential("potential_line_height_style"));
-                else {    
+                    ret.push(RuleFail("fail_line_height_style"));
+                else {  
                     const lineHeight = parseFloat(line_style);
                     if (!isNaN(lineHeight)) {
                         let parsed = line_style.trim().match(regex);
                         if (parsed[2] === '') { //line-height are allowed unitless when the valie is multiple (or fraction) of the font size
                             if (parsed[1] < 1.5)
-                                ret.push(RulePotential("potential_line_height_style"));
+                                ret.push(RuleFail("fail_line_height_style"));
                             else
                                 ret.push(RulePass("pass"));
                         } else {
                             let pixels = convertValue2Pixels(parsed[2], parsed[1], ruleContext);
-                            console.log("line node=" + nodeName + ", font size= " + font_size + ", parsed= " + parsed + ", unit= " + parsed[2] + ", value= " + parsed[1] + ", pixels= " + pixels +", ratio= " + pixels/font_size + ", important= " + ruleContext.style.getPropertyPriority('line-height'));
                             if (pixels != null && pixels/font_size < 1.5)
-                                ret.push(RulePotential("potential_line_height_style"));
+                                ret.push(RuleFail("fail_line_height_style"));
                             else
                                 ret.push(RulePass("pass"));
                         }    

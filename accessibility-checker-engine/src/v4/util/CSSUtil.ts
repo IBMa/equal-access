@@ -68,7 +68,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     let definedStyles = {}
     let definedStylePseudo = {}
 
-    function fillStyle(maps, style) { //console.log("style=" + JSON.stringify(style) +", priority=" + style.getPropertyPriority('word-spacing'));
+    function fillStyle(maps, style) {
         for (let sIndex=0; sIndex < style.length; ++sIndex) {
             if (style[sIndex] === "all" && style[style[sIndex]]) {
                 for (const map of maps) {
@@ -82,7 +82,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                 for (const map of maps) {
                     let priority = style.getPropertyPriority(key);
                     if (key in map && map[key].endsWith("!important")) {
-                         if (priority === 'important')
+                         if (priority === 'important' && !map[key].startsWith("inherit") && !map[key].startsWith("unset"))
                             //override !important only if it is also !important
                             map[key] = style[key] + " !important";
                          else 
@@ -197,5 +197,6 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         return supportedUnits[ unit ]( unitValue );
     
     return null;
-
 }
+
+

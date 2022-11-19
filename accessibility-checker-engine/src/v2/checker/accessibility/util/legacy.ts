@@ -1225,17 +1225,26 @@ export class RPTUtil {
      * @parm {element} element - The element to start the node walk on to find parent node
      * @parm {[string]} styleProps - The style properties and values of the parent to search for.
      *         such as {"overflow":['auto', 'scroll'], "overflow-x":['auto', 'scroll']}
+     *          or {"overflow":['*'], "overflow-x":['*']}, The '*' for any value to check the existence of the style prop.
+     * @parm {bool} excludedValues - style values that should be ignored.
      * @return {node} walkNode - A parent node of the element, which has the style properties
      * @memberOf RPTUtil
      */
-     public static getAncestorWithStyles(elem, styleProps) {
+     public static getAncestorWithStyles(elem, styleProps, excludedValues =[]) {
         let walkNode = elem;
         while (walkNode !== null) {
             const styles = getDefinedStyles(walkNode);
             for (const style in styleProps) {
                 let value = styles[style];
-                if (value && styleProps[style].includes(value))
-                     return walkNode;
+                if (value) {
+                    value = value.split(" ")[0]; //get rid of !important
+                    if (!excludedValues.includes(value)) {
+                        if (styleProps[style].includes('*')) {
+                            return walkNode;
+                        } else if (styleProps[style].includes(value))
+                            return walkNode;
+                    }    
+                }  
             }
             walkNode = DOMWalker.parentElement(walkNode);
         }
