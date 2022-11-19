@@ -2,7 +2,7 @@
 
 ## Overview
 
-`accessibility-checker-engine` is a DOM, rule-based engine for detecting issues in web applications. The engine should not be used by the [IBM Equal Access Accessibility Checker](https://www.ibm.com/able/toolkit/tools#develop) suite of tools. The rules and engine are fully written in JavaScript and can be injected directly into web pages and applications.
+`accessibility-checker-engine` is a DOM, rule-based engine for detecting issues in web applications. The engine is used by the [IBM Equal Access Accessibility Checker](https://www.ibm.com/able/toolkit/tools#develop) suite of tools. The rules and engine are fully written in JavaScript and can be injected directly into web pages and applications.
 
 ## Get the engine
 
