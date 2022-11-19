@@ -28,7 +28,7 @@ export let WCAG20_Text_LetterSpacing: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Potential_1": "Verify space characters are not being used to create space between the letters of a word",
+            "Potential_1": "Verify space characters should not be used to create space between the letters of a word",
             "group": "CSS 'letter-spacing' should not be used to control spacing within a word"
         }
     },

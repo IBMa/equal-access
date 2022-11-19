@@ -202,7 +202,7 @@ describe("Rule Unit Tests", function() {
             continue;
         }
 
-        // This function should not be used to execute for each of the unitTestFiles, we have to use this type of function
+        // This function is used to execute for each of the unitTestFiles, we have to use this type of function
         // to allow dynamic creation/execution of the Unit Testcases. This is like forcing an syncronous execution
         // for the testcases. Which is needed to make sure that all the tests run in the same order.
         // For now we do not need to consider threaded execution because over all theses testscases will take at
@@ -224,7 +224,7 @@ describe("Rule Unit Tests", function() {
                 });
 
                 // The Individual testcase for each of the unittestcases.
-                // Note the done that is passed in, this should not be used to wait for asyn functions.
+                // Note the done that is passed in, this is used to wait for asyn functions.
                 it('a11y scan should match expected value', async function() {
 
                     // Extract the unitTestcase data file from the unitTestcase hash map.

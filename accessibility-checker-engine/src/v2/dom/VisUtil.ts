@@ -18,7 +18,7 @@ import { DOMWalker } from "./DOMWalker";
 export class VisUtil {
     // This list contains a list of element tags which can not be hidden, when hidden is
     // added to theses elements it does not do anything at all.
-    //  area --> area element is part of a map element and it can not be hidden because it should not be used to
+    //  area --> area element is part of a map element and it can not be hidden because it is used to
     //           make an certian parts of an map interactive.
     //  param --> element can only be part of object elment and it cannot be hidden directly, it
     //            can only be hidden if the parent is hidden.
@@ -119,7 +119,7 @@ export class VisUtil {
         // in the case that the element is part of the unhideableElements array then we do not run the hidden check on this element,
         // and go stright to the parent node.
         // Array check elements like:
-        //  area --> area element is part of a map element and it can not be hidden because it should not be used to
+        //  area --> area element is part of a map element and it can not be hidden because it is used to
         //           make an certian parts of an map interactive.
         //  param --> element can only be part of object elment and it cannot be hidden directly, it
         //            can only be hidden if the parent is hidden.
