@@ -1229,6 +1229,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
@@ -1275,6 +1276,7 @@ export class ARIADefinitions {
             reqChildren: null,
             htmlEquiv: null,
             roleType: "structure",
+            prohibitedProps: ["aria-label", "aria-labelledby"],
             deprecatedProps: ['aria-disabled', 'aria-errormessage', 'aria-haspopup', 'aria-invalid'] 
         },
 
