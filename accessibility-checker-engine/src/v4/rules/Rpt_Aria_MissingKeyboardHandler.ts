@@ -22,15 +22,15 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
-            "Pass_0": "Rpt_Aria_MissingKeyboardHandler.html",
-            "Potential_1": "Rpt_Aria_MissingKeyboardHandler.html",
+            "pass": "Rpt_Aria_MissingKeyboardHandler.html",
+            "potential_no_keyboard_access": "Rpt_Aria_MissingKeyboardHandler.html",
             "group": "Rpt_Aria_MissingKeyboardHandler.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Verify the <{0}> element with \"{1}\" role has keyboard access",
+            "pass": "Rule Passed",
+            "potential_no_keyboard_access": "Verify the <{0}> element with \"{1}\" role has keyboard access",
             "group": "Interactive WAI_ARIA UI components must provide keyboard access"
         }
     },
@@ -103,24 +103,18 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                                                     continue;
                                                 }
 
-                                                passed = RPTUtil.tabIndexLEZero(r2) &&
+                                                passed = RPTUtil.isTabbable(r2) &&
                                                     (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                                 if (!passed) {
-
-                                                    // No tabindex focusable element found with a key handler.  See if an element focusable by default has a handler.
-                                                    if (RPTUtil.isfocusableByDefault(r2)) {
-                                                        passed = (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
-
                                                         // Is this an action link?
                                                         if (r2.nodeName.toLowerCase() == "a" && r2.hasAttribute("href")) {
                                                             let href = r2.getAttribute("href");
-
+                                                    
                                                             // Action link must start with "javascript:", must not contain a "void" and
                                                             // must have a function name following "javascript:" (i.e., href.length > 11)
                                                             passed = (href.startsWith("javascript:") && href.indexOf("void") == -1 && href.length > 11);
                                                         }
-                                                    }
                                                 }
                                                 r2 = xpathResult2.iterateNext() as Element;
                                             }
@@ -153,23 +147,17 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                                         continue;
                                     }
 
-                                    passed = RPTUtil.tabIndexLEZero(r2) &&
+                                    passed = RPTUtil.isTabbable(r2) &&
                                         (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
 
                                     if (!passed) {
+                                        // Is this an action link?
+                                        if (r2.nodeName.toLowerCase() == "a" && r2.hasAttribute("href")) {
+                                            let href = r2.getAttribute("href");
 
-                                        // No tabindex focusable element found with a key handler.  See if an element focusable by default has a handler.
-                                        if (RPTUtil.isfocusableByDefault(r2)) {
-                                            passed = (r2.hasAttribute("onkeydown") || r2.hasAttribute("onkeypress"));
-
-                                            // Is this an action link?
-                                            if (r2.nodeName.toLowerCase() == "a" && r2.hasAttribute("href")) {
-                                                let href = r2.getAttribute("href");
-
-                                                // Action link must start with "javascript:", must not contain a "void" and
-                                                // must have a function name following "javascript:" (i.e., href.length > 11)
-                                                passed = (href.startsWith("javascript:") && href.indexOf("void") == -1 && href.length > 11);
-                                            }
+                                            // Action link must start with "javascript:", must not contain a "void" and
+                                            // must have a function name following "javascript:" (i.e., href.length > 11)
+                                            passed = (href.startsWith("javascript:") && href.indexOf("void") == -1 && href.length > 11);
                                         }
                                     }
                                     r2 = xpathResult2.iterateNext() as Element;
@@ -202,6 +190,6 @@ export let Rpt_Aria_MissingKeyboardHandler: Rule = {
                 return null;
             }
         }
-        return savedPassed ? RulePass("Pass_0") : RulePotential("Potential_1", [retToken1.toString(), retToken2.toString()]);
+        return savedPassed ? RulePass("pass") : RulePotential("potential_no_keyboard_access", [retToken1.toString(), retToken2.toString()]);
     }
 }

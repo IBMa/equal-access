@@ -138,7 +138,7 @@ describe("JSON Structure Verification Selenium", function () {
                                 // Make sure that the structure of the result match with expected structure
                                 // Fetch the baseline object based on the label provided
                                 var expected = aChecker.getBaseline(labelName);
-
+                                
                                 // Define the differences with some content as we expect it to be null or undefined if pass
                                 var differences = "Something";
 
@@ -178,7 +178,7 @@ describe("JSON Structure Verification Selenium", function () {
                                         if (pc !== 0) return pc;
                                         return b.ruleId.localeCompare(a.ruleId);
                                     })
-
+                                    //console.log("report= " + JSON.stringify(report));
                                     // Run the diff algo to get the list of differences
                                     differences = aChecker.diffResultsWithExpected(report, expected, false);
                                 }

@@ -12,31 +12,11 @@ const path = require("path");
 let loadOnce = null;
 let ace;
 
-const myrequest = (url) => {
-    if (typeof cy !== "undefined") {
-        return cy.request(url)
-            .then((data) => {
-                return data.body;
-            })
-    } else {
-        return new Promise((resolve, reject) => {
-            const request = require("request");
-            request.get(url, function (error, response, body) {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(JSON.parse(body));
-                }
-            });
-        });
-    }
-}
-
 let loggerFunction = function (output) {
     ACTasks.DEBUG && console.log(output);
 };
 
-let loggerCreate = function (type) {
+let loggerCreate = function () {
     return logger;
 };
 
@@ -177,7 +157,7 @@ let ACTasks = module.exports = {
      *
      * @return N/A - This function will not return any thing, as it is full async
      */
-    loadEngine: (content) => {
+    loadEngine: () => {
         ACTasks.DEBUG && console.log("START 'aChecker.loadEngine' function");
 
         if (typeof cy === "undefined") {
@@ -202,21 +182,18 @@ let ACTasks = module.exports = {
                             console.log("Cannot read: " + ACTasks.Config.rulePack + "/ace-node.js");
                         }
                         data = data.body;
-                        let engineDir = path.join(__dirname, "engine");
+                        let engineDir = path.join(config.cacheFolder, "engine");
                         if (!fs.existsSync(engineDir)) {
-                            fs.mkdirSync(engineDir);
+                            fs.mkdirSync(engineDir, { recursive: true });
                         }
-                        let cacheDir = path.join(engineDir, "cache");
-                        if (!fs.existsSync(cacheDir)) {
-                            fs.mkdirSync(cacheDir);
-                        }
-                        let engineFilename = path.join(engineDir, "ace-node.js");
+                        const nodePath = path.join(engineDir, "ace-node")
+                        let engineFilename = nodePath+".js";
                         // Only write the engine if it's different - can cause Cypress to trigger a file changed watch
                         if (fs.existsSync(engineFilename)) {
                             if (fs.readFileSync(engineFilename).toString() === data) {
                                 try {
                                     err && console.log(err);
-                                    ACTasks.ace = require("./engine/ace-node");
+                                    ACTasks.ace = require(nodePath);
                                     return resolve(ACTasks.ace);
                                 } catch (e) {
                                     console.log(e);
@@ -224,10 +201,10 @@ let ACTasks = module.exports = {
                                 }
                             }
                         }
-                        fs.writeFile(path.join(engineDir, "ace-node.js"), data, function (err) {
+                        fs.writeFile(engineFilename, data, function (err) {
                             try {
                                 err && console.log(err);
-                                ACTasks.ace = require("./engine/ace-node");
+                                ACTasks.ace = require(nodePath);
                             } catch (e) {
                                 console.log(e);
                                 return reject(e);
@@ -257,13 +234,13 @@ let ACTasks = module.exports = {
     sendResultsToReporter: function (unFilteredResults, results, profile) {
         return ACTasks.initialize().then(() => {
             ACTasks.DEBUG && console.log("sendResultsToReporter:", ACTasks.Config.outputFormat);
-            if (ACTasks.Config.outputFormat.indexOf("json") != -1) {
+            if (ACTasks.Config.outputFormat.indexOf("json") !== -1) {
                 ACTasks.reporterJSON.report(results);
             }
             if (ACTasks.Config.outputFormat.includes("csv")) {
                 ACTasks.reporterCSV.report(results);
             }
-            if (ACTasks.Config.outputFormat.indexOf("html") != -1) {
+            if (ACTasks.Config.outputFormat.indexOf("html") !== -1) {
                 ACTasks.reporterHTML.report(unFilteredResults);
             }
             // Only perform the profiling if profiling was not disabled on purpose
@@ -275,7 +252,7 @@ let ACTasks = module.exports = {
         });
     },
 
-    loadBaselines: (parentDir, parResult) => ACTasks.initializeConfig().then(() => new Promise((resolve, reject) => {
+    loadBaselines: (parentDir, parResult) => ACTasks.initializeConfig().then(() => new Promise((resolve) => {
         let result = parResult || {}
         let readDirPath = path.join(process.cwd(), ACTasks.Config.baselineFolder);
         if (parentDir) {
@@ -300,7 +277,7 @@ let ACTasks = module.exports = {
                 } else if (fs.lstatSync(filePath).isDirectory()) {
                     ACTasks.loadBaselines((parentDir || "")+"/"+file, result);
                 }
-            };
+            }
             return resolve(result);
         });
     })),
@@ -511,7 +488,7 @@ let ACTasks = module.exports = {
                 // to support some browser which return it differently
                 issue.xpath = issue.xpath.replace(/\[1\]/g, "");
             }
-        };
+        }
 
         return objectToClean;
     }
