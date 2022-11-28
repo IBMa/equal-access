@@ -178,7 +178,6 @@ describe("JSON Structure Verification Selenium", function () {
                                         if (pc !== 0) return pc;
                                         return b.ruleId.localeCompare(a.ruleId);
                                     })
-                                    console.log("report= " + JSON.stringify(report));
                                     // Run the diff algo to get the list of differences
                                     differences = aChecker.diffResultsWithExpected(report, expected, false);
                                 }

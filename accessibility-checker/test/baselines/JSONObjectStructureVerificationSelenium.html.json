@@ -94,7 +94,7 @@
 			"Pass_0": "Rule Passed"
 		},
 		"WCAG20_Text_LetterSpacing": {
-			"0": "Use CSS 'letter-spacing' to control spacing within a word",
+			"0": "Sapce characters should not be used to control spacing within a word",
 			"Pass_0": "Rule Passed"
 		},
 		"aria_attribute_deprecated": {
