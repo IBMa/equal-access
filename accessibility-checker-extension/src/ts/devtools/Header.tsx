@@ -289,10 +289,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
                     <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{ display: 'flex', alignContent: 'center' }}>
-                        <Button disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
+
+                        <Button id="scanButton" style={{marginRight:"3px"}} disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
                         <Tooltip
                             align="right"
                             label="Scan options"
+
                         >
                             <OverflowMenu 
                                 className="rendered-icon svg"
