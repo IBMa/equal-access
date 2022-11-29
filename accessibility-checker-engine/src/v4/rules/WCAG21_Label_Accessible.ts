@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { getDefinedStyles } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG21_Label_Accessible: Rule = {
@@ -44,14 +45,14 @@ export let WCAG21_Label_Accessible: Rule = {
     // TODO: ACT: Review https://github.com/act-rules/act-rules.github.io/issues/1618
     act: "2ee8b8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
         if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
         let passed = true;
 
-        let nodeName = ruleContext.nodeName.toLowerCase();
+        let nodeName = ruleContext.nodeName.toLowerCase();console.log("nodeName=" + nodeName);
 
         let isInputButton = false;
         let buttonTypes = ["button", "reset", "submit"/*, "image"*/];
@@ -152,6 +153,10 @@ export let WCAG21_Label_Accessible: Rule = {
 
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
             let normalizedLabel = RPTUtil.normalizeSpacing(theLabel).toLowerCase();
+
+            // check material icon
+            let styles = getDefinedStyles(ruleContext);
+            console.log("font-family=" + styles['font-family']);
 
             if (normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);
