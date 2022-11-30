@@ -19,10 +19,14 @@
 var fs = require("fs");
 var path = require("path");
 var unitTestcaseHTML = {};
-var aChecker = require("../../../../src");
-const ace = require("../../../../../accessibility-checker-engine/dist/ace-node");
-var testRootDir = path.join(process.cwd(), "..","accessibility-checker-engine","test","v2","checker","accessibility","rules");
-var gdirs = fs.readdirSync(testRootDir);
+//Using local checker and location 
+var aChecker = require("../../src");
+//Using a checker local checker engine 
+const ace = require("../../../accessibility-checker-engine/dist/ace-node");
+//Location of tests with path so fs can read?
+const urlList = fs.readFileSync(path.join(__dirname,"listofURLs.txt")).toString();
+console.log(urlList);
+const urls = urlList.split(/[\r\n]+/);
 var expect = require("chai").expect;
 
 const mapRuleToG = aChecker.ruleIdToLegacyId;
@@ -40,7 +44,7 @@ const puppeteer = require('puppeteer');
 let browser;
 let page;
 before(async function () {
-    let config = await aChecker.getConfig();
+    let config = await aChecker.getConfig(); //where are we getting the config from? 
     browser = await puppeteer.launch({ headless: config.headless, ignoreHTTPSErrors: config.ignoreHTTPSErrors || false});
     page = await browser.newPage();
     config.policies.forEach(function (policy) {
@@ -66,29 +70,43 @@ after(async function () {
     }
 })
 
-gdirs.forEach(function (gdir) {
-    var gdir = path.join(testRootDir, gdir)
-    if (fs.lstatSync(gdir).isDirectory()) {
-        var files = fs.readdirSync(gdir);
-        files.forEach(function (f) {
-            var fileExtension = f.substr(f.lastIndexOf('.') + 1);
-            if (fileExtension === 'html' || fileExtension === 'htm') {
-                var f = path.join(gdir, f);
-                unitTestcaseHTML[f] = fs.readFileSync(f, 'utf8');
-            };
-        });
-    }
-});
-
 // Skip test cases that don't work in this environment (e.g., can't disable meta refresh in chrome)
 var skipList = [
 
     // Not in Karma Conf Skip list
     // Testcase has a script reference to a file, which traps zombie when loaded as a string
-    // path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Hidden_ruleunit", "unitTestisNodeVisible.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Hidden_ruleunit", "unitTestisNodeVisible.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "HAAC_BackgroundImg_HasTextOrTitle_ruleunit", "APassedFileWithNoImg.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Blink_CSSTrigger1_ruleunit", "TextDecoration-Blink.html"),
+    // CSS processing errors
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "HAAC_Aria_Native_Host_Semantics_ruleunit", "input_type_test.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics_ruleunit", "eventHandlerMissingRole2.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_WidgetLabels_Implicit_ruleunit", "menuItemCheckboxNoInnerText.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Style_BeforeAfter_ruleunit", "D100.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Style_ColorSemantics1_ruleunit", "D543.html"),
+    // Can't access referenced files
+    // no baseline found
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "Rpt_Aria_MultipleBannerLandmarks_Implicit_ruleunit", "validLandMarks-testCaseFromAnn.html"),
 
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Img_LinkTextNotRedundant_ruleunit", "Img-redundantLink.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_LabelAfter_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_LabelBefore_ruleunit", "Input-hasLabelBadPlacement.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Elem_EventMouseAndKey_ruleunit", "Events-invalidNoMouseRequired.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Input_ExplicitLabel_ruleunit", "D766.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_A_HasText_ruleunit", "A-nonTabable.html"),
+
+    //in karma conf file skip list
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_A_HasText_ruleunit", "A-hasTextEmbedded.html"),
+
+    // Meta refresh
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Meta_Refresh_ruleunit", "Meta-invalidRefresh.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Meta_Refresh_ruleunit", "Meta-validRefresh.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "WCAG20_Meta_RedirectZero_ruleunit", "Meta-RefreshZero.html"),
+
+    // Blank titles are removed from the DOM
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Title_Valid_ruleunit","Title-empty.html"),
+    path.join(process.cwd(), "..", "accessibility-checker-engine", "test", "v2", "checker", "accessibility", "rules", "RPT_Title_Valid_ruleunit","Title-invalidSpaces.html"),
 ]
-
 var skipMap = {}
 skipList.forEach(function (skip) {
     skipMap[skip] = true;
@@ -104,26 +122,18 @@ describe("Rule Unit Tests As File URL", function () {
     var originalTimeout;
 
     // Loop over all the unitTestcase html/htm files and perform a scan for them
-    for (var unitTestFile in unitTestcaseHTML) {
-        if (unitTestFile in skipMap) continue;
-        // Get the extension of the file we are about to scan
-        var fileExtension = unitTestFile.substr(unitTestFile.lastIndexOf('.') + 1);
-
-        // Make sure the unit testcase we are trying to scan is actually and html/htm files, if it is not
-        // just move on to the next one.
-        if (fileExtension !== 'html' && fileExtension !== 'htm' && fileExtension !== 'svg') {
-            continue;
-        }
+    for (const url of urls) {
+        if (url in skipMap) continue;
 
         // This function is used to execute for each of the unitTestFiles, we have to use this type of function
         // to allow dynamic creation/execution of the Unit Testcases. This is like forcing an syncronous execution
         // for the testcases. Which is needed to make sure that all the tests run in the same order.
         // For now we do not need to consider threaded execution because over all theses testscases will take at
         // most half 1 sec * # of testcses (500ms * 780)
-        (function (unitTestFile) {
+        (function (url) {
 
             // Description of the test case that will be run.
-            describe("Load Test: " + unitTestFile, function () {
+            describe("Load Test: " + url, function () {
 
                 // The Individual testcase for each of the unittestcases.
                 // Note the done that is passed in, this is used to wait for asyn functions.
@@ -135,13 +145,13 @@ describe("Rule Unit Tests As File URL", function () {
                     var actualMap = {};
                     let report = null;
                     let puppeteer = null;
-                    await page.goto("file://"+unitTestFile);
+                    await page.goto(url);
 
                     // Perform the accessibility scan using the IBMaScan Wrapper
-                    return aChecker.getCompliance(page, "Puppeteer_" + unitTestFile)
+                    return aChecker.getCompliance(page, "Puppeteer_" + url)
                         .then((result) => {
                             if (!result || !result.report) {
-                                try { expect(false).to.equal(true, "\nWas unable to scan: " + unitTestFile); } catch (e) { return Promise.reject(e); }
+                                try { expect(false).to.equal(true, "\nWas unable to scan: " + url); } catch (e) { return Promise.reject(e); }
                             }
                             report = result.report;
                             puppeteer = result.puppeteer;
@@ -225,6 +235,6 @@ describe("Rule Unit Tests As File URL", function () {
                         })
                 });
             });
-        }(unitTestFile));
+        }(url));
     }
 });
