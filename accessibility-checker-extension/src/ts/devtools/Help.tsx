@@ -37,6 +37,13 @@ export default class Help extends React.Component<IHelpProps, IHelpState> {
         loading: true
     };
 
+    componentDidUpdate() {
+        var button = document.getElementById('backToListView2');
+        if (button) {
+            button.focus();
+        }
+     }
+
     onHelpLoaded() {
         this.setState({loading: false});
     }
