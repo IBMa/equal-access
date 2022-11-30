@@ -544,7 +544,7 @@
                         // 2.4.3 Focus Order
                         result.ruleId === "IBMA_Focus_MultiTab" ||
                         result.ruleId === "IBMA_Focus_Tabbable" ||
-                        result.ruleID === "element_tabbable_role_valid" ||
+                        result.ruleId === "element_tabbable_role_valid" ||
                         // 2.4.7 Focus Visible
                         // result.ruleId === "RPT_Style_HinderFocus1" ||
                         result.ruleId === "WCAG20_Script_FocusBlurs" ||
