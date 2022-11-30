@@ -17,6 +17,7 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { getDefinedStyles } from "../util/CSSUtil";
+import { FontIconUtil } from "../util/FontIconUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG21_Label_Accessible: Rule = {
@@ -31,7 +32,7 @@ export let WCAG21_Label_Accessible: Rule = {
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
+            "Pass_0": "Accessible name matches or contains the visible label text",
             "Fail_1": "Accessible name does not match or contain the visible label text",
             "group": "Accessible name must match or contain the visible label text"
         }
@@ -43,6 +44,7 @@ export let WCAG21_Label_Accessible: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
     // TODO: ACT: Review https://github.com/act-rules/act-rules.github.io/issues/1618
+    // https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA24
     act: "2ee8b8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
@@ -154,11 +156,19 @@ export let WCAG21_Label_Accessible: Rule = {
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
             let normalizedLabel = RPTUtil.normalizeSpacing(theLabel).toLowerCase();
 
-            // check material icon
+            // check material icon: can be defined either by font-family: 'Material Icons' or by class="material-icons"
             let styles = getDefinedStyles(ruleContext);
-            console.log("font-family=" + styles['font-family']);
+            let fontFamily = styles['font-family'];
+            console.log("nodeName=" + nodeName +", font-family=" + fontFamily +" split=" + fontFamily.split(",")[0] +", "+ (fontFamily.split(",")[0].replace('"', '').trim() === 'Material Icons'));
+            // font-family specifies a prioritized list of one or more font family names
+            if (fontFamily && fontFamily.split(",")[0].replace('"', '').trim() === 'Material Icons') {
+                  // dertermine if the element text can be replaced by a material icon
+                  console.log("nodeName=" + nodeName +", font icons=" + FontIconUtil.getFontIcons());
+                  //if (FontIconUtil.getFontIcons().includes(normalizedText))
+                  //    passed = true; 
+            }
 
-            if (normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
+            if (!passed && normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);
 
                 // Avoid matching partial words.e.g. text "name" should not match 'surname' or 'names'
