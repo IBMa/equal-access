@@ -9,6 +9,10 @@ body {
     }
 }
 
+.cds--modal {
+    z-index: 9500 !important;
+}
+
 #options-root {
     .leftPanel {
         margin: 0rem;

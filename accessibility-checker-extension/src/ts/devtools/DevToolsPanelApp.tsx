@@ -64,6 +64,8 @@
         rulesets: IRuleset[] | null,
         selectedCheckpoint?: ICheckpoint,
         learnMore: boolean,
+        learnMoreLink: HTMLElement | null,
+        // learnMoreReturn: boolean, // true if have return from learn more Back to list view
         learnItem: IReportItem | null,
         showIssueTypeFilter: boolean[],
         scanning: boolean,  // true when scan taking place
@@ -131,6 +133,8 @@
             selectedIssue: null,
             rulesets: null,
             learnMore: false,
+            learnMoreLink: null,
+            // learnMoreReturn: false,
             learnItem: null,
             showIssueTypeFilter: [true, true, true, true],
             scanning: false,
@@ -255,10 +259,20 @@
         }
     
         async componentDidMount() {
-            // console.log("Function: componentDidMount START");
-            // console.log("this.state.tabId = ", this.state.tabId);
             await this.readOptionsData();
-            // console.log("Function: componentDidMount DONE");
+        }
+
+        componentDidUpdate(_prevProps: any, prevState: any) {
+            if (!this.state.learnMore && prevState.learnMore) {
+                // If help is closing, focus the link and clear the link
+                prevState.learnMoreLink!.focus();
+            } else {
+                // If this update wasn't from clearing the link, focus scan button
+                let button = document.getElementById('scanButton');
+                if (button) {
+                    button.focus();
+                }
+            }
         }
     
         async readOptionsData() {
@@ -530,7 +544,7 @@
                         // 2.4.3 Focus Order
                         result.ruleId === "IBMA_Focus_MultiTab" ||
                         result.ruleId === "IBMA_Focus_Tabbable" ||
-                        result.ruleID === "element_tabbable_role_valid" ||
+                        result.ruleId === "element_tabbable_role_valid" ||
                         // 2.4.7 Focus Visible
                         // result.ruleId === "RPT_Style_HinderFocus1" ||
                         result.ruleId === "WCAG20_Script_FocusBlurs" ||
@@ -1072,8 +1086,12 @@
             this.setState({ selectedIssue: item });
         }
     
-        learnHelp() {
+        learnHelpClose() {
             this.setState({ learnMore: false });
+        }
+
+        returnFromHelp(e: Element | null) {
+            this.setState({learnMoreLink: (e as HTMLElement)});
         }
     
         reportManagerHelp() {
@@ -1158,14 +1176,6 @@
     
         
         render() {
-            // console.log("render --------------");
-            // console.log("this.state.this.state.selectedArchive = ",this.state.selectedArchive);
-            // console.log("this.state.this.state.selectedPolicy = ",this.state.selectedPolicy);
-            // console.log("this.state.tabStopLines = ",this.state.tabStopLines);
-            // console.log("this.state.tabStopOutlines = ",this.state.tabStopOutlines);
-            // console.log("this.state.tabStopAlerts = ",this.state.tabStopAlerts);
-            // console.log("this.state.tabStopFirstTime = ",this.state.tabStopFirstTime);
-    
             let error = this.state.error;
     
             if (error) {
@@ -1242,7 +1252,9 @@
                     </div>
                 </React.Fragment>
             } else if (this.props.layout === "sub") {
-    
+                if (document.activeElement?.innerHTML === "Learn more") {
+                    this.returnFromHelp(document.activeElement);
+                }
                 return <React.Fragment>
                     {/* ok now need three way display for Report Manager so need reportManager state */}
                     <div style={{ display: this.state.reportManager && !this.state.learnMore && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
@@ -1263,7 +1275,7 @@
                         </ReportManagerTable>
                     </div>
                     <div style={{ display: this.state.learnMore && !this.state.reportManager && !this.state.tabStopsPanel ? "" : "none", height: "100%" }}>
-                        <HelpHeader learnHelp={this.learnHelp.bind(this)} layout={this.props.layout}></HelpHeader>
+                        <HelpHeader learnHelp={this.learnHelpClose.bind(this)} layout={this.props.layout}></HelpHeader>
                         <div style={{ overflow: "auto", height: "100%", width: "100%", boxSizing: "border-box", top: "0", position:"absolute"  }} ref={this.subPanelRef}>
                             <div style={{ marginTop: "56px", height: "calc(100% - 56px)" }}>
                                 <div style={{ height: "100%" }}>
