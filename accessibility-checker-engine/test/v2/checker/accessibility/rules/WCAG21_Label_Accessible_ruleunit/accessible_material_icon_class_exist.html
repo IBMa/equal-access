@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<i class="material-icons">cloud</i>
+<button class="material-icons" aria-label="sphere">cloud</button>
 
 </body>
 
@@ -13,22 +13,22 @@
   UnitTest = {
       ruleIds: ["WCAG21_Label_Accessible"],
       results: [
-        {
+          {
             "ruleId": "WCAG21_Label_Accessible",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "PASS"
             ],
             "path": {
               "dom": "/html[1]/body[1]/button[1]",
               "aria": "/document[1]/button[1]"
             },
-            "reasonId": "Fail_1",
-            "message": "Accessible name does not match or contain the visible label text",
+            "reasonId": "Pass_0",
+            "message": "Accessible name matches or contains the visible label text",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"
-        }
+          }
       ]
   };
 </script>

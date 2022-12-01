@@ -16,8 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { getDefinedStyles } from "../util/CSSUtil";
-import { FontIconUtil } from "../util/FontIconUtil";
+import { isMaterialIconFont } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG21_Label_Accessible: Rule = {
@@ -52,9 +51,14 @@ export let WCAG21_Label_Accessible: Rule = {
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
+
+        // pass if the visible text uses Material Icon font
+        if (isMaterialIconFont(ruleContext)) 
+            return RulePass("Pass_0");
+
         let passed = true;
 
-        let nodeName = ruleContext.nodeName.toLowerCase();console.log("nodeName=" + nodeName);
+        let nodeName = ruleContext.nodeName.toLowerCase();
 
         let isInputButton = false;
         let buttonTypes = ["button", "reset", "submit"/*, "image"*/];
@@ -156,19 +160,7 @@ export let WCAG21_Label_Accessible: Rule = {
             theLabel = theLabel.replace(nonalphanumeric, " "); // only consider alphanumeric characters
             let normalizedLabel = RPTUtil.normalizeSpacing(theLabel).toLowerCase();
 
-            // check material icon: can be defined either by font-family: 'Material Icons' or by class="material-icons"
-            let styles = getDefinedStyles(ruleContext);
-            let fontFamily = styles['font-family'];
-            console.log("nodeName=" + nodeName +", font-family=" + fontFamily +" split=" + fontFamily.split(",")[0] +", "+ (fontFamily.split(",")[0].replace('"', '').trim() === 'Material Icons'));
-            // font-family specifies a prioritized list of one or more font family names
-            if (fontFamily && fontFamily.split(",")[0].replace('"', '').trim() === 'Material Icons') {
-                  // dertermine if the element text can be replaced by a material icon
-                  console.log("nodeName=" + nodeName +", font icons=" + FontIconUtil.getFontIcons());
-                  //if (FontIconUtil.getFontIcons().includes(normalizedText))
-                  //    passed = true; 
-            }
-
-            if (!passed && normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
+            if (normalizedText.length > 1) { // skip non-text content. e.g. <button aria-label="close">X</button>
                 let location = normalizedLabel.indexOf(normalizedText);
 
                 // Avoid matching partial words.e.g. text "name" should not match 'surname' or 'names'

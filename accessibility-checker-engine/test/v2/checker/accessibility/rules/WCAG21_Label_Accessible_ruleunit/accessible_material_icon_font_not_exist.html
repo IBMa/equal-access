@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<title>Flag a violation if Accessible name does not match or contain the visible label text</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!--link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" /-->
     <style>
       button {
         font-family: 'Material Icons, series';
@@ -11,28 +11,28 @@
 	</head>
 	<body>
 		
-<button aria-label="Find">123search1234</button>
+<button aria-label="Find">search</button>
 
 <script>
   UnitTest = {
       ruleIds: ["WCAG21_Label_Accessible"],
       results: [
       {
-      "ruleId": "WCAG21_Label_Accessible",
-      "value": [
-        "INFORMATION",
-        "PASS"
-      ],
-      "path": {
-        "dom": "/html[1]/body[1]/div[1]",
-        "aria": "/document[1]/listbox[1]"
-      },
-      "reasonId": "Pass",
-      "message": "An element with a ARIA role owns a required child",
-      "messageArgs": [],
-      "apiArgs": [],
-      "category": "Accessibility"
-    }
+            "ruleId": "WCAG21_Label_Accessible",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Accessible name does not match or contain the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
       ]
   };
 </script>
