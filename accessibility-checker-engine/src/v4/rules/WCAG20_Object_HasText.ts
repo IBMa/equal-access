@@ -29,8 +29,8 @@ export let WCAG20_Object_HasText: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "<object> elements must have a text alternative for the content rendered by the object",
-            "Pass_0": "Rule Passed",
+            "group": "<object> element must have a text alternative for the content rendered by the object",
+            "Pass_0": "<object> element has a text alternative",
             "Fail_1": "An <object> element does not have a text alternative"
         }
     },
@@ -45,17 +45,16 @@ export let WCAG20_Object_HasText: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        // JCH - NO OUT OF SCOPE hidden in context
-
+        
         // Detect if this object is of type text, by checking the object type in the case it is text then do not trigger this rule
         if (ruleContext.hasAttribute("type") && (ruleContext.getAttribute("type")).indexOf("text") !== -1) {
             return null;
         }
-        if (ruleContext.getAttribute("aria-hidden") === "true") {
-            return null;
-        }
+        
+        // ignore if an explicit role is specified: including 'presentation', 'none', 'application', 'document' or 'img'
+        // this case will be covered in other rules
         let role = ruleContext.getAttribute("role");
-        if (role === "presentation" || role === "none") {
+        if (role) {
             return null;
         }
 
@@ -65,8 +64,9 @@ export let WCAG20_Object_HasText: Rule = {
         if (ext === ".html" || ext === ".htm") {
             return null;
         }
-
-        let passed = RPTUtil.hasInnerContentHidden(ruleContext) || ARIAMapper.computeName(ruleContext).trim().length > 0;
+        
+        //let passed = RPTUtil.hasInnerContentHidden(ruleContext) || ARIAMapper.computeName(ruleContext).trim().length > 0;
+        let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt") || RPTUtil.attributeNonEmpty(ruleContext, "title");
         if (passed) {
             return RulePass("Pass_0");
         } else {

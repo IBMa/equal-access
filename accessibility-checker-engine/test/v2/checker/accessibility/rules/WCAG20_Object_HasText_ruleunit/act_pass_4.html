@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+	<style>
+		.offScreen {
+			position: absolute;
+			left: -9999px;
+			top: -9999px;
+		}
+	</style>
+	<body>
+		<object title="Moon speech" data="/test-assets/moon-audio/moon-speech.mp3" class="offScreen"></object>
+	</body>
+</html>
+
+
+<script>
+  UnitTest = {
+      ruleIds: ["WCAG20_Object_HasText"],
+      results: [
+      {
+            "ruleId": "WCAG20_Object_HasText",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/object[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "<object> element has a text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  };
+</script>
+</body>
+
+</html>

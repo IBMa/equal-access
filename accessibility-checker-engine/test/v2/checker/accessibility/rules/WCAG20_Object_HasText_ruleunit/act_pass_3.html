@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<span id="label">W3C logo</span> <object aria-labelledby="label" data="/test-assets/shared/w3c-logo.png"></object>
+
+<script>
+  UnitTest = {
+      ruleIds: ["WCAG20_Object_HasText"],
+      results: [
+      {
+            "ruleId": "WCAG20_Object_HasText",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/object[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "<object> element has a text alternative",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  };
+</script>
+</body>
+
+</html>
