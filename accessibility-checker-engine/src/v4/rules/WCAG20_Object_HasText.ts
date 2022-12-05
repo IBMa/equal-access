@@ -23,15 +23,15 @@ export let WCAG20_Object_HasText: Rule = {
     help: {
         "en-US": {
             "group": "WCAG20_Object_HasText.html",
-            "Pass_0": "WCAG20_Object_HasText.html",
-            "Fail_1": "WCAG20_Object_HasText.html"
+            "pass": "WCAG20_Object_HasText.html",
+            "fail_no_text_alternative": "WCAG20_Object_HasText.html"
         }
     },
     messages: {
         "en-US": {
             "group": "<object> element must have a text alternative for the content rendered by the object",
-            "Pass_0": "<object> element has a text alternative",
-            "Fail_1": "An <object> element does not have a text alternative"
+            "pass": "<object> element has a text alternative",
+            "fail_no_text_alternative": "An <object> element does not have a text alternative"
         }
     },
     rulesets: [{
@@ -65,12 +65,11 @@ export let WCAG20_Object_HasText: Rule = {
             return null;
         }
         
-        //let passed = RPTUtil.hasInnerContentHidden(ruleContext) || ARIAMapper.computeName(ruleContext).trim().length > 0;
-        let passed = RPTUtil.attributeNonEmpty(ruleContext, "alt") || RPTUtil.attributeNonEmpty(ruleContext, "title");
+        let passed = ARIAMapper.computeName(ruleContext).trim().length > 0;
         if (passed) {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         } else {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_no_text_alternative");
         }
     }
 }
