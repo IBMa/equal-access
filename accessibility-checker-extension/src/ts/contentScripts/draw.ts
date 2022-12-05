@@ -515,7 +515,7 @@ function deleteDrawing(classToRemove: string) {
     // console.log("Function: deleteDrawing DONE")
 }
 
-
+// Tab Stop error NOT in the tab chain - get ? instead of number
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
     // console.log("Function: redrawErrors");
@@ -577,7 +577,6 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
 
                 if (nodes[i] != null ) { // JCH - if node exists
 
-                    
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
@@ -587,8 +586,6 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
         
                     // adjustment for iframes
                     // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
-                    // console.log("xpath = ",nodeXpaths[i]);
-                    
                     if (nodeXpaths[i].includes("iframe")) { // this is for element i
                         // find and store iframe
                         let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
@@ -598,18 +595,12 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                             if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
                                 const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
                                 iframes.push(iframe);
-                                // console.log(iframes);
                             }
                             // no need to adjust coords as the iframe is an element on the main page
-                            // console.log(iframes);
                         } else { // this is for elements that are within an iframe
                             // get the iframe string iframe[n]
-                            // console.log("We have and element in an iframe");
-                            // console.log("iframeString = ",iframeString);
                             let realIframeString = nodeXpaths[i].slice(0,nodeXpaths[i].indexOf('/html', nodeXpaths[i].indexOf('/html')+1));
-                            // console.log("realIframeString = ",realIframeString);
                             // find the iframe in iframes
-                            // console.log(iframes);
                             const iframesObj = iframes.find((e:any) => e.name === realIframeString);
                             // console.log("iframesObj = ",iframesObj);
                             x = iframesObj.x + nodes[i].getBoundingClientRect().x;
@@ -651,23 +642,9 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
                     }
 
-                    // Logic used from:  https://math.stackexchange.com/questions/1344690/is-it-possible-to-find-the-vertices-of-an-equilateral-triangle-given-its-center
-                    let triangleLegLength = 27;
-                    let triangleXShifted = x;  
-                    let triangleYShifted = y+1; // Shift 1 px to center the ? we draw
-                    // If the triangle is being drawn slighly off of the screen move it into the screen
-                    if (triangleXShifted >= -10 && triangleXShifted <= 6) {
-                        triangleXShifted = 14;
-                    }
-                    if (triangleYShifted >= -10 && triangleYShifted <= 6) {
-                        triangleYShifted = 14;
-                    }
+                    
                     // console.log("Not Tabbable ERROR i = ",i," so makeTriangle");
-                    makeTriangle(  
-                                triangleXShifted, triangleYShifted - (Math.sqrt(3)/3)*triangleLegLength ,
-                                triangleXShifted-triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                                triangleXShifted+triangleLegLength/2, triangleYShifted+(Math.sqrt(3)/6)*triangleLegLength,
-                                "Error"+i.toString(), nodeXpaths[i])
+                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
                     
                     makeTextSmall(x, y, "?", "textColorBlack");
                     // JCH TODO - now we are working towards changing the Triangle to a Notification Dot
