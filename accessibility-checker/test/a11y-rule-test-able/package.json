@@ -1,0 +1,12 @@
+{
+  "name": "a11y-rule-benchmark",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "achecker listofURLs.txt"
+  },
+  "author": "",
+  "devDependencies": {
+    "accessibility-checker": "*"
+  }
+}
