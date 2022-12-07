@@ -38,7 +38,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         `
     );
     injectCSS(
-        `#svgCircle{
+        `#svgCircle {
             position: absolute !important;
             top: 0 !important;
             left: 0 !important;
@@ -49,25 +49,25 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             cursor: pointer !important;
         }
 
-        .noHighlightSVG{
+        .nohighlightSVGcircle {
             fill: #E6D6FF;
             stroke-width: 1px;
             stroke: black;
         }
         
-        .highlightSVG{
+        .highlightSVGcircle{
             fill: #BB8EFF;
             stroke-width: 3px;
             stroke: black;
         }
 
-        .noHighlightSVGtriangle{
+        .nohighlightSVGerrorCircle{
             fill: #FFB077;
             stroke-width: 1px;
             stroke: black;
         }
         
-        .highlightSVGtriangle{
+        .highlightSVGerrorCircle{
             fill: #FC7B1E;
             stroke-width: 3px;
             stroke: black;
@@ -136,10 +136,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         } 
     }
     
-    // console.log("----------------");
-    // console.log(regularTabstops);
-    // console.log(tabStopsErrors);
-    // console.log("----------------");
+    console.log("----------------");
+    console.log("regularTabstops.length = ",regularTabstops.length);
+    console.log("tabStopsErrors.length = ",tabStopsErrors.length);
+    console.log("----------------");
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
@@ -232,8 +232,12 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     return true;
 });
 
+
+// JCH - This is where we handle Tab Stop highlighting
+//       Since there are no more Triangles there will be no polygons
+//       So we need to differentiate between regular circles and circles with errors.
 function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
-    // console.log("Function: handleTabHighlight");
+    console.log("Function: handleTabHighlight");
     let elementXpath = "";
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
@@ -263,30 +267,35 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             elementXpath = sdXpath+iframeStr;
         }
 
-        // get circle or polygon with matching xpath
+        // get circle or errorCircle with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-        let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+        let errorCircle = null;
+        if (circle?.classList.contains('error')) {
+            errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+        } else {
+            circle = null;
+        }
 
-        // console.log("circle = ",circle);
-        // console.log("polygon = ",polygon);
+        console.log("circle = ",circle);
+        console.log("errorCircle = ", errorCircle);
         
         let prevHighlightedElement;
-        // find previouse highlighted element which is either a circle or triangle so will be within document
-        if (prevHighlightedElement = document.getElementsByClassName("highlightSVG")[0]) {
+        // find previous highlighted element which is either a circle or errorCircle so will be within document
+        if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
             // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGtriangle")[0]) {
-            // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
+            // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
         }
-        // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+        // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
         if (prevHighlightedElement) {
             // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
-            if (prevHighlightedElement.tagName === "circle") {
-                prevHighlightedElement.classList.remove("highlightSVG");
-                prevHighlightedElement.classList.add("noHighlightSVG");
+            if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
+                prevHighlightedElement.classList.remove("highlightSVGcircle");
+                prevHighlightedElement.classList.add("nohighlightSVGcircle");
             } 
-            else if (prevHighlightedElement.tagName === "polygon") {
-                prevHighlightedElement.classList.remove("highlightSVGtriangle");
-                prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+            else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
+                prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
+                prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
             }
             // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
         } else {
@@ -294,15 +303,15 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         }
         // Highlight circle
         if (circle) {
-            circle?.classList.remove("noHighlightSVG");
-            circle?.classList.add("highlightSVG");
+            circle?.classList.remove("nohighlightSVGcircle");
+            circle?.classList.add("highlightSVGcircle");
             // console.log("circle highlighted = ",circle);
         } else {
             // console.log("No circle to highlight = ",circle);
         }
-        if (polygon) {
-            polygon?.classList.remove("noHighlightSVGtriangle");
-            polygon?.classList.add("highlightSVGtriangle");
+        if (errorCircle) {
+            errorCircle?.classList.remove("nohighlightSVGerrorCircle");
+            errorCircle?.classList.add("highlightSVGerrorCircle");
             // console.log("polygon highlighted = ",polygon);
         } else {
             // console.log("No polygon to highlight = ",circle);
@@ -334,33 +343,37 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             elementXpath = sdXpath+iframeStr;
         }
 
-        console.log("elementXpath right before matching = ",elementXpath);
-        // get circle or polygon with matching xpath
+        // get circle or errorCircle with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-        let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
+        let errorCircle = null;
+        if (circle?.classList.contains('error')) {
+            errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+        } else {
+            circle = null;
+        }
 
-        // console.log("circle = ",circle);
-        // console.log("polygon = ",polygon);
+        console.log("circle = ",circle);
+        console.log("errorCircle = ", errorCircle);
         
         let prevHighlightedElement;
         // find previouse highlighted element which is either a circle or triangle so will be within document
         
-        if (prevHighlightedElement = document.getElementsByClassName("highlightSVG")[0]) {
+        if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
             // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGtriangle")[0]) {
-            // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
+        } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
+            // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
         }
-        // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+        // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
         
         if (prevHighlightedElement) {
             // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
-            if (prevHighlightedElement.tagName === "circle") {
-                prevHighlightedElement.classList.remove("highlightSVG");
-                prevHighlightedElement.classList.add("noHighlightSVG");
+            if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
+                prevHighlightedElement.classList.remove("highlightSVGcircle");
+                prevHighlightedElement.classList.add("nohighlightSVGcircle");
             } 
-            else if (prevHighlightedElement.tagName === "polygon") {
-                prevHighlightedElement.classList.remove("highlightSVGtriangle");
-                prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+            else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
+                prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
+                prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
             }
             // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
         } else {
@@ -368,28 +381,28 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         }
         // Highlight circle
         if (circle) {
-            circle?.classList.remove("noHighlightSVG");
-            circle?.classList.add("highlightSVG");
+            circle?.classList.remove("nohighlightSVGcircle");
+            circle?.classList.add("highlightSVGcircle");
             // console.log("circle highlighted = ",circle);
         } else {
             // console.log("No circle to highlight = ",circle);
         }
-        if (polygon) {
-            polygon?.classList.remove("noHighlightSVGtriangle");
-            polygon?.classList.add("highlightSVGtriangle");
-            // console.log("polygon highlighted = ",polygon);
+        if (errorCircle) {
+            errorCircle?.classList.remove("nohighlightSVGerrorCircle");
+            errorCircle?.classList.add("highlightSVGerrorCircle");
+            // console.log("errorCircle highlighted = ",polygon);
         } else {
-            // console.log("No polygon to highlight = ",circle);
+            // console.log("No errorCircle to highlight = ",circle);
         }
     } else if (event.detail !== 0) {
-        if (event.target.tagName === "circle" || event.target.tagName === "polygon") {
+        if (event.target.tagName === "circle" && !event.target.classList.contains('error') || event.target.tagName === "circle" && event.target.classList.contains('error')) {
             let circle;
-            if (event.target.tagName === "circle") {
+            if (event.target.tagName === "circle" && !event.target.classList.contains('error')) {
                 circle = event.target;
             }
-            let polygon;
-            if (event.target.tagName === "polygon") {
-                polygon = event.target;
+            let errorCircle;
+            if (event.target.tagName === "circle" && event.target.classList.contains('error')) {
+                errorCircle = event.target;
             }
 
             let element = selectPath(event.target.getAttribute("xpath")); // circle's element that we want to have focus
@@ -411,22 +424,22 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             // let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
             // let polygon = document.querySelector('polygon[xpath="'+elementXpath+'"]');
             let prevHighlightedElement;
-            if (prevHighlightedElement = doc.getElementsByClassName("highlightSVG")[0] || document.getElementsByClassName("highlightSVG")[0]) {
+            if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGcircle")[0] || document.getElementsByClassName("highlightSVGcircle")[0]) {
                 // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
-            } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGtriangle")[0] || document.getElementsByClassName("highlightSVGtriangle")[0]) {
+            } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGerrorCircle")[0] || document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
                 // console.log("Found prevHighlightedElement is polygon = ", prevHighlightedElement );
             }
-            // for prevHighlightedElement remove highlightSVG and add noHighlightSVG
+            // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
             
             if (prevHighlightedElement) {
                 // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
-                if (prevHighlightedElement.tagName === "circle") {
-                    prevHighlightedElement.classList.remove("highlightSVG");
-                    prevHighlightedElement.classList.add("noHighlightSVG");
+                if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
+                    prevHighlightedElement.classList.remove("highlightSVGcircle");
+                    prevHighlightedElement.classList.add("nohighlightSVGcircle");
                 } 
-                else if (prevHighlightedElement.tagName === "polygon") {
-                    prevHighlightedElement.classList.remove("highlightSVGtriangle");
-                    prevHighlightedElement.classList.add("noHighlightSVGtriangle");
+                else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
+                    prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
+                    prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
                 }
                 // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
@@ -434,18 +447,18 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             }
             // Highlight circle
             if (circle) {
-                circle?.classList.remove("noHighlightSVG");
-                circle?.classList.add("highlightSVG");
+                circle?.classList.remove("nohighlightSVGcircle");
+                circle?.classList.add("highlightSVGcircle");
                 // console.log("circle highlighted = ",circle);
             } else {
                 // console.log("No circle to highlight = ",circle);
             }
-            if (polygon) {
-                polygon?.classList.remove("noHighlightSVGtriangle");
-                polygon?.classList.add("highlightSVGtriangle");
-                // console.log("polygon highlighted = ",polygon);
+            if (errorCircle) {
+                errorCircle?.classList.remove("nohighlightSVGerrorCircle");
+                errorCircle?.classList.add("highlightSVGerrorCircle");
+                // console.log("errorCircle highlighted = ",polygon);
             } else {
-                // console.log("No circle to highlight = ",circle);
+                // console.log("No errorCircle to highlight = ",circle);
             }
         }
     }
@@ -479,9 +492,9 @@ function getXPathForElement(element: any) {
 
 TabMessaging.addListener("HIGHLIGHT_TABSTOP_TO_CONTEXT_SCRIPTS", async (message: any) => {
     // Clearing any that are already highlighted
-    document.querySelectorAll(".highlightSVG").forEach(e => e.classList.remove("highlightSVG"));
+    document.querySelectorAll(".highlightSVGcircle").forEach(e => e.classList.remove("highlightSVGcircle"));
     // Highlighting any that are "clicked"
-    document.getElementsByClassName("circleNumber" + message.tabStopId)[0].classList.add("highlightSVG");
+    document.getElementsByClassName("circleNumber" + message.tabStopId)[0].classList.add("highlightSVGcircle");
     return true;
 });
 
@@ -518,7 +531,7 @@ function deleteDrawing(classToRemove: string) {
 // Tab Stop error NOT in the tab chain - get ? instead of number
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-    // console.log("Function: redrawErrors");
+    console.log("Function: redrawErrors");
     setTimeout(() => {
         let tabbableNodesXpaths = getNodesXpaths(tabStops);
         
@@ -643,8 +656,8 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                     }
 
                     
-                    // console.log("Not Tabbable ERROR i = ",i," so makeTriangle");
-                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
+                    console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
+                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], true);
                     
                     makeTextSmall(x, y, "?", "textColorBlack");
                     // JCH TODO - now we are working towards changing the Triangle to a Notification Dot
@@ -661,7 +674,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
 
 // @ts-ignore
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
-    // console.log("Function: redraw");
+    console.log("Function: redraw");
     // JCH - do circles and triangles coord calculations before lines and outlines 
     // as centers of circles and triangles set the basic coords
 
@@ -715,26 +728,29 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     let y = nodes[i].getBoundingClientRect().y;
                     let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
-
-                    let triangleLegLength = 27;
         
                     // adjustment for iframes
                     // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
                     if (nodeXpaths[i].includes("iframe")) { // this is for element i
                         // find and store iframe
                         let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
+                        
                         if (lastElement.includes("iframe")) { // this is for the iframe element
+                            // console.log("We Have an iframe, lastElement", lastElement);
                             if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
                                 const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
                                 iframes.push(iframe);
                             }
                             // no need to adjust coords as the iframe is an element on the main page
                         } else { // this is for elements that are within an iframe
+                            // get the iframe string iframe[n]
                             let realIframeString = nodeXpaths[i].slice(0,nodeXpaths[i].indexOf('/html', nodeXpaths[i].indexOf('/html')+1));
+                            // find the iframe in iframes
                             const iframesObj = iframes.find((e:any) => e.name === realIframeString);
-                            // adjust coords since in iframe
+                            // console.log("iframesObj = ",iframesObj);
                             x = iframesObj.x + nodes[i].getBoundingClientRect().x;
                             y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+
                         }
                     }
                     
@@ -747,7 +763,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         y += 15 - y;
                     }
 
-                    // see below lines as we draw triangle after lines
+                    // see below lines as we draw circle after lines
                     
                     // for line to next tabbable element find next tabbable element that exists
                     let nextTabbableElement;
@@ -760,46 +776,31 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     
                     if (lines) {
                         if (i < nodes.length - 1) {
-                            if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                                // console.log("nodes[",i,"] has bounding rect");
-                            }
-                            else {
-                                continue;
-                                // console.log("nodes[",i,"] has NO bounding rect");
-                            }
-                            if (typeof nextTabbableElement.getBoundingClientRect !== 'undefined' || nextTabbableElement.getBoundingClientRect != null) {
-                                // console.log("nextTabbableElement has bounding rect");
-                            }
-                            else {
-                                continue;
-                                // console.log("nextTabbableElement has NO bounding rect");
-                            }
-
                             let slope = (nextTabbableElement.getBoundingClientRect().y - offset - nodes[i].getBoundingClientRect().y - offset) / (nextTabbableElement.getBoundingClientRect().x - offset - nodes[i].getBoundingClientRect().x - offset);
                             let x1, y1, x2, y2;
                             x1 = x;
                             y1 = y;
 
                             // coords for nodes[i+1] or nextTabbableElement if not in iframe or shadow dom
-                            x2 = nextTabbableElement.getBoundingClientRect().x;
-                            y2 = nextTabbableElement.getBoundingClientRect().y;
+                            x2 = nodes[i+1].getBoundingClientRect().x;
+                            y2 = nodes[i+1].getBoundingClientRect().y;
 
                             // let check if the next tabbable element is an iframe
                             if (nodeXpaths[i+1].includes("iframe")) {
+                                // find and store iframe
                                 let lastElement = nodeXpaths[i+1].slice(nodeXpaths[i+1].lastIndexOf('/'));
-                                
                                 if (lastElement.includes("iframe")) { // this is for the iframe element
+                                    // console.log("We Have an iframe, lastElement", lastElement);
                                     if (!iframes.find((e:any) => e.name === nodeXpaths[i+1])) {  // already in iframes
                                         const iframe = {element: nodes[i+1], name: nodeXpaths[i+1], x: nodes[i+1].getBoundingClientRect().x, y: nodes[i+1].getBoundingClientRect().y};
                                         iframes.push(iframe);
-                                        // adjust coords
                                         x2 = nodes[i+1].getBoundingClientRect().x;
                                         y2 = nodes[i+1].getBoundingClientRect().y;
                                     }
-                                    // no need to adjust coords as the iframe is an element on the main page
                                 } else { // this is for elements that are within an iframe
                                     // get the iframe string iframe[n]
                                     let realIframeString = nodeXpaths[i+1].slice(0,nodeXpaths[i+1].indexOf('/html', nodeXpaths[i+1].indexOf('/html')+1));
+                                    // find the iframe in iframes
                                     const iframesObj = iframes.find((e:any) => e.name === realIframeString);
                                     // adjust coords
                                     x2 = iframesObj.x + nodes[i+1].getBoundingClientRect().x;
@@ -831,20 +832,11 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
 
-                    if (i < nodes.length) {
-                        makeTriangle(  
-                                    x, y - (Math.sqrt(3)/3)*triangleLegLength ,
-                                    x-triangleLegLength/2, y+(Math.sqrt(3)/6)*triangleLegLength,
-                                    x+triangleLegLength/2, y+(Math.sqrt(3)/6)*triangleLegLength,
-                                    i.toString(), nodeXpaths[i]);
+                    // draw circles after lines
+                    console.log("Tabbable with ERROR i = ",i," so add classname error");
+                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], true);
+                    makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
-                        // JCH TODO - now we are working towards changing the Triangle to a Notification Dot
-                        // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-                        // makeIcon(x, y, "test");
-                        
-
-                        makeTextSmall(x, y, (i + 1).toString(), "textColorBlack");
-                    }
 
                     if (outlines) {
 
@@ -978,8 +970,8 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
 
                     // draw circles after lines
-                    
-                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i]);
+                    console.log("Tabbable no ERROR i = ",i," so DON'T add classname error");
+                    makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], false);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
 
@@ -1012,7 +1004,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
     }, 1)
 }
 
-function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string) {
+function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string, errorStatus: boolean) {
     var circleClone = createSVGCircleTemplate();
     circleClone.removeAttribute("id");
     circleClone.classList.add("deleteMe");
@@ -1022,6 +1014,13 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
     circleClone.setAttribute('pointer-events', "auto");
     circleClone.setAttribute('r', String(radius));
     circleClone.setAttribute('xpath', xpath);
+    if (errorStatus === true) {
+        circleClone.classList.add("error");
+        circleClone.classList.add("nohighlightSVGerrorCircle");
+    } else {
+        circleClone.classList.add("nohighlightSVGcircle");
+    }
+   
     circleClone.onclick = () => {
         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
     };
@@ -1037,46 +1036,46 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
-function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
-    // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
-    //  <polygon points="0,0 100,0 50,100"/>
-    // </svg>
+// function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
+//     // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
+//     //  <polygon points="0,0 100,0 50,100"/>
+//     // </svg>
 
-    // <polygon points="x1,y1 x2,y2 x3,y3"
-    // x1,y1 represents the starting point of the
+//     // <polygon points="x1,y1 x2,y2 x3,y3"
+//     // x1,y1 represents the starting point of the
 
-    // .svg-triangle{
-    //     margin: 0 auto;
-    //     width: 100px;
-    //     height: 100px;
-    // }
+//     // .svg-triangle{
+//     //     margin: 0 auto;
+//     //     width: 100px;
+//     //     height: 100px;
+//     // }
     
-    // .svg-triangle polygon {
-    // fill:#98d02e;
-    // stroke:#65b81d;
-    // stroke-width:2;
-    // }
+//     // .svg-triangle polygon {
+//     // fill:#98d02e;
+//     // stroke:#65b81d;
+//     // stroke-width:2;
+//     // }
 
-    // TODO: Find possible better way to deal with this (Talk to design)
+//     // TODO: Find possible better way to deal with this (Talk to design)
    
-    var triangleClone = createSVGTriangleTemplate();
-    triangleClone.removeAttribute("id");
-    triangleClone.classList.add("deleteMe");
-    triangleClone.classList.add("circleNumber" + circleNumber);
-    triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
-    triangleClone.setAttribute('pointer-events', "auto");
-    triangleClone.setAttribute('xpath', xpath);
-    triangleClone.onclick = () => {
-        TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
-    };
-    if (document.getElementById("svgCircle") == null) {
-        const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        elemSVG.setAttribute("id", "svgCircle");
-        document.body.appendChild(elemSVG);
-    }
-    // console.log("Inject triangle circleNumber" + circleNumber);
-    document.getElementById('svgCircle')?.appendChild(triangleClone);
-}
+//     var triangleClone = createSVGTriangleTemplate();
+//     triangleClone.removeAttribute("id");
+//     triangleClone.classList.add("deleteMe");
+//     triangleClone.classList.add("circleNumber" + circleNumber);
+//     triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
+//     triangleClone.setAttribute('pointer-events', "auto");
+//     triangleClone.setAttribute('xpath', xpath);
+//     triangleClone.onclick = () => {
+//         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
+//     };
+//     if (document.getElementById("svgCircle") == null) {
+//         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//         elemSVG.setAttribute("id", "svgCircle");
+//         document.body.appendChild(elemSVG);
+//     }
+//     // console.log("Inject triangle circleNumber" + circleNumber);
+//     document.getElementById('svgCircle')?.appendChild(triangleClone);
+// }
 
 // JCH - now we are working towards changing the Triangle to a Notification Dot
 // function makeIcon(x1: number, y1: number, iconName: string) {
@@ -1218,24 +1217,24 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
     document.getElementById('svgLine')?.appendChild(lineClone);
 }
 
-function createSVGTriangleTemplate() {
-    // This is what we are creating:
-    // <svg id="svgTriangle">
-    // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="black" stroke-width="1" fill="yellow"/>
-    //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
-    // </svg>
-    // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    // elemCircle.setAttribute("id", "triangle");
-    elemCircle.setAttribute("id", "circle");
-    elemCircle.setAttribute("class", "tabCircle");
-    elemCircle.classList.add("dynamic");
-    elemCircle.classList.add("noHighlightSVGtriangle");
-    elemCircle.setAttribute("stroke", "black");
-    elemCircle.setAttribute("stroke-width", "1");
-    elemCircle.setAttribute("stroke-linejoin", "round");
-    return elemCircle
-}
+// function createSVGTriangleTemplate() {
+//     // This is what we are creating:
+//     // <svg id="svgTriangle">
+//     // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="black" stroke-width="1" fill="yellow"/>
+//     //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
+//     // </svg>
+//     // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+//     var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+//     // elemCircle.setAttribute("id", "triangle");
+//     elemCircle.setAttribute("id", "circle");
+//     elemCircle.setAttribute("class", "tabCircle");
+//     elemCircle.classList.add("dynamic");
+//     elemCircle.classList.add("nohighlightSVGerrorCircle");
+//     elemCircle.setAttribute("stroke", "black");
+//     elemCircle.setAttribute("stroke-width", "1");
+//     elemCircle.setAttribute("stroke-linejoin", "round");
+//     return elemCircle
+// }
 
 
 function createSVGCircleTemplate() {
@@ -1248,7 +1247,7 @@ function createSVGCircleTemplate() {
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
     elemCircle.classList.add("dynamic");
-    elemCircle.classList.add("noHighlightSVG");
+    // elemCircle.classList.add("nohighlightSVGcircle");
     elemCircle.setAttribute("stroke", "grey");
     elemCircle.setAttribute("stroke-width", "1");
     return elemCircle
