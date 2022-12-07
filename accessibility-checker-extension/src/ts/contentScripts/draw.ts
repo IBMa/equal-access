@@ -241,17 +241,17 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
     let elementXpath = "";
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-        // console.log("Got TAB Key");
-        // console.log("TAB doc = ", doc);
+        console.log("Got TAB Key");
+        console.log("TAB doc = ", doc);
         if (docType === "main") {
-            // console.log("Got main doc element");
+            console.log("Got main doc element");
             let element = doc.activeElement;  // get element just tabbed to which has focus
             elementXpath = getXPathForElement(element); // in main doc so just get xpath
         }
         
         // if we have iframe
         if (docType === "iframe") {
-            // console.log("Got iframe element");
+            console.log("Got iframe element");
             let element = doc.activeElement;  // get element just tabbed to which has focus
             elementXpath = getXPathForElement(element); // in main doc so just get xpath
             elementXpath = iframeStr + elementXpath;
@@ -259,7 +259,7 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
 
         // if we have shadow dom no need to do anything special
         if (docType === "shadowdom") {
-            // console.log("we have an element in a shadow dom");
+            console.log("we have an element in a shadow dom");
             let sdXpath = getXPathForElement(doc);
             let element = doc.shadowRoot.activeElement;
             elementXpath = getXPathForElement(element);
@@ -269,11 +269,10 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
 
         // get circle or errorCircle with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
+        console.log("circle test = ", circle);
         let errorCircle = null;
         if (circle?.classList.contains('error')) {
             errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-        } else {
-            circle = null;
         }
 
         console.log("circle = ",circle);
@@ -282,9 +281,9 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         let prevHighlightedElement;
         // find previous highlighted element which is either a circle or errorCircle so will be within document
         if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
-            // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+            console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
         } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-            // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+            console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
         }
         // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
         if (prevHighlightedElement) {
@@ -348,8 +347,6 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         let errorCircle = null;
         if (circle?.classList.contains('error')) {
             errorCircle = document.querySelector('circle[xpath="'+elementXpath+'"]');
-        } else {
-            circle = null;
         }
 
         console.log("circle = ",circle);
