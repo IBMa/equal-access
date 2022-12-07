@@ -37,7 +37,8 @@ export default class MultiScanReport {
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
 
         // if scanStorage false clear/delete current scan?
-
+        console.log("blob---------------------------------")
+        console.log(blob)
         // download file
         ReportUtil.download_file(blob, fileName);
     }

@@ -1,5 +1,8 @@
 # Custom Internal settings for testing purposes only
 
+DEBUG: true
+
+
 # optional - Specify one rule archive which consist diffrent type of policies.
 # Default: latest
 ruleServer: https://localhost:9445/rules
@@ -23,6 +26,7 @@ policies:
 failLevels:
     - violation
     - potentialviolation
+
 
 # optional - Specify one or many violation levels which should be reported
 #            i.e. If specified violation then in the report it would only contain
@@ -48,6 +52,8 @@ captureScreenshots: false
 # Default: json
 outputFormat:
     - json
+    - csv
+    - xlsx
 
 # Optional - Specify labels that you would like associated to your scan
 #
@@ -77,3 +83,4 @@ baselineFolder: test/baselines
 # false --> Don't scan hidden content
 # Default: true
 checkHiddenContent: false
+

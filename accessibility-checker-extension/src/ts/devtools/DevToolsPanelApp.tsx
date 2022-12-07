@@ -669,7 +669,17 @@
                 tabTitle: this.state.tabTitle,
                 tabURL: this.state.tabURL
             }
-    
+            console.log("this.state.report")
+            console.log(this.state.report)
+
+            console.log("this.state.rulesets")
+            console.log(this.state.rulesets)
+
+            console.log("this.state.tabTitle")
+            console.log(this.state.tabTitle)
+
+            console.log("this.state.tabURL")
+            console.log(this.state.tabURL)
             var report: any = this.state.report;
     
             var violation = report?.counts.total["Violation"];
@@ -687,6 +697,8 @@
     
             // scan label of the current stored scan 
             // the current scan is always stored for the current scan report
+            console.log("ALIWASHERE")
+            console.log(this.state.storedScanCount)
             this.setState({ currentStoredScan:  "scan" + this.state.storedScanCount });
     
             // get only data needed for multi-scan report
@@ -757,6 +769,8 @@
             this.setState(({
                 storedScans: [...this.state.storedScans, currentScan]
             }));
+            console.log("----------------------------------currentScan")
+            console.log(currentScan)
         }
     
         storeScanLabel(event:any,i:number) {
@@ -888,7 +902,19 @@
         xlsxReportHandler = (scanType:string) => {
             // console.log("xlsxReportHandler");
             //@ts-ignore
+            // console.log("")
+            // console.log()
             MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
+
+            console.log("ALIWASHERE multiScanXlsxDownload ------")
+            console.log("this.state.storedScans")
+            console.log(this.state.storedScans)
+            console.log("scanType")
+            console.log(scanType)
+            console.log("this.state.storedScanCount")
+            console.log(this.state.storedScanCount)
+            console.log("this.state.archives")
+            console.log(this.state.archives)
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {

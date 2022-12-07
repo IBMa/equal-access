@@ -111,6 +111,8 @@ async function processACConfig(ACConfig) {
     if (ruleArchiveParse && ruleArchiveParse.length > 0) {
         ACConstants.DEBUG && console.log("Found archiveFile: " + ruleArchiveFile);
         ACConfig.ruleArchiveSet = ruleArchiveParse;
+        // console.log("ALIWAHERE")
+        // console.log(ACConfig.ruleArchiveSet)
         let ruleArchive = ACConfig.ruleArchive;
         ACConfig.ruleArchiveLabel = ACConfig.ruleArchive;
         for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
