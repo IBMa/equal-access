@@ -15,21 +15,21 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, Rul
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
-export let WCAG20_Text_LetterSpacing: Rule = {
-    id: "WCAG20_Text_LetterSpacing",
+export let text_whitespace_valid: Rule = {
+    id: "text_whitespace_valid",
     context: "dom:*",
     help: {
         "en-US": {
-            "Pass_0": "WCAG20_Text_LetterSpacing.html",
-            "Potential_1": "WCAG20_Text_LetterSpacing.html",
-            "group": "WCAG20_Text_LetterSpacing.html"
+            "pass": "text_whitespace_valid.html",
+            "potential_text": "text_whitespace_valid.html",
+            "group": "text_whitespace_valid.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Potential_1": "Verify space characters are not being used to create space between the letters of a word",
-            "group": "Use CSS 'letter-spacing' to control spacing within a word"
+            "pass": "No space characters are used to space letters or words",
+            "potential_text": "Verify space characters are not being used to create space between the letters of a word",
+            "group": "Space characters should not be used to space letters or words"
         }
     },
     rulesets: [{
@@ -41,6 +41,12 @@ export let WCAG20_Text_LetterSpacing: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        // Don't trigger if we're not in the body or if we're in a script
+        let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
+        if (checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body")
+            return null;
+            
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
         while (passed && walkNode) {
@@ -57,13 +63,8 @@ export let WCAG20_Text_LetterSpacing: Rule = {
             walkNode = walkNode.nextSibling;
         }
 
-        if (!passed) {
-            // Don't trigger if we're not in the body or if we're in a script
-            let checkAncestor = RPTUtil.getAncestor(ruleContext, ["body", "script", "code"]);
-            passed = checkAncestor == null || checkAncestor.nodeName.toLowerCase() != "body";
-        }
-        if (passed) return RulePass("Pass_0");
-        if (!passed) return RulePotential("Potential_1");
+        if (passed) return RulePass("pass");
+        return RulePotential("potential_text");
 
     }
 }
