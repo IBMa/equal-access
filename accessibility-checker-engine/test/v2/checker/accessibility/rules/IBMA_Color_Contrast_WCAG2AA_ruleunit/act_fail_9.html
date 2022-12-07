@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <button style="color: #777; background: #EEE;">My button!</button>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["IBMA_Color_Contrast_WCAG2AA"],
+            results: [
+            {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/a[1]",
+              "aria": "/document[1]/link[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "9.40",
+              16,
+              400,
+              "#0000ee",
+              "#ffffff",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>
