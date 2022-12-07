@@ -48,7 +48,8 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "73f2c2": {
             "Pass_0": "pass",
             "Fail_1": "fail",
-            "Fail_2": "pass"
+            "Fail_2": "pass",
+            "Fail_attribute_incorrect": "fail"
         }
     }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
