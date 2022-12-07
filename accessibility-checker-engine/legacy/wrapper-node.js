@@ -99,7 +99,7 @@ var mapRuleToG = IBMa.mapRuleToG = {
     "HAAC_Img_UsemapAlt": "1067",
     "WCAG20_Text_Emoticons": "1068",
     "WCAG20_Style_BeforeAfter": "1069",
-    "WCAG20_Text_LetterSpacing": "1070",
+    "text_whitespace_valid": "1070",
     "Rpt_Aria_ValidRole": "1074",
     "Rpt_Aria_ValidPropertyValue": "1076",
     "Rpt_Aria_ValidIdRef": "1077",
