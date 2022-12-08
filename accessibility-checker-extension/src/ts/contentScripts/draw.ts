@@ -136,10 +136,10 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         } 
     }
     
-    console.log("----------------");
-    console.log("regularTabstops.length = ",regularTabstops.length);
-    console.log("tabStopsErrors.length = ",tabStopsErrors.length);
-    console.log("----------------");
+    // console.log("----------------");
+    // console.log("regularTabstops.length = ",regularTabstops.length);
+    // console.log("tabStopsErrors.length = ",tabStopsErrors.length);
+    // console.log("----------------");
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
@@ -529,7 +529,7 @@ function deleteDrawing(classToRemove: string) {
 // Tab Stop error NOT in the tab chain - get ? instead of number
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
     // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-    console.log("Function: redrawErrors");
+    // console.log("Function: redrawErrors");
     setTimeout(() => {
         let tabbableNodesXpaths = getNodesXpaths(tabStops);
         
@@ -654,7 +654,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                     }
 
                     
-                    console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
+                    // console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
                     
                     makeTextSmall(x, y, "?", "textColorBlack");
@@ -672,9 +672,9 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
 
 // @ts-ignore
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
-    console.log("Function: redraw");
-    // JCH - do circles and triangles coord calculations before lines and outlines 
-    // as centers of circles and triangles set the basic coords
+    // console.log("Function: redraw");
+    // JCH - do circles and errorCircle coord calculations before lines and outlines 
+    // as centers of circles and errorCircles set the basic coords
 
     setTimeout(() => { 
         let offset = 3;
@@ -753,14 +753,14 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
                     
                     // If the circle is being drawn slighly off of the screen move it into the screen
-                    // Note: here we assume radius is 13
-                    if (x <= 15) {
-                        x += 15 - x;
+                    // Note: here we assume radius is 16
+                    if (x <= 18) {
+                        x += 18 - x;
                     }
-                    if (y <= 15) {
-                        y += 15 - y;
+                    if (y <= 18) {
+                        y += 18 - y;
                     }
-
+                    
                     // see below lines as we draw circle after lines
                     
                     // for line to next tabbable element find next tabbable element that exists
@@ -808,14 +808,14 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                             // If the if the 2nd circle is being drawn slighly off of the screen move it into the screen
                             // Note: here we assume radius is 16
-                            if (x2 <= 15) {
-                                x2 += 15 - x2;
+                            if (x2 <= 18) {
+                                x2 += 18 - x2;
                             }
-                            if (y2 <= 15) {
-                                y2 += 15 - y2;
+                            if (y2 <= 18) {
+                                y2 += 18 - y2;
                             }
 
-                            console.log("x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
+                            
                             makeLine(x1, y1, x2, y2, ["line"]);
 
                             // Create white outline
@@ -831,7 +831,8 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
 
                     // draw circles after lines
-                    console.log("Tabbable with ERROR i = ",i," so add classname error");
+                    // console.log("Tabbable with ERROR i = ",i," so add classname error");
+                    // console.log("errorCircle x = ",x,"  y = ",y);
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
@@ -897,7 +898,6 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     if (y <= 15) {
                         y += 15 - y;
                     }
-
                     // see below lines as we draw circle after lines
                     
                     // for line to next tabbable element find next tabbable element that exists
@@ -968,7 +968,9 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
 
                     // draw circles after lines
-                    console.log("Tabbable no ERROR i = ",i," so DON'T add classname error");
+                    // console.log("Tabbable no ERROR i = ",i," so DON'T add classname error");
+                    // console.log("x = ", x);
+                    // console.log("y = ", y);
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], false);
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
@@ -1034,46 +1036,6 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
-// function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
-//     // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
-//     //  <polygon points="0,0 100,0 50,100"/>
-//     // </svg>
-
-//     // <polygon points="x1,y1 x2,y2 x3,y3"
-//     // x1,y1 represents the starting point of the
-
-//     // .svg-triangle{
-//     //     margin: 0 auto;
-//     //     width: 100px;
-//     //     height: 100px;
-//     // }
-    
-//     // .svg-triangle polygon {
-//     // fill:#98d02e;
-//     // stroke:#65b81d;
-//     // stroke-width:2;
-//     // }
-
-//     // TODO: Find possible better way to deal with this (Talk to design)
-   
-//     var triangleClone = createSVGTriangleTemplate();
-//     triangleClone.removeAttribute("id");
-//     triangleClone.classList.add("deleteMe");
-//     triangleClone.classList.add("circleNumber" + circleNumber);
-//     triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
-//     triangleClone.setAttribute('pointer-events', "auto");
-//     triangleClone.setAttribute('xpath', xpath);
-//     triangleClone.onclick = () => {
-//         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
-//     };
-//     if (document.getElementById("svgCircle") == null) {
-//         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-//         elemSVG.setAttribute("id", "svgCircle");
-//         document.body.appendChild(elemSVG);
-//     }
-//     // console.log("Inject triangle circleNumber" + circleNumber);
-//     document.getElementById('svgCircle')?.appendChild(triangleClone);
-// }
 
 // JCH - now we are working towards changing the Triangle to a Notification Dot
 // function makeIcon(x1: number, y1: number, iconName: string) {
@@ -1215,24 +1177,7 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
     document.getElementById('svgLine')?.appendChild(lineClone);
 }
 
-// function createSVGTriangleTemplate() {
-//     // This is what we are creating:
-//     // <svg id="svgTriangle">
-//     // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="black" stroke-width="1" fill="yellow"/>
-//     //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
-//     // </svg>
-//     // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-//     var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-//     // elemCircle.setAttribute("id", "triangle");
-//     elemCircle.setAttribute("id", "circle");
-//     elemCircle.setAttribute("class", "tabCircle");
-//     elemCircle.classList.add("dynamic");
-//     elemCircle.classList.add("nohighlightSVGerrorCircle");
-//     elemCircle.setAttribute("stroke", "black");
-//     elemCircle.setAttribute("stroke-width", "1");
-//     elemCircle.setAttribute("stroke-linejoin", "round");
-//     return elemCircle
-// }
+
 
 
 function createSVGCircleTemplate() {
@@ -1359,3 +1304,65 @@ function selectPath(srcPath: any) {
     }
     return element;
 }
+
+
+// function makeTriangle(x1: number, y1: number, x2: number, y2: number,x3: number, y3: number, circleNumber: string, xpath: string) {
+//     // <svg xmlns="http://www.w3.org/2000/svg" class="svg-triangle">
+//     //  <polygon points="0,0 100,0 50,100"/>
+//     // </svg>
+
+//     // <polygon points="x1,y1 x2,y2 x3,y3"
+//     // x1,y1 represents the starting point of the
+
+//     // .svg-triangle{
+//     //     margin: 0 auto;
+//     //     width: 100px;
+//     //     height: 100px;
+//     // }
+    
+//     // .svg-triangle polygon {
+//     // fill:#98d02e;
+//     // stroke:#65b81d;
+//     // stroke-width:2;
+//     // }
+
+//     // TODO: Find possible better way to deal with this (Talk to design)
+   
+//     var triangleClone = createSVGTriangleTemplate();
+//     triangleClone.removeAttribute("id");
+//     triangleClone.classList.add("deleteMe");
+//     triangleClone.classList.add("circleNumber" + circleNumber);
+//     triangleClone.setAttribute('points', String(x1)+","+String(y1)+","+String(x2)+","+String(y2)+","+String(x3)+","+String(y3));
+//     triangleClone.setAttribute('pointer-events', "auto");
+//     triangleClone.setAttribute('xpath', xpath);
+//     triangleClone.onclick = () => {
+//         TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
+//     };
+//     if (document.getElementById("svgCircle") == null) {
+//         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+//         elemSVG.setAttribute("id", "svgCircle");
+//         document.body.appendChild(elemSVG);
+//     }
+//     // console.log("Inject triangle circleNumber" + circleNumber);
+//     document.getElementById('svgCircle')?.appendChild(triangleClone);
+// }
+
+
+// function createSVGTriangleTemplate() {
+//     // This is what we are creating:
+//     // <svg id="svgTriangle">
+//     // THIS PART->     <triangle id="triangle" class="tabTriangle" stroke="black" stroke-width="1" fill="yellow"/>
+//     //                 <text class="TriangleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="black"/>
+//     // </svg>
+//     // var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+//     var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+//     // elemCircle.setAttribute("id", "triangle");
+//     elemCircle.setAttribute("id", "circle");
+//     elemCircle.setAttribute("class", "tabCircle");
+//     elemCircle.classList.add("dynamic");
+//     elemCircle.classList.add("nohighlightSVGerrorCircle");
+//     elemCircle.setAttribute("stroke", "black");
+//     elemCircle.setAttribute("stroke-width", "1");
+//     elemCircle.setAttribute("stroke-linejoin", "round");
+//     return elemCircle
+// }
