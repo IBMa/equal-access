@@ -18,40 +18,159 @@
 -->
 
 <html lang="en">
-	<head>
-		<title>Checks that the HTML autocomplete attribute has a correct value </title>
-	</head>
-	<body>
+    <head>
+        <title>
+            Checks that the HTML autocomplete attribute has a correct value
+        </title>
+    </head>
+    <body>
+        <fieldset>
+            <legend>Ship the blue gift to...</legend>
+            <div>
+                <label>
+                    Address:
+                    <input
+                        name="ba"
+                        autocomplete="section-blue shipping street-address"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    City:
+                    <input
+                        name="bc"
+                        autocomplete="section-blue shipping address-level2"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    Postal Code:
+                    <input
+                        name="bp"
+                        autocomplete="section-blue shipping postal-code"
+                    />
+                </label>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Ship the red gift to...</legend>
+            <div>
+                <label>
+                    Address:
+                    <input
+                        name="ra"
+                        autocomplete="section-red shipping street-address"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    City:
+                    <input
+                        name="rc"
+                        autocomplete="section-red shipping address-level2"
+                    />
+                </label>
+            </div>
+            <div>
+                <label>
+                    Postal Code:
+                    <input
+                        name="rp"
+                        autocomplete="section-red shipping postal-code"
+                    />
+                </label>
+            </div>
+        </fieldset>
 
-<fieldset>
-  <legend>Ship the blue gift to...</legend>
-  <div> <label> Address:     <input name=ba autocomplete="section-blue shipping street-address"> </label> </div>
-  <div> <label> City:        <input name=bc autocomplete="section-blue shipping address-level2"> </label></div>
-  <div> <label> Postal Code: <input name=bp autocomplete="section-blue shipping postal-code"> </label></div>
-</fieldset>
-<fieldset>
-  <legend>Ship the red gift to...</legend>
-  <div> <label> Address:     <input name=ra autocomplete="section-red shipping street-address"> </label></div>
-  <div> <label> City:        <input name=rc autocomplete="section-red shipping address-level2"> </label></div>
-  <div> <label> Postal Code: <input name=rp autocomplete="section-red shipping postal-code"> </label></div>
-</fieldset>
-
-<script type="text/javascript">
-//<![CDATA[
-  if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-  if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-  OpenAjax.a11y.ruleCoverage = [
-    {
-      ruleId: "1203",
-      passedXpaths: [
-      ],
-      failedXpaths: [
-        "/html/body/fieldset/div/label/input",
-        "/html/body/fieldset[2]/div/label/input"
-      ]
-    }
-  ];
-//]]>
-</script>
-	</body>
-	</html>
+        <script>
+            UnitTest = {
+                ruleIds: ["WCAG21_Input_Autocomplete"],
+                results: [
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "FAIL"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[1]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[1]",
+                        },
+                        reasonId: "Fail_2",
+                        message:
+                            "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[2]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[2]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[1]/div[3]/label[1]/input[1]",
+                            aria: "/document[1]/group[1]/textbox[3]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "FAIL"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[1]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[1]",
+                        },
+                        reasonId: "Fail_2",
+                        message:
+                            "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[2]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[2]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/fieldset[2]/div[3]/label[1]/input[1]",
+                            aria: "/document[1]/group[2]/textbox[3]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    }
+                ]
+            };
+        </script>
+    </body>
+</html>

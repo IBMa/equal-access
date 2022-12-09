@@ -128,6 +128,7 @@ export class Server {
                             days: 1,
                             selfSigned: true
                         }, (pemErr, keys) => {
+                            pemErr && console.error(pemErr);
                             // Write the generated pem and keys
                             fs.writeFileSync(Config.certPEMPath, keys.certificate);
                             fs.writeFileSync(Config.certKEYPath, keys.serviceKey);

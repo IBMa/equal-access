@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { isMaterialIconFont } from "../util/CSSUtil";
 import { DOMWalker } from "../../v2/dom/DOMWalker";
 
 export let WCAG21_Label_Accessible: Rule = {
@@ -30,7 +31,7 @@ export let WCAG21_Label_Accessible: Rule = {
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
+            "Pass_0": "Accessible name matches or contains the visible label text",
             "Fail_1": "Accessible name does not match or contain the visible label text",
             "group": "Accessible name must match or contain the visible label text"
         }
@@ -42,13 +43,19 @@ export let WCAG21_Label_Accessible: Rule = {
         "toolkitLevel": eToolkitLevel.LEVEL_TWO
     }],
     // TODO: ACT: Review https://github.com/act-rules/act-rules.github.io/issues/1618
+    // https://www.w3.org/WAI/WCAG21/Techniques/aria/ARIA24
     act: "2ee8b8",
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        const ruleContext = context["dom"].node as Element;
+        const ruleContext = context["dom"].node as HTMLElement;
         if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
             return null;
         }
+
+        // pass if the visible text uses Material Icon font
+        if (isMaterialIconFont(ruleContext)) 
+            return RulePass("Pass_0");
+
         let passed = true;
 
         let nodeName = ruleContext.nodeName.toLowerCase();
