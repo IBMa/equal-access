@@ -30,6 +30,7 @@ var YAML = require('js-yaml');
 var constants = require(pathLib.join(__dirname, 'ACConstants'));
 var uuid = require('uuid');
 const request = require("request");
+const { resolve } = require('path');
 
 /**
  * This object contains all the common, variables and functions used core server side
@@ -243,7 +244,7 @@ var ACCommon = {
         config.extensions = config.extensions || constants.extensions;
         config.engineFileName = config.engineFileName || constants.engineFileName;
         config.ruleArchive = config.ruleArchive || constants.ruleArchive;
-        config.cacheFolder = config.cacheFolder || constants.cacheFolder;
+        config.cacheFolder = config.cacheFolder ? resolve(config.cacheFolder) : constants.cacheFolder;
 
         // For check hidden content need to check for null or undefined and then set default otherwise it will evaluate the
         // boolean which causes it to always comply with the default value and not user provided option

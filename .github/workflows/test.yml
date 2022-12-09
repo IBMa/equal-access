@@ -10,7 +10,7 @@ jobs:
 # Engine test
 ####
   accessibility-checker-engine-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -43,7 +43,7 @@ jobs:
 # Node basic test
 ####
   accessibility-checker-test-basic:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -89,7 +89,7 @@ jobs:
 # Node basic test
 ####
   accessibility-checker-test-basic2:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -129,7 +129,7 @@ jobs:
 # Node Selenium test
 ####
   accessibility-checker-test-selenium:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -170,7 +170,7 @@ jobs:
 # Node Playwright test
 ####
   accessibility-checker-test-playwright:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -209,7 +209,7 @@ jobs:
 # Karma Tests
 ####
   karma-accessibility-checker-test:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -252,7 +252,7 @@ jobs:
 # Cypress test
 ####
   cypress-checker-test-basic:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -288,7 +288,7 @@ jobs:
 # Extension Build verification
 ####
   extension-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
