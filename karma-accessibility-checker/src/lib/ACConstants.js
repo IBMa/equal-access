@@ -20,6 +20,7 @@
  *******************************************************************************/
 
 // Load all the modules that are needed
+var os = require('os');
 var pathLib = require('path');
 
 // Used to specify all the constant
@@ -43,8 +44,8 @@ var constants = {
     // i.e. If specified violation then in the report it would only contain
     //      results which are level of violation.
     reportLevels: ["violation",
-                   "potentialviolation"
-                  ],
+        "potentialviolation"
+    ],
 
     // Specify default value if screenshoot should be captured of the current page that is being scanned.
     captureScreenshots: false,
@@ -115,7 +116,11 @@ var constants = {
     baseA11yServerURL: "https://cdn.jsdelivr.net/npm/accessibility-checker-engine",
 
     // Specify true or false to allow setting rulePack with a custom server
-    customRuleServer: false
+    customRuleServer: false,
+
+    // Default cache folder (for ace-node.js / archives.json)
+    cacheFolder: os.tmpdir()+"/accessibility-checker/"
+
 };
 
 // Export this the constants

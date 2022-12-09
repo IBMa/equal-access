@@ -23,14 +23,18 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "en-US": {
             "group": "WCAG21_Input_Autocomplete.html",
             "Pass_0": "WCAG21_Input_Autocomplete.html",
-            "Fail_1": "WCAG21_Input_Autocomplete.html"
+            "Fail_1": "WCAG21_Input_Autocomplete.html",
+            "Fail_2": "WCAG21_Input_Autocomplete.html",
+            "Fail_attribute_incorrect": "WCAG21_Input_Autocomplete.html"
         }
     },
     messages: {
         "en-US": {
             "group": "The 'autocomplete' attribute's token(s) must be appropriate for the input form field",
             "Pass_0": "Rule Passed",
-            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field"
+            "Fail_1": "The 'autocomplete' attribute's token(s) are not appropriate for the input form field",
+            "Fail_2": "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+            "Fail_attribute_incorrect": "The 'autocomplete' attribute has an incorrect value"
         }
     },
     rulesets: [{
@@ -39,8 +43,15 @@ export let WCAG21_Input_Autocomplete: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    // TODO: ACT: Pass example 8
-    act: "73f2c2",
+    
+    act: [{
+        "73f2c2": {
+            "Pass_0": "pass",
+            "Fail_1": "fail",
+            "Fail_2": "pass",
+            "Fail_attribute_incorrect": "fail"
+        }
+    }],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const cache = {
             "tokensOnOff": ["on", "off"],
@@ -157,8 +168,13 @@ export let WCAG21_Input_Autocomplete: Rule = {
                 "email",
                 "impp"]
         }
+        let valid_values = [];
+        for (var key in cache)
+            valid_values=valid_values.concat(cache[key]);
+        
         const ruleContext = context["dom"].node as Element;
         let foundMandatoryToken = false;
+        let foundRecognizedToken = true;
         let nodeName = ruleContext.nodeName.toLowerCase();
         if (!VisUtil.isNodeVisible(ruleContext) ||
             RPTUtil.isNodeDisabled(ruleContext)) {
@@ -170,11 +186,13 @@ export let WCAG21_Input_Autocomplete: Rule = {
         let autocompleteAttr = ruleContext.getAttribute("autocomplete").trim().toLowerCase();
 
         let tokens = autocompleteAttr.split(/\s+/);
-
         if (tokens.length === 0 || autocompleteAttr.length === 0) {
             return null;
         }
-
+        
+        if (!tokens.every(r => valid_values.includes(r) || r.startsWith(cache['tokenOptionalSection'])))
+            return RuleFail("Fail_attribute_incorrect");
+        
         let tokensMandatoryGroup1 = [];
         let tokensMandatoryGroup2 = [];
 
@@ -253,17 +271,20 @@ export let WCAG21_Input_Autocomplete: Rule = {
 
         // check detail autofill tokens
         let currIndex = 0;
+        let currRecognizedIndex = 0;
 
         // check optional 'section-*' tokens
         if (tokens[currIndex].startsWith(cache.tokenOptionalSection) &&
             tokens[currIndex].length > 8) {
             currIndex++; // consume token
+            currRecognizedIndex++;
         }
 
         // check optional 'shipping|billing' tokens
         if (tokens.length > currIndex &&
             cache.tokensOptionalPurpose.includes(tokens[currIndex])) {
             currIndex++; // consume  token
+            currRecognizedIndex++;
         }
 
         // check either mandatory group 1 or 2 tokens
@@ -285,9 +306,30 @@ export let WCAG21_Input_Autocomplete: Rule = {
             }
         }
 
+        // check either mandatory group 1 or 2 tokens
+        if (tokens.length > currRecognizedIndex) {
+            // check mandatory group 1
+            if (cache.tokensMandatoryGroup1_all.includes(tokens[currRecognizedIndex])) {
+                foundRecognizedToken = true;
+                currRecognizedIndex++;
+            } else {
+                // check optional tokens for group 2
+                if (cache.tokensOptionalGroup2.includes(tokens[currRecognizedIndex])) {
+                    currRecognizedIndex++;
+                }
+                // check mandatory group 2
+                if (cache.tokensMandatoryGroup2_all.includes(tokens[currRecognizedIndex])) {
+                    foundRecognizedToken = true;
+                    currRecognizedIndex++;
+                }
+            }
+        }
+
         // Only pass if we have seen either of the mandatory groups and all tokens have been consumed
         if (foundMandatoryToken && tokens.length === currIndex) {
             return RulePass("Pass_0");
+        } else if (foundRecognizedToken && tokens.length === currRecognizedIndex) {
+            return RuleFail("Fail_2");
         } else {
             return RuleFail("Fail_1");
         }

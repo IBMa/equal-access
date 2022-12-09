@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>
+            Checks that the HTML autocomplete attribute has an incorrect value
+        </title>
+    </head>
+    <body>
+        <!-- Pass 1: the required token “username” -->
+        <label>Username<input autocomplete="username" /></label>
+
+        <!-- Pass 2: required token “bday-month” -->
+        <form autocomplete="off">
+            <label
+                >Birthday month
+                <select autocomplete="bday-month">
+                    <option>January</option>
+                    <option>...</option>
+                </select>
+            </label>
+        </form>
+
+        <!--Pass 3: required token “street-address”. Mixing upper and lower case letters is allowed -->
+        <label>
+            Street address<textarea autocomplete="Street-Address"></textarea>
+        </label>
+
+        <!--Pass 4: a work token, allowed because it is used before email.  -->
+        <label>Work email<input autocomplete="work email" /></label>
+
+        <!--Pass 5: a section- token, which can preface any correct autocomplete field  -->
+        <label
+            >Partner's email address<input autocomplete="section-partner email"
+        /></label>
+
+        <!--Pass 6: section- and billing tokens. These tokens can preface any correct autocomplete field.  -->
+        <label
+            >Billing address- first line<input
+                type="text"
+                autocomplete="section-primary billing address-line1"
+        /></label>
+
+        <!--Pass 7: all allowed types of tokens in the correct order  -->
+        <label
+            >Office email<input
+                type="text"
+                autocomplete="section-primary shipping work email"
+        /></label>
+
+        <!--Pass 8: the required token “bday-day”, even though it is inappropriate for the “tel”  -->
+        <label
+            >Birthday day<input
+                name="bdayday"
+                type="tel"
+                autocomplete="bday-day"
+        /></label>
+
+        <script>
+            UnitTest = {
+                ruleIds: ["WCAG21_Input_Autocomplete"],
+                results: [
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[1]/input[1]",
+                            aria: "/document[1]/textbox[1]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/form[1]/label[1]/select[1]",
+                            aria: "/document[1]/combobox[1]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[2]/textarea[1]",
+                            aria: "/document[1]/textbox[2]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[3]/input[1]",
+                            aria: "/document[1]/textbox[3]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[4]/input[1]",
+                            aria: "/document[1]/textbox[4]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[5]/input[1]",
+                            aria: "/document[1]/textbox[5]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "PASS"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[6]/input[1]",
+                            aria: "/document[1]/textbox[6]",
+                        },
+                        reasonId: "Pass_0",
+                        message: "Rule Passed",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                    {
+                        ruleId: "WCAG21_Input_Autocomplete",
+                        value: ["INFORMATION", "FAIL"],
+                        path: {
+                            dom: "/html[1]/body[1]/label[7]/input[1]",
+                            aria: "/document[1]/textbox[7]",
+                        },
+                        reasonId: "Fail_2",
+                        message:
+                            "The 'autocomplete' attribute's token(s) are not appropriate for an input form field of any type",
+                        messageArgs: [],
+                        apiArgs: [],
+                        category: "Accessibility",
+                    },
+                ],
+            };
+        </script>
+    </body>
+</html>

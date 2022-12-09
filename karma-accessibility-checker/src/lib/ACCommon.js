@@ -30,6 +30,7 @@ var YAML = require('js-yaml');
 var constants = require(pathLib.join(__dirname, 'ACConstants'));
 var uuid = require('uuid');
 const request = require("request");
+const { resolve } = require('path');
 
 /**
  * This object contains all the common, variables and functions used core server side
@@ -243,6 +244,8 @@ var ACCommon = {
         config.extensions = config.extensions || constants.extensions;
         config.engineFileName = config.engineFileName || constants.engineFileName;
         config.ruleArchive = config.ruleArchive || constants.ruleArchive;
+        config.cacheFolder = config.cacheFolder ? resolve(config.cacheFolder) : constants.cacheFolder;
+
         // For check hidden content need to check for null or undefined and then set default otherwise it will evaluate the
         // boolean which causes it to always comply with the default value and not user provided option
         if (config.checkHiddenContent === null || config.checkHiddenContent === undefined || typeof config.checkHiddenContent === "undefined") {
@@ -341,7 +344,9 @@ var ACCommon = {
                     }
                 });
             });
-            fs.writeFileSync(pathLib.join(__dirname, "archives.json"), archiveJson);
+            fs.mkdirSync(ACConfig.cacheFolder, { recursive: true});
+            fs.writeFileSync(pathLib.join(ACConfig.cacheFolder, "archives.json"), archiveJson);
+            // fs.writeFileSync(pathLib.join(ACConfig.cacheFolder, "archives.json"), archiveJson);
             let ACArchive = JSON.parse(archiveJson);
             let ruleArchive = ACConfig.ruleArchive;
             let ruleArchivePath = null;
