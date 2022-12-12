@@ -54,6 +54,10 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             return null;
         }
         
+        //skip no-html element
+        if (RPTUtil.getAncestor(ruleContext, "svg"))
+            return null;
+
         // Ensure that this element has children with actual text.
         let childStr = "";
         let childNodes = ruleContext.childNodes;
@@ -62,7 +66,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
                 childStr += childNodes[i].nodeValue;
             }
         }
-        if (childStr.trim().length == 0)
+        console.log("node="+ nodeName + ", node-id="+ ruleContext.getAttribute("id") +", isShadowHostElement=" + RPTUtil.isShadowHostElement(ruleContext));
+        if (childStr.trim().length == 0 && !RPTUtil.isShadowHostElement(ruleContext))
             return null;
 
         let doc = ruleContext.ownerDocument;
