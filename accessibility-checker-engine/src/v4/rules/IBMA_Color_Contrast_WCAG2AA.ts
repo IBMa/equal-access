@@ -13,7 +13,7 @@
 
 import { RPTUtil, RPTUtilStyle } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { setCache } from "../util/CacheUtil";
 
@@ -54,20 +54,13 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             return null;
         }
         
-        //skip no-html element
-        if (RPTUtil.getAncestor(ruleContext, "svg"))
+        //TODO ? should only consider native disabled, ignore aria-disabled
+        //skip disabled element
+        if (RPTUtil.isNodeDisabled(ruleContext))
             return null;
 
-        // Ensure that this element has children with actual text.
-        let childStr = "";
-        let childNodes = ruleContext.childNodes;
-        for (let i = 0; i < childNodes.length; ++i) {
-            if (childNodes[i].nodeType == 3) {
-                childStr += childNodes[i].nodeValue;
-            }
-        }
-        console.log("node="+ nodeName + ", node-id="+ ruleContext.getAttribute("id") +", isShadowHostElement=" + RPTUtil.isShadowHostElement(ruleContext));
-        if (childStr.trim().length == 0 && !RPTUtil.isShadowHostElement(ruleContext))
+        //skip no-html element
+        if (RPTUtil.getAncestor(ruleContext, "svg"))
             return null;
 
         let doc = ruleContext.ownerDocument;
@@ -79,8 +72,14 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (!win) {
             return null;
         }
-        let style = win.getComputedStyle(ruleContext);
 
+        // Ensure that this element has children with actual text.
+        let childStr = RPTUtil.getNodeText(ruleContext);
+        
+        if (childStr.trim().length == 0 && (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')))
+            return null;
+
+        let style = win.getComputedStyle(ruleContext);
 
         // JCH clip INFO:
         //      The clip property lets you specify a rectangle to clip an absolutely positioned element. 

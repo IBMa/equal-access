@@ -2120,6 +2120,21 @@ export class RPTUtil {
         return retVal;
     }
 
+    /** Return the text content of the given node 
+     *  this is different than innerText or textContent that return text content of a node and its descendants
+    */
+    public static getNodeText(element) {
+        if (!element) return "";
+        let text = "";
+        let childNodes = element.childNodes;
+        for (let i = 0; i < childNodes.length; ++i) {
+            if (childNodes[i].nodeType == 3) {
+                text += childNodes[i].nodeValue;
+            }
+        }
+        return text;
+    }
+
     /**
      * This function is responsible for checking if elements inner text is empty or not.
      *
@@ -3338,7 +3353,7 @@ export class ColorObj {
         return "#" + this.toHexHelp(this.red) + this.toHexHelp(this.green) + this.toHexHelp(this.blue);
     };
 
-    contrastRatio(bgColor : ColorObj) {
+    contrastRatio(bgColor : ColorObj) { 
         let fgColor: ColorObj = this;
 
         if (typeof (this.alpha) != "undefined")
