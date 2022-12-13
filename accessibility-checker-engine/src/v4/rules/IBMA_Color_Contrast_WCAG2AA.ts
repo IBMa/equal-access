@@ -59,8 +59,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (RPTUtil.isNodeDisabled(ruleContext))
             return null;
 
-        //skip no-html element
-        if (RPTUtil.getAncestor(ruleContext, "svg"))
+        //skip elements
+        if (RPTUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
             return null;
 
         let doc = ruleContext.ownerDocument;
@@ -78,9 +78,26 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         
         if (childStr.trim().length == 0 && (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')))
             return null;
+        
+        let elem = ruleContext;
+        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
+        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
+        if (RPTUtil.isShadowHostElement(ruleContext)) {
+            // if it's direct text of a shadow host
+            if (ruleContext.shadowRoot) {
+                for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
+                    if (node.nodeType==3) {
+                        //if multiple texts exist, only need to check one 
+                        elem = (node as Text).assignedSlot;
+                        break;
+                    }   
+                }
+            }
+            if (elem === null) return;
+        }
 
-        let style = win.getComputedStyle(ruleContext);
-
+        let style = win.getComputedStyle(elem);
+        
         // JCH clip INFO:
         //      The clip property lets you specify a rectangle to clip an absolutely positioned element. 
         //      The rectangle specified as four coordinates, all from the top-left corner of the element to be clipped.
@@ -191,22 +208,6 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             return null;
         }
 
-        let elem = ruleContext;
-        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
-        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
-        if (RPTUtil.isShadowHostElement(ruleContext)) {
-            // if it's direct text of a shadow host
-            if (ruleContext.shadowRoot) {
-                for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
-                    if (node.nodeType==3) {
-                       //if multiple texts exist, only need to check one 
-                       elem = (node as Text).assignedSlot;
-                       break;
-                    }   
-                }
-            }
-            if (elem === null) return;
-        }
         // First determine the color contrast ratio
         let colorCombo = RPTUtil.ColorCombo(elem);
         if (colorCombo === null) {
@@ -223,19 +224,19 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
         
-        let isDisabled = RPTUtil.isNodeDisabled(ruleContext);
+        let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
-            let control = RPTUtil.getControlOfLabel(ruleContext);
+            let control = RPTUtil.getControlOfLabel(elem);
             if (control) {
                 isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
 
-        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(ruleContext)) {
+        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
 
-        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(ruleContext)) {
+        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(elem)) {
             isDisabled = true;
         }
 
