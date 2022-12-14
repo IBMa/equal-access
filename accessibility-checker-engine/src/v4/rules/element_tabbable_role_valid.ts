@@ -96,6 +96,10 @@ export let element_tabbable_role_valid: Rule = {
             if (roles[i] === "row" || ARIADefinitions.designPatterns[roles[i]].roleType === 'widget') {
                  return RulePass("pass");
             }
+            // Focusable separators are widgets
+            if (roles[i] === "separator") {
+                return RulePass("pass");
+            }
         }
             
         return RuleFail("fail_invalid_role", [roles.length === 0 ? 'none' : roles.join(', ')]);

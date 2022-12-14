@@ -725,7 +725,7 @@ export class RPTUtil {
             let requiredAttributes = ARIADefinitions.designPatterns[role].reqProps;
             // handle special case of separator
             if (role.toLowerCase() === "separator" && RPTUtil.isFocusable(ele)) {
-                RPTUtil.concatUniqueArrayItemList(["aria-valuenow"], requiredAttributes || []);
+                requiredAttributes = RPTUtil.concatUniqueArrayItemList(["aria-valuenow"], requiredAttributes || []);
             }
             return requiredAttributes;
         } else {
