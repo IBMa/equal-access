@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <div role="separator" tabindex="0" aria-valuenow="10" aria-valuemax="100" aria-valuemin="0">
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["aria_attribute_allowed"],
+        results: [
+          {
+            "ruleId": "aria_attribute_allowed",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[1]",
+              "aria": "/document[1]/main[1]/separator[1]"
+            },
+            "reasonId": "Pass",
+            "message": "ARIA attributes are valid for the element and ARIA role",
+            "messageArgs": [
+              "aria-valuenow, aria-valuemax, aria-valuemin",
+              "div",
+              "separator"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
