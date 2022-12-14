@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { DOMUtil } from "../../v2/dom/DOMUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 
 export let table_headers_ref_valid: Rule = {
     id: "table_headers_ref_valid",
@@ -50,8 +51,9 @@ export let table_headers_ref_valid: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let parentTable = RPTUtil.getAncestor(ruleContext, "table");
+        let parentRole = ARIAMapper.nodeToRole(parentTable);
         // If this is a layout table or a simple table the rule does not apply.
-        if (parentTable == null || !VisUtil.isNodeVisible(parentTable) || !RPTUtil.isDataTable(parentTable))
+        if (parentTable == null || !VisUtil.isNodeVisible(parentTable) || !["table", "grid"].includes(parentRole))
             return null;
 
         let nodeName = ruleContext.nodeName.toLowerCase();
