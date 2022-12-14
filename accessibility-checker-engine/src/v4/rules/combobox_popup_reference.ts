@@ -24,8 +24,10 @@ export let combobox_popup_reference: Rule = {
     help: {
         "en-US": {
             "group": "combobox_popup_reference.html",
-            "Pass_expanded": "combobox_popup_reference.html",
-            "Pass_collapsed": "combobox_popup_reference.html",
+            "Pass_1.0_expanded": "combobox_popup_reference.html",
+            "Pass_1.0_collapsed": "combobox_popup_reference.html",
+            "Pass_1.2_expanded": "combobox_popup_reference.html",
+            "Pass_1.2_collapsed": "combobox_popup_reference.html",
             "Fail_1.0_missing_owns": "combobox_popup_reference.html",
             "Fail_1.2_missing_controls": "combobox_popup_reference.html",
             "Fail_1.0_popup_reference_missing": "combobox_popup_reference.html",
@@ -37,8 +39,10 @@ export let combobox_popup_reference: Rule = {
     messages: {
         "en-US": {
             "group": "The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value",
-            "Pass_expanded": "The combobox popup referenced by 'aria-controls' (ARIA 1.2) or 'aria-owns' (ARIA 1.0) exists and is visible",
-            "Pass_collapsed": "The combobox popup in its collapsed state does not reference any visible popup as required",
+            "Pass_1.0_expanded": "The combobox popup referenced by 'aria-owns' (ARIA 1.0) exists and is visible",
+            "Pass_1.0_collapsed": "The combobox popup in its collapsed state does not reference any visible popup as required",
+            "Pass_1.2_expanded": "The combobox popup referenced by 'aria-controls' (ARIA 1.2) exists and is visible",
+            "Pass_1.2_collapsed": "The combobox popup in its collapsed state does not reference any visible popup as required",
             "Fail_1.0_missing_owns": "The 'aria-owns' attribute of the expanded combobox is missing",
             "Fail_1.2_missing_controls": "The 'aria-controls' attribute of the expanded combobox is missing",
             "Fail_1.0_popup_reference_missing": "The 'aria-owns' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value",
@@ -55,8 +59,10 @@ export let combobox_popup_reference: Rule = {
     }],
     act: [{
         "4e8ab6": {
-            "Pass_expanded": "pass",
-            "Pass_collapsed": "pass",
+            "Pass_1.0_expanded": "fail",
+            "Pass_1.0_collapsed": "fail",
+            "Pass_1.2_expanded": "pass",
+            "Pass_1.2_collapsed": "pass",
             "Fail_1.0_missing_owns": "inapplicable",
             "Fail_1.2_missing_controls": "fail",
             "Fail_1.0_popup_reference_missing": "inapplicable",
@@ -112,6 +118,10 @@ export let combobox_popup_reference: Rule = {
             return RuleFail("Fail_combobox_collapsed_visible");
         }
 
-        return RulePass(expanded ? "Pass_expanded" : "Pass_collapsed");
+        if (pattern === "1.0") {
+            return RulePass(expanded ? "Pass_1.0_expanded" : "Pass_1.0_collapsed");
+        } else {
+            return RulePass(expanded ? "Pass_1.2_expanded" : "Pass_1.2_collapsed");
+        }
     }
 }
