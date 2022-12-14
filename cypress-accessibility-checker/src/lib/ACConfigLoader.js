@@ -19,6 +19,7 @@ var fs = require('fs');
 var YAML = require('js-yaml');
 var constants = require("./ACConstants");
 var uuid = require('uuid');
+const { resolve } = require('path');
 
 const myrequest = (url) => {
     if (typeof cy !== "undefined") {
@@ -135,7 +136,7 @@ function processACConfig(ACConfig) {
                     let ruleArchivePath = null;
                     let ruleArchiveVersion = null;
                     for (let i = 0; i < ACConfig.ruleArchiveSet.length; i++) {
-                        if (ruleArchive == ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
+                        if (ruleArchive === ACConfig.ruleArchiveSet[i].id && !ACConfig.ruleArchiveSet[i].sunset) {
                             ruleArchivePath = ACConfig.ruleArchiveSet[i].path;
                             ruleArchiveVersion = ACConfig.ruleArchiveSet[i].version;
                             ACConfig.ruleArchive = ruleArchiveParse[i].name + " (" + ruleArchiveParse[i].id + ")";
@@ -198,7 +199,7 @@ function initializeDefaults(config) {
     config.extensions = config.extensions || constants.extensions;
     config.engineFileName = config.engineFileName || constants.engineFileName;
     config.ruleArchive = config.ruleArchive || constants.ruleArchive;
-    config.cacheFolder = config.cacheFolder || constants.cacheFolder;
+    config.cacheFolder = config.cacheFolder ? resolve(config.cacheFolder) : constants.cacheFolder;
     // For capture screenshots need to check for null or undefined and then set default otherwise it will evaluate the
     // boolean which causes it to always comply with the default value and not user provided option
     if (config.captureScreenshots === null || config.captureScreenshots === undefined || typeof config.captureScreenshots === "undefined") {
