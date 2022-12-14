@@ -1,3 +1,4 @@
+import { writeFileSync } from 'fs';
 /******************************************************************************
      Copyright:: 2020- IBM, Inc
 
@@ -19,60 +20,82 @@
     
     // import ExcelJS from "exceljs"
     const ExcelJS = require('exceljs');
+    const fs = require('fs');
 
     
     export default class MultiScanReport {
     
-        public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: []) {
-            console.log("ALIWASHERE multiScanXlsxDownload")
+        public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: [], toolID: string) {
+            console.log("ALIWASHERE multiScanXlsxDownload0")
             // create workbook
-            var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives);
+            var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives, toolID);
+            // console.log(reportWorkbook)
             console.log("ALIWASHERE multiScanXlsxDownload1")
 
             // create binary buffer
             const buffer = await reportWorkbook.xlsx.writeBuffer();
-    
+            console.log("blob-----0----------------------------")
+            await console.log(buffer)
+            fs.writeFileSync('/tmp/test-sync.xlsx', buffer);
+
+
             // create xlsx blob
-            const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            const blob = new Blob([buffer], {type: fileType});
-    
-            // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
-            const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
-    
+            // const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            // const blob = new Blob([buffer], {type: fileType});
+            
             // return blob
+            // console.log("blob-----1----------------------------")
+            // console.log(blob)
+
+            // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
+            // const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
+            
+            // return blob
+            // console.log("blob-----2----------------------------")
+            // console.log(blob)
+            
+    
             // if scanStorage false clear/delete current scan?
     
             // download file
-            ReportUtil.download_file(blob, fileName);
+            // ReportUtil.download_file(blob, fileName);
         }
     
-        public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number, archives: []) {
+        public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number, archives: [], toolID: string) {
             // create workbook
             // @ts-ignore
             console.log("ALIWASHERE createReportWorkbook")
             const workbook = new ExcelJS.Workbook({useStyles: true });
             console.log("ALIWASHERE createReportWorkbook 1")
+            // console.log("ALIWASHERE createReportWorkbook workbook")
+            // console.log(workbook)
+            
             // create worksheets
-            this.createOverviewSheet(storedScans, scanType, storedScanCount, archives, workbook);
+            this.createOverviewSheet(storedScans, scanType, storedScanCount, archives, workbook, toolID);
             console.log("ALIWASHERE createReportWorkbook 2")
+            // console.log(workbook)
 
             this.createScanSummarySheet(storedScans, scanType, workbook);
             console.log("ALIWASHERE createReportWorkbook 3")
+            // console.log(workbook)
 
             this.createIssueSummarySheet(storedScans, scanType, workbook);
             console.log("ALIWASHERE createReportWorkbook 4")
+            // console.log(workbook)
 
             this.createIssuesSheet(storedScans, scanType, workbook);
             console.log("ALIWASHERE createReportWorkbook 5")
+            // console.log(workbook)
 
             this.createDefinitionsSheet(workbook);
             console.log("ALIWASHERE createReportWorkbook 6")
+            // console.log(workbook)
     
             return workbook;
         }
     
         
-        public static createOverviewSheet(storedScans: any, scanType: string, storedScanCount: number, archives: [], workbook: any) {
+        public static createOverviewSheet(storedScans: any, scanType: string, storedScanCount: number, archives: [], workbook: any, toolID: string) {
     
             let violations = 0;
             let needsReviews = 0;
@@ -153,7 +176,8 @@
             // note except for Report Date this is the same for all scans
             const rowData = [
                 {key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker'},
-                {key1: 'Version:', key2: "chrome.runtime.getManifest().version"},
+                // {key1: 'Version:', key2: "chrome.runtime.getManifest().version"},
+                {key1: 'Version:', key2: toolID},
                 //@ts-ignore
                 {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
                 {key1: 'Guidelines:', key2: theCurrentScan.guidelines},

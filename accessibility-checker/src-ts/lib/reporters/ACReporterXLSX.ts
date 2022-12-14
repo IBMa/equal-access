@@ -103,6 +103,7 @@ export class ACReporterXLSX {
             "total": {},
             "filtered": {}
         };
+        report.counts.total["All"] = 0;
         for (const item of report.results) {
             let filtVal = "";
             item.selected = false;
@@ -128,8 +129,15 @@ export class ACReporterXLSX {
                     }
                 }
             }
+
+            
+            
+            // let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
             let val = valueMap[item.value[0]][item.value[1]] || item.value[0] + "_" + item.value[1];
+            // report.counts.total[val] = (report.counts.total[val] || 0) + 1;    
             report.counts.total[val] = (report.counts.total[val] || 0) + 1;
+            report.counts.total["All"] = report.counts.total["All"] + 1;
+            item.help = ACEngineManager.getHelpURL(item);
             if (filtVal !== "") {
                 report.counts.filtered[val] = (report.counts.filtered[val] || 0) + 1;
             }
@@ -147,7 +155,7 @@ export class ACReporterXLSX {
 
         this.Config.DEBUG && console.log("ALIWASHERE1");
         // this.Config.DEBUG && console.log(report);
-        // this.Config.DEBUG && console.log(JSON.stringify(report));
+        this.Config.DEBUG && console.log(JSON.stringify(report));
         
         // this.Config.DEBUG && console.log("ALIWASHERE1 ruleArchiveSet");
         let ruleArchiveSet = (await ACConfigManager.getConfig()).ruleArchiveSet
@@ -169,8 +177,8 @@ export class ACReporterXLSX {
         var xlsx_props = {
             report: report,
             rulesets: await ACEngineManager.getRulesets(),
-            tabTitle: "this.state.tabTitle",
-            tabURL: "this.state.tabURL"
+            tabTitle: report.summary.URL,
+            tabURL: report.summary.URL
         }
 
         // this.Config.DEBUG && console.log(JSON.stringify(xlsx_props));
@@ -182,25 +190,37 @@ export class ACReporterXLSX {
 
 
         
-        var violation = report?.counts.total["Violation"];
-        var needsReview = report?.counts.total["Needs review"];
-        var recommendation = report?.counts.total["Recommendation"];
+        var violation = report?.counts.total["Violation"] ? report?.counts.total["Violation"] : 0;
+        var needsReview = report?.counts.total["Needs review"] ? report?.counts.total["Needs review"] : 0;
+        var recommendation = report?.counts.total["Recommendation"] ? report?.counts.total["Recommendation"] : 0;
+        // var all = violation + needsReview + recommendation
         var all = report?.counts.total["All"];
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
+
+        this.Config.DEBUG && console.log("violation");
+        this.Config.DEBUG && console.log(violation);
+        this.Config.DEBUG && console.log("needsReview");
+        this.Config.DEBUG && console.log(needsReview);
+        this.Config.DEBUG && console.log("recommendation");
+        this.Config.DEBUG && console.log(recommendation);
+        this.Config.DEBUG && console.log("all");
+        this.Config.DEBUG && console.log(all);
+        this.Config.DEBUG && console.log("element_no_failures");
+        this.Config.DEBUG && console.log(element_no_failures);
 
 
         let currentScan = {
             actualStoredScan:  true,
             isSelected: false,
-            url: "this.state.tabURL",
-            pageTitle: "this.state.tabTitle",
-            dateTime: "1670021829876",
+            url: report.summary.URL ,
+            pageTitle: report.summary.URL, // TODO ALI need to fix this to be better. 
+            dateTime: Date.now(),
             scanLabel: "scan1", // is this safe since setState above is async
             userScanLabel: "scan1", // this is the visible scan label which may be edited by user
             ruleSet: "Preview Rules",
             guidelines: myPolicies[0],
-            reportDate: "2022-12-02T22:57:09.876Z",
+            reportDate: new Date().toJSON(),
             violations: violation,
             needsReviews: needsReview,
             recommendations: recommendation,
@@ -219,15 +239,30 @@ export class ACReporterXLSX {
             // console.log("xlsxReportHandler");
             //@ts-ignore
                   // MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
-        let myblob = MultiScanReport.multiScanXlsxDownload([currentScan], "current", 1, ruleArchiveSet);
+
+        console.log("ALIWASHERE multiScanXlsxDownload ------")
+        console.log("this.state.storedScans")
+        console.log([currentScan])
+        console.log("scanType")
+        console.log("scanType")
+        console.log("this.state.storedScanCount")
+        console.log("this.state.storedScanCount")
+        // console.log("this.state.archives")
+        // console.log(ruleArchiveSet)
+
+        let myblob = MultiScanReport.multiScanXlsxDownload([currentScan], "current", 1, ruleArchiveSet, report.toolID);
 
         this.Config.DEBUG && console.log("myblob");
+        // this.Config.DEBUG && console.log(myblob.then((resp)=>{console.log(resp)},(resp)=>{console.log(resp)}));     
         // this.Config.DEBUG && console.log(myblob.then((resp)=>{console.log(resp)}));
-        var promiseRes = await myblob.then(function(result) {
+        // myblob.then(function(result){
+        //    console.log(result)
+        //  })
+        // var promiseRes = await myblob.then(function(result) {
             // do something with result
-            return result
-         });
-         console.log(promiseRes)
+            // return result
+        //  });
+        //  console.log(promiseRes)
         this.Config.DEBUG && console.log("ALIWASHERE5");
 
         // }
