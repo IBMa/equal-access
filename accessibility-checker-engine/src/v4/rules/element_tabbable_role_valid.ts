@@ -92,8 +92,14 @@ export let element_tabbable_role_valid: Rule = {
         // handle the case: tabindex >= 0 to examine whether a widget role is setup or not 
         // pass if one of the roles is a widget type
         for (let i=0; i < roles.length; i++) {
-            if (ARIADefinitions.designPatterns[roles[i]].roleType === 'widget')
+            // Row is weird. It's structure, but can also be widget
+            if (roles[i] === "row" || ARIADefinitions.designPatterns[roles[i]].roleType === 'widget') {
                  return RulePass("pass");
+            }
+            // Focusable separators are widgets
+            if (roles[i] === "separator") {
+                return RulePass("pass");
+            }
         }
             
         return RuleFail("fail_invalid_role", [roles.length === 0 ? 'none' : roles.join(', ')]);

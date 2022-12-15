@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
+  </head>
+
+  <body>
+    <main>
+      <h1>Test page</h1>
+      <div role="separator"></div>
+      <div role="separator" tabindex="0"></div>
+    </main>
+    <script>
+      UnitTest = {
+        ruleIds: ["element_tabbable_role_valid"],
+        results: [
+          {
+            "ruleId": "element_tabbable_role_valid",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]",
+              "aria": "/document[1]/main[1]/separator[2]"
+            },
+            "reasonId": "pass",
+            "message": "The tabbable element has a widget role",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+      };
+    </script>
+  </body>
+</html>
