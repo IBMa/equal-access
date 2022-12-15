@@ -1,26 +1,5 @@
 {
 	"results": [{
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/head[1]/title[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 0,
-			"width": 0
-		},
-		"snippet": "<title>",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -126,27 +105,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/head[1]/meta[2]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 0,
-			"width": 0
-		},
-		"snippet": "<meta content=\"text\" name=\"Description\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -227,27 +185,6 @@
 			"width": 0
 		},
 		"snippet": "<meta content=\"text\" name=\"Description\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/head[1]/meta[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 0,
-			"width": 0
-		},
-		"snippet": "<meta charset=\"utf-8\">",
 		"category": "Accessibility",
 		"ignored": false,
 		"level": "pass"
@@ -336,27 +273,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/head[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 0,
-			"width": 0
-		},
-		"snippet": "<head>",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -441,7 +357,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/h1[1]",
@@ -462,14 +378,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/h1[1]",
 			"aria": "/document[1]/main[1]/heading[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -672,7 +588,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[2]",
@@ -693,14 +609,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[2]",
 			"aria": "/document[1]/main[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -882,7 +798,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[1]",
@@ -903,14 +819,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/div[1]",
 			"aria": "/document[1]/main[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1092,7 +1008,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/a[1]",
@@ -1113,14 +1029,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]/a[1]",
 			"aria": "/document[1]/main[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1260,7 +1176,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]",
@@ -1281,14 +1197,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[2]",
 			"aria": "/document[1]/main[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1533,27 +1449,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/body[1]/div[1]/a[1]",
-			"aria": "/document[1]/navigation[1]/link[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 8,
-			"top": 8,
-			"height": 18,
-			"width": 56
-		},
-		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -1583,6 +1478,27 @@
 		},
 		"reasonId": "Pass_0",
 		"message": "Hyperlink has a description of its purpose",
+		"messageArgs": [],
+		"apiArgs": [],
+		"bounds": {
+			"left": 8,
+			"top": 8,
+			"height": 18,
+			"width": 56
+		},
+		"snippet": "<a alt=\"skip to main content\" href=\"#navskip\">",
+		"category": "Accessibility",
+		"ignored": false,
+		"level": "pass"
+	}, {
+		"ruleId": "text_whitespace_valid",
+		"value": ["VIOLATION", "PASS"],
+		"path": {
+			"dom": "/html[1]/body[1]/div[1]/a[1]",
+			"aria": "/document[1]/navigation[1]/link[1]"
+		},
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1806,7 +1722,7 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
+		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]",
@@ -1827,14 +1743,14 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_Emoticons",
+		"ruleId": "text_whitespace_valid",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
 			"dom": "/html[1]/body[1]/div[1]",
 			"aria": "/document[1]/navigation[1]"
 		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -2079,27 +1995,6 @@
 		"ignored": false,
 		"level": "pass"
 	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]/body[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 8,
-			"top": 8,
-			"height": 114,
-			"width": 784
-		},
-		"snippet": "<body>",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
 		"ruleId": "WCAG20_Text_Emoticons",
 		"value": ["VIOLATION", "PASS"],
 		"path": {
@@ -2150,6 +2045,27 @@
 		},
 		"reasonId": "Pass_0",
 		"message": "Rule Passed",
+		"messageArgs": [],
+		"apiArgs": [],
+		"bounds": {
+			"left": 8,
+			"top": 8,
+			"height": 114,
+			"width": 784
+		},
+		"snippet": "<body>",
+		"category": "Accessibility",
+		"ignored": false,
+		"level": "pass"
+	}, {
+		"ruleId": "text_whitespace_valid",
+		"value": ["VIOLATION", "PASS"],
+		"path": {
+			"dom": "/html[1]/body[1]",
+			"aria": "/document[1]"
+		},
+		"reasonId": "pass",
+		"message": "No space characters are used to space letters or words",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -2264,27 +2180,6 @@
 			"width": 784
 		},
 		"snippet": "<body>",
-		"category": "Accessibility",
-		"ignored": false,
-		"level": "pass"
-	}, {
-		"ruleId": "WCAG20_Text_LetterSpacing",
-		"value": ["VIOLATION", "PASS"],
-		"path": {
-			"dom": "/html[1]",
-			"aria": "/document[1]"
-		},
-		"reasonId": "Pass_0",
-		"message": "Rule Passed",
-		"messageArgs": [],
-		"apiArgs": [],
-		"bounds": {
-			"left": 0,
-			"top": 0,
-			"height": 144,
-			"width": 800
-		},
-		"snippet": "<html lang=\"en\">",
 		"category": "Accessibility",
 		"ignored": false,
 		"level": "pass"
@@ -2478,7 +2373,7 @@
 		"ignored": false,
 		"level": "pass"
 	}],
-	"numExecuted": 118,
+	"numExecuted": 113,
 	"nls": {
 		"html_lang_valid": {
 			"0": "The default human language of the page must be valid and specified in accordance with BCP 47",
@@ -2508,10 +2403,6 @@
 			"0": "Emoticons must have a short text alternative that describes their purpose",
 			"Pass_0": "Rule Passed"
 		},
-		"WCAG20_Text_LetterSpacing": {
-			"0": "Sapce characters should not be used to control spacing within a word",
-			"Pass_0": "Rule Passed"
-		},
 		"Rpt_Aria_MultipleDocumentRoles": {
 			"0": "All elements with a \"document\" role must have unique labels",
 			"Pass_0": "Rule Passed"
@@ -2539,6 +2430,10 @@
 		"text_quoted_correctly": {
 			"0": "Quotations should be marked with <q> or <blockquote> elements",
 			"Pass_0": "Rule Passed"
+		},
+		"text_whitespace_valid": {
+			"0": "Space characters should not be used to space letters or words",
+			"pass": "No space characters are used to space letters or words"
 		},
 		"WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
 			"0": "The description of a hyperlink used to skip content must communicate where it links to",
@@ -2609,7 +2504,7 @@
 			"recommendation": 0,
 			"potentialrecommendation": 0,
 			"manual": 0,
-			"pass": 117,
+			"pass": 112,
 			"ignored": 0
 		},
 		"scanTime": 999,
