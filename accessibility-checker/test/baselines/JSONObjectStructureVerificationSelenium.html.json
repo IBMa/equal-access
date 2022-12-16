@@ -93,10 +93,6 @@
 			"0": "Emoticons must have a short text alternative that describes their purpose",
 			"Pass_0": "Rule Passed"
 		},
-		"WCAG20_Text_LetterSpacing": {
-			"0": "Sapce characters should not be used to control spacing within a word",
-			"Pass_0": "Rule Passed"
-		},
 		"aria_attribute_deprecated": {
 			"0": "No deprecated ARIA role or attribute should be used",
 			"pass": "The ARIA roles and attribute are used per specification"
@@ -122,8 +118,7 @@
 			"Pass_0": "Rule Passed"
 		},
 		"text_whitespace_valid": {
-			"0": "Space characters should not be used to space letters or words",
-			"pass": "No space characters are used to space letters or words"
+			"0": "Sapce characters should not be used to control spacing within a word"
 		}
 	},
 	"numExecuted": 113,
@@ -514,7 +509,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]/heading[1]",
@@ -745,7 +740,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -955,7 +950,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1165,7 +1160,7 @@
 			"width": 0
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1333,7 +1328,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1627,7 +1622,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/navigation[1]/link[1]",
@@ -1879,7 +1874,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/navigation[1]",
@@ -2194,7 +2189,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]",

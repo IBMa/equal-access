@@ -385,7 +385,7 @@
 			"aria": "/document[1]/main[1]/heading[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -616,7 +616,7 @@
 			"aria": "/document[1]/main[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -826,7 +826,7 @@
 			"aria": "/document[1]/main[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1036,7 +1036,7 @@
 			"aria": "/document[1]/main[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1204,7 +1204,7 @@
 			"aria": "/document[1]/main[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1498,7 +1498,7 @@
 			"aria": "/document[1]/navigation[1]/link[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -1750,7 +1750,7 @@
 			"aria": "/document[1]/navigation[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -2065,7 +2065,7 @@
 			"aria": "/document[1]"
 		},
 		"reasonId": "pass",
-		"message": "No space characters are used to space letters or words",
+		"message": "text_whitespace_valid_pass",
 		"messageArgs": [],
 		"apiArgs": [],
 		"bounds": {
@@ -2432,8 +2432,7 @@
 			"Pass_0": "Rule Passed"
 		},
 		"text_whitespace_valid": {
-			"0": "Space characters should not be used to space letters or words",
-			"pass": "No space characters are used to space letters or words"
+			"0": "Sapce characters should not be used to control spacing within a word"
 		},
 		"WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
 			"0": "The description of a hyperlink used to skip content must communicate where it links to",
