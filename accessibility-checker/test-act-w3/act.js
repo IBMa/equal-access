@@ -66,14 +66,14 @@ async function getTestcases() {
         request("https://www.w3.org/WAI/content-assets/wcag-act-rules/testcases.json", (err, req, body) => {
             let testcaseInfo = JSON.parse(body);
             for (const testcase of testcaseInfo.testcases) {
-                if (testcase.ruleId in aceMapping) {
+                // if (testcase.ruleId in aceMapping) {
                     ruleTestInfo[testcase.ruleId] = ruleTestInfo[testcase.ruleId] || {
                         aceRules: aceMapping[testcase.ruleId],
                         label: testcase.ruleName,
                         testcases: []
                     }
                     ruleTestInfo[testcase.ruleId].testcases.push(testcase);
-                }
+                // }
             }
             resolve(ruleTestInfo);
         });
