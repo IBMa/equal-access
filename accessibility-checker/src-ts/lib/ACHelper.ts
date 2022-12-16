@@ -318,7 +318,6 @@ async function getComplianceHelperPuppeteer(label, parsed, curPol) : Promise<ICh
         let report : Report = await page.evaluate(({ policies, customRulesets }) => {
             
             let checker = new (window as any).ace_ibma.Checker();
-            console.log("ACHelper.js:getComplianceHelperPuppeteer=", "checker ", checker);
             customRulesets.forEach((rs) => checker.addRuleset(rs));
             return new Promise<Report>((resolve, reject) => {
                 setTimeout(function () {
