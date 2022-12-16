@@ -34,7 +34,7 @@ const fs = require("fs");
             approved = approved || testcase.approved;
             if (!!approved !== showApproved) continue;
             if (first) {
-                console.group(`* ${ruleTestInfo[ruleId].label}`);
+                console.group(`* ${ruleTestInfo[ruleId].label} (https://www.w3.org/WAI/standards-guidelines/act/rules/${ruleId})`);
                 first = false;
             }
             let ext = testcase.url.substring(testcase.url.lastIndexOf("."));
