@@ -156,9 +156,14 @@ export class ACReporterXLSX {
     async report(report1) {
         this.Config.DEBUG && console.log("START 'info' emitter function");
         
-        this.deploymentDate = this.Config.ruleArchive
-        this.accessibilityGuidelines = this.Config.policies[0]
-        
+        // get values from user config
+        if(this.Config.hasOwnProperty('ruleArchive')){  
+            this.deploymentDate = this.Config.ruleArchive
+        }
+        if(this.Config.hasOwnProperty('policies')){  // TODO should this always be 0? 
+            this.accessibilityGuidelines = this.Config.policies[0]
+        }
+
         let report = this.preprocessReport(report1, null, false)
         report.timestamp = new Date().getTime();
 
