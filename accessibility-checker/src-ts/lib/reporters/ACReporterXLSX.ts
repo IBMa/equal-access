@@ -205,17 +205,6 @@ export class ACReporterXLSX {
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
 
-        this.Config.DEBUG && console.log("violation");
-        this.Config.DEBUG && console.log(violation);
-        this.Config.DEBUG && console.log("needsReview");
-        this.Config.DEBUG && console.log(needsReview);
-        this.Config.DEBUG && console.log("recommendation");
-        this.Config.DEBUG && console.log(recommendation);
-        this.Config.DEBUG && console.log("all");
-        this.Config.DEBUG && console.log(all);
-        this.Config.DEBUG && console.log("element_no_failures");
-        this.Config.DEBUG && console.log(element_no_failures);
-
         let scanLabel = "scan"+this.scanNumber
         this.scanNumber += 1
 

@@ -31,8 +31,6 @@ import { writeFileSync } from 'fs';
 
             // create binary buffer
             const buffer = await reportWorkbook.xlsx.writeBuffer();
-
-            await console.log(buffer)
             fs.writeFileSync(fileName, buffer);
         }
     
@@ -315,7 +313,7 @@ import { writeFileSync } from 'fs';
             // if current scan use only the last scan otherwise loop through each scan an create row
             let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
             for (j; j < storedScans.length; j++) { // for each scan
-                console.log("scanType = ", scanType, "   storedScans[j].isSelected = ", storedScans[j].isSelected);
+                // console.log("scanType = ", scanType, "   storedScans[j].isSelected = ", storedScans[j].isSelected);
                 if (scanType === "selected" && storedScans[j].isSelected === true) {
                     let row = worksheet.addRow(
                         [storedScans[j].pageTitle, 
