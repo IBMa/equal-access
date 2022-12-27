@@ -46,8 +46,9 @@ import { report } from 'process';
             var report = xlsx_props.report;
             var tab_url = xlsx_props.tabURL;
             var tab_title = xlsx_props.tabTitle;
+            var engine_end_point = xlsx_props.helpPath;
             this.Config.DEBUG && console.log("ALIWASHERE12");
-            const engine_end_point = "process.env.engineEndpoint";
+            // const engine_end_point = "process.env.engineEndpoint";
             const rule_map = MultiScanData.id_rule_map(xlsx_props);
             const rule_checkpoints_map = MultiScanData.ruleId_checkpoints_map(xlsx_props);
     
@@ -105,7 +106,8 @@ import { report } from 'process';
                     MultiScanData.get_element(item.snippet),
                     item.snippet,
                     item.path.aria,
-                    engine_end_point + '/tools/help/' + item.ruleId
+                    // engine_end_point + '/tools/help/' + item.ruleId
+                    engine_end_point + item.ruleId + ".html"
                 ]
     
                 ret.push(row);

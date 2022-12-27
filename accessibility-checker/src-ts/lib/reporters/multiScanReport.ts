@@ -179,12 +179,13 @@ import { writeFileSync } from 'fs';
                 // {key1: 'Version:', key2: "chrome.runtime.getManifest().version"},
                 {key1: 'Version:', key2: toolID},
                 //@ts-ignore
-                {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
+                // {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
+                {key1: 'Rule set:', key2: theCurrentScan.ruleSet},
                 {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
                 {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
-                {key1: 'Platform:', key2: "navigator.userAgent"}, // ALIWASHERE TODO do we have access to navigatior?
+                {key1: 'Platform:', key2: "N/A"}, // Removed after talking to Tom, we might not have access to navigatior?
                 {key1: 'Scans:', key2: scanType === "current" ? 1 : scanType === "all" ? storedScanCount : selectedStoredScanCount}, // *** NEED TO FIX FOR selected
-                {key1: 'Pages:', key2: ""}
+                {key1: 'Pages:', key2: "N/A"}
             ];
             
             worksheet.mergeCells('B2', "D2");

@@ -55,8 +55,15 @@ let toCSV = function(str) {
  * @memberOf this
  */
 export class ACReporterXLSX {
+    storedScans:any = []
     resultStr: string = `Label,Level,RuleId,Message,Xpath,Help\n`;
     Config: IConfigUnsupported;
+    ruleArchiveSet:any 
+    toolID:any
+    scanNumber:any = 0
+    deploymentDate:string = "latest" // These need to be user set
+    accessibilityGuidelines:string = "IBM_Accessibility" // These need to be user set
+    // helpPath:string = "" 
 
     constructor(config: IConfigUnsupported, scanSummary: IScanSummary) {
         this.Config = config;
@@ -154,31 +161,42 @@ export class ACReporterXLSX {
 
 
         this.Config.DEBUG && console.log("ALIWASHERE1");
-        // this.Config.DEBUG && console.log(report);
-        this.Config.DEBUG && console.log(JSON.stringify(report));
+        let myConfig = (await ACConfigManager.getConfig())
         
-        // this.Config.DEBUG && console.log("ALIWASHERE1 ruleArchiveSet");
-        let ruleArchiveSet = (await ACConfigManager.getConfig()).ruleArchiveSet
-        // this.Config.DEBUG && console.log(ruleArchiveSet);
+        let ruleArchiveSet = myConfig.ruleArchiveSet
+        this.ruleArchiveSet = ruleArchiveSet
 
-        // let myArchive3s = (await ACConfigManager.getConfig()).get
-
-
-        // this.Config.DEBUG && console.log("ALIWASHERE1myPolicies");
-        let myPolicies = (await ACConfigManager.getConfig()).policies
-        // this.Config.DEBUG && console.log(myPolicies);
-
-        // this.Config.DEBUG && console.log("ALIWASHERE1myRulesets");
-        let myRulesets = await ACEngineManager.getRuleset(myPolicies[0]) // TODO ALI should this really be [0]?
-        // this.Config.DEBUG && console.log(JSON.stringify(myRulesets));
-
+        let myRulesets = await ACEngineManager.getRuleset(this.accessibilityGuidelines)
         report.ruleset = myRulesets;
+
+        let helpPath = ""
+        ruleArchiveSet.forEach(element => {
+            if(element.id === this.deploymentDate){
+                helpPath = element.helpPath
+            }
+        });
+
+
+        this.Config.DEBUG && console.log(helpPath);
+        // this.Config.DEBUG && console.log(report);
+        // this.Config.DEBUG && console.log(JSON.stringify(report));
+        // this.Config.DEBUG && console.log(JSON.stringify(myConfig));
+        // this.Config.DEBUG && console.log("ALIWASHERE1 ruleArchiveSet");
+        // this.Config.DEBUG && console.log(ruleArchiveSet);
+        // let myArchive3s = (await ACConfigManager.getConfig()).get
+        // this.Config.DEBUG && console.log("ALIWASHERE1myPolicies");
+        // let myPolicies = myConfig.policies
+        // let myPolicies = this.accessibilityGuidelines
+        // console.log(JSON.stringify(myPolicies))
+        // this.Config.DEBUG && console.log("ALIWASHERE1myRulesets");
+        // this.Config.DEBUG && console.log(JSON.stringify(myRulesets));
 
         var xlsx_props = {
             report: report,
             rulesets: await ACEngineManager.getRulesets(),
-            tabTitle: report.summary.URL,
-            tabURL: report.summary.URL
+            tabTitle: "",//report.label,
+            tabURL: report.summary.URL,
+            helpPath: helpPath+"/en-US/"
         }
 
         // this.Config.DEBUG && console.log(JSON.stringify(xlsx_props));
@@ -209,24 +227,26 @@ export class ACReporterXLSX {
         this.Config.DEBUG && console.log("element_no_failures");
         this.Config.DEBUG && console.log(element_no_failures);
 
+        let scanLabel = "scan"+this.scanNumber
+        this.scanNumber += 1
 
         let currentScan = {
             actualStoredScan:  true,
             isSelected: false,
             url: report.summary.URL ,
-            pageTitle: report.summary.URL, // TODO ALI need to fix this to be better. 
+            pageTitle: "",//report.label, // TODO ALI need to fix this to be better. 
             dateTime: Date.now(),
-            scanLabel: "scan1", // is this safe since setState above is async
-            userScanLabel: "scan1", // this is the visible scan label which may be edited by user
-            ruleSet: "Preview Rules",
-            guidelines: myPolicies[0],
+            scanLabel: scanLabel, // is this safe since setState above is async
+            userScanLabel: scanLabel, // this is the visible scan label which may be edited by user
+            ruleSet: this.deploymentDate,
+            guidelines: this.accessibilityGuidelines,
             reportDate: new Date().toJSON(),
             violations: violation,
             needsReviews: needsReview,
             recommendations: recommendation,
             elementsNoViolations: element_no_violations,
             elementsNoFailures: element_no_failures,
-            storedScan: "scan1",
+            storedScan: scanLabel,
             screenShot: null,
             storedScanData: scanData,
         };
@@ -242,7 +262,7 @@ export class ACReporterXLSX {
 
         console.log("ALIWASHERE multiScanXlsxDownload ------")
         console.log("this.state.storedScans")
-        console.log([currentScan])
+        // console.log([currentScan])
         console.log("scanType")
         console.log("scanType")
         console.log("this.state.storedScanCount")
@@ -250,7 +270,17 @@ export class ACReporterXLSX {
         // console.log("this.state.archives")
         // console.log(ruleArchiveSet)
 
-        let myblob = MultiScanReport.multiScanXlsxDownload([currentScan], "current", 1, ruleArchiveSet, report.toolID);
+        this.toolID = report.toolID
+
+        this.Config.DEBUG && console.log("START 'storedScans' function");
+        this.storedScans = [...this.storedScans, currentScan]
+        console.log(this.storedScans.length)
+
+        this.Config.DEBUG && console.log("END 'storedScans' function");
+
+
+
+        // ****let myblob = MultiScanReport.multiScanXlsxDownload([currentScan], "current", 1, ruleArchiveSet, report.toolID);
 
         this.Config.DEBUG && console.log("myblob");
         // this.Config.DEBUG && console.log(myblob.then((resp)=>{console.log(resp)},(resp)=>{console.log(resp)}));     
@@ -410,7 +440,8 @@ export class ACReporterXLSX {
             return;
         }
         this.Config.DEBUG && console.log("START 'saveSummary' function");
-        this.writeObjectToFile("results.xlsx", this.resultStr);
+        // this.writeObjectToFile("results.xlsx", this.resultStr);
+        MultiScanReport.multiScanXlsxDownload(this.storedScans, "all", this.storedScans.length, this.ruleArchiveSet, this.toolID);
         this.Config.DEBUG && console.log("END 'saveSummary' function");
     }
 
