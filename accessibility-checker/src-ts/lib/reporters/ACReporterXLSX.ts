@@ -441,7 +441,8 @@ export class ACReporterXLSX {
         }
         this.Config.DEBUG && console.log("START 'saveSummary' function");
         // this.writeObjectToFile("results.xlsx", this.resultStr);
-        MultiScanReport.multiScanXlsxDownload(this.storedScans, "all", this.storedScans.length, this.ruleArchiveSet, this.toolID);
+        let fileName = pathLib.join(this.Config.outputFolder, "results.xlsx");
+        MultiScanReport.multiScanXlsxDownload(this.storedScans, "all", this.storedScans.length, this.ruleArchiveSet, this.toolID, fileName);
         this.Config.DEBUG && console.log("END 'saveSummary' function");
     }
 

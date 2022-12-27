@@ -25,7 +25,7 @@ import { writeFileSync } from 'fs';
     
     export default class MultiScanReport {
     
-        public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: [], toolID: string) {
+        public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: [], toolID: string, fileName:string) {
             console.log("ALIWASHERE multiScanXlsxDownload0")
             // create workbook
             var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives, toolID);
@@ -36,7 +36,7 @@ import { writeFileSync } from 'fs';
             const buffer = await reportWorkbook.xlsx.writeBuffer();
             console.log("blob-----0----------------------------")
             await console.log(buffer)
-            fs.writeFileSync('/tmp/test-sync.xlsx', buffer);
+            fs.writeFileSync(fileName, buffer);
 
 
             // create xlsx blob
