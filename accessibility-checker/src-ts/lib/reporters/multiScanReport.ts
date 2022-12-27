@@ -26,71 +26,27 @@ import { writeFileSync } from 'fs';
     export default class MultiScanReport {
     
         public static async multiScanXlsxDownload(storedScans: any, scanType:string, storedScanCount: number, archives: [], toolID: string, fileName:string) {
-            console.log("ALIWASHERE multiScanXlsxDownload0")
             // create workbook
             var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives, toolID);
-            // console.log(reportWorkbook)
-            console.log("ALIWASHERE multiScanXlsxDownload1")
 
             // create binary buffer
             const buffer = await reportWorkbook.xlsx.writeBuffer();
-            console.log("blob-----0----------------------------")
+
             await console.log(buffer)
             fs.writeFileSync(fileName, buffer);
-
-
-            // create xlsx blob
-            // const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-            // const blob = new Blob([buffer], {type: fileType});
-            
-            // return blob
-            // console.log("blob-----1----------------------------")
-            // console.log(blob)
-
-            // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
-            // const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
-            
-            // return blob
-            // console.log("blob-----2----------------------------")
-            // console.log(blob)
-            
-    
-            // if scanStorage false clear/delete current scan?
-    
-            // download file
-            // ReportUtil.download_file(blob, fileName);
         }
     
         public static createReportWorkbook(storedScans: any, scanType: string, storedScanCount: number, archives: [], toolID: string) {
             // create workbook
             // @ts-ignore
-            console.log("ALIWASHERE createReportWorkbook")
             const workbook = new ExcelJS.Workbook({useStyles: true });
-            console.log("ALIWASHERE createReportWorkbook 1")
-            // console.log("ALIWASHERE createReportWorkbook workbook")
-            // console.log(workbook)
             
             // create worksheets
             this.createOverviewSheet(storedScans, scanType, storedScanCount, archives, workbook, toolID);
-            console.log("ALIWASHERE createReportWorkbook 2")
-            // console.log(workbook)
-
             this.createScanSummarySheet(storedScans, scanType, workbook);
-            console.log("ALIWASHERE createReportWorkbook 3")
-            // console.log(workbook)
-
             this.createIssueSummarySheet(storedScans, scanType, workbook);
-            console.log("ALIWASHERE createReportWorkbook 4")
-            // console.log(workbook)
-
             this.createIssuesSheet(storedScans, scanType, workbook);
-            console.log("ALIWASHERE createReportWorkbook 5")
-            // console.log(workbook)
-
             this.createDefinitionsSheet(workbook);
-            console.log("ALIWASHERE createReportWorkbook 6")
-            // console.log(workbook)
-    
             return workbook;
         }
     

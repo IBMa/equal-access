@@ -23,8 +23,6 @@ import { report } from 'process';
         Config: IConfigUnsupported;
         constructor(config: IConfigUnsupported) {
             this.Config = config;
-            this.Config.DEBUG && console.log("ALIWASHEREconfig");
-
         }    
     
         // this class barrows heavily from singlePageReport
@@ -39,15 +37,12 @@ import { report } from 'process';
         // from the issue data
     
         public issues_sheet_rows(xlsx_props: any) {
-            this.Config.DEBUG && console.log("ALIWASHERE11");
-
             var ret: any = [];
     
             var report = xlsx_props.report;
             var tab_url = xlsx_props.tabURL;
             var tab_title = xlsx_props.tabTitle;
             var engine_end_point = xlsx_props.helpPath;
-            this.Config.DEBUG && console.log("ALIWASHERE12");
             // const engine_end_point = "process.env.engineEndpoint";
             const rule_map = MultiScanData.id_rule_map(xlsx_props);
             const rule_checkpoints_map = MultiScanData.ruleId_checkpoints_map(xlsx_props);
@@ -83,14 +78,10 @@ import { report } from 'process';
                 }
                 let test = MultiScanData.checkpoints_string(rule_checkpoints_map, item.ruleId)
                 let test2 = MultiScanData.wcag_string(rule_checkpoints_map, item.ruleId)
-                this.Config.DEBUG && console.log("ALIWASHERE13");    
                 MultiScanData.get_element(item.snippet)
                 MultiScanData.format_date(report.timestamp)
-                this.Config.DEBUG && console.log("ALIWASHERE14");    
                 stringHash(item.ruleId + item.path.dom)
-                this.Config.DEBUG && console.log("ALIWASHERE15");    
-                parseInt(rule_map.get(item.ruleId).toolkitLevel)
-                this.Config.DEBUG && console.log("ALIWASHERE16");    
+                parseInt(rule_map.get(item.ruleId).toolkitLevel) 
 
                 var row = [
                     tab_title,
@@ -112,7 +103,6 @@ import { report } from 'process';
     
                 ret.push(row);
             }
-            this.Config.DEBUG && console.log("ALIWASHERE20");    
 
             return ret;
         }
@@ -152,12 +142,6 @@ import { report } from 'process';
         }
     
         public static id_rule_map(xlsx_props: any) {
-            // this.Config.DEBUG && console.log("ALIWASHERE id_rule_map");
-
-            // const guideline_id = xlsx_props.report.option.guideline.id;
-    
-            //ruleset used for scanning
-            // const ruleset = xlsx_props.rulesets.find((element: any) => element.id == guideline_id);
             const ruleset = xlsx_props.report.ruleset;
     
             const checkpoints = ruleset.checkpoints;

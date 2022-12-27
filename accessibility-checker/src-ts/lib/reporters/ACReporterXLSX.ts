@@ -58,11 +58,11 @@ export class ACReporterXLSX {
     storedScans:any = []
     resultStr: string = `Label,Level,RuleId,Message,Xpath,Help\n`;
     Config: IConfigUnsupported;
-    ruleArchiveSet:any 
-    toolID:any
-    scanNumber:any = 0
-    deploymentDate:string = "latest" // These need to be user set
-    accessibilityGuidelines:string = "IBM_Accessibility" // These need to be user set
+    ruleArchiveSet: any 
+    toolID: any
+    scanNumber: any = 0
+    deploymentDate: string = "latest" 
+    accessibilityGuidelines: string = "IBM_Accessibility" 
     // helpPath:string = "" 
 
     constructor(config: IConfigUnsupported, scanSummary: IScanSummary) {
@@ -154,13 +154,14 @@ export class ACReporterXLSX {
 
     // This emitter function is responsible for calling this function when the info event is detected
     async report(report1) {
-
         this.Config.DEBUG && console.log("START 'info' emitter function");
+        
+        this.deploymentDate = this.Config.ruleArchive
+        this.accessibilityGuidelines = this.Config.policies[0]
+        
         let report = this.preprocessReport(report1, null, false)
         report.timestamp = new Date().getTime();
 
-
-        this.Config.DEBUG && console.log("ALIWASHERE1");
         let myConfig = (await ACConfigManager.getConfig())
         
         let ruleArchiveSet = myConfig.ruleArchiveSet
@@ -170,26 +171,20 @@ export class ACReporterXLSX {
         report.ruleset = myRulesets;
 
         let helpPath = ""
+        let helpPathLatest = ""
         ruleArchiveSet.forEach(element => {
             if(element.id === this.deploymentDate){
-                helpPath = element.helpPath
+                if(element.hasOwnProperty('helpPath')){ // The preview rules do no have a helpPath associated with them so we need to check
+                    helpPath = element.helpPath
+                }
+            }
+            if(element.id === "latest"){ // This is to default to a known helpPath when we cant find them othere wise. Like in the case of preview rules.
+                if(element.hasOwnProperty('helpPath')){
+                    helpPathLatest = element.helpPath
+                }
             }
         });
-
-
-        this.Config.DEBUG && console.log(helpPath);
-        // this.Config.DEBUG && console.log(report);
-        // this.Config.DEBUG && console.log(JSON.stringify(report));
-        // this.Config.DEBUG && console.log(JSON.stringify(myConfig));
-        // this.Config.DEBUG && console.log("ALIWASHERE1 ruleArchiveSet");
-        // this.Config.DEBUG && console.log(ruleArchiveSet);
-        // let myArchive3s = (await ACConfigManager.getConfig()).get
-        // this.Config.DEBUG && console.log("ALIWASHERE1myPolicies");
-        // let myPolicies = myConfig.policies
-        // let myPolicies = this.accessibilityGuidelines
-        // console.log(JSON.stringify(myPolicies))
-        // this.Config.DEBUG && console.log("ALIWASHERE1myRulesets");
-        // this.Config.DEBUG && console.log(JSON.stringify(myRulesets));
+        helpPath = (helpPath !== "") ? helpPath : helpPathLatest
 
         var xlsx_props = {
             report: report,
@@ -199,19 +194,13 @@ export class ACReporterXLSX {
             helpPath: helpPath+"/en-US/"
         }
 
-        // this.Config.DEBUG && console.log(JSON.stringify(xlsx_props));
-        this.Config.DEBUG && console.log("ALIWASHERE2");
+
         let myScanData = new MultiScanData(this.Config)
         const scanData = myScanData.issues_sheet_rows(xlsx_props); 
-        // this.Config.DEBUG && console.log(JSON.stringify(xlsx_props));
-        this.Config.DEBUG && console.log("ALIWASHERE3");
 
-
-        
         var violation = report?.counts.total["Violation"] ? report?.counts.total["Violation"] : 0;
         var needsReview = report?.counts.total["Needs review"] ? report?.counts.total["Needs review"] : 0;
         var recommendation = report?.counts.total["Recommendation"] ? report?.counts.total["Recommendation"] : 0;
-        // var all = violation + needsReview + recommendation
         var all = report?.counts.total["All"];
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
@@ -234,10 +223,10 @@ export class ACReporterXLSX {
             actualStoredScan:  true,
             isSelected: false,
             url: report.summary.URL ,
-            pageTitle: "",//report.label, // TODO ALI need to fix this to be better. 
+            pageTitle: "", // TODO need to fix this to be better. But dont have a solution at the moment.
             dateTime: Date.now(),
-            scanLabel: scanLabel, // is this safe since setState above is async
-            userScanLabel: scanLabel, // this is the visible scan label which may be edited by user
+            scanLabel: scanLabel, 
+            userScanLabel: scanLabel,
             ruleSet: this.deploymentDate,
             guidelines: this.accessibilityGuidelines,
             reportDate: new Date().toJSON(),
@@ -251,97 +240,8 @@ export class ACReporterXLSX {
             storedScanData: scanData,
         };
 
-        this.Config.DEBUG && console.log("currentScan");
-        // this.Config.DEBUG && console.log(JSON.stringify(currentScan));
-        this.Config.DEBUG && console.log("ALIWASHERE4");
-
-        // xlsxReportHandler = (scanType:string) => {
-            // console.log("xlsxReportHandler");
-            //@ts-ignore
-                  // MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
-
-        console.log("ALIWASHERE multiScanXlsxDownload ------")
-        console.log("this.state.storedScans")
-        // console.log([currentScan])
-        console.log("scanType")
-        console.log("scanType")
-        console.log("this.state.storedScanCount")
-        console.log("this.state.storedScanCount")
-        // console.log("this.state.archives")
-        // console.log(ruleArchiveSet)
-
         this.toolID = report.toolID
-
-        this.Config.DEBUG && console.log("START 'storedScans' function");
         this.storedScans = [...this.storedScans, currentScan]
-        console.log(this.storedScans.length)
-
-        this.Config.DEBUG && console.log("END 'storedScans' function");
-
-
-
-        // ****let myblob = MultiScanReport.multiScanXlsxDownload([currentScan], "current", 1, ruleArchiveSet, report.toolID);
-
-        this.Config.DEBUG && console.log("myblob");
-        // this.Config.DEBUG && console.log(myblob.then((resp)=>{console.log(resp)},(resp)=>{console.log(resp)}));     
-        // this.Config.DEBUG && console.log(myblob.then((resp)=>{console.log(resp)}));
-        // myblob.then(function(result){
-        //    console.log(result)
-        //  })
-        // var promiseRes = await myblob.then(function(result) {
-            // do something with result
-            // return result
-        //  });
-        //  console.log(promiseRes)
-        this.Config.DEBUG && console.log("ALIWASHERE5");
-
-        // }
-
-
-        
-        // let currentScan = {
-        //     actualStoredScan: this.state.scanStorage ? true : false,
-        //     isSelected: false,
-        //     url: this.state.tabURL,
-        //     pageTitle: this.state.tabTitle,
-        //     dateTime: this.state.report?.timestamp,
-        //     scanLabel: "scan" + this.state.storedScanCount, // is this safe since setState above is async
-        //     userScanLabel: "scan" + this.state.storedScanCount, // this is the visible scan label which may be edited by user
-        //     ruleSet: report.option.deployment.name,
-        //     guidelines: report.option.guideline.name,
-        //     reportDate: new Date(report.timestamp),
-        //     violations: violation,
-        //     needsReviews: needsReview,
-        //     recommendations: recommendation,
-        //     elementsNoViolations: element_no_violations,
-        //     elementsNoFailures: element_no_failures,
-        //     storedScan: "scan" + this.state.storedScanCount,
-        //     screenShot: canvas,
-        //     storedScanData: scanData,
-        // };
-        // 
-
-
-
-
-        // // Array of stored scans these scans are stored in state memory
-        // this.setState(({
-        //     storedScans: [...this.state.storedScans, currentScan]
-        // }));
-        
-
-        // xlsxReportHandler = (scanType:string) => {
-        //     // console.log("xlsxReportHandler");
-        //     //@ts-ignore
-        //     MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
-        // }
-    
-
-
-
-
-
-
 
         // Save the results of a single scan to a JSON file based on the label provided
         this.savePageResults(report);
