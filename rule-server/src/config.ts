@@ -16,21 +16,32 @@
 
 import cfenv = require("cfenv");
 import { join } from "path";
-import * as fs from "fs";
-
-const appEnv = (cfenv as any).getAppEnv();
 
 export class Config {
-    public static PLATFORM_ENDPOINT = !process.env.VCAP_SERVICES ? null : appEnv.url;
+    public static __DEVELOPMENT__: boolean = process.env.NODE_ENV !== "production";
+    public static __CODEENGINE__: boolean = !!process.env.CE_APP;
+    public static __CLOUDFOUNDRY__: boolean = !!process.env.VCAP_SERVICES;
+    public static __CLOUD__: boolean = Config.__CLOUDFOUNDRY__ || Config.__CODEENGINE__;
+    public static __PRODUCTION__: boolean = Config.__CLOUD__;
+    public static __LOCAL__: boolean = !process.env.TRAVIS_BRANCH && !Config.__CLOUD__;
+    public static __LOCAL_REACT__: boolean = Config.__LOCAL__ && process.env.__LOCAL_REACT__ === "true";
 
-    // Configure the deployed host where the server is hosted
-    public static deployedHost: string = Config.PLATFORM_ENDPOINT || "localhost";
+    // See also package.json / homepage in src-ui
+    public static BASE_PATH = "/rules";
+    public static CODEENGINE_PREFIX = "rules";
 
-    // Configure the deployed port where the server is to be hosted on
+    // Set up the APP Name to be used for logging
+    public static app: { name: string; } = { name: process.env.CE_APP || require("../package.json").name };
     public static deployedPort = process.env.DEPLOYED_PORT || 9445;
+    public static endpoint = Config.__CODEENGINE__ ? `https://${process.env.CE_APP}.${process.env.CE_SUBDOMAIN}.${process.env.CE_DOMAIN}` : `https://localhost:${Config.deployedPort}`
 
-    // Configure the deployed schema for the server
-    public static deployedSchema: string = process.env.DEPLOYED_SCHEMA || "https";
+    // Absolute path to swagger json for API Middleware
+    public static swaggerDir: string = join(__dirname, "../api/swagger.json");
+    // Configure if HTTP Requests should be logged or not
+    public static logHttpRequests: boolean = process.env.LOG_HTTP_REQUESTS === "true" ? true : false;
+
+    // Configure if the viewing the API Docs should be disabled or not
+    public static disableApiDocs: boolean = process.env.DISABLE_API_DOCS !== "true" ? false : true;
 
     // Configure the path to where the PEM file resides for https support
     public static certPEMPath: string = process.env.CERT_PEM_PATH ? process.env.CERT_PEM_PATH : "./certs/app.crt";
@@ -41,31 +52,36 @@ export class Config {
     // Configure if this microservice should allow self signed certs or not.
     public static secure: boolean = process.env.ALLOW_SELF_SIGNED_CERTS === "true" ? false : true;
 
-    // Set up the APP Name to be used for logging
-    public static app: { name: string; } = { name: (fs.existsSync("./package.json") ? require("./package.json") : require("../package.json")).name };
+    // Configure if testMode set as Evn
+    public static testMode: boolean = process.env.TEST_MODE === "true" ? true : false;
 
-    // // Configure the debug level to set for the logger
-    // // Available debug levels "fatal", "error", "warn", "info", "debug", "trace"
-    public static debugLevel: string = process.env.DEBUG_LEVEL ? process.env.DEBUG_LEVEL : "error";
+    public static bodyParserOptionsLimit: string = process.env.BODY_PARSER_OPTION_LIMIT || "5mb";
 
-    // Configuration if running in development mode or production mode
-    public static __DEVELOPMENT__: boolean = process.env.NODE_ENV !== "production";
-
-    // Build endpoint URL
-    public static endpoint: string = Config.PLATFORM_ENDPOINT || (Config.deployedSchema + "://" + Config.deployedHost + ":" + Config.deployedPort);
-
-    // // Absolute path to swagger json for API Middleware
-    public static swaggerDir: string = join(__dirname, "../api/swagger.json");
-
-    public static __LOCAL__: boolean = !process.env.TRAVIS_BRANCH && !process.env.VCAP_SERVICES;
-
-    public static VCAP_SERVICES = process.env.VCAP_SERVICES ? JSON.parse(process.env.VCAP_SERVICES) : null;
-    public static CouchDBUser = process.env.COUCHDB_USER;
-    public static CouchDBPassword = process.env.COUCHDB_PASSWORD;
-
+    public static AAT_DB: string = process.env.ACS_AAT_EXTERNALDB_URL;
+    public static COUCHDB_USER = process.env.COUCHDB_USER || "admin";
+    public static COUCHDB_PASSWORD = process.env.COUCHDB_PASSWORD || "couchadmin";
 }
+
+if (Config.__CLOUDFOUNDRY__) {
+    const appEnv = cfenv.getAppEnv();
+    const ENV_ENDPOINT = !process.env.VCAP_SERVICES ? null : appEnv.url.substring(0, appEnv.url.indexOf(Config.BASE_PATH));
+    Config.endpoint = ENV_ENDPOINT;
+    Config.deployedPort = appEnv.port;
+} else if (Config.__CODEENGINE__) {
+    Config.AAT_DB = process.env.AATCLOUDANT_URL
+    if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-sandbox`)) {
+        Config.endpoint = "https://able-sandbox.rqz6qqeidkk.us-south.codeengine.appdomain.cloud"
+    }
+    if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-main`)) {
+        Config.endpoint = "https://able-main.rqz6qqeidkk.us-south.codeengine.appdomain.cloud"
+    }
+    if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-prod`)) {
+        Config.endpoint = "https://able.ibm.com"
+    }
+}
+
 /* istanbul ignore if */
-if (!Config.secure) {
+if (!Config.__CLOUD__) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 

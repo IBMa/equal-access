@@ -109,8 +109,6 @@ export class Server {
     public async run() {
         try {
 
-            // Construct the endpoint URL where the server will be hosted
-            const url = "https://" + Config.deployedHost + ":" + Config.deployedPort;
             // Check if it's local env
             if (Server.appEnv.isLocal) {
 
