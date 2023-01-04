@@ -110,7 +110,7 @@ export class Server {
         try {
 
             // Check if it's local env
-            if (Server.appEnv.isLocal) {
+            if (!Config.__CLOUD__ || Config.testMode === true) {
 
                 // Check weather or not cert file exists and have read access to file, otherwise create it and use
                 fs.access(Config.certPEMPath, fs.constants.R_OK, (err) => {
@@ -154,8 +154,8 @@ export class Server {
                 });
                 // Production enviornment
             } else {
-                this.app.listen(Server.appEnv.port, () => {
-                    console.info("App started on: " + Server.appEnv.url);
+                this.app.listen(Config.deployedPort, () => {
+                    console.info({ app: Config.app.name, url: Config.endpoint }, "App started");
                 });
             }
         } catch (err) {
