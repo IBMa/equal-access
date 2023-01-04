@@ -98,5 +98,6 @@ RUN set -ex \
 ENV NODE_ENV=production
 WORKDIR /app
 COPY ["rule-server/dist", "./"]
+RUN npm ci
 # CMD [ "node", "main.js" ]
 ENTRYPOINT ["node", "main.js"]
