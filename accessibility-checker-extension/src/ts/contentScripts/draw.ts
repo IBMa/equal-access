@@ -50,35 +50,35 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         }
 
         .nohighlightSVGcircle {
-            fill: #E6D6FF;
-            stroke-width: 1px;
-            stroke: black;
+            fill: #525252;
+            stroke-width: 3px;
+            stroke: #C6C6C6;
         }
         
         .highlightSVGcircle{
-            fill: #BB8EFF;
+            fill: black;
             stroke-width: 3px;
-            stroke: black;
+            stroke: #C6C6C6;
         }
 
         .nohighlightSVGerrorCircle{
-            fill: #FFB077;
-            stroke-width: 1px;
-            stroke: black;
+            fill: #525252;
+            stroke-width: 3px;
+            stroke: #FF8389;
         }
         
         .highlightSVGerrorCircle{
-            fill: #FC7B1E;
+            fill: black;
             stroke-width: 3px;
-            stroke: black;
+            stroke: #FF8389;
         }
 
         .textColorWhite{
-            fill: black
+            fill: white
         }
 
         .textColorBlack{
-            fill: black
+            fill: white
         }
 
         .svgIconTest{
@@ -108,6 +108,8 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             pointer-events: none !important;
             z-index: 2147483646 !important;
         }
+
+
         .circleText{
             pointer-events: none !important;
         }
@@ -655,12 +657,12 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
 
                     
                     // console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
+                    
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
+                    makeIcon(x+11, y-16, "test");   // notification dot
                     
                     makeTextSmall(x, y, "?", "textColorBlack");
-                    // JCH TODO - now we are working towards changing the Triangle to a Notification Dot
-                    // makeIcon(xPlusWidth-6, y-6, "test");  // 12px icon on top right corner
-                    // makeIcon(x, y, "test");
+                    
                 } else {
                     continue;
                 }
@@ -834,6 +836,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     // console.log("Tabbable with ERROR i = ",i," so add classname error");
                     // console.log("errorCircle x = ",x,"  y = ",y);
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
+                    makeIcon(x+11, y-16, "test");   // notification dot
                     makeTextSmall(x, y, (i + 1).toString(),"textColorWhite");
 
 
@@ -1036,82 +1039,108 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
     document.getElementById('svgCircle')?.appendChild(circleClone)
 }
 
+function createSVGCircleTemplate() {
+    // This is what we are creating:
+    // <svg id="svgCircle">
+    // THIS PART->     <circle id="circle" class="tabCircle" stroke="black" stroke-width="1" fill="purple"/>
+    //                 <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
+    // </svg>
+    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    elemCircle.setAttribute("id", "circle");
+    elemCircle.setAttribute("class", "tabCircle");
+    elemCircle.classList.add("dynamic");
+    elemCircle.setAttribute("stroke", "#D9BFFF");
+    elemCircle.setAttribute("stroke-width", "3");
+    return elemCircle
+}
+
 
 // JCH - now we are working towards changing the Triangle to a Notification Dot
-// function makeIcon(x1: number, y1: number, iconName: string) {
-//     iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
-//     var iconClone = createSVGErrorIconTemplate();
-//     iconClone.removeAttribute("display");
-//     iconClone.classList.remove("svgIcon1");
-//     iconClone.classList.add("svgIconTest");
-//     iconClone.classList.add("deleteMe");
-//     iconClone.style.position = "absolute";
-//     iconClone.style.left = String(x1) + "px";
-//     iconClone.style.top = String(y1) + "px";
-//     // (iconClone as HTMLElement).style.fill = "red";
-//     // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
+function makeIcon(x1: number, y1: number, iconName: string) {
+    iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
+    var iconClone = createSVGErrorIconTemplate();
+    iconClone.removeAttribute("display");
+    iconClone.classList.remove("svgIcon1");
+    iconClone.classList.add("svgIconTest");
+    iconClone.classList.add("deleteMe");
+    iconClone.style.position = "absolute";
+    iconClone.style.left = String(x1) + "px";
+    iconClone.style.top = String(y1) + "px";
+    // (iconClone as HTMLElement).style.fill = "red";
+    // (iconClone as HTMLElement).onclick = () => { alert("You have found an warning icon") };
 
-//     if (document.getElementById("svgIcons") == null) {
-//         var elemDIV = document.createElement('div');
-//         elemDIV.setAttribute("class", "svgIcons");
-//         document.body.appendChild(elemDIV);
-//     }
-//     document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
-// }
+    if (document.getElementById("svgIcons") == null) {
+        var elemDIV = document.createElement('div');
+        elemDIV.setAttribute("class", "svgIcons");
+        document.body.appendChild(elemDIV);
+    }
+    document.getElementsByClassName('svgIcons')[0].appendChild(iconClone)
+}
 
-// function createSVGErrorIconTemplate() {
-//     // This is what we are creating:
-//     // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
-//     //     <defs>
-//     //         <style> 
-//     //            .cls-1 { fill: none; } 
-//     //         </style>
-//     //     </defs >
-//     //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
-//     //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
-//     //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
-//     //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
-//     // </svg>
-//     var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-//     elemSvg.setAttribute("class", "svgIcon1");
-//     elemSvg.setAttribute("display", "none");
-//     elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-//     elemSvg.setAttribute("width", "12px");
-//     elemSvg.setAttribute("height", "12px");
-//     elemSvg.setAttribute("viewBox", "0 0 32 32"); // JCH how does viewBox affect off page
+function createSVGErrorIconTemplate() {
+    // This is what we are creating:
+    // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
+    //     <defs>
+    //         <style> 
+    //            .cls-1 { fill: none; } 
+    //         </style>
+    //     </defs >
+    //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
+    //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
+    //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
+    //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
+    // </svg>
+    var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    elemSvg.setAttribute("class", "svgIcon1");
+    elemSvg.setAttribute("display", "none");
+    elemSvg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+    elemSvg.setAttribute("width", "12px");
+    elemSvg.setAttribute("height", "12px");
+    elemSvg.setAttribute("viewBox", "0 0 32 32"); // JCH how does viewBox affect off page
+    elemSvg.setAttribute("stroke", "#525252");
+    elemSvg.setAttribute("stroke-width", "1");
 
-//     var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+    var elemDefs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
 
-//     var elemStyle = document.createElement('style');
-//     elemStyle.innerText = ".cls-1 { fill: none; }"
+    var elemStyle = document.createElement('style');
+    elemStyle.innerText = ".cls-1 { fill: none; }"
 
-//     var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-//     elemPath1.setAttribute("class", "cls-1");
-//     elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
-//     elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
+    // var elemPath1 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    // elemPath1.setAttribute("class", "cls-1");
+    // elemPath1.setAttribute("d", "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z");
+    // elemPath1.setAttribute("style", "&#10;    fill: black;&#10;");
 
-//     var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-//     elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
-//     elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
+    // var elemPath2 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    // elemPath2.setAttribute("d", "M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z");
+    // elemPath2.setAttribute("style", "&#10;    fill: yellow;&#10;");
 
-//     var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-//     elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
-//     elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
+    // var elemPath3 = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    // elemPath3.setAttribute("d", "M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z");
+    // elemPath3.setAttribute("style", "&#10;    fill: black;&#10;");
 
-//     var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-//     elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
-//     elemRect.setAttribute("class", "cls-1");
-//     elemRect.setAttribute("width", "32");
-//     elemRect.setAttribute("height", "32");
+    // var elemRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    // elemRect.setAttribute("data-name", "&lt;Transparent Rectangle&gt;");
+    // elemRect.setAttribute("class", "cls-1");
+    // elemRect.setAttribute("width", "32");
+    // elemRect.setAttribute("height", "32");
 
-//     elemDefs.appendChild(elemStyle);
-//     elemSvg.appendChild(elemDefs);
-//     elemSvg.appendChild(elemPath1);
-//     elemSvg.appendChild(elemPath2);
-//     elemSvg.appendChild(elemPath3);
-//     elemSvg.appendChild(elemRect);
-//     return elemSvg;
-// }
+    elemDefs.appendChild(elemStyle);
+    // elemSvg.appendChild(elemDefs);
+    // elemSvg.appendChild(elemPath1);
+    // elemSvg.appendChild(elemPath2);
+    // elemSvg.appendChild(elemPath3);
+    // elemSvg.appendChild(elemRect);
+    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    elemCircle.setAttribute("id", "circle");
+    elemCircle.setAttribute("class", "tabCircle");
+    elemCircle.classList.add("dynamic");
+    elemCircle.setAttribute("stroke", "#FF8389");
+    elemCircle.setAttribute("stroke-width", "2");
+    elemCircle.setAttribute('r', String("12"));
+    elemCircle.setAttribute('fill','#FF8389');
+    elemSvg.appendChild(elemCircle);
+    return elemSvg;
+}
 
 
 
@@ -1180,20 +1209,7 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
 
 
 
-function createSVGCircleTemplate() {
-    // This is what we are creating:
-    // <svg id="svgCircle">
-    // THIS PART->     <circle id="circle" class="tabCircle" stroke="black" stroke-width="1" fill="purple"/>
-    //                 <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
-    // </svg>
-    var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    elemCircle.setAttribute("id", "circle");
-    elemCircle.setAttribute("class", "tabCircle");
-    elemCircle.classList.add("dynamic");
-    elemCircle.setAttribute("stroke", "grey");
-    elemCircle.setAttribute("stroke-width", "1");
-    return elemCircle
-}
+
 
 function createSVGCircleTextTemplate() {
     // This is what we are creating:
@@ -1365,4 +1381,16 @@ function selectPath(srcPath: any) {
 //     elemCircle.setAttribute("stroke-width", "1");
 //     elemCircle.setAttribute("stroke-linejoin", "round");
 //     return elemCircle
+// }
+
+// .nohighlightSVGerrorCircle{
+//     fill: #FFB077;
+//     stroke-width: 1px;
+//     stroke: black;
+// }
+
+// .highlightSVGerrorCircle{
+//     fill: #FC7B1E;
+//     stroke-width: 3px;
+//     stroke: black;
 // }
