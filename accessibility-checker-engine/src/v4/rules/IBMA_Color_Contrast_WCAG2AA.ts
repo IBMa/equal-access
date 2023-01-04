@@ -13,6 +13,7 @@
 
 import { RPTUtil, RPTUtilStyle } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { ColorUtil } from "../../v2/dom/ColorUtil";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { setCache } from "../util/CacheUtil";
@@ -209,7 +210,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         }
 
         // First determine the color contrast ratio
-        let colorCombo = RPTUtil.ColorCombo(elem);
+        let colorCombo = ColorUtil.ColorCombo(elem);
         if (colorCombo === null) {
             //some exception occurred, or not able to get color combo for some reason
             console.log("unable to get color combo for element: " + elem.nodeName);
@@ -223,7 +224,7 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
-        
+        //console.log("node="+ nodeName +",fg=" +JSON.stringify(fg)+",bg="+JSON.stringify(bg)+",ratio="+ratio);
         let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
             let control = RPTUtil.getControlOfLabel(elem);
