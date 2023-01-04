@@ -350,5 +350,7 @@ jobs:
       working-directory: rule-server
     - run: gitactions/publish/rules.sh
       env: 
+        BLUEMIX_USERID: apikey
+        BLUEMIX_PASS: ${{ secrets.BLUEMIX_PASS }}
         CLOUD_PWD: ${{ secrets.CLOUD_PWD }}
-        TRAVIS_BRANCH: master
+        TRAVIS_BRANCH: sandbox
