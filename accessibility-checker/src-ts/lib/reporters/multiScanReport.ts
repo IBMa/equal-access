@@ -139,7 +139,7 @@ import { writeFileSync } from 'fs';
                 {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
                 {key1: 'Platform:', key2: "N/A"}, // Removed after talking to Tom, we might not have access to navigatior?
                 {key1: 'Scans:', key2: scanType === "current" ? 1 : scanType === "all" ? storedScanCount : selectedStoredScanCount}, // *** NEED TO FIX FOR selected
-                {key1: 'Pages:', key2: "N/A"}
+                {key1: 'Pages:', key2: ""}
             ];
             
             worksheet.mergeCells('B2', "D2");

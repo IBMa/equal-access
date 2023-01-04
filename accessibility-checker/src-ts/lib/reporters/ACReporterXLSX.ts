@@ -1,4 +1,4 @@
-/******************************************************************************
+        /******************************************************************************
      Copyright:: 2020- IBM, Inc
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -60,7 +60,6 @@ export class ACReporterXLSX {
     Config: IConfigUnsupported;
     ruleArchiveSet: any 
     toolID: any
-    scanNumber: any = 0
     deploymentDate: string = "latest" 
     accessibilityGuidelines: string = "IBM_Accessibility" 
     // helpPath:string = "" 
@@ -196,7 +195,7 @@ export class ACReporterXLSX {
             rulesets: await ACEngineManager.getRulesets(),
             tabTitle: "",//report.label,
             tabURL: report.summary.URL,
-            helpPath: helpPath+"/en-US/"
+            helpPath: helpPath+"en-US/"
         }
 
 
@@ -209,9 +208,7 @@ export class ACReporterXLSX {
         var all = report?.counts.total["All"];
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
-
-        let scanLabel = "scan"+this.scanNumber
-        this.scanNumber += 1
+        let scanLabel = report.label
 
         let currentScan = {
             actualStoredScan:  true,
