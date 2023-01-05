@@ -70,10 +70,10 @@ if (Config.__CLOUDFOUNDRY__) {
 } else if (Config.__CODEENGINE__) {
     Config.AAT_DB = process.env.AATCLOUDANT_URL
     if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-sandbox`)) {
-        Config.endpoint = "https://able-sandbox.rqz6qqeidkk.us-south.codeengine.appdomain.cloud"
+        Config.endpoint = "https://able-sandbox.xbhbw9w198q.us-south.codeengine.appdomain.cloud"
     }
     if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-main`)) {
-        Config.endpoint = "https://able-main.rqz6qqeidkk.us-south.codeengine.appdomain.cloud"
+        Config.endpoint = "https://able-main.xcc2slstt6y.us-south.codeengine.appdomain.cloud"
     }
     if (Config.endpoint.includes(`${Config.CODEENGINE_PREFIX}-prod`)) {
         Config.endpoint = "https://able.ibm.com"
