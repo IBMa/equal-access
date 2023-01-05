@@ -31,7 +31,7 @@ export class Config {
     public static CODEENGINE_PREFIX = "rules";
 
     // Set up the APP Name to be used for logging
-    public static app: { name: string; } = { name: process.env.CE_APP || require("../package.json").name };
+    public static app: { name: string; } = { name: process.env.CE_APP || "rule-server" };
     public static deployedPort = process.env.DEPLOYED_PORT || 9445;
     public static endpoint = Config.__CODEENGINE__ ? `https://${process.env.CE_APP}.${process.env.CE_SUBDOMAIN}.${process.env.CE_DOMAIN}` : `https://localhost:${Config.deployedPort}`
 
