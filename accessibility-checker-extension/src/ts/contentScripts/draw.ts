@@ -592,6 +592,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
 
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
+                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                     let y = nodes[i].getBoundingClientRect().y;
@@ -724,6 +725,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
+                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                     let y = nodes[i].getBoundingClientRect().y;
@@ -863,6 +865,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                 } else { // This is the defalt case were we just draw a circle
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
+                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                     let y = nodes[i].getBoundingClientRect().y;
@@ -1031,8 +1034,8 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         elemSVG.setAttribute("id", "svgCircle");
         elemSVG.classList.add("dynamic");
-        elemSVG.setAttribute("width","1px");
-        elemSVG.setAttribute("height","1px");
+        // elemSVG.setAttribute("width","1px");
+        // elemSVG.setAttribute("height","1px");
         document.body.appendChild(elemSVG);
     }
     // console.log("Inject circle circleNumber" + circleNumber);
@@ -1134,8 +1137,8 @@ function createSVGErrorIconTemplate() {
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
     elemCircle.classList.add("dynamic");
-    elemCircle.setAttribute("stroke", "#FF8389");
-    elemCircle.setAttribute("stroke-width", "2");
+    elemCircle.setAttribute("stroke", "black");
+    elemCircle.setAttribute("stroke-width", "1");
     elemCircle.setAttribute('r', String("12"));
     elemCircle.setAttribute('fill','#FF8389');
     elemSvg.appendChild(elemCircle);
