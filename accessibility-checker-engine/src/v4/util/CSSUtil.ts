@@ -152,3 +152,51 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         return definedStylePseudo;
     }
 }
+
+/**
+ * Returns if the font for visible text of the element is defined by material icons
+ *  
+ * @param {HTMLElement} elem 
+ */
+ export function isMaterialIconFont(elem: HTMLElement) {
+    // TODO: check the existence material icons using fetch in node 18+
+    // for now (node 16) just dertermine if the stylesheet for the 'Material Icons' exists statically. note that the loading of the font stylesheet occurs at run time.
+    //list of known material icons and stylesheet link
+    const known_icons = {
+        'Material Icons' : "https://fonts.googleapis.com/icon?family=Material+Icons"
+    };
+    const known_css_classes = {
+        'material-icons' : "https://fonts.googleapis.com/icon?family=Material+Icons"
+    };
+
+    // material icon font can be defined either by font-family: 'Material Icons' or by class="material-icons"
+    let styles = getDefinedStyles(elem);
+    let fontFamily = styles['font-family'];
+    
+    let found = false;
+    // font-family specifies a prioritized list of one or more font family names 
+    if (fontFamily && fontFamily.split(",")[0].replace(/['"]+/g, '').trim() in known_icons)
+        found = true;
+
+    if (!found) {
+       let list =  elem.classList;
+       for (let css_class in known_css_classes) {
+           if (list.contains(css_class)) {
+               found = true;
+               break;
+           } 
+       }
+    }    
+    if (!found) return false;
+    
+    let passed = false;
+    // check if the stylesheet for the 'Material Icons' exists statically
+    let sheets = elem.ownerDocument.styleSheets;
+    for (let s = 0; s < sheets.length; s++) {
+        if (sheets && sheets.length > 0 && Object.values(known_icons).indexOf(sheets[s].href) > -1) {
+            passed = true;
+            break;
+        } 
+    }       
+    return passed;
+ }   

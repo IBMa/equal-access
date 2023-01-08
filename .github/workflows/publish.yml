@@ -13,7 +13,7 @@ jobs:
 # NPM Node
 ####
   accessibility-checker-engine-publish:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -52,7 +52,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   accessibility-checker-publish:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -75,7 +75,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   karma-accessibility-checker-publish:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -98,7 +98,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   cypress-accessibility-checker-publish:
-      runs-on: ubuntu-latest
+      runs-on: ubuntu-20.04
 
       strategy:
         matrix:
@@ -123,7 +123,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   extension-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -193,7 +193,7 @@ jobs:
         path: accessibility-checker-extension/package/accessibility-checker-extension.zip
 
   rule-deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -213,4 +213,5 @@ jobs:
       env: 
         BLUEMIX_USERID: apikey
         BLUEMIX_PASS: ${{ secrets.BLUEMIX_PASS }}
+        CLOUD_PWD: ${{ secrets.CLOUD_PWD }}
         TRAVIS_BRANCH: prod

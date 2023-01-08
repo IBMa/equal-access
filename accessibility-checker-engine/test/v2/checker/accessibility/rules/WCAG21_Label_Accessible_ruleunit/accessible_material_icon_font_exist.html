@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Flag a violation if Accessible name does not match or contain the visible label text</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+	button {
+		font-family: 'Material Icons';
+	}
+  </style>
+	</head>
+	<body>
+		
+<!-- passed -->
+<button aria-label="Find">search</button>
+
+<script>
+  UnitTest = {
+      ruleIds: ["WCAG21_Label_Accessible"],
+      results: [
+      {
+            "ruleId": "WCAG21_Label_Accessible",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/button[1]",
+              "aria": "/document[1]/button[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Accessible name matches or contains the visible label text",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+      ]
+  };
+</script>
+	</body>
+	</html>
