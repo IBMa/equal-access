@@ -669,17 +669,7 @@
                 tabTitle: this.state.tabTitle,
                 tabURL: this.state.tabURL
             }
-            console.log("this.state.report")
-            console.log(this.state.report)
 
-            console.log("this.state.rulesets")
-            console.log(this.state.rulesets)
-
-            console.log("this.state.tabTitle")
-            console.log(this.state.tabTitle)
-
-            console.log("this.state.tabURL")
-            console.log(this.state.tabURL)
             var report: any = this.state.report;
     
             var violation = report?.counts.total["Violation"];
@@ -697,8 +687,6 @@
     
             // scan label of the current stored scan 
             // the current scan is always stored for the current scan report
-            console.log("ALIWASHERE")
-            console.log(this.state.storedScanCount)
             this.setState({ currentStoredScan:  "scan" + this.state.storedScanCount });
     
             // get only data needed for multi-scan report
