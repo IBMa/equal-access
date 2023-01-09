@@ -8,21 +8,14 @@
   <body>
     <main>
       <h1>Test page</h1>
-      <!--div id='div1' style="background-color: #4d4d4d;">
-        <div id='div2' style="color: white;">
+      <div style="background-color: #4d4d4d;">
+        <div style="color: white;">
           This does not fail
         </div>
       </div>
-      <div id='div3' style="background: rgb(233, 233, 233);">
-        <div id='div4' style="background-color: rgb(77,77,77, 0.2);">
-          <div id='div5' style="color: white;">
-            This should not fail, but does
-          </div>
-        </div>
-      </div-->
-      <div id='div6' style="background: rgb(33, 33, 33);">
-        <div id='div7' style="background-color: hsla(0, 0%, 100%, 0.2);">
-          <div id='div8' style="color: white;">
+      <div style="background: rgb(33, 33, 33);">
+        <div style="background-color: hsla(0, 0%, 100%, 0.2);">
+          <div style="color: white;">
             This should not fail, but does
           </div>
         </div>
@@ -63,7 +56,31 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]/div[1]",
+              "dom": "/html[1]/body[1]/main[1]/div[1]/div[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "Pass_0",
+            "message": "Rule Passed",
+            "messageArgs": [
+              "8.45",
+              16,
+              400,
+              "#ffffff",
+              "#4d4d4d",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/div[2]/div[1]/div[1]",
               "aria": "/document[1]/main[1]"
             },
             "reasonId": "Pass_0",
