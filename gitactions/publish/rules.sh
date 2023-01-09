@@ -6,7 +6,6 @@ ibmcloud plugin install code-engine
 ibmcloud login --apikey "$CLOUD_PWD" -r "us-south"
 ibmcloud cr login
 ibmcloud target -g Accessibility_Enablement_prod
-ibmcloud ce project select -n able
 
 if [[ "$TRAVIS_BRANCH" == "master" ]]
 then
@@ -14,6 +13,7 @@ then
     docker build --tag rules:main .
     docker tag rules:main us.icr.io/able/rules:main
     docker push us.icr.io/able/rules:main
+    ibmcloud ce project select -n able
     ibmcloud ce app update --name rules-main
 elif [[ "$TRAVIS_BRANCH" == "sandbox" ]]
 then
@@ -21,6 +21,7 @@ then
     docker build --tag rules:sandbox .
     docker tag rules:sandbox us.icr.io/able/rules:sandbox
     docker push us.icr.io/able/rules:sandbox
+    ibmcloud ce project select -n able-sandbox
     ibmcloud ce app update --name rules-sandbox
 elif [[ "$TRAVIS_BRANCH" == "prod" ]]
 then
@@ -28,6 +29,7 @@ then
     docker build --tag rules:prod .
     docker tag rules:prod us.icr.io/able/rules:prod
     docker push us.icr.io/able/rules:prod
+    ibmcloud ce project select -n able-main
     ibmcloud ce app update --name rules-prod
 fi
 

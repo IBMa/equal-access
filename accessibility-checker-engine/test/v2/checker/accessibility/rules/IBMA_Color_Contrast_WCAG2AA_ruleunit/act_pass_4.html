@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ 
+<head>
+  <title>Test Suite</title>
+</head>
+
+<body>
+
+  <p style="color: #000; background: #737373; text-shadow: white 0 0 3px">
+    Some text in a human language
+  </p>
+
+<script type="text/javascript">
+        UnitTest = {
+            ruleIds: ["IBMA_Color_Contrast_WCAG2AA"],
+            results: [
+            {
+            "ruleId": "IBMA_Color_Contrast_WCAG2AA",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/p[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "Text contrast of 4.43 with its background is less than the WCAG AA minimum requirements for text of size 16px and weight of 400",
+            "messageArgs": [
+              "4.43",
+              16,
+              400,
+              "#000000",
+              "#737373",
+              false,
+              false
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+        
+</script></body>
+
+</html>
