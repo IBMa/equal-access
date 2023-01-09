@@ -757,8 +757,6 @@
             this.setState(({
                 storedScans: [...this.state.storedScans, currentScan]
             }));
-            console.log("----------------------------------currentScan")
-            console.log(currentScan)
         }
     
         storeScanLabel(event:any,i:number) {
@@ -890,19 +888,7 @@
         xlsxReportHandler = (scanType:string) => {
             // console.log("xlsxReportHandler");
             //@ts-ignore
-            // console.log("")
-            // console.log()
             MultiScanReport.multiScanXlsxDownload(this.state.storedScans, scanType, this.state.storedScanCount, this.state.archives);
-
-            console.log("ALIWASHERE multiScanXlsxDownload ------")
-            console.log("this.state.storedScans")
-            console.log(this.state.storedScans)
-            console.log("scanType")
-            console.log(scanType)
-            console.log("this.state.storedScanCount")
-            console.log(this.state.storedScanCount)
-            console.log("this.state.archives")
-            console.log(this.state.archives)
         }
     
         selectItem(item?: IReportItem, checkpoint?: ICheckpoint) {
