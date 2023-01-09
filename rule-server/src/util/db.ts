@@ -1,6 +1,5 @@
 import { Config } from "../config";
 const Cloudant = require("@cloudant/cloudant");
-const VCAP_SERVICES = Config.VCAP_SERVICES ? Config.VCAP_SERVICES : {}
 
 const createConnection = (url: string, dbName: string) => new Promise((resolve, reject) => {
     Cloudant(url, (err, cloudant) => {
@@ -30,10 +29,13 @@ export class DB {
     constructor(db: eDB) {
         this.db = db;
         let url = null;
-        if (VCAP_SERVICES.cloudantNoSQLDB) {
+        if (Config.__CLOUDFOUNDRY__) {
+            const VCAP_SERVICES = process.env.VCAP_SERVICES ? JSON.parse(process.env.VCAP_SERVICES) : {}
             url = VCAP_SERVICES.cloudantNoSQLDB[0].credentials.url;
-        } else if (Config.CouchDBUser && Config.CouchDBPassword) {
-            url = `http://${Config.CouchDBUser}:${Config.CouchDBPassword}@localhost:5984`;
+        } else if (Config.__CODEENGINE__) {
+            url = Config.AAT_DB;
+        } else if (Config.COUCHDB_USER && Config.COUCHDB_PASSWORD) {
+            url = `http://${Config.COUCHDB_USER}:${Config.COUCHDB_PASSWORD}@localhost:5984`;
         }
         if (url) {
             if (db === eDB.AAT) {
