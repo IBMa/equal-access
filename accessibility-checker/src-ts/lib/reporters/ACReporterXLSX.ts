@@ -205,7 +205,8 @@ export class ACReporterXLSX {
         var violation = report?.counts.total["Violation"] ? report?.counts.total["Violation"] : 0;
         var needsReview = report?.counts.total["Needs review"] ? report?.counts.total["Needs review"] : 0;
         var recommendation = report?.counts.total["Recommendation"] ? report?.counts.total["Recommendation"] : 0;
-        var all = report?.counts.total["All"];
+        var all = violation + needsReview + recommendation // not using report?.counts.total["All"] here on purpose. This calculation matches the excel sheet produced by the extension.
+
         var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
         var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
         let scanLabel = report.label
