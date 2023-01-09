@@ -14,7 +14,11 @@
     limitations under the License.
  *****************************************************************************/
 
-.cds--modal-content {
+.cds--modal {
+    z-index: 9500 !important;
+}
+
+ .cds--modal-content {
     padding-right: 2rem !important;
     margin-bottom: 1rem !important;
 }

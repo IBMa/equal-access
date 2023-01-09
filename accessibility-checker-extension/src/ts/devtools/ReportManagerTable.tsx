@@ -289,7 +289,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                                 onRequestClose={(() => {
                                                     this.setState({ modalScreenShot: false });
                                                 }).bind(this)}
-                                                style={{ paddingRight: "2rem" }}
+                                                style={{ paddingRight: "2rem", zIndex: '9050' }}
                                             >
                                                 <Grid>
                                                     <Column sm={{ span: 2 }} md={{ span: 4 }} lg={{ span: 8 }}>
@@ -324,6 +324,7 @@ export default class ReportManagerTable extends React.Component<IReportManagerTa
                                                 secondaryButtonText="Cancel"
                                                 primaryButtonDisabled={false}
                                                 preventCloseOnClickOutside={true}
+                                                style={{ zIndex: 9050 }}
                                             >
                                                 <p style={{ marginBottom: '1rem' }}>
                                                     Are you sure you want to delete selected scans?

@@ -21,7 +21,7 @@ import { IReportItem } from "./Report";
 import {
     Column, Grid, Button, Checkbox, ContentSwitcher, Switch, OverflowMenu, OverflowMenuItem, Modal, Tooltip
 } from '@carbon/react';
-import { Information, ReportData, Renew, ChevronDown, View, ViewOff, Help, Settings } from '@carbon/react/icons/lib/index';
+import { Information, ReportData, Renew, ChevronDown, Keyboard, KeyboardOff, Help, Settings } from '@carbon/react/icons/lib/index';
 import { IArchiveDefinition } from '../background/helper/engineCache';
 import OptionUtil from '../util/optionUtil';
 import PanelMessaging from '../util/panelMessaging';
@@ -30,6 +30,7 @@ const BeeLogo = "/assets/BE_for_Accessibility_darker.svg";
 import Violation16 from "../../assets/Violation16.svg";
 import NeedsReview16 from "../../assets/NeedsReview16.svg";
 import Recommendation16 from "../../assets/Recommendation16.svg";
+// import keyboard_off from "../../assets/keyboard_off.svg";
 // import KCM_On from "../../assets/KCM_button_on.svg";
 // import KCM_Off from "../../assets/KCM_button_on.svg";
 // import KCM_disabled from "../../assets/KCM_button_disabled.svg";
@@ -289,10 +290,12 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                     
                 <Grid style={{ marginTop: '10px', padding: "0rem" }}>
                     <Column sm={{span: 2}} md={{span: 4}} lg={{span: 8}} style={{ display: 'flex', alignContent: 'center' }}>
-                        <Button disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
+
+                        <Button id="scanButton" style={{marginRight:"3px"}} disabled={this.props.scanning} renderIcon={Renew} onClick={this.props.startScan.bind(this)} size="sm" className="scan-button">Scan</Button>
                         <Tooltip
                             align="right"
                             label="Scan options"
+
                         >
                             <OverflowMenu 
                                 className="rendered-icon svg"
@@ -396,8 +399,9 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                                 />
                             </ContentSwitcher>
                         </Tooltip>
+                        
                         <Button 
-                            renderIcon={this.props.showHideTabStops ? View : ViewOff} 
+                            renderIcon={this.props.showHideTabStops ? Keyboard : KeyboardOff} 
                             disabled={!this.props.counts}
                             hasIconOnly iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             style={{background:"black", border:"none", verticalAlign:"baseline", minHeight:"28px", 

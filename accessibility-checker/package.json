@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src",
-    "test": "mocha -R dot test/mocha/**/*.test.js",
+    "test": "mocha -R dot test/mocha/**/*.test.js test/a11y-rule-test-able/*.test.js",
     "build": "npm run build:report && npm run build:ts && cd ../accessibility-checker-engine && npm install && npm run build && npm run build-debug && npm run build-node && npm run build-node-debug",
     "build:ts": "npx tsc",
     "build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker && shx cp ../report-react/build/genReport.tsx ./src-ts/lib/reporters/genReport.ts)",
