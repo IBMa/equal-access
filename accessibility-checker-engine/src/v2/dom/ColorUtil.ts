@@ -236,7 +236,6 @@ export class ColorUtil {
         if (!compStyleColor)
             compStyleColor = "black";
         var fg = ColorUtil.Color(compStyleColor);
-        console.log("1 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id")+", fg="+JSON.stringify(fg));
         var reColor = /transparent|rgba?\([^)]+\)/gi;
         var guessGradColor = function (gradList, bgColor, fgColor) {
             try {
@@ -290,11 +289,9 @@ export class ColorUtil {
 
             // thisBgColor is the color of this layer or null if the layer is transparent
             var thisBgColor = null;
-            console.log("2 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id")+ ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",cStyle.backgroundColor=" + JSON.stringify(cStyle.backgroundColor)+", opacity="+cStyle.opacity);
             if (cStyle.backgroundColor && cStyle.backgroundColor != "transparent" && cStyle.backgroundColor != "rgba(0, 0, 0, 0)") {
                 thisBgColor = ColorUtil.Color(cStyle.backgroundColor);
             }
-            console.log("3 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id")+ ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",thisBgColor=" + JSON.stringify(thisBgColor)+", opacity="+cStyle.opacity);
             // If there is a gradient involved, set thisBgColor to the worst color combination available against the foreground
             if (cStyle.backgroundImage && cStyle.backgroundImage.indexOf && cStyle.backgroundImage.indexOf("gradient") != -1) {
                 var gradColors : string[] = cStyle.backgroundImage.match(reColor);
@@ -336,17 +333,16 @@ export class ColorUtil {
                 }
             }
             // Handle solid color backgrounds and gradient color backgrounds
-            else if (thisBgColor != null) { console.log("4 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",thisBgColor=" + JSON.stringify(thisBgColor)+",thisStackBG=" + JSON.stringify(thisStackBG));
+            else if (thisBgColor != null) {
                 // If this stack already has a background color, blend it
                 if (thisStackBG === null) {
                     thisStackBG = thisBgColor;
-                    thisStackAlpha = thisStackBG.alpha || 1.0;console.log("5 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",thisStackAlpha=" + thisStackAlpha);
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
                     delete thisStackBG.alpha;
-                } else { console.log("5.1 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",after thisBgColor=" + JSON.stringify(thisBgColor)+",thisStackBG=" + JSON.stringify(thisStackBG) +", thisStackAlpha="+thisStackAlpha +", thisBgColor.alpha="+thisBgColor.alpha);
+                } else {
                     thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
                     thisStackAlpha = thisBgColor.alpha || 1.0
-                    //thisStackAlpha = thisStackBG.alpha || 1.0
-                } console.log("6 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",after thisBgColor=" + JSON.stringify(thisBgColor)+",thisStackBG=" + JSON.stringify(thisStackBG) +", thisStackAlpha="+thisStackAlpha +", thisBgColor.alpha="+thisBgColor.alpha);
+                }
                 // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
                 // We can't wipe out the gradient info if this layer was transparent
                 if (thisStackOpacity === 1.0 && thisStackAlpha === 1.0 && (thisStackBG.alpha || 1.0) === 1.0 && (thisBgColor.alpha || 1.0) === 0) {
@@ -360,20 +356,18 @@ export class ColorUtil {
                 } else {
                     retVal.hasBGImage = true;
                 }
-            }console.log("7 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",last thisBgColor=" + JSON.stringify(thisBgColor)+",thisStackBG=" + JSON.stringify(thisStackBG) +", thisStackAlpha="+thisStackAlpha);
-            
+            }
         }
-        console.log("8 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",resolved thisStackBG=" + JSON.stringify(thisStackBG)+", thisStackOpacity="+thisStackOpacity+",priorStackBG=" + JSON.stringify(priorStackBG) +", thisStackAlpha="+thisStackAlpha);
-        if (thisStackBG != null) { console.log("9 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",resolved thisStackBG=" + JSON.stringify(thisStackBG)+", thisStackOpacity="+thisStackOpacity+",priorStackBG=" + JSON.stringify(priorStackBG) +",fg=" + JSON.stringify(fg) +", thisStackOpacity="+thisStackOpacity);
+        if (thisStackBG != null) {
             fg = fg.getOverlayColor(thisStackBG);
             delete fg.alpha;
-        } console.log("10 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",resolved thisStackBG=" + JSON.stringify(thisStackBG)+", thisStackOpacity="+thisStackOpacity+",priorStackBG=" + JSON.stringify(priorStackBG) +",fg=" + JSON.stringify(fg) +", thisStackOpacity="+thisStackOpacity);
+        }
         fg.alpha = (fg.alpha || 1) * thisStackOpacity;
-        fg = fg.getOverlayColor(priorStackBG); console.log("11 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",resolved thisStackBG=" + JSON.stringify(thisStackBG)+", thisStackOpacity="+thisStackOpacity+",priorStackBG=" + JSON.stringify(priorStackBG) +",fg=" + JSON.stringify(fg) +", thisStackOpacity="+thisStackOpacity);
+        fg = fg.getOverlayColor(priorStackBG);
         if (thisStackBG != null) {
             thisStackBG.alpha = thisStackOpacity * thisStackAlpha;
             priorStackBG = thisStackBG.getOverlayColor(priorStackBG);
-        } console.log("12 target node="+ruleContext.nodeName +",id="+ ruleContext.getAttribute("id") + ", node="+procNext.nodeName +",id="+ procNext.getAttribute("id") +",resolved thisStackBG=" + JSON.stringify(thisStackBG)+", thisStackOpacity="+thisStackOpacity+",priorStackBG=" + JSON.stringify(priorStackBG) +",fg=" + JSON.stringify(fg) +", thisStackBG.alpha="+thisStackBG.alpha);
+        }
         retVal.fg = fg;
         retVal.bg = priorStackBG;
         return retVal;
@@ -480,7 +474,8 @@ export class ColorObj {
             return null;
         }
         let retVal = this.mix(bgColor, this.alpha);
-        delete retVal.alpha; delete this.alpha;
+        delete retVal.alpha; 
+        delete this.alpha;
         return retVal;
     }
 

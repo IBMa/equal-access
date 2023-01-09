@@ -224,7 +224,6 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
-        console.log("node="+ nodeName +",colorCombo=" +JSON.stringify(colorCombo)+",ratio="+ratio);
         let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
             let control = RPTUtil.getControlOfLabel(elem);
