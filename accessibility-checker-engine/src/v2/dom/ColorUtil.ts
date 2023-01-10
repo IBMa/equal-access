@@ -341,7 +341,8 @@ export class ColorUtil {
                     delete thisStackBG.alpha;
                 } else {
                     thisStackBG = thisBgColor.getOverlayColor(thisStackBG);
-                    thisStackAlpha = thisBgColor.alpha || 1.0
+                    //thisStackAlpha = thisBgColor.alpha || 1.0;
+                    thisStackAlpha = thisStackBG.alpha || 1.0;
                 }
                 // #526: If thisBgColor had an alpha value, it may not expose through thisStackBG in the above code
                 // We can't wipe out the gradient info if this layer was transparent
@@ -475,7 +476,6 @@ export class ColorObj {
         }
         let retVal = this.mix(bgColor, this.alpha);
         delete retVal.alpha; 
-        delete this.alpha;
         return retVal;
     }
 
