@@ -1037,8 +1037,8 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         elemSVG.setAttribute("id", "svgCircle");
         elemSVG.classList.add("dynamic");
-        elemSVG.setAttribute("width","1px");
-        elemSVG.setAttribute("height","1px");
+        // elemSVG.setAttribute("width","1px");
+        // elemSVG.setAttribute("height","1px");
         document.body.appendChild(elemSVG);
     }
     // console.log("Inject circle circleNumber" + circleNumber);
