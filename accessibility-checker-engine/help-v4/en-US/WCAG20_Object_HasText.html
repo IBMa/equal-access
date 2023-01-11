@@ -51,9 +51,8 @@ Alternative descriptions are important for users whose browsers do not support t
 
 ### What to do
 
-* If the `<object>` element is a Java applet, add an alternative text description
-* **Or**, if the `<object>` element is a MPEG movie, add an image with alternative text
-* **Or**, if the `<object>` element contains an image, add alt text to the `<object>` to ensure the _accessible name_ of the object is calculated correctly because the `<img>` element inside the object is not used in computing the object’s _accessible name_
+* If the `<object>` element is a Java applet, video, or image, add a text description using the `title` attribute
+* **Or**, if the `<object>` element has a role of `application`, `document`, or `img`, add a text description using the `title`, `aria-label`, or `aria-labelledby` attribute
 
 For example:
 
@@ -77,6 +76,7 @@ For example:
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
 * [WCAG technique H53](https://www.w3.org/WAI/WCAG21/Techniques/html/H53)
+* [Accessible Name and Description Computation](https://www.w3.org/TR/accname-1.2/)
 
 ### Who does this affect?
 
