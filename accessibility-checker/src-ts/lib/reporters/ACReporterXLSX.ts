@@ -207,8 +207,17 @@ export class ACReporterXLSX {
         var recommendation = report?.counts.total["Recommendation"] ? report?.counts.total["Recommendation"] : 0;
         var all = violation + needsReview + recommendation // not using report?.counts.total["All"] here on purpose. This calculation matches the excel sheet produced by the extension.
 
-        var element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
-        var element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
+        var element_no_failures
+        var element_no_violations
+
+        if(all !== 0){
+            element_no_failures = parseInt((((all - recommendation) / all) * 100).toFixed(0));
+            element_no_violations = parseInt((((all - violation) / all) * 100).toFixed(0));
+        }else{
+            element_no_failures = 0
+            element_no_violations = 0
+        }
+        
         let scanLabel = report.label
 
         let currentScan = {
@@ -328,10 +337,10 @@ export class ACReporterXLSX {
      * @memberOf this
      */
     saveSummary() {
-        if (this.Config.outputFormat.indexOf("csv") === -1) {
+        this.Config.DEBUG && console.log("START 'saveSummary' function");
+        if (this.Config.outputFormat.indexOf("xlsx") === -1) {
             return;
         }
-        this.Config.DEBUG && console.log("START 'saveSummary' function");
         // this.writeObjectToFile("results.xlsx", this.resultStr);
         let fileName = pathLib.join(this.Config.outputFolder, "results.xlsx");
         MultiScanReport.multiScanXlsxDownload(this.storedScans, "all", this.storedScans.length, this.ruleArchiveSet, this.toolID, fileName);
