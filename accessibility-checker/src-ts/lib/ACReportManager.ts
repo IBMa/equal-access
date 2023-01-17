@@ -6,6 +6,7 @@ import { ACEngineManager } from "./ACEngineManager";
 import { ruleIdToLegacyId } from "..";
 import * as DeepDiff from "deep-diff";
 import { ACReporterCSV } from "./reporters/ACReporterCSV";
+import { ACReporterXLSX } from "./reporters/ACReporterXLSX";
 import { initializeSummary, IScanSummary } from "./reporters/ReportUtil";
 import { ACReporterHTML } from "./reporters/ACReporterHTML";
 import { ACReporterJSON } from "./reporters/ACReporterJSON";
@@ -16,7 +17,8 @@ export class ACReportManager {
     static reporters: {
         html: any,
         json: any,
-        csv: any
+        csv: any,
+        xlsx: any
     }
 
     static refactorMap : {
@@ -47,7 +49,8 @@ export class ACReportManager {
         ACReportManager.reporters = {
             html: new ACReporterHTML(ACReportManager.config, ACReportManager.scanSummary),
             json: new ACReporterJSON(ACReportManager.config, ACReportManager.scanSummary),
-            csv: new ACReporterCSV(ACReportManager.config, ACReportManager.scanSummary)
+            csv: new ACReporterCSV(ACReportManager.config, ACReportManager.scanSummary),
+            xlsx: new ACReporterXLSX(ACReportManager.config, ACReportManager.scanSummary)
         }
 
         ACReportManager.metricsLogger = new ACMetricsLogger("accessibility-checker", logger, ACReportManager.config.policies);
@@ -112,6 +115,9 @@ export class ACReportManager {
         }
         if (ACReportManager.config.outputFormat.includes("csv")) {
             ACReportManager.reporters.csv.report(results);
+        }
+        if (ACReportManager.config.outputFormat.includes("xlsx")) {
+            ACReportManager.reporters.xlsx.report(results);
         }
         if (ACReportManager.config.outputFormat.indexOf("html") != -1) {
             await ACReportManager.reporters.html.report(unFilteredResults);
