@@ -5,6 +5,15 @@ An automated accessibility testing for Node-based test environments from [IBM Eq
 
 To get started, please review [NPM](https://www.npmjs.com/package/accessibility-checker).
 
+## Features
+
+- Scan single or multiple files, directories, or URLs
+- Output scan report results in JSON, CSV, or HTML formats
+- Set a target rule archive
+- Configure policies to scan
+- Set violation levels that trigger test failures
+- Set violation levels that should be reported
+
 ## Running Locally
 
 ### Install
