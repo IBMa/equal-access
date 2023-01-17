@@ -44,15 +44,17 @@
 
 ### Why is this important?
 
-When an image contains important information, providing a text alternative makes the same information accessible through audio or other channels.
+When an image contains important information, providing a text alternative makes the same information accessible through audio or other channels such as a Braille display.
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If the image conveys meaning, use the `alt` attribute on the `<img>` element to provide a short description that serves the same purpose as the image. If the image contains important words, include them in the short description (e.g. `<img alt="submit">`);
-* **Or**, if the image is decorative or redundant, use the `alt` attribute with an empty string as its value (e.g. `<img alt="">`).
+* If the image conveys meaning, use the `alt` attribute on the `<img>` element to provide a short description that serves the same purpose as the image. 
+* **Or**, use an `aria-label` or `aria-labbelledby` to provide a short description that correctly follows the [accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
+* **And**, if the image contains important words, include them in the short description (e.g., `alt="submit"`)
+* **Or**, if the image is decorative or redundant, use the attribute with an empty string as its value (e.g., `<img alt="">`)
 
 </script></mark-down>
 <!-- End main panel -->
@@ -67,12 +69,13 @@ When an image contains important information, providing a text alternative makes
 
 * [IBM 1.1.1 Non-text content](https://www.ibm.com/able/requirements/requirements/#1_1_1)
 * [WCAG technique H37](https://www.w3.org/WAI/WCAG21/Techniques/html/H37)
+* [ARIA specification - accessible name calculation](https://www.w3.org/TR/wai-aria-1.2/#namecalculation)
 
 ### Who does this affect?
 
 * People using a screen reader, including blind, low vision and neurodivergent people
 * People who turn off image-loading on their web browsers
-* People using text only, monochrome or braille displays
+* People using text only, monochrome, or Braille displays
 * People using text-based browsers (e.g., Lynx) or audio interfaces
 
 </script></mark-down>

@@ -14,7 +14,6 @@
     limitations under the License.
  *****************************************************************************/
 
-import { element_attribute_deprecated } from "../../v4/rules";
 import { DOMWalker } from "./DOMWalker";
 
 export class ColorUtil {
