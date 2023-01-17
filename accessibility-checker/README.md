@@ -8,7 +8,7 @@ To get started, please review [NPM](https://www.npmjs.com/package/accessibility-
 ## Features
 
 - Scan single or multiple files, directories, or URLs
-- Output scan report results in JSON, CSV, or HTML formats
+- Output scan report results in JSON, CSV, HTML or XSLX formats
 - Set a target rule archive
 - Configure policies to scan
 - Set violation levels that trigger test failures
