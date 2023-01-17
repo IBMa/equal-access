@@ -81,6 +81,14 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             fill: white
         }
 
+        .noHighlightSVGText {
+            font-weight: normal
+        }
+
+        .highlightSVGText {
+            font-weight: bold
+        }
+
         .svgIconTest{
             position: absolute !important;
             overflow: visible !important;
