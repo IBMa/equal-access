@@ -218,4 +218,13 @@ try {
         }
         return retVal;
     }
+
+    static getRulesSync = function() {
+        if (!checker) return null;
+        let retVal = [];
+        for (const ruleId in checker.engine.ruleMap) {
+            retVal.push(checker.engine.ruleMap[ruleId]);
+        }
+        return retVal;
+    }
 }
