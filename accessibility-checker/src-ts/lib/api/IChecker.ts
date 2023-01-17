@@ -15,6 +15,8 @@ export interface IConfig {
      */
     ruleArchive?: "latest" | "preview" | string
 
+    ruleArchiveSet?:any
+
     ruleArchiveLabel?: string
 
     /**
