@@ -1056,6 +1056,7 @@ export class ACReportManager {
             let retVal = require(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label));
             if (retVal && retVal.results) {
                 if (!this.refactorMap) {
+                    this.refactorMap = {}
                     let rules = ACEngineManager.getRulesSync();
                     for (const rule of rules) {
                         if (rule.refactor) {
@@ -1075,6 +1076,7 @@ export class ACReportManager {
             }
             return retVal;
         } catch (e) {
+            // console.error("getBaseline Error:", e);
             return null;
         }
     };
