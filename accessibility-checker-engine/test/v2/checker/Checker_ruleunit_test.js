@@ -47,7 +47,7 @@ const mapRuleToG = {
     "RPT_Label_UniqueFor": "398",
     "RPT_Img_AltCommonMisuse": "453",
     "RPT_Img_LongDescription2": "454",
-    "WCAG20_Img_HasAlt": "455",
+    "img_alt_exists": "455",
     "RPT_Style_BackgroundImage": "456",
     "RPT_Pre_ASCIIArt": "458",
     "RPT_Media_VideoReferenceTrigger": "511",

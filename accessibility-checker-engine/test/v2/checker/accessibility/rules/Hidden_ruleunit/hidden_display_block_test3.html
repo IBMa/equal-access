@@ -26,9 +26,9 @@
     </main>
     <script>
       UnitTest = {
-        ruleIds: ['WCAG20_Img_HasAlt'],
+        ruleIds: ['img_alt_exists'],
                 results: [{
-                  "ruleId": "WCAG20_Img_HasAlt",
+                  "ruleId": "img_alt_exists",
                   "value": [
                     "INFORMATION",
                     "FAIL"
@@ -37,7 +37,7 @@
                     "dom": "/html[1]/body[1]/main[1]/div[1]/img[1]",
                     "aria": "/document[1]/main[1]/img[1]"
                   },
-                  "reasonId": "Fail_2",
+                  "reasonId": "fail_alt_missing",
                   "message": "Image does not have an 'alt' attribute short text alternative",
                   "messageArgs": [],
                   "apiArgs": [],

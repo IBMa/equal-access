@@ -16,24 +16,32 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
-export let WCAG20_Img_HasAlt: Rule = {
-    id: "WCAG20_Img_HasAlt",
+export let img_alt_exists: Rule = {
+    id: "img_alt_exists",
     context: "dom:img",
+    refactor: {
+        "WCAG20_Img_HasAlt": {
+            "Pass_0": "pass",
+            "Fail_1": "fail_whitespace",
+            "Fail_2": "fail_alt_missing",
+            "Fail_3": "fail_title_whitespace"
+        }
+    },
     help: {
         "en-US": {
-            "Pass_0": "WCAG20_Img_HasAlt.html",
-            "Fail_1": "WCAG20_Img_HasAlt.html",
-            "Fail_2": "WCAG20_Img_HasAlt.html",
-            "Fail_3": "WCAG20_Img_HasAlt.html",
-            "group": "WCAG20_Img_HasAlt.html"
+            "pass": "img_alt_exists.html",
+            "fail_whitespace": "img_alt_exists.html",
+            "fail_alt_missing": "img_alt_exists.html",
+            "fail_title_whitespace": "img_alt_exists.html",
+            "group": "img_alt_exists.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "Image 'alt' attribute value consists only of whitespace",
-            "Fail_2": "Image does not have an 'alt' attribute short text alternative",
-            "Fail_3": "Image does not have an 'alt' attribute and 'title' attribute value consists only of whitespace",
+            "pass": "Rule Passed",
+            "fail_whitespace": "Image 'alt' attribute value consists only of whitespace",
+            "fail_alt_missing": "Image does not have an 'alt' attribute short text alternative",
+            "fail_title_whitespace": "Image does not have an 'alt' attribute and 'title' attribute value consists only of whitespace",
             "group": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative"
         }
     },
@@ -57,7 +65,7 @@ export let WCAG20_Img_HasAlt: Rule = {
                 if (RPTUtil.isTabbable(ruleContext)) {
                     // Ignore the role
                 } else {
-                    return RulePass("Pass_0");
+                    return RulePass("pass");
                 }
             } else {
                 return null;
@@ -68,23 +76,23 @@ export let WCAG20_Img_HasAlt: Rule = {
             let alt = ruleContext.getAttribute("alt");
             if (alt.trim().length === 0 && alt.length !== 0) {
                 // Alt, but it's whitespace (alt=" ")
-                return RuleFail("Fail_1");
+                return RuleFail("fail_whitespace");
             } else {
-                return RulePass("Pass_0");
+                return RulePass("pass");
             }
         } else if (ruleContext.hasAttribute("title")) {
             let title = ruleContext.getAttribute("title");
             if (title.length === 0) {
                 // Same as no alt
-                return RuleFail("Fail_2");
+                return RuleFail("fail_alt_missing");
             } else if (title.trim().length === 0) {
                 // title = " "
-                return RuleFail("Fail_3");
+                return RuleFail("fail_title_whitespace");
             } else {
-                return RulePass("Pass_0");
+                return RulePass("pass");
             }
         } else {
-            return RuleFail("Fail_2");
+            return RuleFail("fail_alt_missing");
         }
     }
 }
