@@ -288,7 +288,14 @@ let aChecker = {
     };
 
     aChecker.getRulesets = () => new ace.Checker().rulesets;
-
+    aChecker.getRulesSync = () => {
+        let checker = new ace.Checker();
+        let retVal = [];
+        for (const ruleId in checker.engine.ruleMap) {
+            retVal.push(checker.engine.ruleMap[ruleId]);
+        }
+        return retVal;
+    }
     /**
      * This function is responsible for running the scan by calling the IBMa.validate function with the
      * provided content.
@@ -1490,6 +1497,8 @@ let aChecker = {
         return objectToClean;
     };
 
+    aChecker.refactor;
+
     /**
      * This function is responsible for getting the baseline object for a label that was provided.
      *
@@ -1503,7 +1512,28 @@ let aChecker = {
      * @memberOf this
      */
     aChecker.getBaseline = function (label) {
-        return window.__aChecker__ && window.__aChecker__[label];
+        let retVal = window.__aChecker__ && window.__aChecker__[label];
+        if (retVal && retVal.results) {
+            if (!aChecker.refactorMap) {
+                aChecker.refactorMap = {}
+                let rules = ACEngineManager.getRulesSync();
+                for (const rule of rules) {
+                    if (rule.refactor) {
+                        for (const key in rule.refactor) {
+                            aChecker.refactorMap[key] = rule;
+                        }
+                    }
+                }
+            }
+            for (const result of retVal.results) {
+                if (result.ruleId in aChecker.refactorMap) {
+                    let mapping = aChecker.refactorMap[result.ruleId].refactor[result.ruleId];
+                    result.ruleId = aChecker.refactorMap[result.ruleId].id;
+                    result.reasonId = mapping[result.reasonId];
+                }
+            }
+        }
+        return retVal;
     };
 
     /**
