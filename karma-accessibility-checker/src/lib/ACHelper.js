@@ -1516,7 +1516,7 @@ let aChecker = {
         if (retVal && retVal.results) {
             if (!aChecker.refactorMap) {
                 aChecker.refactorMap = {}
-                let rules = ACEngineManager.getRulesSync();
+                let rules = aChecker.getRulesSync();
                 for (const rule of rules) {
                     if (rule.refactor) {
                         for (const key in rule.refactor) {
