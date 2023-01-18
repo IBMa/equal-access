@@ -20,6 +20,7 @@ import { VisUtil } from "../../v2/dom/VisUtil";
 export let element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
     context: "dom:*",
+    //context: "dom:style, dom:*[style]",
     help: {
         "en-US": {
             "pass": "element_orientation_unlocked.html",
@@ -29,9 +30,9 @@ export let element_orientation_unlocked: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "Element is not restricted to either landscape or portrait orientation using CSS transform property",
-            "potential_invalid": "The element <{0}> is restricted to either landscape or portrait orientation using CSS transform property",
-            "group": "Element should not be restricted to either landscape or portrait orientation using CSS transform property"
+            "pass": "The element is not restricted to either landscape or portrait orientation using CSS transform property",
+            "fail_locked": "The element <{0}> is restricted to either landscape or portrait orientation using CSS transform property",
+            "group": "Elements should not be restricted to either landscape or portrait orientation using CSS transform property"
         }
     },
     rulesets: [{
@@ -50,23 +51,12 @@ export let element_orientation_unlocked: Rule = {
 
         // get the styles that changed
         const defined_styles = getDefinedStyles(ruleContext);
-            
+        console.log("node=" + ruleContext.nodeName +", defined_styles=" +JSON.stringify(defined_styles));
+        console.log("node=" + ruleContext.nodeName +", styles=" +JSON.stringify(window.getComputedStyle(ruleContext)));
+        
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;
-        while (passed && walkNode) {
-            // Comply to the Check Hidden Content setting will be done by default as this rule triggers on each element
-            // and for each element it only checks that single elements text nodes and nothing else. So all inner elements will be
-            // covered on their own. Currently for this rule by default Check Hidden Content will work, as we are doing
-            // a node walk only on siblings so it would not get text nodes from other siblings at all.
-            // In the case in the future something chnges, just need to add && !RPTUtil.shouldNodeBeSkippedHidden(walkNode) to the below
-            // if.
-            if (walkNode.nodeName == "#text") {
-                let txtVal = walkNode.nodeValue;
-                passed = !(/(^|\s)[a-zA-Z] [a-zA-Z] [a-zA-Z]($|\s)/.test(txtVal));
-            }
-            walkNode = walkNode.nextSibling;
-        }
-
+        
         if (passed) return RulePass("pass");
         return RulePotential("potential_text");
 
