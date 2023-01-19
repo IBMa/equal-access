@@ -2432,7 +2432,7 @@
 			"Pass_0": "Rule Passed"
 		},
 		"text_whitespace_valid": {
-			"0": "Sapce characters should not be used to control spacing within a word"
+			"0": "Space characters should not be used to control spacing within a word"
 		},
 		"WCAG20_Body_FirstAContainsSkipText_Native_Host_Sematics": {
 			"0": "The description of a hyperlink used to skip content must communicate where it links to",
