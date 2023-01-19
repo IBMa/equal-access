@@ -13,7 +13,8 @@
 
 import { RPTUtil, RPTUtilStyle } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { ColorUtil } from "../../v2/dom/ColorUtil";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { setCache } from "../util/CacheUtil";
 
@@ -54,15 +55,13 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             return null;
         }
         
-        // Ensure that this element has children with actual text.
-        let childStr = "";
-        let childNodes = ruleContext.childNodes;
-        for (let i = 0; i < childNodes.length; ++i) {
-            if (childNodes[i].nodeType == 3) {
-                childStr += childNodes[i].nodeValue;
-            }
-        }
-        if (childStr.trim().length == 0)
+        //TODO ? should only consider native disabled, ignore aria-disabled
+        //skip disabled element
+        if (RPTUtil.isNodeDisabled(ruleContext))
+            return null;
+
+        //skip elements
+        if (RPTUtil.getAncestor(ruleContext, ["svg", "script", "meta"]))
             return null;
 
         let doc = ruleContext.ownerDocument;
@@ -74,9 +73,32 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         if (!win) {
             return null;
         }
-        let style = win.getComputedStyle(ruleContext);
 
+        // Ensure that this element has children with actual text.
+        let childStr = RPTUtil.getNodeText(ruleContext);
+        
+        if (childStr.trim().length == 0 && (!RPTUtil.isShadowHostElement(ruleContext) || (RPTUtil.isShadowHostElement(ruleContext) && RPTUtil.getNodeText(ruleContext.shadowRoot) === '')))
+            return null;
+        
+        let elem = ruleContext;
+        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
+        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
+        if (RPTUtil.isShadowHostElement(ruleContext)) {
+            // if it's direct text of a shadow host
+            if (ruleContext.shadowRoot) {
+                for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
+                    if (node.nodeType==3) {
+                        //if multiple texts exist, only need to check one 
+                        elem = (node as Text).assignedSlot;
+                        break;
+                    }   
+                }
+            }
+            if (elem === null) return;
+        }
 
+        let style = win.getComputedStyle(elem);
+        
         // JCH clip INFO:
         //      The clip property lets you specify a rectangle to clip an absolutely positioned element. 
         //      The rectangle specified as four coordinates, all from the top-left corner of the element to be clipped.
@@ -187,24 +209,8 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
             return null;
         }
 
-        let elem = ruleContext;
-        // the child elements (rather than shadow root) of a shadow host is either re-assigned to the shadow slot if the slot exists 
-        // or not displayed, so shouldn't be checked from the light DOM, rather it should be checked as reassginged slot element(s) in the shadow DOM.
-        if (RPTUtil.isShadowHostElement(ruleContext)) {
-            // if it's direct text of a shadow host
-            if (ruleContext.shadowRoot) {
-                for (let node=ruleContext.firstChild; node; node=node.nextSibling) {
-                    if (node.nodeType==3) {
-                       //if multiple texts exist, only need to check one 
-                       elem = (node as Text).assignedSlot;
-                       break;
-                    }   
-                }
-            }
-            if (elem === null) return;
-        }
         // First determine the color contrast ratio
-        let colorCombo = RPTUtil.ColorCombo(elem);
+        let colorCombo = ColorUtil.ColorCombo(elem);
         if (colorCombo === null) {
             //some exception occurred, or not able to get color combo for some reason
             console.log("unable to get color combo for element: " + elem.nodeName);
@@ -218,20 +224,19 @@ export let IBMA_Color_Contrast_WCAG2AA: Rule = {
         let isLargeScale = size >= 24 || size >= 18.6 && weight >= 700;
         let passed = ratio >= 4.5 || (ratio >= 3 && isLargeScale);
         let hasBackground = colorCombo.hasBGImage || colorCombo.hasGradient;
-        
-        let isDisabled = RPTUtil.isNodeDisabled(ruleContext);
+        let isDisabled = RPTUtil.isNodeDisabled(elem);
         if (!isDisabled) {
-            let control = RPTUtil.getControlOfLabel(ruleContext);
+            let control = RPTUtil.getControlOfLabel(elem);
             if (control) {
                 isDisabled = RPTUtil.isNodeDisabled(control);
             }
         }
 
-        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(ruleContext)) {
+        if (!isDisabled && nodeName === 'label' && RPTUtil.isDisabledByFirstChildFormElement(elem)) {
             isDisabled = true;
         }
 
-        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(ruleContext)) {
+        if (!isDisabled && ruleContext.hasAttribute("id") && RPTUtil.isDisabledByReferringElement(elem)) {
             isDisabled = true;
         }
 

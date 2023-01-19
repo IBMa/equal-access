@@ -36,8 +36,6 @@ export default class MultiScanReport {
         // const fileName = ReportUtil.single_page_report_file_name(xlsx_props.tab_title);
         const fileName = ReportUtil.single_page_report_file_name(storedScans[storedScans.length - 1].pageTitle);
 
-        // if scanStorage false clear/delete current scan?
-
         // download file
         ReportUtil.download_file(blob, fileName);
     }
@@ -1210,7 +1208,7 @@ export default class MultiScanReport {
         const level3Row = worksheet.addRow(["",0]);
         level3Row.height = "27"; // actual is 36
 
-        level3Row.getCell(1).value = "Level 3 - necessary to complete IBM requirements";
+        level3Row.getCell(1).value = "Level 3 - necessary to meet requirements";
         level3Row.getCell(1).alignment = { vertical: "middle", horizontal: "left"};
         level3Row.getCell(1).font = { name: "Calibri", color: { argb: "FFFFFFFF" }, size: "16" };
         level3Row.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor:{argb:'FF403151'} };
