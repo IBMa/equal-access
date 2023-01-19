@@ -121,7 +121,7 @@ try {
             fs.mkdirSync(engineDir, { recursive: true });
         }
         await new Promise<void>((resolve, reject) => {
-            var nodePath = path.join(engineDir, "ace-node")
+            let nodePath = path.join(engineDir, "ace-node")
             fs.writeFile(nodePath+".js", data, function (err) {
                 try {
                     if(nodePath.charAt(0) !== '/'){
