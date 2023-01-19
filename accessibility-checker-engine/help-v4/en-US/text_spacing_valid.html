@@ -44,15 +44,24 @@
 
 ### Why is this important?
 
-The visual appearance of spacing in text should be accomplished using style sheets to maintain meaningful text sequencing. Simply adding blank characters to control the spacing may change the meaning, pronunciation or the interpretation of the word or cause the word not to be programmatically recognized as a single word.
+End users need to be able to adjust text, word, and line spacing to make it easier to read;  
+and that the content is still fully usable and understandable (e.g. no truncation) when making adjustments. 
+Assistive technologies cannot adjust spacing when authors use the `!important` attribute.
+
+Authors must ensure the content can be transformed (such as through user style sheets) to attain all of the following specific requirements without loss of content or functionality:
+* Line height (line spacing) to at least 1.5 times the font size
+* Spacing following paragraphs to at least 2 times the font size
+* Letter spacing (tracking) to at least 0.12 times the font size
+* Word spacing to at least 0.16 times the font size
 
 <!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
- * Verify space characters are not being used to create space between the letters of a word;
- * **Or**, if the letters of a word letters need to be spaced out, [use the CSS `letter-spacing` property](https://www.w3.org/WAI/WCAG21/Techniques/css/C8.html).
+* Use CSS to control spacing within a word, between words, and between lines
+* Avoid using the `!important` style attribute that prevents users from adjusting the spacing
+* Or, provide a custom mechanism on the page to allow users to adjust the spacing
 
 </script></mark-down>
 <!-- End main panel -->
@@ -65,8 +74,12 @@ The visual appearance of spacing in text should be accomplished using style shee
 
 ### About this requirement
 
-* [IBM 1.3.2 Meaningful Sequence](https://www.ibm.com/able/requirements/requirements/#1_3_2)
-* [WCAG technique C9](https://www.w3.org/WAI/WCAG21/Techniques/css/C8.html)
+* [IBM 1.4.12 Text Spacing](https://www.ibm.com/able/requirements/requirements/#1_4_12)
+* [WCAG technique C35](https://www.w3.org/WAI/WCAG21/Techniques/css/C35)
+* [WCAG technique C36](https://www.w3.org/WAI/WCAG21/Techniques/css/C36
+* [Design - Responsive reflow](https://www.ibm.com/able/toolkit/design/visual/#responsive-reflow)
+* [Verify - Resize and re-space text](https://www.ibm.com/able/toolkit/verify/manual/#resizetext)
+* [Verify - Reflow text](https://www.ibm.com/able/toolkit/verify/manual/#reflow)
 
 ### Who does this affect?
 
