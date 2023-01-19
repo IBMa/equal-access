@@ -44,7 +44,7 @@ export let text_spacing_valid: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_THREE
     }],
-    act:['9e45ec', '24afc2'],
+    act:['9e45ec', '24afc2', '78fd32'],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
         let nodeName = ruleContext.nodeName.toLowerCase();
