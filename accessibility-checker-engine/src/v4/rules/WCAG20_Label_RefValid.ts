@@ -46,6 +46,10 @@ export let WCAG20_Label_RefValid: Rule = {
         let passed = false;
         let target = FragmentUtil.getById(ruleContext, id);
         if (target) {
+            // ignore if both label and control are invisible
+            if (!VisUtil.isNodeVisible(target) && !VisUtil.isNodeVisible(ruleContext))
+                return null;
+            
             passed = true;
             // handles null and undefined
             if (!target.hasAttribute("role")) {
