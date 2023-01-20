@@ -118,7 +118,8 @@
 			"Pass_0": "Rule Passed"
 		},
 		"text_whitespace_valid": {
-			"0": "Space characters should not be used to control spacing within a word"
+			"0": "Space characters should not be used to control spacing within a word",
+			"pass": "Rule Passed"
 		}
 	},
 	"numExecuted": 113,
@@ -509,7 +510,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]/heading[1]",
@@ -740,7 +741,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -950,7 +951,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1160,7 +1161,7 @@
 			"width": 0
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1328,7 +1329,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/main[1]",
@@ -1622,7 +1623,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/navigation[1]/link[1]",
@@ -1874,7 +1875,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]/navigation[1]",
@@ -2189,7 +2190,7 @@
 			"width": 999
 		},
 		"category": "Accessibility",
-		"message": "text_whitespace_valid_pass",
+		"message": "Rule Passed",
 		"messageArgs": [],
 		"path": {
 			"aria": "/document[1]",
