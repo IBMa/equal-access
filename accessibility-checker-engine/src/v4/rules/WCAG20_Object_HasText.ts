@@ -23,15 +23,15 @@ export let WCAG20_Object_HasText: Rule = {
     help: {
         "en-US": {
             "group": "WCAG20_Object_HasText.html",
-            "Pass_0": "WCAG20_Object_HasText.html",
-            "Fail_1": "WCAG20_Object_HasText.html"
+            "pass": "WCAG20_Object_HasText.html",
+            "fail_no_text_alternative": "WCAG20_Object_HasText.html"
         }
     },
     messages: {
         "en-US": {
-            "group": "<object> elements must have a text alternative for the content rendered by the object",
-            "Pass_0": "Rule Passed",
-            "Fail_1": "An <object> element does not have a text alternative"
+            "group": "<object> element must have a text alternative for the content rendered by the object",
+            "pass": "<object> element has a text alternative",
+            "fail_no_text_alternative": "An <object> element does not have a text alternative"
         }
     },
     rulesets: [{
@@ -45,17 +45,16 @@ export let WCAG20_Object_HasText: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        // JCH - NO OUT OF SCOPE hidden in context
-
+        
         // Detect if this object is of type text, by checking the object type in the case it is text then do not trigger this rule
         if (ruleContext.hasAttribute("type") && (ruleContext.getAttribute("type")).indexOf("text") !== -1) {
             return null;
         }
-        if (ruleContext.getAttribute("aria-hidden") === "true") {
-            return null;
-        }
+        
+        // ignore if an explicit role is specified: including 'presentation', 'none', 'application', 'document' or 'img'
+        // this case will be covered in other rules
         let role = ruleContext.getAttribute("role");
-        if (role === "presentation" || role === "none") {
+        if (role) {
             return null;
         }
 
@@ -65,12 +64,12 @@ export let WCAG20_Object_HasText: Rule = {
         if (ext === ".html" || ext === ".htm") {
             return null;
         }
-
-        let passed = RPTUtil.hasInnerContentHidden(ruleContext) || ARIAMapper.computeName(ruleContext).trim().length > 0;
+        
+        let passed = ARIAMapper.computeName(ruleContext).trim().length > 0;
         if (passed) {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         } else {
-            return RuleFail("Fail_1");
+            return RuleFail("fail_no_text_alternative");
         }
     }
 }
