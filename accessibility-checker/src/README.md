@@ -150,7 +150,7 @@ module.exports = {
 
 ## Usage
 
-### Command-line
+### Command-line and multi-scan
 
 The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. You can also create a .txt file with path(s) to files, directories or a list of urls to be scanned, then provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`). Run `npx achecker` for more information.
 
