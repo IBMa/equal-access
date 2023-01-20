@@ -13,9 +13,11 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getMediaTransformFunction } from "../util/CSSUtil";
+import { getDefinedStyles, selectorMatchesElem, getMediaOrientationTransform } from "../util/CSSUtil";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
+import { getCache, setCache } from "../util/CacheUtil";
+import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
 
 export let element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
@@ -49,8 +51,15 @@ export let element_orientation_unlocked: Rule = {
         if (!VisUtil.isNodeVisible(ruleContext))
             return null;
 
+        let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
+
         // get the styles that changed
-        const mediaText = getMediaTransformFunction(ruleContext);
+        let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
+        if (orientationTransforms) {
+            orientationTransforms = getMediaOrientationTransform(ruleContext);
+            setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
+        } 
+        
         //console.log("node=" + ruleContext.nodeName +", defined_styles=" +JSON.stringify(defined_styles));
         //console.log("node=" + ruleContext.nodeName +", styleSheets=" +JSON.stringify(ruleContext.ownerDocument.styleSheets));
         

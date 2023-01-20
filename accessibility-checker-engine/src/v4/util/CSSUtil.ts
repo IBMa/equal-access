@@ -158,9 +158,9 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
  * 
  * @param {HTMLElement} elem 
  */
-export function getMediaTransformFunction(elem: HTMLElement) {
+export function getMediaOrientationTransform(elem: HTMLElement) {
     // console.log("Function: getDefinedStyles");
-    let mediaTransforms = {}
+    let orientationTransforms = {}
     
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
@@ -171,31 +171,35 @@ export function getMediaTransformFunction(elem: HTMLElement) {
             if (sheet && sheet.cssRules) {
                 // console.log("Got sheet");
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
-                    console.log("Got rule: ", sheet.cssRules[rIndex]);
                     const rule = sheet.cssRules[rIndex] as CSSMediaRule;
-                        
                     if (rule && rule.media) {
                         const mediaList = rule.media;
                         console.log("node=" + elem.nodeName +", mediaText=" + mediaList.mediaText +", cssRules="+JSON.stringify(rule.cssRules));
                         for (let i = 0; i < mediaList.length; i++) {
                             console.log("elem node=" + elem.nodeName + ", media.item=" + mediaList.item(i));
+                            let transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
+                            if (!transforms) transforms = {};
                             let styleRules = rule.cssRules;
                             for (let i = 0; i < styleRules.length; ++i) {
-                                // console.log("Got rule: ", sheet.cssRules[rIndex]);
                                 const styleRule = styleRules[i] as CSSStyleRule;
                                 const fullRuleSelector = styleRule.selectorText;
                                 if (fullRuleSelector) {
                                     const styles = styleRule.style;
                                     for (let s=0; s < styles.length; ++s) {
-                                        if (styles[s].toLocaleLowerCase() === "transform") {
-                                            const key = styles[s];
-                                            mediaTransforms[key] = styles[key];
+                                        const key = styles[s];
+                                        if (key.toLocaleLowerCase() === "transform") {
+                                            if (key === "all" && styles[key]) {
+                                                delete transforms[key];
+                                                break;
+                                            } else {
+                                                transforms[key] = styles[key];
+                                            }
                                         }
                                     }
-                                    console.log("mediaTransforms=" + JSON.stringify(mediaTransforms) + ", fullRuleSelector =" + styleRule.selectorText); 
+                                    console.log("transforms=" + JSON.stringify(transforms) + ", fullRuleSelector =" + styleRule.selectorText);
                                 }  
-                                  
                             }
+                            orientationTransforms[mediaList.item(i).toLocaleLowerCase()] = transforms; 
                         }
                     }
                 }
@@ -205,28 +209,8 @@ export function getMediaTransformFunction(elem: HTMLElement) {
             throw err;
             
         }
-    }
-    return mediaTransforms;
-}
-
-function getStyleRulesForMedia(rules) {
-    let result = '';
-    try {
-        // console.log("Got sheet");
-        for (let i = 0; i < rules.length; ++i) {
-            // console.log("Got rule: ", sheet.cssRules[rIndex]);
-            const rule = rules[i] as CSSStyleRule;
-            const fullRuleSelector = rule.selectorText;
-            if (fullRuleSelector) {
-                console.log("style=" + rule.style + ", fullRuleSelector =" + rule.selectorText); 
-            }  
-              
-        }
-        return result;
-    } catch (err) {
-        console.log("Cannot access media rule: " + err);
-        return result;
-    }
+    } console.log("orientationTransforms=" + JSON.stringify(orientationTransforms)); 
+    return orientationTransforms;
 }
 
 /**
