@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
+import { getMediaTransformFunction } from "../util/CSSUtil";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { VisUtil } from "../../v2/dom/VisUtil";
 
@@ -50,9 +50,9 @@ export let element_orientation_unlocked: Rule = {
             return null;
 
         // get the styles that changed
-        const defined_styles = getDefinedStyles(ruleContext);
-        console.log("node=" + ruleContext.nodeName +", defined_styles=" +JSON.stringify(defined_styles));
-        console.log("node=" + ruleContext.nodeName +", styles=" +JSON.stringify(window.getComputedStyle(ruleContext)));
+        const mediaText = getMediaTransformFunction(ruleContext);
+        //console.log("node=" + ruleContext.nodeName +", defined_styles=" +JSON.stringify(defined_styles));
+        //console.log("node=" + ruleContext.nodeName +", styleSheets=" +JSON.stringify(ruleContext.ownerDocument.styleSheets));
         
         let passed = true;
         let walkNode = ruleContext.firstChild as Node;

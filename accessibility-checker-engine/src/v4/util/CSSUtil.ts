@@ -85,7 +85,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             }
         }
     }
-
+        
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
@@ -150,6 +150,82 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         }
         // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStylePseudo, null, 2));
         return definedStylePseudo;
+    }
+}
+
+/**
+ * Returns the media query defined for this element
+ * 
+ * @param {HTMLElement} elem 
+ */
+export function getMediaTransformFunction(elem: HTMLElement) {
+    // console.log("Function: getDefinedStyles");
+    let mediaTransforms = {}
+    
+    // Iterate through all of the stylesheets and rules
+    for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
+        const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
+        //console.log("elem node=" + elem.nodeName +", sheet=" + JSON.stringify(sheet));
+        //console.log("elem node=" + elem.nodeName +", sheet.media=" +sheet.media+", sheet.cssRules[0]=" + JSON.stringify(sheet.cssRules[0])+", sheet.cssRules[0].type=" + sheet.cssRules[0].type+", sheet.cssRules[0].cssText=" + sheet.cssRules[0].cssText);
+        try {
+            if (sheet && sheet.cssRules) {
+                // console.log("Got sheet");
+                for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                    console.log("Got rule: ", sheet.cssRules[rIndex]);
+                    const rule = sheet.cssRules[rIndex] as CSSMediaRule;
+                        
+                    if (rule && rule.media) {
+                        const mediaList = rule.media;
+                        console.log("node=" + elem.nodeName +", mediaText=" + mediaList.mediaText +", cssRules="+JSON.stringify(rule.cssRules));
+                        for (let i = 0; i < mediaList.length; i++) {
+                            console.log("elem node=" + elem.nodeName + ", media.item=" + mediaList.item(i));
+                            let styleRules = rule.cssRules;
+                            for (let i = 0; i < styleRules.length; ++i) {
+                                // console.log("Got rule: ", sheet.cssRules[rIndex]);
+                                const styleRule = styleRules[i] as CSSStyleRule;
+                                const fullRuleSelector = styleRule.selectorText;
+                                if (fullRuleSelector) {
+                                    const styles = styleRule.style;
+                                    for (let s=0; s < styles.length; ++s) {
+                                        if (styles[s].toLocaleLowerCase() === "transform") {
+                                            const key = styles[s];
+                                            mediaTransforms[key] = styles[key];
+                                        }
+                                    }
+                                    console.log("mediaTransforms=" + JSON.stringify(mediaTransforms) + ", fullRuleSelector =" + styleRule.selectorText); 
+                                }  
+                                  
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (err) {
+            console.log("Cannot access media style: " + err);
+            throw err;
+            
+        }
+    }
+    return mediaTransforms;
+}
+
+function getStyleRulesForMedia(rules) {
+    let result = '';
+    try {
+        // console.log("Got sheet");
+        for (let i = 0; i < rules.length; ++i) {
+            // console.log("Got rule: ", sheet.cssRules[rIndex]);
+            const rule = rules[i] as CSSStyleRule;
+            const fullRuleSelector = rule.selectorText;
+            if (fullRuleSelector) {
+                console.log("style=" + rule.style + ", fullRuleSelector =" + rule.selectorText); 
+            }  
+              
+        }
+        return result;
+    } catch (err) {
+        console.log("Cannot access media rule: " + err);
+        return result;
     }
 }
 
