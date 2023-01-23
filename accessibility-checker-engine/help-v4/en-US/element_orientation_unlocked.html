@@ -51,7 +51,7 @@ For example, if a user has their display affixed to a wheelchair or is otherwise
 the content becomes unusable. 
 Most applications should be able to be used when displayed in either orientation (although one orientation may be less optimal).
 
-**Essential Exception**: This requirement does not apply to the rare situation where a specific display orientation is essential. 
+**Essential Exception**: This requirement does not apply to rare situations where a specific display orientation is essential. 
 An example is a piano keyboard emulator that mimics a physical piano keyboard, which is heavily dependent on horizontal operation.
 
 <!-- This is where the code snippet is injected -->
@@ -59,22 +59,21 @@ An example is a piano keyboard emulator that mimics a physical piano keyboard, w
 
 ### What to do
 
-- If users 
-- **Or**, if users 
-- **And**, if 
-- **And**, ensure that
+* When the CSS `[transform](https://www.w3.org/TR/css-transforms/#propdef-transform)` property is used, 
+ensure the [transform function](https://www.w3.org/TR/css-transforms/#transform-functions) is conditionally applied on the [orientation](https://www.w3.org/TR/mediaqueries-3/#orientation) [media feature](https://www.w3.org/TR/mediaqueries-3/#media1) 
+so that it does not restrict the page or element to either portrait or landscape orientation
+* **Or**, remove the CSS `[transform](https://www.w3.org/TR/css-transforms/#propdef-transform)` property if not [essential](https://www.w3.org/TR/WCAG21/#dfn-essential)
 
-
-Example: this "**_Skip to main content_**" tabbable element uses CSS positioning to ensure it is visible when the element has keyboard focus:
+Example: a CSS `transform` property has a [rotateZ](https://drafts.csswg.org/css-transforms-2/#funcdef-rotatez) transform function conditionally applied on the orientation media feature which does not restrict the element to either portrait or landscape orientation:
 
 ```
     <style>
-    .skip {
-        position: absolute; background-color: white; padding: 0.5rem;
-        left: -1000px;
-    }
-    </style>
-    <a class="skip" href="#main">Skip to main content</a>   
+        @media (orientation: portrait) {
+            html {
+                transform: rotateZ(1turn);
+                }
+            }
+        </style>
 ```
 
 </script></mark-down>
