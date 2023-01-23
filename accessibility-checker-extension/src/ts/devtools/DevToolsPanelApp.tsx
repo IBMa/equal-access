@@ -242,6 +242,7 @@
         }
     
         async xpathFromTabstops(message: any) {
+            console.log("**** Function: xpathFromTabstops ****")
             // JCH take xpath and match to item with same item.path.dom
             this.state.tabStopsResults.map((result: any) => {
                 if (message.xpath === result.path.dom) {
