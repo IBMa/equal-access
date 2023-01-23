@@ -77,7 +77,7 @@ export let text_spacing_valid: Rule = {
 
         //font size always resolved to 'px'    
         const font_size_style = getComputedStyle(ruleContext).getPropertyValue('font-size');
-        var font_size = parseFloat(font_size_style); 
+        let font_size = parseFloat(font_size_style); 
         
         const styles = getDefinedStyles(ruleContext);
         if (Object.keys(styles).length === 0)
