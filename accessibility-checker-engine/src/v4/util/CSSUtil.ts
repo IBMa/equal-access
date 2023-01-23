@@ -115,7 +115,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                         if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
                             fillStyle([definedStylePseudo], rule.style);
                         }
-                    }
+                    }   
                 }
             }
         } catch (err) {
@@ -171,37 +171,46 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
             if (sheet && sheet.cssRules) {
                 // console.log("Got sheet");
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
-                    const rule = sheet.cssRules[rIndex] as CSSMediaRule;
-                    if (rule && rule.media) {
-                        const mediaList = rule.media;
-                        console.log("node=" + elem.nodeName +", mediaText=" + mediaList.mediaText +", cssRules="+JSON.stringify(rule.cssRules));
-                        for (let i = 0; i < mediaList.length; i++) {
-                            console.log("elem node=" + elem.nodeName + ", media.item=" + mediaList.item(i));
-                            let transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
-                            if (!transforms) transforms = {};
-                            let styleRules = rule.cssRules;
-                            for (let i = 0; i < styleRules.length; ++i) {
-                                const styleRule = styleRules[i] as CSSStyleRule;
-                                const fullRuleSelector = styleRule.selectorText;
-                                if (fullRuleSelector) {
-                                    const styles = styleRule.style;
-                                    for (let s=0; s < styles.length; ++s) {
-                                        const key = styles[s];
-                                        if (key.toLocaleLowerCase() === "transform") {
-                                            if (key === "all" && styles[key]) {
-                                                delete transforms[key];
-                                                break;
-                                            } else {
-                                                transforms[key] = styles[key];
+                    const sheetRule = sheet.cssRules[rIndex];
+                    if (CSSRule.MEDIA_RULE === sheetRule.MEDIA_RULE) { 
+                        const rule = sheetRule as CSSMediaRule;
+                        console.log("elem=" + elem.nodeName + ", media rule=" + CSSRule.MEDIA_RULE +" : " + rule.MEDIA_RULE);
+                        if (rule && rule.media) {
+                            const mediaList = rule.media;
+                            console.log("node=" + elem.nodeName +", mediaText=" + mediaList.mediaText +", cssRules="+JSON.stringify(rule.cssRules));
+                            for (let i = 0; i < mediaList.length; i++) {
+                                console.log("elem node=" + elem.nodeName + ", media.item=" + mediaList.item(i));
+                                let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
+                                if (!elem_transforms) elem_transforms = {};
+                                let styleRules = rule.cssRules;
+                                console.log("elem=" + elem.nodeName + ", style rule=" + CSSRule.STYLE_RULE +" : " + styleRules[i].STYLE_RULE);
+                                for (let i = 0; i < styleRules.length; ++i) {
+                                    if (CSSRule.STYLE_RULE === styleRules[i].STYLE_RULE) { 
+                                        const styleRule = styleRules[i] as CSSStyleRule;
+                                        const selector = styleRule.selectorText;
+                                        if (selector) {
+                                            let transforms = {};
+                                            const styles = styleRule.style;
+                                            for (let s=0; s < styles.length; ++s) {
+                                                const key = styles[s];
+                                                if (key.toLocaleLowerCase() === "transform") {
+                                                    if (key === "all" && styles[key]) {
+                                                        delete transforms[key];
+                                                        break;
+                                                    } else {
+                                                        transforms[key] = styles[key];
+                                                    }
+                                                }
                                             }
+                                            elem_transforms[selector] = transforms;
+                                            console.log("transforms=" + JSON.stringify(transforms) + ", selector =" + styleRule.selectorText);
                                         }
-                                    }
-                                    console.log("transforms=" + JSON.stringify(transforms) + ", fullRuleSelector =" + styleRule.selectorText);
-                                }  
+                                    }      
+                                }
+                                orientationTransforms[mediaList.item(i).toLocaleLowerCase()] = elem_transforms; 
                             }
-                            orientationTransforms[mediaList.item(i).toLocaleLowerCase()] = transforms; 
                         }
-                    }
+                    }    
                 }
             }
         } catch (err) {

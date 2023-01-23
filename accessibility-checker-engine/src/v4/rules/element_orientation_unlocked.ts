@@ -51,14 +51,37 @@ export let element_orientation_unlocked: Rule = {
         if (!VisUtil.isNodeVisible(ruleContext))
             return null;
 
+        const transform_functions =["rotate", "rotate3d", "rotateZ", "matrix", "matrix3d"]; 
+
+        const nodeName = ruleContext.nodeName.toLowerCase();    
+        console.log("node=" + ruleContext.nodeName +", orientation=" +window.matchMedia("(orientation: landscape)").matches);
+        if (ruleContext.nodeName === 'HTML') console.log("node=" + nodeName +", computedStyle=" + JSON.stringify(window.getComputedStyle(ruleContext).transform));
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
 
         // get the styles that changed
         let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
-        if (orientationTransforms) {
+        if (!orientationTransforms) {
             orientationTransforms = getMediaOrientationTransform(ruleContext);
+            console.log("node=" + nodeName +", orientationTransforms=" + JSON.stringify(orientationTransforms));
             setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
-        } 
+        } else {
+            console.log("cached node=" + ruleContext.nodeName +", orientationTransforms=" + JSON.stringify(orientationTransforms));
+        }
+        
+        let mediaStyle = null;
+        let stop = false;
+        Object.keys(orientationTransforms).forEach(key => {
+            console.log(key, orientationTransforms[key]);
+            Object.keys(orientationTransforms[key]).forEach(tag => {
+                console.log(tag, orientationTransforms[key]); console.log("tag=" + tag + ", " + nodeName +", mediastyle=" + JSON.stringify(orientationTransforms[key][tag]));
+                if (tag === nodeName)
+                    mediaStyle = orientationTransforms[key][tag];    
+            });
+        });
+
+        // the elemenet is not in media orientation style
+        if (mediaStyle === null ) return null;
+        console.log("node=" + nodeName + ", mediastyle=" + mediaStyle.transform);
         
         //console.log("node=" + ruleContext.nodeName +", defined_styles=" +JSON.stringify(defined_styles));
         //console.log("node=" + ruleContext.nodeName +", styleSheets=" +JSON.stringify(ruleContext.ownerDocument.styleSheets));
