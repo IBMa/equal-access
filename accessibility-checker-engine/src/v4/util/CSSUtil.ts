@@ -58,6 +58,10 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * This differs from the computed style in that the computed style will return
  * styles defined by the user agent. This will only return styles defined by the
  * application
+ * if you use rotation transform, the computed style return resolved matrix
+ *  while the defined style return the transform function(s) 
+ * for example, for 'transform: rotate(2.5deg);', the computed style returns matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0) 
+ *  and the defined style returns rotate(2.5deg)  
  * 
  * @param {HTMLElement} elem 
  * @param {string} [pseudoClass] If specified, will return values that are different
@@ -220,6 +224,107 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
         }
     } console.log("orientationTransforms=" + JSON.stringify(orientationTransforms)); 
     return orientationTransforms;
+}
+
+/**
+ * convert given rotation transform functions to degree transformed. 
+ * If multiple functions are given, then the functions are applied linearly in the order. 
+ *   rotation_transform function example:  rotate(45deg), rotate(2turn), rotate(2rad), rotate3d(1, 1, 1, 45deg),
+ *        rotate(2rad) rotate3d(1, 1, 1, 45deg)
+ * @param rotation_transform 
+ */
+export function getRotationDegree(rotation_transform) {
+    let degree = 0;
+    try {
+        if (!rotation_transform) return degree;
+
+        const transform_functions = rotation_transform.split(" ");
+        for (let i =0; i < transform_functions.length; i++) {
+            const transform_function = transform_functions[i].trim();
+            if (transform_function === '') continue;
+            if (transform_function.startsWith("rotate") || transform_function.startsWith("rotateZ")) {
+                // example: rotate(45deg);
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let rotation = transform_function.substring(left+1, right);
+                    if (!rotation) continue;
+                    rotation = rotation.trim();
+                    if (rotation.endsWith("turn")) {
+                        let num = rotation.substring(0, rotation.length - 4);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree = num * 360; 
+                        console.log("num=" + num + ", degree=" + degree);
+                    } else if (rotation.endsWith("rad")) {
+                        let num = rotation.substring(0, rotation.length - 3);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree = num * 180/Math.PI; 
+                        console.log("num=" + num + ", degree=" + degree);
+                    } else if (rotation.endsWith("deg")) {
+                        let num = rotation.substring(0, rotation.length - 3);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree += num; 
+                        console.log("num=" + num + ", degree=" + degree);
+                    }
+                    console.log("rotation=" + rotation +", degree=" + degree); 
+                }
+            } else if (transform_function.startsWith("rotate3d")) {
+                // example: rotate3d(1, 1, 1, 45deg);
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values = null;
+                    if (matrix) values = matrix.split(",");
+                    if (values !== null) {
+                        let rotation = values[3];
+                        if (!rotation) continue;
+                        rotation = rotation.trim();
+                        if (rotation.endsWith("turn")) {
+                            let num = rotation.substring(0, rotation.length - 4);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 360; 
+                            console.log("num=" + num + ", degree=" + degree);
+                        } else if (rotation.endsWith("rad")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 180/Math.PI; 
+                            console.log("num=" + num + ", degree=" + degree);
+                        } else if (rotation.endsWith("deg")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree += num; 
+                            console.log("num=" + num + ", degree=" + degree);
+                        }
+                        console.log("rotation=" + rotation +", degree=" + degree); 
+                    }    
+                }
+            } else if (transform_function.startsWith("matrix")) {
+                // calculate the three Euler angles
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values = null;
+                    if (matrix) values = matrix.split(",");
+                    if (values !== null) {
+                        
+                        console.log("values=" + values +", degree=" + degree);
+                    }     
+                }
+            } else if (transform_function.startsWith("matrix3d")) {
+                
+            }     
+        }
+        
+        while (degree >= 360) degree -= 360;
+        console.log("final degree=" + degree); 
+
+    } catch (err) {
+        console.log("Cannot retrieve rotation degree: " + err);
+        throw err;
+    } 
+    return degree; 
 }
 
 /**

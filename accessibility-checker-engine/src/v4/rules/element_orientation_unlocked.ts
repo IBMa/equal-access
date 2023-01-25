@@ -13,8 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, selectorMatchesElem, getMediaOrientationTransform } from "../util/CSSUtil";
-import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
+import { getDefinedStyles, getMediaOrientationTransform, getRotationDegree } from "../util/CSSUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
@@ -66,63 +65,54 @@ export let element_orientation_unlocked: Rule = {
             console.log("cached node=" + ruleContext.nodeName +", orientationTransforms=" + JSON.stringify(orientationTransforms));
         }
         
-        let transform_function = null;
+        let media_transform = null;
         let stop = false;
         Object.keys(orientationTransforms).forEach(key => {
             console.log(key, orientationTransforms[key]);
             Object.keys(orientationTransforms[key]).forEach(tag => {
                 console.log(tag, orientationTransforms[key]); console.log("tag=" + tag + ", " + nodeName +", mediastyle=" + JSON.stringify(orientationTransforms[key][tag]));
                 if (tag === nodeName)
-                    transform_function = orientationTransforms[key][tag].transform;    
+                    media_transform = orientationTransforms[key][tag].transform;    
             });
         });
 
         // the elemenet is not in media orientation style
-        if (transform_function === null ) return null;
-        console.log("node=" + nodeName + ", transform_function=" + transform_function);
+        if (!media_transform) return null;
+        console.log("node=" + nodeName + ", media_transform=" + media_transform);
+        let containsRotation = false;
+        ['rotate', 'rotate3d', 'rotateZ', 'matrix', 'matrix3d'].forEach(rotation => {
+             if (media_transform.includes(rotation)) containsRotation = true;
+        });
+        // no rotation transform, skip
+        if (!containsRotation) return null;
+
+        const degree = getRotationDegree(media_transform);
+        console.log("node=" + nodeName + ", degree=" + degree); 
         
-        let degree = 0;
-        if (transform_function.startsWith("rotate") || transform_function.startsWith("rotate3d") || transform_function.startsWith("rotateZ")) {
-            const left = transform_function.indexOf("(");
-            const right = transform_function.indexOf(")");
-            if (left != -1 && right != -1) {
-                let rotation = transform_function.substring(left+1, right);
-                if (rotation) rotation = rotation.trim();
-                if (rotation.endsWith("turn")) {
-                    let num = rotation.substring(0, rotation.length - 4);
-                    num = parseFloat(num);
-                    if (!isNaN(num)) degree = num * 360; 
-                    console.log("node=" + nodeName + ", num=" + num + ", degree=" + degree);
-                } else if (rotation.endsWith("rad")) {
-                    let num = rotation.substring(0, rotation.length - 3);
-                    num = parseFloat(num);
-                    if (!isNaN(num)) degree = num * 180/Math.PI; 
-                    console.log("node=" + nodeName + ", num=" + num + ", degree=" + degree);
-                } else if (rotation.endsWith("deg")) {
-                    let num = rotation.substring(0, rotation.length - 3);
-                    num = parseFloat(num);
-                    if (!isNaN(num)) degree = num; 
-                    console.log("node=" + nodeName + ", num=" + num + ", degree=" + degree);
-                }
-                console.log("node=" + nodeName + ", rotation=" + rotation +", degree=" + degree); 
-            }
-        } else if (transform_function.startsWith("matrix") || transform_function.startsWith("matrix3d")) {
-            // calculate the three Euler angles
-
-        } else if (transform_function.startsWith("matrix") || transform_function.startsWith("matrix3d")) {
-            
-        } else 
-           // ignore, irrelevant transform
-           return null;    
-
-        // if no rotation, ignore it 
-        if (degree === 0) return null;
-
-        while (degree >= 360) degree -= 360;
-        console.log("final node=" + nodeName + ", degree=" + degree); 
+        // no or 360n degree rotation 
+        if (degree === 0) 
+            return RulePass("pass");
         
-        // allow 1 degree range for the right angle
-        if (degree > 89 && degree < 91)
+        /**
+         * calculate the original page rotation, example
+         *  html { transform: rotate(2.5deg); }
+        */
+        const definedStyle = getDefinedStyles(ruleContext);
+        console.log("defined node=" + nodeName + ", definedStyle=" + definedStyle['transform']); 
+        // the original page roatation degree
+        let page_degree = 0;
+        if (definedStyle['transform'])
+            page_degree = getRotationDegree(definedStyle['transform']);
+
+        /** TODO: 
+         *   consider an opposite case when a page transformation (not in media) is defined after the media transformation,  
+         * and the media transform, therefore, is not actually applied or is overwritten. 
+        */     
+        const resolved_degree = degree - page_degree;
+        console.log("final node=" + nodeName + ", resolved_degree=" + resolved_degree);
+
+        // allow 1 degree floating range for the right angle
+        if ((resolved_degree > 89 && resolved_degree < 91) || resolved_degree > -91 && resolved_degree < -89 )
             return RuleFail("fail_locked", [nodeName]);
         return RulePass("pass");
         
