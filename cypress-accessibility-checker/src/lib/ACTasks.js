@@ -295,12 +295,40 @@ let ACTasks = module.exports = {
      */
     getBaseline: function (labelStr) {
         try {
-            return require(path.join(path.join(process.cwd(), ACTasks.Config.baselineFolder), labelStr));
+            let retVal = require(path.join(path.join(process.cwd(), ACTasks.Config.baselineFolder), labelStr));
+            if (retVal && retVal.results) {
+                if (!ACTasks.refactorMap) {
+                    ACTasks.refactorMap = {}
+                    let rules = ACTasks.getRulesSync();
+                    for (const rule of rules) {
+                        if (rule.refactor) {
+                            for (const key in rule.refactor) {
+                                ACTasks.refactorMap[key] = rule;
+                            }
+                        }
+                    }
+                }
+                for (const result of retVal.results) {
+                    if (result.ruleId in ACTasks.refactorMap) {
+                        let mapping = ACTasks.refactorMap[result.ruleId].refactor[result.ruleId];
+                        result.ruleId = ACTasks.refactorMap[result.ruleId].id;
+                        result.reasonId = mapping[result.reasonId];
+                    }
+                }
+            }
+            return retVal;
         } catch (e) {
             return null;
         }
     },
-    
+    getRulesSync: () =>  {
+        let checker = new ACTasks.ace.Checker();
+        let retVal = [];
+        for (const ruleId in checker.engine.ruleMap) {
+            retVal.push(checker.engine.ruleMap[ruleId]);
+        }
+        return retVal;
+    },    
     getRulesets: () => new ACTasks.ace.Checker().rulesets,
 
     /**
