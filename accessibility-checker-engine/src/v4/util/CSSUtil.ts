@@ -160,6 +160,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
 /**
  * Returns the media query defined for this element
  * 
+ * 
  * @param {HTMLElement} elem 
  */
 export function getMediaOrientationTransform(elem: HTMLElement) {
@@ -169,25 +170,18 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
-        //console.log("elem node=" + elem.nodeName +", sheet=" + JSON.stringify(sheet));
-        //console.log("elem node=" + elem.nodeName +", sheet.media=" +sheet.media+", sheet.cssRules[0]=" + JSON.stringify(sheet.cssRules[0])+", sheet.cssRules[0].type=" + sheet.cssRules[0].type+", sheet.cssRules[0].cssText=" + sheet.cssRules[0].cssText);
         try {
             if (sheet && sheet.cssRules) {
-                // console.log("Got sheet");
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
                     const sheetRule = sheet.cssRules[rIndex];
                     if (CSSRule.MEDIA_RULE === sheetRule.MEDIA_RULE) { 
                         const rule = sheetRule as CSSMediaRule;
-                        console.log("elem=" + elem.nodeName + ", media rule=" + CSSRule.MEDIA_RULE +" : " + rule.MEDIA_RULE);
                         if (rule && rule.media) {
                             const mediaList = rule.media;
-                            console.log("node=" + elem.nodeName +", mediaText=" + mediaList.mediaText +", cssRules="+JSON.stringify(rule.cssRules));
                             for (let i = 0; i < mediaList.length; i++) {
-                                console.log("elem node=" + elem.nodeName + ", media.item=" + mediaList.item(i));
                                 let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
                                 if (!elem_transforms) elem_transforms = {};
                                 let styleRules = rule.cssRules;
-                                console.log("elem=" + elem.nodeName + ", style rule=" + CSSRule.STYLE_RULE +" : " + styleRules[i].STYLE_RULE);
                                 for (let i = 0; i < styleRules.length; ++i) {
                                     if (CSSRule.STYLE_RULE === styleRules[i].STYLE_RULE) { 
                                         const styleRule = styleRules[i] as CSSStyleRule;
@@ -207,7 +201,6 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
                                                 }
                                             }
                                             elem_transforms[selector] = transforms;
-                                            console.log("transforms=" + JSON.stringify(transforms) + ", selector =" + styleRule.selectorText);
                                         }
                                     }      
                                 }
@@ -218,11 +211,11 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
                 }
             }
         } catch (err) {
-            console.log("Cannot access media style: " + err);
-            throw err;
-            
+            if (!err.toString().includes("Cannot access rules") && !err.toString().includes("SecurityError:")) {
+                throw err;
+            }
         }
-    } console.log("orientationTransforms=" + JSON.stringify(orientationTransforms)); 
+    }
     return orientationTransforms;
 }
 
@@ -237,12 +230,40 @@ export function getRotationDegree(rotation_transform) {
     let degree = 0;
     try {
         if (!rotation_transform) return degree;
-
+        // normalize the rotation_transform
+        rotation_transform = rotation_transform.replaceAll(", ", ",");
         const transform_functions = rotation_transform.split(" ");
         for (let i =0; i < transform_functions.length; i++) {
             const transform_function = transform_functions[i].trim();
             if (transform_function === '') continue;
-            if (transform_function.startsWith("rotate") || transform_function.startsWith("rotateZ")) {
+            if (transform_function.startsWith("rotate3d")) {
+                // example: rotate3d(1, 1, 1, 45deg);
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values;
+                    if (matrix) values = matrix.split(",");
+                    if (values && values.length === 4) {
+                        let rotation = values[3];
+                        if (!rotation) continue;
+                        rotation = rotation.trim();
+                        if (rotation.endsWith("turn")) {
+                            let num = rotation.substring(0, rotation.length - 4);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 360; 
+                        } else if (rotation.endsWith("rad")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 180/Math.PI; 
+                        } else if (rotation.endsWith("deg")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree += num; 
+                        }
+                    }    
+                }
+            } else if (transform_function.startsWith("rotate") || transform_function.startsWith("rotateZ")) {
                 // example: rotate(45deg);
                 const left = transform_function.indexOf("(");
                 const right = transform_function.indexOf(")");
@@ -254,22 +275,18 @@ export function getRotationDegree(rotation_transform) {
                         let num = rotation.substring(0, rotation.length - 4);
                         num = parseFloat(num);
                         if (!isNaN(num)) degree = num * 360; 
-                        console.log("num=" + num + ", degree=" + degree);
                     } else if (rotation.endsWith("rad")) {
                         let num = rotation.substring(0, rotation.length - 3);
                         num = parseFloat(num);
                         if (!isNaN(num)) degree = num * 180/Math.PI; 
-                        console.log("num=" + num + ", degree=" + degree);
                     } else if (rotation.endsWith("deg")) {
                         let num = rotation.substring(0, rotation.length - 3);
                         num = parseFloat(num);
                         if (!isNaN(num)) degree += num; 
-                        console.log("num=" + num + ", degree=" + degree);
                     }
-                    console.log("rotation=" + rotation +", degree=" + degree); 
                 }
-            } else if (transform_function.startsWith("rotate3d")) {
-                // example: rotate3d(1, 1, 1, 45deg);
+            } else if (transform_function.startsWith("matrix3d")) {
+                // calculate the three Euler angles
                 const left = transform_function.indexOf("(");
                 const right = transform_function.indexOf(")");
                 if (left !== -1 && right !== -1) {
@@ -277,27 +294,9 @@ export function getRotationDegree(rotation_transform) {
                     let values = null;
                     if (matrix) values = matrix.split(",");
                     if (values !== null) {
-                        let rotation = values[3];
-                        if (!rotation) continue;
-                        rotation = rotation.trim();
-                        if (rotation.endsWith("turn")) {
-                            let num = rotation.substring(0, rotation.length - 4);
-                            num = parseFloat(num);
-                            if (!isNaN(num)) degree = num * 360; 
-                            console.log("num=" + num + ", degree=" + degree);
-                        } else if (rotation.endsWith("rad")) {
-                            let num = rotation.substring(0, rotation.length - 3);
-                            num = parseFloat(num);
-                            if (!isNaN(num)) degree = num * 180/Math.PI; 
-                            console.log("num=" + num + ", degree=" + degree);
-                        } else if (rotation.endsWith("deg")) {
-                            let num = rotation.substring(0, rotation.length - 3);
-                            num = parseFloat(num);
-                            if (!isNaN(num)) degree += num; 
-                            console.log("num=" + num + ", degree=" + degree);
-                        }
-                        console.log("rotation=" + rotation +", degree=" + degree); 
-                    }    
+                        const z_angle = Math.atan2(values[4], values[5]);
+                        degree += Math.round(Math.round(z_angle * 180/Math.PI));
+                    }     
                 }
             } else if (transform_function.startsWith("matrix")) {
                 // calculate the three Euler angles
@@ -308,18 +307,15 @@ export function getRotationDegree(rotation_transform) {
                     let values = null;
                     if (matrix) values = matrix.split(",");
                     if (values !== null) {
-                        
-                        console.log("values=" + values +", degree=" + degree);
+                        const z_angle = Math.atan2(values[1], values[0]);
+                        degree += Math.round(Math.round(z_angle * 180/Math.PI));
                     }     
                 }
-            } else if (transform_function.startsWith("matrix3d")) {
-                
             }     
         }
         
         while (degree >= 360) degree -= 360;
-        console.log("final degree=" + degree); 
-
+        
     } catch (err) {
         console.log("Cannot retrieve rotation degree: " + err);
         throw err;
@@ -373,4 +369,14 @@ export function getRotationDegree(rotation_transform) {
         } 
     }       
     return passed;
- }   
+ }
+
+ export function getDeviceOrientation() {
+    if (window.matchMedia("(orientation: portrait)").matches) {
+        /* The viewport is currently in portrait orientation */
+        return 'portrait';
+      } else {
+        /* The viewport is not currently in portrait orientation, therefore landscape */
+        return 'landscape';
+      }
+ }

@@ -4,18 +4,42 @@
 		<style>
 			@media (orientation: landscape) {
 				body {
-					transform: matrix3d(0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+					transform: rotate(0.25turn);
+				}
+			}
+
+      @media (orientation: portrait) {
+				body {
+					transform: rotate(90deg);
 				}
 			}
 		</style>
 	</head>
 	<body>
 		Page Content
-		<script>
+        <script>
             UnitTest = {
               ruleIds: ["element_orientation_unlocked"],
               results: [
-			  {
+              {
+            "ruleId": "element_orientation_unlocked",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_locked",
+            "message": "The element <body> is restricted to either landscape or portrait orientation using CSS transform property",
+            "messageArgs": [
+              "body"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
             "ruleId": "element_orientation_unlocked",
             "value": [
               "INFORMATION",
@@ -35,6 +59,6 @@
           }
               ]
         }
-        </script> 	
+        </script>
 	</body>
 </html>

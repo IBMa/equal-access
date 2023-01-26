@@ -4,14 +4,20 @@
 		<style>
 			@media (orientation: landscape) {
 				body {
-					transform: matrix3d(0, -1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+					transform: rotate(5deg);
+				}
+			}
+
+      @media (orientation: landscape) {
+				body {
+					transform: rotate(90deg);
 				}
 			}
 		</style>
 	</head>
 	<body>
 		Page Content
-		<script>
+        <script>
             UnitTest = {
               ruleIds: ["element_orientation_unlocked"],
               results: [
@@ -35,6 +41,6 @@
           }
               ]
         }
-        </script> 	
+        </script>
 	</body>
 </html>
