@@ -1,0 +1,66 @@
+/******************************************************************************
+  Copyright:: 2020- IBM, Inc
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+
+import { IMessage } from "../interfaces/interfaces";
+import { CommonMessaging } from "./commonMessaging";
+
+/**
+ * This class is to be used by the panels to listen to and send messages
+ */
+export class PanelMessaging {
+
+    public static addListener(type: string, listener: (message: IMessage) => Promise<any>) {
+        CommonMessaging.addListener(type, async (message: IMessage) => {
+            if (message.blob_url) {
+                let blob_url = message.blob_url;
+                let blob = await fetch(blob_url).then(r => r.blob());
+                let newMessage = JSON.parse(await blob.text());
+                listener(newMessage);
+            } else {
+                listener(message);
+            }
+        });
+    }
+
+    public static send(message: IMessage): Promise<any> {
+        let myMessage: IMessage = JSON.parse(JSON.stringify(message));
+        myMessage.src = "panel";
+        if (message.dest === "tab" && !message.destTab) {
+            message.destTab = chrome.devtools.inspectedWindow.tabId;
+        }
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                chrome.runtime.sendMessage(myMessage, function (res) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    } else {
+                        if (res) {
+                            if (typeof res === "string") {
+                                try {
+                                    res = JSON.parse(res);
+                                } catch (e) {}
+                            }
+                            resolve(res);
+                        } else {
+                            resolve(null);
+                        }
+                    }
+                });
+            }, 0);
+        })
+    }
+
+}

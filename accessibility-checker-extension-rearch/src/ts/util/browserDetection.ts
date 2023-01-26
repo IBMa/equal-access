@@ -14,6 +14,18 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getBGController } from "./backgroundController";
+export default class BrowserDetection {
 
-getBGController("background");
+    public static isChrome(): boolean {
+        return !BrowserDetection.isFirefrox();
+    };
+
+    public static isFirefrox(): boolean {
+        if ("InstallTrigger" in window) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+}

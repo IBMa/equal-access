@@ -14,30 +14,45 @@
   limitations under the License.
 *****************************************************************************/
 
-import * as React from 'react';
-import ReactDOM from 'react-dom';
-import { getBGController } from '../background/backgroundController';
-import { ISettings } from '../interfaces/interfaces';
-    
-import "../styles/index.scss";
+export type eMessageSrcDst = "background" | "panel" | "tab";
 
-let bgController = getBGController("panel");
-interface PageAppState {
-    settings?: ISettings
-}
-class PageApp extends React.Component<{}, PageAppState> {
-    state : PageAppState = {
-    }
-    componentDidMount(): void {
-        bgController.getSettings().then((settings) => {
-            this.setState({ settings });
-        })
-    }
-    render() {
-        return <React.Fragment>{JSON.stringify(this.state.settings)}</React.Fragment>
-    }
+export interface IPolicyDefinition {
+    id: string,
+    name: string
 }
 
-ReactDOM.render(<PageApp />
-    , document.getElementById('pageapp-root'));
-    
+export interface IArchiveDefinition {
+    id: string,
+    name: string,
+    path: string,
+    version: string,
+    latest?: boolean,
+    sunset?: boolean,
+    policies: IPolicyDefinition[]
+}
+
+export interface IReport {
+
+}
+
+export interface ISettings {
+    selected_archive: {
+        id: string
+    }
+    selected_ruleset: {
+        id: string
+    }
+    tabStopLines: boolean
+    tabStopOutlines: boolean
+    tabStopAlerts: boolean
+    tabStopFirstTime: boolean
+}
+
+export interface IMessage {
+    type: string
+    src?: eMessageSrcDst
+    dest: eMessageSrcDst
+    destTab?: number
+    content?: any
+    blob_url?: string
+}
