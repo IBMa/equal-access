@@ -28,7 +28,7 @@ export let RPT_Blockquote_HasCite: Rule = {
     messages: {
         "en-US": {
             "Pass_0": "Rule Passed",
-            "Potential_1": "Verify that <blockquote> is used only for quotations, not indentation",
+            "Potential_1": "Verify that <blockquote> should not be used only for quotations, not indentation",
             "group": "Use <blockquote> only for quotations, not indentation"
         }
     },
