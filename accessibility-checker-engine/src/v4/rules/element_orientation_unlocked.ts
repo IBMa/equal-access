@@ -17,11 +17,11 @@ import { getDefinedStyles, getMediaOrientationTransform, getRotationDegree} from
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
+import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 
 export let element_orientation_unlocked: Rule = {
     id: "element_orientation_unlocked",
     context: "dom:*",
-    //context: "dom:style, dom:*[style]",
     help: {
         "en-US": {
             "pass": "element_orientation_unlocked.html",
@@ -49,6 +49,10 @@ export let element_orientation_unlocked: Rule = {
         //skip invisible element
         if (!VisUtil.isNodeVisible(ruleContext))
             return null;
+        
+        //skip elements
+        if (RPTUtil.getAncestor(ruleContext, ["script", "meta"]))
+            return null;
 
         const nodeName = ruleContext.nodeName.toLowerCase();    
         
@@ -60,17 +64,14 @@ export let element_orientation_unlocked: Rule = {
         } 
         
         let media_transforms = [];
-        let media_orientation = 'portriat';
-        let stop = false;
         Object.keys(orientationTransforms).forEach(key => {
-            media_orientation = key.substring(key.indexOf(":")+1, key.indexOf(")")).trim();
             Object.keys(orientationTransforms[key]).forEach(tag => {
                 if (tag === nodeName && Object.keys(orientationTransforms[key][tag]).length > 0)
                     media_transforms.push(orientationTransforms[key][tag].transform);    
             });
         });
 
-        // no elemenet is not in media orientation transform
+        // elemenet is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
         let ret = [];
@@ -98,8 +99,8 @@ export let element_orientation_unlocked: Rule = {
             
             /** 
              * compensate the media orientation with the page orientation
-             * TODO: 
-             *   consider an opposite case when a page transformation (not in media) is defined after the media transformation,  
+             * TODO: can it be contained in #1277 ?
+             *   consider a case when a page transformation (not in media) is defined after the media transformation,  
              * and the media transform, therefore, is not actually applied or is overwritten by the page transformation. 
              *   const device_orientation = getDeviceOrientation();
             */

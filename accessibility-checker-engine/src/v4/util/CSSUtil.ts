@@ -58,10 +58,10 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * This differs from the computed style in that the computed style will return
  * styles defined by the user agent. This will only return styles defined by the
  * application
- * if you use rotation transform, the computed style return resolved matrix
+ * if rotation transform is used, the computed style returns the resolved matrix
  *  while the defined style return the transform function(s) 
- * for example, for 'transform: rotate(2.5deg);', the computed style returns matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0) 
- *  and the defined style returns rotate(2.5deg)  
+ * for example, for 'transform: rotate(2.5deg);', the computed style returns 'matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0)' 
+ *  and the defined style returns 'rotate(2.5deg)'  
  * 
  * @param {HTMLElement} elem 
  * @param {string} [pseudoClass] If specified, will return values that are different
@@ -88,8 +88,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                 }
             }
         }
-    }
-        
+    }    
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
@@ -119,7 +118,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                         if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
                             fillStyle([definedStylePseudo], rule.style);
                         }
-                    }   
+                    } 
                 }
             }
         } catch (err) {
@@ -164,7 +163,6 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
  * @param {HTMLElement} elem 
  */
 export function getMediaOrientationTransform(elem: HTMLElement) {
-    // console.log("Function: getDefinedStyles");
     let orientationTransforms = {}
     
     // Iterate through all of the stylesheets and rules
