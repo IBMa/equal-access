@@ -121,9 +121,12 @@ try {
             fs.mkdirSync(engineDir, { recursive: true });
         }
         await new Promise<void>((resolve, reject) => {
-            const nodePath = path.join(engineDir, "ace-node")
+            let nodePath = path.join(engineDir, "ace-node")
             fs.writeFile(nodePath+".js", data, function (err) {
                 try {
+                    if(nodePath.charAt(0) !== '/'){
+                        nodePath = "../../" + nodePath;
+                    }
                     err && console.log(err);
                     var ace_ibma = require(nodePath);
                     checker = new ace_ibma.Checker();
@@ -212,6 +215,15 @@ try {
         if (!checker) {
             await ACEngineManager.loadEngineLocal();
         }
+        let retVal = [];
+        for (const ruleId in checker.engine.ruleMap) {
+            retVal.push(checker.engine.ruleMap[ruleId]);
+        }
+        return retVal;
+    }
+
+    static getRulesSync = function() {
+        if (!checker) return null;
         let retVal = [];
         for (const ruleId in checker.engine.ruleMap) {
             retVal.push(checker.engine.ruleMap[ruleId]);
