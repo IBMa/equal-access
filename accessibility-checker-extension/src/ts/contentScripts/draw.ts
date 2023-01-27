@@ -553,7 +553,7 @@ function deleteDrawing(classToRemove: string) {
     // console.log("Function: deleteDrawing DONE")
 }
 
-
+// Draw circles and connecting lines for TAB Stops (with and without errors) in the TAB chain
 // @ts-ignore
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
     console.log("Function: redraw");
@@ -887,7 +887,8 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
     return true;
 }
 
-// Tab Stop error NOT in the tab chain - get ? instead of number
+// Purpose: for TAB STOP errors not in the TAB chain they get a "?" instead of a number
+// Note:    no connecting lines just outlines
 function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
     // JCH - FIX drawing ? errorCircle if there is already a tabbable errorCircle
     console.log("Function: redrawErrors");
@@ -1031,6 +1032,10 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
     }, 1);
 }
 
+// <circle class="tabCircle dynamic deleteMe circleNumber19 nohighlightSVGcircle" stroke="#D9BFFF" stroke-width="3" 
+//         cx="80" cy="2680.0703125" pointer-events="auto" r="13" 
+//         xpath="/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/main[1]/div[6]/div[3]/ul[1]/li[1]">
+// </circle>
 function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string, errorStatus: boolean) {
     var circleClone = createSVGCircleTemplate();
     circleClone.removeAttribute("id");
@@ -1064,11 +1069,6 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
 }
 
 function createSVGCircleTemplate() {
-    // This is what we are creating:
-    // <svg id="svgCircle">
-    // THIS PART->     <circle id="circle" class="tabCircle" stroke="black" stroke-width="1" fill="purple"/>
-    //                 <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
-    // </svg>
     var elemCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
@@ -1077,7 +1077,6 @@ function createSVGCircleTemplate() {
     elemCircle.setAttribute("stroke-width", "3");
     return elemCircle
 }
-
 
 // Notification dot for error circle
 function makeIcon(x1: number, y1: number, iconName: string) {
@@ -1128,10 +1127,7 @@ function createSVGErrorIconTemplate() {
     return elemSvg;
 }
 
-
-
 function makeTextSmall(x1: number, y1: number, n: string, n2: string, errorStatus: boolean, textColorClassName?: string) {
-
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
     if (x1 >= -10 && x1 <= 6) {
@@ -1141,8 +1137,7 @@ function makeTextSmall(x1: number, y1: number, n: string, n2: string, errorStatu
         y1 = 12;
     }
 
-    // let text = document.getElementsByClassName('circleText')[0]
-    var textClone = createSVGCircleTextTemplate();//text.cloneNode(true);
+    var textClone = createSVGCircleTextTemplate();  //text.cloneNode(true);
     textClone.removeAttribute("id");
     textClone.classList.add("deleteMe");
     textClone.classList.add("circleNumber"+n2);
@@ -1173,12 +1168,11 @@ function makeTextSmall(x1: number, y1: number, n: string, n2: string, errorStatu
         elemSVG.setAttribute("id", "svgCircle");
         document.body.appendChild(elemSVG);
     }
-    console.log("textClone: ", textClone);
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
 
 function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: string[]) {
-    var lineClone = createSVGLineTemplate()//line.cloneNode(true);
+    var lineClone = createSVGLineTemplate();     //line.cloneNode(true);
     if (CSSclass) {
         for (let i = 0; i < CSSclass.length; i++) {
             lineClone.classList.add(CSSclass[i]);
@@ -1199,11 +1193,7 @@ function makeLine(x1: number, y1: number, x2: number, y2: number, CSSclass?: str
 }
 
 function createSVGCircleTextTemplate() {
-    // This is what we are creating:
-    // <svg id="svgCircle">
-    //                 <circle id="circle" class="tabCircle" stroke="black" stroke-width="1" fill="purple"/>
-    // THIS PART->     <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
-    // </svg>
+    // <text class="circleText" font-family="helvetica"  font-size="10" font-weight="normal" fill="white"/>
     var elemText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
     elemText.setAttribute("class", "circleText");
     elemText.setAttribute("font-family", "helvetica");
@@ -1214,14 +1204,11 @@ function createSVGCircleTextTemplate() {
 }
 
 function createSVGLineTemplate() {
-    // This is what we are creating:
-    // <svg id="svgLine">
-    //    <line id="line" class="tabLine"/>
-    // </svg>
+    // <svg id="svgLine"><line id="line" class="tabLine"/></svg>
     var elemLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
     elemLine.setAttribute("id", "line");
     elemLine.setAttribute("class", "tabLine");
-    return elemLine
+    return elemLine;    
 }
 
 function convertXpathsToHtmlElements(xpaths: any) {
@@ -1235,11 +1222,9 @@ function convertXpathsToHtmlElements(xpaths: any) {
 }
 
 function getNodesXpaths(nodes: any) {
-    // console.log("Inside getNodesXpaths");
     let tabXpaths: any = [];
     nodes.map((result: any) => {
         if (result != null) {
-            // console.log("result.path.dom = "+result.path.dom);
             tabXpaths.push(result.path.dom);
         }
     });
@@ -1270,12 +1255,13 @@ function lookup(doc: any, xpath:string) {
     }
 }
 
+// Get element for an xpath
 // @ts-ignore
 function selectPath(srcPath: any) {
     let doc = document;
     let element = null;
     while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-        if (srcPath.includes("iframe")) {
+        if (srcPath.includes("iframe")) { // iframe srcPath
             let parts = srcPath.match(/(.*?iframe\[\d+\])(.*)/);
             let iframe = lookup(doc, parts[1]);
             element = iframe || element;
@@ -1285,7 +1271,7 @@ function selectPath(srcPath: any) {
             } else {
                 srcPath = null;
             }
-        } else if (srcPath.includes("#document-fragment")) {
+        } else if (srcPath.includes("#document-fragment")) { // shadowdom srcPath
             let parts = srcPath.match(/(.*?)\/#document-fragment\[\d+\](.*)/);
             let fragment = lookup(doc, parts[1]); // get fragment which is in main document
             element = fragment || element;
