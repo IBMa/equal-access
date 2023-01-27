@@ -24,6 +24,7 @@ failLevels:
     - violation
     - potentialviolation
 
+
 # optional - Specify one or many violation levels which should be reported
 #            i.e. If specified violation then in the report it would only contain
 #                 results which are level of violation.
@@ -44,7 +45,7 @@ reportLevels:
 captureScreenshots: false
 
 # Optional - Which type should the results be outputted to
-#   outputFormat: json,csv
+#   outputFormat: json, csv, xlsx
 # Default: json
 outputFormat:
     - json
@@ -77,3 +78,4 @@ baselineFolder: test/baselines
 # false --> Don't scan hidden content
 # Default: true
 checkHiddenContent: false
+

@@ -84,7 +84,17 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             } else {
                 const key = style[sIndex];
                 for (const map of maps) {
-                    map[key] = style[key];
+                    let priority = style.getPropertyPriority(key);
+                    if (key in map && map[key].endsWith("!important")) {
+                         if (priority === 'important' && !map[key].startsWith("inherit") && !map[key].startsWith("unset"))
+                            //override !important only if it is also !important
+                            map[key] = style[key] + " !important";
+                         else 
+                            //don't override !important if it is not !important
+                            continue;   
+                    } else
+                        //create/overide anyway
+                        map[key] = style[key] + (priority === 'important' ? " !important" : "");
                 }
             }
         }
@@ -131,6 +141,8 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     // Handled the stylesheets, now handle the element defined styles
     fillStyle([definedStyles, definedStylePseudo], elem.style);
 
+    /**
+     * 'initial' sets the style back to default
     for (const key in definedStyles) {
         if (definedStyles[key] === "initial") {
             delete definedStyles[key];
@@ -141,6 +153,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             delete definedStylePseudo[key];
         }
     }
+    */
 
     if (!pseudoClass) {
         // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
@@ -322,6 +335,40 @@ export function getRotationDegree(rotation_transform) {
 }
 
 /**
+ * Convert absolute CSS numerical values to pixels.
+ *
+ * @param unitValue in string
+ * @param target element.
+ * @return value in pixels
+ */
+ export function convertValue2Pixels(unit, unitValue, elem ) {
+    if (unitValue == 0) return 0;
+    const supportedUnits = {
+        // absolute unit
+        'px': value => value,
+        'cm': value => value * 37.8,
+        'mm': value => value * 3.78,
+        'q': value => value * 0.95,
+        'in': value => value * 96,
+        'pc': value => value * 16,
+        'pt': value => value * 1.33,
+        
+        // relative unit
+        'rem': value => value * parseFloat( getComputedStyle(elem.ownerDocument.documentElement).getPropertyValue('font-size') ),
+        'em': value => value * parseFloat( getComputedStyle(elem).getPropertyValue('font-size')),
+        'vw': value => value / 100 * elem.ownerDocument.defaultView.innerWidth,
+        'vh': value => value / 100 * elem.ownerDocument.defaultView.innerHeight,
+        '%':  value => value / 100 * parseFloat( getComputedStyle(elem).getPropertyValue('font-size'))
+    };
+
+    if ( unit in supportedUnits )
+        return supportedUnits[ unit ]( unitValue );
+    
+    return null;
+}
+
+
+ /*
  * Returns if the font for visible text of the element is defined by material icons
  *  
  * @param {HTMLElement} elem 

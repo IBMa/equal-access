@@ -93,8 +93,8 @@ reportLevels:
     - potentialrecommendation
     - manual
 
-# Optional - In which fornats should the results be output
-# Valid values: json, csv, html
+# Optional - In which formats should the results be output
+# Valid values: json, csv, xlsx, html
 # Default: json
 outputFormat:
     - json
@@ -150,7 +150,7 @@ module.exports = {
 
 ## Usage
 
-### Command-line
+### Command-line and multi-scan
 
 The module provides some basic command-line utilities that will allow you to scan files, directories, or URLs. You can also create a .txt file with path(s) to files, directories or a list of urls to be scanned, then provide the `npx achecker` the full path of the .txt file to start the scan (e.g. `npx achecker path/to/your/file.txt`). Run `npx achecker` for more information.
 
@@ -410,3 +410,8 @@ If you think you've found a bug, have questions or suggestions, please report th
 1. If you see `TypeError: ace.Checker is not a constructor`: 
     - Try to run your tests serially using the configuration option in your framework. For example, use `--runInBand` in Jest framework. 
 
+2. If your site has a `Content Security Policy`, the engine script may be
+    prevented from loading. In the browser console, you'll see something like:
+    > VM43:24 Refused to load the script ‘https://cdn.jsdelivr.net/npm/accessibility-checker-engine@3.1.42/ace.js’ because it violates the following Content Security Policy directive:
+
+    If you would prefer not to add cdn.jsdelivr.net to the CSP, you can add able.ibm.com instead via your config file (e.g., ruleServer: "https://able.ibm.com/rules")

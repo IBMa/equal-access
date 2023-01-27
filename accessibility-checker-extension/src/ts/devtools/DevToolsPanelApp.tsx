@@ -683,7 +683,7 @@
                 tabTitle: this.state.tabTitle,
                 tabURL: this.state.tabURL
             }
-    
+
             var report: any = this.state.report;
     
             var violation = report?.counts.total["Violation"];

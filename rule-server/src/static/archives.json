@@ -5,6 +5,12 @@
         "path": "/archives/latest"
     },
     {
+        "id": "27January2023",
+        "name": "27 January 2023 Deployment",
+        "version": "3.1.43",
+        "path": "/archives/2023.01.27"
+    },
+    {
         "id": "11January2023",
         "name": "11 January 2023 Deployment",
         "version": "3.1.42",
