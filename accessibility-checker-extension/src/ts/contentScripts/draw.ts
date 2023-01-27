@@ -121,9 +121,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 
         .circleText{
             pointer-events: none !important;
-        }
-
-        .circleSmall{
             font-size: 12px !important;
         }
         `
@@ -152,10 +149,9 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
         setTimeout(() => {
                 let iframes: any = [];
                 draw(regularTabstops, tabStopsErrors, message.tabStopLines, message.tabStopOutlines,iframes).then(function() {
-                drawErrors(tabStopsErrors, regularTabstops, message.tabStopOutlines,iframes);
-            });
-            
-        }, 1000)
+                    drawErrors(tabStopsErrors, regularTabstops, message.tabStopOutlines,iframes);
+                });
+        }, 1000);
         
     });
 
@@ -212,7 +208,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             })
         }
     }
-    return true;
 });
 
 
@@ -222,9 +217,11 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
 //       The number text inside the circle (doesn't matter if error or not) 
 //       will be normal if not highlighting, bold if highlight
 function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
+    console.log("Function: handleTabHighlight");
     let elementXpath = "";
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
+        console.log("**** Got TAB key ****");
         if (docType === "main") {
             let element = doc.activeElement;  // get element just tabbed to which has focus
             elementXpath = getXPathForElement(element); // in main doc so just get xpath
@@ -256,49 +253,35 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         let prevHighlightedElement;
         // find previous highlighted element which is either a circle or errorCircle so will be within document
         if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
-            // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+            console.log("TAB Found prevHighlightedElement is circle = ", prevHighlightedElement);
         } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-            // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+            console.log("TAB Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
         }
         // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
         if (prevHighlightedElement) {
             if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
-                prevHighlightedElement.classList.remove("highlightSVGcircle");
-                prevHighlightedElement.classList.add("nohighlightSVGcircle");
-                let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                prevHightlightedText?.classList.remove("highlightSVGText");
-                prevHightlightedText?.classList.add("noHighlightSVGText");
+               unHighlightCircle(prevHighlightedElement, false);
             } 
             else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
-                prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
-                prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
-                let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                prevHightlightedText?.classList.remove("highlightSVGText");
-                prevHightlightedText?.classList.add("noHighlightSVGText");
+                unHighlightCircle(prevHighlightedElement, true);
             }
         } else {
-            // No prevHighlightedElement to highlight
+            console.log("No prevHighlightedElement to highlight");
         }
         // Highlight circle
         if (circle && !circle.classList.contains('error')) {
-            circle?.classList.remove("nohighlightSVGcircle");
-            circle?.classList.add("highlightSVGcircle");
-            let circleText = findCircleTextElement(circle);
-            circleText?.classList.remove("noHighlightSVGText");
-            circleText?.classList.add("highlightSVGText");
+            console.log("circle before call highlightCircle: ",circle);
+            highlightCircle(circle, false);
         } else {
             // No circle to highlight
         }
         if (errorCircle && errorCircle.classList.contains('error')) {
-            errorCircle?.classList.remove("nohighlightSVGerrorCircle");
-            errorCircle?.classList.add("highlightSVGerrorCircle");
-            let errorCircleText = findErrorCircleTextElement(errorCircle);
-            errorCircleText?.classList.remove("noHighlightSVGText");
-            errorCircleText?.classList.add("highlightSVGText");
+            highlightCircle(errorCircle, true);
         } else {
             // No errorCircle to highlight
         }
     } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
+        console.log("**** Got SHIFT TAB key ****");
         if (docType === "main") {
             let element = doc.activeElement;  // get element just tabbed to which has focus
             elementXpath = getXPathForElement(element); // in main doc so just get xpath
@@ -330,54 +313,36 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         let prevHighlightedElement;
         
         if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
-            // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+            console.log("SHIFT TAB Found prevHighlightedElement is circle = ", prevHighlightedElement);
         } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-            // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+            console.log("SHIFT TAB Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
         }
 
         // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
         if (prevHighlightedElement) {
-            console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
             if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
-                prevHighlightedElement.classList.remove("highlightSVGcircle");
-                prevHighlightedElement.classList.add("nohighlightSVGcircle");
-                let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                prevHightlightedText?.classList.remove("highlightSVGText");
-                prevHightlightedText?.classList.add("noHighlightSVGText");
+               unHighlightCircle(prevHighlightedElement, false);
             } 
             else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
-                prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
-                prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
-                let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                prevHightlightedText?.classList.remove("highlightSVGText");
-                prevHightlightedText?.classList.add("noHighlightSVGText");
+                unHighlightCircle(prevHighlightedElement, true);
             }
-            console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
         } else {
-            console.log("No prevHighlightedElement to highlight")
+            console.log("No prevHighlightedElement to highlight");
         }
         // Highlight circle
         if (circle && !circle.classList.contains('error')) {
-            circle?.classList.remove("nohighlightSVGcircle");
-            circle?.classList.add("highlightSVGcircle");
-            let circleText = findCircleTextElement(circle);
-            circleText?.classList.remove("noHighlightSVGText");
-            circleText?.classList.add("highlightSVGText");
-            console.log("circle highlighted = ",circle);
+            console.log("circle before call highlightCircle: ",circle);
+            highlightCircle(circle, false);
         } else {
-            console.log("No circle to highlight = ",circle);
+            // No circle to highlight
         }
         if (errorCircle && errorCircle.classList.contains('error')) {
-            errorCircle?.classList.remove("nohighlightSVGerrorCircle");
-            errorCircle?.classList.add("highlightSVGerrorCircle");
-            let errorCircleText = findErrorCircleTextElement(errorCircle);
-            errorCircleText?.classList.remove("noHighlightSVGText");
-            errorCircleText?.classList.add("highlightSVGText");
-            console.log("errorCircle highlighted = ",errorCircle);
+            highlightCircle(errorCircle, true);
         } else {
-            console.log("No errorCircle to highlight = ",circle);
+            // No errorCircle to highlight
         }
     } else if (event.detail !== 0) {
+        console.log("**** Got Mouse click ****");
         if (event.target.tagName === "circle" && !event.target.classList.contains('error') || event.target.tagName === "circle" && event.target.classList.contains('error')) {
             let circle = null;
             if (event.target.tagName === "circle" && !event.target.classList.contains('error')) {
@@ -403,70 +368,97 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
 
             let prevHighlightedElement;
             if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGcircle")[0] || document.getElementsByClassName("highlightSVGcircle")[0]) {
-                console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+                console.log("Mouse Click Found prevHighlightedElement is circle = ", prevHighlightedElement);
             } else if (prevHighlightedElement = doc.getElementsByClassName("highlightSVGerrorCircle")[0] || document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-                console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+                console.log("Mouse Click Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
             }
 
             // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
             if (prevHighlightedElement) {
-                console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
                 if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
-                    prevHighlightedElement.classList.remove("highlightSVGcircle");
-                    prevHighlightedElement.classList.add("nohighlightSVGcircle");
-                    let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                    prevHightlightedText?.classList.remove("highlightSVGText");
-                    prevHightlightedText?.classList.add("noHighlightSVGText");
+                unHighlightCircle(prevHighlightedElement, false);
                 } 
                 else if (prevHighlightedElement.tagName === "circle" && prevHighlightedElement.classList.contains('error')) {
-                    prevHighlightedElement.classList.remove("highlightSVGerrorCircle");
-                    prevHighlightedElement.classList.add("nohighlightSVGerrorCircle");
-                    let prevHightlightedText = findCircleTextElement(prevHighlightedElement);
-                    prevHightlightedText?.classList.remove("highlightSVGText");
-                    prevHightlightedText?.classList.add("noHighlightSVGText");
+                    unHighlightCircle(prevHighlightedElement, true);
                 }
-                console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
-                console.log("No prevHighlightedElement to highlight")
+                console.log("No prevHighlightedElement to highlight");
             }
             // Highlight circle
             if (circle && !circle.classList.contains('error')) {
-                circle?.classList.remove("nohighlightSVGcircle");
-                circle?.classList.add("highlightSVGcircle");
-                let circleText = findCircleTextElement(circle);
-                circleText?.classList.remove("noHighlightSVGText");
-                circleText?.classList.add("highlightSVGText");
-                console.log("circle highlighted = ",circle);
+                console.log("circle before call highlightCircle: ",circle);
+                highlightCircle(circle, false);
             } else {
-                console.log("No circle to highlight = ",circle);
+                // No circle to highlight
             }
             if (errorCircle && errorCircle.classList.contains('error')) {
-                errorCircle?.classList.remove("nohighlightSVGerrorCircle");
-                errorCircle?.classList.add("highlightSVGerrorCircle");
-                let errorCircleText = findErrorCircleTextElement(errorCircle);
-                errorCircleText?.classList.remove("noHighlightSVGText");
-                errorCircleText?.classList.add("highlightSVGText");
-                console.log("errorCircle highlighted = ",errorCircle);
+                highlightCircle(errorCircle, true);
             } else {
-                console.log("No errorCircle to highlight = ",circle);
+                // No errorCircle to highlight
             }
             // element.focus(); // JCH - Can't set focus keeps going to Scan Button 
         }
     }
 }
 
+function highlightCircle(circle: any, errorCircle: boolean) {
+    console.log("Function: highlightCircle");
+    console.log("circle: ", circle);
+    console.log("errorCircle: ", errorCircle);
+    if (errorCircle) {
+        circle.classList.remove("nohighlightSVGerrorCircle");
+        circle.classList.add("highlightSVGerrorCircle");
+    } else {
+        circle.classList.remove("nohighlightSVGcircle");
+        circle.classList.add("highlightSVGcircle");
+    }
+    
+    let circleTextElement;
+    if (errorCircle) {
+        circleTextElement = findErrorCircleTextElement(circle);
+    } else {
+        circleTextElement = findCircleTextElement(circle);
+    }
+    console.log("circleTextElement: ",circleTextElement);
+    circleTextElement?.classList.remove("noHighlightSVGText");
+    circleTextElement?.classList.add("highlightSVGText");
+    console.log("circleTextElement: ",circleTextElement);
+}
+
+function unHighlightCircle(circle: any, errorCircle: boolean) {
+    console.log("Function: unHighlightCircle");
+    console.log("circle: ", circle);
+    console.log("errorCircle: ", errorCircle);
+    if (errorCircle) {
+        circle.classList.remove("highlightSVGerrorCircle");
+        circle.classList.add("nohighlightSVGerrorCircle");
+    } else {
+        circle.classList.remove("highlightSVGcircle");
+        circle.classList.add("nohighlightSVGcircle");
+    }
+    
+    let circleTextElement;
+    if (errorCircle) {
+        circleTextElement = findErrorCircleTextElement(circle);
+    } else {
+        circleTextElement = findCircleTextElement(circle);
+    }
+    circleTextElement?.classList.remove("highlightSVGText");
+    circleTextElement?.classList.add("noHighlightSVGText");
+    console.log("circleTextElement: ",circleTextElement);
+}
+
 function findCircleTextElement(circle:any) {
     console.log("Function: findCircleTextElement");
-    
     let circleClassList, circleClassMatch, circleNumber, textCollection;
 
     if (circle) {
+        console.log("circle?.classList.value.toLowerCase() = ", circle?.classList.value.toLowerCase());
         circleClassList = circle?.classList.value.toLowerCase().split(' ');
+        console.log("circleClassList = ", circleClassList);
         circleClassMatch = circleClassList.filter((item: string) => {return item.toLowerCase().includes('circleNumber'.toLowerCase())});
         circleNumber = circleClassMatch[0].slice(12);
         textCollection = document.getElementsByClassName("circleNumber" + circleNumber + " circleText");
-        console.log("textCollection.length = ", textCollection.length);
-        console.log("circleCollection[0] = ", textCollection[0]);
         return (textCollection[0]);
     } else {
         return null;
@@ -475,23 +467,25 @@ function findCircleTextElement(circle:any) {
 }
 
 function findErrorCircleTextElement(errorCircle:any) {
-    console.log("Function: findErrorCircleTextElement");
+    console.log("Function: findCircleTextElement");
+    console.log("errorCircle: ", errorCircle);
     let errorCircleClasslist, errorCircleClassMatch, errorCircleNumber, errorTextCollection;
 
     if (errorCircle) {
-        errorCircleClasslist = errorCircle?.classList.value.split(' ');
+        console.log("errorCircle?.classList.value.toLowerCase() = ", errorCircle?.classList.value.toLowerCase());
+        errorCircleClasslist = errorCircle?.classList.value.toLowerCase().split(' ');
+        console.log("circleClassList = ", errorCircleClasslist);
         // @ts-ignore
         errorCircleClassMatch = errorCircleClasslist.filter((item: string) => {return item.toLowerCase().includes('circleNumber'.toLowerCase())});
         errorCircleNumber = errorCircleClassMatch[0].slice(12);
-        console.log("errorCircleNumber = ", errorCircleNumber);
         errorTextCollection = document.getElementsByClassName("circleNumber" + errorCircleNumber + " circleText");
-        console.log("textCollection.length = ", errorTextCollection.length);
-        console.log("circleCollection[0] = ", errorTextCollection[0]);
         return (errorTextCollection[0]);
     } else {
         return null;
     }
 }
+
+
 
 // Debounce
 function debounce(func:any, time:any) {
@@ -540,13 +534,16 @@ function injectCSS(styleString: string) {
 }
 
 async function draw(tabstops: any, tabStopsErrors: any, lines:boolean, outlines:boolean,iframes:any) {
-    // console.log("Inside draw")
+    console.log("draw START")
     await redraw(tabstops, tabStopsErrors, lines, outlines, iframes);
+    console.log("draw DONE")
+    return true;
 }
 
-async function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
-    // console.log("Inside drawErrors")
-    await redrawErrors(tabStopsErrors, tabStops, outlines, iframes);
+function drawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
+    console.log("drawErrors START")
+    redrawErrors(tabStopsErrors, tabStops, outlines, iframes);
+    console.log("drawErrors DONE")
     return true;
 }
 
@@ -556,151 +553,10 @@ function deleteDrawing(classToRemove: string) {
     // console.log("Function: deleteDrawing DONE")
 }
 
-// Tab Stop error NOT in the tab chain - get ? instead of number
-function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
-    // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-    // console.log("Function: redrawErrors");
-    setTimeout(() => {
-        let tabbableNodesXpaths = getNodesXpaths(tabStops);
-        
-        let nodes = getNodesXpaths(tabStopsErrors);
-        let nodeXpaths = nodes;
-        nodes = convertXpathsToHtmlElements(nodeXpaths);
-        
-        // console.log("tabStopsErrors = ", tabStopsErrors);
-        nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
-            return el != null;
-        });
-
-        // console.log("nodes.length = ",nodes.length);
-        for (let i = 0; i < nodes.length; i++) {
-            // console.log("nodes[",i,"] = ",nodes[i]);
-            // Check if already taken care of in the tabbable elements
-            let skipErrorNode = false;
-            for (let j=0; j < tabbableNodesXpaths.length; j++) {
-                if (nodeXpaths[i] === tabbableNodesXpaths[j]) {
-                    // console.log("Already in Tab Chain");
-                    // console.log(tabStopsErrors[i].ruleId);
-                    skipErrorNode = true; // JCH - already taken care of in redraw
-                } else {
-                    // console.log("Not in Tab Chain");
-                    // console.log(tabStopsErrors[i].ruleId);
-                    // console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
-                }
-            }
-            if (skipErrorNode === true) {
-                // console.log("JCH - skip out");
-                continue; // JCH - don't put up non triangle for an element if already done in redraw
-            }
-
-            if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
-                // console.log("Non tabbable nodes[",i,"] = ",nodes[i]);
-                
-                if (nodes[i] != null ) { // JCH - tabbable nodes
-                    if (nodes[i] != null ) { // JCH - tabbable nodes
-                        // console.log("Non tabbable nodes[",i,"]   element exists");
-                        if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
-                            // console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
-                            if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                                // console.log("Non tabbable nodes[",i,"] has bounding rect");
-                            }
-                            else {
-                                // console.log("Non tabbable nodes[",i,"] has NO bounding rect");
-                            }
-                        } else {
-                            // console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
-                        }
-                    } else {
-                        // console.log("Non tabbable nodes[",i,"] is null $$$$$");
-                    }
-                }
-                // console.log("--------------------------------");
-
-                if (nodes[i] != null ) { // JCH - if node exists
-
-                    // coords for nodes[i] and its bounding box if not in iframe or shadow dom
-                    let x = nodes[i].getBoundingClientRect().x;
-                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
-                    let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
-
-                    let y = nodes[i].getBoundingClientRect().y;
-                    let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
-        
-                    // adjustment for iframes
-                    // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
-                    if (nodeXpaths[i].includes("iframe")) { // this is for element i
-                        // find and store iframe
-                        let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
-                        
-                        if (lastElement.includes("iframe")) { // this is for the iframe element
-                            // console.log("We Have an iframe, lastElement", lastElement);
-                            if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
-                                const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
-                                iframes.push(iframe);
-                            }
-                            // no need to adjust coords as the iframe is an element on the main page
-                        } else { // this is for elements that are within an iframe
-                            // get the iframe string iframe[n]
-                            let realIframeString = nodeXpaths[i].slice(0,nodeXpaths[i].indexOf('/html', nodeXpaths[i].indexOf('/html')+1));
-                            // find the iframe in iframes
-                            const iframesObj = iframes.find((e:any) => e.name === realIframeString);
-                            // console.log("iframesObj = ",iframesObj);
-                            x = iframesObj.x + nodes[i].getBoundingClientRect().x;
-                            y = iframesObj.y + nodes[i].getBoundingClientRect().y;
-
-                        }
-                    }
-                    
-                    // If the circle is being drawn slighly off of the screen move it into the screen
-                    // Note: here we assume radius is 16
-                    if (x <= 18) {
-                        x += 18 - x;
-                    }
-                    if (y <= 18) {
-                        y += 18 - y;
-                    }
-
-                    if (outlines) {
-
-                        // MAKE BOX AROUND ACTIVE COMPONENT
-                        makeLine(x, y, xPlusWidth, y, ["lineError"]);
-                        makeLine(x, y, x, yPlusHeight, ["lineError"]);
-                        makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
-                        makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
-
-                        // Make white stroke around active component outline
-                        makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
-                        makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
-                        makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-                        makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
-
-                        // Make white stroke inside active component outline
-                        makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
-                        makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
-                        makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-                        makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
-                    }
-
-                    
-                    // console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
-                    
-                    makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
-                    makeIcon(x+11, y-16, "test");   // notification dot
-                    
-                    makeTextSmall(x, y, "?", i.toString(), "textColorBlack");
-                    
-                } else {
-                    continue;
-                }
-            }
-        }
-    }, 1);
-}
-
 
 // @ts-ignore
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
-    // console.log("Function: redraw");
+    console.log("Function: redraw");
     // JCH - do circles and errorCircle coord calculations before lines and outlines 
     // as centers of circles and errorCircles set the basic coords
 
@@ -710,7 +566,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         let nodeXpaths = nodes;
         nodes = convertXpathsToHtmlElements(nodeXpaths);
 
-        // console.log("Tabbable elements: nodes.length = ",nodes.length);
+        console.log("Tabbable elements: nodes.length = ",nodes.length);
         for (let i = 0; i < nodes.length; i++) {
             if (nodes[i] != null) {
                 // console.log("Tabbable nodes[",i,"]   element exists");
@@ -746,11 +602,12 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             if (nodes[i] != null ) { // JCH - tabbable nodes
+                // ERROR Nodes / Circles
                 if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if true should draw triangle instead of circle
 
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
-                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
+                    // console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                     let y = nodes[i].getBoundingClientRect().y;
@@ -860,7 +717,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
 
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
                     makeIcon(x+11, y-16, "test");   // notification dot
-                    makeTextSmall(x, y, (i + 1).toString(), i.toString(), "textColorWhite");
+                    makeTextSmall(x, y, (i + 1).toString(), i.toString(), true, "textColorWhite");
 
 
                     if (outlines) {
@@ -995,7 +852,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                     }
 
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], false);
-                    makeTextSmall(x, y, (i + 1).toString(), i.toString(), "textColorWhite");
+                    makeTextSmall(x, y, (i + 1).toString(), i.toString(), false, "textColorWhite");
 
 
                     if (outlines) {
@@ -1019,12 +876,159 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmboss"]);
                     }
                 }
+                
             } else {
                 continue;
             }
+            
         }
+        
+    }, 1);
+    return true;
+}
 
-    }, 1)
+// Tab Stop error NOT in the tab chain - get ? instead of number
+function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
+    // JCH - FIX drawing ? errorCircle if there is already a tabbable errorCircle
+    console.log("Function: redrawErrors");
+    console.log("tabStopsErrors: ", tabStopsErrors);
+    setTimeout(() => {
+        let tabbableNodesXpaths = getNodesXpaths(tabStops);
+        let tabStopCount = tabStops.length;
+        
+        let nodes = getNodesXpaths(tabStopsErrors);
+        let nodeXpaths = nodes;
+        nodes = convertXpathsToHtmlElements(nodeXpaths);
+        
+        // console.log("tabStopsErrors = ", tabStopsErrors);
+        nodes = nodes.filter(function (el: any) {  // Removing failure case of null nodes being sent
+            return el != null;
+        });
+        console.log("tabstops.length = ", tabStops.length);
+        console.log("nodes.length = ",nodes.length);
+        for (let i = 0; i < nodes.length; i++) {
+            // console.log("nodes[",i,"] = ",nodes[i]);
+            // Check if already taken care of in the tabbable elements
+            let skipErrorNode = false;
+            for (let j=0; j < tabbableNodesXpaths.length; j++) {
+                if (nodeXpaths[i] === tabbableNodesXpaths[j]) {
+                    // console.log("Already in Tab Chain");
+                    // console.log(tabStopsErrors[i].ruleId);
+                    skipErrorNode = true; // JCH - already taken care of in redraw
+                } else {
+                    // console.log("Not in Tab Chain");
+                    // console.log(tabStopsErrors[i].ruleId);
+                    // console.log("nodeXpaths[",i,"] = ",nodeXpaths[i]);
+                }
+            }
+            if (skipErrorNode === true) {
+                console.log("JCH - skip out");
+                continue; // JCH - don't put up non triangle for an element if already done in redraw
+            }
+
+            if (nodeXpaths[i].includes("body")) { // JCH - non tabbable nodes must be within body
+                // console.log("Non tabbable nodes[",i,"] = ",nodes[i]);
+                
+                if (nodes[i] != null ) { // JCH - tabbable nodes
+                    if (nodes[i] != null ) { // JCH - tabbable nodes
+                        // console.log("Non tabbable nodes[",i,"]   element exists");
+                        if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
+                            // console.log("Non tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
+                            if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
+                                // console.log("Non tabbable nodes[",i,"] has bounding rect");
+                            }
+                            else {
+                                // console.log("Non tabbable nodes[",i,"] has NO bounding rect");
+                            }
+                        } else {
+                            // console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
+                        }
+                    } else {
+                        // console.log("Non tabbable nodes[",i,"] is null $$$$$");
+                    }
+                }
+                // console.log("--------------------------------");
+
+                if (nodes[i] != null ) { // JCH - if node exists
+
+                    // coords for nodes[i] and its bounding box if not in iframe or shadow dom
+                    let x = nodes[i].getBoundingClientRect().x;
+                    let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
+
+                    let y = nodes[i].getBoundingClientRect().y;
+                    let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
+        
+                    // adjustment for iframes
+                    // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
+                    if (nodeXpaths[i].includes("iframe")) { // this is for element i
+                        // find and store iframe
+                        let lastElement = nodeXpaths[i].slice(nodeXpaths[i].lastIndexOf('/'));
+                        
+                        if (lastElement.includes("iframe")) { // this is for the iframe element
+                            // console.log("We Have an iframe, lastElement", lastElement);
+                            if (!iframes.find((e:any) => e.name === nodeXpaths[i])) {  // already in iframes
+                                const iframe = {element: nodes[i], name: nodeXpaths[i], x: nodes[i].getBoundingClientRect().x, y: nodes[i].getBoundingClientRect().y};
+                                iframes.push(iframe);
+                            }
+                            // no need to adjust coords as the iframe is an element on the main page
+                        } else { // this is for elements that are within an iframe
+                            // get the iframe string iframe[n]
+                            let realIframeString = nodeXpaths[i].slice(0,nodeXpaths[i].indexOf('/html', nodeXpaths[i].indexOf('/html')+1));
+                            // find the iframe in iframes
+                            const iframesObj = iframes.find((e:any) => e.name === realIframeString);
+                            // console.log("iframesObj = ",iframesObj);
+                            x = iframesObj.x + nodes[i].getBoundingClientRect().x;
+                            y = iframesObj.y + nodes[i].getBoundingClientRect().y;
+
+                        }
+                    }
+                    
+                    // If the circle is being drawn slighly off of the screen move it into the screen
+                    // Note: here we assume radius is 16
+                    if (x <= 18) {
+                        x += 18 - x;
+                    }
+                    if (y <= 18) {
+                        y += 18 - y;
+                    }
+
+                    if (outlines) {
+
+                        // MAKE BOX AROUND ACTIVE COMPONENT
+                        makeLine(x, y, xPlusWidth, y, ["lineError"]);
+                        makeLine(x, y, x, yPlusHeight, ["lineError"]);
+                        makeLine(xPlusWidth, y, xPlusWidth, yPlusHeight, ["lineError"]);
+                        makeLine(x, yPlusHeight, xPlusWidth, yPlusHeight, ["lineError"]);
+
+                        // Make white stroke around active component outline
+                        makeLine(x - 1, y - 1, xPlusWidth + 1, y - 1, ["lineEmbossError"]);
+                        makeLine(x - 1, y - 1, x - 1, yPlusHeight + 1, ["lineEmbossError"]);
+                        makeLine(xPlusWidth + 1, y - 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+                        makeLine(x - 1, yPlusHeight + 1, xPlusWidth + 1, yPlusHeight + 1, ["lineEmbossError"]);
+
+                        // Make white stroke inside active component outline
+                        makeLine(x + 1, y + 1, xPlusWidth - 1, y + 1, ["lineEmbossError"]);
+                        makeLine(x + 1, y + 1, x + 1, yPlusHeight - 1, ["lineEmbossError"]);
+                        makeLine(xPlusWidth - 1, y + 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                        makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
+                    }
+
+                    
+                    console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
+
+                    let errorCount = tabStopCount++;
+                    
+                    makeCircleSmall(x, y, (errorCount).toString(), 16, nodeXpaths[i], true);
+                    makeIcon(x+11, y-16, "test");   // notification dot
+                    
+                    makeTextSmall(x, y, "?", (errorCount).toString(), true, "textColorBlack");
+                    
+                } else {
+                    continue;
+                }
+            }
+        }
+    }, 1);
 }
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string, errorStatus: boolean) {
@@ -1054,6 +1058,8 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         elemSVG.classList.add("dynamic");
         document.body.appendChild(elemSVG);
     }
+    console.log("errorStatus: ", errorStatus);
+    console.log("circleClone: ", circleClone);
     document.getElementById('svgCircle')?.appendChild(circleClone) // Inject circle with class circleNumber
 }
 
@@ -1094,18 +1100,6 @@ function makeIcon(x1: number, y1: number, iconName: string) {
 }
 
 function createSVGErrorIconTemplate() {
-    // This is what we are creating:
-    // <svg class="svgIcon1" display = "none" xmlns = "http://www.w3.org/2000/svg" width = "12px" height = "12px" viewBox = "0 0 32 32" >
-    //     <defs>
-    //         <style> 
-    //            .cls-1 { fill: none; } 
-    //         </style>
-    //     </defs >
-    //     <path  class="cls-1" d = "M16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Zm-1.125-5h2.25V12h-2.25Z" style = "&#10;    fill: black;&#10;" />
-    //     <path d="M16.002,6.1714h-.004L4.6487,27.9966,4.6506,28H27.3494l.0019-.0034ZM14.875,12h2.25v9h-2.25ZM16,26a1.5,1.5,0,1,1,1.5-1.5A1.5,1.5,0,0,1,16,26Z" style = "&#10;    fill: yellow;&#10;" />
-    //     <path d="M29,30H3a1,1,0,0,1-.8872-1.4614l13-25a1,1,0,0,1,1.7744,0l13,25A1,1,0,0,1,29,30ZM4.6507,28H27.3493l.002-.0033L16.002,6.1714h-.004L4.6487,27.9967Z" style = "&#10;    fill: black;&#10;" />
-    //     <rect data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width = "32" height = "32" />
-    // </svg>
     var elemSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     elemSvg.setAttribute("class", "svgIcon1");
     elemSvg.setAttribute("display", "none");
@@ -1136,7 +1130,7 @@ function createSVGErrorIconTemplate() {
 
 
 
-function makeTextSmall(x1: number, y1: number, n: string, n2: string, textColorClassName?: string) {
+function makeTextSmall(x1: number, y1: number, n: string, n2: string, errorStatus: boolean, textColorClassName?: string) {
 
     // TODO: Find possible better way to deal with this (Talk to design)
     // If the circle is being drawn slighly off of the screen move it into the screen
@@ -1151,11 +1145,16 @@ function makeTextSmall(x1: number, y1: number, n: string, n2: string, textColorC
     var textClone = createSVGCircleTextTemplate();//text.cloneNode(true);
     textClone.removeAttribute("id");
     textClone.classList.add("deleteMe");
-    textClone.classList.add("circleSmall");
-    textClone.classList.add("noHighlightSVGText");
-    textClone.classList.add("circleNumber"+n2)
+    textClone.classList.add("circleNumber"+n2);
     if(textColorClassName){
         textClone.classList.add(textColorClassName); 
+    }
+
+    if (errorStatus === true) {
+        textClone.classList.add("error");
+        textClone.classList.add("noHighlightSVGText");
+    } else {
+        textClone.classList.add("noHighlightSVGText");
     }
 
     if (n.length >= 3) { // If number has 3+ digits shift it a few more px to center it
@@ -1174,6 +1173,7 @@ function makeTextSmall(x1: number, y1: number, n: string, n2: string, textColorC
         elemSVG.setAttribute("id", "svgCircle");
         document.body.appendChild(elemSVG);
     }
+    console.log("textClone: ", textClone);
     document.getElementById('svgCircle')?.appendChild(textClone)
 }
 
