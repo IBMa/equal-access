@@ -415,13 +415,3 @@ export function getRotationDegree(rotation_transform) {
     }       
     return passed;
  }
-
- export function getDeviceOrientation() {
-    if (window.matchMedia("(orientation: portrait)").matches) {
-        /* The viewport is currently in portrait orientation */
-        return 'portrait';
-      } else {
-        /* The viewport is not currently in portrait orientation, therefore landscape */
-        return 'landscape';
-      }
- }

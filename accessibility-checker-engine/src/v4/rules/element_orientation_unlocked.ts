@@ -99,7 +99,7 @@ export let element_orientation_unlocked: Rule = {
             
             /** 
              * compensate the media orientation with the page orientation
-             * TODO: can it be contained in #1277 ?
+             * TODO:
              *   consider a case when a page transformation (not in media) is defined after the media transformation,  
              * and the media transform, therefore, is not actually applied or is overwritten by the page transformation. 
              *   const device_orientation = getDeviceOrientation();
