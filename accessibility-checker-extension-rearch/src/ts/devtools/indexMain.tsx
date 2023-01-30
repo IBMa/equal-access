@@ -16,25 +16,30 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { getBGController } from '../background/backgroundController';
-import { ISettings } from '../interfaces/interfaces';
-    
-import "../styles/index.scss";
+// import { getBGController } from '../background/backgroundController';
 
-let bgController = getBGController("panel");
+import "../styles/index.scss";
+// import { getTabController } from '../tab/tabController';
+import { ScanSection } from './components/scanSection';
+
+// let bgController = getBGController();
+// let tabController = getTabController();
+
 interface PageAppState {
-    settings?: ISettings
 }
+
 class PageApp extends React.Component<{}, PageAppState> {
     state : PageAppState = {
     }
+
     componentDidMount(): void {
-        bgController.getSettings().then((settings) => {
-            this.setState({ settings });
-        })
+        // bgController.getSettings().then((settings) => {
+        //     this.setState({ settings });
+        // })
     }
+
     render() {
-        return <React.Fragment>{JSON.stringify(this.state.settings)}</React.Fragment>
+        return <ScanSection />
     }
 }
 

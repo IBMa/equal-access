@@ -14,66 +14,15 @@
   limitations under the License.
 *****************************************************************************/
 
-import { eMessageSrcDst, IMessage, ISettings } from "../interfaces/interfaces";
-import { BackgroundMessaging } from "../messaging/backgroundMessaging";
-import { PanelMessaging } from "../messaging/panelMessaging";
-import { TabMessaging } from "../messaging/tabMessaging";
+import { ISettings } from "../interfaces/interfaces";
+import { Controller, eControllerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
 
-type eMessageId = "BG_getSettings" | "BG_setSettings";
-
-class BackgroundController {
-    src;
-
-    private async hook<InT, OutT> (
-        msgName: eMessageId, 
-        msgBody: InT | null, 
-        func: (msgBody: InT | null) => Promise<OutT>
-    ) : Promise<OutT> {
-        if (this.src === "background") {
-            return func(msgBody);
-        } else if (this.src === "panel") {
-            let retVal = await PanelMessaging.send({
-                type: msgName,
-                dest: "background",
-                content: msgBody
-            })
-            return retVal;
-        } else {
-            return TabMessaging.send({
-                type: msgName,
-                dest: "background",
-                content: msgBody
-            })
-        }
-    }
-
-    private async hookListener<InT, OutT>(
-        msgName: eMessageId,
-        func: (msgBody: InT | null) => Promise<OutT>
-    ) {
-        BackgroundMessaging.addListener(msgName, (message: IMessage) => {
-            return func(message.content);
-        })
-    }
-
-    constructor(src: eMessageSrcDst) {
-        this.src = src;
-        let myThis = this;
-        if (src === "background") {
-            // One listener per function
-            this.hookListener("BG_getSettings", () => {
-                return this.getSettings();
-            })
-            this.hookListener("BG_setSettings", async (settings: ISettings | null) => {
-                let updSettings = await myThis.validateSettings(settings || undefined);
-                return this.setSettings(updSettings);
-            })
-            BackgroundMessaging.initRelays();
-        }
-    }
-
+class BackgroundController extends Controller {
+    ///////////////////////////////////////////////////////////////////////////
+    ///// PUBLIC API //////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
     /**
      * Get settings for the extension
      */
@@ -101,6 +50,116 @@ class BackgroundController {
                 });
             })
         });
+    }
+
+    public async initTab(tabId: number) {
+        console.log("initTab", tabId);
+        return this.hook("BG_initTab", tabId, async () => {
+            console.log("INITTAB");
+            let settings = await this.getSettings();
+            let archiveId = settings.selected_archive.id;
+            // Determine if we've ever loaded any engine
+            let isLoaded = await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    func: () => {
+                        (window as any).aceIBMaTemp =  (window as any).ace;
+                        return(typeof (window as any).aceIBMa);
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res[0].result !== "undefined");
+                })
+            });
+
+            if (!chrome && !chrome.scripting) {
+                await new Promise((resolve, reject) => {
+                    myExecuteScript({
+                        target: { tabId: tabId, frameIds: [0] },
+                        func: () => {
+                            ((window as any).aceIBMa = (window as any).ace);
+                            (window as any).ace = (window as any).aceIBMaTemp;
+                        }
+                    }, function (res: any) {
+                        if (chrome.runtime.lastError) {
+                            reject(chrome.runtime.lastError.message);
+                        }
+                        resolve(res);
+                    })
+                });
+            }
+        
+            // Switch to the appropriate engine for this archiveId
+            let engineFile = await EngineCache.getEngine(archiveId);
+            await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: tabId, frameIds: [0] },
+                    files: [engineFile]
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res);
+                });
+            });
+
+            if (chrome && chrome.scripting) {
+                await new Promise((resolve, reject) => {
+                    myExecuteScript({
+                        target: { tabId: tabId, frameIds: [0] },
+                        func: () => {
+                            ((window as any).aceIBMa = (window as any).ace);
+                            (window as any).ace = (window as any).aceIBMaTemp;
+                        }
+                    }, function (res: any) {
+                        if (chrome.runtime.lastError) {
+                            reject(chrome.runtime.lastError.message);
+                        }
+                        resolve(res);
+                    })
+                });
+            }
+            
+        
+            // Initialize the listeners once
+            if (!isLoaded) {
+                await new Promise((resolve, reject) => {
+                    myExecuteScript({
+                        target: { tabId: tabId, frameIds: [0] },
+                        files: ["/tabListeners.js"]
+                    }, function (_res: any) {
+                        if (chrome.runtime.lastError) {
+                            reject(chrome.runtime.lastError.message);
+                        }
+                        resolve(_res);
+                    });
+                });
+            }
+        });
+    }
+
+    constructor(type: eControllerType) {
+        super(type);
+        let myThis = this;
+        if (type === "local") {
+            // One listener per function
+            this.hookListener("BG_getSettings", () => {
+                return this.getSettings();
+            })
+            this.hookListener("BG_setSettings", async (settings: ISettings | null) => {
+                let updSettings = await myThis.validateSettings(settings || undefined);
+                return this.setSettings(updSettings);
+            })
+            this.hookListener("BG_initTab", async (tabId: number | null) => {
+                console.log("BG_initTab", tabId);
+                if (tabId !== null) {
+                    return this.initTab(tabId);
+                }
+            })
+            // CommonMessaging.initRelays();
+        }
     }
 
     /**
@@ -138,11 +197,65 @@ class BackgroundController {
     }
 }
 
-let singleton : BackgroundController;
+function myExecuteScript(
+    params: any, 
+    pCB?: (any) | undefined): void
+{
+    if (chrome && chrome.scripting && chrome.scripting.executeScript) {
+        chrome.scripting.executeScript(params, pCB);
+    } else {
+        if (params.func) {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    code: `(${params.func.toString()})()`,
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    if (!res) {
+                        pCB && pCB(res);
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
+        } else {
+            chrome.tabs.executeScript(
+                params.target.tabId as number,
+                { 
+                    file: params.files[0],
+                    frameId: params.target.frameIds[0],
+                    matchAboutBlank: true
+                },
+                (res) => {
+                    if (params.files[0].includes("ace.js")) {
+                        chrome.tabs.executeScript(
+                            params.target.tabId as number,
+                            { 
+                                code: `window.aceIBMa = ace`,
+                                frameId: params.target.frameIds[0],
+                                matchAboutBlank: true
+                            },
+                            (res) => {
+                                if (!res) {
+                                    pCB && pCB(res);
+                                } else {
+                                    pCB && pCB(res.map(item => ({ result: item })));
+                                }
+                            })
+                    } else {
+                        pCB && pCB(res.map(item => ({ result: item })));
+                    }
+                })
+        }
+    }
+}
 
-export function getBGController(src: eMessageSrcDst) {
+let singleton : BackgroundController;
+export function getBGController(type?: eControllerType) {
     if (!singleton) {
-        singleton = new BackgroundController(src);
+        console.log("Creating background controller")
+        singleton = new BackgroundController(type || "remote");
     }
     return singleton;
 }

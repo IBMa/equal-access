@@ -1,0 +1,98 @@
+/******************************************************************************
+  Copyright:: 2020- IBM, Inc
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*****************************************************************************/
+
+import { getBGController } from "../background/backgroundController";
+import { getDevtoolsController } from "../devtools/devtoolsController";
+import { Controller, eControllerType } from "../messaging/controller";
+
+let bgController = getBGController();
+let devtoolsController = getDevtoolsController();
+
+class TabController extends Controller {
+    ///////////////////////////////////////////////////////////////////////////
+    ///// PUBLIC API //////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
+    constructor(type: eControllerType) {
+        super(type);
+        if (type === "local") {
+            this.hookListener("TAB_requestScan", () => {
+                return this.requestScan();
+            })
+        }
+    }
+
+    public async requestScan() {
+        let tabId = (this.type === "remote" && chrome.devtools.inspectedWindow.tabId) || undefined;
+        if (this.type === "remote") {
+            await bgController.initTab(tabId!);
+        }
+        return this.hook("TAB_requestScan", null, async () => {
+            console.log("Scanning3");
+            // We want this to execute after the message returns
+            (async () => {
+                let settings = await bgController.getSettings();
+                let checker = new (<any>window).aceIBMa.Checker();    
+                let report = await checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]);
+                if (report) {
+                    let passResults = report.results.filter((result: any) => {
+                        return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
+                    })
+                    let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
+        
+                    report.passUniqueElements = Array.from(new Set(passXpaths));
+        
+                    report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
+                    for (let result of report.results) {
+                        let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
+                        let version = settings.selected_archive.version || "latest";
+                        if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                            engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                        } else {
+                            engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
+                            if (engineHelp.includes("//able.ibm.com/")) {
+                                engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
+                            }
+                        }
+                        let minIssue = {
+                            message: result.message,
+                            snippet: result.snippet,
+                            value: result.value,
+                            reasonId: result.reasonId,
+                            ruleId: result.ruleId,
+                            msgArgs: result.msgArgs
+                        };
+                        result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
+                    }
+                }
+                devtoolsController.setReport(report);
+            })();
+            return true;
+        }, tabId);
+    }
+}
+
+let singleton : TabController;
+export function getTabController(type?: eControllerType) {
+    if (!singleton) {
+        console.log("Creating Tab controller")
+        singleton = new TabController(type || "remote");
+    }
+    return singleton;
+}
+
+
+

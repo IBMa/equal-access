@@ -14,31 +14,31 @@
   limitations under the License.
 *****************************************************************************/
 
-export type eMessageSrcDst = "background" | "panel" | "tab";
+export type eMessageSrcDst = "background" | "devtools" | "main" | "elements" | "options" | "popup" | "tab";
 
 export interface IPolicyDefinition {
     id: string,
     name: string
+    description: string
 }
 
 export interface IArchiveDefinition {
-    id: string,
-    name: string,
-    path: string,
-    version: string,
-    latest?: boolean,
-    sunset?: boolean,
-    policies: IPolicyDefinition[]
-}
-
-export interface IReport {
-
+    id: string
+    name: string
+    path: string
+    rulesets: {
+        extension: IPolicyDefinition[]
+        default: IPolicyDefinition[]
+    }
+    version: string
+    latest?: true
+    sunset?: boolean
+    helpPath: string
+    enginePath: string
 }
 
 export interface ISettings {
-    selected_archive: {
-        id: string
-    }
+    selected_archive: IArchiveDefinition
     selected_ruleset: {
         id: string
     }
@@ -50,9 +50,44 @@ export interface ISettings {
 
 export interface IMessage {
     type: string
-    src?: eMessageSrcDst
-    dest: eMessageSrcDst
     destTab?: number
     content?: any
     blob_url?: string
+}
+
+export interface IIssue {
+    ruleId: string
+    value: [string, string]
+    node: any
+    path: {
+        dom: string
+        aria: string
+    }
+    ruleTime: number
+    reasonId: string
+    message: string
+    messageArgs: string[]
+    apiArgs: any[]
+    bounds: {
+        left: number,
+        top: number,
+        height: number
+        width: number
+    }
+    snippet: string
+    category: "Accessibility",
+    help: string
+}
+
+export interface IReport {
+    results: IIssue[]
+    numExecuted: number
+    ruleTime: number
+    totalTime: number
+    nls : {
+        [ruleId: string]: {
+            [reasonCode: string]: string
+        }
+    }
+    passUniqueElements: string[]
 }

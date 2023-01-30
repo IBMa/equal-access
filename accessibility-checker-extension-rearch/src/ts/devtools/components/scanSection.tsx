@@ -14,6 +14,27 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getTabController } from "./tabController";
+import * as React from 'react';
+import { getTabController } from "../../tab/tabController";
+import { Button } from "@carbon/react";
 
-getTabController("local");
+let tabController = getTabController();
+
+interface ScanSectionState {
+}
+
+export class ScanSection extends React.Component<{}, ScanSectionState> {
+    state : ScanSectionState = {
+    }
+
+    componentDidMount(): void {
+    }
+
+    scan() {
+        tabController.requestScan();
+    }
+
+    render() {
+        return <Button onClick={() => { this.scan(); }}>Scan</Button>
+    }
+}

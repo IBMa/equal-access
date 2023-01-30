@@ -16,4 +16,4 @@
 
 import { getBGController } from "./backgroundController";
 
-getBGController("background");
+getBGController("local");

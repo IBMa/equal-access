@@ -16,12 +16,25 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
+import { getBGController } from '../background/backgroundController';
+import { ISettings } from '../interfaces/interfaces';
     
 import "../styles/index.scss";
 
-class PageApp extends React.Component<{}, {}> {
+let bgController = getBGController();
+interface PageAppState {
+    settings?: ISettings
+}
+class PageApp extends React.Component<{}, PageAppState> {
+    state : PageAppState = {
+    }
+    componentDidMount(): void {
+        bgController.getSettings().then((settings) => {
+            this.setState({ settings });
+        })
+    }
     render() {
-        return <React.Fragment>Elements Panel</React.Fragment>
+        return <React.Fragment>{JSON.stringify(this.state.settings)}</React.Fragment>
     }
 }
 

@@ -14,6 +14,23 @@
   limitations under the License.
 *****************************************************************************/
 
-import { getTabController } from "./tabController";
+export class StorageUtil {
 
-getTabController("local");
+    async getLocal(key: string) {
+        return new Promise((resolve, _reject) => {
+            chrome.storage.local.get(key, async function (result: any) {
+                resolve(result[key]);
+            });
+        })
+    }
+
+    async setLocal(key: string, data: any) {
+        return new Promise((resolve, _reject) => {
+            let setVal : any = {};
+            setVal[key] = data;
+            chrome.storage.local.set(setVal, async function () {
+                resolve(data);
+            });
+        })
+    }
+}
