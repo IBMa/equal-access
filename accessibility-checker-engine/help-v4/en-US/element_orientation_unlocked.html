@@ -44,9 +44,8 @@
 
 ### Why is this important?
 
-Some users are unable to easily change the orientation of their device. 
 If designers force content to _only_ display in portrait (or landscape) mode, 
-it prevents users from being able to see the content in the perspective that they need. 
+it prevents users from being able to see the content in the orientation that they need. 
 For example, if a user has their display affixed to a wheelchair or is otherwise unable to reorient the device to match the designer-imposed orientation, 
 the content becomes unusable. 
 Most applications should be able to be used when displayed in either orientation (although one orientation may be less optimal).
@@ -59,10 +58,10 @@ An example is a piano keyboard emulator that mimics a physical piano keyboard, w
 
 ### What to do
 
-* When the CSS `[transform](https://www.w3.org/TR/css-transforms/#propdef-transform)` property is used, 
-ensure the [transform function](https://www.w3.org/TR/css-transforms/#transform-functions) is conditionally applied on the [orientation](https://www.w3.org/TR/mediaqueries-3/#orientation) [media feature](https://www.w3.org/TR/mediaqueries-3/#media1) 
+* When the CSS `transform` property is used, 
+ensure the [transform function](https://www.w3.org/TR/css-transforms/#transform-functions) is conditionally applied on the [orientation](https://www.w3.org/TR/mediaqueries-3/#orientation) of the [media feature](https://www.w3.org/TR/mediaqueries-3/#media1) 
 so that it does not restrict the page or element to either portrait or landscape orientation
-* **Or**, remove the CSS `[transform](https://www.w3.org/TR/css-transforms/#propdef-transform)` property if not [essential](https://www.w3.org/TR/WCAG21/#dfn-essential)
+* **Or**, remove the CSS [transform property](https://www.w3.org/TR/css-transforms/#propdef-transform) if not [essential](https://www.w3.org/TR/WCAG21/#dfn-essential)
 
 Example: a CSS `transform` property has a [rotateZ](https://drafts.csswg.org/css-transforms-2/#funcdef-rotatez) transform function conditionally applied on the orientation media feature which does not restrict the element to either portrait or landscape orientation:
 
@@ -89,7 +88,7 @@ Example: a CSS `transform` property has a [rotateZ](https://drafts.csswg.org/css
 
 * [1.3.4 Orientation](https://www.ibm.com/able/requirements/requirements/#1_3_4)
 * [WCAG technique G214](https://www.w3.org/WAI/WCAG21/Techniques/general/G214)
-* [Design - Layout orientations] (https://www.ibm.com/able/toolkit/design/visual/#layout-orientations)
+* [Design - Layout orientations](https://www.ibm.com/able/toolkit/design/visual/#layout-orientations)
 * [Test - Check motion operation](https://www.ibm.com/able/toolkit/verify/manual#motionoperation) 
 
 ### Who does this affect?
