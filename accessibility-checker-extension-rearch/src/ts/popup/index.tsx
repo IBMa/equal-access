@@ -18,10 +18,11 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
     
 import "../styles/index.scss";
+import PopupApp from './PopupApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <React.Fragment>Popup</React.Fragment>
+        return <PopupApp />
     }
 }
 

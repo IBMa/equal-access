@@ -18,10 +18,11 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
     
 import "../styles/index.scss";
+import UsingACApp from './UsingACApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <React.Fragment>Using AC</React.Fragment>
+        return <UsingACApp />
     }
 }
 
