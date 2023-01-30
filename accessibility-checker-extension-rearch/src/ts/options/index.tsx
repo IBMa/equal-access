@@ -18,13 +18,14 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
     
 import "../styles/index.scss";
+import { OptionsApp } from './OptionsApp';
 
 class PageApp extends React.Component<{}, {}> {
     render() {
-        return <React.Fragment>Options</React.Fragment>
+        return <OptionsApp />
     }
 }
 
 ReactDOM.render(<PageApp />
-    , document.getElementById('pageapp-root'));
+    , document.getElementById('options-root'));
     

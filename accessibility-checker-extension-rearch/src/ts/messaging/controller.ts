@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import { IMessage } from "../interfaces/interfaces";
+import Config from "../util/config";
 import { CommonMessaging } from "./commonMessaging";
 
 export type eControllerType = "local" | "remote";
@@ -33,7 +34,7 @@ export class Controller {
         destTab?: number
     ) : Promise<OutT> {
         try {
-            console.log("hook", this.type);
+            Config.DEBUG && console.log("hook", this.type);
             if (this.type === "local") {
                 return func(msgBody);
             } else {

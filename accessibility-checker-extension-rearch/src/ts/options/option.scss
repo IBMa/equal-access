@@ -1,0 +1,247 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+html,
+body {
+    @include breakpoint('lg') {
+        height: 100%;
+    }
+}
+
+.cds--modal {
+    z-index: 9500 !important;
+}
+
+#options-root {
+    .leftPanel {
+        margin: 0rem;
+        background-color: $gray-10;
+    }
+
+    @include breakpoint('lg') {
+        height: 100%;
+
+        .cds--grid,
+        .cds--row,
+        .leftPanel {
+            height: 100%;
+        }
+    }
+
+    .cds--grid {
+        padding: 0rem 1rem;
+    }
+
+    p {
+        margin-top: 1.5rem;
+
+        @include breakpoint('md') {
+            max-width: 75%;
+        }
+    }
+
+    .leftPanel {
+        padding: 2rem 1rem;
+
+        .icon {
+            height: 38px;
+            width: 48px;
+        }
+
+        h2 {
+            @include type-style("productive-heading-04");
+            margin-top: 2rem;
+        }
+
+        .ibm {
+            height: 20px;
+            width: 130px;
+            color: #171717;
+            font-family: "IBM Plex Sans";
+            font-size: 16px;
+            letter-spacing: 0;
+            line-height: 20px;
+        }
+
+        .accessibility {
+            height: 20px;
+            width: 130px;
+            color: #171717;
+            font-family: "IBM Plex Sans";
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 0;
+            line-height: 20px;
+        }
+
+        .equal-access-toolkit {
+            height: 56px;
+            width: 206px;
+            color: #171717;
+            font-family: "IBM Plex Sans";
+            font-size: 20px;
+            letter-spacing: 0;
+            line-height: 28px;
+          }
+
+        .op_version {
+            @include type-style("label-01");
+            color: $gray-70;
+        }
+
+        p {
+            @include breakpoint('lg') {
+                max-width: 100%;
+            }
+        }
+    }
+
+    .rightPanel {
+        padding: 3rem 0rem 1rem 0rem;
+
+        @include breakpoint('lg') {
+            padding-top: 6rem;
+        }
+
+        .cds--dropdown__wrapper {
+            margin-top: 1rem;
+
+            @include breakpoint('md') {
+                max-width: 75%;
+            }
+        }
+
+        .checker-options {
+            height: 28px;
+            width: 305px;
+            color: #161616;
+            font-family: "IBM Plex Sans";
+            font-size: 20px;
+            letter-spacing: 0;
+            line-height: 28px;
+            margin-bottom: 32px;
+          }
+
+        .rule-sets {
+            height: 16px;
+            width: 265px;
+            color: #161616;
+            font-family: "IBM Plex Sans";
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.16px;
+            line-height: 18px;
+            margin-bottom: 16px;
+        }
+
+        .select-a-rule-set {
+            height: 22px;
+            width: 608px;
+            color: #161616;
+            font-family: "IBM Plex Sans";
+            font-size: 16px;
+            letter-spacing: 0;
+            line-height: 22px;
+        }
+
+        .op_helper-text {
+            @include type-style("body-compact-02");
+            margin-top: 0.5rem;
+        }
+
+        h1 {
+            @include type-style("productive-heading-03");
+            margin-bottom: 48px;
+        }
+
+        h2 {
+            @include type-style("productive-heading-02");
+            margin-top: 1rem;
+        }
+
+        .accordion {
+            margin-top: 1rem;
+
+            @include breakpoint('md') {
+                max-width: 75%;
+            }
+
+            .cds--dropdown__wrapper {
+                margin-top: 1rem;
+
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+            }
+
+            .cds--accordion__content {
+                padding-right: 15%;
+            }
+
+            .accordionItem {
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+            }
+
+            p {
+                @include breakpoint('md') {
+                    max-width: 100%;
+                }
+
+                ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                li::before {
+                    content: "—";
+                    padding-right: 0.5rem;
+                }
+            }
+        }
+
+        .buttonRow {
+            margin-top: 1.5rem;
+            display: flex;
+            margin-right: 1rem;
+
+            @include breakpoint('md') {
+                max-width: 73.2%;
+            }
+
+            .cds--btn {
+                min-width: 50%;
+            }
+
+            .cds--btn+.cds--btn {
+                margin-left: 1rem;
+            }
+        }
+
+        .notification {
+            margin-top: 1.5rem;
+            display: flex;
+
+            @include breakpoint('md') {
+                max-width: 73.2%;
+            }
+
+            p {
+                margin-top: 0rem;
+            }
+        }
+
+        .label-text {
+            height: 16px;
+            width: 119px;
+            color: #525252;
+            font-family: "IBM Plex Sans";
+            font-size: 12px;
+            letter-spacing: 0.32px;
+            line-height: 16px;
+          }
+    }
+}

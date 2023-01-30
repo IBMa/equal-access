@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import { IMessage } from "../interfaces/interfaces";
+import Config from "../util/config";
 
 export class CommonMessaging {
 
@@ -33,6 +34,8 @@ export class CommonMessaging {
 
     public static addListenerHelp(type: string, listener: (message: IMessage) => Promise<any> | void) : void {
         chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+            Config.DEBUG && console.log(`CommonMessaging:${type}, received message`, message)
+
             // Note - only allow background to listen to all for the purposes of routing
             // If two listeners respond, the first wins, which causes trouble
             if (message.type === type || (type === "ALL" && message.dest !== "background")) {
@@ -68,33 +71,32 @@ export class CommonMessaging {
     public static send(message: IMessage): Promise<any> {
         let myMessage : IMessage = JSON.parse(JSON.stringify(message || {}));
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                let callback = (res: any) => {
-                    setTimeout(() => {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError.message);
-                        } else {
-                            if (res) {
-                                if (typeof res === "string") {
-                                    try {
-                                        res = JSON.parse(res);
-                                    } catch (e) {}
-                                }
-                                resolve(res);
-                            } else {
-                                resolve(null);
+            let callback = (res: any) => {
+                // setTimeout(() => {
+                    Config.DEBUG && console.log("--",res);
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    } else {
+                        if (res) {
+                            if (typeof res === "string") {
+                                try {
+                                    res = JSON.parse(res);
+                                } catch (e) {}
                             }
+                            resolve(res);
+                        } else {
+                            resolve(null);
                         }
-                    }, 0);
-                };
-                if (message.destTab) {
-                    console.log("sendTab", message);
-                    chrome.tabs.sendMessage(message.destTab!, myMessage, callback);
-                } else {
-                    console.log("sendOther", message);
-                    chrome.runtime.sendMessage(myMessage, callback);
-                }
-            }, 0);
+                    }
+                // }, 0);
+            };
+            if (message.destTab) {
+                Config.DEBUG && console.log("sendTab", myMessage);
+                chrome.tabs.sendMessage(message.destTab!, myMessage, callback);
+            } else {
+                Config.DEBUG && console.log("sendOther", myMessage);
+                chrome.runtime.sendMessage(myMessage, callback);
+            }
         });
     }
 

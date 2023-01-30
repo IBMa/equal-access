@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, ISettings } from "../interfaces/interfaces";
 import { Controller, eControllerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
@@ -31,7 +31,8 @@ class BackgroundController extends Controller {
         let retVal = await this.hook("BG_getSettings", null, async () => {
             let retVal = await new Promise<ISettings>((resolve, _reject) => {
                 chrome.storage.local.get("OPTIONS", async function (result: any) {
-                    resolve(await myThis.validateSettings(result.OPTIONS));
+                    let retSett = await myThis.validateSettings(result.OPTIONS);
+                    resolve(retSett);
                 });
             })
             return retVal;
@@ -43,7 +44,7 @@ class BackgroundController extends Controller {
      * Set settings for the extension
      */
     public async setSettings(settings: ISettings) : Promise<ISettings> {
-        return this.hook("BG_setSettings", null, async () => {
+        return this.hook("BG_setSettings", settings, async () => {
             return new Promise<ISettings>((resolve, _reject) => {
                 chrome.storage.local.set({ "OPTIONS": settings }, async function () {
                     resolve(settings!);
@@ -52,8 +53,21 @@ class BackgroundController extends Controller {
         });
     }
 
+    /**
+     * Get the archive definitions
+     */
+    public async getArchives() : Promise<IArchiveDefinition[]> {
+        return this.hook("BG_getArchives", null, async () => {
+            return EngineCache.getArchives();
+        });
+    }
+    /**
+     * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
+     * @param tabId 
+     * @returns 
+     */
     public async initTab(tabId: number) {
-        console.log("initTab", tabId);
+        Config.DEBUG && console.log("initTab", tabId);
         return this.hook("BG_initTab", tabId, async () => {
             console.log("INITTAB");
             let settings = await this.getSettings();
@@ -140,6 +154,10 @@ class BackgroundController extends Controller {
         });
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    ///// PRIVATE API /////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+
     constructor(type: eControllerType) {
         super(type);
         let myThis = this;
@@ -153,10 +171,12 @@ class BackgroundController extends Controller {
                 return this.setSettings(updSettings);
             })
             this.hookListener("BG_initTab", async (tabId: number | null) => {
-                console.log("BG_initTab", tabId);
                 if (tabId !== null) {
                     return this.initTab(tabId);
                 }
+            })
+            this.hookListener("BG_getArchives", () => {
+                return this.getArchives();
             })
             // CommonMessaging.initRelays();
         }
@@ -254,7 +274,7 @@ function myExecuteScript(
 let singleton : BackgroundController;
 export function getBGController(type?: eControllerType) {
     if (!singleton) {
-        console.log("Creating background controller")
+        Config.DEBUG && console.log("Creating background controller")
         singleton = new BackgroundController(type || "remote");
     }
     return singleton;

@@ -39,9 +39,7 @@ export interface IArchiveDefinition {
 
 export interface ISettings {
     selected_archive: IArchiveDefinition
-    selected_ruleset: {
-        id: string
-    }
+    selected_ruleset: { id: string }
     tabStopLines: boolean
     tabStopOutlines: boolean
     tabStopAlerts: boolean
