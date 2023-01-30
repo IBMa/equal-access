@@ -1,0 +1,36 @@
+<html lang="en">
+	<head>
+		<title>Page with some content</title>
+	</head>
+	<body>
+		<div role="checkbox">Wrong, without required aria-checked, no native equivalent</div>
+        <div role="checkbox" checked>Accept terms and conditions</div>
+        <div role="checkbox" checked aria-checked="true">Accept terms and conditions</div>
+        <div role="checkbox" aria-checked="true">Accept terms and conditions</div>
+        <div role="checkbox" aria-checked="">Accept terms and conditions</div>
+        <div role="checkbox" aria-checked>Accept terms and conditions</div>
+		<script>
+            UnitTest = {
+              ruleIds: ["Rpt_Aria_EmptyPropertyValue"],
+              results: [
+			  {
+            "ruleId": "element_orientation_unlocked",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "pass",
+            "message": "The element is not restricted to either landscape or portrait orientation using CSS transform property",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+              ]
+        }
+        </script>
+	</body>
+</html>
