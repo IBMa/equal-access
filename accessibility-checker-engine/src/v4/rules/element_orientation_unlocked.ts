@@ -13,7 +13,7 @@
 
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
-import { getDefinedStyles, getMediaOrientationTransform, getRotationDegree} from "../util/CSSUtil";
+import { getDefinedStyles, selectorMatchesElem, getMediaOrientationTransform, getRotationDegree} from "../util/CSSUtil";
 import { VisUtil } from "../../v2/dom/VisUtil";
 import { getCache, setCache } from "../util/CacheUtil";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
@@ -51,27 +51,29 @@ export let element_orientation_unlocked: Rule = {
             return null;
         
         //skip elements
-        if (RPTUtil.getAncestor(ruleContext, ["script", "meta"]))
+        if (RPTUtil.getAncestor(ruleContext, ["script", "meta", "title"]))
             return null;
 
         const nodeName = ruleContext.nodeName.toLowerCase();    
         
+        // cache the orientation ressult for all the elements in the page
         let doc = FragmentUtil.getOwnerFragment(ruleContext) as any;
         let orientationTransforms = getCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", null);
         if (!orientationTransforms) {
-            orientationTransforms = getMediaOrientationTransform(ruleContext);
+            orientationTransforms = getMediaOrientationTransform(doc);
             setCache(doc, "RPTUtil_MEDIA_ORIENTATION_TRANSFROM", orientationTransforms);
         } 
         
+        // find if the element matches orientation selector(s)
         let media_transforms = [];
         Object.keys(orientationTransforms).forEach(key => {
             Object.keys(orientationTransforms[key]).forEach(tag => {
-                if (tag === nodeName && Object.keys(orientationTransforms[key][tag]).length > 0)
+                if (Object.keys(orientationTransforms[key][tag]).length > 0 && selectorMatchesElem(ruleContext, tag))
                     media_transforms.push(orientationTransforms[key][tag].transform);    
             });
         });
 
-        // elemenet is not in media orientation transform
+        // no match, the elemenet is not in media orientation transform
         if (media_transforms.length === 0) return null;
         
         let ret = [];
@@ -99,11 +101,7 @@ export let element_orientation_unlocked: Rule = {
             
             /** 
              * compensate the media orientation with the page orientation
-             * TODO:
-             *   consider a case when a page transformation (not in media) is defined after the media transformation,  
-             * and the media transform, therefore, is not actually applied or is overwritten by the page transformation. 
-             *   const device_orientation = getDeviceOrientation();
-            */
+             */
             if (definedStyle['transform']) {
                 const page_degree = getRotationDegree(definedStyle['transform']);
                 degree -= page_degree;

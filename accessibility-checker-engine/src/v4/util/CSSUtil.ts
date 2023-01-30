@@ -170,17 +170,17 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
 }
 
 /**
- * Returns the media query defined for this element
+ * Returns the media query defined for the document
  * 
  * 
- * @param {HTMLElement} elem 
+ * @param {Document} doc 
  */
-export function getMediaOrientationTransform(elem: HTMLElement) {
+export function getMediaOrientationTransform(doc: Document) {
     let orientationTransforms = {}
     
     // Iterate through all of the stylesheets and rules
-    for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
-        const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
+    for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
+        const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet;
         try {
             if (sheet && sheet.cssRules) {
                 for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
@@ -231,7 +231,7 @@ export function getMediaOrientationTransform(elem: HTMLElement) {
 }
 
 /**
- * convert given rotation transform functions to degree transformed. 
+ * convert given rotation transform functions to the degree transformed. 
  * If multiple functions are given, then the functions are applied linearly in the order. 
  *   rotation_transform function example:  rotate(45deg), rotate(2turn), rotate(2rad), rotate3d(1, 1, 1, 45deg),
  *        rotate(2rad) rotate3d(1, 1, 1, 45deg)
