@@ -222,28 +222,26 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
         console.log("**** Got TAB key ****");
-        // if (docType === "main") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        // }
+        if (docType === "main") {
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+        }
         
-        // // if we have iframe
-        // if (docType === "iframe") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        //     elementXpath = iframeStr + elementXpath;
-        // }
+        // if we have iframe
+        if (docType === "iframe") {
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+            elementXpath = iframeStr + elementXpath;
+        }
 
-        // // if we have shadow dom no need to do anything special
-        // if (docType === "shadowdom") {
-        //     let sdXpath = getXPathForElement(doc);
-        //     let element = doc.shadowRoot.activeElement;
-        //     elementXpath = getXPathForElement(element);
-        //     // need #document-fragment[n]
-        //     elementXpath = sdXpath+iframeStr;
-        // }
-
-        elementXpath = realElementXpath(doc, docType, iframeStr);
+        // if we have shadow dom no need to do anything special
+        if (docType === "shadowdom") {
+            let sdXpath = getXPathForElement(doc);
+            let element = doc.shadowRoot.activeElement;
+            elementXpath = getXPathForElement(element);
+            // need #document-fragment[n]
+            elementXpath = sdXpath+iframeStr;
+        }
 
         // get circle or errorCircle with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
@@ -284,28 +282,26 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         }
     } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
         console.log("**** Got SHIFT TAB key ****");
-        // if (docType === "main") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        // }
+        if (docType === "main") {
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+        }
         
-        // // if we have iframe
-        // if (docType === "iframe") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        //     elementXpath = iframeStr + elementXpath;
-        // }
+        // if we have iframe
+        if (docType === "iframe") {
+            let element = doc.activeElement;  // get element just tabbed to which has focus
+            elementXpath = getXPathForElement(element); // in main doc so just get xpath
+            elementXpath = iframeStr + elementXpath;
+        }
 
-        // // if we have shadow dom no need to do anything special
-        // if (docType === "shadowdom") {
-        //     let sdXpath = getXPathForElement(doc);
-        //     let element = doc.shadowRoot.activeElement;
-        //     elementXpath = getXPathForElement(element);
-        //     // need #document-fragment[n]
-        //     elementXpath = sdXpath+iframeStr;
-        // }
-
-        elementXpath = realElementXpath(doc, docType, iframeStr);
+        // if we have shadow dom no need to do anything special
+        if (docType === "shadowdom") {
+            let sdXpath = getXPathForElement(doc);
+            let element = doc.shadowRoot.activeElement;
+            elementXpath = getXPathForElement(element);
+            // need #document-fragment[n]
+            elementXpath = sdXpath+iframeStr;
+        }
 
         // get circle or errorCircle with matching xpath
         let circle = document.querySelector('circle[xpath="'+elementXpath+'"]');
@@ -403,33 +399,6 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
             // element.focus(); // JCH - Can't set focus keeps going to Scan Button 
         }
     }
-}
-
-function realElementXpath(doc:any,docType:string,iframeStr:string) {
-
-    let elementXpath = "";
-    if (docType === "main") {
-        let element = doc.activeElement;  // get element just tabbed to which has focus
-        elementXpath = getXPathForElement(element); // in main doc so just get xpath
-    }
-    
-    // if we have iframe
-    if (docType === "iframe") {
-        let element = doc.activeElement;  // get element just tabbed to which has focus
-        elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        elementXpath = iframeStr + elementXpath;
-    }
-
-    // if we have shadow dom no need to do anything special
-    if (docType === "shadowdom") {
-        let sdXpath = getXPathForElement(doc);
-        let element = doc.shadowRoot.activeElement;
-        elementXpath = getXPathForElement(element);
-        // need #document-fragment[n]
-        elementXpath = sdXpath+iframeStr;
-    }
-
-    return elementXpath;
 }
 
 function highlightCircle(circle: any, errorCircle: boolean) {
