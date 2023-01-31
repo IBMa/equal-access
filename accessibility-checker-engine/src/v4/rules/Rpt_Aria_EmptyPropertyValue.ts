@@ -45,8 +45,8 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
 
-        //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        //skip the check if the element is hidden
+        if (VisUtil.isNodeHiddenFromAT(ruleContext))
             return;
 
         let attrNameArr = new Array();
