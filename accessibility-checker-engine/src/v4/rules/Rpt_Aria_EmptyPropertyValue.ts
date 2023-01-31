@@ -86,7 +86,7 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
                         if (hasAttribute(ruleContext, attribute)) {
                             testedProperties++;
                             let nodeValue = RPTUtil.normalizeSpacing(ruleContext.getAttribute(attribute));
-                            if (nodeValue.length == 0) {
+                            if (nodeValue.length == 0 && !attrNameArr.includes(attribute)) {
                                 attrNameArr.push(attribute);
                             }
                         }
