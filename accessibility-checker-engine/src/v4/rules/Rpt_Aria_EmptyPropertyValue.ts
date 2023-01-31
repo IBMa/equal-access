@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_EmptyPropertyValue: Rule = {
     id: "Rpt_Aria_EmptyPropertyValue",
@@ -43,6 +44,11 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
     act: ["6a7281"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
+
         let attrNameArr = new Array();
         let designPatterns = ARIADefinitions.designPatterns;
         let hasAttribute = RPTUtil.hasAttribute;
