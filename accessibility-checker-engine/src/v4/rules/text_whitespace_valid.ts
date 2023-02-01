@@ -27,9 +27,9 @@ export let text_whitespace_valid: Rule = {
     },
     messages: {
         "en-US": {
-            "pass": "No space characters are used to space letters or words",
-            "potential_text": "Verify space characters are not being used to create space between the letters of a word",
-            "group": "Space characters should not be used to space letters or words"
+            "pass": "Rule Passed",
+            "potential_text": "Space characters should not be used to create space between the letters of a word",
+            "group": "Space characters should not be used to control spacing within a word"
         }
     },
     rulesets: [{

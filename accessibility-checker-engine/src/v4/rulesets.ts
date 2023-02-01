@@ -39,7 +39,7 @@ const summaries = {
     "1.4.2": "If any audio plays automatically for more than 3 seconds, either a mechanism is available to pause or stop the audio, or a mechanism is available to control audio volume independently from the overall system volume level.",
     "1.4.3": "The visual presentation of text and images of text has a contrast ratio of at least 4.5:1, with a 3:1 ratio for large-scale text.",
     "1.4.4": "Text can be resized without assistive technology up to 200 percent without loss of content or functionality.",
-    "1.4.5": "If the technologies being used can achieve the visual presentation, text is used to convey information rather than images of text.",
+    "1.4.5": "If the technologies being used can achieve the visual presentation, text should not be used to convey information rather than images of text.",
     "1.4.10": "Content can reflow without loss of information or functionality, and without requiring scrolling in two dimensions.",
     "1.4.11": "The parts of graphical objects required to understand the content, and the visual information required to identify UI components and states, have a contrast ratio of at least 3:1 against adjacent colors.",
     "1.4.12": "No loss of content or functionality occurs when users change letter, word and paragraph spacing, as well as line height.",

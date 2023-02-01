@@ -140,6 +140,12 @@ export type Rule = {
         toolkitLevel: eToolkitLevel
     }>
 
+    refactor?: {
+        [oldRuleId: string]: {
+            [oldReasonCode: string]: string
+        }
+    };
+
     messages: {
         [locale: string]: {
             [reasonId: string]: string
