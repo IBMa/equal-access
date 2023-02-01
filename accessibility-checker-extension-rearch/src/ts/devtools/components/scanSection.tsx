@@ -19,9 +19,10 @@ import { getTabController } from "../../tab/tabController";
 import { Button } from "@carbon/react";
 import { getDevtoolsController } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
+import { getBGController, TabChangeType } from '../../background/backgroundController';
 
-let tabController = getTabController();
 let devtoolsController = getDevtoolsController();
+let bgController = getBGController();
 
 interface ScanSectionState {
     scanInProgress: boolean
@@ -44,15 +45,21 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 tabId: getTabId()!
             }
         });
-        chrome.tabs.onUpdated.addListener((_changedTabId, changeInfo, _tab) => {
-            if (changeInfo.status) {
-                this.setState({ pageStatus: changeInfo.status });
+        bgController.addTabChangeListener( {
+            callbackDest: { 
+                type: "extension"
+            },
+            callback: async (content: TabChangeType) => {
+                if (content.changeInfo.status) {
+                    this.setState({ pageStatus: content.changeInfo.status });
+                }
             }
         });
     }
 
     async scan() {
         this.setState( { scanInProgress: true });
+        let tabController = getTabController();
         await (await tabController).requestScan();
     }
 

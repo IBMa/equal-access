@@ -14,6 +14,8 @@
   limitations under the License.
 *****************************************************************************/
 
+declare var browser: any;
+
 import { IMessage } from "../interfaces/interfaces";
 import Config from "../util/config";
 
@@ -48,6 +50,7 @@ export class CommonMessaging {
             // Note - only allow background to listen to all for the purposes of routing
             // If two listeners respond, the first wins, which causes trouble
             if (types.includes(message.type)) {
+                Config.DEBUG && console.log("[DEBUG:onMessage]", message, sender);
                 let response = listener(message, sender && sender.tab && sender.tab.id);
                 if (response && response.then) {
                     response.then((result) => {
@@ -81,58 +84,77 @@ export class CommonMessaging {
     }
 
     public static send<inT, retT>(message: IMessage<inT>, retry?: number): Promise<retT | null> {
+        Config.DEBUG && console.log("[DEBUG:send]", message, retry);
         let myMessage : IMessage<inT> = JSON.parse(JSON.stringify(message || {}));
         return new Promise((resolve, reject) => {
-            let callback = (res: retT | string | null) => {
-                // setTimeout(() => {
-                    Config.DEBUG && console.log("--",res);
-                    if (chrome.runtime.lastError) {
-                        let shouldRetry = false;
-                        if (chrome.runtime.lastError.message?.includes("Receiving end does not exist.")) {
-                            shouldRetry = true;
-                        }
-                        // Retry 3 times if the receiver doesn't exist yet (might still be initializing)
-                        if (shouldRetry && (!retry || retry <= 3)) {
-                            setTimeout(async () => {
-                                resolve(await this.send(message, (retry || 0) + 1));
-                            },0);
-                        } else {
-                            reject({
-                                arg: message,
-                                error: chrome.runtime.lastError.message
-                            });
-                        }
-                    } else {
-                        if (res) {
-                            if (typeof res === "string") {
-                                try {
-                                    res = JSON.parse(res);
-                                } catch (e) {}
+            try {
+                let callback = (res: retT | string | null) => {
+                    Config.DEBUG && console.log("[DEBUG:sendMessage:callback]", message, res);
+                    // setTimeout(() => {
+                        if (chrome.runtime.lastError) {
+                            let shouldRetry = false;
+                            if (chrome.runtime.lastError.message?.includes("Receiving end does not exist.")) {
+                                shouldRetry = true;
                             }
-                            resolve(res as retT | null);
+                            // Retry 3 times if the receiver doesn't exist yet (might still be initializing)
+                            if (shouldRetry && (!retry || retry <= 3)) {
+                                setTimeout(async () => {
+                                    resolve(await this.send(message, (retry || 0) + 1));
+                                },0);
+                            } else {
+                                reject({
+                                    arg: message,
+                                    error: chrome.runtime.lastError.message
+                                });
+                            }
                         } else {
-                            resolve(null);
+                            if (res) {
+                                if (typeof res === "string") {
+                                    try {
+                                        res = JSON.parse(res);
+                                    } catch (e) {}
+                                }
+                                resolve(res as retT | null);
+                            } else {
+                                resolve(null);
+                            }
                         }
+                    // }, 0);
+                };
+                if (message.dest.type === "contentScript" && ((chrome && chrome.tabs) || (browser && browser.tabs))) {
+                    if (chrome.tabs) {
+                        Config.DEBUG && console.log("[DEBUG:chrome.tabs.sendMessage]", message.dest.tabId, myMessage);
+                        chrome.tabs.sendMessage(message.dest.tabId, myMessage, callback);
+                    } else if (browser.tabs) {
+                        Config.DEBUG && console.log("[DEBUG:browser.tabs.sendMessage]", message.dest.tabId, myMessage);
+                        browser.tabs.sendMessage(message.dest.tabId, myMessage, callback);
+                    } else {
+                        console.error("Unable to send message", myMessage);
                     }
-                // }, 0);
-            };
-            if (message.dest.type === "contentScript") {
-                Config.DEBUG && console.log("sendTab", myMessage);
-                chrome.tabs.sendMessage(message.dest.tabId, myMessage, callback);
-            } else {
-                Config.DEBUG && console.log("sendOther", myMessage);
-                chrome.runtime.sendMessage(myMessage, callback);
+                } else {
+                    if (myMessage.dest.type !== "extension") {
+                        // Need to relay these through the background
+                        myMessage.dest.relay = true;
+                    }
+                    Config.DEBUG && console.log("[DEBUG:runtime.sendMessage]", myMessage);
+                    chrome.runtime.sendMessage(myMessage, callback);
+                }
+            } catch (err) {
+                console.error(err);
+                reject(err);
             }
         });
     }
 
-    // public static initRelays() {
-    //     CommonMessaging.addListener("ALL", async (message: IMessage) => {
-    //         if (message.dest !== "background") {
-    //             return CommonMessaging.send(message);
-    //         } else {
-    //             return null;
-    //         }
-    //     });
-    // }
+    public static initRelays() {
+        chrome.runtime.onMessage.addListener((message: IMessage<any>, _sender, _sendResponse) => {
+            if (message.dest.type !== "extension" && message.dest.relay) {
+                message.dest.relay = false;
+                Config.DEBUG && console.log("[DEBUG:relay]",message);
+                return CommonMessaging.send(message);
+            }
+            return null;
+        });
+        Config.DEBUG && console.log("[DEBUG:initRelays] Relay added");
+    }
 }

@@ -49,9 +49,11 @@ export interface ISettings {
 export type MsgDestType = {
     type: "contentScript"
     tabId: number
+    relay?: boolean
 } | {
     type: "devTools"
     tabId: number
+    relay?: boolean
 } | {
     type: "extension"
 }

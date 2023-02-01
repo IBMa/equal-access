@@ -14,6 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
+import { getBGController, TabChangeType } from "../background/backgroundController";
 import { IMessage, IReport } from "../interfaces/interfaces";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
@@ -24,6 +25,8 @@ let sessionStorage : {
     lastReport: IReport | null
     lastElement: HTMLElement | null
 } | null = null;
+
+let bgController = getBGController();
 
 export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
@@ -83,7 +86,7 @@ export class DevtoolsController extends Controller {
     }
 
     public async addReportListener(listener: ListenerType<IReport>) {
-        this.addEventListener(listener, `${this.evtPrefix}_onReport`);//, listener.callbackTabId);
+        this.addEventListener(listener, `DT_onReport`);//, listener.callbackTabId);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -119,11 +122,15 @@ export class DevtoolsController extends Controller {
                 }
             )
 
-            chrome.tabs.onUpdated.addListener((changedTabId, _changeInfo, _tab) => {
-                if (this.ctrlDest.type === "devTools" && changedTabId === this.ctrlDest.tabId) {
-                    this.setReport(null);
-                }
-                // this.fireEvent("DT_onReport", null);
+            bgController.addTabChangeListener( {
+                callbackDest: { 
+                    type: "extension"
+                },
+                callback: async (content: TabChangeType) => {
+                    if (this.ctrlDest.type === "devTools" && content.tabId === this.ctrlDest.tabId) {
+                        this.setReport(null);
+                    }
+                },
             });
         }
     }

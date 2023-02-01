@@ -20,11 +20,7 @@ import ReactDOM from 'react-dom';
 
 import "../styles/index.scss";
 import { ReportSection } from './components/reportSection';
-// import { getTabController } from '../tab/tabController';
 import { ScanSection } from './components/scanSection';
-
-// let bgController = getBGController();
-// let tabController = getTabController();
 
 interface PageAppState {
 }

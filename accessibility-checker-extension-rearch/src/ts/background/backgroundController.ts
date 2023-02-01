@@ -15,9 +15,16 @@
 *****************************************************************************/
 
 import { IArchiveDefinition, IMessage, ISettings } from "../interfaces/interfaces";
-import { Controller, eControllerType } from "../messaging/controller";
+import { CommonMessaging } from "../messaging/commonMessaging";
+import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
+
+export type TabChangeType = {
+    tabId: number
+    changeInfo: chrome.tabs.TabChangeInfo
+    tab: chrome.tabs.Tab
+}
 
 class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
@@ -77,7 +84,6 @@ class BackgroundController extends Controller {
      * @returns 
      */
     public async initTab(tabId: number) {
-        Config.DEBUG && console.log("initTab", tabId);
         return this.hook("initTab", tabId, async () => {
             let settings = await this.getSettings();
             let archiveId = settings.selected_archive.id;
@@ -163,6 +169,9 @@ class BackgroundController extends Controller {
         });
     }
 
+    public async addTabChangeListener(listener: ListenerType<TabChangeType>) {
+        this.addEventListener(listener, `BG_onTabUpdate`);
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -197,6 +206,16 @@ class BackgroundController extends Controller {
                     return f ? f(msgBody,senderTabId) : null;
                 }
             )
+
+            // Extra
+            chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+
+                self.fireEvent<TabChangeType>("BG_onTabUpdate", {
+                    tabId, changeInfo, tab
+                })
+            });
+
+            CommonMessaging.initRelays();
         }
     }
 
@@ -292,7 +311,6 @@ function myExecuteScript(
 let singleton : BackgroundController;
 export function getBGController(type?: eControllerType) {
     if (!singleton) {
-        Config.DEBUG && console.log("Creating background controller")
         singleton = new BackgroundController(type || "remote");
     }
     return singleton;

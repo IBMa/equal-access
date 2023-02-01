@@ -28,7 +28,6 @@ import { Restart, Save, Information } from "@carbon/react/icons/lib/index";
 // import OptionUtil  from '../util/optionUtil';
 import beeLogoUrl from "../../assets/BE_for_Accessibility_darker.svg";
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
-import Config from "../util/config";
 import { getBGController } from "../background/backgroundController";
 import "./option.scss";
 
@@ -71,12 +70,8 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
     };
 
     async componentDidMount() {
-        Config.DEBUG && console.log("Options App ComponentDidMount");
         let self = this;
         let settings = await bgController.getSettings();
-        Config.DEBUG && console.log("_____________");
-        Config.DEBUG && console.log(JSON.stringify(settings, null, 2));
-        Config.DEBUG && console.log("_____________");
         let archives = await bgController.getArchives();
         let selected_archive: IArchiveDefinition | null = null;
         let rulesets: IPolicyDefinition[] | null = null;
@@ -95,7 +90,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         tabStopOutlines = settings.tabStopOutlines;
         tabStopAlerts = settings.tabStopAlerts;
         tabStopFirstTime = settings.tabStopFirstTime;
-        Config.DEBUG && console.log("AAAA", selected_archive)
         if (selected_archive) {
             if (archives.some((archive: IArchiveDefinition) => (selected_archive && archive.id === selected_archive.id && archive.name === selected_archive.name))) {
                 // do nothing
@@ -135,7 +129,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
     getRuleset(archive: IArchiveDefinition, id: string) {
         let retVal = archive.rulesets.default.find((pol => pol.id === id))!;
-        Config.DEBUG && console.log("??", id, retVal);
         return retVal;
     }
 
@@ -210,7 +203,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         } = {
             ...this.state,
         };
-        Config.DEBUG && console.log(selected_ruleset);
         // only show keyboard first time notification on first time 
         // user uses the keyboard visualization - note it is can be 
         // reset with "Reset to defaults"

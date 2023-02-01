@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import { IMessage, MsgDestType } from "../interfaces/interfaces";
+import Config from "../util/config";
 import { getTabId } from "../util/tabId";
 import { CommonMessaging } from "./commonMessaging";
 
@@ -107,6 +108,7 @@ export class Controller {
         func: (msgBody: InT | null) => Promise<OutT>
     ) : Promise<OutT> {
         try {
+            Config.DEBUG && console.log("[DEBUG:hook]", this.type, this.ctrlDest, `${this.evtPrefix}_${msgName}`, msgBody);
             if (this.type === "local") {
                 return func(msgBody);
             } else {
