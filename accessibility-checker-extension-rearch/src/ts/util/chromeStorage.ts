@@ -16,7 +16,7 @@
 
 export class StorageUtil {
 
-    async getLocal(key: string) {
+    async getLocal(key: string) : Promise<any> {
         return new Promise((resolve, _reject) => {
             chrome.storage.local.get(key, async function (result: any) {
                 resolve(result[key]);

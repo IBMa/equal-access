@@ -66,7 +66,7 @@ export interface IMessage<T> {
 export interface IIssue {
     ruleId: string
     value: [string, string]
-    node: any
+    node: Node
     path: {
         dom: string
         aria: string

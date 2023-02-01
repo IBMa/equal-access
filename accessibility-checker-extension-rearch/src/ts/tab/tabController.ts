@@ -16,7 +16,7 @@
 
 import { getBGController } from "../background/backgroundController";
 import { DevtoolsController, getDevtoolsController } from "../devtools/devtoolsController";
-import { IMessage } from "../interfaces/interfaces";
+import { IMessage, IReport } from "../interfaces/interfaces";
 import { Controller, eControllerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
 
@@ -60,16 +60,16 @@ class TabController extends Controller {
             (async () => {
                 let settings = await bgController.getSettings();
                 let checker = new (<any>window).aceIBMa.Checker();    
-                let report = await checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]);
+                let report : IReport = await checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]);
                 if (report) {
-                    let passResults = report.results.filter((result: any) => {
+                    let passResults = report.results.filter((result) => {
                         return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
                     })
-                    let passXpaths : string[] = passResults.map((result: any) => result.path.dom);
+                    let passXpaths : string[] = passResults.map((result) => result.path.dom);
         
                     report.passUniqueElements = Array.from(new Set(passXpaths));
         
-                    report.results = report.results.filter((issue: any) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
+                    report.results = report.results.filter((issue) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
                     for (let result of report.results) {
                         let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
                         let version = settings.selected_archive.version || "latest";
@@ -87,7 +87,7 @@ class TabController extends Controller {
                             value: result.value,
                             reasonId: result.reasonId,
                             ruleId: result.ruleId,
-                            msgArgs: result.msgArgs
+                            messageArgs: result.messageArgs
                         };
                         result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
                     }

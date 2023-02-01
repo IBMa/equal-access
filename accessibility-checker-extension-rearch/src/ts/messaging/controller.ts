@@ -76,7 +76,7 @@ export class Controller {
         }
         Controller.myListeners[msgId].push(listener);
         if (bInitRemote) {
-            CommonMessaging.addMsgListener((message: IMessage<any>) => {
+            CommonMessaging.addMsgListener((message: IMessage<inT>) => {
                 this.fireEvent(msgId, message.content);
             }, [msgId], getTabId());
             CommonMessaging.send({
@@ -110,11 +110,11 @@ export class Controller {
             if (this.type === "local") {
                 return func(msgBody);
             } else {
-                return CommonMessaging.send({
+                return (await CommonMessaging.send<InT | null, OutT>({
                     type: `${this.evtPrefix}_${msgName}`,
                     dest: this.ctrlDest,
                     content: msgBody
-                })
+                }))!
             }
         } catch(err) {
             console.error(err);

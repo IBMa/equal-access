@@ -32,7 +32,7 @@ export class DevtoolsController extends Controller {
     /**
      * Get stored reports
      */
-    public async getStoredReports() : Promise<any[]> {
+    public async getStoredReports() : Promise<IReport[]> {
         let retVal = await this.hook("getStoredReports", null, async () => {
             return sessionStorage!.storedReports;
         });
@@ -120,7 +120,7 @@ export class DevtoolsController extends Controller {
             )
 
             chrome.tabs.onUpdated.addListener((changedTabId, _changeInfo, _tab) => {
-                if (changedTabId === (this.ctrlDest as any).tabId) {
+                if (this.ctrlDest.type === "devTools" && changedTabId === this.ctrlDest.tabId) {
                     this.setReport(null);
                 }
                 // this.fireEvent("DT_onReport", null);

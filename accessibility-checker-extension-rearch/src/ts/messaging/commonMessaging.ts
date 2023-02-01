@@ -18,12 +18,12 @@ import { IMessage } from "../interfaces/interfaces";
 import Config from "../util/config";
 
 export class CommonMessaging {
-    public static addMsgListener(
-        listener: (message: IMessage<any>, senderTabId?: number) => Promise<any> | void, 
+    public static addMsgListener<inT, retT>(
+        listener: (message: IMessage<inT>, senderTabId?: number) => Promise<retT> | void, 
         types: string[], 
         listeningTabId?: number) : void 
     {
-        CommonMessaging.addMsgListenerHelp(async (message: IMessage<any>, senderTabId?: number) => {
+        CommonMessaging.addMsgListenerHelp(async (message: IMessage<inT>, senderTabId?: number) => {
             if (message.blob_url) {
                 let blob_url = message.blob_url;
                 let blob = await fetch(blob_url).then(r => r.blob());
@@ -35,12 +35,12 @@ export class CommonMessaging {
         }, types, listeningTabId);
     }
 
-    public static addMsgListenerHelp(
-        listener: (message: IMessage<any>, senderTabId?: number) => Promise<any> | void,
+    public static addMsgListenerHelp<inT, retT>(
+        listener: (message: IMessage<inT>, senderTabId?: number) => Promise<retT> | void,
         types: string[], 
         listeningTabId?: number) : void 
     {
-        chrome.runtime.onMessage.addListener((message: IMessage<any>, sender, sendResponse) => {
+        chrome.runtime.onMessage.addListener((message: IMessage<inT>, sender, sendResponse) => {
             // If we're listening to tabId and tabId isn't specified, ignore it
             if (listeningTabId && message.dest.type !== "extension" && listeningTabId !== message.dest.tabId) {
                 return null;
@@ -51,10 +51,13 @@ export class CommonMessaging {
                 let response = listener(message, sender && sender.tab && sender.tab.id);
                 if (response && response.then) {
                     response.then((result) => {
+                        let resultStr: string;
                         if (typeof result !== "string") {
-                            result = JSON.stringify(result);
+                            resultStr = JSON.stringify(result)
+                        } else {
+                            resultStr = result;
                         }
-                        sendResponse(result);
+                        sendResponse(resultStr);
                         return result;
                     }).catch(err => {
                         sendResponse(JSON.stringify({ error: err }));
@@ -77,10 +80,10 @@ export class CommonMessaging {
         });
     }
 
-    public static send(message: IMessage<any>, retry?: number): Promise<any> {
-        let myMessage : IMessage<any> = JSON.parse(JSON.stringify(message || {}));
+    public static send<inT, retT>(message: IMessage<inT>, retry?: number): Promise<retT | null> {
+        let myMessage : IMessage<inT> = JSON.parse(JSON.stringify(message || {}));
         return new Promise((resolve, reject) => {
-            let callback = (res: any) => {
+            let callback = (res: retT | string | null) => {
                 // setTimeout(() => {
                     Config.DEBUG && console.log("--",res);
                     if (chrome.runtime.lastError) {
@@ -106,7 +109,7 @@ export class CommonMessaging {
                                     res = JSON.parse(res);
                                 } catch (e) {}
                             }
-                            resolve(res);
+                            resolve(res as retT | null);
                         } else {
                             resolve(null);
                         }

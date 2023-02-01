@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 export default class Fetch {
-    public static async json(filename: string) : Promise<any> {
+    public static async json<retT>(filename: string) : Promise<retT> {
         return fetch(filename)
             .then((response) => response.json()) //assuming file contains json
     }

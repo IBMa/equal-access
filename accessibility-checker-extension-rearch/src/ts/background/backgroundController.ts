@@ -28,15 +28,15 @@ class BackgroundController extends Controller {
      */
     public async getSettings() : Promise<ISettings> {
         let myThis = this;
-        let retVal = await this.hook("getSettings", null, async () => {
+        let retVal = (await this.hook("getSettings", null, async () => {
             let retVal = await new Promise<ISettings>((resolve, _reject) => {
-                chrome.storage.local.get("OPTIONS", async function (result: any) {
+                chrome.storage.local.get("OPTIONS", async function (result: { OPTIONS?: ISettings}) {
                     let retSett = await myThis.validateSettings(result.OPTIONS);
                     resolve(retSett);
                 });
             })
             return retVal;
-        });
+        }))!;
         return retVal;
     }
 
@@ -223,7 +223,7 @@ class BackgroundController extends Controller {
 
         // Determine which policy we're scanning with
         let policyId: string = settings.selected_archive.policies[0].id;
-        const validPolicy = ((id: string) => id && settings.selected_archive.policies.some((policy : any) => policy.id === id));
+        const validPolicy = ((id: string) => id && (settings as ISettings).selected_archive.rulesets.default.some((policy) => policy.id === id));
         if (!validPolicy(policyId)) policyId = "IBM_Accessibility";
         if (settings && settings.selected_ruleset && validPolicy(settings.selected_ruleset.id)) {
             policyId = settings.selected_ruleset.id;
