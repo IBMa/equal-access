@@ -169,36 +169,34 @@ class BackgroundController extends Controller {
 
     constructor(type: eControllerType) {
         super(type, { type: "extension" }, "BG");
-        let myThis = this;
         if (type === "local") {
-            // One listener per function
-            this.hookListener(
-                [
-                    "BG_getSettings", 
-                    "BG_setSettings",
-                    "BG_initTab",
-                    "BG_getArchives",
-                    "BG_getTabId"
-                ],
-                async (msgBody: IMessage<any>, senderTabId?: number) => {
-                    if (msgBody.type === "BG_getSettings") {
-                        return this.getSettings();
-                    } else if (msgBody.type === "BG_setSettings") {
-                        let updSettings = await myThis.validateSettings(msgBody.content || undefined);
-                        return this.setSettings(updSettings);        
-                    } else if (msgBody.type === "BG_initTab") {
-                        if (msgBody.content !== null) {
-                            return this.initTab(msgBody.content);
-                        }
-                    } else if (msgBody.type === "BG_getArchives") {
-                        return this.getArchives();
-                    } else if (msgBody.type === "BG_getTabId") {
-                        return this.getTabId(senderTabId);
+            let self = this;
+
+            const listenMsgs : { 
+                [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
+            }= {
+                "BG_getSettings": async () => self.getSettings(),
+                "BG_getArchives": async () => self.getArchives(),
+                "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),
+                "BG_setSettings": async (msgBody) => {
+                    let updSettings = await self.validateSettings(msgBody.content || undefined);
+                    return self.setSettings(updSettings);
+                },
+                "BG_initTab": async (msgBody) => {
+                    if (msgBody.content !== null) {
+                        return self.initTab(msgBody.content);
                     }
-                    return null;
+                }
+            }
+
+            // Hook the above definitions
+            this.hookListener(
+                Object.keys(listenMsgs),
+                async (msgBody: IMessage<any>, senderTabId?: number) => {
+                    let f = listenMsgs[msgBody.type];
+                    return f ? f(msgBody,senderTabId) : null;
                 }
             )
-            // CommonMessaging.initRelays();
         }
     }
 

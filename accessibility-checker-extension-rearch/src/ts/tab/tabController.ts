@@ -16,6 +16,7 @@
 
 import { getBGController } from "../background/backgroundController";
 import { DevtoolsController, getDevtoolsController } from "../devtools/devtoolsController";
+import { IMessage } from "../interfaces/interfaces";
 import { Controller, eControllerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
 
@@ -30,11 +31,23 @@ class TabController extends Controller {
     constructor(type: eControllerType, tabId?: number) {
         super(type, { type: "contentScript", tabId: (tabId || getTabId())! }, "TAB");
         if (type === "local") {
+            let self = this;
             this.devtoolsController = getDevtoolsController("remote", tabId);
-            this.hookListener(["TAB_requestScan"], async () => {
-                // Don't await this - we want to trigger and return
-                this.requestScan();
-            })
+
+            const listenMsgs : { 
+                [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
+            } = {
+                "TAB_requestScan": async () => self.requestScan()
+            }
+
+            // Hook the above definitions
+            this.hookListener(
+                Object.keys(listenMsgs),
+                async (msgBody: IMessage<any>, senderTabId?: number) => {
+                    let f = listenMsgs[msgBody.type];
+                    return f ? f(msgBody,senderTabId) : null;
+                }
+            )
         }
     }
 

@@ -25,11 +25,13 @@ let devtoolsController = getDevtoolsController();
 
 interface ScanSectionState {
     scanInProgress: boolean
+    pageStatus: string
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
-        scanInProgress: false
+        scanInProgress: false,
+        pageStatus: "complete"
     }
 
     componentDidMount(): void {
@@ -42,6 +44,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 tabId: getTabId()!
             }
         });
+        chrome.tabs.onUpdated.addListener((_changedTabId, changeInfo, _tab) => {
+            if (changeInfo.status) {
+                this.setState({ pageStatus: changeInfo.status });
+            }
+        });
     }
 
     async scan() {
@@ -50,6 +57,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     render() {
-        return <Button disabled={this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
+        return <Button disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
     }
 }

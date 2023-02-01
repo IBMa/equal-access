@@ -62,8 +62,7 @@ export class DevtoolsController extends Controller {
      */
     public async setReport(report: IReport | null) : Promise<void> {
         return this.hook("setReport", report, async () => {
-            if (!report) return;
-            if (sessionStorage?.storeReports) {
+            if (report && sessionStorage?.storeReports) {
                 sessionStorage.storedReports.push(report);
             }
             sessionStorage!.lastReport = report;
@@ -93,6 +92,7 @@ export class DevtoolsController extends Controller {
     constructor(type: eControllerType, tabId?: number) {
         super(type, { type: "devTools", tabId: (tabId || getTabId())!}, "DT");
         if (type === "local") {
+            let self = this;
             sessionStorage = {
                 storeReports: false,
                 storedReports: [],
@@ -100,32 +100,31 @@ export class DevtoolsController extends Controller {
                 lastElement: null
             };
 
-            // One listener per function
-            this.hookListener([
-                "DT_getStoredReports",
-                "DT_clearReports",
-                "DT_setStoreReports",
-                "DT_setReport",
-                "DT_getReport"
-            ], async (msgBody: IMessage<any>, _senderTabId?: number) => {
-                if (msgBody.type === "DT_getStoredReports") {
-                    return this.getStoredReports();
-                } else if (msgBody.type === "DT_clearReports") {
-                    return this.clearReports();
-                } else if (msgBody.type === "DT_setStoreReports") {
-                    return this.setStoreReports(!!msgBody.content);
-                } else if (msgBody.type === "DT_setReport") {
-                    return this.setReport(msgBody.content);
-                } else if (msgBody.type === "DT_getReport") {
-                    return this.getReport();
-                }
-                return null;
-            });
+            const listenMsgs : { 
+                [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
+            } = {
+                "DT_getStoredReports": async () => self.getStoredReports(),
+                "DT_clearReports": async () => self.clearReports(),
+                "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),
+                "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
+                "DT_getReport": async () => self.getReport()
+            }
 
-            chrome.tabs.onUpdated.addListener((_tabId, _changeInfo, _tab) => {
-                this.fireEvent("DT_onReport", null);
+            // Hook the above definitions
+            this.hookListener(
+                Object.keys(listenMsgs),
+                async (msgBody: IMessage<any>, senderTabId?: number) => {
+                    let f = listenMsgs[msgBody.type];
+                    return f ? f(msgBody,senderTabId) : null;
+                }
+            )
+
+            chrome.tabs.onUpdated.addListener((changedTabId, _changeInfo, _tab) => {
+                if (changedTabId === (this.ctrlDest as any).tabId) {
+                    this.setReport(null);
+                }
+                // this.fireEvent("DT_onReport", null);
             });
-        
         }
     }
 }
