@@ -18,28 +18,37 @@ import { IMessage } from "../interfaces/interfaces";
 import Config from "../util/config";
 
 export class CommonMessaging {
-
-    public static addListener(type: string, listener: (message: IMessage) => Promise<any> | void) : void {
-        CommonMessaging.addListenerHelp(type, async (message: IMessage) => {
+    public static addMsgListener(
+        listener: (message: IMessage<any>, senderTabId?: number) => Promise<any> | void, 
+        types: string[], 
+        listeningTabId?: number) : void 
+    {
+        CommonMessaging.addMsgListenerHelp(async (message: IMessage<any>, senderTabId?: number) => {
             if (message.blob_url) {
                 let blob_url = message.blob_url;
                 let blob = await fetch(blob_url).then(r => r.blob());
                 let newMessage = JSON.parse(await blob.text());
-                return listener(newMessage);
+                return listener(newMessage, senderTabId);
             } else {
-                return listener(message);
+                return listener(message, senderTabId);
             }
-        });
+        }, types, listeningTabId);
     }
 
-    public static addListenerHelp(type: string, listener: (message: IMessage) => Promise<any> | void) : void {
-        chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
-            Config.DEBUG && console.log(`CommonMessaging:${type}, received message`, message)
-
+    public static addMsgListenerHelp(
+        listener: (message: IMessage<any>, senderTabId?: number) => Promise<any> | void,
+        types: string[], 
+        listeningTabId?: number) : void 
+    {
+        chrome.runtime.onMessage.addListener((message: IMessage<any>, sender, sendResponse) => {
+            // If we're listening to tabId and tabId isn't specified, ignore it
+            if (listeningTabId && message.dest.type !== "extension" && listeningTabId !== message.dest.tabId) {
+                return null;
+            }
             // Note - only allow background to listen to all for the purposes of routing
             // If two listeners respond, the first wins, which causes trouble
-            if (message.type === type || (type === "ALL" && message.dest !== "background")) {
-                let response = listener(message);
+            if (types.includes(message.type)) {
+                let response = listener(message, sender && sender.tab && sender.tab.id);
                 if (response && response.then) {
                     response.then((result) => {
                         if (typeof result !== "string") {
@@ -68,14 +77,28 @@ export class CommonMessaging {
         });
     }
 
-    public static send(message: IMessage): Promise<any> {
-        let myMessage : IMessage = JSON.parse(JSON.stringify(message || {}));
+    public static send(message: IMessage<any>, retry?: number): Promise<any> {
+        let myMessage : IMessage<any> = JSON.parse(JSON.stringify(message || {}));
         return new Promise((resolve, reject) => {
             let callback = (res: any) => {
                 // setTimeout(() => {
                     Config.DEBUG && console.log("--",res);
                     if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError.message);
+                        let shouldRetry = false;
+                        if (chrome.runtime.lastError.message?.includes("Receiving end does not exist.")) {
+                            shouldRetry = true;
+                        }
+                        // Retry 3 times if the receiver doesn't exist yet (might still be initializing)
+                        if (shouldRetry && (!retry || retry <= 3)) {
+                            setTimeout(async () => {
+                                resolve(await this.send(message, (retry || 0) + 1));
+                            },0);
+                        } else {
+                            reject({
+                                arg: message,
+                                error: chrome.runtime.lastError.message
+                            });
+                        }
                     } else {
                         if (res) {
                             if (typeof res === "string") {
@@ -90,9 +113,9 @@ export class CommonMessaging {
                     }
                 // }, 0);
             };
-            if (message.destTab) {
+            if (message.dest.type === "contentScript") {
                 Config.DEBUG && console.log("sendTab", myMessage);
-                chrome.tabs.sendMessage(message.destTab!, myMessage, callback);
+                chrome.tabs.sendMessage(message.dest.tabId, myMessage, callback);
             } else {
                 Config.DEBUG && console.log("sendOther", myMessage);
                 chrome.runtime.sendMessage(myMessage, callback);

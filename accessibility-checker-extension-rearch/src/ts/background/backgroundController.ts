@@ -14,7 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
-import { IArchiveDefinition, ISettings } from "../interfaces/interfaces";
+import { IArchiveDefinition, IMessage, ISettings } from "../interfaces/interfaces";
 import { Controller, eControllerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
@@ -28,7 +28,7 @@ class BackgroundController extends Controller {
      */
     public async getSettings() : Promise<ISettings> {
         let myThis = this;
-        let retVal = await this.hook("BG_getSettings", null, async () => {
+        let retVal = await this.hook("getSettings", null, async () => {
             let retVal = await new Promise<ISettings>((resolve, _reject) => {
                 chrome.storage.local.get("OPTIONS", async function (result: any) {
                     let retSett = await myThis.validateSettings(result.OPTIONS);
@@ -44,7 +44,7 @@ class BackgroundController extends Controller {
      * Set settings for the extension
      */
     public async setSettings(settings: ISettings) : Promise<ISettings> {
-        return this.hook("BG_setSettings", settings, async () => {
+        return this.hook("setSettings", settings, async () => {
             return new Promise<ISettings>((resolve, _reject) => {
                 chrome.storage.local.set({ "OPTIONS": settings }, async function () {
                     resolve(settings!);
@@ -57,10 +57,20 @@ class BackgroundController extends Controller {
      * Get the archive definitions
      */
     public async getArchives() : Promise<IArchiveDefinition[]> {
-        return this.hook("BG_getArchives", null, async () => {
+        return this.hook("getArchives", null, async () => {
             return EngineCache.getArchives();
         });
     }
+
+    /**
+     * Get the tab id of the caller
+     */
+    public async getTabId(senderTabId?: number) : Promise<number> {
+        return this.hook("getTabId", senderTabId, async () => {
+            return senderTabId!;
+        });
+    }
+    
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
@@ -68,8 +78,7 @@ class BackgroundController extends Controller {
      */
     public async initTab(tabId: number) {
         Config.DEBUG && console.log("initTab", tabId);
-        return this.hook("BG_initTab", tabId, async () => {
-            console.log("INITTAB");
+        return this.hook("initTab", tabId, async () => {
             let settings = await this.getSettings();
             let archiveId = settings.selected_archive.id;
             // Determine if we've ever loaded any engine
@@ -159,25 +168,36 @@ class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
 
     constructor(type: eControllerType) {
-        super(type);
+        super(type, { type: "extension" }, "BG");
         let myThis = this;
         if (type === "local") {
             // One listener per function
-            this.hookListener("BG_getSettings", () => {
-                return this.getSettings();
-            })
-            this.hookListener("BG_setSettings", async (settings: ISettings | null) => {
-                let updSettings = await myThis.validateSettings(settings || undefined);
-                return this.setSettings(updSettings);
-            })
-            this.hookListener("BG_initTab", async (tabId: number | null) => {
-                if (tabId !== null) {
-                    return this.initTab(tabId);
+            this.hookListener(
+                [
+                    "BG_getSettings", 
+                    "BG_setSettings",
+                    "BG_initTab",
+                    "BG_getArchives",
+                    "BG_getTabId"
+                ],
+                async (msgBody: IMessage<any>, senderTabId?: number) => {
+                    if (msgBody.type === "BG_getSettings") {
+                        return this.getSettings();
+                    } else if (msgBody.type === "BG_setSettings") {
+                        let updSettings = await myThis.validateSettings(msgBody.content || undefined);
+                        return this.setSettings(updSettings);        
+                    } else if (msgBody.type === "BG_initTab") {
+                        if (msgBody.content !== null) {
+                            return this.initTab(msgBody.content);
+                        }
+                    } else if (msgBody.type === "BG_getArchives") {
+                        return this.getArchives();
+                    } else if (msgBody.type === "BG_getTabId") {
+                        return this.getTabId(senderTabId);
+                    }
+                    return null;
                 }
-            })
-            this.hookListener("BG_getArchives", () => {
-                return this.getArchives();
-            })
+            )
             // CommonMessaging.initRelays();
         }
     }

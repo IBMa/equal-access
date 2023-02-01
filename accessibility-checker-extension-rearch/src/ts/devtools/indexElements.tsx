@@ -20,6 +20,8 @@ import { getBGController } from '../background/backgroundController';
 import { ISettings } from '../interfaces/interfaces';
     
 import "../styles/index.scss";
+import { ReportSection } from './components/reportSection';
+import { ScanSection } from './components/scanSection';
 
 let bgController = getBGController();
 interface PageAppState {
@@ -34,7 +36,7 @@ class PageApp extends React.Component<{}, PageAppState> {
         })
     }
     render() {
-        return <React.Fragment>{JSON.stringify(this.state.settings)}</React.Fragment>
+        return <div><ScanSection /><ReportSection /></div>
     }
 }
 

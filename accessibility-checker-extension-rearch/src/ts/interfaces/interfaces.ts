@@ -46,10 +46,20 @@ export interface ISettings {
     tabStopFirstTime: boolean
 }
 
-export interface IMessage {
+export type MsgDestType = {
+    type: "contentScript"
+    tabId: number
+} | {
+    type: "devTools"
+    tabId: number
+} | {
+    type: "extension"
+}
+
+export interface IMessage<T> {
     type: string
-    destTab?: number
-    content?: any
+    dest: MsgDestType
+    content?: T
     blob_url?: string
 }
 

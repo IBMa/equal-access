@@ -15,33 +15,34 @@
 *****************************************************************************/
 
 import { getBGController } from "../background/backgroundController";
-import { getDevtoolsController } from "../devtools/devtoolsController";
+import { DevtoolsController, getDevtoolsController } from "../devtools/devtoolsController";
 import { Controller, eControllerType } from "../messaging/controller";
+import { getTabId } from "../util/tabId";
 
 let bgController = getBGController();
-let devtoolsController = getDevtoolsController();
 
 class TabController extends Controller {
+    devtoolsController?: DevtoolsController;
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
 
-    constructor(type: eControllerType) {
-        super(type);
+    constructor(type: eControllerType, tabId?: number) {
+        super(type, { type: "contentScript", tabId: (tabId || getTabId())! }, "TAB");
         if (type === "local") {
-            this.hookListener("TAB_requestScan", () => {
-                return this.requestScan();
+            this.devtoolsController = getDevtoolsController("remote", tabId);
+            this.hookListener(["TAB_requestScan"], async () => {
+                // Don't await this - we want to trigger and return
+                this.requestScan();
             })
         }
     }
 
     public async requestScan() {
-        let tabId = (this.type === "remote" && chrome.devtools.inspectedWindow.tabId) || undefined;
         if (this.type === "remote") {
-            await bgController.initTab(tabId!);
+            await bgController.initTab((this.ctrlDest as any).tabId);
         }
-        return this.hook("TAB_requestScan", null, async () => {
-            console.log("Scanning3");
+        return this.hook("requestScan", null, async () => {
             // We want this to execute after the message returns
             (async () => {
                 let settings = await bgController.getSettings();
@@ -78,18 +79,21 @@ class TabController extends Controller {
                         result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
                     }
                 }
-                devtoolsController.setReport(report);
+                this.devtoolsController!.setReport(report);
             })();
-            return true;
-        }, tabId);
+            return {};
+        });
     }
 }
 
 let singleton : TabController;
-export function getTabController(type?: eControllerType) {
+export async function getTabController(type?: eControllerType) {
     if (!singleton) {
-        console.log("Creating Tab controller")
-        singleton = new TabController(type || "remote");
+        let tabId = getTabId();
+        if (!tabId) {
+            tabId = await bgController.getTabId();
+        }
+        singleton = new TabController(type || "remote", tabId);
     }
     return singleton;
 }

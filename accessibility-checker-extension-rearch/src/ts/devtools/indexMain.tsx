@@ -19,6 +19,7 @@ import ReactDOM from 'react-dom';
 // import { getBGController } from '../background/backgroundController';
 
 import "../styles/index.scss";
+import { ReportSection } from './components/reportSection';
 // import { getTabController } from '../tab/tabController';
 import { ScanSection } from './components/scanSection';
 
@@ -39,7 +40,7 @@ class PageApp extends React.Component<{}, PageAppState> {
     }
 
     render() {
-        return <ScanSection />
+        return <div><ScanSection /><ReportSection /></div>
     }
 }
 

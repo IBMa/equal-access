@@ -15,41 +15,41 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { getTabController } from "../../tab/tabController";
-import { Button } from "@carbon/react";
 import { getDevtoolsController } from '../devtoolsController';
+import { IReport } from '../../interfaces/interfaces';
 import { getTabId } from '../../util/tabId';
 
-let tabController = getTabController();
 let devtoolsController = getDevtoolsController();
 
-interface ScanSectionState {
-    scanInProgress: boolean
+interface ReportSectionState {
+    report: IReport | null
 }
 
-export class ScanSection extends React.Component<{}, ScanSectionState> {
-    state : ScanSectionState = {
-        scanInProgress: false
+export class ReportSection extends React.Component<{}, ReportSectionState> {
+    state : ReportSectionState = {
+        report: null
     }
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener({
-            callback: async (_report) => {
-                this.setState( { scanInProgress: false });
+            callback: async (report) => {
+                this.setState( { report });
             },
             callbackDest: {
                 type: "devTools",
                 tabId: getTabId()!
             }
         });
-    }
-
-    async scan() {
-        this.setState( { scanInProgress: true });
-        await (await tabController).requestScan();
+        let report = await devtoolsController.getReport();
+        this.setState( { report });
     }
 
     render() {
-        return <Button disabled={this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
+        return <div>
+            {this.state.report && JSON.stringify(this.state.report.results.length)}
+            {!this.state.report && <>
+                No report
+            </>}
+        </div>
     }
 }

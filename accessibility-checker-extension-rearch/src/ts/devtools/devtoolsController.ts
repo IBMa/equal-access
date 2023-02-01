@@ -14,16 +14,18 @@
   limitations under the License.
 *****************************************************************************/
 
-import { IReport } from "../interfaces/interfaces";
-import { Controller, eControllerType } from "../messaging/controller";
+import { IMessage, IReport } from "../interfaces/interfaces";
+import { Controller, eControllerType, ListenerType } from "../messaging/controller";
+import { getTabId } from "../util/tabId";
 
 let sessionStorage : {
     storeReports: boolean
     storedReports: IReport[]
     lastReport: IReport | null
+    lastElement: HTMLElement | null
 } | null = null;
 
-class DevtoolsController extends Controller {
+export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -31,7 +33,7 @@ class DevtoolsController extends Controller {
      * Get stored reports
      */
     public async getStoredReports() : Promise<any[]> {
-        let retVal = await this.hook("DT_getStoredReports", null, async () => {
+        let retVal = await this.hook("getStoredReports", null, async () => {
             return sessionStorage!.storedReports;
         });
         return retVal;
@@ -41,7 +43,7 @@ class DevtoolsController extends Controller {
      * Clear stored reports
      */
     public async clearReports() : Promise<void> {
-        return this.hook("DT_clearReports", null, async () => {
+        return this.hook("clearReports", null, async () => {
             sessionStorage!.storedReports = [];
         });
     }
@@ -50,7 +52,7 @@ class DevtoolsController extends Controller {
      * Set report storing
      */
     public async setStoreReports(bVal: boolean) : Promise<void> {
-        return this.hook("DT_setStoreReports", bVal, async () => {
+        return this.hook("setStoreReports", bVal, async () => {
             sessionStorage!.storeReports = bVal;
         });
     }
@@ -59,47 +61,79 @@ class DevtoolsController extends Controller {
      * Set report storing
      */
     public async setReport(report: IReport | null) : Promise<void> {
-        return this.hook("DT_setReport", report, async () => {
+        return this.hook("setReport", report, async () => {
             if (!report) return;
             if (sessionStorage?.storeReports) {
                 sessionStorage.storedReports.push(report);
             }
             sessionStorage!.lastReport = report;
-            console.log(report);
+            setTimeout(() => {
+                this.fireEvent("DT_onReport", report);
+            }, 0);
         });
     }
 
-    constructor(type: eControllerType) {
-        super(type);
+    /**
+     * Set report storing
+     */
+    public async getReport() : Promise<IReport | null> {
+        return this.hook("getReport", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.lastReport;
+        });
+    }
+
+    public async addReportListener(listener: ListenerType<IReport>) {
+        this.addEventListener(listener, `${this.evtPrefix}_onReport`);//, listener.callbackTabId);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    ///// PRIVATE API /////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    constructor(type: eControllerType, tabId?: number) {
+        super(type, { type: "devTools", tabId: (tabId || getTabId())!}, "DT");
         if (type === "local") {
             sessionStorage = {
                 storeReports: false,
                 storedReports: [],
-                lastReport: null
+                lastReport: null,
+                lastElement: null
             };
 
             // One listener per function
-            this.hookListener("DT_getStoredReports", () => {
-                return this.getStoredReports();
-            })
-            this.hookListener("DT_clearReports", async () => {
-                return this.clearReports();
-            })
-            this.hookListener("DT_setStoreReports", async(bVal: boolean | null) => {
-                return this.setStoreReports(!!bVal);
-            })
-            this.hookListener("DT_setReport", async(report: IReport | null) => {
-                return this.setReport(report);
-            })
+            this.hookListener([
+                "DT_getStoredReports",
+                "DT_clearReports",
+                "DT_setStoreReports",
+                "DT_setReport",
+                "DT_getReport"
+            ], async (msgBody: IMessage<any>, _senderTabId?: number) => {
+                if (msgBody.type === "DT_getStoredReports") {
+                    return this.getStoredReports();
+                } else if (msgBody.type === "DT_clearReports") {
+                    return this.clearReports();
+                } else if (msgBody.type === "DT_setStoreReports") {
+                    return this.setStoreReports(!!msgBody.content);
+                } else if (msgBody.type === "DT_setReport") {
+                    return this.setReport(msgBody.content);
+                } else if (msgBody.type === "DT_getReport") {
+                    return this.getReport();
+                }
+                return null;
+            });
+
+            chrome.tabs.onUpdated.addListener((_tabId, _changeInfo, _tab) => {
+                this.fireEvent("DT_onReport", null);
+            });
+        
         }
     }
 }
 
 let singleton : DevtoolsController;
-export function getDevtoolsController(type?: eControllerType) {
+export function getDevtoolsController(type?: eControllerType, tabId?: number) {
     if (!singleton) {
-        console.log("Creating devtools controller")
-        singleton = new DevtoolsController(type || "remote");
+        singleton = new DevtoolsController(type || "remote", tabId);
     }
     return singleton;
 }
