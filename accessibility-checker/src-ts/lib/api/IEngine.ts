@@ -143,6 +143,12 @@ export type Rule = {
     // See src/v2/common/Context.ts for valid contexts
     context: string;
 
+    refactor?: {
+        [oldRuleId: string]: {
+            [oldReasonCode: string]: string
+        }
+    };
+
     // Array of rules that must pass to allow this validate to run - they must have the same context property
     dependencies?: string[]
 
