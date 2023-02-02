@@ -1,54 +1,79 @@
+@use '@carbon/styles/scss/type'as *;
+@use '@carbon/styles/scss/colors'as *;
 .popupPanel {
-  width: 500px;
-//   margin-left: 26px;
-//   margin-right: 26px;
-//   margin-top: 26px;
-//   margin-bottom: 24px;
-    margin: 26px 26px 24px 26px
-}
+    min-width: 552px;
+    margin: 1.5rem .5rem 1rem .5rem;
+    color: $gray-90;
 
-.popupPanel a {
-  color: #0062ff;
-  text-decoration: none;
-}
+    .popupTitle {
+        @include type-style("helper-text-02");
+    }
 
-.popupTitle {
-  font-size: 1rem;
-  letter-spacing: 0;
-  line-height: 1.25rem;
-  color: #252525;
-  font-family: "IBM Plex Sans";
-  padding-top: 8px;
-}
+    .versionDec {
+        @include type-style("helper-text-01");
+        color: $gray-80;
+        margin-top: .25rem;
+    }
 
-.versionDec {
-  color: #3c3838;
-  font-family: "IBM Plex Sans";
-  font-size: 11px;
-  letter-spacing: 0.13px;
-  line-height: 18px;
-  margin-top: 3px;
-}
+    .popupSubTitle {
+        @include type-style("helper-text-02");
+        margin-top: 1rem;
+    }
 
-.popupSubTitle {
-  color: #252525;
-  font-size: 0.875rem;
-  letter-spacing: 0.01rem;
-  line-height: 1.125rem;
-  margin-top: 1rem;
+    .popupPanelDesc {
+        @include type-style("helper-text-01");
+        color: $gray-70;
+        margin-top: .5rem;
+        margin-bottom: .5rem;
+    }
 }
+// .popupPanel {
+//   width: 500px;
+//     margin: 26px 26px 24px 26px
+// }
 
-.popupPanelDesc {
-  color: #565151;
-  font-size: 0.6875rem;
-  letter-spacing: 0;
-  line-height: 0.875rem;
-  margin-top: 0.5rem;
-}
+// .popupPanel a {
+//   color: #0062ff;
+//   text-decoration: none;
+// }
 
-.links {
-  color: #0062ff;
-  font-size: 14px;
-  letter-spacing: 0.16px;
-  line-height: 18px;
-}
+// .popupTitle {
+//   font-size: 1rem;
+//   letter-spacing: 0;
+//   line-height: 1.25rem;
+//   color: #252525;
+//   font-family: "IBM Plex Sans";
+//   padding-top: 8px;
+// }
+
+// .versionDec {
+//   color: #3c3838;
+//   font-family: "IBM Plex Sans";
+//   font-size: 11px;
+//   letter-spacing: 0.13px;
+//   line-height: 18px;
+//   margin-top: 3px;
+// }
+
+// .popupSubTitle {
+//   color: #252525;
+//   font-size: 0.875rem;
+//   letter-spacing: 0.01rem;
+//   line-height: 1.125rem;
+//   margin-top: 1rem;
+// }
+
+// .popupPanelDesc {
+//   color: #565151;
+//   font-size: 0.6875rem;
+//   letter-spacing: 0;
+//   line-height: 0.875rem;
+//   margin-top: 0.5rem;
+// }
+
+// .links {
+//   color: #0062ff;
+//   font-size: 14px;
+//   letter-spacing: 0.16px;
+//   line-height: 18px;
+// }
