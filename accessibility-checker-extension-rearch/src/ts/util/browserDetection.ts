@@ -14,9 +14,18 @@
   limitations under the License.
 *****************************************************************************/
 
-export default class Fetch {
-    public static async json<retT>(filename: string) : Promise<retT> {
-        return fetch(filename)
-            .then((response) => response.json()) //assuming file contains json
-    }
+export default class BrowserDetection {
+
+    public static isChrome(): boolean {
+        return !BrowserDetection.isFirefrox();
+    };
+
+    public static isFirefrox(): boolean {
+        if ("InstallTrigger" in window) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
 }

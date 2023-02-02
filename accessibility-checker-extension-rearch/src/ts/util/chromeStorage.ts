@@ -14,9 +14,23 @@
   limitations under the License.
 *****************************************************************************/
 
-export default class Fetch {
-    public static async json<retT>(filename: string) : Promise<retT> {
-        return fetch(filename)
-            .then((response) => response.json()) //assuming file contains json
+export class StorageUtil {
+
+    async getLocal(key: string) : Promise<any> {
+        return new Promise((resolve, _reject) => {
+            chrome.storage.local.get(key, async function (result: any) {
+                resolve(result[key]);
+            });
+        })
+    }
+
+    async setLocal(key: string, data: any) {
+        return new Promise((resolve, _reject) => {
+            let setVal : any = {};
+            setVal[key] = data;
+            chrome.storage.local.set(setVal, async function () {
+                resolve(data);
+            });
+        })
     }
 }

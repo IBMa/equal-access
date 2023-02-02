@@ -17,12 +17,12 @@
     "permissions": [
         "tabs",
         "storage",
+        "unlimitedStorage",
         "scripting",
         "activeTab"
 	],
 	"host_permissions": [
-        "*://*/*",
-        "<all_urls>"
+        "*://*/*"
     ],
 	"action": {
 		"default_title": "IBM Equal Access Accessibility Checker",
@@ -39,15 +39,15 @@
 	"background": {
 		"service_worker": "background.js"
 	},
+	"content_scripts": [ 
+        {
+        "matches": ["<all_urls>"],
+        "js": ["viewKCM.js"]
+        }
+    ], 
 	"options_ui": {
 		"page": "options.html",
 		"open_in_tab": true
     },
-	"content_scripts": [ 
-        {
-        "matches": ["<all_urls>"],
-        "js": ["draw.js"]
-        }
-    ], 
     "incognito": "split"
 }

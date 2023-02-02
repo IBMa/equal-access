@@ -16,12 +16,27 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-    
-import "../styles/index.scss";
+// import { getBGController } from '../background/backgroundController';
 
-class PageApp extends React.Component<{}, {}> {
+import "../styles/index.scss";
+import { ReportSection } from './components/reportSection';
+import { ScanSection } from './components/scanSection';
+
+interface PageAppState {
+}
+
+class PageApp extends React.Component<{}, PageAppState> {
+    state : PageAppState = {
+    }
+
+    componentDidMount(): void {
+        // bgController.getSettings().then((settings) => {
+        //     this.setState({ settings });
+        // })
+    }
+
     render() {
-        return <React.Fragment>Main Panel</React.Fragment>
+        return <div><ScanSection /><ReportSection /></div>
     }
 }
 

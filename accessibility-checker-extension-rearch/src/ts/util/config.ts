@@ -18,5 +18,5 @@ export default class Config {
     public static defaultArchiveId = process.env.defaultArchiveId;
     public static engineEndpoint = process.env.engineEndpoint;
     public static workspace = process.env.workspace;
-    
+    public static DEBUG=false;
 }

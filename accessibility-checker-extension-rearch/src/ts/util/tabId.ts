@@ -14,9 +14,10 @@
   limitations under the License.
 *****************************************************************************/
 
-export default class Fetch {
-    public static async json<retT>(filename: string) : Promise<retT> {
-        return fetch(filename)
-            .then((response) => response.json()) //assuming file contains json
+export function getTabId() {
+    if (chrome && chrome.devtools && chrome.devtools.inspectedWindow && chrome.devtools.inspectedWindow.tabId) {
+        return chrome.devtools.inspectedWindow.tabId;
+    } else {
+        return undefined;
     }
 }

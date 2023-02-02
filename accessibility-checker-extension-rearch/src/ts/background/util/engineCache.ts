@@ -14,22 +14,8 @@
   limitations under the License.
 *****************************************************************************/
 
+import { IArchiveDefinition } from "../../interfaces/interfaces";
 import Fetch from "../../util/fetch";
-
-export interface IPolicyDefinition {
-    id: string,
-    name: string
-}
-
-export interface IArchiveDefinition {
-    id: string,
-    name: string,
-    path: string,
-    version: string,
-    latest?: boolean,
-    sunset?: boolean,
-    policies: IPolicyDefinition[]
-}
 
 export default class EngineCache {
     public static async getArchives() {

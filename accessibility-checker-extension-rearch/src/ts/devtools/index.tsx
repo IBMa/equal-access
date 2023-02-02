@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import Config from "../util/config";
+import { getDevtoolsController } from "./devtoolsController";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
 
 chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+localStr,
@@ -28,3 +29,5 @@ chrome.devtools.panels.create("Accessibility Assessment"+localStr, "", "devtools
     function(_sidebar) {
     }
 );
+
+getDevtoolsController("local");
