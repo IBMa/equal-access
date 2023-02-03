@@ -400,7 +400,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
 
                             <h2>Keyboard checker mode</h2>
                             <div>
-                                <div style={{marginTop: ".5rem"}} />
+                                <div style={{marginTop: "1rem"}} />
                                 <fieldset className="cds--fieldset">
                                     <legend className="cds--label">Visualization options</legend>
                                     <Checkbox 
