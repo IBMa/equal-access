@@ -12,13 +12,13 @@
  *****************************************************************************/
 
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getDefinedStyles, getComputedStyle } from "../util/CSSUtil";
-import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy, RulePotential } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let iframe_interactive_tabbable: Rule = {
     id: "iframe_interactive_tabbable",
-    context: "dom:*",
+    context: "dom:iframe",
     dependencies: [],
     help: {
         "en-US": {
@@ -29,72 +29,46 @@ export let iframe_interactive_tabbable: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "A tabbable element should be visible on the screen when it has keyboard focus",
-            "pass": "The tabbable element is visible on the screen",
-            "fail_invalid": "Confirm the element should be tabbable, and is visible on the screen when it has keyboard focus"
+            "group": "Iframe with interactive content should not be excluded from focus order using tabindex",
+            "pass": "The iframe with interactive content is not excluded from the focus order using tabindex",
+            "fail_invalid": "The <iframe> with interactive content is excluded from focus order using tabindex"
         }
     },
     rulesets: [{
         id: ["IBM_Accessibility", "WCAG_2_1", "WCAG_2_0"],
-        num: ["2.4.7"],
+        num: ["2.1.1"],
         level: eRulePolicy.VIOLATION,
         toolkitLevel: eToolkitLevel.LEVEL_ONE
     }],
-    act: [],
+    act: ["akn7bn"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as HTMLElement;
-        if (!RPTUtil.isTabbable(ruleContext))
-            return null;
+        //skip the check if the element is hidden or disabled
+        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+            return;
         
-        const nodeName = ruleContext.nodeName.toLocaleLowerCase(); 
+        console.log("node=" + ruleContext.nodeName.toLocaleLowerCase()+" tabindex="+ruleContext.getAttribute("tabindex")); 
         const bounds = context["dom"].bounds;
         //in case the bounds not available
         if (!bounds) return null;
         
-        // defined styles only give the styles that changed
-        const defined_styles = getDefinedStyles(ruleContext);
-        const onfocus_styles = getDefinedStyles(ruleContext, ":focus");
-                
-        if (bounds['height'] === 0 || bounds['width'] === 0 
-            || (defined_styles['position']==='absolute' && defined_styles['clip'] && defined_styles['clip'].replaceAll(' ', '')==='rect(0px,0px,0px,0px)'
-              && !onfocus_styles['clip']))
-            return RulePotential("potential_visible", []);
+        // ignore if iframe is too small to be visible on screen
+        if (Math.max(bounds['height'], bounds['width']) < 30 || Math.min(bounds['height'], bounds['width']) < 15)  
+           return null; 
 
-        if (bounds['top'] >= 0 && bounds['left'] >= 0)
+        // pass iframe element does not have a tabindex attribute value that is a negative number
+        if (!ruleContext.hasAttribute("tabindex") || parseInt(ruleContext.getAttribute("tabindex")) >= 0)
             return RulePass("pass");
-        
-        const default_styles = getComputedStyle(ruleContext);
-        
-        let top = bounds['top'];
-        let left = bounds['left'];     
-       
-        if (Object.keys(onfocus_styles).length === 0 ) {
-            // no onfocus position change, but could be changed from js 
-            return RulePotential("potential_visible", []);
-        } else {   
-            // with onfocus position change
-            var positions = ['absolute', 'fixed'];
-            if (typeof onfocus_styles['top'] !== 'undefined') {
-                if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
-                    top = onfocus_styles['top'].replace(/\D/g,'');
-                } else { 
-                    // the position is undefined and the parent's position is 'relative'
-                    top = Number.MIN_VALUE;   
-                }     
-            } 
-            if (typeof onfocus_styles['left'] !== 'undefined') {
-                if (positions.includes(onfocus_styles['position']) || (typeof onfocus_styles['position'] === 'undefined' && positions.includes(default_styles['position']))) {
-                    left = onfocus_styles['left'].replace(/\D/g,'');
-                } else { 
-                    // the position is undefined and the parent's position is 'relative'
-                    left = Number.MIN_VALUE;   
-                }     
-            }    
-        }
-        
-        if (top >= 0 && left >= 0)
-            return RulePass("pass");
-        else
-            return RulePotential("potential_visible", []);
+
+        // check iframe content
+        const iframElem = ruleContext as HTMLIFrameElement;
+        if (!iframElem || !iframElem.contentDocument || !iframElem.contentDocument.documentElement)
+            return null;
+
+        const count = RPTUtil.getTabbableChildren(iframElem.contentDocument);console.log("node=" + ruleContext.nodeName.toLocaleLowerCase()+" tabindex="+ruleContext.getAttribute("tabindex") +",  child=" +iframElem.contentDocument.firstChild +", count="+count); 
+        if (count > 0)
+            return RuleFail("fail_invalid");
+
+        return null;    
     }
 }
