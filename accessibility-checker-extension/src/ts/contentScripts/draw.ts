@@ -90,14 +90,6 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             font-weight: bold
         }
 
-        .svgIconTest{
-            position: absolute !important;
-            overflow: visible !important;
-            pointer-events: none !important;
-            z-index: 2147483646 !important;
-        }
-
-
         `
     );
 
@@ -111,13 +103,12 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             z-index: 2147483646 !important;
             visibility: visible !important;
         }
-        .svgIconTest{
+        .svgIcon {
             position: absolute !important;
             overflow: visible !important;
             pointer-events: none !important;
             z-index: 2147483646 !important;
         }
-
 
         .circleText{
             pointer-events: none !important;
@@ -128,6 +119,7 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
     
     // Create nodes that have keyboard errors
     let tabStopsErrors = JSON.parse(JSON.stringify(message.tabStopsErrors));
+    console.log("tabStopsErrors = ", tabStopsErrors);
 
     // Create nodes that are tabbable, i.e., in the tab chain
     let regularTabstops: any = JSON.parse(JSON.stringify(message.tabStopsResults));
@@ -140,9 +132,15 @@ TabMessaging.addListener("DRAW_TABS_TO_CONTEXT_SCRIPTS", async (message: any) =>
             }
         });
         if (flagMatchFound) {
-            regularTabstops[index].nodeHasError = true
-        } 
+            regularTabstops[index].nodeHasError = true;
+            console.log("regularTabstops["+index+"].nodeHasError = ", regularTabstops[index].nodeHasError);
+        } else {
+            regularTabstops[index].nodeHasError = false;
+            console.log("regularTabstops["+index+"].nodeHasError = ", regularTabstops[index].nodeHasError);
+        }
     }
+
+    console.log("regularTabstops = ", regularTabstops);
     
     // JCH - this allows the web to scroll to the top before drawing occurs
     goToTop().then(function() {
@@ -222,26 +220,6 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
     
     if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
         console.log("**** Got TAB key ****");
-        // if (docType === "main") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        // }
-        
-        // // if we have iframe
-        // if (docType === "iframe") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        //     elementXpath = iframeStr + elementXpath;
-        // }
-
-        // // if we have shadow dom no need to do anything special
-        // if (docType === "shadowdom") {
-        //     let sdXpath = getXPathForElement(doc);
-        //     let element = doc.shadowRoot.activeElement;
-        //     elementXpath = getXPathForElement(element);
-        //     // need #document-fragment[n]
-        //     elementXpath = sdXpath+iframeStr;
-        // }
 
         elementXpath = realElementXpath(doc, docType, iframeStr);
 
@@ -284,26 +262,6 @@ function handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) {
         }
     } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
         console.log("**** Got SHIFT TAB key ****");
-        // if (docType === "main") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        // }
-        
-        // // if we have iframe
-        // if (docType === "iframe") {
-        //     let element = doc.activeElement;  // get element just tabbed to which has focus
-        //     elementXpath = getXPathForElement(element); // in main doc so just get xpath
-        //     elementXpath = iframeStr + elementXpath;
-        // }
-
-        // // if we have shadow dom no need to do anything special
-        // if (docType === "shadowdom") {
-        //     let sdXpath = getXPathForElement(doc);
-        //     let element = doc.shadowRoot.activeElement;
-        //     elementXpath = getXPathForElement(element);
-        //     // need #document-fragment[n]
-        //     elementXpath = sdXpath+iframeStr;
-        // }
 
         elementXpath = realElementXpath(doc, docType, iframeStr);
 
@@ -585,6 +543,10 @@ function deleteDrawing(classToRemove: string) {
     // console.log("Function: deleteDrawing DONE")
 }
 
+// As we are drawing circles for the next two functions we need to determine any previous node / elements has
+// more than one issue circle with the same coordinates, if so adjust accordingly, i.e., move the issue circle
+// to the right so that they don't overlay. Do redraw first then do redrawErrors
+
 // Draw circles and connecting lines for TAB Stops (with and without errors) in the TAB chain
 // @ts-ignore
 function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
@@ -635,7 +597,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
         for (let i = 0; i < nodes.length; i++) { //Make lines between numbers
             if (nodes[i] != null ) { // JCH - tabbable nodes
                 // ERROR Nodes / Circles
-                if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if true should draw triangle instead of circle
+                if (tabstops[i].hasOwnProperty("nodeHasError") && tabstops[i].nodeHasError) { // if true should draw bigger salmon colored circle
 
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
@@ -747,8 +709,9 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
 
+                    console.log("Function: redraw tab stop chain circle error index = ", i.toString());
                     makeCircleSmall(x, y, i.toString(), 16, nodeXpaths[i], true);
-                    makeIcon(x+11, y-16, "test");   // notification dot
+                    makeIcon(x+11, y-16, "Notification dot");   // notification dot
                     makeTextSmall(x, y, (i + 1).toString(), i.toString(), true, "textColorWhite");
 
 
@@ -775,7 +738,6 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                 } else { // This is the defalt case were we just draw a circle
                     // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                     let x = nodes[i].getBoundingClientRect().x;
-                    console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                     let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                     let y = nodes[i].getBoundingClientRect().y;
@@ -883,6 +845,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
                         }
                     }
 
+                    console.log("Function: redraw tab stop chain circle index = ", i.toString());
                     makeCircleSmall(x, y, i.toString(), 13, nodeXpaths[i], false);
                     makeTextSmall(x, y, (i + 1).toString(), i.toString(), false, "textColorWhite");
 
@@ -1052,7 +1015,7 @@ function redrawErrors(tabStopsErrors: any, tabStops: any, outlines: boolean, ifr
                     let errorCount = tabStopCount++;
                     
                     makeCircleSmall(x, y, (errorCount).toString(), 16, nodeXpaths[i], true);
-                    makeIcon(x+11, y-16, "test");   // notification dot
+                    makeIcon(x+11, y-16, "Notification dot");   // notification dot
                     
                     makeTextSmall(x, y, "?", (errorCount).toString(), true, "textColorBlack");
                     
@@ -1081,8 +1044,14 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
     if (errorStatus === true) {
         circleClone.classList.add("error");
         circleClone.classList.add("nohighlightSVGerrorCircle");
+        circleClone.setAttribute("fill", "#525252");
+        circleClone.setAttribute("stroke", "#FF8389");
+        circleClone.setAttribute("stroke-width", "3");
     } else {
         circleClone.classList.add("nohighlightSVGcircle");
+        circleClone.setAttribute("fill", "#525252");
+        circleClone.setAttribute("stroke", "#C6C6C6;");
+        circleClone.setAttribute("stroke-width", "3");
     }
    
     circleClone.onclick = () => {
@@ -1095,7 +1064,6 @@ function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: n
         elemSVG.classList.add("dynamic");
         document.body.appendChild(elemSVG);
     }
-    console.log("errorStatus: ", errorStatus);
     console.log("circleClone: ", circleClone);
     document.getElementById('svgCircle')?.appendChild(circleClone) // Inject circle with class circleNumber
 }
@@ -1105,8 +1073,7 @@ function createSVGCircleTemplate() {
     elemCircle.setAttribute("id", "circle");
     elemCircle.setAttribute("class", "tabCircle");
     elemCircle.classList.add("dynamic");
-    elemCircle.setAttribute("stroke", "#D9BFFF");
-    elemCircle.setAttribute("stroke-width", "3");
+    
     return elemCircle
 }
 
@@ -1116,7 +1083,7 @@ function makeIcon(x1: number, y1: number, iconName: string) {
     var iconClone = createSVGErrorIconTemplate();
     iconClone.removeAttribute("display");
     iconClone.classList.remove("svgIcon1");
-    iconClone.classList.add("svgIconTest");
+    iconClone.classList.add("svgIcon");
     iconClone.classList.add("deleteMe");
     iconClone.style.position = "absolute";
     iconClone.style.left = String(x1) + "px";
