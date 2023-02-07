@@ -47,7 +47,6 @@ export let iframe_interactive_tabbable: Rule = {
         if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
-        console.log("node=" + ruleContext.nodeName.toLocaleLowerCase()+" tabindex="+ruleContext.getAttribute("tabindex")); 
         const bounds = context["dom"].bounds;
         //in case the bounds not available
         if (!bounds) return null;
@@ -65,7 +64,7 @@ export let iframe_interactive_tabbable: Rule = {
         if (!iframElem || !iframElem.contentDocument || !iframElem.contentDocument.documentElement)
             return null;
 
-        const count = RPTUtil.getTabbableChildren(iframElem.contentDocument);console.log("node=" + ruleContext.nodeName.toLocaleLowerCase()+" tabindex="+ruleContext.getAttribute("tabindex") +",  child=" +iframElem.contentDocument.firstChild +", count="+count); 
+        const count = RPTUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RuleFail("fail_invalid");
 
