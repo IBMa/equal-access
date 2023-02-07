@@ -10,7 +10,7 @@ import { ACReporterXLSX } from "./reporters/ACReporterXLSX";
 import { initializeSummary, IScanSummary } from "./reporters/ReportUtil";
 import { ACReporterHTML } from "./reporters/ACReporterHTML";
 import { ACReporterJSON } from "./reporters/ACReporterJSON";
-import { eRuleLevel, Report } from "./api/IEngine";
+import { eRuleLevel, Report, Rule } from "./api/IEngine";
 
 export class ACReportManager {
     static config: IConfigUnsupported;
@@ -19,6 +19,10 @@ export class ACReportManager {
         json: any,
         csv: any,
         xlsx: any
+    }
+
+    static refactorMap : {
+        [oldRuleId: string]: Rule
     }
 
     // Array that contains the list of entries that need to be compared between the actual and baseline objects only.
@@ -1055,8 +1059,30 @@ export class ACReportManager {
      */
     static getBaseline(label) {
         try {
-            return require(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label));
+            let retVal = require(path.join(path.join(process.cwd(), ACReportManager.config.baselineFolder), label));
+            if (retVal && retVal.results) {
+                if (!this.refactorMap) {
+                    this.refactorMap = {}
+                    let rules = ACEngineManager.getRulesSync();
+                    for (const rule of rules) {
+                        if (rule.refactor) {
+                            for (const key in rule.refactor) {
+                                this.refactorMap[key] = rule;
+                            }
+                        }
+                    }
+                }
+                for (const result of retVal.results) {
+                    if (result.ruleId in this.refactorMap) {
+                        let mapping = this.refactorMap[result.ruleId].refactor[result.ruleId];
+                        result.ruleId = this.refactorMap[result.ruleId].id;
+                        result.reasonId = mapping[result.reasonId];
+                    }
+                }
+            }
+            return retVal;
         } catch (e) {
+            // console.error("getBaseline Error:", e);
             return null;
         }
     };

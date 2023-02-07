@@ -58,6 +58,10 @@ export function getComputedStyle(elem: HTMLElement, pseudoElt?: PseudoClass) {
  * This differs from the computed style in that the computed style will return
  * styles defined by the user agent. This will only return styles defined by the
  * application
+ * if rotation transform is used, the computed style returns the resolved matrix
+ *  while the defined style return the transform function(s) 
+ * for example, for 'transform: rotate(2.5deg);', the computed style returns 'matrix(-0.0436194, 0.999048, -0.999048, -0.0436194, 0, 0)' 
+ *  and the defined style returns 'rotate(2.5deg)'  
  * 
  * @param {HTMLElement} elem 
  * @param {string} [pseudoClass] If specified, will return values that are different
@@ -80,12 +84,21 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             } else {
                 const key = style[sIndex];
                 for (const map of maps) {
-                    map[key] = style[key];
+                    let priority = style.getPropertyPriority(key);
+                    if (key in map && map[key].endsWith("!important")) {
+                         if (priority === 'important' && !map[key].startsWith("inherit") && !map[key].startsWith("unset"))
+                            //override !important only if it is also !important
+                            map[key] = style[key] + " !important";
+                         else 
+                            //don't override !important if it is not !important
+                            continue;   
+                    } else
+                        //create/overide anyway
+                        map[key] = style[key] + (priority === 'important' ? " !important" : "");
                 }
             }
         }
-    }
-
+    }    
     // Iterate through all of the stylesheets and rules
     for (let ssIndex = 0; ssIndex < elem.ownerDocument.styleSheets.length; ++ssIndex) {
         const sheet = elem.ownerDocument.styleSheets[ssIndex] as CSSStyleSheet;
@@ -115,7 +128,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
                         if (samePseudoClass && selectorMatchesElem(elem, selMain)) {
                             fillStyle([definedStylePseudo], rule.style);
                         }
-                    }
+                    } 
                 }
             }
         } catch (err) {
@@ -128,6 +141,8 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
     // Handled the stylesheets, now handle the element defined styles
     fillStyle([definedStyles, definedStylePseudo], elem.style);
 
+    /**
+     * 'initial' sets the style back to default
     for (const key in definedStyles) {
         if (definedStyles[key] === "initial") {
             delete definedStyles[key];
@@ -138,6 +153,7 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
             delete definedStylePseudo[key];
         }
     }
+    */
 
     if (!pseudoClass) {
         // console.log("[DEBUG: CSSUtil::getDefinedStyles]", elem.nodeName, pseudoClass, JSON.stringify(definedStyles, null, 2));
@@ -154,6 +170,205 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
 }
 
 /**
+ * Returns the media query defined for the document
+ * 
+ * 
+ * @param {Document} doc 
+ */
+export function getMediaOrientationTransform(doc: Document) {
+    let orientationTransforms = {}
+    
+    // Iterate through all of the stylesheets and rules
+    for (let ssIndex = 0; ssIndex < doc.styleSheets.length; ++ssIndex) {
+        const sheet = doc.styleSheets[ssIndex] as CSSStyleSheet;
+        try {
+            if (sheet && sheet.cssRules) {
+                for (let rIndex = 0; rIndex < sheet.cssRules.length; ++rIndex) {
+                    const sheetRule = sheet.cssRules[rIndex];
+                    if (CSSRule.MEDIA_RULE === sheetRule.MEDIA_RULE) { 
+                        const rule = sheetRule as CSSMediaRule;
+                        if (rule && rule.media) {
+                            const mediaList = rule.media;
+                            for (let i = 0; i < mediaList.length; i++) {
+                                let elem_transforms = orientationTransforms[mediaList.item(i).toLocaleLowerCase()];
+                                if (!elem_transforms) elem_transforms = {};
+                                let styleRules = rule.cssRules;
+                                for (let i = 0; i < styleRules.length; ++i) {
+                                    if (CSSRule.STYLE_RULE === styleRules[i].STYLE_RULE) { 
+                                        const styleRule = styleRules[i] as CSSStyleRule;
+                                        const selector = styleRule.selectorText;
+                                        if (selector) {
+                                            let transforms = {};
+                                            const styles = styleRule.style;
+                                            for (let s=0; s < styles.length; ++s) {
+                                                const key = styles[s];
+                                                if (key.toLocaleLowerCase() === "transform") {
+                                                    if (key === "all" && styles[key]) {
+                                                        delete transforms[key];
+                                                        break;
+                                                    } else {
+                                                        transforms[key] = styles[key];
+                                                    }
+                                                }
+                                            }
+                                            elem_transforms[selector] = transforms;
+                                        }
+                                    }      
+                                }
+                                orientationTransforms[mediaList.item(i).toLocaleLowerCase()] = elem_transforms; 
+                            }
+                        }
+                    }    
+                }
+            }
+        } catch (err) {
+            if (!err.toString().includes("Cannot access rules") && !err.toString().includes("SecurityError:")) {
+                throw err;
+            }
+        }
+    }
+    return orientationTransforms;
+}
+
+/**
+ * convert given rotation transform functions to the degree transformed. 
+ * If multiple functions are given, then the functions are applied linearly in the order. 
+ *   rotation_transform function example:  rotate(45deg), rotate(2turn), rotate(2rad), rotate3d(1, 1, 1, 45deg),
+ *        rotate(2rad) rotate3d(1, 1, 1, 45deg)
+ * @param rotation_transform 
+ */
+export function getRotationDegree(rotation_transform) {
+    let degree = 0;
+    try {
+        if (!rotation_transform) return degree;
+        // normalize the rotation_transform
+        rotation_transform = rotation_transform.replaceAll(", ", ",");
+        const transform_functions = rotation_transform.split(" ");
+        for (let i =0; i < transform_functions.length; i++) {
+            const transform_function = transform_functions[i].trim();
+            if (transform_function === '') continue;
+            if (transform_function.startsWith("rotate3d")) {
+                // example: rotate3d(1, 1, 1, 45deg);
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values;
+                    if (matrix) values = matrix.split(",");
+                    if (values && values.length === 4) {
+                        let rotation = values[3];
+                        if (!rotation) continue;
+                        rotation = rotation.trim();
+                        if (rotation.endsWith("turn")) {
+                            let num = rotation.substring(0, rotation.length - 4);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 360; 
+                        } else if (rotation.endsWith("rad")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree = num * 180/Math.PI; 
+                        } else if (rotation.endsWith("deg")) {
+                            let num = rotation.substring(0, rotation.length - 3);
+                            num = parseFloat(num);
+                            if (!isNaN(num)) degree += num; 
+                        }
+                    }    
+                }
+            } else if (transform_function.startsWith("rotate") || transform_function.startsWith("rotateZ")) {
+                // example: rotate(45deg);
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let rotation = transform_function.substring(left+1, right);
+                    if (!rotation) continue;
+                    rotation = rotation.trim();
+                    if (rotation.endsWith("turn")) {
+                        let num = rotation.substring(0, rotation.length - 4);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree = num * 360; 
+                    } else if (rotation.endsWith("rad")) {
+                        let num = rotation.substring(0, rotation.length - 3);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree = num * 180/Math.PI; 
+                    } else if (rotation.endsWith("deg")) {
+                        let num = rotation.substring(0, rotation.length - 3);
+                        num = parseFloat(num);
+                        if (!isNaN(num)) degree += num; 
+                    }
+                }
+            } else if (transform_function.startsWith("matrix3d")) {
+                // calculate the three Euler angles
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values = null;
+                    if (matrix) values = matrix.split(",");
+                    if (values !== null) {
+                        const z_angle = Math.atan2(values[4], values[5]);
+                        degree += Math.round(Math.round(z_angle * 180/Math.PI));
+                    }     
+                }
+            } else if (transform_function.startsWith("matrix")) {
+                // calculate the three Euler angles
+                const left = transform_function.indexOf("(");
+                const right = transform_function.indexOf(")");
+                if (left !== -1 && right !== -1) {
+                    let matrix = transform_function.substring(left+1, right);
+                    let values = null;
+                    if (matrix) values = matrix.split(",");
+                    if (values !== null) {
+                        const z_angle = Math.atan2(values[1], values[0]);
+                        degree += Math.round(Math.round(z_angle * 180/Math.PI));
+                    }     
+                }
+            }     
+        }
+        
+        while (degree >= 360) degree -= 360;
+        
+    } catch (err) {
+        console.log("Cannot retrieve rotation degree: " + err);
+        throw err;
+    } 
+    return degree; 
+}
+
+/**
+ * Convert absolute CSS numerical values to pixels.
+ *
+ * @param unitValue in string
+ * @param target element.
+ * @return value in pixels
+ */
+ export function convertValue2Pixels(unit, unitValue, elem ) {
+    if (unitValue == 0) return 0;
+    const supportedUnits = {
+        // absolute unit
+        'px': value => value,
+        'cm': value => value * 37.8,
+        'mm': value => value * 3.78,
+        'q': value => value * 0.95,
+        'in': value => value * 96,
+        'pc': value => value * 16,
+        'pt': value => value * 1.33,
+        
+        // relative unit
+        'rem': value => value * parseFloat( getComputedStyle(elem.ownerDocument.documentElement).getPropertyValue('font-size') ),
+        'em': value => value * parseFloat( getComputedStyle(elem).getPropertyValue('font-size')),
+        'vw': value => value / 100 * elem.ownerDocument.defaultView.innerWidth,
+        'vh': value => value / 100 * elem.ownerDocument.defaultView.innerHeight,
+        '%':  value => value / 100 * parseFloat( getComputedStyle(elem).getPropertyValue('font-size'))
+    };
+
+    if ( unit in supportedUnits )
+        return supportedUnits[ unit ]( unitValue );
+    
+    return null;
+}
+
+
+ /*
  * Returns if the font for visible text of the element is defined by material icons
  *  
  * @param {HTMLElement} elem 
@@ -199,4 +414,4 @@ export function getDefinedStyles(elem: HTMLElement, pseudoClass?: PseudoClass) {
         } 
     }       
     return passed;
- }   
+ }

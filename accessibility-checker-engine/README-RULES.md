@@ -26,10 +26,15 @@ An example rule might look like:
 {
     id: "body_all_trigger",
     context: "dom:body",
+    refactor: {
+        "OLDID_Trigger": {
+            "Manual_0": "manual_always"
+        }
+    },
     help: {
         "en-US": {
             0: `body_all_trigger.html`,
-            "Pass_0": `body_all_trigger.html`
+            "manual_always": `body_all_trigger.html`
         }
     },
     messages: {

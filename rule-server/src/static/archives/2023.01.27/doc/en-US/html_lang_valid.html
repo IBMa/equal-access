@@ -1,0 +1,110 @@
+<html lang="en-US">
+<head>
+    <title>html_lang_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"Pass_0":"Lang has a valid primary lang and conforms to BCP 47","Fail_1":"Specified 'lang' attribute does not include a valid primary language","Fail_2":"Specified 'lang' attribute does not conform to BCP 47","Fail_3":"Specified 'xml:lang' attribute does not include a valid primary language","Fail_4":"Specified 'xml:lang' attribute does not conform to BCP 47","group":"The default human language of the page must be valid and specified in accordance with BCP 47"}};
+        RULE_ID = "html_lang_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+When the language attribute is used to identify the default human language of the page, the attribute value must conform to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt). 
+This ensures that user agents and text-to-speech (TTS) synthesizers can correctly present the page's default content using the correct presentation and in the appropriate accent with proper pronunciation for that language.
+
+A valid language attribute also allows the following:
+- Braille translation software to substitute control codes for accented characters for example and prevent erroneous creation of Grade 2 braille contractions
+- Translate page to a familiar language
+- Assist user agents in providing definitions using a dictionary
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* Update the value of the `lang` or `xml:lang` attribute to a value that conforms to [BCP 47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) to correctly identify the page's default human language
+
+For example:
+
+```
+<html lang="fr">
+  <body>
+    <p>
+      Prouver que j’ai raison serait accorder que je puis avoir tort.
+    </p>
+  </body>
+</html>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 3.1.1 Language of page](https://www.ibm.com/able/requirements/requirements/#3_1_1)
+* [WCAG technique H57](https://www.w3.org/WAI/WCAG21/Techniques/html/H57)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision
+* People with dexterity impairment using voice control
+* People using text-to-speech (TTS) synthesizer technologies
+* People who find it difficult to read written material with fluency and accuracy, such as recognizing characters and alphabets, or decoding words
+* People with certain cognitive, language, and learning disabilities
+* People who rely on captions for synchronized media
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
