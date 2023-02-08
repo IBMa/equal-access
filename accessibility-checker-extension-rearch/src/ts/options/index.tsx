@@ -27,5 +27,5 @@ class PageApp extends React.Component<{}, {}> {
 }
 
 ReactDOM.render(<PageApp />
-    , document.getElementById('options-root'));
+    , document.getElementById('pageapp-root'));
     
