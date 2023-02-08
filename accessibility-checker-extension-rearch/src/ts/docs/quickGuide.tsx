@@ -16,15 +16,9 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-    
+import {QuickGuideACApp} from "./QuickGuideACApp";
 import "../styles/index.scss";
 
-class PageApp extends React.Component<{}, {}> {
-    render() {
-        return <React.Fragment>Quickguide</React.Fragment>
-    }
-}
-
-ReactDOM.render(<PageApp />
+ReactDOM.render(<QuickGuideACApp />
     , document.getElementById('pageapp-root'));
     
