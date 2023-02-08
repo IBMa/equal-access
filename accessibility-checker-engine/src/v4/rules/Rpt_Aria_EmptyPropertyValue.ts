@@ -11,10 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
+import { VisUtil } from "../../v2/dom/VisUtil";
 
 export let Rpt_Aria_EmptyPropertyValue: Rule = {
     id: "Rpt_Aria_EmptyPropertyValue",
@@ -22,15 +23,15 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
     dependencies: ["Rpt_Aria_ValidRole"],
     help: {
         "en-US": {
-            "Pass_0": "Rpt_Aria_EmptyPropertyValue.html",
-            "Fail_1": "Rpt_Aria_EmptyPropertyValue.html",
+            "pass": "Rpt_Aria_EmptyPropertyValue.html",
+            "fail_empty_attribute": "Rpt_Aria_EmptyPropertyValue.html",
             "group": "Rpt_Aria_EmptyPropertyValue.html"
         }
     },
     messages: {
         "en-US": {
-            "Pass_0": "Rule Passed",
-            "Fail_1": "The element attribute(s): '{0}' value is empty",
+            "pass": "Rule Passed",
+            "fail_empty_attribute": "The element attribute(s): '{0}' value is empty",
             "group": "When specifying a required ARIA attribute, the value must not be empty"
         }
     },
@@ -40,9 +41,14 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
         "level": eRulePolicy.VIOLATION,
         "toolkitLevel": eToolkitLevel.LEVEL_ONE
     }],
-    act: [],
+    act: ["6a7281"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
+
+        //skip the check if the element is hidden
+        if (VisUtil.isNodeHiddenFromAT(ruleContext))
+            return;
+
         let attrNameArr = new Array();
         let designPatterns = ARIADefinitions.designPatterns;
         let hasAttribute = RPTUtil.hasAttribute;
@@ -86,7 +92,7 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
                         if (hasAttribute(ruleContext, attribute)) {
                             testedProperties++;
                             let nodeValue = RPTUtil.normalizeSpacing(ruleContext.getAttribute(attribute));
-                            if (nodeValue.length == 0) {
+                            if (nodeValue.length == 0 && !attrNameArr.includes(attribute)) {
                                 attrNameArr.push(attribute);
                             }
                         }
@@ -101,9 +107,9 @@ export let Rpt_Aria_EmptyPropertyValue: Rule = {
         if (testedProperties == 0) {
             return null;
         } else if (!passed) {
-            return RuleFail("Fail_1", retMsg);
+            return RuleFail("fail_empty_attribute", retMsg);
         } else {
-            return RulePass("Pass_0");
+            return RulePass("pass");
         }
     }
 }
