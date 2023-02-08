@@ -184,7 +184,12 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         await bgController.setSettings(newSettings);
         setTimeout(() => { 
             this.setState({ savePending: 2 })
-            setTimeout(() => { this.setState({ savePending: 0 })}, 500);
+            setTimeout(() => { 
+                this.setState({ savePending: 0 })
+                setTimeout(() => {
+                    document.getElementById("saveButton")!.focus();
+                }, 0);
+            }, 500);
         }, 300);
     };
 
@@ -420,6 +425,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             status={this.state.savePending === 1 ? 'active' : 'finished'}
                         />}
                         {this.state.savePending === 0 && <Button
+                            id="saveButton"
                             disabled={false}
                             kind="primary"
                             onClick={this.onSave.bind(this)}
