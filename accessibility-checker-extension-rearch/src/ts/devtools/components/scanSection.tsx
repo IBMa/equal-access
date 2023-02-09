@@ -16,10 +16,14 @@
 
 import * as React from 'react';
 import { getTabController } from "../../tab/tabController";
-import { Button } from "@carbon/react";
 import { getDevtoolsController } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
+import { 
+    Button,
+    Column,
+    Grid 
+} from "@carbon/react";
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -64,8 +68,18 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     render() {
-        return <div>
-            <Button disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
-        </div>
+        return (
+            <Grid className="scanSection"> 
+                <Column sm={4} md={4} lg={8}>
+                    <Button 
+                        size="sm"
+                        disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
+                        onClick={() => { 
+                            this.scan(); 
+                        }
+                    }>Scan</Button>
+                </Column>
+            </Grid>
+        );
     }
 }

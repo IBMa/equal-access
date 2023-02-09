@@ -18,6 +18,7 @@ import * as React from 'react';
 import { getDevtoolsController } from '../devtoolsController';
 import { IReport } from '../../interfaces/interfaces';
 import { getTabId } from '../../util/tabId';
+import { Column, Grid } from "@carbon/react";
 
 let devtoolsController = getDevtoolsController();
 
@@ -45,11 +46,21 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
     }
 
     render() {
-        return <div>
-            {this.state.report && JSON.stringify(this.state.report.results.length)}
-            {!this.state.report && <>
-                No report
-            </>}
-        </div>
+        return (<>
+            <Grid className="reportFilterSection">
+                <Column sm={4} md={4} lg={8}>
+                    Report filters....
+                </Column>
+            </Grid>
+            <Grid className="reportSection" style={{ overflowY: "auto"}}>
+                <Column sm={4} md={4} lg={8}>
+                    {this.state.report && JSON.stringify(this.state.report.results, null, 2).split("\n").map(line => <>{line}<br /></>)}
+                    {!this.state.report && <>
+                        No report
+                    </>}
+                </Column>
+            </Grid>
+            </>
+        );
     }
 }

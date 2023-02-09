@@ -62,11 +62,11 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
     }
 
     render() {
-        let primaryPanel = <>
+        let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
             <ReportSection />
-        </>
+        </div>
 
         let secondaryPanel = <>
             {this.state.secondaryView === "splash" && <SplashScreen />}
@@ -74,8 +74,8 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
 
         return <>
             <Grid fullWidth={true} narrow={true} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
-                <Column sm={4} md={4} lg={8} style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                    <div style={{ width: "calc(100% - 1rem" }}>
+                <Column sm={4} md={4} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
+                    <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                         {primaryPanel}
                     </div>
                 </Column>
