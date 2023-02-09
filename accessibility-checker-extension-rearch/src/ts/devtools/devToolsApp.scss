@@ -1,0 +1,21 @@
+@use '@carbon/styles/scss/breakpoint'as *;
+@use '@carbon/styles/scss/colors'as *;
+
+html,
+body {
+    height: 100%;
+}
+#pageapp-root {
+    min-height: 100%;
+    height: 100%;
+
+    .secondaryColumn {
+        background-color: $gray-10;
+    }
+}
+
+.secondaryDialog {
+    @include breakpoint('md') {
+        display:none;
+    }
+}

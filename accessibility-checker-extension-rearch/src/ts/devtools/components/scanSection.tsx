@@ -64,6 +64,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     render() {
-        return <Button disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
+        return <div>
+            <Button disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} onClick={() => { this.scan(); }}>Scan</Button>
+        </div>
     }
 }

@@ -34,7 +34,7 @@ import {
     Information,
     Restart, 
     Save
-} from "@carbon/react/icons/lib/index";
+} from "@carbon/react/icons";
 import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
 import { getBGController } from "../background/backgroundController";
 import "./option.scss";

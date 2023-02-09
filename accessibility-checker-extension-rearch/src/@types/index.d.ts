@@ -8,4 +8,4 @@ declare module "\*.svg" {
   declare module '@carbon/charts-react';
 
   declare module '@carbon/react'; 
-  declare module '@carbon/react/icons/lib/index'
+  declare module '@carbon/react/icons'
