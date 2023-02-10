@@ -47,85 +47,25 @@ class UsingACApp extends React.Component<{}, UsingACAppState> {
 
     render() {
         let aside = <>
+            <div style={{ marginTop: "1.5rem" }} />
             <OrderedList>
-                <ListItem>
-                    <Link size="lg" href="#install" title="How to install">
-                        How to install
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#issues" title="Accessibility issues">
-                        Accessibility issues
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#view" title="The checker view">
-                        The Checker view
-                    </Link>
+                <ListItem><Link href="#install">How to install</Link></ListItem>
+                <ListItem><Link href="#issues">Accessibility issues</Link></ListItem>
+                <ListItem><Link href="#view">The Checker view</Link>
                     <OrderedList nested={true}>
-                        <ListItem>
-                            <Link size="lg" href="#a11y_check" title="Accessibility Checker">
-                                Accessibility Checker
-                            </Link>
-                        </ListItem>
-                        <ListItem>
-                            <Link size="lg" 
-                                href="#t_single_scan_report"
-                                title="Create scan report"
-                            >
-                                Creating a scan report
-                            </Link>
-                        </ListItem>
-                        <ListItem>
-                            <Link size="lg" 
-                                href="#t_multi_scan_report"
-                                title="Create multi-scan report"
-                            >
-                                Creating a multi-scan report
-                            </Link>
-                        </ListItem>
-                        <ListItem>
-                            <Link size="lg" href="#focus_view" title="Focus view">
-                                Focus view
-                            </Link>
-                        </ListItem>
-                        <ListItem>
-                            <Link size="lg" href="#keyboard_checker_mode" title="Keyboard checker mode">
-                                Keyboard checker mode
-                            </Link>
-                        </ListItem>
+                        <ListItem><Link href="#a11y_check">Accessibility Checker</Link></ListItem>
+                        <ListItem><Link href="#t_single_scan_report">Creating a scan report</Link></ListItem>
+                        <ListItem><Link href="#t_multi_scan_report">Creating a multi-scan report</Link></ListItem>
+                        <ListItem><Link href="#focus_view">Focus view</Link></ListItem>
+                        <ListItem><Link href="#keyboard_checker_mode">Keyboard checker mode</Link></ListItem>
                     </OrderedList>
                 </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#a11y_assess" title="The Assessment view">
-                        Accessibility Assessment
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#t_select_settings" title="select an option">
-                        Options
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#the_report" title="accessibility checker report">
-                        Accessibility Checker reports{" "}
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#a11y_considerations" title="Accessibility Considerations">
-                        Accessibility Considerations
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#feedback" title="feedback">
-                        Feedback
-                    </Link>
-                </ListItem>
-                <ListItem>
-                    <Link size="lg" href="#troubleshooting" title="troubleshooting">
-                        Troubleshooting
-                    </Link>
-                </ListItem>
+                <ListItem><Link href="#a11y_assess">Accessibility Assessment</Link></ListItem>
+                <ListItem><Link href="#t_select_settings">Options</Link></ListItem>
+                <ListItem><Link href="#the_report">Accessibility Checker reports{" "}</Link></ListItem>
+                <ListItem><Link href="#a11y_considerations">Accessibility Considerations</Link></ListItem>
+                <ListItem><Link href="#feedback">Feedback</Link></ListItem>
+                <ListItem><Link href="#troubleshooting">Troubleshooting</Link></ListItem>
             </OrderedList>
             <p>For bite-sized guidance, see <Link inline={true} size="lg" href={chrome.runtime.getURL("quickGuideAC.html")} target="_blank" rel="noopener noreferred">quick guide</Link>
             </p></>
