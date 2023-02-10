@@ -18,7 +18,7 @@ import Config from "../util/config";
 import { getDevtoolsController } from "./devtoolsController";
 let localStr = (Config.engineEndpoint && Config.engineEndpoint.includes("localhost") && " (local)") || "";
 
-chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker"+localStr,
+chrome.devtools.panels.elements.createSidebarPane("Accessibility Checker (new)"+localStr,
     function(sidebar) {
         //sidebar initialization code here
         sidebar.setPage("devtoolsElements.html");

@@ -32,10 +32,10 @@ export class HeaderSection extends React.Component {
     render() {
         return (
             <Grid className="headerSection"> 
-                <Column sm={{span: 3}} md={{span: 2}} lg={{span: 6}}>
+                <Column sm={3} md={6} lg={6}>
                     <h1>IBM Equal Access Accessibility Checker</h1>
                 </Column>
-                <Column sm={{span: 1}} md={{span: 2}} lg={{span: 2}} style={{marginLeft:"auto"}}>
+                <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
                     <Button 
                         renderIcon={Help} 
                         kind="ghost"   

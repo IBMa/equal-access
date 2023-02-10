@@ -48,12 +48,12 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
     render() {
         return (<>
             <Grid className="reportFilterSection">
-                <Column sm={4} md={4} lg={8}>
+                <Column sm={4} md={8} lg={8}>
                     Report filters....
                 </Column>
             </Grid>
-            <Grid className="reportSection" style={{ overflowY: "auto"}}>
-                <Column sm={4} md={4} lg={8}>
+            <Grid className="reportSection" style={{ overflowY: "auto", flex: "1"}}>
+                <Column sm={4} md={8} lg={8}>
                     {this.state.report && JSON.stringify(this.state.report.results, null, 2).split("\n").map(line => <>{line}<br /></>)}
                     {!this.state.report && <>
                         No report

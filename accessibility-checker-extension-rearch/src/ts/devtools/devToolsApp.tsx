@@ -74,12 +74,12 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
 
         return <>
             <Grid fullWidth={true} narrow={true} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
-                <Column sm={4} md={4} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
+                <Column sm={4} md={8} lg={8} style={{margin: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", minHeight: "100%", maxHeight: "100%", height: "100%" }}>
                         {primaryPanel}
                     </div>
                 </Column>
-                <Column sm={0} md={4} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
+                <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
                     <div style={{ width: "calc(100% - 1rem", padding: "1rem 0rem" }}>
                         {secondaryPanel}
                     </div>

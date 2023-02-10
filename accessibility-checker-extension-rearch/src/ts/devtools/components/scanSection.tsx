@@ -24,6 +24,9 @@ import {
     Column,
     Grid 
 } from "@carbon/react";
+import {
+    Renew
+} from "@carbon/react/icons";
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -70,10 +73,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     render() {
         return (
             <Grid className="scanSection"> 
-                <Column sm={4} md={4} lg={8}>
+                <Column sm={4} md={8} lg={8}>
                     <Button 
                         size="sm"
                         disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
+                        renderIcon={Renew} 
                         onClick={() => { 
                             this.scan(); 
                         }

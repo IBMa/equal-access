@@ -15,7 +15,7 @@ body {
 }
 
 .secondaryDialog {
-    @include breakpoint('md') {
+    @include breakpoint('lg') {
         display:none;
     }
 }
