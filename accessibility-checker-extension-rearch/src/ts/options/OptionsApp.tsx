@@ -17,6 +17,11 @@ limitations under the License.
 *****************************************************************************/
 
 import React from "react";
+
+import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
+import { getBGController } from "../background/backgroundController";
+import { DocPage } from "../docs/components/DocPage";
+
 import {
     Button,
     ButtonSet,
@@ -34,11 +39,9 @@ import {
     Information,
     Restart, 
     Save
-} from "@carbon/react/icons/lib/index";
-import { IArchiveDefinition, IPolicyDefinition, ISettings } from "../interfaces/interfaces";
-import { getBGController } from "../background/backgroundController";
+} from "@carbon/react/icons";
+
 import "./option.scss";
-import { DocPage } from "../docs/components/DocPage";
 
 interface OptionsAppState {
     lastSettings?: ISettings
@@ -46,8 +49,6 @@ interface OptionsAppState {
     selected_archive: IArchiveDefinition | null;
     rulesets: IPolicyDefinition[];
     selected_ruleset: IPolicyDefinition | null;
-    show_notif: boolean;
-    show_reset_notif: boolean;
     modalRuleSet: boolean;
     modalGuidelines: boolean;
     // Keyboard Checker Mode options
@@ -66,8 +67,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         selected_archive: null,
         rulesets: [],
         selected_ruleset: null,
-        show_notif: false,
-        show_reset_notif: false,
         modalRuleSet: false,
         modalGuidelines: false,
          // Keyboard Checker Mode options
@@ -113,51 +112,78 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         }
         if (!selected_archive) {
             // No pre-selected archive
-            selected_archive = self.getLatestArchive(archives);
-            rulesets = self.getRulesets(selected_archive);
+            selected_archive = self.getLatestArchiveDefinition(archives);
+            rulesets = self.getGuidelines(selected_archive);
             selectedRulesetId = rulesets[0].id;
         }
 
         self.setState({
             lastSettings: settings,
             archives: archives, selected_archive: selected_archive, rulesets: rulesets,
-            selected_ruleset: this.getRuleset(selected_archive, selectedRulesetId!),
+            selected_ruleset: this.getGuideline(selected_archive, selectedRulesetId!),
             tabStopLines: tabStopLines, tabStopOutlines: tabStopOutlines,
             tabStopAlerts: tabStopAlerts, tabStopFirstTime: tabStopFirstTime,
         });
     }
 
-    getLatestArchive(archives: IArchiveDefinition[]) {
+    /**
+     * Return the archive definition corresponding to the 'latest' id
+     * @param archives 
+     * @returns 
+     */
+    getLatestArchiveDefinition(archives: IArchiveDefinition[]) : IArchiveDefinition{
         return archives.find((archive: IArchiveDefinition) => {
             return archive.id === "latest";
         })!;
     };
 
-    getRulesets (selected_archive: IArchiveDefinition) : IPolicyDefinition[] {
+    /**
+     * Get all of the guideline/policy definitions
+     * @param selected_archive 
+     * @returns 
+     */
+    getGuidelines(selected_archive: IArchiveDefinition) : IPolicyDefinition[] {
         return selected_archive.rulesets.default;
     };
 
-    getRuleset(archive: IArchiveDefinition, id: string) {
-        let retVal = archive.rulesets.default.find((pol => pol.id === id))!;
+    /**
+     * Get guideline definition in the archive for the specificed guidlineId
+     * @param archive 
+     * @param guidelineId 
+     * @returns 
+     */
+    getGuideline(archive: IArchiveDefinition, guidelineId: string) : IPolicyDefinition {
+        let retVal = archive.rulesets.default.find((pol => pol.id === guidelineId))!;
         return retVal;
     }
 
+    /**
+     * Action to perform when an archive is selected
+     * @param item 
+     */
     async onSelectArchive (item: any) {
-        let rulesets = this.getRulesets(item.selectedItem);
+        let rulesets = this.getGuidelines(item.selectedItem);
         let selected_ruleset = rulesets[0];
         this.setState({
             selected_archive: item.selectedItem,
             rulesets,
-            selected_ruleset,
-            show_notif: false,
+            selected_ruleset
         });
     };
 
-    onSelectRuleset(item: any) {
-        this.setState({ selected_ruleset: item.selectedItem, show_notif: false });
+    /**
+     * Action to perform when a guideline is selected
+     * @param item 
+     */
+    onSelectGuideline(item: any) {
+        this.setState({ selected_ruleset: item.selectedItem });
     };
 
-    onSave() {
+    /**
+     * Action to perform when settings are saved
+     * @param item 
+     */
+    async onSave() {
         // TODO if there are stored scans we need to put up modal
         //      modal choices  
         //            delete scans and update ruleset
@@ -166,42 +192,69 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         this.setState({ 
             tabStopFirstTime: false,
          })
-        this.save_options_to_storage();
-        this.setState({ show_notif: true, show_reset_notif: false, });
+         let newSettings: ISettings = this.settingsFromState()
+         this.setState({ savePending: 1 });
+         await bgController.setSettings(newSettings);
+         setTimeout(() => { 
+             this.setState({ savePending: 2 })
+             setTimeout(() => { 
+                 this.setState({ lastSettings: newSettings, savePending: 0 })
+                 setTimeout(() => {
+                     document.getElementById("saveButton")!.focus();
+                 }, 0);
+             }, 500);
+         }, 300);
     };
 
-    //save options into browser's storage
-    async save_options_to_storage () {
-        let newSettings: ISettings = {
-            selected_archive: this.state.selected_archive!,
-            selected_ruleset: this.state.selected_ruleset!,
-            tabStopLines: this.state.tabStopLines,
-            tabStopAlerts: this.state.tabStopAlerts,
-            tabStopFirstTime: this.state.tabStopFirstTime,
-            tabStopOutlines: this.state.tabStopOutlines
+    /**
+     * Generate a settings object from the current state
+     * @returns 
+     */
+    settingsFromState() : ISettings {
+        let retVal : ISettings = JSON.parse(JSON.stringify(this.state.lastSettings));
+        retVal.selected_archive = this.state.selected_archive!;
+        retVal.selected_ruleset = this.state.selected_ruleset!;
+        retVal.tabStopLines = this.state.tabStopLines;
+        retVal.tabStopAlerts = this.state.tabStopAlerts;
+        retVal.tabStopFirstTime = this.state.tabStopFirstTime;
+        retVal.tabStopOutlines = this.state.tabStopOutlines;
+        return retVal;
+    }
+
+    /**
+     * Determine if the settings are the same as the loaded settings
+     * @returns 
+     */
+    settingsEqual() : boolean {
+        if (!this.state.lastSettings) return true;
+        let newSettings = this.settingsFromState();
+        for (const key in newSettings) {
+            switch (key) {
+                case "selected_ruleset":
+                case "selected_archive":
+                    if (this.state.lastSettings[key].id !== newSettings[key].id) {
+                        return false;
+                    }
+                    break;
+                default:
+                    if ((this.state.lastSettings as any)[key] !== (newSettings as any)[key]) {
+                        return false;
+                    }
+            }
         }
-        this.setState({ savePending: 1 });
-        await bgController.setSettings(newSettings);
-        setTimeout(() => { 
-            this.setState({ savePending: 2 })
-            setTimeout(() => { 
-                this.setState({ savePending: 0 })
-                setTimeout(() => {
-                    document.getElementById("saveButton")!.focus();
-                }, 0);
-            }, 500);
-        }, 300);
-    };
+        return true;
+    }
 
+    /**
+     * Action to perform on the reset button
+     */
     onReset() {
-        let selected_archive: IArchiveDefinition = this.getLatestArchive(this.state.archives);
+        let selected_archive: IArchiveDefinition = this.getLatestArchiveDefinition(this.state.archives);
         let selected_ruleset: IPolicyDefinition = selected_archive.rulesets.default[0];
 
         this.setState({
             selected_archive,
             selected_ruleset,
-            show_reset_notif: true,
-            show_notif: false,
             tabStopLines: true,
             tabStopOutlines: true,
             tabStopAlerts: true,
@@ -337,7 +390,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             <Dropdown
                                 ariaLabel="Select accessibility guidelines"
                                 disabled={false}
-                                helperText={this.state.selected_ruleset && ("Currently active: " + this.getRuleset(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!).name)}
+                                helperText={this.state.selected_ruleset && ("Currently active: " + this.getGuideline(this.state.lastSettings?.selected_archive!, this.state.lastSettings?.selected_ruleset.id!).name)}
                                 id="rulesetSelection"
                                 items={rulesets}
                                 itemToString={(item: any) => (item ? item["name"] : "")}
@@ -346,7 +399,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                                 titleText=""
                                 type="default"
                                 selectedItem={selected_ruleset}
-                                onChange={this.onSelectRuleset.bind(this)}
+                                onChange={this.onSelectGuideline.bind(this)}
                             />
                         </>}
 
@@ -426,7 +479,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                         />}
                         {this.state.savePending === 0 && <Button
                             id="saveButton"
-                            disabled={false}
+                            disabled={this.settingsEqual()}
                             kind="primary"
                             onClick={this.onSave.bind(this)}
                             renderIcon={Save}

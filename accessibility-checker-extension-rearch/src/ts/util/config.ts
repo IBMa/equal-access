@@ -19,4 +19,6 @@ export default class Config {
     public static engineEndpoint = process.env.engineEndpoint;
     public static workspace = process.env.workspace;
     public static DEBUG=false;
+
+    public static SECONDARY_MODAL=false;
 }

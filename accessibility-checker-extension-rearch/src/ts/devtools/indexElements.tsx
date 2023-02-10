@@ -16,30 +16,11 @@
 
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { getBGController } from '../background/backgroundController';
-import { ISettings } from '../interfaces/interfaces';
-    
-import "../styles/index.scss";
-import { ReportSection } from './components/reportSection';
-import { ScanSection } from './components/scanSection';
+import { DevToolsApp } from './devToolsApp';
+import { getDevtoolsAppController } from './devtoolsAppController';
 
-let bgController = getBGController();
-interface PageAppState {
-    settings?: ISettings
-}
-class PageApp extends React.Component<{}, PageAppState> {
-    state : PageAppState = {
-    }
-    componentDidMount(): void {
-        bgController.getSettings().then((settings) => {
-            this.setState({ settings });
-        })
-    }
-    render() {
-        return <div><ScanSection /><ReportSection /></div>
-    }
-}
+getDevtoolsAppController("elements");
 
-ReactDOM.render(<PageApp />
+ReactDOM.render(<DevToolsApp />
     , document.getElementById('pageapp-root'));
     
