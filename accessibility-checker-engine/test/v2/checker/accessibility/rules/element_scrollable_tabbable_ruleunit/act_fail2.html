@@ -37,15 +37,17 @@
             "ruleId": "element_scrollable_tabbable",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/iframe[1]",
-              "aria": "/document[1]/main[1]"
+              "dom": "/html[1]/body[1]/section[1]",
+              "aria": "/document[1]"
             },
-            "reasonId": "pass",
-            "message": "The iframe with interactive content is not excluded from the focus order using tabindex",
-            "messageArgs": [],
+            "reasonId": "fail_scrollable",
+            "message": "The scrollable element <section> with non-interactive content is not tabbable",
+            "messageArgs": [
+              "section"
+            ],
             "apiArgs": [],
             "category": "Accessibility"
           }
