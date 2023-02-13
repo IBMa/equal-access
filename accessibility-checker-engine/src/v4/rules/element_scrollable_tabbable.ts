@@ -51,7 +51,7 @@ export let element_scrollable_tabbable: Rule = {
 
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
-        if (VisUtil.isNodeHiddenFromAT(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
+        if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
             return;
         
         //skip elements
@@ -77,10 +77,11 @@ export let element_scrollable_tabbable: Rule = {
         if (Math.max(bounds['height'], bounds['width']) < 30 || Math.min(bounds['height'], bounds['width']) < 15)  
            return null; 
 
-        // ignore if both x and y scroll distances < 1
-        if (nodeName === 'section') console.log("node=" + nodeName +", scrollWidth=" + ruleContext.scrollWidth+", clientWidth=" + ruleContext.clientWidth+", scrollHeight=" + ruleContext.scrollHeight+", clientHeight=" + ruleContext.clientHeight);
-        if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 
-            && ruleContext.scrollHeight -  ruleContext.clientHeight < 1)
+        // ignore if both x and y scroll distances < element's horizontal/vertical padding
+        const padding = styles.paddingLeft;
+        if (nodeName === 'section') console.log("node=" + nodeName +", scrollWidth=" + ruleContext.scrollWidth+", clientWidth=" + ruleContext.clientWidth+", scrollHeight=" + ruleContext.scrollHeight+", clientHeight=" + ruleContext.clientHeight+", paddingLeft=" + styles.paddingLeft+", paddingRight=" + styles.paddingRight+", paddingTop=" + styles.paddingTop+", paddingBottom=" + styles.paddingBottom);
+        if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + parseInt(styles.paddingLeft + styles.paddingRight) 
+            && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ parseInt(styles.paddingTop + styles.paddingTop))
             return null;
         
         // pass iframe element does not have a tabindex attribute value that is a negative number
