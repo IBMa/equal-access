@@ -16,6 +16,7 @@
 
 import { getBGController, TabChangeType } from "../background/backgroundController";
 import { IMessage, IReport } from "../interfaces/interfaces";
+import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
 
@@ -24,9 +25,13 @@ let sessionStorage : {
     storedReports: IReport[]
     lastReport: IReport | null
     lastElement: HTMLElement | null
+    viewState: ViewState
 } | null = null;
 
 let bgController = getBGController();
+export interface ViewState {
+    kcm: boolean
+}
 
 export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
@@ -89,6 +94,33 @@ export class DevtoolsController extends Controller {
         this.addEventListener(listener, `DT_onReport`);//, listener.callbackTabId);
     }
 
+    /**
+     * Set report storing
+     */
+    public async setViewState(newState: ViewState | null) : Promise<void> {
+        return this.hook("setViewState", newState, async () => {
+            if (newState) {
+                sessionStorage!.viewState = newState;
+                setTimeout(() => {
+                    this.fireEvent("DT_onViewState", newState);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Set report storing
+     */
+    public async getViewState() : Promise<ViewState | null> {
+        return this.hook("getViewState", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.viewState;
+        });
+    }
+
+    public async addViewStateListener(listener: ListenerType<ViewState>) {
+        this.addEventListener(listener, `DT_onViewState`);
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -100,7 +132,10 @@ export class DevtoolsController extends Controller {
                 storeReports: false,
                 storedReports: [],
                 lastReport: null,
-                lastElement: null
+                lastElement: null,
+                viewState: {
+                    kcm: false
+                }
             };
 
             const listenMsgs : { 
@@ -110,7 +145,9 @@ export class DevtoolsController extends Controller {
                 "DT_clearReports": async () => self.clearReports(),
                 "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
-                "DT_getReport": async () => self.getReport()
+                "DT_getReport": async () => self.getReport(),
+                "DT_getViewState": async () => self.getViewState(),
+                "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content)
             }
 
             // Hook the above definitions
@@ -131,6 +168,44 @@ export class DevtoolsController extends Controller {
                         this.setReport(null);
                     }
                 },
+            });
+
+            ["DT_onViewState", "DT_onReport"].forEach((s: string) => {
+                this.addEventListener(
+                    { 
+                        callback: async (content: any) => {
+                            CommonMessaging.send({
+                                type: s,
+                                dest: {
+                                    type: "contentScript",
+                                    tabId: (this.ctrlDest as any).tabId
+                                },
+                                content: content
+                            });
+                        },
+                        callbackDest: {
+                            type: "contentScript",
+                            tabId: (this.ctrlDest as any).tabId
+                        }
+                    },
+                    s
+                );
+            });
+            CommonMessaging.send({
+                type: "DT_onViewState",
+                dest: {
+                    type: "contentScript",
+                    tabId: (this.ctrlDest as any).tabId
+                },
+                content: sessionStorage.viewState
+            });
+            CommonMessaging.send({
+                type: "DT_onReport",
+                dest: {
+                    type: "contentScript",
+                    tabId: (this.ctrlDest as any).tabId
+                },
+                content: null
             });
         }
     }

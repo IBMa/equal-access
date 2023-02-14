@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import { getTabController } from "../../tab/tabController";
-import { getDevtoolsController } from '../devtoolsController';
+import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
 import { 
@@ -25,6 +25,8 @@ import {
     Grid 
 } from "@carbon/react";
 import {
+    Keyboard,
+    KeyboardOff,
     Renew
 } from "@carbon/react/icons";
 
@@ -34,38 +36,65 @@ let bgController = getBGController();
 interface ScanSectionState {
     scanInProgress: boolean
     pageStatus: string
+    viewState: ViewState
+    reportContent: boolean
+    scannedOnce: boolean
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
         scanInProgress: false,
-        pageStatus: "complete"
+        pageStatus: "complete",
+        viewState: {
+            kcm: false
+        },
+        scannedOnce: false,
+        reportContent: false
     }
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener({
-            callback: async (_report) => {
-                this.setState( { scanInProgress: false });
+            callback: async (report) => {
+                let hasReportContent = false;
+                if (report && report.results.length > 0) {
+                    hasReportContent = true;
+                }
+                this.setState( { scanInProgress: false, reportContent: hasReportContent });
             },
             callbackDest: {
                 type: "devTools",
                 tabId: getTabId()!
             }
         });
+        devtoolsController.addViewStateListener( {
+            callback: async (newState) => {
+                this.setState( { viewState: newState });
+            },
+            callbackDest: {
+                type: "devTools",
+                tabId: getTabId()!
+            }
+        })
         bgController.addTabChangeListener( {
             callbackDest: { 
                 type: "extension"
             },
             callback: async (content: TabChangeType) => {
                 if (content.changeInfo.status) {
-                    this.setState({ pageStatus: content.changeInfo.status });
+                    this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
                 }
             }
         });
+        let hasReportContent = false;
+        let report = await devtoolsController.getReport();
+        if (report && report.results.length > 0) {
+            hasReportContent = true;
+        }
+        this.setState({ viewState: (await devtoolsController.getViewState())!, reportContent: hasReportContent });
     }
 
     async scan() {
-        this.setState( { scanInProgress: true });
+        this.setState( { scanInProgress: true, scannedOnce: true });
         let tabController = getTabController();
         await (await tabController).requestScan();
     }
@@ -73,7 +102,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     render() {
         return (
             <Grid className="scanSection"> 
-                <Column sm={4} md={8} lg={8}>
+                <Column sm={3} md={6} lg={6}>
                     <Button 
                         size="sm"
                         disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
@@ -82,6 +111,21 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             this.scan(); 
                         }
                     }>Scan</Button>
+                </Column>
+                <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
+                    <Button
+                        hasIconOnly
+                        renderIcon={this.state.viewState.kcm ? Keyboard : KeyboardOff} 
+                        disabled={!this.state.reportContent}
+                        iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
+                        onClick={async () => {
+                            let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));
+                            newState.kcm = !newState.kcm;
+                            await devtoolsController.setViewState(newState);
+                        }}
+                        size="sm"
+                        kind="secondary"
+                    />
                 </Column>
             </Grid>
         );
