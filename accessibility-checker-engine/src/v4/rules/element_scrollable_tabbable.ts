@@ -15,7 +15,7 @@ import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { VisUtil } from "../../v2/dom/VisUtil";
-import { getDefinedStyles, getComputedStyle } from "..//util/CSSUtil";
+import { getComputedStyle, getPixelsFromStyle } from "..//util/CSSUtil";
 
 export let element_scrollable_tabbable: Rule = {
     id: "element_scrollable_tabbable",
@@ -64,27 +64,23 @@ export let element_scrollable_tabbable: Rule = {
             
         const nodeName = ruleContext.nodeName.toLowerCase();
         const styles = getComputedStyle(ruleContext);
-        if (nodeName === 'section') console.log("node=" + nodeName +", styles=" + JSON.stringify(styles));
         // not scrollable, inapplicable
         if ((styles.overflowX === 'visible' || styles.overflowX === 'hidden')
             && (styles.overflowY === 'visible' || styles.overflowY === 'hidden'))
             return null;
 
-        // ignore if the scrollable element is too small to be visible on screen
-        const bounds = context["dom"].bounds;
-        //in case the bounds not available
-        if (!bounds) return null;
-        if (Math.max(bounds['height'], bounds['width']) < 30 || Math.min(bounds['height'], bounds['width']) < 15)  
+        // ignore if the overall scrollable element (clientWidth + scrollbarWidth and clientHeight + scrollbarHeight) is too small to be visible on screen
+        if (Math.max(ruleContext.offsetWidth, ruleContext.offsetHeight) < 30 || Math.min(ruleContext.offsetWidth, ruleContext.offsetHeight) < 15)  
            return null; 
 
         // ignore if both x and y scroll distances < element's horizontal/vertical padding
-        const padding = styles.paddingLeft;
-        if (nodeName === 'section') console.log("node=" + nodeName +", scrollWidth=" + ruleContext.scrollWidth+", clientWidth=" + ruleContext.clientWidth+", scrollHeight=" + ruleContext.scrollHeight+", clientHeight=" + ruleContext.clientHeight+", paddingLeft=" + styles.paddingLeft+", paddingRight=" + styles.paddingRight+", paddingTop=" + styles.paddingTop+", paddingBottom=" + styles.paddingBottom);
-        if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + parseInt(styles.paddingLeft + styles.paddingRight) 
-            && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ parseInt(styles.paddingTop + styles.paddingTop))
+        const padding_x = getPixelsFromStyle(styles.paddingLeft, ruleContext) + getPixelsFromStyle(styles.paddingRight, ruleContext);
+        const padding_y = getPixelsFromStyle(styles.paddingTop, ruleContext) + getPixelsFromStyle(styles.paddingBottom, ruleContext);
+        if (ruleContext.scrollWidth -  ruleContext.clientWidth < 1 + padding_x 
+            && ruleContext.scrollHeight -  ruleContext.clientHeight < 1+ padding_y)
             return null;
         
-        // pass iframe element does not have a tabindex attribute value that is a negative number
+        // pass iframe element has a tabindex attribute value that is not negative
         if (ruleContext.hasAttribute("tabindex") && parseInt(ruleContext.getAttribute("tabindex")) >= 0)
             return RulePass("pass_tabbable");
 

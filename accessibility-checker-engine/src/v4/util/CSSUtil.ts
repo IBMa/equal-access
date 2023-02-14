@@ -335,13 +335,32 @@ export function getRotationDegree(rotation_transform) {
 }
 
 /**
+ * Convert CSS style string values to pixels.
+ *
+ * @param value style value in string, such as 3rem, 230px etc.
+ * @param target element.
+ * @return value in pixels
+ */
+ export function getPixelsFromStyle(value, elem ) {
+    if (!value) return 0;
+    const regex = /(-?[\d.]+)([a-z%]*)/;
+    let parsed = value.trim().match(regex);
+    if (parsed[2] === '' || parsed[1] === 0) 
+       //no zero value without unit which is considered as error, so implicable
+       return 0;
+    
+    const pixels = convertValue2Pixels(parsed[2], parsed[1], elem);
+    return pixels === null ? pixels : parseFloat(pixels);
+}
+
+/**
  * Convert absolute CSS numerical values to pixels.
  *
  * @param unitValue in string
  * @param target element.
  * @return value in pixels
  */
- export function convertValue2Pixels(unit, unitValue, elem ) {
+export function convertValue2Pixels(unit, unitValue, elem ) {
     if (unitValue == 0) return 0;
     const supportedUnits = {
         // absolute unit
@@ -366,8 +385,6 @@ export function getRotationDegree(rotation_transform) {
     
     return null;
 }
-
-
  /*
  * Returns if the font for visible text of the element is defined by material icons
  *  
