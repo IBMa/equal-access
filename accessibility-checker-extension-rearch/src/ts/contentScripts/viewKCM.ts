@@ -13,3 +13,37 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 *****************************************************************************/
+
+import { getBGController } from "../background/backgroundController";
+import { getDevtoolsController } from "../devtools/devtoolsController";
+
+let bgController = getBGController();
+
+(async() => {
+    let settings = await bgController.getSettings();
+    console.log("[DEBUG:KCM Settings]",settings);
+    let myTabId = await bgController.getTabId()!;
+    console.log("[DEBUG:KCM TabId]", myTabId);
+    let devtoolsController = getDevtoolsController("remote", myTabId);
+
+    devtoolsController.addViewStateListener({
+        callback: async (viewState) => {
+            console.log("[DEBUG:KCM ViewState]", viewState.kcm);
+        },
+        callbackDest: {
+            type: "contentScript",
+            tabId: myTabId
+        }
+    });
+    
+    devtoolsController.addReportListener({
+        callback: async (report) => {
+            console.log("[DEBUG:KCM:Report]", report);
+        },
+        callbackDest: {
+            type: "contentScript",
+            tabId: myTabId
+        }
+    });
+})();
+
