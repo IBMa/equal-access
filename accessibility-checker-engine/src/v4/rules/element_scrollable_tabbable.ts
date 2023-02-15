@@ -45,10 +45,6 @@ export let element_scrollable_tabbable: Rule = {
     }],
     act: ["ossw9k"],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
-        // ignore if it's Firefox, not tested in embedded or any simulator
-        if (navigator.userAgent.indexOf("Firefox") > -1)
-            return null;
-
         const ruleContext = context["dom"].node as HTMLElement;
         //skip the check if the element is hidden or disabled
         if (!VisUtil.isNodeVisible(ruleContext) || RPTUtil.isNodeDisabled(ruleContext))
@@ -88,6 +84,10 @@ export let element_scrollable_tabbable: Rule = {
         const count = RPTUtil.getTabbableChildren(ruleContext);
         if (count > 0)
             return RulePass("pass_interactive");
+
+        // ignore in Firefox if no tabindex at all (not tested in embedded or any simulator)
+        if (!ruleContext.hasAttribute("tabindex") && navigator.userAgent.indexOf("Firefox") > -1)
+            return null;
 
         return RuleFail("fail_scrollable", [nodeName]);    
     }
