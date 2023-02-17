@@ -21,8 +21,10 @@
     "axios": "^0.27.2",
     "chromedriver": "*",
     "deep-diff": "^1.0.2",
+    "exceljs": "^4.3.0",
     "js-yaml": "^4.1.0",
     "puppeteer": "^13.0.0",
+    "string-hash": "^1.1.3",
     "uuid": "^8.3.2"
   },
   "repository": {
