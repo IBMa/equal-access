@@ -1,4 +1,12 @@
-<!-- The title of this PR will be used for release notes, please provide a relevant title -->
+<!-- The title of this PR will be used for release notes, please provide a relevant title. 
+The following format should be use for the release notes and PRs.
+
+Extension:   CI/CD Packages:    Rule updates:
+feature()    feature()           newrule(rude ID)
+fix()        fix()               fixrule()
+chore()      chore()             chore()
+
+Please review more info:                         https://github.com/IBMa/equal-access/wiki/Release-notes -->
 
 <!-- Specify what this PR is doing. Remove all that do not apply -->
 * New Rule(s): **List rule IDs**
