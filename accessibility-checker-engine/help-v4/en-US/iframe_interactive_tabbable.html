@@ -44,30 +44,27 @@
 
 ### Why is this important?
 
-Functionally, ARIA roles, states, and properties are analogous to CSS for assistive technologies. 
-For screen reader users, ARIA controls the rendering of their non-visual experience. 
-Incorrect ARIA misrepresents the visual experience, with potentially devastating effects on their corresponding non-visual experience. 
-Incorrect ARIA misrepresents the intended experience to _*all*_ assistive technology users, with potentially devastating effects.
+All users need to be able to read and interact with content and web applications even within any `<iframe>` elements.
+Setting the `tabindex` attribute of an `<iframe>` element to a negative value excludes its content from the tab-order. 
+For example, a `button` should be in the tab-order within an `iframe`, 
+but if the `<iframe>` itself is taken out of the tab-order, 
+the `button` is removed from the tab-order and effectively is keyboard inaccessible and blocks some users.
 
-Many HTML elements have native semantics that map, by default, to implied ARIA semantics (roles). 
-Other elements specified as having _*No corresponding role*_ do not have implicit ARIA semantics. 
-Although they still have meaning it's not provided by ARIA. 
-In order for assistive technologies to predictably represent the context and behavior of these elements (UI controls), 
-these implicit semantics should not be overridden as defined in the [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) specification. 
-It is therefore recommended that developers only add a role attribute to a semantically neutral and allowed HTML element such as a `<div>` or `<span>`, rather than incorrectly attempting to override the semantics of the detected element. 
-No ARIA is better than bad ARIA for assistive technology users.
+<!-- the "detected element" and the "unallowed semantics" will be displayed in the rule message above, so the "Why important" paragraph assumes the reader will understand it in context -->
 
-<!-- the "detected element" and the "unallowed semantics" will be displayed in the rule message above, so the paragraph assumes the reader will have understand that in context -->
+<!-- This is where the code snippet that triggered the rule is injected -->
 
-<!-- This is where the code snippet is injected -->
 <div id="locSnippet"></div>
 
 ### What to do
 
-* If a native HTML element fits the intended behavior, use that instead of adding ARIA markup;
-* **Or**, update the allowed attributes on the element using the guidance in the [Document conformance requirements for use of "ARIA" attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance) section of 
-the ARIA in HTML specification. 
-This reference provides details of allowed ARIA markup and when _*not*_ to use them on native HTML elements.
+* Ensure visible interactive elements are not excluded from the tab-order by adding a `tabindex` attribute value greater than or equal to `"0"` to  the `<iframe>` element
+* **Or**, if not intended to be interactable, remove or hide the content from within the `<iframe>` element
+
+Example of a tabbable `<iframe>`:
+```
+<iframe title="Inline example" srcdoc="<a href="http://xyz">link text</a>" tabindex="0" />
+```
 
 </script></mark-down>
 <!-- End main panel -->
@@ -80,14 +77,17 @@ This reference provides details of allowed ARIA markup and when _*not*_ to use t
 
 ### About this requirement
 
-* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)    
-* [ARIA in HTML - Document conformance requirements for use of ARIA attributes in HTML](https://www.w3.org/TR/html-aria/#docconformance)
-* [ARIA authoring practices guide](https://www.w3.org/WAI/ARIA/apg/)
+* [IBM 2.1.1 Keyboard](https://www.ibm.com/able/requirements/requirements/#2_1_1)
+* [ARIA practices - Developing a keyboard interface]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/)
+* [ARIA practices - The tab sequence]( https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#keyboardnavigationbetweencomponents(thetabsequence))
+* [HTML - The tabindex attribute]( https://html.spec.whatwg.org/multipage/interaction.html#the-tabindex-attribute)
+* [Verify phase – Test with a keyboard](https://www.ibm.com/able/toolkit/verify/manual/#test-with-a-keyboard)
 
 ### Who does this affect?
 
+* People who physically cannot use a pointing device
 * People using a screen reader, including blind, low vision and neurodivergent people
-* People using other assistive technologies that expose accessibility information
+* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software or on-screen keyboards
 
 </script></mark-down>
 <!-- End side panel -->
