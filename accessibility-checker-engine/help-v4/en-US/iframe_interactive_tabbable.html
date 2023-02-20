@@ -44,8 +44,8 @@
 
 ### Why is this important?
 
-All users need to be able to read and interact with content and web applications even within any `<iframe>` elements.
-Setting the `tabindex` attribute of an `<iframe>` element to a negative value excludes its content from the tab-order. 
+Many users need to be able to use the keyboard and keyboard-like emulators to navigate to and interact with content and web applications even within any `<iframe>` elements. 
+Setting the `tabindex` attribute on an `<iframe>` element to a negative value excludes its content from the tab-order. 
 For example, a `button` should be in the tab-order within an `iframe`, 
 but if the `<iframe>` itself is taken out of the tab-order, 
 the `button` is removed from the tab-order and effectively is keyboard inaccessible and blocks some users.
@@ -86,8 +86,8 @@ Example of a tabbable `<iframe>`:
 ### Who does this affect?
 
 * People who physically cannot use a pointing device
-* People using a screen reader, including blind, low vision and neurodivergent people
-* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software or on-screen keyboards
+* People using a screen reader, including blind, low vision, and neurodivergent people
+* People using a keyboard and alternate keyboards and input devices that act as keyboard emulators like speech input software and on-screen keyboards
 
 </script></mark-down>
 <!-- End side panel -->
