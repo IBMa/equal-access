@@ -29,9 +29,9 @@ export let iframe_interactive_tabbable: Rule = {
     },
     messages: {
         "en-US": {
-            "group": "Iframe with interactive content should not be excluded from focus order using tabindex",
-            "pass": "The iframe with interactive content is not excluded from the focus order using tabindex",
-            "fail_invalid": "The <iframe> with interactive content is excluded from focus order using tabindex"
+            "group": "Iframe with interactive content should not be excluded from tab order using tabindex",
+            "pass": "The iframe with interactive content is not excluded from the tab order using tabindex",
+            "fail_invalid": "The <iframe> with interactive content is excluded from tab order using tabindex"
         }
     },
     rulesets: [{
