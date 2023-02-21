@@ -1107,7 +1107,7 @@ function redraw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: bo
             }
         }
 
-    }, 1)
+    }, 1);
 }
 
 function makeCircleSmall(x1: number, y1: number, circleNumber: string, radius: number, xpath: string, errorStatus: boolean) {
