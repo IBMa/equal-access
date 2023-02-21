@@ -105,6 +105,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 <Column sm={3} md={6} lg={6}>
                     <Button 
                         size="sm"
+                        style={{minWidth: "140px"}}
                         disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
                         renderIcon={Renew} 
                         onClick={() => { 
@@ -115,7 +116,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                 <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
                     <Button
                         hasIconOnly
-                        renderIcon={this.state.viewState.kcm ? Keyboard : KeyboardOff} 
+                        renderIcon={this.state.viewState.kcm ? KeyboardOff : Keyboard} 
                         disabled={!this.state.reportContent}
                         iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                         onClick={async () => {

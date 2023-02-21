@@ -35,6 +35,7 @@ import "../styles/index.scss";
 import "./devToolsApp.scss";
 import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
+import HelpScreen from "./components/helpScreen";
 
 interface DevToolsAppProps {
 }
@@ -70,6 +71,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
 
         let secondaryPanel = <>
             {this.state.secondaryView === "splash" && <SplashScreen />}
+            {this.state.secondaryView === "help" && <HelpScreen />}
         </>;
 
         return <>
@@ -80,7 +82,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     </div>
                 </Column>
                 <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                    <div style={{ width: "calc(100% - 1rem", padding: "1rem 0rem" }}>
+                    <div style={{ width: "calc(100% - 1rem", padding: "0rem", height: "100%" }}>
                         {secondaryPanel}
                     </div>
                 </Column>
@@ -94,6 +96,9 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             onClose={() => {
                                 this.devtoolsAppController.closeSecondary();
                             }}
+                            style={{height: "100%"}}
+                            isFullWidth={true}
+                            size="lg"
                         >
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
@@ -109,7 +114,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                     >Back to list view</Button>
                                 </div>
                             </>}
-                            <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem"}}>
+                            <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
                                 {secondaryPanel}
                             </ModalBody>
                         </ComposedModal>

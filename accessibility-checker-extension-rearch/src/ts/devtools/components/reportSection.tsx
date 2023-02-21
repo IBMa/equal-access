@@ -16,11 +16,55 @@
 
 import * as React from 'react';
 import { getDevtoolsController } from '../devtoolsController';
-import { IReport } from '../../interfaces/interfaces';
+import { IIssue, IReport } from '../../interfaces/interfaces';
 import { getTabId } from '../../util/tabId';
 import { Column, Grid } from "@carbon/react";
+import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
+import { UtilIssue } from '../../util/UtilIssue';
 
 let devtoolsController = getDevtoolsController();
+
+class RoleReport extends React.Component<ReportSectionState> {
+    render() {
+        let data : IRowGroup[] | null = null;
+        if (this.props.report && this.props.report.results) {
+            data = [];
+            let curGroup : IRowGroup | null = null;
+            let issues : IIssue[] = [];
+            for (const issue of this.props.report.results) {
+                issues.push(issue);
+            }
+
+            for (const result of issues) {
+                let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
+                if (!curGroup || thisLabel !== curGroup.label) {
+                    if (curGroup) {
+                        curGroup!.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
+                    }
+                    curGroup = {
+                        id: thisLabel+" "+data.length,
+                        label: thisLabel,
+                        children: [result]
+                    }
+                    data.push(curGroup);
+                } else {
+                    curGroup.children.push(result);
+                }
+            }
+            if (curGroup) {
+                curGroup!.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
+            }
+        }
+        return <ReportTreeGrid 
+            emptyLabel="No report"
+            headers={[
+                { key: "issueCount", label: "Issues" },
+                { key: "label", label: "Element Roles" }
+            ]}
+            data={data}
+        />
+    }
+}
 
 interface ReportSectionState {
     report: IReport | null
@@ -34,6 +78,7 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener({
             callback: async (report) => {
+                report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
                 this.setState( { report });
             },
             callbackDest: {
@@ -42,6 +87,7 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
             }
         });
         let report = await devtoolsController.getReport();
+        report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
         this.setState( { report });
     }
 
@@ -49,18 +95,14 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
         return (<>
             <Grid className="reportFilterSection">
                 <Column sm={4} md={8} lg={8}>
-                    Report filters....
+                    <div style={{margin: "1rem 0rem" }}>Report filters....</div>
                 </Column>
             </Grid>
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1"}}>
                 <Column sm={4} md={8} lg={8}>
-                    {this.state.report && JSON.stringify(this.state.report.results, null, 2).split("\n").map(line => <>{line}<br /></>)}
-                    {!this.state.report && <>
-                        No report
-                    </>}
+                    <RoleReport report={this.state.report} />
                 </Column>
             </Grid>
-            </>
-        );
+        </>);
     }
 }

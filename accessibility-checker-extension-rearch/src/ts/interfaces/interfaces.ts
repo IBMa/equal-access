@@ -65,9 +65,14 @@ export interface IMessage<T> {
     blob_url?: string
 }
 
+export type IssueValue = [ 
+    "VIOLATION" | "RECOMMENDATION"| "INFORMATION", 
+    "FAIL" | "POTENTIAL" | "MANUAL" | "PASS" 
+];
+
 export interface IIssue {
     ruleId: string
-    value: [string, string]
+    value: IssueValue
     node: Node
     path: {
         dom: string

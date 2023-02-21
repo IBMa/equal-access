@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import { getBGController, TabChangeType } from "../background/backgroundController";
-import { IMessage, IReport } from "../interfaces/interfaces";
+import { IIssue, IMessage, IReport } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
@@ -24,7 +24,8 @@ let sessionStorage : {
     storeReports: boolean
     storedReports: IReport[]
     lastReport: IReport | null
-    lastElement: HTMLElement | null
+    lastElementPath: string | null
+    lastIssue: IIssue | null
     viewState: ViewState
 } | null = null;
 
@@ -121,6 +122,63 @@ export class DevtoolsController extends Controller {
     public async addViewStateListener(listener: ListenerType<ViewState>) {
         this.addEventListener(listener, `DT_onViewState`);
     }
+
+    /**
+     * Set selected issue
+     */
+    public async setSelectedIssue(issue: IIssue | null) : Promise<void> {
+        return this.hook("setSelectedIssue", issue, async () => {
+            if (issue) {
+                sessionStorage!.lastIssue = issue;
+                setTimeout(() => {
+                    this.fireEvent("DT_onSelectedIssue", issue);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Set report storing
+     */
+    public async getSelectedIssue() : Promise<IIssue | null> {
+        return this.hook("getSelectedIssue", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.lastIssue;
+        });
+    }
+    
+    public async addSelectedIssueListener(listener: ListenerType<IIssue>) {
+        this.addEventListener(listener, `DT_onSelectedIssue`);
+    }
+
+    /**
+     * Set selected issue
+     */
+    public async setSelectedElementPath(path: string | null) : Promise<void> {
+        return this.hook("setSelectedElementPath", path, async () => {
+            if (path) {
+                sessionStorage!.lastElementPath = path;
+                setTimeout(() => {
+                    this.fireEvent("DT_onSelectedElementPath", path);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Set report storing
+     */
+    public async getSelectedElementPath() : Promise<string | null> {
+        return this.hook("getSelectedElementPath", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.lastElementPath;
+        });
+    }
+    
+    public async addSelectedElementPathListener(listener: ListenerType<string>) {
+        this.addEventListener(listener, `DT_onSelectedElementPath`);
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -132,7 +190,8 @@ export class DevtoolsController extends Controller {
                 storeReports: false,
                 storedReports: [],
                 lastReport: null,
-                lastElement: null,
+                lastElementPath: null,
+                lastIssue: null,
                 viewState: {
                     kcm: false
                 }
@@ -147,7 +206,11 @@ export class DevtoolsController extends Controller {
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
                 "DT_getReport": async () => self.getReport(),
                 "DT_getViewState": async () => self.getViewState(),
-                "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content)
+                "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
+                "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
+                "DT_getSelectedIssue": async () => self.getSelectedIssue(),
+                "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content),
+                "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
             }
 
             // Hook the above definitions
@@ -170,7 +233,7 @@ export class DevtoolsController extends Controller {
                 },
             });
 
-            ["DT_onViewState", "DT_onReport"].forEach((s: string) => {
+            ["DT_onViewState", "DT_onReport", "DT_onSelectedElementPath", "DT_onSelectedIssue"].forEach((s: string) => {
                 this.addEventListener(
                     { 
                         callback: async (content: any) => {

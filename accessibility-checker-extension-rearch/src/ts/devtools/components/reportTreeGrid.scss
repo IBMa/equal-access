@@ -1,0 +1,57 @@
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/colors' as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+
+.reportTreeGrid {
+    margin-top: .5rem;
+    .gridHeader {
+        @include type-style('label-01');
+        font-weight: 600;
+        background-color: $gray-20;
+        padding: .5rem 0rem;
+    }
+    .gridBody {
+        @include type-style('label-01');
+        padding: .5rem 0rem;
+        border-bottom: solid $gray-20 1px;
+
+        svg {
+            vertical-align: bottom;
+        }
+
+        &.selectedDescendant {
+            background-color: #e8daff;
+            border-bottom: solid #888 1px;
+        }
+        &.selectedNode {
+            background-color: #be95ff;
+            border-bottom: solid #888 1px;
+        }
+        &.selectedIssue {
+            background-color: #be95ff;
+            border-left: solid #000 2px;
+            border-right: solid #000 2px;
+            outline: solid #000 2px;
+        }
+        .levelIcon {
+            vertical-align: bottom;
+        }
+        .label {
+            text-indent: -1rem;
+            padding-left: 1rem;
+        }
+    }
+    .gridChild {
+        text-indent: -1rem;
+        padding-left: 2.5rem;
+        * {
+            text-indent: 0rem;
+        }
+    }
+    .hideLg {
+        @include breakpoint('lg') {
+            display: none;
+        }
+
+    }
+}

@@ -18,4 +18,16 @@ body {
     @include breakpoint('lg') {
         display:none;
     }
+    .cds--modal-container {
+        height:100%;
+        .cds--modal-content {
+            padding-top: 0rem;
+
+            .helpScreen {
+                padding-right: 0rem;
+                padding-left: 0rem;
+            }
+        }
+    }
+
 }
