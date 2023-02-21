@@ -3,7 +3,6 @@
 @use '@carbon/styles/scss/breakpoint'as *;
 
 .reportTreeGrid {
-    margin-top: .5rem;
     .gridHeader {
         @include type-style('label-01');
         font-weight: 600;
@@ -46,6 +45,9 @@
         padding-left: 2.5rem;
         * {
             text-indent: 0rem;
+        }
+        a {
+            color: $gray-90;
         }
     }
     .hideLg {

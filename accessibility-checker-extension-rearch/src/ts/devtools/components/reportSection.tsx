@@ -16,7 +16,7 @@
 
 import * as React from 'react';
 import { getDevtoolsController } from '../devtoolsController';
-import { IIssue, IReport } from '../../interfaces/interfaces';
+import { IReport } from '../../interfaces/interfaces';
 import { getTabId } from '../../util/tabId';
 import { Column, Grid } from "@carbon/react";
 import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
@@ -29,18 +29,11 @@ class RoleReport extends React.Component<ReportSectionState> {
         let data : IRowGroup[] | null = null;
         if (this.props.report && this.props.report.results) {
             data = [];
-            let curGroup : IRowGroup | null = null;
-            let issues : IIssue[] = [];
-            for (const issue of this.props.report.results) {
-                issues.push(issue);
-            }
-
-            for (const result of issues) {
-                let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
-                if (!curGroup || thisLabel !== curGroup.label) {
-                    if (curGroup) {
-                        curGroup!.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
-                    }
+            for (const result of this.props.report.results) {
+                // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
+                let thisLabel = result.path.aria.replace(/\//g, " /");
+                let curGroup = data.find(group => group.label === thisLabel);
+                if (!curGroup) {
                     curGroup = {
                         id: thisLabel+" "+data.length,
                         label: thisLabel,
@@ -51,8 +44,9 @@ class RoleReport extends React.Component<ReportSectionState> {
                     curGroup.children.push(result);
                 }
             }
-            if (curGroup) {
-                curGroup!.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
+            data.sort((groupA, groupB) => groupA.label.localeCompare(groupB.label));
+            for (const group of data) {
+                group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
         return <ReportTreeGrid 
@@ -87,8 +81,10 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
             }
         });
         let report = await devtoolsController.getReport();
-        report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-        this.setState( { report });
+        if (report) {
+            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
+            this.setState( { report });
+        }
     }
 
     render() {

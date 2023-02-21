@@ -73,6 +73,15 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         });
         let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
+        if (this.props.data) {
+           this.setState({expandedGroups: this.props.data?.map(group => group.label)});
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<ReportTreeGridProps>, _prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
+        if (!prevProps.data && !!this.props.data) {
+            this.setState({expandedGroups: this.props.data?.map(group => group.id)});
+        }
     }
 
     setIssue(issue: IIssue) {
@@ -181,7 +190,8 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                                 {UtilIssue.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <Link 
                                     className="hideLg"
                                     inline={true} 
-                                    size="sm" 
+                                    size="sm"
+                                    role="link"
                                     onClick={() => {
                                         ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
                                         ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
