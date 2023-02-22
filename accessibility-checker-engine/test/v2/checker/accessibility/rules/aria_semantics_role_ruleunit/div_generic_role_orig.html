@@ -18,30 +18,43 @@
     </head>    
     <body>
         <main> 
-            <div>generic content without role</div>
-            <div role='presentation'>generic content with presentation role</div>
-            <div aria-live="polite"> content with a global aria prop </div>
+            <div id="0">generic content without role</div>
+            <div role='presentation' id="1">generic content with presentation role</div>
+            <div id="2" aria-describedby="comment"> content with global aria describedby</div>
+            <div id="3" aria-roledescription="roledescription"> content with global aria roledescription</div>
+            <div id="4" aria-live="polite"> content with a global aria prop </div>
             <hr>
 
             <div hidden id="comment">generic content</div>    
-            <div aria-labelledby="comment"> content with aria labelledby</div>
+            <div id="5" aria-labelledby="comment"> content with aria labelledby</div>
+            <div id="6" aria-label="label"> content with global aria label</div>
+            <div id="7" title="title"> content with title</div>
             <hr>
 
             <div id="8" tabindex='0'>tabbable content without role</div>
             <div id='9' tabindex='0' role='presentation' id="">tabbable content with presentation role</div>
+            <div id="10" tabindex='0' aria-describedby="comment"> tabbable content with global aria describedby</div>
+            <div id="11" tabindex='0' aria-roledescription="roledescription"> tabbable content with global aria roledescription</div>
             <div id="12" tabindex='0' aria-live="polite"> tabbable content with a global aria prop </div>
             <hr>
 
+            <div id="8" onclick="myfuntion()">clickable content without role</div>
+            <div id='9' onclick="myfuntion()" role='presentation' id="">clickable content with presentation role</div>
+            <div id="10" onclick="myfuntion()" aria-describedby="comment"> clickable content with global aria describedby</div>
+            <div id="11" onclick="myfuntion()" aria-roledescription="roledescription"> clickable content with global aria roledescription</div>
+            <div id="12" onclick="myfuntion()" aria-live="polite"> clickable content with a global aria prop </div>
+            <hr>
+
             <div role="list">
-                <div aria-live="polite">
-                    <div role="listitem"><div>List item 1</div></div>
+                <div>
+                    <div role="listitem">List item 1</div>
                     <div role="listitem">List item 2</div>
                 </div>
             </div>
             <hr>
 
             <div role="list">
-                <div style="display:inline;">
+                <div aria-live="polite">
                     <div role="listitem">List Item with aria-live 1</div>
                     <div role="listitem">List Item with aria-live 2</div>
                 </div>
@@ -94,7 +107,6 @@
                 <button>Play</button>
                 <button>RePlay</button>
                 <button>Cancel</button>
-                <div>after button content</div>
             </div></div>
             <hr>
 
