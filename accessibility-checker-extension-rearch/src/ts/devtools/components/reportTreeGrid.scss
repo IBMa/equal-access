@@ -26,12 +26,10 @@
             background-color: #be95ff;
             border-bottom: solid #888 1px;
         }
-        &.selectedIssue {
-            background-color: #be95ff;
-            border-left: solid #000 2px;
-            border-right: solid #000 2px;
-            outline: solid #000 2px;
-        }
+
+        // &.selectedIssue {
+        //     background-color: #be95ff;
+        // }
         .levelIcon {
             vertical-align: bottom;
         }
@@ -41,8 +39,8 @@
         }
     }
     .gridChild {
-        text-indent: -1rem;
-        padding-left: 2.5rem;
+        text-indent: -1.25rem;
+        padding-left: 2.75rem;
         * {
             text-indent: 0rem;
         }
@@ -56,4 +54,22 @@
         }
 
     }
+    &:focus-within {
+        outline-width: 0px;
+
+        .gridBody {
+            &.focused {
+                border-left: solid $black 2px;
+                border-right: solid $black 2px;
+                outline: solid $black 2px;
+                .issueCount {
+                    margin-left: calc(1rem - 2px);
+                }
+                .gridChild {
+                    padding-left: calc(2.75rem - 2px);
+                }    
+            }
+        }
+    }
+    
 }

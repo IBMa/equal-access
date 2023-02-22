@@ -37,7 +37,10 @@ import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
 import HelpScreen from "./components/helpScreen";
 
+export type ePanel = "main" | "elements";
+
 interface DevToolsAppProps {
+    panel: ePanel;
 }
 
 interface DevToolsAppState {
@@ -60,13 +63,16 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         this.devtoolsAppController.addSecondaryViewListener((view: eSecondaryView) => {
             this.setState({secondaryView: view});
         })
+        if (this.props.panel === "elements") {
+            this.devtoolsAppController.hookSelectionChange();
+        }
     }
 
     render() {
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
-            <ReportSection />
+            <ReportSection panel={this.props.panel} />
         </div>
 
         let secondaryPanel = <>
@@ -99,6 +105,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             style={{height: "100%"}}
                             isFullWidth={true}
                             size="lg"
+                            selectorPrimaryFocus=".secondaryDialog button"
                         >
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
@@ -107,6 +114,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                     padding: "1rem"
                                 }}>
                                     <Button 
+                                        id="backToListViewButton"
                                         size="sm"
                                         onClick={() => {
                                             this.devtoolsAppController.closeSecondary();

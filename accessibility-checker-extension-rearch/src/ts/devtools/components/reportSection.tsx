@@ -21,50 +21,56 @@ import { getTabId } from '../../util/tabId';
 import { Column, Grid } from "@carbon/react";
 import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
 import { UtilIssue } from '../../util/UtilIssue';
+import { ePanel } from '../devToolsApp';
 
 let devtoolsController = getDevtoolsController();
 
-class RoleReport extends React.Component<ReportSectionState> {
+class RoleReport extends React.Component<ReportSectionProps & ReportSectionState> {
     render() {
-        let data : IRowGroup[] | null = null;
+        let rowData : IRowGroup[] | null = null;
         if (this.props.report && this.props.report.results) {
-            data = [];
+            rowData = [];
             for (const result of this.props.report.results) {
                 // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
                 let thisLabel = result.path.aria.replace(/\//g, " /");
-                let curGroup = data.find(group => group.label === thisLabel);
+                let curGroup = rowData.find(group => group.label === thisLabel);
                 if (!curGroup) {
                     curGroup = {
-                        id: thisLabel+" "+data.length,
+                        id: ReportTreeGrid.cleanId(thisLabel+" "+rowData.length),
                         label: thisLabel,
                         children: [result]
                     }
-                    data.push(curGroup);
+                    rowData.push(curGroup);
                 } else {
                     curGroup.children.push(result);
                 }
             }
-            data.sort((groupA, groupB) => groupA.label.localeCompare(groupB.label));
-            for (const group of data) {
+            rowData.sort((groupA, groupB) => groupA.label.localeCompare(groupB.label));
+            for (const group of rowData) {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
         return <ReportTreeGrid 
+            panel={this.props.panel}
             emptyLabel="No report"
             headers={[
                 { key: "issueCount", label: "Issues" },
                 { key: "label", label: "Element Roles" }
             ]}
-            data={data}
+            rowData={rowData}
         />
     }
+}
+
+interface ReportSectionProps {
+    panel: ePanel
 }
 
 interface ReportSectionState {
     report: IReport | null
 }
 
-export class ReportSection extends React.Component<{}, ReportSectionState> {
+export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
     state : ReportSectionState = {
         report: null
     }
@@ -96,7 +102,7 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
             </Grid>
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1"}}>
                 <Column sm={4} md={8} lg={8}>
-                    <RoleReport report={this.state.report} />
+                    <RoleReport report={this.state.report} panel={this.props.panel} />
                 </Column>
             </Grid>
         </>);

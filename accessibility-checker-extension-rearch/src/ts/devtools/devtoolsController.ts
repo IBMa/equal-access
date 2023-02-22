@@ -77,6 +77,8 @@ export class DevtoolsController extends Controller {
             sessionStorage!.lastReport = report;
             setTimeout(() => {
                 this.fireEvent("DT_onReport", report);
+                console.log(report);
+                this.setSelectedElementPath("/html[1]");
             }, 0);
         });
     }
@@ -132,6 +134,7 @@ export class DevtoolsController extends Controller {
                 sessionStorage!.lastIssue = issue;
                 setTimeout(() => {
                     this.fireEvent("DT_onSelectedIssue", issue);
+                    this.setSelectedElementPath(issue.path.dom);
                 }, 0);
             }
         });
@@ -179,6 +182,87 @@ export class DevtoolsController extends Controller {
         this.addEventListener(listener, `DT_onSelectedElementPath`);
     }
     
+    /**
+     * Focus an element in the elements panel
+     * @param path 
+     * @param focusElem If specified, we will focus this element after the path is inspected
+     */
+    public async inspectPath(path: string, focusElem?: HTMLElement | null) {
+        let script = `
+            function lookup(doc, xpath) {
+                if (doc.nodeType === 11) {
+                    let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
+                    let element = doc.querySelector(selector);
+                    return element;
+                } else {
+                    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                    let element = nodes.iterateNext();
+                    if (element) {
+                        return element;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            function selectPath(srcPath) {
+                let doc = document;
+                let element = null;
+                while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
+                    if (srcPath.includes("iframe")) {
+                        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+                        let iframe = lookup(doc, parts[1]);
+                        element = iframe || element;
+                        if (iframe && iframe.contentDocument) {
+                            doc = iframe.contentDocument;
+                            srcPath = parts[2];
+                        } else {
+                            srcPath = null;
+                        }
+                    } else if (srcPath.includes("#document-fragment")) {
+                        let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
+                        let fragment = lookup(doc, parts[1]);
+                        element = fragment || element;
+                        if (fragment && fragment.shadowRoot) {
+                            doc = fragment.shadowRoot;
+                            srcPath = parts[2];
+                        } else {
+                            srcPath = null;
+                        }
+                    }
+                }
+                if (srcPath) {
+                    element = lookup(doc, srcPath) || element;
+                }
+                if (element) {
+                    inspect(element);
+                    var elementRect = element.getBoundingClientRect();
+                    var absoluteElementTop = elementRect.top + window.pageYOffset;
+                    var middle = absoluteElementTop - 100;
+                    element.ownerDocument.defaultView.scrollTo({
+                        top: middle,
+                        behavior: 'smooth'
+                    });
+                    return true;
+                }
+                return;
+            }
+            selectPath("${path}");
+        `;
+        chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
+            if (isException) {
+                console.error(isException);
+            }
+            if (!result) {
+                console.log('Could not select element, it may have moved');
+            } else {
+                if (focusElem) {
+                    setTimeout(() => {
+                        focusElem?.focus();
+                    }, 100);
+                }
+            }
+        });
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -237,14 +321,18 @@ export class DevtoolsController extends Controller {
                 this.addEventListener(
                     { 
                         callback: async (content: any) => {
-                            CommonMessaging.send({
-                                type: s,
-                                dest: {
-                                    type: "contentScript",
-                                    tabId: (this.ctrlDest as any).tabId
-                                },
-                                content: content
-                            });
+                            try {
+                                CommonMessaging.send({
+                                    type: s,
+                                    dest: {
+                                        type: "contentScript",
+                                        tabId: (this.ctrlDest as any).tabId
+                                    },
+                                    content: content
+                                });
+                            } catch (err) {
+                                console.error(err);
+                            }
                         },
                         callbackDest: {
                             type: "contentScript",
