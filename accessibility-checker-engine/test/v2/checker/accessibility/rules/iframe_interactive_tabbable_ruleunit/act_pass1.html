@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>test case</title>
+    </head>
+    <body>
+       <main>
+        <iframe srcdoc="<a href='/'>Home</a>"></iframe>
+       </main> 
+    </main>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["iframe_interactive_tabbable"],
+            results: [  
+            {
+            "ruleId": "iframe_interactive_tabbable",
+            "value": [
+              "INFORMATION",
+              "PASS"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/main[1]/iframe[1]",
+              "aria": "/document[1]/main[1]"
+            },
+            "reasonId": "pass",
+            "message": "The iframe with interactive content is not excluded from the tab order using tabindex",
+            "messageArgs": [],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+</body>
+
+</html>   
