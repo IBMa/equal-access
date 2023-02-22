@@ -1,0 +1,75 @@
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/colors' as *;
+@use '@carbon/styles/scss/breakpoint'as *;
+
+.reportTreeGrid {
+    .gridHeader {
+        @include type-style('label-01');
+        font-weight: 600;
+        background-color: $gray-20;
+        padding: .5rem 0rem;
+    }
+    .gridBody {
+        @include type-style('label-01');
+        padding: .5rem 0rem;
+        border-bottom: solid $gray-20 1px;
+
+        svg {
+            vertical-align: bottom;
+        }
+
+        &.selectedDescendant {
+            background-color: #e8daff;
+            border-bottom: solid #888 1px;
+        }
+        &.selectedNode {
+            background-color: #be95ff;
+            border-bottom: solid #888 1px;
+        }
+
+        // &.selectedIssue {
+        //     background-color: #be95ff;
+        // }
+        .levelIcon {
+            vertical-align: bottom;
+        }
+        .label {
+            text-indent: -1rem;
+            padding-left: 1rem;
+        }
+    }
+    .gridChild {
+        text-indent: -1.25rem;
+        padding-left: 2.75rem;
+        * {
+            text-indent: 0rem;
+        }
+        a {
+            color: $gray-90;
+        }
+    }
+    .hideLg {
+        @include breakpoint('lg') {
+            display: none;
+        }
+
+    }
+    &:focus-within {
+        outline-width: 0px;
+
+        .gridBody {
+            &.focused {
+                border-left: solid $black 2px;
+                border-right: solid $black 2px;
+                outline: solid $black 2px;
+                .issueCount {
+                    margin-left: calc(1rem - 2px);
+                }
+                .gridChild {
+                    padding-left: calc(2.75rem - 2px);
+                }    
+            }
+        }
+    }
+    
+}

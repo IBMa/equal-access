@@ -35,8 +35,12 @@ import "../styles/index.scss";
 import "./devToolsApp.scss";
 import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
+import HelpScreen from "./components/helpScreen";
+
+export type ePanel = "main" | "elements";
 
 interface DevToolsAppProps {
+    panel: ePanel;
 }
 
 interface DevToolsAppState {
@@ -59,17 +63,21 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
         this.devtoolsAppController.addSecondaryViewListener((view: eSecondaryView) => {
             this.setState({secondaryView: view});
         })
+        if (this.props.panel === "elements") {
+            this.devtoolsAppController.hookSelectionChange();
+        }
     }
 
     render() {
         let primaryPanel = <div style={{display: "flex", flexFlow: "column", height: "100%"}}>
             <HeaderSection />
             <ScanSection />
-            <ReportSection />
+            <ReportSection panel={this.props.panel} />
         </div>
 
         let secondaryPanel = <>
             {this.state.secondaryView === "splash" && <SplashScreen />}
+            {this.state.secondaryView === "help" && <HelpScreen />}
         </>;
 
         return <>
@@ -80,7 +88,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                     </div>
                 </Column>
                 <Column sm={0} md={0} lg={8} className="secondaryColumn" style={{margin: "0rem", overflowY: "auto", maxHeight: "100%" }}>
-                    <div style={{ width: "calc(100% - 1rem", padding: "1rem 0rem" }}>
+                    <div style={{ width: "calc(100% - 1rem", padding: "0rem", height: "100%" }}>
                         {secondaryPanel}
                     </div>
                 </Column>
@@ -94,6 +102,10 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                             onClose={() => {
                                 this.devtoolsAppController.closeSecondary();
                             }}
+                            style={{height: "100%"}}
+                            isFullWidth={true}
+                            size="lg"
+                            selectorPrimaryFocus=".secondaryDialog button"
                         >
                             { Config.SECONDARY_MODAL && <ModalHeader /> }
                             { !Config.SECONDARY_MODAL && <>
@@ -102,6 +114,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                     padding: "1rem"
                                 }}>
                                     <Button 
+                                        id="backToListViewButton"
                                         size="sm"
                                         onClick={() => {
                                             this.devtoolsAppController.closeSecondary();
@@ -109,7 +122,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                     >Back to list view</Button>
                                 </div>
                             </>}
-                            <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem"}}>
+                            <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
                                 {secondaryPanel}
                             </ModalBody>
                         </ComposedModal>
