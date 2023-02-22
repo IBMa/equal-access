@@ -18,10 +18,10 @@ export class ACEngineManager {
                 try {
                     var ace_backup_in_ibma;
                     if ('undefined' !== typeof(ace)) {
-                        if (!ace || !ace.Checker) 
+                        if (!ace || !ace.Checker)
                             ace_backup_in_ibma = ace;
-                        ace = null; 
-                    } 
+                        ace = null;
+                    }
                     if ('undefined' === typeof (ace) || ace === null) {
                         return new Promise<void>((resolve, reject) => {
                             let script = document.createElement('script');
@@ -32,7 +32,7 @@ export class ACEngineManager {
                                 globalThis.ace_ibma = ace;
                                 if ('undefined' !== typeof(ace)) {
                                     ace = ace_backup_in_ibma;
-                                }    
+                                }
                                 resolve();
                             });
                             let heads = document.getElementsByTagName('head');
@@ -52,7 +52,7 @@ export class ACEngineManager {
                 let browser = content;
                 // Selenium
                 let scriptStr =
-`let cb = arguments[arguments.length - 1];
+                    `let cb = arguments[arguments.length - 1];
 try {
     var ace_backup_in_ibma;
         if ('undefined' !== typeof(ace)) {
@@ -109,51 +109,55 @@ try {
         }
     }
 
+    static localLoadPromise = null;
     static async loadEngineLocal() {
         if (globalThis.ace_ibma) {
             return Promise.resolve();
         }
-        let config = await ACConfigManager.getConfigUnsupported();
-        const response = await axios.get(`${config.rulePack}/ace-node.js`);
-        const data = await response.data;
-        let engineDir = path.join(config.cacheFolder, "engine");
-        if (!fs.existsSync(engineDir)) {
-            fs.mkdirSync(engineDir, { recursive: true });
-        }
-        await new Promise<void>((resolve, reject) => {
-            let nodePath = path.join(engineDir, "ace-node")
-            fs.writeFile(nodePath+".js", data, function (err) {
-                try {
-                    if(nodePath.charAt(0) !== '/'){
-                        nodePath = "../../" + nodePath;
-                    }
-                    err && console.log(err);
-                    var ace_ibma = require(nodePath);
-                    checker = new ace_ibma.Checker();
-                } catch (e) {
-                    console.log(e);
-                    return reject(e);
+        if (!ACEngineManager.localLoadPromise) {
+            ACEngineManager.localLoadPromise = new Promise<void>(async (resolve, reject) => {
+                let config = await ACConfigManager.getConfigUnsupported();
+                const response = await axios.get(`${config.rulePack}/ace-node.js`);
+                const data = await response.data;
+                let engineDir = path.join(config.cacheFolder, "engine");
+                if (!fs.existsSync(engineDir)) {
+                    fs.mkdirSync(engineDir, { recursive: true });
                 }
-                resolve();
+                let nodePath = path.join(engineDir, "ace-node")
+                fs.writeFile(nodePath + ".js", data, function (err) {
+                    try {
+                        if (nodePath.charAt(0) !== '/') {
+                            nodePath = "../../" + nodePath;
+                        }
+                        err && console.log(err);
+                        var ace_ibma = require(nodePath);
+                        checker = new ace_ibma.Checker();
+                    } catch (e) {
+                        console.log(e);
+                        return reject(e);
+                    }
+                    resolve();
+                });
             });
-        });
+        }
+        return this.localLoadPromise;
     }
 
     static isPuppeteer(content) {
         if (content && content.constructor) {
-            return !!content.constructor.toString().match(/Function: Page/) 
+            return !!content.constructor.toString().match(/Function: Page/)
                 || content.constructor.toString().includes("Puppeteer");
         }
         return false;
     }
-    
+
     static isPlaywright(content) {
         if (content && content.constructor) {
             return !!content.constructor.toString().match(/class Page /);
         }
         return false;
     }
-    
+
     static isSelenium(content) {
         if (content && content.constructor) {
             return content.constructor.toString().indexOf("Driver") !== -1 ||
