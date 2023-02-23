@@ -3,7 +3,7 @@ The following formats should be use for the release notes and PRs.
 
 **Rule/Engine updates:**
 newrule(`ruleid`): Title of PR
-fixrule(`ruleid`): Title of PR
+fixrule(`ruleid`): Title of PRls
 feature(engine): Title of PR
 fix(engine): Title of PR
 chore(`ruleid`|engine): Title of PR
