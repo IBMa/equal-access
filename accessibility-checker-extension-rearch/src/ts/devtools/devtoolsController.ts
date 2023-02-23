@@ -77,7 +77,6 @@ export class DevtoolsController extends Controller {
             sessionStorage!.lastReport = report;
             setTimeout(() => {
                 this.fireEvent("DT_onReport", report);
-                console.log(report);
                 this.setSelectedElementPath("/html[1]");
             }, 0);
         });

@@ -36,7 +36,7 @@ class RoleReport extends React.Component<ReportSectionProps & ReportSectionState
                 let curGroup = rowData.find(group => group.label === thisLabel);
                 if (!curGroup) {
                     curGroup = {
-                        id: ReportTreeGrid.cleanId(thisLabel+" "+rowData.length),
+                        id: ReportTreeGrid.cleanId(thisLabel),
                         label: thisLabel,
                         children: [result]
                     }

@@ -17,7 +17,6 @@ import * as React from 'react';
 
 import {
     Column,
-    Link,
     Grid
 } from "@carbon/react";
 
@@ -66,14 +65,14 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
      * @returns 
      */
     public static cleanId(id: string) {
-        return id.trim().replace(/ /g, "_");
+        return id.trim().replace(/ /g, "").replace(/[[\]]/g, "").replace(/\//g, ":").replace(/[^A-Za-z0-9\-_:.]/g, "_");
     }
 
     public static getRowId(group:IRowGroup, child?: IIssue) {
         if (!child) {
             return group.id;
         } else {
-            return `${group.id}^${ReportTreeGrid.cleanId(child.path.dom)}_${child.ruleId}_${child.reasonId}`;
+            return `${group.id}:::::${ReportTreeGrid.cleanId(child.path.dom)}_${child.ruleId}_${child.reasonId}`;
         }
     }
 
@@ -127,6 +126,16 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                         block: 'nearest',
                         inline: 'start'
                     });
+                    if (this.state.tabRowId === this.props.rowData![0].id) {
+                        setTimeout(() => {
+                            this.treeGridRef.current!.firstElementChild!.scrollIntoView({
+                                // @ts-ignore
+                                block: 'nearest',
+                                inline: 'start',
+                                behavior: 'smooth'
+                            });
+                        }, 0);
+                    }
                 }, 0);
             }
         }
@@ -184,9 +193,17 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                     this.onGroupEnter(evt, focusedGroup);
                     evt.preventDefault();
                     break;
+                case "Home":
+                    this.onGroupHome(evt, focusedGroup);
+                    evt.preventDefault();
+                    break;
+                case "End":
+                    this.onGroupEnd(evt, focusedGroup);
+                    evt.preventDefault();
+                    break;
             }
         } else {
-            let [focusedGroupId, _focusedChildId] = focusedElemId.split("^");
+            let [focusedGroupId, _focusedChildId] = focusedElemId.split(/:::::/);
             let focusedGroup = this.props.rowData?.find((group: IRowGroup) => ReportTreeGrid.getRowId(group) === focusedGroupId);
             if (focusedGroup) {
                 let focusedChild = focusedGroup.children.find((issue: IIssue) => ReportTreeGrid.getRowId(focusedGroup!, issue) === focusedElemId);
@@ -210,6 +227,14 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                         case "Tab":
                             this.onRowTab(evt, focusedGroup, focusedChild);
                             break;
+                        case "Home":
+                            this.onGroupHome(evt, focusedGroup);
+                            evt.preventDefault();
+                            break;
+                        case "End":
+                            this.onGroupEnd(evt, focusedGroup);
+                            evt.preventDefault();
+                            break;
                     }
                 }
             }
@@ -229,37 +254,66 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         let newExpanded :string[] = JSON.parse(JSON.stringify(this.state.expandedGroups));
         if (!newExpanded.includes(focusedGroup.id)) {
             newExpanded.push(focusedGroup.id);
+            this.setState( { expandedGroups: newExpanded });
+        } else {
+            // already expanded, go to the first row child
+            let firstChild = focusedGroup.children[0];
+            this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, firstChild)});
         }
-        this.setState( { expandedGroups: newExpanded });
     }
 
     onGroupEnter(_evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
         this.onGroup(focusedGroup.id);
     }
 
-    onGroupArrowUp(_evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
-        let idx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
-        if (idx && idx > 0) {
-            --idx;
-            let newGroup = this.props.rowData![idx];
-            // If expanded, focus the last child of the group
-            if (this.state.expandedGroups.includes(ReportTreeGrid.getRowId(newGroup))) {
-                this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup, newGroup.children[newGroup.children.length-1]) });
-            } else {
+    onGroupArrowUp(evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
+        if (evt.metaKey) {
+            this.onGroupHome(evt, focusedGroup);
+        } else {
+            let idx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
+            if (idx && idx > 0) {
+                --idx;
+                let newGroup = this.props.rowData![idx];
+                // If expanded, focus the last child of the group
+                if (this.state.expandedGroups.includes(ReportTreeGrid.getRowId(newGroup))) {
+                    this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup, newGroup.children[newGroup.children.length-1]) });
+                } else {
+                    this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup) });
+                }
+            }
+        }
+    }
+
+    onGroupArrowDown(evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
+        if (evt.metaKey) {
+            this.onGroupEnd(evt, focusedGroup);
+        } else {
+            let idx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
+            // If expanded, focus the first child of the group
+            if (this.state.expandedGroups.includes(ReportTreeGrid.getRowId(focusedGroup))) {
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[0]) });
+            } else if (typeof idx !== "undefined" && idx < this.props.rowData!.length-1) {
+                ++idx;
+                let newGroup = this.props.rowData![idx];
                 this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup) });
             }
         }
     }
 
-    onGroupArrowDown(_evt: React.KeyboardEvent, focusedGroup: IRowGroup) {
-        let idx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
-        // If expanded, focus the first child of the group
-        if (this.state.expandedGroups.includes(ReportTreeGrid.getRowId(focusedGroup))) {
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[0]) });
-        } else if (typeof idx !== "undefined" && idx < this.props.rowData!.length-1) {
-            ++idx;
-            let newGroup = this.props.rowData![idx];
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(newGroup) });
+    onGroupHome(_evt: React.KeyboardEvent, _focusedGroup: IRowGroup) {
+        if (this.props.rowData && this.props.rowData.length > 0) {
+            this.setState({ tabRowId: ReportTreeGrid.getRowId(this.props.rowData[0]) });
+        }
+    }
+
+    onGroupEnd(_evt: React.KeyboardEvent, _focusedGroup: IRowGroup) {
+        if (this.props.rowData && this.props.rowData.length > 0) {
+            let lastGroup = this.props.rowData[this.props.rowData.length-1];
+            if (this.state.expandedGroups.includes(ReportTreeGrid.getRowId(lastGroup))) {
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(lastGroup, lastGroup.children[lastGroup.children.length-1]) });                
+            } else {
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(lastGroup) });
+            }
         }
     }
 
@@ -269,48 +323,58 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
     }
 
     onRowArrowUp(evt: React.KeyboardEvent, focusedGroup: IRowGroup, focusedRow: IIssue) {
-        let focusedRowId = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
-        let idx = focusedGroup.children.findIndex((value: IIssue) => ReportTreeGrid.getRowId(focusedGroup, value) === focusedRowId);
-        if (idx === 0) {
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup) });
+        if (evt.metaKey) {
+            this.onGroupHome(evt, focusedGroup);
         } else {
-            --idx;
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]) });
-            if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
-                let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]);
-                let row = document.getElementById(id);
-                if (row) {
-                    let link = row.querySelector(`a`) as HTMLAnchorElement;
-                    if (link) {
-                        evt.preventDefault();
-                        link.focus();
-                    }
+            let focusedRowId = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
+            let idx = focusedGroup.children.findIndex((value: IIssue) => ReportTreeGrid.getRowId(focusedGroup, value) === focusedRowId);
+            if (idx === 0) {
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup) });
+            } else {
+                --idx;
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]) });
+                if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
+                    this.treeGridRef.current?.focus();
+                    // let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[idx]);
+                    // let row = document.getElementById(id);
+                    // if (row) {
+                    //     let link = row.querySelector(`a`) as HTMLAnchorElement;
+                    //     if (link) {
+                    //         evt.preventDefault();
+                    //         link.focus();
+                    //     }
+                    // }
                 }
             }
         }
     }
 
     onRowArrowDown(evt: React.KeyboardEvent, focusedGroup: IRowGroup, focusedRow: IIssue) {
-        let focusedRowId = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
-        let rowIdx = focusedGroup.children.findIndex((value: IIssue) => ReportTreeGrid.getRowId(focusedGroup, value) === focusedRowId);
-        if (rowIdx === focusedGroup.children.length-1) {
-            let groupIdx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
-            if (typeof groupIdx !== "undefined" && groupIdx < this.props.rowData!.length-1) {
-                this.setState({ tabRowId: ReportTreeGrid.getRowId(this.props.rowData![groupIdx+1]) });
-            }
+        if (evt.metaKey) {
+            this.onGroupEnd(evt, focusedGroup);
         } else {
-            ++rowIdx;
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]) });
-            if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
-                let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]);
-                let row = document.getElementById(id);
-                if (row) {
-                    let link = row.querySelector(`a`) as HTMLAnchorElement;
-                    if (link) {
-                        evt.preventDefault();
-                        link.focus();
-                    }
-                }                
+            let focusedRowId = ReportTreeGrid.getRowId(focusedGroup, focusedRow);
+            let rowIdx = focusedGroup.children.findIndex((value: IIssue) => ReportTreeGrid.getRowId(focusedGroup, value) === focusedRowId);
+            if (rowIdx === focusedGroup.children.length-1) {
+                let groupIdx = this.props.rowData?.findIndex((value: IRowGroup) => value.id === focusedGroup.id);
+                if (typeof groupIdx !== "undefined" && groupIdx < this.props.rowData!.length-1) {
+                    this.setState({ tabRowId: ReportTreeGrid.getRowId(this.props.rowData![groupIdx+1]) });
+                }
+            } else {
+                ++rowIdx;
+                this.setState({ tabRowId: ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]) });
+                if ((evt.target as HTMLElement).nodeName.toLowerCase() === "a") {
+                    this.treeGridRef.current?.focus();
+                    // let id = ReportTreeGrid.getRowId(focusedGroup, focusedGroup.children[rowIdx]);
+                    // let row = document.getElementById(id);
+                    // if (row) {
+                    //     let link = row.querySelector(`a`) as HTMLAnchorElement;
+                    //     if (link) {
+                    //         evt.preventDefault();
+                    //         link.focus();
+                    //     }
+                    // }                
+                }
             }
         }
     }
@@ -379,10 +443,10 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                 bodyContent.push(<Grid 
                     id={group.id}
                     role="row" 
-                    ariaLevel="1" 
-                    ariaPosinset={idxGroup+1}
-                    ariaSetsize={this.props.rowData.length}
-                    ariaExpanded={groupExpanded}
+                    aria-level="1" 
+                    aria-posinset={idxGroup+1}
+                    aria-setsize={this.props.rowData.length}
+                    aria-expanded={groupExpanded}
                     className={{
                         gridBody: true,
                         focused: group.id === this.state.tabRowId
@@ -395,7 +459,7 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                         let smallCol = idx === this.props.headers.length-1 ? numLeft: 2;
                         let medCol = idx === this.props.headers.length-1 ? numLeft+4: 2;
                         numLeft -= 2;
-                        return <Column role="gridcell" sm={smallCol} md={medCol} className={header.key}>
+                        return <Column role="columnheader" sm={smallCol} md={medCol} className={header.key}>
                             {idx === 0 && groupExpanded && <ChevronUp />}
                             {idx === 0 && !groupExpanded && <ChevronDown />}
                             { header.key === "label" && group.label }
@@ -421,9 +485,9 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                         bodyContent.push(<Grid 
                             id={rowId}
                             role="row" 
-                            ariaLevel="2" 
-                            ariaPosinset={idxRow+1}
-                            ariaSetsize={group.children.length}
+                            aria-level="2" 
+                            aria-posinset={idxRow+1}
+                            aria-setsize={group.children.length}
                             className={{
                                 gridBody: true,
                                 selectedIssue,
@@ -436,10 +500,8 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                             }}
                         >
                             <Column className="gridChild" role="gridcell" sm={4} md={8} lg={8}>
-                                {UtilIssue.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <Link 
-                                    className="hideLg"
-                                    inline={true} 
-                                    size="sm"
+                                {UtilIssue.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
+                                    className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                     role="link"
                                     tabIndex={focused? 0 : -1}
                                     onClick={() => {
@@ -454,7 +516,7 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                                             ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
                                         }
                                     }}
-                                >Learn more</Link>
+                                >Learn more</a>
                             </Column>
                         </Grid>);
                     }
