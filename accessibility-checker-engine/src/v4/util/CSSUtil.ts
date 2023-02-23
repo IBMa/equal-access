@@ -415,3 +415,98 @@ export function getRotationDegree(rotation_transform) {
     }       
     return passed;
  }
+
+ export function getWeightNumber(styleVal) {
+    let map = {
+        "light": 100,
+        "bold": 700
+    };
+    let retVal = parseInt(styleVal);
+    if (retVal) return retVal;
+    if (styleVal in map)
+        return map[styleVal];
+    return 400;
+}
+
+export function getFontInPixels(styleVal, elem) {
+    let map = {
+        "xx-small": 16,
+        "x-small": 10,
+        "small": 13,
+        "medium": 16,
+        "large": 18,
+        "x-large": 24,
+        "xx-large": 32
+    };
+    let value = parseFloat(styleVal);
+    if (!value) {
+        return map[styleVal];
+    }
+    let units = styleVal.substring(("" + value).length);
+    /**
+        if (units === "" || units === "px") return value;
+        if (units === "em") return value * 16;
+        if (units === "%") return value / 100 * 16;
+        if (units === "pt") return value * 4 / 3;
+        return Math.round(value);
+    */
+    return convertValue2Pixels(units, value, elem );
+   
+}
+
+
+export function getCSSStyle(element) {
+    let styleText = "";
+    if (element === null) return [];
+    if (element.IBM_CSS_THB) return element.IBM_CSS_THB;
+    let nodeName = element.nodeName.toLowerCase();
+    if (nodeName === "style") {
+        styleText = element.innerText;
+        if (styleText === undefined || styleText.trim() === "")
+            styleText = element.textContent;
+    } else if (element.hasAttribute("style")) {
+        styleText = element.getAttribute("style");
+    } else return [];
+    if (styleText === null || styleText.trim().length === 0) return [];
+    //remove comment blocks
+    let re = /(\/\*+(?:(?:(?:[^\*])+)|(?:[\*]+(?!\/)))[*]+\/)|\/\/.*/g;
+    let subst = ' ';
+    styleText = styleText.replace(re, subst);
+    // Find all "key : val;" pairs with various whitespace inbetween
+    let rKeyVals = /\s*([^:\s]+)\s*:\s*([^;$}]+)\s*(;|$)/g;
+    // Find all "selector { csskeyvals } with various whitespace inbetween
+    let rSelectors = /\s*([^{]*){([^}]*)}/g;
+    if (styleText.indexOf("{") === -1) {
+
+        let keyVals = {};
+        let m;
+        while ((m = rKeyVals.exec(styleText)) != null) {
+            keyVals[m[1]] = m[2].trim().toLowerCase();
+        }
+        let retVal = [{
+            selector: null,
+            values: keyVals
+        }];
+        element.IBM_CSS_THB = retVal;
+        return retVal;
+    } else {
+        let retVal = [];
+        let m;
+        let m2;
+        while ((m = rSelectors.exec(styleText)) != null) {
+            let keyVals = {}
+            let selKey = m[1];
+            let selVal = m[2];
+
+            while ((m2 = rKeyVals.exec(selVal)) != null) {
+                keyVals[m2[1]] = m2[2].trim().toLowerCase();
+            }
+            retVal.push({
+                selector: selKey,
+                values: keyVals
+            });
+        }
+        element.IBM_CSS_THB = retVal;
+        return retVal;
+    }
+}

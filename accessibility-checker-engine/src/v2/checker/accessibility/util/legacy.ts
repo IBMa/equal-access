@@ -223,6 +223,25 @@ export class RPTUtil {
     }
 
     /**
+     * this method returns user-defined aria attribute from dom
+     * @param ele  element
+     * @returns user defined aria attributes
+     */
+    public static getUserDefinedAriaAttributes(elem) {
+        let ariaAttributes = [];
+        let domAttributes = elem.attributes;
+        if (domAttributes) {
+            for (let i = 0; i < domAttributes.length; i++) {
+                let attrName = domAttributes[i].name.trim().toLowerCase(); 
+                let isAria = attrName.substring(0, 5) === 'aria-';
+                if (isAria)
+                    ariaAttributes.push(attrName);
+            }
+        }
+        return ariaAttributes;
+    }
+
+    /**
      * This method handles implicit aria definitions, for example, an input with checked is equivalent to aria-checked="true"
      */
     public static getAriaAttribute(ele, attributeName) {
@@ -658,6 +677,19 @@ export class RPTUtil {
 
         return retVal;
     }
+
+    /**
+     * This function is responsible for retrieving user defined element's roles from dom.
+     * @parm {HTMLElement} ele - element for which to find role.
+     *
+     * @return {List} roles - list of user defined roles in the element role attribute.
+     *
+     * @memberOf RPTUtil
+     */
+    public static getUserDefinedRoles(ele: Element) : string[] {
+        return RPTUtil.getRoles(ele, false);
+    }
+    
     /**
      * This function is responsible for retrieving element's roles.
      * This function also finds implicit roles.
@@ -725,7 +757,7 @@ export class RPTUtil {
         if (ARIADefinitions.designPatterns[role]) {
             let requiredAttributes = ARIADefinitions.designPatterns[role].reqProps;
             // handle special case of separator
-            if (role.toLowerCase() === "separator" && RPTUtil.isFocusable(ele)) {
+            if (role.toLowerCase() === "separator" && ele && RPTUtil.isFocusable(ele)) {
                 requiredAttributes = RPTUtil.concatUniqueArrayItemList(["aria-valuenow"], requiredAttributes || []);
             }
             return requiredAttributes;
@@ -2324,6 +2356,22 @@ export class RPTUtil {
     }
 
     /**
+     * remove array items from a given array
+     * @param itemList items to be removed from arr
+     * @param arr the array
+     * @returns 
+     */
+    public static reduceArrayItemList(itemList: string[], arr: string[]) : string[] {
+        if (arr && arr.length > 0 && itemList && itemList.length > 0) {
+            let result = arr.filter((value) =>  {
+                return !itemList.includes(value);
+            });
+            return result;
+        }
+        return arr;
+    }
+
+    /**
      * this function is responsible for resolving ARIA requirements for an HTML element per ARIA in HTML
      * @param ruleContext the HTML element to be examined
      * @returns 
@@ -2369,8 +2417,6 @@ export class RPTUtil {
                     break;
                 }
                 case "header":
-                    // TODO: need to check If a descendant of an article, aside, main, nav or section element
-                    // that might be different than the role because an element may take other roles
                     let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
                     if (ancestor === null)
                         ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
@@ -2450,6 +2496,10 @@ export class RPTUtil {
                         RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
                     }
                     break;
+                case "div":
+                    let prt = ruleContext.parentElement;
+                    prt !== null && prt.nodeName.toLowerCase() === 'dl' ? tagProperty = specialTagProperties["child-dl"] : tagProperty = specialTagProperties["no-child-dl"];
+                    break;
                 default:
                     tagProperty = ARIADefinitions.documentConformanceRequirementSpecialTags["default"] as IDocumentConformanceRequirement;
             } //switch
@@ -2474,6 +2524,16 @@ export class RPTUtil {
             if (tagProperty.validRoles !== null) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
             }
+        }
+
+        // the 'generic' role is only allowed if a valid aria prop exists.
+        if (allowedRoles.includes("generic")) {
+            let roleAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, 'generic', tagProperty);
+            console.log("roleAttributes=" + roleAttributes);
+            let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+            // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
+            if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
+                RPTUtil.reduceArrayItemList(['generic'], allowedRoles); 
         }
         return allowedRoles;
     }
@@ -2606,11 +2666,7 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(disallowed, prohibitedAttributes);
         }
         //exclude the prohibitedAttributes from the allowedAttributes
-        if (prohibitedAttributes.length > 0) {
-            allowedAttributes = allowedAttributes.filter((value) =>  {
-                return !prohibitedAttributes.includes(value);
-            });
-        }
+        allowedAttributes = RPTUtil.reduceArrayItemList(prohibitedAttributes, allowedAttributes);
         return allowedAttributes;
     }
     /**
@@ -2695,7 +2751,8 @@ export class RPTUtil {
         }
         return false;
     }
-
+    
+    /** moved to CSSUtil
     public static CSS(element) {
         let styleText = "";
         if (element === null) return [];
@@ -2708,7 +2765,7 @@ export class RPTUtil {
         } else return [];
         if (styleText === null || styleText.trim().length === 0) return [];
         //remove comment blocks
-        let re = /(\/\*+(?:(?:(?:[^\*])+)|(?:[\*]+(?!\/)))[*]+\/)|\/\/.*/g;
+        let re = /(\/\*+(?:(?:(?:[^\*])+)|(?:[\*]+(?!\/)))[*]+\/)|\/\/.* /g;
         let subst = ' ';
         styleText = styleText.replace(re, subst);
         // Find all "key : val;" pairs with various whitespace inbetween
@@ -2749,7 +2806,8 @@ export class RPTUtil {
             return retVal;
         }
     }
-
+    */
+    
     public static getControlOfLabel(node: Node) {
         // Handle the easy case of label -> for
         let labelAncestor = RPTUtil.getAncestor(node, "label");
@@ -2956,7 +3014,7 @@ export class RPTUtil {
         return hasAttribute;
     }
 }
-
+/** moved to CSSUtil
 export class RPTUtilStyle {
     public static getWeightNumber(styleVal) {
         let map = {
@@ -2992,7 +3050,7 @@ export class RPTUtilStyle {
         return Math.round(value);
     }
 }
-
+*/
 /* Return a node walker for the given element.
  * bEnd is optional and defaults to false
  * but if true, indicates the node is the end node*/
