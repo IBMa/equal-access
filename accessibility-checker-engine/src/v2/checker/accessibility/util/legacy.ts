@@ -2385,9 +2385,10 @@ export class RPTUtil {
         } else if (ruleContext.nodeName) {
             tagName = ruleContext.nodeName.toLowerCase();
         }
-
+        
         // check if the tagProperty exists in the documentConformanceRequirement hash.
         let tagProperty : IDocumentConformanceRequirement = ARIADefinitions.documentConformanceRequirement[tagName];
+        
         // The tag needs to check some special attributes
         if (tagProperty === null || tagProperty === undefined) {
             let specialTagProperties = ARIADefinitions.documentConformanceRequirementSpecialTags[tagName];
@@ -2528,9 +2529,9 @@ export class RPTUtil {
 
         // the 'generic' role is only allowed if a valid aria prop exists.
         if (allowedRoles.includes("generic")) {
-            let roleAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, 'generic', tagProperty);
-            console.log("roleAttributes=" + roleAttributes);
             let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+            let roleAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, ['generic'], tagProperty);
+            
             // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
             if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
                 RPTUtil.reduceArrayItemList(['generic'], allowedRoles); 
@@ -2594,7 +2595,7 @@ export class RPTUtil {
                 let properties = ARIADefinitions.globalProperties; // global properties
                 RPTUtil.concatUniqueArrayItemList(properties, allowedAttributes);
             } 
-        }    
+        }
         // adding the other role to the allowed roles for the attributes
         if (tagProperty && tagProperty.otherRolesForAttributes && tagProperty.otherRolesForAttributes.length > 0)
             RPTUtil.concatUniqueArrayItemList(tagProperty.otherRolesForAttributes, permittedRoles);       

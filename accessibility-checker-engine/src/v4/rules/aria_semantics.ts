@@ -47,6 +47,10 @@ export let aria_semantics_role: Rule = {
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
         let tagName = ruleContext.tagName.toLowerCase();
+        // only chek element (1) and fragment nodes (11)
+        if (ruleContext.nodeType !== Node.ELEMENT_NODE)
+            return null;
+
         // dependency check: if it's already failed, then skip
         if (["td", "th", "tr"].includes(tagName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
@@ -72,7 +76,7 @@ export let aria_semantics_role: Rule = {
         let passRoleTokens = [];
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
-        allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
+        allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);console.log("tagName=" + tagName +",allowedRoles="+allowedRoles);
         
         // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
         for (let i = 0; i < domRoles.length; i++) {
@@ -146,7 +150,10 @@ export let aria_attribute_allowed: Rule = {
     act: ["5c01ea", { "46ca7f": { "Pass": "pass", "Fail_invalid_role_attr": "fail", "Fail_invalid_implicit_role_attr": "fail"}}],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        
+        // only chek element (1)
+        if (ruleContext.nodeType !== Node.ELEMENT_NODE)
+            return null;
+
         // get roles from RPTUtil because multiple explicit roles are allowed
         let roles = RPTUtil.getRoles(ruleContext, false);
 
@@ -176,7 +183,6 @@ export let aria_attribute_allowed: Rule = {
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         // Attributes allowed on this node
         let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, roles, tagProperty);
-        
         let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);    
         for (let i = 0; i < domAriaAttributes.length; i++) {
             if (!allowedAttributes.includes(domAriaAttributes[i])) {
