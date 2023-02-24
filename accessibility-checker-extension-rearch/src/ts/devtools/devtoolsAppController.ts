@@ -72,7 +72,6 @@ export class DevtoolsAppController {
             if (/ ?#/.test(this.secondaryCloseQuerySelect)) {
                 e = document;
                 let parts = this.secondaryCloseQuerySelect.split(/ +/);
-                console.log(this.secondaryCloseQuerySelect, parts);
                 for (const part of parts) {
                     if (part.startsWith("#")) {
                         e = document.getElementById(part.substring(1));
@@ -81,7 +80,6 @@ export class DevtoolsAppController {
                     }
                     if (!e) return;
                 }
-                console.log(e);
             } else {
                 e = document.querySelector(this.secondaryCloseQuerySelect) as HTMLElement;
             }
