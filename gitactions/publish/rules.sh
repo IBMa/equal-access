@@ -1,3 +1,4 @@
+$
 
 
 curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
@@ -59,3 +60,4 @@ then
     echo "The return code value from deploy_to_bluemix.sh script: ${RETURN_CODE}"
     exit ${RETURN_CODE}
 fi
+start "the log entry"
