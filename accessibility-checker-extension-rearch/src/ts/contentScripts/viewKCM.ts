@@ -18,6 +18,7 @@ import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
 import { ISettings, IReport } from "../interfaces/interfaces";
 import TabChainCircles from "./TabChainCircles";
+import TabStopErrorCircles from "./TabStopErrorCircles";
 
 
 
@@ -268,7 +269,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         setTimeout(() => {
                 let iframes: any = [];
                 TabChainCircles.draw(regularTabstops, tabStopsErrors, settings.tabStopLines, settings.tabStopOutlines,iframes).then(function() {
-                drawErrors(tabStopsErrors, regularTabstops, settings.tabStopOutlines,iframes);
+                TabStopErrorCircles.draw(tabStopsErrors, regularTabstops, settings.tabStopOutlines,iframes);
             });
             
         }, 1000)
@@ -385,14 +386,14 @@ function getXPathForElement(element: any) {
 //     console.log("iframes = ",iframes);
 // }
 
-function drawErrors(tabStopsErrors: any, regularTabstops: any, tabStopOutlines: any, iframes: any) {
-    // dummy function
-    console.log("Function: drawErrors");
-    console.log("regularTabstops = ",regularTabstops);
-    console.log("tabStopsErrors = ",tabStopsErrors);
-    console.log("tabStopOutlines = ",tabStopOutlines);
-    console.log("iframes = ",iframes);
-}
+// function drawErrors(tabStopsErrors: any, regularTabstops: any, tabStopOutlines: any, iframes: any) {
+//     // dummy function
+//     console.log("Function: drawErrors");
+//     console.log("regularTabstops = ",regularTabstops);
+//     console.log("tabStopsErrors = ",tabStopsErrors);
+//     console.log("tabStopOutlines = ",tabStopOutlines);
+//     console.log("iframes = ",iframes);
+// }
 
 function handleTabHighlight(event: any, document: Document, arg2: string, arg3: string) {
     // dummy function
