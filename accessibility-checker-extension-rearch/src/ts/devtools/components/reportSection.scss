@@ -1,0 +1,18 @@
+@use '@carbon/styles/scss/type' as *;
+@use '@carbon/styles/scss/colors' as *;
+// @use '@carbon/styles/scss/breakpoint'as *;
+
+.reportFilterSection {
+    margin: 1rem 0rem;
+    padding: .125rem 0rem .25rem 0rem;
+    border-top: solid $gray-30 1px;
+    border-bottom: solid $gray-30 1px;
+
+    .reportSecIcon {
+        vertical-align: text-bottom;
+    }
+    .totalCount {
+        @include type-style("label-02");
+        margin-top: .5rem;
+    }
+}

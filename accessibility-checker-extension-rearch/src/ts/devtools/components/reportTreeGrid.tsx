@@ -45,19 +45,19 @@ interface ReportTreeGridProps {
     headers: Array<{ key: string, label: string }>
     rowData?: IRowGroup[] | null
     className?: string
-    // onRow?: (id: string) => Promise<void>
-    // fieldMapper?: (rowId: string, cellId: string, cellValue: string) => any
+    selectedPath: string | null;
+    noScanMessage: React.ReactNode;
 }
 
 interface ReportTreeGridState {
     expandedGroups: string[]
     selectedIssue: IIssue | null;
-    selectedPath: string | null;
     tabRowId: string;
 }
 
 export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportTreeGridState> {
-    treeGridRef = React.createRef<HTMLDivElement>();
+    private static devtoolsAppController = getDevtoolsAppController();
+    private static devtoolsController = getDevtoolsController();
 
     /**
      * Clean an id of spaces for use in id attribute and active-descendant
@@ -76,14 +76,12 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         }
     }
 
-    private static devtoolsAppController = getDevtoolsAppController();
-    private static devtoolsController = getDevtoolsController();
     state: ReportTreeGridState = {
         expandedGroups: [],
         selectedIssue: null,
-        selectedPath: null,
         tabRowId: ""
     }
+    treeGridRef = React.createRef<HTMLDivElement>();
 
     async componentDidMount(): Promise<void> {
         ReportTreeGrid.devtoolsController.addSelectedIssueListener({
@@ -97,17 +95,7 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         });
         let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
-        ReportTreeGrid.devtoolsController.addSelectedElementPathListener({
-            callback: async (path) => {
-                this.setPath(path);
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
-        });
-        let path = await ReportTreeGrid.devtoolsController.getSelectedElementPath();
-        this.setPath(path!);
+
         if (this.props.rowData && this.props.rowData.length > 0) {
             this.setState({ expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData[0].id });
         }
@@ -115,38 +103,36 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
 
     componentDidUpdate(prevProps: Readonly<ReportTreeGridProps>, prevState: Readonly<ReportTreeGridState>, _snapshot?: any): void {
         if (!prevProps.rowData && !!this.props.rowData) {
-            this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData[0].id });
+            this.setState({expandedGroups: this.props.rowData?.map(group => group.id), tabRowId: this.props.rowData && this.props.rowData.length > 0 ? this.props.rowData[0].id : ""});
         }
         if (prevState.tabRowId !== this.state.tabRowId && document) {
-            let elem = document.getElementById(this.state.tabRowId);
-            if (elem) {
-                setTimeout(() => {
-                    elem?.scrollIntoView({
-                        // @ts-ignore
-                        block: 'nearest',
-                        inline: 'start'
-                    });
-                    if (this.state.tabRowId === this.props.rowData![0].id) {
-                        setTimeout(() => {
-                            this.treeGridRef.current!.firstElementChild!.scrollIntoView({
-                                // @ts-ignore
-                                block: 'nearest',
-                                inline: 'start',
-                                behavior: 'smooth'
-                            });
-                        }, 0);
-                    }
-                }, 0);
+            if (this.props.rowData && this.props.rowData.length > 0) {
+                let elem = document.getElementById(this.state.tabRowId);
+                if (elem) {
+                    setTimeout(() => {
+                        elem?.scrollIntoView({
+                            // @ts-ignore
+                            block: 'nearest',
+                            inline: 'start'
+                        });
+                        if (this.state.tabRowId === this.props.rowData![0].id) {
+                            setTimeout(() => {
+                                this.treeGridRef.current!.firstElementChild!.scrollIntoView({
+                                    // @ts-ignore
+                                    block: 'nearest',
+                                    inline: 'start',
+                                    behavior: 'smooth'
+                                });
+                            }, 0);
+                        }
+                    }, 0);
+                }
             }
         }
     }
 
     setIssue(issue: IIssue) {
         this.setState( { selectedIssue: issue });
-    }
-
-    setPath(path: string) {
-        this.setState( { selectedPath: path });
     }
 
     onGroup(groupId: string) {
@@ -405,9 +391,11 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
 
     ///////////////// Render ////////////
     render() {
-        let content = <></>;
+        let content : React.ReactNode = <></>;
 
-        if (!this.props.rowData || this.props.rowData.length === 0) {
+        if (!this.props.rowData) {
+            content = this.props.noScanMessage;
+        } else if (this.props.rowData.length === 0) {
             content = <>{ this.props.emptyLabel }</>
         } else {
             // Generate the header
@@ -477,10 +465,10 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                             && this.state.selectedIssue.path.dom === thisIssue.path.dom
                             && this.state.selectedIssue.reasonId === thisIssue.reasonId
                             && this.state.selectedIssue.ruleId === thisIssue.ruleId;
-                        let selectedNode : boolean = !!this.state.selectedPath 
-                            && this.state.selectedPath === thisIssue.path.dom;
-                        let selectedDescendant: boolean = !!this.state.selectedPath 
-                            && thisIssue.path.dom.startsWith(this.state.selectedPath);
+                        let selectedNode : boolean = !!this.props.selectedPath 
+                            && this.props.selectedPath === thisIssue.path.dom;
+                        let selectedDescendant: boolean = !!this.props.selectedPath 
+                            && thisIssue.path.dom.startsWith(this.props.selectedPath);
                         let focused: boolean = this.state.tabRowId === rowId
                         bodyContent.push(<Grid 
                             id={rowId}
