@@ -2,7 +2,7 @@
 
 # equal-access
 
-This Git repository hosts tools that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit) and supporting components.
+This Git repository hosts tools that are part of the [IBM Equal Access Toolkit](https://ibm.com/able/toolkit) and supporting components. Build check
 
 ## Overview
 
