@@ -101,3 +101,19 @@ export interface IReport {
     }
     passUniqueElements: string[]
 }
+export interface IReportItem {
+    ruleId: string,
+    node: any,
+    path: {
+        aria: string,
+        dom: string
+    },
+    itemIdx?: number
+    value: string[],
+    message: string,
+    selected: boolean,
+    selectedChild: boolean,
+    scrollTo: boolean,
+    snippet: string,
+    help?: string
+}

@@ -16,40 +16,10 @@
 
 import { getBGController } from "../background/backgroundController";
 import { getDevtoolsController } from "../devtools/devtoolsController";
-import { ISettings } from "../interfaces/interfaces";
+import { ISettings, IReport } from "../interfaces/interfaces";
+import TabChainCircles from "./TabChainCircles";
 
-export interface IReport {
-    nls: {
-        [ruleId: string] : {
-            [reasonCode: string]: string
-        }
-    }
-    timestamp: number,
-    filterstamp: number,
-    results: IReportItem[],
-    passUniqueElements: string[],
-    counts: { 
-        "total": { [key: string]: number },
-        "filtered": { [key: string]: number }
-    }
-}
 
-export interface IReportItem {
-    ruleId: string,
-    node: any,
-    path: {
-        aria: string,
-        dom: string
-    },
-    itemIdx?: number
-    value: string[],
-    message: string,
-    selected: boolean,
-    selectedChild: boolean,
-    scrollTo: boolean,
-    snippet: string,
-    help?: string
-}
 
 let bgController = getBGController();
 
@@ -297,7 +267,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
     goToTop().then(function() {
         setTimeout(() => {
                 let iframes: any = [];
-                draw(regularTabstops, tabStopsErrors, settings.tabStopLines, settings.tabStopOutlines,iframes).then(function() {
+                TabChainCircles.draw(regularTabstops, tabStopsErrors, settings.tabStopLines, settings.tabStopOutlines,iframes).then(function() {
                 drawErrors(tabStopsErrors, regularTabstops, settings.tabStopOutlines,iframes);
             });
             
@@ -405,15 +375,15 @@ function getXPathForElement(element: any) {
     return segs(element).join('/');
 }
 
-async function draw(regularTabstops: any, tabStopsErrors: any, tabStopLines: any, tabStopOutlines: any, iframes: any) {
-    // dummy function
-    console.log("Function: draw");
-    console.log("regularTabstops = ",regularTabstops);
-    console.log("tabStopsErrors = ",tabStopsErrors);
-    console.log("tabStopLines = ",tabStopLines);
-    console.log("tabStopOutlines = ",tabStopOutlines);
-    console.log("iframes = ",iframes);
-}
+// async function draw(regularTabstops: any, tabStopsErrors: any, tabStopLines: any, tabStopOutlines: any, iframes: any) {
+//     // dummy function
+//     console.log("Function: draw");
+//     console.log("regularTabstops = ",regularTabstops);
+//     console.log("tabStopsErrors = ",tabStopsErrors);
+//     console.log("tabStopLines = ",tabStopLines);
+//     console.log("tabStopOutlines = ",tabStopOutlines);
+//     console.log("iframes = ",iframes);
+// }
 
 function drawErrors(tabStopsErrors: any, regularTabstops: any, tabStopOutlines: any, iframes: any) {
     // dummy function
