@@ -126,7 +126,7 @@ try {
                 let nodePath = path.join(engineDir, "ace-node")
                 fs.writeFile(nodePath + ".js", data, function (err) {
                     try {
-                        if (nodePath.charAt(0) !== '/') {
+                        if (nodePath.charAt(0) !== '/' && nodePath.charAt(0) !== '\\') {
                             nodePath = "../../" + nodePath;
                         }
                         err && console.log(err);
