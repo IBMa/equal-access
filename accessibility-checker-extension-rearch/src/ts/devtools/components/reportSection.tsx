@@ -19,14 +19,58 @@ import { getDevtoolsController } from '../devtoolsController';
 import { IReport } from '../../interfaces/interfaces';
 import { getTabId } from '../../util/tabId';
 import { Column, Grid } from "@carbon/react";
+import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
+import { UtilIssue } from '../../util/UtilIssue';
+import { ePanel } from '../devToolsApp';
 
 let devtoolsController = getDevtoolsController();
+
+class RoleReport extends React.Component<ReportSectionProps & ReportSectionState> {
+    render() {
+        let rowData : IRowGroup[] | null = null;
+        if (this.props.report && this.props.report.results) {
+            rowData = [];
+            for (const result of this.props.report.results) {
+                // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
+                let thisLabel = result.path.aria.replace(/\//g, " /");
+                let curGroup = rowData.find(group => group.label === thisLabel);
+                if (!curGroup) {
+                    curGroup = {
+                        id: ReportTreeGrid.cleanId(thisLabel),
+                        label: thisLabel,
+                        children: [result]
+                    }
+                    rowData.push(curGroup);
+                } else {
+                    curGroup.children.push(result);
+                }
+            }
+            rowData.sort((groupA, groupB) => groupA.label.localeCompare(groupB.label));
+            for (const group of rowData) {
+                group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
+            }
+        }
+        return <ReportTreeGrid 
+            panel={this.props.panel}
+            emptyLabel="No report"
+            headers={[
+                { key: "issueCount", label: "Issues" },
+                { key: "label", label: "Element Roles" }
+            ]}
+            rowData={rowData}
+        />
+    }
+}
+
+interface ReportSectionProps {
+    panel: ePanel
+}
 
 interface ReportSectionState {
     report: IReport | null
 }
 
-export class ReportSection extends React.Component<{}, ReportSectionState> {
+export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
     state : ReportSectionState = {
         report: null
     }
@@ -34,6 +78,7 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener({
             callback: async (report) => {
+                report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
                 this.setState( { report });
             },
             callbackDest: {
@@ -42,25 +87,24 @@ export class ReportSection extends React.Component<{}, ReportSectionState> {
             }
         });
         let report = await devtoolsController.getReport();
-        this.setState( { report });
+        if (report) {
+            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
+            this.setState( { report });
+        }
     }
 
     render() {
         return (<>
             <Grid className="reportFilterSection">
                 <Column sm={4} md={8} lg={8}>
-                    Report filters....
+                    <div style={{margin: "1rem 0rem" }}>Report filters....</div>
                 </Column>
             </Grid>
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1"}}>
                 <Column sm={4} md={8} lg={8}>
-                    {this.state.report && JSON.stringify(this.state.report.results, null, 2).split("\n").map(line => <>{line}<br /></>)}
-                    {!this.state.report && <>
-                        No report
-                    </>}
+                    <RoleReport report={this.state.report} panel={this.props.panel} />
                 </Column>
             </Grid>
-            </>
-        );
+        </>);
     }
 }

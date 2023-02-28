@@ -3,13 +3,8 @@
 @use '@carbon/styles/scss/colors'as *;
 
 .splashScreen {
-    @include breakpoint('sm') {
-        margin: 0rem;
-    }
-    @include breakpoint('md') {
-        margin:1rem;
-    }
-
+    margin: 0rem;
+    padding: 1rem 0rem;
 
     .title {
         @include type-style('productive-heading-04');

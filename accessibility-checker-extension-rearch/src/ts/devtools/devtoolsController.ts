@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import { getBGController, TabChangeType } from "../background/backgroundController";
-import { IMessage, IReport } from "../interfaces/interfaces";
+import { IIssue, IMessage, IReport } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
@@ -24,7 +24,8 @@ let sessionStorage : {
     storeReports: boolean
     storedReports: IReport[]
     lastReport: IReport | null
-    lastElement: HTMLElement | null
+    lastElementPath: string | null
+    lastIssue: IIssue | null
     viewState: ViewState
 } | null = null;
 
@@ -76,6 +77,7 @@ export class DevtoolsController extends Controller {
             sessionStorage!.lastReport = report;
             setTimeout(() => {
                 this.fireEvent("DT_onReport", report);
+                this.setSelectedElementPath("/html[1]");
             }, 0);
         });
     }
@@ -121,6 +123,145 @@ export class DevtoolsController extends Controller {
     public async addViewStateListener(listener: ListenerType<ViewState>) {
         this.addEventListener(listener, `DT_onViewState`);
     }
+
+    /**
+     * Set selected issue
+     */
+    public async setSelectedIssue(issue: IIssue | null) : Promise<void> {
+        return this.hook("setSelectedIssue", issue, async () => {
+            if (issue) {
+                sessionStorage!.lastIssue = issue;
+                setTimeout(() => {
+                    this.fireEvent("DT_onSelectedIssue", issue);
+                    this.setSelectedElementPath(issue.path.dom);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Set report storing
+     */
+    public async getSelectedIssue() : Promise<IIssue | null> {
+        return this.hook("getSelectedIssue", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.lastIssue;
+        });
+    }
+    
+    public async addSelectedIssueListener(listener: ListenerType<IIssue>) {
+        this.addEventListener(listener, `DT_onSelectedIssue`);
+    }
+
+    /**
+     * Set selected issue
+     */
+    public async setSelectedElementPath(path: string | null) : Promise<void> {
+        return this.hook("setSelectedElementPath", path, async () => {
+            if (path) {
+                sessionStorage!.lastElementPath = path;
+                setTimeout(() => {
+                    this.fireEvent("DT_onSelectedElementPath", path);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Set report storing
+     */
+    public async getSelectedElementPath() : Promise<string | null> {
+        return this.hook("getSelectedElementPath", null, async () => {
+            if (!sessionStorage) return null;
+            return sessionStorage?.lastElementPath;
+        });
+    }
+    
+    public async addSelectedElementPathListener(listener: ListenerType<string>) {
+        this.addEventListener(listener, `DT_onSelectedElementPath`);
+    }
+    
+    /**
+     * Focus an element in the elements panel
+     * @param path 
+     * @param focusElem If specified, we will focus this element after the path is inspected
+     */
+    public async inspectPath(path: string, focusElem?: HTMLElement | null) {
+        let script = `
+            function lookup(doc, xpath) {
+                if (doc.nodeType === 11) {
+                    let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
+                    let element = doc.querySelector(selector);
+                    return element;
+                } else {
+                    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                    let element = nodes.iterateNext();
+                    if (element) {
+                        return element;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            function selectPath(srcPath) {
+                let doc = document;
+                let element = null;
+                while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
+                    if (srcPath.includes("iframe")) {
+                        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+                        let iframe = lookup(doc, parts[1]);
+                        element = iframe || element;
+                        if (iframe && iframe.contentDocument) {
+                            doc = iframe.contentDocument;
+                            srcPath = parts[2];
+                        } else {
+                            srcPath = null;
+                        }
+                    } else if (srcPath.includes("#document-fragment")) {
+                        let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
+                        let fragment = lookup(doc, parts[1]);
+                        element = fragment || element;
+                        if (fragment && fragment.shadowRoot) {
+                            doc = fragment.shadowRoot;
+                            srcPath = parts[2];
+                        } else {
+                            srcPath = null;
+                        }
+                    }
+                }
+                if (srcPath) {
+                    element = lookup(doc, srcPath) || element;
+                }
+                if (element) {
+                    inspect(element);
+                    var elementRect = element.getBoundingClientRect();
+                    var absoluteElementTop = elementRect.top + window.pageYOffset;
+                    var middle = absoluteElementTop - 100;
+                    element.ownerDocument.defaultView.scrollTo({
+                        top: middle,
+                        behavior: 'smooth'
+                    });
+                    return true;
+                }
+                return;
+            }
+            selectPath("${path}");
+        `;
+        chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
+            if (isException) {
+                console.error(isException);
+            }
+            if (!result) {
+                console.log('Could not select element, it may have moved');
+            } else {
+                if (focusElem) {
+                    setTimeout(() => {
+                        focusElem?.focus();
+                    }, 100);
+                }
+            }
+        });
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -132,7 +273,8 @@ export class DevtoolsController extends Controller {
                 storeReports: false,
                 storedReports: [],
                 lastReport: null,
-                lastElement: null,
+                lastElementPath: null,
+                lastIssue: null,
                 viewState: {
                     kcm: false
                 }
@@ -147,7 +289,11 @@ export class DevtoolsController extends Controller {
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
                 "DT_getReport": async () => self.getReport(),
                 "DT_getViewState": async () => self.getViewState(),
-                "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content)
+                "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
+                "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
+                "DT_getSelectedIssue": async () => self.getSelectedIssue(),
+                "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content),
+                "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
             }
 
             // Hook the above definitions
@@ -170,18 +316,22 @@ export class DevtoolsController extends Controller {
                 },
             });
 
-            ["DT_onViewState", "DT_onReport"].forEach((s: string) => {
+            ["DT_onViewState", "DT_onReport", "DT_onSelectedElementPath", "DT_onSelectedIssue"].forEach((s: string) => {
                 this.addEventListener(
                     { 
                         callback: async (content: any) => {
-                            CommonMessaging.send({
-                                type: s,
-                                dest: {
-                                    type: "contentScript",
-                                    tabId: (this.ctrlDest as any).tabId
-                                },
-                                content: content
-                            });
+                            try {
+                                CommonMessaging.send({
+                                    type: s,
+                                    dest: {
+                                        type: "contentScript",
+                                        tabId: (this.ctrlDest as any).tabId
+                                    },
+                                    content: content
+                                });
+                            } catch (err) {
+                                console.error(err);
+                            }
                         },
                         callbackDest: {
                             type: "contentScript",

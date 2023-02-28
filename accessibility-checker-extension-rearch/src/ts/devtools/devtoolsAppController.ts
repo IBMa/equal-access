@@ -14,8 +14,11 @@
   limitations under the License.
 *****************************************************************************/
 
-export type ePanel = "main" | "elements";
+import { getDevtoolsController } from "./devtoolsController";
+
 export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_overview";
+
+let devtoolsController = getDevtoolsController();
 
 /**
  * Controller for the DevtoolsApp. 
@@ -25,7 +28,6 @@ export type eSecondaryView = "splash" | "summary" | "stored" | "help" | "kcm_ove
  * and direct messages should be sent to the DevtoolsController
  */
 export class DevtoolsAppController {
-    panel: ePanel;
     secondaryView: eSecondaryView = "splash";
     secondaryOpen: boolean = false;
     secondaryCloseQuerySelect: string = "";
@@ -35,13 +37,6 @@ export class DevtoolsAppController {
     ///////////////////////////////////////////////////////////////////////////
     ///// PUBLIC API //////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    /**
-     * Which panel is the app running in?
-     */
-    public getPanel() : ePanel {
-        return this.panel;
-    }
-
     public getSecondaryView() : eSecondaryView {
         return this.secondaryView;
     }
@@ -73,11 +68,25 @@ export class DevtoolsAppController {
         this.secondaryOpen = false;
         this.fireSecondaryOpen(false);
         setTimeout(() => {
-            let e = document.querySelector(this.secondaryCloseQuerySelect) as HTMLElement;
-            if (e) {
-                e.focus();
+            let e : HTMLElement | Document | null = null;
+            if (/ ?#/.test(this.secondaryCloseQuerySelect)) {
+                e = document;
+                let parts = this.secondaryCloseQuerySelect.split(/ +/);
+                for (const part of parts) {
+                    if (part.startsWith("#")) {
+                        e = document.getElementById(part.substring(1));
+                    } else {
+                        e = e!.querySelector(part) as HTMLElement;
+                    }
+                    if (!e) return;
+                }
+            } else {
+                e = document.querySelector(this.secondaryCloseQuerySelect) as HTMLElement;
             }
-        })
+            if (e) {
+                (e as HTMLElement).focus();
+            }
+        }, 0)
     }
 
     public addSecondaryOpenListener(cb: (open: boolean) => void) {
@@ -88,13 +97,63 @@ export class DevtoolsAppController {
         this.secondaryOpenListeners.filter(listener => listener !== cb);
     }
 
+    public hookSelectionChange() {
+        chrome.devtools.panels.elements.onSelectionChanged.addListener(() => {
+            chrome.devtools.inspectedWindow.eval(`((node) => {
+                let countNode = (node) => { 
+                    let count = 0;
+                    let findName = node.nodeName;
+                    while (node) { 
+                        if (node.nodeName === findName) {
+                            ++count;
+                        }
+                        node = node.previousElementSibling; 
+                    }
+                    return "/"+findName.toLowerCase()+"["+count+"]";
+                }
+                try {
+                    let retVal = "";
+                    while (node && node.nodeType === 1) {
+                        retVal = countNode(node)+retVal;
+                        if (node.parentElement) {
+                            node = node.parentElement;
+                        } else {
+                            let parentElement = null;
+                            try {
+                                // Check if we're in a shadow DOM
+                                if (node.parentNode && node.parentNode.nodeType === 11) {
+                                    parentElement = node.parentNode.host;
+                                    retVal = "/#document-fragment[1]"+retVal;
+                                } else {
+                                    // Check if we're in an iframe
+                                    let parentWin = node.ownerDocument.defaultView.parent;
+                                    let iframes = parentWin.document.documentElement.querySelectorAll("iframe");
+                                    for (const iframe of iframes) {
+                                        try {
+                                            if (iframe.contentDocument === node.ownerDocument) {
+                                                parentElement = iframe;
+                                                break;
+                                            }
+                                        } catch (e) {}
+                                    }
+                                }
+                            } catch (e) {}
+                            node = parentElement;
+                        }
+                    }
+                    return retVal;
+                } catch (err) {
+                    console.error(err);
+                }
+            })($0)`, (result: string) => {
+                devtoolsController.setSelectedElementPath(result);
+            });
+        });
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    constructor(panel: ePanel) {
-        this.panel = panel; 
-    }
-
     private fireSecondaryView(view: eSecondaryView) {
         for (const listener of this.secondaryViewListeners) {
             listener(view);
@@ -109,9 +168,9 @@ export class DevtoolsAppController {
 }
 
 let singleton : DevtoolsAppController;
-export function getDevtoolsAppController(panel?: ePanel) {
+export function getDevtoolsAppController() {
     if (!singleton) {
-        singleton = new DevtoolsAppController(panel || "main");
+        singleton = new DevtoolsAppController();
     }
     return singleton;
 }
