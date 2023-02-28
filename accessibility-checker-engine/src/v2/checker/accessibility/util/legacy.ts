@@ -366,7 +366,7 @@ export class RPTUtil {
     public static getTabbableChildren(element) {
         let count = 0;
         // If node has children, look for tab stops in the children
-        if (element.firstChild) {
+        if (element.firstChild || element.nodeName.toUpperCase() === "IFRAME") {
             let nw = new NodeWalker(element);
             while (nw.nextNode() && nw.node != element) {
                 if (nw.node.nodeType == 1 && !nw.bEndTag && RPTUtil.isTabbable(nw.node)) {

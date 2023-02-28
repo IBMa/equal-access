@@ -1,0 +1,111 @@
+<html lang="en-US">
+<head>
+    <title>element_orientation_unlocked - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"The element is not restricted to either landscape or portrait orientation using CSS transform property","fail_locked":"The element <{0}> is restricted to either landscape or portrait orientation using CSS transform property","group":"Elements should not be restricted to either landscape or portrait orientation using CSS transform property"}};
+        RULE_ID = "element_orientation_unlocked"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+If designers force content to _only_ display in portrait (or landscape) mode, 
+it prevents users from being able to see the content in the orientation that they need. 
+For example, if a user has their display affixed to a wheelchair or is otherwise unable to reorient the device to match the designer-imposed orientation, 
+the content becomes unusable. 
+Most applications should be able to be used when displayed in either orientation (although one orientation may be less optimal).
+
+**Essential Exception**: This requirement does not apply to rare situations where a specific display orientation is essential. 
+An example is a piano keyboard emulator that mimics a physical piano keyboard, which is heavily dependent on horizontal operation.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+* When the CSS `transform` property is used, 
+ensure the [transform function](https://www.w3.org/TR/css-transforms/#transform-functions) is conditionally applied on the [orientation](https://www.w3.org/TR/mediaqueries-3/#orientation) of the [media feature](https://www.w3.org/TR/mediaqueries-3/#media1) 
+so that it does not restrict the page or element to either portrait or landscape orientation
+* **Or**, remove the CSS [transform property](https://www.w3.org/TR/css-transforms/#propdef-transform) if not [essential](https://www.w3.org/TR/WCAG21/#dfn-essential)
+
+Example: a CSS `transform` property has a [rotateZ](https://drafts.csswg.org/css-transforms-2/#funcdef-rotatez) transform function conditionally applied on the orientation media feature which does not restrict the element to either portrait or landscape orientation:
+
+```
+    <style>
+        @media (orientation: portrait) {
+            html {
+                transform: rotateZ(1turn);
+                }
+            }
+        </style>
+```
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [1.3.4 Orientation](https://www.ibm.com/able/requirements/requirements/#1_3_4)
+* [WCAG technique G214](https://www.w3.org/WAI/WCAG21/Techniques/general/G214)
+* [Design - Layout orientations](https://www.ibm.com/able/toolkit/design/visual/#layout-orientations)
+* [Test - Check motion operation](https://www.ibm.com/able/toolkit/verify/manual#motionoperation) 
+
+### Who does this affect?
+
+* People with dexterity impairments using a mounted device
+* People with low vision using large screen magnification in landscape mode
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
