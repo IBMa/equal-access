@@ -19,6 +19,9 @@ import { getDevtoolsController } from "../devtools/devtoolsController";
 import { ISettings, IReport } from "../interfaces/interfaces";
 import TabChainCircles from "./TabChainCircles";
 import TabStopErrorCircles from "./TabStopErrorCircles";
+import TabStopHighlight from "./TabStopHighlight";
+import XpathUtils from "./XpathUtils";
+
 
 
 
@@ -297,7 +300,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         // console.log("---------------------------------------");
         // console.log("main doc left mouse click catcher");
         // console.log("event.target = ",event.target);
-        handleTabHighlight(event,document,"click","");
+        TabStopHighlight.handleTabHighlight(event,document,"click","");
     
     });
 
@@ -306,7 +309,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         // console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
             // console.log("CALL FUNCTION handleTabHighlight for main doc");
-            handleTabHighlight(event, document, "main", "");
+            TabStopHighlight.handleTabHighlight(event, document, "main", "");
         }
     });
 
@@ -321,9 +324,9 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
                 // console.log("add iframe listener");
                 frames[i].contentWindow?.addEventListener('keyup', function(event:any) {
                     // console.log("iframe key catcher");
-                    let iframePath:string = getXPathForElement(frames[i]); // since iframes in main doc
+                    let iframePath:string = XpathUtils.getXPathForElement(frames[i]); // since iframes in main doc
                     // console.log("iframePath = ",iframePath);
-                    handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath);
+                    TabStopHighlight.handleTabHighlight(event,frames[i].contentWindow!.document,"iframe",iframePath);
                 });
             } else {
                 console.log("iframe cross-origin");
@@ -345,10 +348,10 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             shadowDoms[i].shadowRoot?.addEventListener('keyup', function(event:any) {
                 // console.log("shadow dom key catcher");
                 let focusElement = shadowDoms[i].shadowRoot?.activeElement;
-                let focusElementPath = getXPathForElement(focusElement);
+                let focusElementPath = XpathUtils.getXPathForElement(focusElement);
                 // JCH TODO 1 for the doc frag ONLY works for 1 level doc frags
                 focusElementPath = "/#document-fragment"+"["+"1"+"]"+ focusElementPath;
-                handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath);
+                TabStopHighlight.handleTabHighlight(event,shadowDoms[i],"shadowdom",focusElementPath);
             })
         }
     }
@@ -370,37 +373,13 @@ async function goToTop() {
       });
 }
 
-function getXPathForElement(element: any) {
-    const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
-    const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
-    return segs(element).join('/');
-}
 
-// async function draw(regularTabstops: any, tabStopsErrors: any, tabStopLines: any, tabStopOutlines: any, iframes: any) {
+// function handleTabHighlight(event: any, document: Document, arg2: string, arg3: string) {
 //     // dummy function
-//     console.log("Function: draw");
-//     console.log("regularTabstops = ",regularTabstops);
-//     console.log("tabStopsErrors = ",tabStopsErrors);
-//     console.log("tabStopLines = ",tabStopLines);
-//     console.log("tabStopOutlines = ",tabStopOutlines);
-//     console.log("iframes = ",iframes);
+//     console.log("Function: handleTabHighlight");
+//     console.log("event = ",event);
+//     console.log("document = ",document);
+//     console.log("arg2 = ",arg2);
+//     console.log("arg3 = ",arg3);
 // }
-
-// function drawErrors(tabStopsErrors: any, regularTabstops: any, tabStopOutlines: any, iframes: any) {
-//     // dummy function
-//     console.log("Function: drawErrors");
-//     console.log("regularTabstops = ",regularTabstops);
-//     console.log("tabStopsErrors = ",tabStopsErrors);
-//     console.log("tabStopOutlines = ",tabStopOutlines);
-//     console.log("iframes = ",iframes);
-// }
-
-function handleTabHighlight(event: any, document: Document, arg2: string, arg3: string) {
-    // dummy function
-    console.log("Function: handleTabHighlight");
-    console.log("event = ",event);
-    console.log("document = ",document);
-    console.log("arg2 = ",arg2);
-    console.log("arg3 = ",arg3);
-}
 

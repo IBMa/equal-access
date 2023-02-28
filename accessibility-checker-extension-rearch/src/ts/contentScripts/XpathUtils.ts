@@ -58,7 +58,7 @@ export default class XpathUtils {
     }
 
     // @ts-ignore
-    private static selectPath(srcPath: any) {
+    public static selectPath(srcPath: any) {
         let doc = document;
         let element = null;
         while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
@@ -90,5 +90,11 @@ export default class XpathUtils {
             element = this.lookup(doc, srcPath) || element;
         }
         return element;
+    }
+
+    public static getXPathForElement(element: any) {
+        const idx: any = (sib: any, name: any) => sib ? idx(sib.previousElementSibling, name || sib.localName) + (sib.localName == name) : 1;
+        const segs: any = (elm: any) => (!elm || elm.nodeType !== 1) ? [''] : [...segs(elm.parentNode), `${elm.localName.toLowerCase()}[${idx(elm)}]`];
+        return segs(element).join('/');
     }
 }
