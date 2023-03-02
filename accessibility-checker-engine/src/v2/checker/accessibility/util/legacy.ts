@@ -751,8 +751,6 @@ export class RPTUtil {
                 // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
                 if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
                     return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
-                //console.log("elem name=" + ele.nodeName +",  domAriaAttributes="+domAriaAttributes +",roleAttributes="+roleAttributes+", tagProperty.implicitRole="+tagProperty.implicitRole);
-                
             }
             return tagProperty.implicitRole;   
         }
