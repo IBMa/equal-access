@@ -2414,26 +2414,14 @@ export class RPTUtil {
                     fcs !== null && fcs.length > 0 ? tagProperty = specialTagProperties["child-figcaption"] : tagProperty = specialTagProperties["no-child-figcaption"];
                     break;
                 }
-                case "footer": {
+                case "footer": 
+                case "header":
                     if (RPTUtil.getAncestorWithRole(ruleContext, "article", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "complementary", true) !== null
                        || RPTUtil.getAncestorWithRole(ruleContext, "navigation", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "region", true) !== null
                        || RPTUtil.getAncestor(ruleContext, ["article", "aside", "main", "nav", "section"]) !== null)
                        tagProperty = specialTagProperties["des-section-article-aside-main-nav"];
                     else
                         tagProperty = specialTagProperties["other"];   
-                    break;
-                }
-                case "header":
-                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
-                    ancestor !== null ? tagProperty = specialTagProperties["des-section-article-aside-main-nav"] : tagProperty = specialTagProperties["not-des-section-article"];
                     break;
                 case "img":
                     if (ruleContext.hasAttribute("alt")) {

@@ -2261,7 +2261,7 @@ export class ARIADefinitions {
                 validRoles: ["group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
-            "not-des-section-article": {
+            "other": {
                 implicitRole: ["banner"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
                 validRoles: ["group", "none", "presentation"],
