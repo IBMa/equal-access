@@ -595,11 +595,10 @@ export class RPTUtil {
                     }
 
                     if (wRoles.length === 0 && considerImplicitRoles) {
-                        let tagProperty = RPTUtil.getElementAriaProperty(nw.node);
                         //check if there are any implicit roles for this element.
-                        if (tagProperty && tagProperty.implicitRole) {
-                            wRoles = tagProperty.implicitRole;
-                        }
+                        let implicitRole = RPTUtil.getImplicitRole(nw.node);
+                        if (implicitRole !== null && implicitRole.length > 0)
+                            wRoles = implicitRole;
                     }
 
                     if (wRoles.length === 0) {
@@ -713,7 +712,7 @@ export class RPTUtil {
         //Note: element can have multiple implicit roles
         if (considerImplicitRoles) {
             let implicitRole = RPTUtil.getImplicitRole(ele);
-            if (implicitRole.length > 0) {
+            if (implicitRole !== null && implicitRole.length > 0) {
                 //add implicit roles to the attributes roles.
                 RPTUtil.concatUniqueArrayItemList(implicitRole, roles);
             }
@@ -737,6 +736,9 @@ export class RPTUtil {
                 // the 'generic' role is only allowed if a valid aria attribute exists.
                 if (tagProperty.implicitRole.includes("generic")) {
                     let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
+                    if (tagProperty.globalAriaAttributesValid) {
+                        
+                    }
                     let roleAttributes = RPTUtil.getAllowedAriaAttributes(ele, ['generic'], tagProperty);
                     // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
                     if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr))) {
@@ -818,12 +820,11 @@ export class RPTUtil {
         //check if implicit roles matches.
         //Note: element can have multiple implicit roles
         if (!retVal && considerImplicitRoles) {
-            let tagProperty = RPTUtil.getElementAriaProperty(ele);
             let wRoles = [];
             //check if there are any implicit roles for this element.
-            if (tagProperty && tagProperty.implicitRole !== null) {
-                //add implicit roles to the attributes roles.
-                RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, wRoles);
+            let implicitRole = RPTUtil.getImplicitRole(ele);
+            if (implicitRole !== null && implicitRole.length > 0) {
+                RPTUtil.concatUniqueArrayItemList(implicitRole, wRoles);
                 //if role is array loop thru and see if any  of the implicit role present in the array
                 if (typeof (role) != typeof ("")) {
                     for (let i = 0; !retVal && i < wRoles.length; ++i) {
@@ -876,10 +877,9 @@ export class RPTUtil {
 
         //check if implicit roles matches.
         //Note: element can have multiple implicit roles
-        let tagProperty = RPTUtil.getElementAriaProperty(ele);
         //check if there are any implicit roles for this element.
-        if (tagProperty && tagProperty.implicitRole !== null) {
-            let impRoles = tagProperty.implicitRole;
+        let impRoles = RPTUtil.getImplicitRole(ele);
+        if (impRoles !== null && impRoles.length > 0) {
             //if role is array loop thru and see if any  of the implicit role present in the array
             if (typeof (role) != typeof ("")) {
                 for (let i = 0; !retVal && i < impRoles.length; ++i) {
@@ -913,12 +913,10 @@ export class RPTUtil {
         //check if implicit roles exist.
         //Note: element can have multiple implicit roles
         if (!retVal && considerImplicitRoles) {
-            let tagProperty = RPTUtil.getElementAriaProperty(ele);
             //check if there are any implicit roles for this element.
-            if (tagProperty && tagProperty.implicitRole !== null &&
-                tagProperty.implicitRole.length > 0) {
+            let impRoles = RPTUtil.getImplicitRole(ele);
+            if (impRoles !== null && impRoles.length > 0)
                 retVal = true;
-            }
         }
         return retVal;
     }

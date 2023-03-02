@@ -2542,28 +2542,6 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             }
         },
-        /**"th": {
-            "des-table": {
-                implicitRole: ["columnheader", "rowheader", "cell"],
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "des-grid": {
-                implicitRole: ["columnheader", "rowheader", "gridcell"],
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "des-treegrid": {
-                implicitRole: ["columnheader", "rowheader", "gridcell"],
-                validRoles: null,
-                globalAriaAttributesValid: true
-            },
-            "des-other": {
-                implicitRole: null,
-                validRoles: ["any"],
-                globalAriaAttributesValid: true
-            }
-        },*/
         "th": {
             "des-table-grid-treegrid-row-scope": {
                 implicitRole: ["rowheader", "cell"],
