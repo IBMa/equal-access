@@ -119,6 +119,8 @@ export class ACReporterJSON {
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // configuration.
+        // Replace the colons in the label with hyphen-minuses.
+        results.label = results.label.replace(/:/g, '-');
         let resultsFileName = pathLib.join(resultDir, results.label + '.json');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
