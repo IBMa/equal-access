@@ -662,9 +662,12 @@ export class ARIAMapper extends CommonMapper {
                 }    
             }
         }
-        return this.elemToImplicitRole(elem);
+        console.log("elem=" + elem.nodeName +", implicit role=" + this.elemToImplicitRole(elem) +", RPTUTil implicit role=" + RPTUtil.getImplicitRole(elem));
+        //return this.elemToImplicitRole(elem);
+        const roles = RPTUtil.getImplicitRole(elem);
+        return !roles || roles.length ===0 ? null : roles[0];
     }
-
+    
     public static elemToImplicitRole(elem : Element) {
         let nodeName = elem.nodeName.toLowerCase();
 
@@ -777,7 +780,7 @@ export class ARIAMapper extends CommonMapper {
         }
         return {
             "a": function(element) {
-                // If it doesn't represent a hyperlink, no corresponding role
+                // If it doesn't represent a hyperlink, 'generic' role
                 if (!element.hasAttribute("href")) return null;
                 return "link";
             },

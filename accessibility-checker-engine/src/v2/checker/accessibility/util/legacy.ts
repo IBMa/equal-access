@@ -734,6 +734,16 @@ export class RPTUtil {
         //check if there are any implicit roles for this element.
         if (tagProperty) {
             if (tagProperty.implicitRole) {
+                // the 'generic' role is only allowed if a valid aria attribute exists.
+                if (tagProperty.implicitRole.includes("generic")) {
+                    let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
+                    let roleAttributes = RPTUtil.getAllowedAriaAttributes(ele, ['generic'], tagProperty);
+                    // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
+                    if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr))) {
+                        return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
+                        //console.log("elem name=" + ele.nodeName +",  domAriaAttributes="+domAriaAttributes +",roleAttributes="+roleAttributes+", tagProperty.implicitRole="+tagProperty.implicitRole);
+                    }    
+                }
                 return tagProperty.implicitRole;
             }
         }
@@ -2405,16 +2415,12 @@ export class RPTUtil {
                     break;
                 }
                 case "footer": {
-                    let ancestor = RPTUtil.getAncestorWithRole(ruleContext, "article", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "complementary", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "main", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "navigation", true);
-                    if (ancestor === null)
-                        ancestor = RPTUtil.getAncestorWithRole(ruleContext, "region", true);
-                    ancestor !== null ? tagProperty = specialTagProperties["des-section-article"] : tagProperty = specialTagProperties["not-des-section-article"];
+                    if (RPTUtil.getAncestorWithRole(ruleContext, "article", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "complementary", true) !== null
+                       || RPTUtil.getAncestorWithRole(ruleContext, "navigation", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "region", true) !== null
+                       || RPTUtil.getAncestor(ruleContext, ["article", "aside", "main", "nav", "section"]) !== null)
+                       tagProperty = specialTagProperties["des-section-article-aside-main-nav"];
+                    else
+                        tagProperty = specialTagProperties["other"];   
                     break;
                 }
                 case "header":
@@ -2489,7 +2495,6 @@ export class RPTUtil {
                     break;
                 case "tbody":
                 case "td":
-                case "th":
                 case "tr":
                     if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null) {
                         tagProperty = specialTagProperties["des-table"];
@@ -2497,6 +2502,15 @@ export class RPTUtil {
                         RPTUtil.getAncestorWithRole(ruleContext, "grid", true) || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) ? tagProperty = specialTagProperties["des-grid"] : tagProperty = specialTagProperties["des-other"];
                     }
                     break;
+                case "th":
+                    if (RPTUtil.getAncestorWithRole(ruleContext, "table", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "grid", true) !== null || RPTUtil.getAncestorWithRole(ruleContext, "treegrid", true) !== null) {
+                        const scope = RPTUtil.getScopeForTh(ruleContext);
+                        if (scope === 'column') tagProperty = specialTagProperties["des-table-grid-treegrid-column-scope"];
+                        else tagProperty = specialTagProperties["des-table-grid-treegrid-row-scope"];
+                    } else {
+                        tagProperty = specialTagProperties["des-other"];
+                    }
+                    break;    
                 case "div":
                     let prt = ruleContext.parentElement;
                     prt !== null && prt.nodeName.toLowerCase() === 'dl' ? tagProperty = specialTagProperties["child-dl"] : tagProperty = specialTagProperties["no-child-dl"];
@@ -2506,6 +2520,36 @@ export class RPTUtil {
             } //switch
         }
         return tagProperty || null;
+    }
+
+    public static getScopeForTh(element) {
+        /** https://www.w3.org/TR/html5/tabular-data.html#header-and-data-cell-semantics
+         * A header cell anchored at the slot with coordinate (x, y) with width width and height height is 
+         * said to be a column header if any of the following conditions are true:
+         * * The cell's scope attribute is in the column state, or
+         * * The cell's scope attribute is in the auto state, and there are no data cells in any of 
+         *   the cells covering slots with y-coordinates y .. y+height-1.
+         * A header cell anchored at the slot with coordinate (x, y) with width width and height height is
+         * said to be a row header if any of the following conditions are true:
+         * * The cell's scope attribute is in the row state, or
+         * * The cell's scope attribute is in the auto state, the cell is not a column header, and there are
+         *   no data cells in any of the cells covering slots with x-coordinates x .. x+width-1.
+         */
+        // Note: auto is default scope
+        
+        // Easiest answer is if scope is specified
+        if (element.hasAttribute("scope")) {
+            let scope = element.getAttribute("scope").toLowerCase();
+            if (scope === "row" || scope === 'rowgroup') return "row";
+            if (scope === "col" || scope === 'colgroup') return "column";
+        }
+        
+        // scope is auto, default (without a scope) or invalid value.
+        // if all the sibling elements are th, then return "columnheader" 
+        var siblings = element => [...element.parentElement.children].filter(node=>node.nodeType === 1 && node.tagName != "TH");
+        if (siblings === null || siblings.length === 0)
+            return "column"; 
+        else return "row";
     }
 
     public static getAllowedAriaRoles(ruleContext, properties: IDocumentConformanceRequirement) {
@@ -2521,21 +2565,24 @@ export class RPTUtil {
             if (tagProperty.implicitRole !== null) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, allowedRoles);
             }
-
-            if (tagProperty.validRoles !== null) {
+            /**if (tagProperty.validRoles !== null) {
+                RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
+            }*/
+            let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
+            if (implicitRoles && implicitRoles.length > 0) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
             }
         }
 
         // the 'generic' role is only allowed if a valid aria prop exists.
-        if (allowedRoles.includes("generic")) {
+        /**if (allowedRoles.includes("generic")) {
             let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
             let roleAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, ['generic'], tagProperty);
             
             // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
             if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
                 RPTUtil.reduceArrayItemList(['generic'], allowedRoles); 
-        }
+        }*/
         return allowedRoles;
     }
 

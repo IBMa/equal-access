@@ -76,7 +76,7 @@ export let aria_semantics_role: Rule = {
         let passRoleTokens = [];
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
-        allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);console.log("tagName=" + tagName +",allowedRoles="+allowedRoles);
+        allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);//console.log("tagName=" + tagName +",allowedRoles="+allowedRoles);
         
         // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
         for (let i = 0; i < domRoles.length; i++) {

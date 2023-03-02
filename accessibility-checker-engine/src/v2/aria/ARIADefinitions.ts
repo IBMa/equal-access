@@ -2240,7 +2240,7 @@ export class ARIADefinitions {
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
                 globalAriaAttributesValid: true
             },
-            "not-des-section-article": {
+            "other": {
                 implicitRole: ["contentinfo"],
                 //roleCondition: " when not a descendant of an article, aside, main, nav or section element",
                 validRoles: ["doc-footnote", "group", "none", "presentation"],
@@ -2542,7 +2542,7 @@ export class ARIADefinitions {
                 globalAriaAttributesValid: true
             }
         },
-        "th": {
+        /**"th": {
             "des-table": {
                 implicitRole: ["columnheader", "rowheader", "cell"],
                 validRoles: null,
@@ -2555,6 +2555,23 @@ export class ARIADefinitions {
             },
             "des-treegrid": {
                 implicitRole: ["columnheader", "rowheader", "gridcell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "des-other": {
+                implicitRole: null,
+                validRoles: ["any"],
+                globalAriaAttributesValid: true
+            }
+        },*/
+        "th": {
+            "des-table-grid-treegrid-row-scope": {
+                implicitRole: ["rowheader", "cell"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "des-table-grid-treegrid-column-scope": {
+                implicitRole: ["columnheader", "cell"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             },
