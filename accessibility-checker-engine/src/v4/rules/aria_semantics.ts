@@ -55,10 +55,6 @@ export let aria_semantics_role: Rule = {
         if (["td", "th", "tr"].includes(tagName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
             return null;
         
-        /**let domRoles: string[] = [];
-        if (ruleContext.getAttribute("role") !== null) {
-            domRoles = ruleContext.getAttribute("role").trim().toLowerCase().split(/\s+/); // separated by one or more white spaces
-        }*/
         let domRoles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
 
         // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
@@ -77,6 +73,7 @@ export let aria_semantics_role: Rule = {
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
+        console.log("tagName=" + tagName +", allowedRoles="+allowedRoles);
         // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
         for (let i = 0; i < domRoles.length; i++) {
             if (allowedRoles.length === 0) {
