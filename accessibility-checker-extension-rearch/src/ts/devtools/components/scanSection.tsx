@@ -22,6 +22,7 @@ import { getBGController, TabChangeType } from '../../background/backgroundContr
 import { 
     Button,
     Column,
+    InlineLoading,
     Grid 
 } from "@carbon/react";
 import {
@@ -34,7 +35,7 @@ let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
-    scanInProgress: boolean
+    scanInProgress: number
     pageStatus: string
     viewState: ViewState
     reportContent: boolean
@@ -43,7 +44,7 @@ interface ScanSectionState {
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
-        scanInProgress: false,
+        scanInProgress: 0,
         pageStatus: "complete",
         viewState: {
             kcm: false
@@ -53,13 +54,17 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     async componentDidMount(): Promise<void> {
+        let self = this;
         devtoolsController.addReportListener({
             callback: async (report) => {
                 let hasReportContent = false;
                 if (report && report.results.length > 0) {
                     hasReportContent = true;
                 }
-                this.setState( { scanInProgress: false, reportContent: hasReportContent });
+                self.setState( { scanInProgress: 2, reportContent: hasReportContent });
+                setTimeout(() => {
+                    self.setState( { scanInProgress: 0 });
+                }, 500);
             },
             callbackDest: {
                 type: "devTools",
@@ -94,7 +99,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     async scan() {
-        this.setState( { scanInProgress: true, scannedOnce: true });
+        this.setState( { scanInProgress: 1, scannedOnce: true });
         let tabController = getTabController();
         await (await tabController).requestScan();
     }
@@ -103,15 +108,19 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         return (
             <Grid className="scanSection"> 
                 <Column sm={3} md={6} lg={6}>
-                    <Button 
+                    {this.state.scanInProgress > 0 && <InlineLoading 
+                        description={"Scanning"}
+                        status={this.state.scanInProgress === 1 ? 'active' : 'finished'}
+                    />}
+                    {this.state.scanInProgress === 0 && <Button 
                         size="sm"
                         style={{minWidth: "140px"}}
-                        disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
+                        disabled={this.state.pageStatus !== "complete"} 
                         renderIcon={Renew} 
                         onClick={() => { 
                             this.scan(); 
                         }
-                    }>Scan</Button>
+                    }>Scan</Button>}
                 </Column>
                 <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
                     <Button

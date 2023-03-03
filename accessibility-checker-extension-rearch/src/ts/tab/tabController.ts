@@ -16,7 +16,7 @@
 
 import { getBGController } from "../background/backgroundController";
 import { DevtoolsController, getDevtoolsController } from "../devtools/devtoolsController";
-import { IMessage, IReport } from "../interfaces/interfaces";
+import { IMessage, IReport, IRuleset } from "../interfaces/interfaces";
 import { Controller, eControllerType } from "../messaging/controller";
 import { getTabId } from "../util/tabId";
 
@@ -37,7 +37,8 @@ class TabController extends Controller {
             const listenMsgs : { 
                 [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
             } = {
-                "TAB_requestScan": async () => self.requestScan()
+                "TAB_requestScan": async () => self.requestScan(),
+                "TAB_getRulesets": async () => self.getRulesets()
             }
 
             // Hook the above definitions
@@ -49,6 +50,16 @@ class TabController extends Controller {
                 }
             )
         }
+    }
+
+    public async getRulesets() : Promise<IRuleset[]> {
+        if (this.type === "remote") {
+            await bgController.initTab((this.ctrlDest as any).tabId);
+        }
+        return this.hook("getRulesets", null, async () => {
+            let checker = new (<any>window).aceIBMa.Checker();
+            return checker.rulesets;
+        });
     }
 
     public async requestScan() {

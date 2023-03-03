@@ -3,16 +3,43 @@
 // @use '@carbon/styles/scss/breakpoint'as *;
 
 .reportFilterSection {
-    margin: 1rem 0rem;
+    margin: 1rem 0rem 0rem 0rem;
     padding: .125rem 0rem .25rem 0rem;
     border-top: solid $gray-30 1px;
     border-bottom: solid $gray-30 1px;
 
+    .countCol {
+        white-space: nowrap;
+    }
     .reportSecIcon {
         vertical-align: text-bottom;
     }
     .totalCount {
         @include type-style("label-02");
-        margin-top: .5rem;
+        margin-top: .625rem;
+        text-align: right;
+    }
+    .reportSecCounts {
+        font-weight: 600;
+    }
+    .summaryBarLabels {
+        @include type-style("label-02");
+        font-weight: 600;
+        display:none;
+        @media (min-width:780px) {
+            display:inline;
+        }
+        @media (min-width:1056px) {
+            display:none;
+        }
+        @media (min-width:1500px) {
+            display:inline;
+        }
+    }
+}
+
+.reportSection {
+    .cds--tab-content {
+        padding: 1rem 0rem;
     }
 }
