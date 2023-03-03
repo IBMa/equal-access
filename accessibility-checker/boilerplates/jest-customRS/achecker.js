@@ -48,5 +48,5 @@ module.exports = {
 
     // optional - Where the baseline results should be loaded from
     // Default: baselines
-    baselineFolder: "baselines",
+    baselineFolder: "baselines"
 };

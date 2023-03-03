@@ -4,7 +4,7 @@
   "description": "Example usage of IBM AAT with Jest",
   "main": "src/app.js",
   "scripts": {
-    "test": "node_modules/jest/bin/jest.js test/*.test.js"
+    "test": "node_modules/jest/bin/jest.js --detectOpenHandles test/*.test.js"
   },
   "engines": {
     "node": ">=10"
@@ -14,8 +14,9 @@
       "./setupAfterEnv.js"
     ],
     "resolver": "jest-pnp-resolver",
-    "testEnvironment": "jsdom"
-  },
+    "testEnvironment": "jsdom",
+    "transformIgnorePatterns": ["ace-node\\.js"]
+},
   "devDependencies": {
     "@babel/cli": "7.19.3",
     "@babel/core": "7.20.2",
@@ -32,7 +33,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "11.2.7",
     "@testing-library/user-event": "^14.4.3",
-    "accessibility-checker": "3.1.38",
+    "accessibility-checker": "^3.1.45",
     "jest": "27.5.1",
     "jest-pnp-resolver": "1.2.2",
     "react": "17.0.1",
