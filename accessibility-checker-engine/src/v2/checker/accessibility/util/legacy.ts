@@ -2453,7 +2453,7 @@ export class RPTUtil {
                                     RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
                                     break;
                                 default:
-                                    // default type is the same as type=text
+                                    // default type is the same as type=text, including invalid type value
                                     RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
                                     break;
                             }
@@ -2559,16 +2559,7 @@ export class RPTUtil {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
             }
         }
-
-        // the 'generic' role is only allowed if a valid aria prop exists.
-        /**if (allowedRoles.includes("generic")) {
-            let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
-            let roleAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, ['generic'], tagProperty);
-            
-            // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
-            if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
-                RPTUtil.reduceArrayItemList(['generic'], allowedRoles); 
-        }*/
+       
         return allowedRoles;
     }
 
