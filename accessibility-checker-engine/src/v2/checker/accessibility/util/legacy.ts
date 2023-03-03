@@ -737,7 +737,7 @@ export class RPTUtil {
                 if (tagProperty.implicitRole.includes("generic")) {
                     let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
                     if (tagProperty.globalAriaAttributesValid) {
-                        
+
                     }
                     let roleAttributes = RPTUtil.getAllowedAriaAttributes(ele, ['generic'], tagProperty);
                     // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
@@ -2551,9 +2551,9 @@ export class RPTUtil {
             if (tagProperty.implicitRole !== null) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.implicitRole, allowedRoles);
             }
-            /**if (tagProperty.validRoles !== null) {
+            if (tagProperty.validRoles !== null) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
-            }*/
+            }
             let implicitRoles = RPTUtil.getImplicitRole(ruleContext);
             if (implicitRoles && implicitRoles.length > 0) {
                 RPTUtil.concatUniqueArrayItemList(tagProperty.validRoles, allowedRoles);
