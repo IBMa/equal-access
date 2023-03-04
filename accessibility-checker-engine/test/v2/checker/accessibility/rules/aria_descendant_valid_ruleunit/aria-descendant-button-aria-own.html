@@ -93,17 +93,17 @@
             "ruleId": "aria_descendant_valid",
             "value": [
               "INFORMATION",
-              "FAIL"
+              "POTENTIAL"
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/a[1]",
               "aria": "/document[1]/checkbox[1]"
             },
-            "reasonId": "fail_child_explicit_role",
-            "message": "The element with role \"checkbox\" contains descendants with roles \"listbox\" which are ignored by browsers",
+            "reasonId": "potential_child_implicit_role",
+            "message": "The element with role \"checkbox\" contains descendants with implicit roles \"generic\" which are ignored by browsers",
             "messageArgs": [
               "checkbox",
-              "listbox"
+              "generic"
             ],
             "apiArgs": [],
             "category": "Accessibility"
