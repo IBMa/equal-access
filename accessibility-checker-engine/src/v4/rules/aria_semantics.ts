@@ -62,7 +62,7 @@ export let aria_semantics_role: Rule = {
         for (const role of domRoles) 
             if (!(role.toLowerCase() in designPatterns)) 
                 return null;
-        
+        //console.log("tagName=" + tagName + ", id=" + ruleContext.getAttribute('id') +", domRoles=" + domRoles);
         // Roles allowed on this node
         let allowedRoles = [];
 

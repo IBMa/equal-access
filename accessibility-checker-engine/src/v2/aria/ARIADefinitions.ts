@@ -1663,7 +1663,7 @@ export class ARIADefinitions {
             globalAriaAttributesValid: true
         },
         "address": {
-            implicitRole: null,
+            implicitRole: ["group"],
             validRoles: ["any"],
             globalAriaAttributesValid: true
         },
@@ -2463,9 +2463,15 @@ export class ARIADefinitions {
                 otherAllowedAriaAttributes: ["aria-readonly"],
                 otherRolesForAttributes: ["textbox"]
             },
-            "default": {
-                implicitRole: null,
-                //roleCondition: "",
+            "default-with-list": {
+                // input with a missing or invalid type, with a list attribute
+                implicitRole: ["combobox"],
+                validRoles: null,
+                globalAriaAttributesValid: true
+            },
+            "default-no-list": {
+                // input with a missing or invalid type, with a list attribute
+                implicitRole: ["textbox"],
                 validRoles: null,
                 globalAriaAttributesValid: true
             }

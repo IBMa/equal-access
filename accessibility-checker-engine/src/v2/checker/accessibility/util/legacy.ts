@@ -2453,8 +2453,8 @@ export class RPTUtil {
                                     RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["url-with-list"] : tagProperty = specialTagProperties["url-no-list"];
                                     break;
                                 default:
-                                    // default type is the same as type=text, including invalid type value
-                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["text-with-list"] : tagProperty = specialTagProperties["text-no-list"];
+                                    // default
+                                    RPTUtil.attributeNonEmpty(ruleContext, "list") ? tagProperty = specialTagProperties["default-with-list"] : tagProperty = specialTagProperties["default-no-list"];
                                     break;
                             }
                         }

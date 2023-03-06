@@ -33,7 +33,7 @@
         <a class="offleft" href="#maincontent">Skip to main content</a>
         <a name="maincontent"></a>
 
-        <input aria-label="test1_1" />
+        <input id='1' aria-label="test1_1" />
         <input aria-label="test1_2" role="application" />
 
         <input type="button" aria-label="test2_3" />
@@ -45,7 +45,7 @@
         <input type="checkbox" aria-label="test3_7" />
         <input type="checkbox" aria-label="test3_8" role="application" />
         <input type="checkbox" aria-label="test3_9" role="checkbox" aria-checked="true" onkeypress="keyEvent()" />
-        <input type="checkbox" aria-label="test3_10" role="button" aria-label="true" onkeypress="keyEvent()"
+        <input id='10' type="checkbox" aria-label="test3_10" role="button" aria-label="true" onkeypress="keyEvent()"
             aria-pressed="true" />
         <input type="checkbox" aria-label="test3_11" role="menuitemcheckbox switch" aria-checked="true"
             onkeypress="keyEvent()" />
@@ -61,7 +61,7 @@
 
         <input type="email" list="test" aria-label="test7_18" />
         <input type="email" list="test" aria-label="test7_19" role="application" />
-        <input type="email" list="test" aria-label="test7_20" role="combobox" aria-expanded="true"
+        <input id='20' type="email" list="test" aria-label="test7_20" role="combobox" aria-expanded="true"
             onkeypress="keyEvent()" />
 
         <input type="email" aria-label="test8_21" />
@@ -76,7 +76,7 @@
 
         <input type="image" aria-label="test11_28" alt="test11" />
         <input type="image" aria-label="test11_29" alt="test11" role="application" />
-        <input type="image" aria-label="test11_30" alt="test11" role="button" onkeypress="keyEvent()" />
+        <input id='30' type="image" aria-label="test11_30" alt="test11" role="button" onkeypress="keyEvent()" />
         <input type="image" aria-label="test11_31" alt="test11"
             role="link menuitem menuitemcheckbox menuitemradio radio switch" onkeypress="keyEvent()" />
 
@@ -92,8 +92,8 @@
         <input type="password" aria-label="test14_38" role="application" />
         <input type="password" aria-label="test14_39" role="textbox" onkeypress="keyEvent()" />
 
-        <input type="radio" aria-label="test15_40" />
-        <input type="radio" aria-label="test15_41" role="application" />
+        <input id='40' type="radio" aria-label="test15_40" />
+        <input  type="radio" aria-label="test15_41" role="application" />
         <input type="radio" aria-label="test15_42" role="radio" aria-checked="true" onkeypress="keyEvent()" />
         <input type="radio" aria-label="test15_43" role="menuitemradio" aria-checked="true" onkeypress="keyEvent()" />
 
@@ -106,7 +106,7 @@
         <input type="reset" aria-label="test17_48" role="application" />
         <input type="reset" aria-label="test17_49" role="button" onkeypress="keyEvent()" />
 
-        <input type="search" aria-label="test18_50" />
+        <input id='50' type="search" aria-label="test18_50" />
         <input type="search" aria-label="test18_51" role="application" />
         <input type="search" aria-label="test18_52" role="searchbox" />
 
@@ -120,7 +120,7 @@
         <input type="submit" aria-label="test20_59" role="button" onkeypress="keyEvent()" />
 
         <input type="tel" aria-label="test21_60" />
-        <input type="tel" aria-label="test21_61" role="application" />
+        <input id='60' type="tel" aria-label="test21_61" role="application" />
         <input type="tel" aria-label="test21_62" role="textbox" onkeypress="keyEvent()" />
 
         <input type="tel" list="test" aria-label="test22_63" />
@@ -134,7 +134,7 @@
 
         <input type="text" list="test" aria-label="test24_69" />
         <input type="text" list="test" aria-label="test24_70" role="application" />
-        <input type="text" list="test" aria-label="test24_71" role="combobox" aria-expanded="true"
+        <input id='70' type="text" list="test" aria-label="test24_71" role="combobox" aria-expanded="true"
             onkeypress="keyEvent()" />
 
         <input type="url" aria-label="test25_72" />
@@ -150,7 +150,7 @@
         <input type="time" aria-label="test27_79" role="application" />
 
         <input type="week" aria-label="test28_80" />
-        <input type="week" aria-label="test28_81" role="application" />
+        <input id='80' type="week" aria-label="test28_81" role="application" />
 
         <input type="password" aria-label="test14_40" aria-required="true" />
 
@@ -174,7 +174,7 @@
             "messageArgs": [
               "aria-atomic",
               "body",
-              ""
+              "generic"
             ],
             "apiArgs": [],
             "category": "Accessibility"
@@ -616,7 +616,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[16]",
-              "aria": "/document[1]/generic[1]/region[1]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -655,7 +655,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[18]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[1]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -694,7 +694,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[20]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -713,7 +713,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[20]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[1]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1493,7 +1493,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[53]",
-              "aria": "/document[1]/generic[1]/region[1]/searchbox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[3]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1532,7 +1532,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[55]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1551,7 +1551,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[55]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[2]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1727,7 +1727,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[62]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[8]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[5]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1766,7 +1766,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[64]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1785,7 +1785,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[64]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[3]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[6]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1805,7 +1805,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[65]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[8]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1844,7 +1844,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[67]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[10]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1863,7 +1863,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[67]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[10]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[9]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1883,7 +1883,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[68]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[7]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1922,7 +1922,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[70]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -1941,7 +1941,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[70]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[4]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[8]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -1961,7 +1961,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[71]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[12]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[10]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2000,7 +2000,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[73]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[13]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -2019,7 +2019,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[73]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[13]"
+              "aria": "/document[1]/generic[1]/region[1]/textbox[11]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2039,7 +2039,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[74]",
-              "aria": "/document[1]/generic[1]/region[1]/textbox[14]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[9]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
@@ -2078,7 +2078,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[76]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[5]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
             },
             "reasonId": "Pass_0",
             "message": "Rule Passed",
@@ -2097,7 +2097,7 @@
             ],
             "path": {
               "dom": "/html[1]/body[1]/div[1]/input[76]",
-              "aria": "/document[1]/generic[1]/region[1]/combobox[5]"
+              "aria": "/document[1]/generic[1]/region[1]/combobox[10]"
             },
             "reasonId": "Pass",
             "message": "ARIA attributes are valid for the element and ARIA role",
