@@ -47,6 +47,10 @@ export class UtilIssue {
 
     public static valueToStringPlural(value: IssueValue) : string {
         let sing = UtilIssue.valueToStringSingular(value);
+        return this.singToStringPlural(sing);
+    }
+    
+    public static singToStringPlural(sing: string) : string {
         if (sing === "Violation") return "Violations";
         if (sing === "Needs review") return "Need review";
         if (sing === "Recommendation") return "Recommendations";

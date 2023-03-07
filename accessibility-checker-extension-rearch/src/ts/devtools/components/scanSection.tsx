@@ -15,13 +15,13 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { getTabController } from "../../tab/tabController";
 import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
 import { 
     Button,
     Column,
+    InlineLoading,
     Grid 
 } from "@carbon/react";
 import {
@@ -29,12 +29,14 @@ import {
     KeyboardOff,
     Renew
 } from "@carbon/react/icons";
+import { ListenerType } from '../../messaging/controller';
+import { IReport } from '../../interfaces/interfaces';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
 
 interface ScanSectionState {
-    scanInProgress: boolean
+    scanInProgress: number
     pageStatus: string
     viewState: ViewState
     reportContent: boolean
@@ -43,7 +45,7 @@ interface ScanSectionState {
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
     state : ScanSectionState = {
-        scanInProgress: false,
+        scanInProgress: 0,
         pageStatus: "complete",
         viewState: {
             kcm: false
@@ -52,20 +54,26 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         reportContent: false
     }
 
-    async componentDidMount(): Promise<void> {
-        devtoolsController.addReportListener({
-            callback: async (report) => {
-                let hasReportContent = false;
-                if (report && report.results.length > 0) {
-                    hasReportContent = true;
-                }
-                this.setState( { scanInProgress: false, reportContent: hasReportContent });
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
+    reportListener : ListenerType<IReport> = {
+        callback: async (report) => {
+            let self = this;
+            let hasReportContent = false;
+            if (report && report.results.length > 0) {
+                hasReportContent = true;
             }
-        });
+            self.setState( { scanInProgress: 2, reportContent: hasReportContent });
+            setTimeout(() => {
+                self.setState( { scanInProgress: 0 });
+            }, 500);
+        },
+        callbackDest: {
+            type: "devTools",
+            tabId: getTabId()!
+        }
+    }
+
+    async componentDidMount(): Promise<void> {
+        devtoolsController.addReportListener(this.reportListener);
         devtoolsController.addViewStateListener( {
             callback: async (newState) => {
                 this.setState( { viewState: newState });
@@ -93,25 +101,32 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         this.setState({ viewState: (await devtoolsController.getViewState())!, reportContent: hasReportContent });
     }
 
+    componentWillUnmount(): void {
+        devtoolsController.removeReportListener(this.reportListener);
+    }
+
     async scan() {
-        this.setState( { scanInProgress: true, scannedOnce: true });
-        let tabController = getTabController();
-        await (await tabController).requestScan();
+        this.setState( { scanInProgress: 1, scannedOnce: true });
+        await bgController.requestScan(getTabId()!);
     }
 
     render() {
         return (
             <Grid className="scanSection"> 
                 <Column sm={3} md={6} lg={6}>
-                    <Button 
+                    {this.state.scanInProgress > 0 && <InlineLoading 
+                        description={"Scanning"}
+                        status={this.state.scanInProgress === 1 ? 'active' : 'finished'}
+                    />}
+                    {this.state.scanInProgress === 0 && <Button 
                         size="sm"
                         style={{minWidth: "140px"}}
-                        disabled={this.state.pageStatus !== "complete" || this.state.scanInProgress} 
+                        disabled={this.state.pageStatus !== "complete"} 
                         renderIcon={Renew} 
                         onClick={() => { 
                             this.scan(); 
                         }
-                    }>Scan</Button>
+                    }>Scan</Button>}
                 </Column>
                 <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
                     <Button

@@ -106,3 +106,45 @@ export interface IReport {
     }
     passUniqueElements: string[]
 }
+
+export enum eToolkitLevel {
+    LEVEL_ONE = "1",
+    LEVEL_TWO = "2",
+    LEVEL_THREE = "3",
+    LEVEL_FOUR = "4"
+}
+
+export enum eRuleCategory {
+    ACCESSIBILITY = "Accessibility",
+    DESIGN = "Design",
+    OTHER = "Other"
+}
+
+export enum eRulesetType {
+    DEFAULT = "default",
+    EXTENSION = "extension"
+}
+
+export enum eRulePolicy {
+    VIOLATION = "VIOLATION",
+    RECOMMENDATION = "RECOMMENDATION",
+    INFORMATION = "INFORMATION"
+}
+
+export interface IRuleset {
+    id: string,
+    name: string,
+    category: eRuleCategory,
+    description: string,
+    type?: eRulesetType,
+    checkpoints: Array<{
+        num: string,
+        // See https://github.com/act-rules/act-tools/blob/main/src/data/sc-urls.json
+        scId?: string,
+        // JCH: add name of checkpoint and summary description
+        name: string,
+        wcagLevel: string,
+        summary: string,
+        rules?: Array<{ id: string, level: eRulePolicy, toolkitLevel: eToolkitLevel }>
+    }>
+}
