@@ -23,18 +23,20 @@ import TabStopHighlight from "./TabStopHighlight";
 import XpathUtils from "./XpathUtils";
 
 let bgController = getBGController();
-
+let myKCMState = false;
 (async() => {
     let settings = await bgController.getSettings();
     console.log("[DEBUG:KCM Settings]",settings);
     let myTabId = await bgController.getTabId()!;
     console.log("[DEBUG:KCM TabId]", myTabId);
     let devtoolsController = getDevtoolsController("remote", myTabId);
-
+    console.log("ADDING LISTENERR");
     devtoolsController.addViewStateListener({
         callback: async (viewState) => {
+            if (viewState.kcm === myKCMState) return;
             console.log("[DEBUG:KCM ViewState]", viewState.kcm);
             if (viewState.kcm === true) {
+                myKCMState = true;
                 // if viewState.kcm === true then scan has occurred and KCM button has been pushed
                 //    so draw KCM visualization
                 let report = await devtoolsController.getReport();
