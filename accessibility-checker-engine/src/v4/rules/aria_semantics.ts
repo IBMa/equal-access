@@ -62,7 +62,6 @@ export let aria_semantics_role: Rule = {
         for (const role of domRoles) 
             if (!(role.toLowerCase() in designPatterns)) 
                 return null;
-        //console.log("tagName=" + tagName + ", id=" + ruleContext.getAttribute('id') +", domRoles=" + domRoles);
         // Roles allowed on this node
         let allowedRoles = [];
 
@@ -73,7 +72,6 @@ export let aria_semantics_role: Rule = {
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
-        console.log("tagName=" + tagName +", allowedRoles="+allowedRoles);
         // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
         for (let i = 0; i < domRoles.length; i++) {
             if (allowedRoles.length === 0) {

@@ -662,12 +662,11 @@ export class ARIAMapper extends CommonMapper {
                 }    
             }
         }
-        console.log("elem=" + elem.nodeName +", implicit role=" + this.elemToImplicitRole(elem) +", RPTUTil implicit role=" + RPTUtil.getImplicitRole(elem));
         //return this.elemToImplicitRole(elem);
         const roles = RPTUtil.getImplicitRole(elem);
         return !roles || roles.length ===0 ? null : roles[0];
     }
-    
+    /**
     public static elemToImplicitRole(elem : Element) {
         let nodeName = elem.nodeName.toLowerCase();
 
@@ -683,7 +682,7 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
     }
-
+    
     public static hasParentRole(element, role) : boolean {
         let parent = DOMWalker.parentNode(element);
         // If link is in a menu, it's a menuitem
@@ -750,7 +749,7 @@ export class ARIAMapper extends CommonMapper {
             return null;
         }
     }
-
+   
     private static elemToRoleMap = (function() {
         let sectioningRoots = {
             "blockquote": true,
@@ -893,19 +892,6 @@ export class ARIAMapper extends CommonMapper {
                 return null;
             },
             "th": function(element) {
-                /** https://www.w3.org/TR/html5/tabular-data.html#header-and-data-cell-semantics
-                 * A header cell anchored at the slot with coordinate (x, y) with width width and height height is 
-                 * said to be a column header if any of the following conditions are true:
-                 * * The cell's scope attribute is in the column state, or
-                 * * The cell's scope attribute is in the auto state, and there are no data cells in any of 
-                 *   the cells covering slots with y-coordinates y .. y+height-1.
-                 * A header cell anchored at the slot with coordinate (x, y) with width width and height height is
-                 * said to be a row header if any of the following conditions are true:
-                 * * The cell's scope attribute is in the row state, or
-                 * * The cell's scope attribute is in the auto state, the cell is not a column header, and there are
-                 *   no data cells in any of the cells covering slots with x-coordinates x .. x+width-1.
-                 */
-                // Note: auto is default scope
                 
                 let parent = DOMWalker.parentNode(element);
                 while (parent) {
@@ -929,11 +915,6 @@ export class ARIAMapper extends CommonMapper {
                         return "columnheader"; 
                     else return "rowheader";
                     
-                    /**
-                     *  dead code here 
-                    if (role === "table") return "cell";
-                    if (role === "grid" || role === "treegrid") return "gridcell";
-                    */
                 }
                 return null;
             },
@@ -951,4 +932,5 @@ export class ARIAMapper extends CommonMapper {
             "ul": "list"
         }
     })()
-}
+   */
+} 
