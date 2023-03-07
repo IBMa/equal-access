@@ -22,9 +22,6 @@ import TabStopErrorCircles from "./TabStopErrorCircles";
 import TabStopHighlight from "./TabStopHighlight";
 import XpathUtils from "./XpathUtils";
 
-
-
-
 let bgController = getBGController();
 
 (async() => {
@@ -37,11 +34,13 @@ let bgController = getBGController();
     devtoolsController.addViewStateListener({
         callback: async (viewState) => {
             console.log("[DEBUG:KCM ViewState]", viewState.kcm);
-            // if viewState.kcm === true then scan has occurred and KCM button has been pushed
-            //    so draw KCM visualization
-            let report = await devtoolsController.getReport();
-            // @ts-ignore
-            getKCMData(viewState.kcm, report, settings);
+            if (viewState.kcm === true) {
+                // if viewState.kcm === true then scan has occurred and KCM button has been pushed
+                //    so draw KCM visualization
+                let report = await devtoolsController.getReport();
+                // @ts-ignore
+                getKCMData(viewState.kcm, report, settings);
+            }
         },
         callbackDest: {
             type: "contentScript",
@@ -296,19 +295,18 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
     // window.addEventListener("resize", debounce( resizeContent, 250 ));
 
     // left mouse click listener for the circles and triangles
-    window.addEventListener('click', function(event:any) {
-        // console.log("---------------------------------------");
-        // console.log("main doc left mouse click catcher");
-        // console.log("event.target = ",event.target);
+    window.addEventListener('mousedown', function(event:any) {
+        console.log("-------------------1-------------------");
+        console.log("main doc left mouse click catcher");
+        console.log("event.target = ",event.target);
         TabStopHighlight.handleTabHighlight(event,document,"click","");
-    
     });
 
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
-        // console.log("main doc key catcher");
+        console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
-            // console.log("CALL FUNCTION handleTabHighlight for main doc");
+            console.log("CALL FUNCTION handleTabHighlight for main doc");
             TabStopHighlight.handleTabHighlight(event, document, "main", "");
         }
     });

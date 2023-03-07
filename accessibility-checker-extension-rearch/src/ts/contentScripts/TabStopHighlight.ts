@@ -23,22 +23,22 @@ export default class TabStopHighlight {
     //       The number text inside the circle (doesn't matter if error or not) 
     //       will be normal if not highlighting, bold if highlight
     public static handleTabHighlight(event:any,doc:any,docType:string,iframeStr:string) { // doc type is main, iframe, shadowdom, click
-        // console.log("Function: handleTabHighlight");
+        console.log("**** Function: handleTabHighlight ****");
         let elementXpath = "";
         
         // console.log("JOHO docType = ", docType);
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            // console.log("Got TAB Key");
-            // console.log("TAB doc = ", doc);
+            console.log("Got TAB Key");
+            console.log("TAB doc = ", doc);
             if (docType === "main") {
-                // console.log("Got main doc element");
+                console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
             }
             
             // if we have iframe
             if (docType === "iframe") {
-                // console.log("Got iframe element");
+                console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
@@ -46,7 +46,7 @@ export default class TabStopHighlight {
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
-                // console.log("we have an element in a shadow dom");
+                console.log("we have an element in a shadow dom");
                 let sdXpath = XpathUtils.getXPathForElement(doc);
                 let element = doc.shadowRoot.activeElement;
                 elementXpath = XpathUtils.getXPathForElement(element);
@@ -72,13 +72,13 @@ export default class TabStopHighlight {
             let prevHighlightedElement;
             // find previous highlighted element which is either a circle or errorCircle so will be within document
             if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
-                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+                console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
             } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-                // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+                console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
             }
             // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
             if (prevHighlightedElement) {
-                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+                console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
                 if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
                     prevHighlightedElement.classList.remove("highlightSVGcircle");
                     prevHighlightedElement.classList.add("nohighlightSVGcircle");
@@ -93,9 +93,9 @@ export default class TabStopHighlight {
                     prevHightlightedText?.classList.remove("highlightSVGText");
                     prevHightlightedText?.classList.add("noHighlightSVGText");
                 }
-                // console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
+                console.log("prevHighlightedElement unhighlighted = ",prevHighlightedElement);
             } else {
-                // console.log("No prevHighlightedElement to highlight")
+                console.log("No prevHighlightedElement to highlight")
             }
             // Highlight circle
             if (circle && !circle.classList.contains('error')) {
@@ -104,10 +104,10 @@ export default class TabStopHighlight {
                 let circleText = this.findCircleTextElement(circle);
                 circleText?.classList.remove("noHighlightSVGText");
                 circleText?.classList.add("highlightSVGText");
-                // console.log("circle highlighted = ",circle);
-                // console.log("circleText highlighted = ", circleText);
+                console.log("circle highlighted = ",circle);
+                console.log("circleText highlighted = ", circleText);
             } else {
-                // console.log("No circle to highlight = ",circle);
+                console.log("No circle to highlight = ",circle);
             }
             if (errorCircle && errorCircle.classList.contains('error')) {
                 errorCircle?.classList.remove("nohighlightSVGerrorCircle");
@@ -115,22 +115,22 @@ export default class TabStopHighlight {
                 let errorCircleText = this.findErrorCircleTextElement(errorCircle);
                 errorCircleText?.classList.remove("noHighlightSVGText");
                 errorCircleText?.classList.add("highlightSVGText");
-                // console.log("errorCircle highlighted = ",errorCircle);
+                console.log("errorCircle highlighted = ",errorCircle);
             } else {
-                // console.log("No errorCircle to highlight = ",errorCircle);
+                console.log("No errorCircle to highlight = ",errorCircle);
             }
         } else if (event.shiftKey && event.key === "Tab") { // catch SHIFT TAB
-            // console.log("Got SHIFT TAB Key");
-            // console.log("TAB doc = ", doc);
+            console.log("Got SHIFT TAB Key");
+            console.log("TAB doc = ", doc);
             if (docType === "main") {
-                // console.log("Got main doc element");
+                console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
             }
             
             // if we have iframe
             if (docType === "iframe") {
-                // console.log("Got iframe element");
+                console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
@@ -138,7 +138,7 @@ export default class TabStopHighlight {
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
-                // console.log("Got shadow dom element");
+                console.log("Got shadow dom element");
                 let sdXpath = XpathUtils.getXPathForElement(doc);
                 let element = doc.shadowRoot.activeElement;
                 elementXpath = XpathUtils.getXPathForElement(element);
@@ -169,9 +169,9 @@ export default class TabStopHighlight {
             
             
             if (prevHighlightedElement = document.getElementsByClassName("highlightSVGcircle")[0]) {
-                // console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
+                console.log("Found prevHighlightedElement is circle = ", prevHighlightedElement);
             } else if (prevHighlightedElement = document.getElementsByClassName("highlightSVGerrorCircle")[0]) {
-                // console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
+                console.log("Found prevHighlightedElement is errorCircle = ", prevHighlightedElement );
             }
             // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
             

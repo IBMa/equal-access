@@ -85,7 +85,7 @@ export default class TabStopErrorCircles {
 
                         // coords for nodes[i] and its bounding box if not in iframe or shadow dom
                         let x = nodes[i].getBoundingClientRect().x;
-                        console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
+                        // console.log("nodes[i].getBoundingClientRect() = ",nodes[i].getBoundingClientRect());
                         let xPlusWidth = nodes[i].getBoundingClientRect().x + nodes[i].getBoundingClientRect().width;
 
                         let y = nodes[i].getBoundingClientRect().y;
