@@ -37,12 +37,13 @@ export class CommonMessaging {
         }, types, listeningTabId);
     }
 
+    public static listenerMetas : any[] = [];
     public static addMsgListenerHelp<inT, retT>(
         listener: (message: IMessage<inT>, senderTabId?: number) => Promise<retT> | void,
         types: string[], 
         listeningTabId?: number) : void 
     {
-        chrome.runtime.onMessage.addListener((message: IMessage<inT>, sender, sendResponse) => {
+        let thisListener = (message: IMessage<inT>, sender: chrome.runtime.MessageSender, sendResponse: any) => {
             // If we're listening to tabId and tabId isn't specified, ignore it
             if (listeningTabId && message.dest.type !== "extension" && listeningTabId !== message.dest.tabId) {
                 return null;
@@ -80,7 +81,26 @@ export class CommonMessaging {
                 }
             }
             return null;
+        }
+        chrome.runtime.onMessage.addListener(thisListener);
+        this.listenerMetas.push({ 
+            types, 
+            listeningTabId, 
+            listener: thisListener
         });
+    }
+
+    public static removeMsgListeners(
+        types: string[], 
+        listeningTabId?: number) : void 
+    {
+        for (let idx=0; idx<this.listenerMetas.length; ++idx) {
+            const listenerMeta = this.listenerMetas[idx];
+            if (JSON.stringify(types) === JSON.stringify(listenerMeta.types) && listeningTabId === listenerMeta.listeningTabId) {
+                chrome.runtime.onMessage.removeListener(listenerMeta.listener);
+                this.listenerMetas.splice(idx--, 1);
+            }
+        }
     }
 
     public static send<inT, retT>(message: IMessage<inT>, retry?: number): Promise<retT | null> {

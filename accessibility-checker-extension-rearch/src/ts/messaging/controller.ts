@@ -45,7 +45,7 @@ export class Controller {
         this.ctrlDest = ctrlDest
 
         if (this.type === "local") {
-            CommonMessaging.addMsgListener((message: IMessage<any>) => {
+            let listener = (message: IMessage<any>) => {
                 this.addEventListener(
                     { 
                         callback: async (content: any) => {
@@ -59,7 +59,19 @@ export class Controller {
                     },
                     message.content.msgId
                 );
-            }, [`${this.evtPrefix}_addEventListener`], ctrlDest.type !== "extension" ? ctrlDest.tabId : undefined)
+            };
+            CommonMessaging.addMsgListener(listener, [`${this.evtPrefix}_addEventListener`], ctrlDest.type !== "extension" ? ctrlDest.tabId : undefined)
+            CommonMessaging.addMsgListener(listener, [`${this.evtPrefix}_removeEventListener`], ctrlDest.type !== "extension" ? ctrlDest.tabId : undefined)
+        }
+        if (typeof window !== "undefined" && window.addEventListener) {
+            window.addEventListener("beforeunload", () => {
+                // If we're in a window that's unloading, unregister all of my listeners
+                for (const msgId in Controller.myListeners) {
+                    for (const listener of Controller.myListeners[msgId]) {
+                        this.removeEventListener(listener, msgId);
+                    }
+                }
+            })
         }
     }
 
@@ -91,13 +103,47 @@ export class Controller {
         }
     }
 
+    protected async removeEventListener<inT>(
+        listener: ListenerType<inT>,
+        msgId: string)
+    {
+        if (msgId in Controller.myListeners) {
+            for (let idx=0; idx<Controller.myListeners[msgId].length; ++idx) {
+                if (Controller.myListeners[msgId][idx] === listener) {
+                    Controller.myListeners[msgId].splice(idx--, 1);
+                }
+            }
+            if (Controller.myListeners[msgId].length === 0) {
+                CommonMessaging.removeMsgListeners([msgId], getTabId());
+                CommonMessaging.send({
+                    type: `${this.evtPrefix}_removeEventListener`,
+                    dest: this.ctrlDest,
+                    content: {
+                        msgId: msgId,
+                        callbackDest: listener.callbackDest
+                    }
+                })    
+            }
+        }
+    }
+
     protected async fireEvent<inT>(
         msgId: string,
         content: inT
     ) {
         if (msgId in Controller.myListeners) {
-            for (const listener of Controller.myListeners[msgId]) {
-                listener.callback(content);
+            for (let idx1=0; idx1<Controller.myListeners[msgId].length; ++idx1) {
+                let listener = Controller.myListeners[msgId][idx1];
+                let firstIdx = -1;
+                for (let idx2=0; idx2<Controller.myListeners[msgId].length; ++idx2) {
+                    if (Controller.myListeners[msgId][idx2].callback.toString() === listener.callback.toString()) {
+                        firstIdx = idx2;
+                        break;
+                    }
+                }
+                if (idx1 === firstIdx) {
+                    listener.callback(content);
+                }
             }
         }
     }
