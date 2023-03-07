@@ -81,7 +81,7 @@ export let group_withInputs_hasName: Rule = {
 
             setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
         }
-        //formCache.groupsWithInputs.forEach(element => {
+        // formCache.groupsWithInputs.forEach(element => {
         //     console.log("formCache.groupsWithInputs: " +element.id)
         // });
         // console.log("formCache.groupsWithInputsComputedLabels: " +formCache.groupsWithInputsComputedLabels)
