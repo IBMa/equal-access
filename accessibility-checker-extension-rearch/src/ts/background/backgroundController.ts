@@ -14,7 +14,8 @@
   limitations under the License.
 *****************************************************************************/
 
-import { IArchiveDefinition, IMessage, ISettings } from "../interfaces/interfaces";
+import { getDevtoolsController } from "../devtools/devtoolsController";
+import { IArchiveDefinition, IMessage, IReport, IRuleset, ISettings } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
@@ -73,8 +74,99 @@ class BackgroundController extends Controller {
      * Get the tab id of the caller
      */
     public async getTabId(senderTabId?: number) : Promise<number> {
-        return this.hook("getTabId", senderTabId, async () => {
+        return this.hook("getTabId", null, async () => {
             return senderTabId!;
+        });
+    }
+
+    /**
+     * Get the rulesets for the currently loaded engine
+     */
+    public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
+        return this.hook("getRulesets", senderTabId, async () => {
+            await this.initTab(senderTabId!);
+            let retVal : IRuleset[] = await new Promise((resolve, reject) => {
+                myExecuteScript({
+                    target: { tabId: senderTabId!, frameIds: [0] },
+                    func: () => {
+                        let checker = new (<any>window).aceIBMa.Checker();
+                        return checker.rulesets;
+                    }
+                }, function (res: any) {
+                    if (chrome.runtime.lastError) {
+                        reject(chrome.runtime.lastError.message);
+                    }
+                    resolve(res[0].result);
+                })
+            });
+            return retVal;
+        });
+    }
+
+    public async requestScan(senderTabId: number) {
+        return this.hook("requestScan", senderTabId, async () => {
+            await this.initTab(senderTabId!);
+            // We want this to execute after the message returns
+            (async () => {
+                let settings = await this.getSettings();
+                let report : IReport = await new Promise((resolve, reject) => {
+                    myExecuteScript({
+                        target: { tabId: senderTabId!, frameIds: [0] },
+                        args: [
+                            settings
+                        ],
+                        func: (settings: ISettings) => {
+                            let checker = new (<any>window).aceIBMa.Checker();    
+                            return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
+                                try {
+                                    if (report) {
+                                        let passResults = report.results.filter((result) => {
+                                            return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
+                                        })
+                                        let passXpaths : string[] = passResults.map((result) => result.path.dom);
+                            
+                                        report.passUniqueElements = Array.from(new Set(passXpaths));
+                            
+                                        report.results = report.results.filter((issue) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
+                                        for (let result of report.results) {
+                                            let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
+                                            let version = settings.selected_archive.version || "latest";
+                                            if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                                                engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                                            } else {
+                                                engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
+                                                if (engineHelp.includes("//able.ibm.com/")) {
+                                                    engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
+                                                }
+                                            }
+                                            let minIssue = {
+                                                message: result.message,
+                                                snippet: result.snippet,
+                                                value: result.value,
+                                                reasonId: result.reasonId,
+                                                ruleId: result.ruleId,
+                                                messageArgs: result.messageArgs
+                                            };
+                                            result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
+                                        }
+                                    }
+                                    return report;
+                                } catch (err) {
+                                    console.error(err);
+                                    return null;
+                                }
+                            });
+                        }
+                    }, function (res: any) {
+                        if (chrome.runtime.lastError) {
+                            reject(chrome.runtime.lastError.message);
+                        }
+                        resolve(res[0].result);
+                    })
+                });
+                getDevtoolsController("remote", senderTabId).setReport(report);
+            })();
+            return {};
         });
     }
     
@@ -88,7 +180,7 @@ class BackgroundController extends Controller {
             let settings = await this.getSettings();
             let archiveId = settings.selected_archive.id;
             // Determine if we've ever loaded any engine
-            let isLoaded = await new Promise((resolve, reject) => {
+            await new Promise((resolve, reject) => {
                 myExecuteScript({
                     target: { tabId: tabId, frameIds: [0] },
                     func: () => {
@@ -150,22 +242,6 @@ class BackgroundController extends Controller {
                     })
                 });
             }
-            
-        
-            // Initialize the listeners once
-            if (!isLoaded) {
-                await new Promise((resolve, reject) => {
-                    myExecuteScript({
-                        target: { tabId: tabId, frameIds: [0] },
-                        files: ["/tabListeners.js"]
-                    }, function (_res: any) {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError.message);
-                        }
-                        resolve(_res);
-                    });
-                });
-            }
         });
     }
 
@@ -187,6 +263,8 @@ class BackgroundController extends Controller {
                 "BG_getSettings": async () => self.getSettings(),
                 "BG_getArchives": async () => self.getArchives(),
                 "BG_getTabId": async (_a, senderTabId) => self.getTabId(senderTabId),
+                "BG_getRulesets": async (msgBody) => self.getRulesets(msgBody.content),
+                "BG_requestScan": async (msgBody) => self.requestScan(msgBody.content),
                 "BG_setSettings": async (msgBody) => {
                     let updSettings = await self.validateSettings(msgBody.content || undefined);
                     return self.setSettings(updSettings);
@@ -308,7 +386,7 @@ function myExecuteScript(
     }
 }
 
-let singleton : BackgroundController;
+let singleton : BackgroundController | null = null;
 export function getBGController(type?: eControllerType) {
     if (!singleton) {
         singleton = new BackgroundController(type || "remote");

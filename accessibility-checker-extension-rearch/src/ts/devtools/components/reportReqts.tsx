@@ -21,8 +21,8 @@ import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
 
 import "./reportSection.scss";
-import { getTabController } from '../../tab/tabController';
 import { getBGController } from '../../background/backgroundController';
+import { getTabId } from '../../util/tabId';
 
 interface ReportProps {
     panel: ePanel
@@ -39,15 +39,14 @@ interface ReportState {
     ruleset?: IRuleset
 }
 
-let tabController = getTabController();
-let bgController = getBGController();
 
 export class ReportReqts extends React.Component<ReportProps, ReportState> {
     state : ReportState = {};
 
     async componentDidMount(): Promise<void> {
+        let bgController = getBGController();
         let settings = await bgController.getSettings();
-        let rulesets = await (await tabController).getRulesets();
+        let rulesets = await bgController.getRulesets(getTabId()!);
         let ruleset = rulesets.find(policy => policy.id === settings.selected_ruleset.id);
         if (ruleset) {
             this.setState({ ruleset });

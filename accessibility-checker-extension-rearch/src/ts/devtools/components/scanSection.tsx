@@ -15,7 +15,6 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { getTabController } from "../../tab/tabController";
 import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
@@ -30,6 +29,8 @@ import {
     KeyboardOff,
     Renew
 } from "@carbon/react/icons";
+import { ListenerType } from '../../messaging/controller';
+import { IReport } from '../../interfaces/interfaces';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -53,24 +54,26 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         reportContent: false
     }
 
-    async componentDidMount(): Promise<void> {
-        let self = this;
-        devtoolsController.addReportListener({
-            callback: async (report) => {
-                let hasReportContent = false;
-                if (report && report.results.length > 0) {
-                    hasReportContent = true;
-                }
-                self.setState( { scanInProgress: 2, reportContent: hasReportContent });
-                setTimeout(() => {
-                    self.setState( { scanInProgress: 0 });
-                }, 500);
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
+    reportListener : ListenerType<IReport> = {
+        callback: async (report) => {
+            let self = this;
+            let hasReportContent = false;
+            if (report && report.results.length > 0) {
+                hasReportContent = true;
             }
-        });
+            self.setState( { scanInProgress: 2, reportContent: hasReportContent });
+            setTimeout(() => {
+                self.setState( { scanInProgress: 0 });
+            }, 500);
+        },
+        callbackDest: {
+            type: "devTools",
+            tabId: getTabId()!
+        }
+    }
+
+    async componentDidMount(): Promise<void> {
+        devtoolsController.addReportListener(this.reportListener);
         devtoolsController.addViewStateListener( {
             callback: async (newState) => {
                 this.setState( { viewState: newState });
@@ -98,10 +101,13 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         this.setState({ viewState: (await devtoolsController.getViewState())!, reportContent: hasReportContent });
     }
 
+    componentWillUnmount(): void {
+        devtoolsController.removeReportListener(this.reportListener);
+    }
+
     async scan() {
         this.setState( { scanInProgress: 1, scannedOnce: true });
-        let tabController = getTabController();
-        await (await tabController).requestScan();
+        await bgController.requestScan(getTabId()!);
     }
 
     render() {

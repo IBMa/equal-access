@@ -35,6 +35,7 @@ import "./reportSection.scss";
 import { ReportRoles } from './reportRoles';
 import { ReportReqts } from './reportReqts';
 import { ReportRules } from './reportRules';
+import { ListenerType } from '../../messaging/controller';
 
 let devtoolsController = getDevtoolsController();
 
@@ -65,34 +66,41 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         selectedPath: null,
     }
 
+    reportListener : ListenerType<IReport> = {
+        callback: async (report: IReport) => {
+            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
+            this.setState( { report });
+        },
+        callbackDest: {
+            type: "devTools",
+            tabId: getTabId()!
+        }
+    }
+    selectedElementListener : ListenerType<string> = {
+        callback: async (path) => {
+            this.setPath(path);
+        },
+        callbackDest: {
+            type: "devTools",
+            tabId: getTabId()!
+        }
+    }
+
     async componentDidMount(): Promise<void> {
-        devtoolsController.addReportListener({
-            callback: async (report) => {
-                report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-                this.setState( { report });
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
-        });
+        devtoolsController.addReportListener(this.reportListener);
         let report = await devtoolsController.getReport();
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
             this.setState( { report });
         }
 
-        devtoolsController.addSelectedElementPathListener({
-            callback: async (path) => {
-                this.setPath(path);
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
-        });
+        devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
         let path = await devtoolsController.getSelectedElementPath();
         this.setPath(path!);
+    }
+
+    componentWillUnmount(): void {
+        devtoolsController.removeReportListener(this.reportListener);
     }
 
     setPath(path: string) {

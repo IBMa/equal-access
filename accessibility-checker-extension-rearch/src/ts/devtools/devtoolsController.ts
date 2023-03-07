@@ -29,7 +29,6 @@ let sessionStorage : {
     viewState: ViewState
 } | null = null;
 
-let bgController = getBGController();
 export interface ViewState {
     kcm: boolean
 }
@@ -96,6 +95,10 @@ export class DevtoolsController extends Controller {
         this.addEventListener(listener, `DT_onReport`);//, listener.callbackTabId);
     }
 
+    public async removeReportListener(listener: ListenerType<IReport>) {
+        this.removeEventListener(listener, `DT_onReport`);
+    }
+
     /**
      * Set report storing
      */
@@ -122,6 +125,10 @@ export class DevtoolsController extends Controller {
 
     public async addViewStateListener(listener: ListenerType<ViewState>) {
         this.addEventListener(listener, `DT_onViewState`);
+    }
+
+    public async removeViewStateListener(listener: ListenerType<ViewState>) {
+        this.removeEventListener(listener, `DT_onViewState`);
     }
 
     /**
@@ -305,6 +312,7 @@ export class DevtoolsController extends Controller {
                 }
             )
 
+            let bgController = getBGController();
             bgController.addTabChangeListener( {
                 callbackDest: { 
                     type: "extension"
