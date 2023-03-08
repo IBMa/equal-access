@@ -2,13 +2,20 @@ import { Config } from "../config";
 const Cloudant = require("@cloudant/cloudant");
 
 const createConnection = (url: string, dbName: string) => new Promise((resolve, reject) => {
-    Cloudant(url, (err, cloudant) => {
-        if (err) {
-            reject(err);
-            return;
-        }
-        resolve(cloudant.db.use(dbName));
-    })
+    if (Config.__NODB__) {
+        console.log("Running with stub DB");
+        resolve({
+            updateRecords: (data: any[]) => {}
+        });
+    } else {
+        Cloudant(url, (err, cloudant) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resolve(cloudant.db.use(dbName));
+        })
+    }
 })
 
 export interface DBRow<DocType, KeyType = string, ValueType = string> {
