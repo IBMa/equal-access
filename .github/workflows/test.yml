@@ -59,10 +59,12 @@ jobs:
         working-directory: rule-server
       - run: npm run build
         working-directory: rule-server
-      - run: node main.js &
+      - run: cmd /c "START /b node main.js"
         working-directory: rule-server/dist
+      - run: ping 127.0.0.1 -n 6 > nul
+      - run: netstat -o -n -a | findstr 9445
+      - run: curl -X GET "http://localhost:9445/rules/archives.json"
       - run: sleep 10
-        working-directory: rule-server/dist
 
       - run: npm install
         working-directory: accessibility-checker-engine
