@@ -7,6 +7,39 @@ on: [ pull_request ]
 
 jobs:
 ###############################################################################
+# Engine test Windows
+####
+  accessibility-checker-engine-test-windows:
+    runs-on: windows-2022
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: rule-server
+    - run: npm run build
+      working-directory: rule-server
+    - run: node main.js &
+      working-directory: rule-server/dist
+    - run: sleep 10
+      working-directory: rule-server/dist
+      
+    - run: google-chrome --version
+    - run: npm install
+      working-directory: accessibility-checker-engine
+    - run: npx karma start karmaaction.conf.js --single-run --watch=false
+      working-directory: accessibility-checker-engine
+    - run: npx mocha ./test/mocha/help/help.test.js
+      working-directory: accessibility-checker-engine
+
+###############################################################################
 # Engine test
 ####
   accessibility-checker-engine-test:
