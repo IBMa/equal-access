@@ -730,24 +730,31 @@ export class RPTUtil {
      */
     public static getImplicitRole(ele) : string[] {
         let tagProperty = RPTUtil.getElementAriaProperty(ele);
-        //check if there are any implicit roles for this element.
-        if (tagProperty) {
-            if (tagProperty.implicitRole) {
+        // check if there are any implicit roles for this element.
+        if (tagProperty && tagProperty.implicitRole) {
+            if (tagProperty.implicitRole.includes("generic")) {
                 // the 'generic' role is only allowed if a valid aria attribute exists.
-                if (tagProperty.implicitRole.includes("generic")) {
-                    let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
-                    if (tagProperty.globalAriaAttributesValid) {
+                let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ele);
+                if (domAriaAttributes.length === 0) return [];
 
-                    }
-                    let roleAttributes = RPTUtil.getAllowedAriaAttributes(ele, ['generic'], tagProperty);
-                    // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
-                    if (domAriaAttributes.length === 0 || !roleAttributes.some(attr=> domAriaAttributes.includes(attr))) {
-                        return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
-                        //console.log("elem name=" + ele.nodeName +",  domAriaAttributes="+domAriaAttributes +",roleAttributes="+roleAttributes+", tagProperty.implicitRole="+tagProperty.implicitRole);
-                    }    
-                }
-                return tagProperty.implicitRole;
+                let roleAttributes = [];
+                let pattern = ARIADefinitions.designPatterns['generic'];
+                if (pattern.reqProps && pattern.reqProps.length > 0)
+                    RPTUtil.concatUniqueArrayItemList(pattern.reqProps, roleAttributes);
+                
+                if (tagProperty.globalAriaAttributesValid)
+                    RPTUtil.concatUniqueArrayItemList(ARIADefinitions.globalProperties, roleAttributes);
+                
+                if (pattern.deprecatedProps && pattern.deprecatedProps.length > 0)
+                    RPTUtil.reduceArrayItemList(pattern.deprecatedProps, roleAttributes); 
+
+                // remove 'generic' role if roleAttributes doesn't contain any of domAriaAttributes 
+                if (roleAttributes.length > 0 && !roleAttributes.some(attr=> domAriaAttributes.includes(attr)))
+                    return RPTUtil.reduceArrayItemList(['generic'], tagProperty.implicitRole); 
+                //console.log("elem name=" + ele.nodeName +",  domAriaAttributes="+domAriaAttributes +",roleAttributes="+roleAttributes+", tagProperty.implicitRole="+tagProperty.implicitRole);
+                
             }
+            return tagProperty.implicitRole;   
         }
         return [];
     }

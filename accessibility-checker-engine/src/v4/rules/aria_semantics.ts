@@ -57,6 +57,12 @@ export let aria_semantics_role: Rule = {
         
         let domRoles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
 
+        // check the 'generic' role first
+        if (domRoles && domRoles.includes('generic')) {
+            setCache(ruleContext, "aria_semantics_role", "Fail_1");
+            return RuleFail("Fail_1", ["generic", tagName]);
+        }
+        
         // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
         let designPatterns = ARIADefinitions.designPatterns;
         for (const role of domRoles) 
@@ -150,8 +156,8 @@ export let aria_attribute_allowed: Rule = {
 
         // get roles from RPTUtil because multiple explicit roles are allowed
         let roles = RPTUtil.getRoles(ruleContext, false);
-
-        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        
+        // the invalid role (not defined in the spec) case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
         // for mutiple roles, skip if any role is invalid
         let designPatterns = ARIADefinitions.designPatterns;
         for (const role of roles) 
