@@ -202,7 +202,7 @@ export class ACReporterHTML {
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // this.Configuration.
-        let resultsFileName = pathLib.join(resultDir, results.label + '.html');
+        let resultsFileName = pathLib.join(resultDir, results.label.replace(/[:?&=]/g,"_") + '.html');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
         // Debug example which has label which has unix "/" in them.
