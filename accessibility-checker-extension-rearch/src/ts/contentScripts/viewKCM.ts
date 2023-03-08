@@ -26,24 +26,12 @@ let bgController = getBGController();
     console.log("[DEBUG:KCM TabId]", myTabId);
     let devtoolsController = getDevtoolsController("remote", myTabId);
 
-    devtoolsController.addViewStateListener({
-        callback: async (viewState) => {
-            console.log("[DEBUG:KCM ViewState]", viewState.kcm);
-        },
-        callbackDest: {
-            type: "contentScript",
-            tabId: myTabId
-        }
+    devtoolsController.addViewStateListener(async (viewState) => {
+        console.log("[DEBUG:KCM ViewState]", viewState.kcm);
     });
     
-    devtoolsController.addReportListener({
-        callback: async (report) => {
-            console.log("[DEBUG:KCM:Report]", report);
-        },
-        callbackDest: {
-            type: "contentScript",
-            tabId: myTabId
-        }
+    devtoolsController.addReportListener(async (report) => {
+        console.log("[DEBUG:KCM:Report]", report);
     });
 })();
 

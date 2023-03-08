@@ -45,7 +45,7 @@ export class CommonMessaging {
     {
         let thisListener = (message: IMessage<inT>, sender: chrome.runtime.MessageSender, sendResponse: any) => {
             // If we're listening to tabId and tabId isn't specified, ignore it
-            if (listeningTabId && message.dest.type !== "extension" && listeningTabId !== message.dest.tabId) {
+            if (listeningTabId && message.dest.type !== "background" && listeningTabId !== message.dest.tabId) {
                 return null;
             }
             // Note - only allow background to listen to all for the purposes of routing
@@ -152,7 +152,7 @@ export class CommonMessaging {
                         console.error("Unable to send message", myMessage);
                     }
                 } else {
-                    if (myMessage.dest.type !== "extension") {
+                    if (myMessage.dest.type !== "background") {
                         // Need to relay these through the background
                         myMessage.dest.relay = true;
                     }
@@ -168,7 +168,7 @@ export class CommonMessaging {
 
     public static initRelays() {
         chrome.runtime.onMessage.addListener((message: IMessage<any>, _sender, _sendResponse) => {
-            if (message.dest.type !== "extension" && message.dest.relay) {
+            if (message.dest.type !== "background" && message.dest.relay) {
                 message.dest.relay = false;
                 Config.DEBUG && console.log("[DEBUG:relay]",message);
                 return CommonMessaging.send(message);

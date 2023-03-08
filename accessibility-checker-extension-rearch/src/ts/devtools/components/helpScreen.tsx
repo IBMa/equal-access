@@ -18,7 +18,6 @@ import React from "react";
 import { Column, InlineLoading, Grid } from "@carbon/react";
 import { IIssue } from "../../interfaces/interfaces";
 import { getDevtoolsController } from "../devtoolsController";
-import { getTabId } from "../../util/tabId";
 
 interface IHelpScreenState {
     issue: IIssue | null
@@ -37,14 +36,8 @@ export default class HelpScreen extends React.Component<IHelpScreenProps, IHelpS
     private static devtoolsController = getDevtoolsController();
 
     async componentDidMount(): Promise<void> {
-        HelpScreen.devtoolsController.addSelectedIssueListener({
-            callback: async (issue) => {
-                this.setIssue(issue);
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
+        HelpScreen.devtoolsController.addSelectedIssueListener(async (issue) => {
+            this.setIssue(issue);
         });
         let issue = await HelpScreen.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);

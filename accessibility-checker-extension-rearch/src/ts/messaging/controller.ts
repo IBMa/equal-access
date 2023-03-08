@@ -20,10 +20,7 @@ import { getTabId } from "../util/tabId";
 import { CommonMessaging } from "./commonMessaging";
 
 export type eControllerType = "local" | "remote";
-export type ListenerType<inT> = {
-    callback: (content: inT) => Promise<void>
-    callbackDest: MsgDestType
-} 
+export type ListenerType<inT> = (content: inT) => Promise<void>
 
 export class Controller {
     protected type: eControllerType = "local";
@@ -42,37 +39,7 @@ export class Controller {
     constructor(type: eControllerType, ctrlDest: MsgDestType, evtPrefix: string) {
         this.type = type;
         this.evtPrefix = evtPrefix;
-        this.ctrlDest = ctrlDest
-
-        if (this.type === "local") {
-            let listener = (message: IMessage<any>) => {
-                this.addEventListener(
-                    { 
-                        callback: async (content: any) => {
-                            CommonMessaging.send({
-                                type: message.content.msgId,
-                                dest: message.content.callbackDest,
-                                content: content
-                            });
-                        },
-                        callbackDest: message.content.callbackDest
-                    },
-                    message.content.msgId
-                );
-            };
-            CommonMessaging.addMsgListener(listener, [`${this.evtPrefix}_addEventListener`], ctrlDest.type !== "extension" ? ctrlDest.tabId : undefined)
-            CommonMessaging.addMsgListener(listener, [`${this.evtPrefix}_removeEventListener`], ctrlDest.type !== "extension" ? ctrlDest.tabId : undefined)
-        }
-        if (typeof window !== "undefined" && window.addEventListener) {
-            window.addEventListener("beforeunload", () => {
-                // If we're in a window that's unloading, unregister all of my listeners
-                for (const msgId in Controller.myListeners) {
-                    for (const listener of Controller.myListeners[msgId]) {
-                        this.removeEventListener(listener, msgId);
-                    }
-                }
-            })
-        }
+        this.ctrlDest = ctrlDest;
     }
 
     protected async addEventListener<inT>(
@@ -90,16 +57,11 @@ export class Controller {
         Controller.myListeners[msgId].push(listener);
         if (bInitRemote) {
             CommonMessaging.addMsgListener((message: IMessage<inT>) => {
-                this.fireEvent(msgId, message.content);
-            }, [msgId], getTabId());
-            CommonMessaging.send({
-                type: `${this.evtPrefix}_addEventListener`,
-                dest: this.ctrlDest,
-                content: {
-                    msgId: msgId,
-                    callbackDest: listener.callbackDest
+                if (message.dest.tabId === this.ctrlDest.tabId 
+                    || (message.dest.type === "background" && this.ctrlDest.type === "background")) {
+                    this.notifyEventListeners(msgId, this.ctrlDest.tabId, message.content);
                 }
-            })
+            }, [msgId], getTabId());
         }
     }
 
@@ -113,22 +75,12 @@ export class Controller {
                     Controller.myListeners[msgId].splice(idx--, 1);
                 }
             }
-            if (Controller.myListeners[msgId].length === 0) {
-                CommonMessaging.removeMsgListeners([msgId], getTabId());
-                CommonMessaging.send({
-                    type: `${this.evtPrefix}_removeEventListener`,
-                    dest: this.ctrlDest,
-                    content: {
-                        msgId: msgId,
-                        callbackDest: listener.callbackDest
-                    }
-                })    
-            }
         }
     }
 
-    protected async fireEvent<inT>(
+    protected async notifyEventListeners<inT>(
         msgId: string,
+        tabId: number,
         content: inT
     ) {
         if (msgId in Controller.myListeners) {
@@ -136,15 +88,42 @@ export class Controller {
                 let listener = Controller.myListeners[msgId][idx1];
                 let firstIdx = -1;
                 for (let idx2=0; idx2<Controller.myListeners[msgId].length; ++idx2) {
-                    if (Controller.myListeners[msgId][idx2].callback.toString() === listener.callback.toString()) {
+                    if (Controller.myListeners[msgId][idx2].toString() === listener.toString()) {
                         firstIdx = idx2;
                         break;
                     }
                 }
                 if (idx1 === firstIdx) {
-                    listener.callback(content);
+                    listener(content);
                 }
             }
+        }
+        if (this.type === "local") {
+            // Need to notify others also
+            CommonMessaging.send({
+                type: msgId,
+                dest: {
+                    type: "contentScript",
+                    tabId: tabId
+                },
+                content
+            });
+            CommonMessaging.send({
+                type: msgId,
+                dest: {
+                    type: "devTools",
+                    tabId: tabId
+                },
+                content
+            });
+            CommonMessaging.send({
+                type: msgId,
+                dest: {
+                    type: "background",
+                    tabId: -1
+                },
+                content
+            })
         }
     }
 
