@@ -7,39 +7,6 @@ on: [ pull_request ]
 
 jobs:
 ###############################################################################
-# Engine test Windows
-####
-  accessibility-checker-engine-test-windows:
-    runs-on: windows-2022
-
-    strategy:
-      matrix:
-        node-version: [16.x]
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: rule-server
-    - run: npm run build
-      working-directory: rule-server
-    - run: node main.js &
-      working-directory: rule-server/dist
-    - run: sleep 10
-      working-directory: rule-server/dist
-      
-    - run: google-chrome --version
-    - run: npm install
-      working-directory: accessibility-checker-engine
-    - run: npx karma start karmaaction.conf.js --single-run --watch=false
-      working-directory: accessibility-checker-engine
-    - run: npx mocha ./test/mocha/help/help.test.js
-      working-directory: accessibility-checker-engine
-
-###############################################################################
 # Engine test
 ####
   accessibility-checker-engine-test:
@@ -72,6 +39,52 @@ jobs:
     - run: npx mocha ./test/mocha/help/help.test.js
       working-directory: accessibility-checker-engine
 
+###############################################################################
+# Node basic test Windows
+####
+  accessibility-checker-test-basic-windows:
+    runs-on: windows-2022
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: rule-server
+      - run: npm run build
+        working-directory: rule-server
+      - run: node main.js &
+        working-directory: rule-server/dist
+      - run: sleep 10
+        working-directory: rule-server/dist
+
+      - run: npm install
+        working-directory: accessibility-checker-engine
+      - run: npm install
+        working-directory: report-react
+      - run: npm install
+        working-directory: accessibility-checker
+        
+      - run: npm run build
+        working-directory: accessibility-checker
+
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Baselines/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Functions.Defined/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.ObjectStructure/*.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.assertionCompliance.test.js
+        working-directory: accessibility-checker
+      - run: npx mocha -R dot test/mocha/aChecker.Fast/aChecker.Scans/aChecker.Content.Puppeteer.test.js
+        working-directory: accessibility-checker
+    
 ###############################################################################
 # Node basic test
 ####
