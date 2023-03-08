@@ -54,43 +54,26 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         reportContent: false
     }
 
-    reportListener : ListenerType<IReport> = {
-        callback: async (report) => {
-            let self = this;
-            let hasReportContent = false;
-            if (report && report.results.length > 0) {
-                hasReportContent = true;
-            }
-            self.setState( { scanInProgress: 2, reportContent: hasReportContent });
-            setTimeout(() => {
-                self.setState( { scanInProgress: 0 });
-            }, 500);
-        },
-        callbackDest: {
-            type: "devTools",
-            tabId: getTabId()!
+    reportListener : ListenerType<IReport> = async (report) => {
+        let self = this;
+        let hasReportContent = false;
+        if (report && report.results.length > 0) {
+            hasReportContent = true;
         }
+        self.setState( { scanInProgress: hasReportContent ? 2 : 0, reportContent: hasReportContent });
+        setTimeout(() => {
+            self.setState( { scanInProgress: 0 });
+        }, 500);
     }
 
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
-        devtoolsController.addViewStateListener( {
-            callback: async (newState) => {
-                this.setState( { viewState: newState });
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
+        devtoolsController.addViewStateListener(async (newState) => {
+            this.setState( { viewState: newState });
         })
-        bgController.addTabChangeListener( {
-            callbackDest: { 
-                type: "extension"
-            },
-            callback: async (content: TabChangeType) => {
-                if (content.changeInfo.status) {
-                    this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
-                }
+        bgController.addTabChangeListener(async (content: TabChangeType) => {
+            if (content.changeInfo.status) {
+                this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
             }
         });
         let hasReportContent = false;

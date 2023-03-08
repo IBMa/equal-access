@@ -253,7 +253,7 @@ class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
 
     constructor(type: eControllerType) {
-        super(type, { type: "extension" }, "BG");
+        super(type, { type: "background", tabId: -1 }, "BG");
         if (type === "local") {
             let self = this;
 
@@ -288,7 +288,7 @@ class BackgroundController extends Controller {
             // Extra
             chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
-                self.fireEvent<TabChangeType>("BG_onTabUpdate", {
+                self.notifyEventListeners<TabChangeType>("BG_onTabUpdate", tabId, {
                     tabId, changeInfo, tab
                 })
             });

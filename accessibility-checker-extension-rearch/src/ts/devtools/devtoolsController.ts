@@ -75,7 +75,7 @@ export class DevtoolsController extends Controller {
             }
             sessionStorage!.lastReport = report;
             setTimeout(() => {
-                this.fireEvent("DT_onReport", report);
+                this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
                 this.setSelectedElementPath("/html[1]");
             }, 0);
         });
@@ -107,7 +107,7 @@ export class DevtoolsController extends Controller {
             if (newState) {
                 sessionStorage!.viewState = newState;
                 setTimeout(() => {
-                    this.fireEvent("DT_onViewState", newState);
+                    this.notifyEventListeners("DT_onViewState", this.ctrlDest.tabId, newState);
                 }, 0);
             }
         });
@@ -139,7 +139,7 @@ export class DevtoolsController extends Controller {
             if (issue) {
                 sessionStorage!.lastIssue = issue;
                 setTimeout(() => {
-                    this.fireEvent("DT_onSelectedIssue", issue);
+                    this.notifyEventListeners("DT_onSelectedIssue", this.ctrlDest.tabId, issue);
                     this.setSelectedElementPath(issue.path.dom);
                 }, 0);
             }
@@ -168,7 +168,7 @@ export class DevtoolsController extends Controller {
             if (path) {
                 sessionStorage!.lastElementPath = path;
                 setTimeout(() => {
-                    this.fireEvent("DT_onSelectedElementPath", path);
+                    this.notifyEventListeners("DT_onSelectedElementPath", this.ctrlDest.tabId, path);
                 }, 0);
             }
         });
@@ -313,57 +313,22 @@ export class DevtoolsController extends Controller {
             )
 
             let bgController = getBGController();
-            bgController.addTabChangeListener( {
-                callbackDest: { 
-                    type: "extension"
-                },
-                callback: async (content: TabChangeType) => {
-                    if (this.ctrlDest.type === "devTools" && content.tabId === this.ctrlDest.tabId) {
-                        this.setReport(null);
-                    }
-                },
+            bgController.addTabChangeListener(async (content: TabChangeType) => {
+                if (content.tabId === this.ctrlDest.tabId) {
+                    this.setReport(null);
+                    this.setViewState({
+                        kcm: false
+                    })
+                }
             });
 
-            ["DT_onViewState", "DT_onReport", "DT_onSelectedElementPath", "DT_onSelectedIssue"].forEach((s: string) => {
-                this.addEventListener(
-                    { 
-                        callback: async (content: any) => {
-                            try {
-                                CommonMessaging.send({
-                                    type: s,
-                                    dest: {
-                                        type: "contentScript",
-                                        tabId: (this.ctrlDest as any).tabId
-                                    },
-                                    content: content
-                                });
-                            } catch (err) {
-                                console.error(err);
-                            }
-                        },
-                        callbackDest: {
-                            type: "contentScript",
-                            tabId: (this.ctrlDest as any).tabId
-                        }
-                    },
-                    s
-                );
-            });
             CommonMessaging.send({
                 type: "DT_onViewState",
                 dest: {
                     type: "contentScript",
-                    tabId: (this.ctrlDest as any).tabId
+                    tabId: this.ctrlDest.tabId
                 },
                 content: sessionStorage.viewState
-            });
-            CommonMessaging.send({
-                type: "DT_onReport",
-                dest: {
-                    type: "contentScript",
-                    tabId: (this.ctrlDest as any).tabId
-                },
-                content: null
             });
         }
     }

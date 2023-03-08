@@ -17,7 +17,6 @@
 import * as React from 'react';
 import { getDevtoolsController } from '../devtoolsController';
 import { IIssue, IReport } from '../../interfaces/interfaces';
-import { getTabId } from '../../util/tabId';
 import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
@@ -66,24 +65,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         selectedPath: null,
     }
 
-    reportListener : ListenerType<IReport> = {
-        callback: async (report: IReport) => {
+    reportListener : ListenerType<IReport> = async (report: IReport) => {
+        if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-            this.setState( { report });
-        },
-        callbackDest: {
-            type: "devTools",
-            tabId: getTabId()!
         }
+        this.setState( { report });
     }
-    selectedElementListener : ListenerType<string> = {
-        callback: async (path) => {
-            this.setPath(path);
-        },
-        callbackDest: {
-            type: "devTools",
-            tabId: getTabId()!
-        }
+    selectedElementListener : ListenerType<string> = async (path) => {
+        this.setPath(path);
     }
 
     async componentDidMount(): Promise<void> {

@@ -55,7 +55,9 @@ export type MsgDestType = {
     tabId: number
     relay?: boolean
 } | {
-    type: "extension"
+    type: "background",
+    tabId: -1,
+    relay?: false
 }
 
 export interface IMessage<T> {

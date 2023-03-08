@@ -31,34 +31,16 @@ let myKCMState = false;
     console.log("[DEBUG:KCM TabId]", myTabId);
     let devtoolsController = getDevtoolsController("remote", myTabId);
     console.log("ADDING LISTENERR");
-    devtoolsController.addViewStateListener({
-        callback: async (viewState) => {
-            if (viewState.kcm === myKCMState) return;
-            console.log("[DEBUG:KCM ViewState]", viewState.kcm);
-            if (viewState.kcm === true) {
-                myKCMState = true;
-                // if viewState.kcm === true then scan has occurred and KCM button has been pushed
-                //    so draw KCM visualization
-                let report = await devtoolsController.getReport();
-                // @ts-ignore
-                getKCMData(viewState.kcm, report, settings);
-            }
-        },
-        callbackDest: {
-            type: "contentScript",
-            tabId: myTabId
-        }
-    });
-    
-    devtoolsController.addReportListener({
-        callback: async (report) => {
-            console.log("[DEBUG:KCM:Report]", report);
-            // JCH - report filled when scan occurs
-            //       need to adjust for draw
-        },
-        callbackDest: {
-            type: "contentScript",
-            tabId: myTabId
+    devtoolsController.addViewStateListener(async (viewState) => {
+        if (viewState.kcm === myKCMState) return;
+        console.log("[DEBUG:KCM ViewState]", viewState.kcm);
+        if (viewState.kcm === true) {
+            myKCMState = true;
+            // if viewState.kcm === true then scan has occurred and KCM button has been pushed
+            //    so draw KCM visualization
+            let report = await devtoolsController.getReport();
+            // @ts-ignore
+            getKCMData(viewState.kcm, report, settings);
         }
     });
 })();

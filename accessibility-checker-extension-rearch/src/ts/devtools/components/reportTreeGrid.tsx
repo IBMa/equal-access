@@ -29,7 +29,6 @@ import "./reportTreeGrid.scss";
 import { IIssue } from '../../interfaces/interfaces';
 import { getDevtoolsAppController } from '../devtoolsAppController';
 import { getDevtoolsController } from '../devtoolsController';
-import { getTabId } from '../../util/tabId';
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
 
@@ -84,14 +83,8 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
     treeGridRef = React.createRef<HTMLDivElement>();
 
     async componentDidMount(): Promise<void> {
-        ReportTreeGrid.devtoolsController.addSelectedIssueListener({
-            callback: async (issue) => {
-                this.setIssue(issue);
-            },
-            callbackDest: {
-                type: "devTools",
-                tabId: getTabId()!
-            }
+        ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
+            this.setIssue(issue);
         });
         let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
