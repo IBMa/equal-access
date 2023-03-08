@@ -32,6 +32,7 @@ let myKCMState = false;
     let devtoolsController = getDevtoolsController("remote", myTabId);
     console.log("ADDING LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
+        console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);
         if (viewState.kcm === myKCMState) return;
         console.log("[DEBUG:KCM ViewState]", viewState.kcm);
         if (viewState.kcm === true) {
@@ -41,6 +42,9 @@ let myKCMState = false;
             let report = await devtoolsController.getReport();
             // @ts-ignore
             getKCMData(viewState.kcm, report, settings);
+        } else {
+            deleteDrawing(".deleteMe");
+            myKCMState = false;
         }
     });
 })();
@@ -353,6 +357,12 @@ async function goToTop() {
         left: 0,
         behavior: 'smooth'
       });
+}
+
+function deleteDrawing(classToRemove: string) {
+    // console.log("Function: deleteDrawing START");
+    document.querySelectorAll(classToRemove).forEach(e => e.remove());
+    // console.log("Function: deleteDrawing DONE")
 }
 
 
