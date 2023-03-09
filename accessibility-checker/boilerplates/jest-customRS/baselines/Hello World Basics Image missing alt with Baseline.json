@@ -10,9 +10,9 @@
                 "dom": "/html[1]/body[1]/div[1]/img[1]",
                 "aria": "/document[1]/img[1]"
             },
-            "ruleTime": 0,
-            "reasonId": "Fail_2",
-            "message": "Image does not have an 'alt' attribute short text alternative",
+            "ruleTime": 1,
+            "reasonId": "fail_no_alt",
+            "message": "The image has neither an alt atttribute nor an ARIA label or title",
             "messageArgs": [],
             "apiArgs": [],
             "bounds": {
@@ -27,14 +27,10 @@
             "level": "violation"
         }
     ],
-    "numExecuted": 45,
+    "numExecuted": 33,
     "nls": {
         "HAAC_BackgroundImg_HasTextOrTitle": {
             "0": "Background images that convey important information must have a text alternative that describes the image",
-            "Pass_0": "Rule Passed"
-        },
-        "Rpt_Aria_OrphanedContent_Native_Host_Sematics": {
-            "0": "All content must reside within an element with a landmark role",
             "Pass_0": "Rule Passed"
         },
         "RPT_List_UseMarkup": {
@@ -45,12 +41,8 @@
             "0": "Emoticons must have a short text alternative that describes their purpose",
             "Pass_0": "Rule Passed"
         },
-        "WCAG20_Text_LetterSpacing": {
-            "0": "Use CSS 'letter-spacing' to control spacing within a word",
-            "Pass_0": "Rule Passed"
-        },
-        "text_quoted_correctly": {
-            "0": "Quotations should be marked with <q> or <blockquote> elements",
+        "Rpt_Aria_MultipleDocumentRoles": {
+            "0": "All elements with a \"document\" role must have unique labels",
             "Pass_0": "Rule Passed"
         },
         "IBMA_Color_Contrast_WCAG2AA_PV": {
@@ -61,17 +53,29 @@
             "0": "Instructions must be meaningful without shape or location words",
             "Pass_0": "Rule Passed"
         },
+        "text_quoted_correctly": {
+            "0": "Quotations should be marked with <q> or <blockquote> elements",
+            "Pass_0": "Rule Passed"
+        },
+        "text_whitespace_valid": {
+            "0": "Space characters should not be used to control spacing within a word",
+            "pass": "Rule Passed"
+        },
         "RPT_Block_ShouldBeHeading": {
             "0": "Heading text must use a heading element",
             "Pass_0": "Rule Passed"
         },
-        "WCAG20_Img_HasAlt": {
-            "0": "Images must have an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
-            "Fail_2": "Image does not have an 'alt' attribute short text alternative"
-        },
         "RPT_Img_AltCommonMisuse": {
             "0": "'alt' attribute value must be a good inline replacement for the image",
             "Pass_0": "Rule Passed"
+        },
+        "WCAG20_Img_HasAlt": {
+            "0": "Images require an 'alt' attribute with a short text alternative if they convey meaning, or 'alt=\"\" if decorative",
+            "fail_no_alt": "The image has neither an alt atttribute nor an ARIA label or title"
+        },
+        "aria_descendant_valid": {
+            "0": "Browsers ignore the explicit and implicit ARIA roles of the descendants of certain elements",
+            "pass": "The element contains valid descendants"
         }
     },
     "summary": {
@@ -83,7 +87,7 @@
             "manual": 0,
             "ignored": 0
         },
-        "scanTime": 96,
+        "scanTime": 90,
         "ruleArchive": "Latest Deployment (latest)",
         "policies": [
             "CUSTOM"
@@ -95,9 +99,9 @@
             "potentialrecommendation",
             "manual"
         ],
-        "startScan": 1604078461722
+        "startScan": 1677771734540
     },
-    "scanID": "c46a7e92-217a-4449-a5ce-f7e58b94ab59",
-    "toolID": "accessibility-checker-v3.0.8",
-    "label": "IMG_BASELINE"
+    "scanID": "ef7bc0c4-0172-4b4d-97cc-461adfa1541f",
+    "toolID": "accessibility-checker-v3.1.45",
+    "label": "Hello World Basics Image missing alt with Baseline"
 }

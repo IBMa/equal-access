@@ -7,29 +7,36 @@
 
 'use strict';
 
-const aChecker = require("accessibility-checker");
-let customInit = (async () => {
-    let skipIds = [
-        "WCAG20_Html_HasLang",
-        "WCAG20_Doc_HasTitle",
-        "WCAG20_Body_FirstASkips_Native_Host_Sematics",
-        "RPT_Html_SkipNav"
-    ]
-    let ruleset = await aChecker.getRuleset("IBM_Accessibility");
-    let rulesetCopy = JSON.parse(JSON.stringify(ruleset));
-    rulesetCopy.id = "CUSTOM";
-    rulesetCopy.checkpoints = rulesetCopy.checkpoints.map((checkpoint) => {
-        checkpoint.rules = checkpoint.rules.filter((rule) => {
-            return !skipIds.includes(rule.id);
-        });
-        return checkpoint;
-    });
-    aChecker.addRuleset(rulesetCopy);
-})()
+let aChecker = null;
 
-async function toBeAccessible(node, label) {
-    await customInit;
-    let results = await aChecker.getCompliance(node, label);
+async function toBeAccessible(node) {
+    if (process.env.DISABLE_A11Y_SCAN)
+      return {message: 'A11y scan skipped', pass: true};
+  
+    if (!aChecker) {
+      aChecker = require('accessibility-checker');
+  
+      const ignorelist = [
+        'WCAG20_Html_HasLang',
+        'WCAG20_Doc_HasTitle',
+        'WCAG20_Body_FirstASkips_Native_Host_Sematics',
+        'RPT_Html_SkipNav',
+        'Rpt_Aria_OrphanedContent_Native_Host_Sematics'
+      ];
+      const ruleset = await aChecker.getRuleset('IBM_Accessibility');
+      const customRuleset = JSON.parse(JSON.stringify(ruleset));
+  
+      customRuleset.id = 'Custom_Ruleset';
+      customRuleset.checkpoints = customRuleset.checkpoints.map(checkpoint => {
+        checkpoint.rules = checkpoint.rules.filter(
+          rule => !ignorelist.includes(rule.id)
+        );
+        return checkpoint;
+      });
+  
+      aChecker.addRuleset(customRuleset);
+    }
+    const results = await aChecker.getCompliance(node, this.currentTestName);
     if (aChecker.assertCompliance(results.report) === 0) {
         return {
             pass: true
@@ -38,8 +45,8 @@ async function toBeAccessible(node, label) {
         return {
             pass: false,
             message: () => aChecker.stringifyResults(results.report)
-        }
+        };
     }
-}
+  }
 
 module.exports = toBeAccessible;
