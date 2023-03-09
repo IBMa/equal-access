@@ -14,6 +14,7 @@
   limitations under the License.
 *****************************************************************************/
 
+import { getDevtoolsController } from "../devtools/devtoolsController";
 import XpathUtils from "./XpathUtils";
 
 export default class TabStopHighlight {
@@ -281,9 +282,13 @@ export default class TabStopHighlight {
                     circleText?.classList.remove("noHighlightSVGText");
                     circleText?.classList.add("highlightSVGText");
                     console.log("circle highlighted = ",circle);
+                    let devtoolsController = getDevtoolsController();
+                    devtoolsController.inspectPath(elementXpath);
+                    // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No circle to highlight = ",circle);
                 }
+                // Highlight error circle
                 if (errorCircle && errorCircle.classList.contains('error')) {
                     errorCircle?.classList.remove("nohighlightSVGerrorCircle");
                     errorCircle?.classList.add("highlightSVGerrorCircle");
@@ -291,6 +296,9 @@ export default class TabStopHighlight {
                     errorCircleText?.classList.remove("noHighlightSVGText");
                     errorCircleText?.classList.add("highlightSVGText");
                     console.log("errorCircle highlighted = ",errorCircle);
+                    let devtoolsController = getDevtoolsController();
+                    devtoolsController.inspectPath(elementXpath);
+                    // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No errorCircle to highlight = ",circle);
                 }

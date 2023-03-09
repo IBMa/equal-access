@@ -57,7 +57,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Set store reports
      */
     public async setStoreReports(bVal: boolean) : Promise<void> {
         return this.hook("setStoreReports", bVal, async () => {
@@ -66,7 +66,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Set report 
      */
     public async setReport(report: IReport | null) : Promise<void> {
         return this.hook("setReport", report, async () => {
@@ -82,7 +82,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Get report
      */
     public async getReport() : Promise<IReport | null> {
         return this.hook("getReport", null, async () => {
@@ -100,7 +100,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Set view state
      */
     public async setViewState(newState: ViewState | null) : Promise<void> {
         return this.hook("setViewState", newState, async () => {
@@ -114,7 +114,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Get view state
      */
     public async getViewState() : Promise<ViewState | null> {
         return this.hook("getViewState", null, async () => {
@@ -147,7 +147,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Get selected issue
      */
     public async getSelectedIssue() : Promise<IIssue | null> {
         return this.hook("getSelectedIssue", null, async () => {
@@ -161,7 +161,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set selected issue
+     * Set selected element path
      */
     public async setSelectedElementPath(path: string | null) : Promise<void> {
         return this.hook("setSelectedElementPath", path, async () => {
@@ -175,7 +175,7 @@ export class DevtoolsController extends Controller {
     }
 
     /**
-     * Set report storing
+     * Get Selected Element Path
      */
     public async getSelectedElementPath() : Promise<string | null> {
         return this.hook("getSelectedElementPath", null, async () => {
@@ -194,81 +194,87 @@ export class DevtoolsController extends Controller {
      * @param focusElem If specified, we will focus this element after the path is inspected
      */
     public async inspectPath(path: string, focusElem?: HTMLElement | null) {
-        let script = `
-            function lookup(doc, xpath) {
-                if (doc.nodeType === 11) {
-                    let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
-                    let element = doc.querySelector(selector);
-                    return element;
-                } else {
-                    let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
-                    let element = nodes.iterateNext();
-                    if (element) {
+        await this.hook("inspectPath", path, async () => {
+            let script = `
+                function lookup(doc, xpath) {
+                    if (doc.nodeType === 11) {
+                        let selector = ":host" + xpath.replace(/\\//g, " > ").replace(/\\[(\\d+)\\]/g, ":nth-of-type($1)");
+                        let element = doc.querySelector(selector);
                         return element;
                     } else {
-                        return null;
-                    }
-                }
-            }
-            function selectPath(srcPath) {
-                let doc = document;
-                let element = null;
-                while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
-                    if (srcPath.includes("iframe")) {
-                        let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
-                        let iframe = lookup(doc, parts[1]);
-                        element = iframe || element;
-                        if (iframe && iframe.contentDocument) {
-                            doc = iframe.contentDocument;
-                            srcPath = parts[2];
+                        let nodes = doc.evaluate(xpath, doc, null, XPathResult.ANY_TYPE, null);
+                        let element = nodes.iterateNext();
+                        if (element) {
+                            return element;
                         } else {
-                            srcPath = null;
-                        }
-                    } else if (srcPath.includes("#document-fragment")) {
-                        let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
-                        let fragment = lookup(doc, parts[1]);
-                        element = fragment || element;
-                        if (fragment && fragment.shadowRoot) {
-                            doc = fragment.shadowRoot;
-                            srcPath = parts[2];
-                        } else {
-                            srcPath = null;
+                            return null;
                         }
                     }
                 }
-                if (srcPath) {
-                    element = lookup(doc, srcPath) || element;
+                function selectPath(srcPath) {
+                    let doc = document;
+                    let element = null;
+                    while (srcPath && (srcPath.includes("iframe") || srcPath.includes("#document-fragment"))) {
+                        if (srcPath.includes("iframe")) {
+                            let parts = srcPath.match(/(.*?iframe\\[\\d+\\])(.*)/);
+                            let iframe = lookup(doc, parts[1]);
+                            element = iframe || element;
+                            if (iframe && iframe.contentDocument) {
+                                doc = iframe.contentDocument;
+                                srcPath = parts[2];
+                            } else {
+                                srcPath = null;
+                            }
+                        } else if (srcPath.includes("#document-fragment")) {
+                            let parts = srcPath.match(/(.*?)\\/#document-fragment\\[\\d+\\](.*)/);
+                            let fragment = lookup(doc, parts[1]);
+                            element = fragment || element;
+                            if (fragment && fragment.shadowRoot) {
+                                doc = fragment.shadowRoot;
+                                srcPath = parts[2];
+                            } else {
+                                srcPath = null;
+                            }
+                        }
+                    }
+                    if (srcPath) {
+                        element = lookup(doc, srcPath) || element;
+                    }
+                    if (element) {
+                        inspect(element);
+                        var elementRect = element.getBoundingClientRect();
+                        var absoluteElementTop = elementRect.top + window.pageYOffset;
+                        var middle = absoluteElementTop - 100;
+                        element.ownerDocument.defaultView.scrollTo({
+                            top: middle,
+                            behavior: 'smooth'
+                        });
+                        return true;
+                    }
+                    return;
                 }
-                if (element) {
-                    inspect(element);
-                    var elementRect = element.getBoundingClientRect();
-                    var absoluteElementTop = elementRect.top + window.pageYOffset;
-                    var middle = absoluteElementTop - 100;
-                    element.ownerDocument.defaultView.scrollTo({
-                        top: middle,
-                        behavior: 'smooth'
-                    });
-                    return true;
-                }
-                return;
-            }
-            selectPath("${path}");
-        `;
-        chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
-            if (isException) {
-                console.error(isException);
-            }
-            if (!result) {
-                console.log('Could not select element, it may have moved');
-            } else {
-                if (focusElem) {
-                    setTimeout(() => {
-                        focusElem?.focus();
-                    }, 100);
-                }
-            }
+                selectPath("${path}");
+            `;
+            await new Promise<void>((resolve, _reject) => {
+                chrome.devtools.inspectedWindow.eval(script, function (result, isException) {
+                    if (isException) {
+                        console.error(isException);
+                    }
+                    if (!result) {
+                        console.log('Could not select element, it may have moved');
+                    } else {
+                        if (focusElem) {
+                            resolve();
+                        }
+                    }
+                });
+            })
         });
+        setTimeout(() => {
+            focusElem?.focus();
+        }, 100);
     }
+
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -301,6 +307,7 @@ export class DevtoolsController extends Controller {
                 "DT_getSelectedIssue": async () => self.getSelectedIssue(),
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content),
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
+                "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content)
             }
 
             // Hook the above definitions
