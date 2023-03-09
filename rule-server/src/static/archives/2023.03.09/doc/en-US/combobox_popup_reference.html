@@ -1,0 +1,111 @@
+<html lang="en-US">
+<head>
+    <title>combobox_popup_reference - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"group":"The 'aria-controls' (for ARIA 1.2) or the 'aria-owns' (for ARIA 1.0) attribute of the expanded combobox must reference a valid popup 'id' value","Pass_1.0_expanded":"The combobox popup referenced by 'aria-owns' (ARIA 1.0) exists and is visible","Pass_1.0_collapsed":"The combobox popup in its collapsed state does not reference any visible popup as required","Pass_1.2_expanded":"The combobox popup referenced by 'aria-controls' (ARIA 1.2) exists and is visible","Pass_1.2_collapsed":"The combobox popup in its collapsed state does not reference any visible popup as required","Fail_1.0_missing_owns":"The 'aria-owns' attribute of the expanded combobox is missing","Fail_1.2_missing_controls":"The 'aria-controls' attribute of the expanded combobox is missing","Fail_1.0_popup_reference_missing":"The 'aria-owns' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value","Fail_1.2_popup_reference_missing":"The 'aria-controls' attribute \"{0}\" of the expanded combobox does not reference a valid popup 'id' value","Fail_combobox_expanded_hidden":"The combobox 'aria-expanded' attribute is true, but the combobox popup is not visible","Fail_combobox_collapsed_visible":"The combobox 'aria-expanded' attribute is false, but the combobox popup is visible"}};
+        RULE_ID = "combobox_popup_reference"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+A combobox combines a text input element and a popup element that helps the user set the value of the 
+input. The popup becomes visible when the combobox is in an expanded state and is controlled by using 
+an attribute `aria-controls` referencing its `id`. When the value of the `aria-controls` attribute of
+the expanded combobox does not reference a valid popup `id`, assistive 
+technologies may not be able to present and control the content correctly.
+
+Additionally, when the element with `role="combobox"` has an `aria-expanded` attribute with value `true`,
+the related popup element must be visible so that the assistive technology is able to present the
+popup to the user.
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+
+ * Code the combobox as in the ARIA 1.2 example below;
+ * **And**, set the value of the combobox `aria-controls` attribute to the `id` value of an element with `role="listbox"`;
+ * **Or**, if using the ARIA 1.0 style of combobox, update the value of the `aria-owns` attribute of the combobox to reference the `id` value of the combobox popup element;
+
+```
+<label for="tag_combo">Tag</label>
+  <input type="text" id="tag_combo"
+      role="combobox" aria-autocomplete="list"
+      aria-haspopup="listbox" aria-expanded="true"
+      aria-controls="popup_listbox" aria-activedescendant="selected_option">
+  <ul role="listbox" id="popup_listbox">
+   <li role="option">Zebra</li>
+   <li role="option" id="selected_option">Zoom</li>
+  </ul>
+```
+
+Note, example code includes material copied from or derived from [W3C, Accessible Rich Internet Applications (ARIA) latest editor's draft](https://w3c.github.io/aria-practices/#combobox). Copyright © [2018-2021] W3C® (MIT, ERCIM, Keio, Beihang).
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [IBM 4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)  
+* [ARIA practices - Combobox](https://w3c.github.io/aria-practices/#combobox)
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
