@@ -84,7 +84,16 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
 
     async componentDidMount(): Promise<void> {
         ReportTreeGrid.devtoolsController.addSelectedIssueListener(async (issue) => {
-            this.setIssue(issue);
+            for (const group of this.props.rowData!) {
+                for (const groupIssue of group.children) {
+                    if (groupIssue.path.dom === issue.path.dom
+                        && groupIssue.reasonId === issue.reasonId
+                        && groupIssue.ruleId === issue.ruleId
+                    ) {
+                        this.setState({ tabRowId: ReportTreeGrid.getRowId(group, groupIssue) });                        
+                    }
+                }
+            }
         });
         let issue = await ReportTreeGrid.devtoolsController.getSelectedIssue();
         this.setIssue(issue!);
@@ -138,11 +147,11 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         this.setState( { expandedGroups: newExpanded });
     }
 
-    onRow(group: IRowGroup, issue: IIssue) {
+    onRow(_group: IRowGroup, issue: IIssue) {
         ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
         ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
         if (this.props.panel === "elements") {
-            this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
+            // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
             ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
         }
     }

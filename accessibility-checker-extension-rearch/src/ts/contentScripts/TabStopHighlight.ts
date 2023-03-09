@@ -235,7 +235,7 @@ export default class TabStopHighlight {
 
                 // if we have iframe
                 if (docType === "iframe") {
-                    let element = doc.activeElement;  // get element just tabbed to which has focus
+                    element = doc.activeElement;  // get element just tabbed to which has focus
                     elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
                     elementXpath = iframeStr + elementXpath;
                     console.log("iframeStr = ",iframeStr)
@@ -283,7 +283,7 @@ export default class TabStopHighlight {
                     circleText?.classList.add("highlightSVGText");
                     console.log("circle highlighted = ",circle);
                     let devtoolsController = getDevtoolsController();
-                    devtoolsController.inspectPath(elementXpath);
+                    devtoolsController.inspectPath(elementXpath, element);
                     // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No circle to highlight = ",circle);
@@ -297,7 +297,7 @@ export default class TabStopHighlight {
                     errorCircleText?.classList.add("highlightSVGText");
                     console.log("errorCircle highlighted = ",errorCircle);
                     let devtoolsController = getDevtoolsController();
-                    devtoolsController.inspectPath(elementXpath);
+                    devtoolsController.inspectPath(elementXpath, element);
                     // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No errorCircle to highlight = ",circle);

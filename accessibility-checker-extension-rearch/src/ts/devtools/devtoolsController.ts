@@ -166,7 +166,18 @@ export class DevtoolsController extends Controller {
     public async setSelectedElementPath(path: string | null) : Promise<void> {
         return this.hook("setSelectedElementPath", path, async () => {
             if (path) {
-                sessionStorage!.lastElementPath = path;
+                if (path !== sessionStorage!.lastElementPath) {
+                    sessionStorage!.lastElementPath = path;
+                    let report = await this.getReport();
+                    if (report) {
+                        for (const issue of report.results) {
+                            if (issue.value[1] !== "PASS" && issue.path.dom === path) {
+                                this.setSelectedIssue(issue);
+                                break;
+                            }
+                        }
+                    }
+                }
                 setTimeout(() => {
                     this.notifyEventListeners("DT_onSelectedElementPath", this.ctrlDest.tabId, path);
                 }, 0);
@@ -262,17 +273,16 @@ export class DevtoolsController extends Controller {
                     }
                     if (!result) {
                         console.log('Could not select element, it may have moved');
-                    } else {
-                        if (focusElem) {
-                            resolve();
-                        }
                     }
+                    resolve();
                 });
             })
         });
-        setTimeout(() => {
-            focusElem?.focus();
-        }, 100);
+        if (focusElem) {
+            setTimeout(() => {
+                focusElem?.focus();
+            }, 100);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
