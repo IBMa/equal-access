@@ -85,8 +85,8 @@ class BackgroundController extends Controller {
     public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
         return this.hook("getRulesets", senderTabId, async () => {
             await this.initTab(senderTabId!);
-            let isLoaded = await this.isEngineLoaded(senderTabId);
-            isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
+            // let isLoaded = await this.isEngineLoaded(senderTabId);
+            // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
             return await myExecuteScript2(senderTabId, () => {
                 let checker = new (<any>window).aceIBMa.Checker();
                 return checker.rulesets;
@@ -141,7 +141,7 @@ class BackgroundController extends Controller {
                             return null;
                         }
                     });
-                }, settings);
+                }, [settings]);
                 getDevtoolsController("remote", senderTabId).setReport(report);
             })();
             return {};
@@ -164,15 +164,17 @@ class BackgroundController extends Controller {
             let isAlreadyLoaded = await myExecuteScript2(tabId, (archiveId: string) => {
                 return typeof (window as any).aceIBMa !== "undefined" 
                     && (window as any).aceIBMa.archiveId === archiveId;
-            }, archiveId);
-            if (isAlreadyLoaded) return;
+            }, [archiveId]);
+            if (isAlreadyLoaded) {
+                return;
+            }
 
             // Move any existing object out of the way
             await myExecuteScript2(tabId, () => {
                 delete (window as any).aceIBMa;
                 (window as any).aceIBMaTemp =  (window as any).ace;
             });
-        
+
             // Switch to the appropriate engine for this archiveId
             let engineFile = await EngineCache.getEngine(archiveId);
             await new Promise((resolve, reject) => {
@@ -196,21 +198,21 @@ class BackgroundController extends Controller {
         });
     }
 
-    private async isEngineLoaded(tabId: number) : Promise<boolean> {
-        return await new Promise((resolve, reject) => {
-            myExecuteScript({
-                target: { tabId: tabId, frameIds: [0] },
-                func: () => {
-                    return(typeof (window as any).aceIBMa);
-                }
-            }, function (res: any) {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError.message);
-                }
-                resolve(res[0].result !== "undefined");
-            })
-        });
-    }
+    // private async isEngineLoaded(tabId: number) : Promise<boolean> {
+    //     return await new Promise((resolve, reject) => {
+    //         myExecuteScript({
+    //             target: { tabId: tabId, frameIds: [0] },
+    //             func: () => {
+    //                 return(typeof (window as any).aceIBMa);
+    //             }
+    //         }, function (res: any) {
+    //             if (chrome.runtime.lastError) {
+    //                 reject(chrome.runtime.lastError.message);
+    //             }
+    //             resolve(res[0].result !== "undefined");
+    //         })
+    //     });
+    // }
 
     public async addTabChangeListener(listener: ListenerType<TabChangeType>) {
         this.addEventListener(listener, `BG_onTabUpdate`);
@@ -375,7 +377,7 @@ function myExecuteScript(
     }
 }
 
-async function myExecuteScript2<T>(tabId: number, func: any, args?: any) : Promise<T> {
+async function myExecuteScript2<T>(tabId: number, func: any, args?: any[]) : Promise<T> {
     return await new Promise((resolve, reject) => {
         myExecuteScript({
             target: { tabId: tabId, frameIds: [0] },
@@ -383,6 +385,7 @@ async function myExecuteScript2<T>(tabId: number, func: any, args?: any) : Promi
             func: func
         }, function (res: any) {
             if (chrome.runtime.lastError) {
+                console.error(chrome.runtime.lastError);
                 reject(chrome.runtime.lastError.message);
             }
             resolve(res[0].result);
