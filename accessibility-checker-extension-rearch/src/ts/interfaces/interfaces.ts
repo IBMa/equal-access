@@ -101,12 +101,24 @@ export interface IReport {
     numExecuted: number
     ruleTime: number
     totalTime: number
+    timestamp: string
     nls : {
         [ruleId: string]: {
             [reasonCode: string]: string
         }
     }
+    counts: {
+        filtered: number
+        total: number
+    }
+    pageTitle: string
     passUniqueElements: string[]
+    violations: number
+    needsReviews: number
+    recommendations: number
+    isSelected?: boolean
+    guidelines?: string
+    reportDate?: string
 }
 
 export enum eToolkitLevel {
