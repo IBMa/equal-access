@@ -4,7 +4,7 @@
 	"description": "Accessibility Checker Extension for Browsers",
 	"main": "index.js",
 	"scripts": {
-		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension && shx cp ../report-react/build/genReport.tsx ./src/ts/devtools/)",
+		"build:report": "(cd ../report-react && npm run build && cd ../accessibility-checker-extension-rearch && shx cp ../report-react/build/genReport.tsx ./src/ts/util/htmlReport/)",
 		"build:dev": "node preprocess && npm run build:report && cross-env NODE_ENV=development SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",
 		"build:prod": "node preprocess && npm run build:report && cross-env NODE_ENV=production SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production && shx mv dist/background*.js dist/background.js",
 		"build:watch:noreport": "node preprocess && cross-env NODE_ENV=watch SASS_PATH=node_modules:src:node_modules/carbon-components/scss/globals/scss/vendor webpack --mode production",

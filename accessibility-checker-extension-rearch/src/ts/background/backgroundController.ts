@@ -85,21 +85,12 @@ class BackgroundController extends Controller {
     public async getRulesets(senderTabId: number) : Promise<IRuleset[]> {
         return this.hook("getRulesets", senderTabId, async () => {
             await this.initTab(senderTabId!);
-            let retVal : IRuleset[] = await new Promise((resolve, reject) => {
-                myExecuteScript({
-                    target: { tabId: senderTabId!, frameIds: [0] },
-                    func: () => {
-                        let checker = new (<any>window).aceIBMa.Checker();
-                        return checker.rulesets;
-                    }
-                }, function (res: any) {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError.message);
-                    }
-                    resolve(res[0].result);
-                })
+            // let isLoaded = await this.isEngineLoaded(senderTabId);
+            // isLoaded && console.log("Engine loaded", senderTabId) || console.log("Engine not loaded", senderTabId);
+            return await myExecuteScript2(senderTabId, () => {
+                let checker = new (<any>window).aceIBMa.Checker();
+                return checker.rulesets;
             });
-            return retVal;
         });
     }
 
@@ -109,109 +100,81 @@ class BackgroundController extends Controller {
             // We want this to execute after the message returns
             (async () => {
                 let settings = await this.getSettings();
-                let report : IReport = await new Promise((resolve, reject) => {
-                    myExecuteScript({
-                        target: { tabId: senderTabId!, frameIds: [0] },
-                        args: [
-                            settings
-                        ],
-                        func: (settings: ISettings) => {
-                            let checker = new (<any>window).aceIBMa.Checker();    
-                            return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
-                                try {
-                                    if (report) {
-                                        let passResults = report.results.filter((result) => {
-                                            return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
-                                        })
-                                        let passXpaths : string[] = passResults.map((result) => result.path.dom);
-                            
-                                        report.passUniqueElements = Array.from(new Set(passXpaths));
-                            
-                                        report.results = report.results.filter((issue) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
-                                        for (let result of report.results) {
-                                            let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
-                                            let version = settings.selected_archive.version || "latest";
-                                            if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
-                                                engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
-                                            } else {
-                                                engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
-                                                if (engineHelp.includes("//able.ibm.com/")) {
-                                                    engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
-                                                }
-                                            }
-                                            let minIssue = {
-                                                message: result.message,
-                                                snippet: result.snippet,
-                                                value: result.value,
-                                                reasonId: result.reasonId,
-                                                ruleId: result.ruleId,
-                                                messageArgs: result.messageArgs
-                                            };
-                                            result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
+                let report : IReport = await myExecuteScript2(senderTabId, (settings: ISettings) => {
+                    let checker = new (<any>window).aceIBMa.Checker();    
+                    return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
+                        try {
+                            if (report) {
+                                let passResults = report.results.filter((result) => {
+                                    return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
+                                })
+                                let passXpaths : string[] = passResults.map((result) => result.path.dom);
+                    
+                                report.passUniqueElements = Array.from(new Set(passXpaths));
+                    
+                                report.results = report.results.filter((issue) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
+                                for (let result of report.results) {
+                                    let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
+                                    let version = settings.selected_archive.version || "latest";
+                                    if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
+                                        engineHelp = engineHelp.replace(/able.ibm.com/,"localhost:9445");
+                                    } else {
+                                        engineHelp = engineHelp.replace(/https\:\/\/able\.ibm\.com\/rules\/archives\/[^/]*\/doc\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/`);
+                                        if (engineHelp.includes("//able.ibm.com/")) {
+                                            engineHelp = engineHelp.replace(/https\:\/\/able.ibm.com\/rules\/tools\/help\//, `https://unpkg.com/accessibility-checker-engine@${version}/help/en-US/`)+".html";
                                         }
                                     }
-                                    return report;
-                                } catch (err) {
-                                    console.error(err);
-                                    return null;
+                                    let minIssue = {
+                                        message: result.message,
+                                        snippet: result.snippet,
+                                        value: result.value,
+                                        reasonId: result.reasonId,
+                                        ruleId: result.ruleId,
+                                        messageArgs: result.messageArgs
+                                    };
+                                    result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
                                 }
-                            });
+                            }
+                            return report;
+                        } catch (err) {
+                            console.error(err);
+                            return null;
                         }
-                    }, function (res: any) {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError.message);
-                        }
-                        resolve(res[0].result);
-                    })
-                });
+                    });
+                }, [settings]);
                 getDevtoolsController("remote", senderTabId).setReport(report);
             })();
             return {};
         });
     }
     
+    private sync = Promise.resolve();
     /**
      * Used by the tab controller to initialize the tab when the first scan is performmed on that tab
      * @param tabId 
      * @returns 
      */
     public async initTab(tabId: number) {
-        return this.hook("initTab", tabId, async () => {
+        // Only allow one init at a time
+        await this.sync;
+        return this.sync = this.hook("initTab", tabId, async () => {
+            // Determine if the engine is already loaded with this archive
             let settings = await this.getSettings();
             let archiveId = settings.selected_archive.id;
-            // Determine if we've ever loaded any engine
-            await new Promise((resolve, reject) => {
-                myExecuteScript({
-                    target: { tabId: tabId, frameIds: [0] },
-                    func: () => {
-                        (window as any).aceIBMaTemp =  (window as any).ace;
-                        return(typeof (window as any).aceIBMa);
-                    }
-                }, function (res: any) {
-                    if (chrome.runtime.lastError) {
-                        reject(chrome.runtime.lastError.message);
-                    }
-                    resolve(res[0].result !== "undefined");
-                })
+            let isAlreadyLoaded = await myExecuteScript2(tabId, (archiveId: string) => {
+                return typeof (window as any).aceIBMa !== "undefined" 
+                    && (window as any).aceIBMa.archiveId === archiveId;
+            }, [archiveId]);
+            if (isAlreadyLoaded) {
+                return;
+            }
+
+            // Move any existing object out of the way
+            await myExecuteScript2(tabId, () => {
+                delete (window as any).aceIBMa;
+                (window as any).aceIBMaTemp =  (window as any).ace;
             });
 
-            if (!chrome && !chrome.scripting) {
-                await new Promise((resolve, reject) => {
-                    myExecuteScript({
-                        target: { tabId: tabId, frameIds: [0] },
-                        func: () => {
-                            ((window as any).aceIBMa = (window as any).ace);
-                            (window as any).ace = (window as any).aceIBMaTemp;
-                        }
-                    }, function (res: any) {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError.message);
-                        }
-                        resolve(res);
-                    })
-                });
-            }
-        
             // Switch to the appropriate engine for this archiveId
             let engineFile = await EngineCache.getEngine(archiveId);
             await new Promise((resolve, reject) => {
@@ -226,27 +189,54 @@ class BackgroundController extends Controller {
                 });
             });
 
-            if (chrome && chrome.scripting) {
-                await new Promise((resolve, reject) => {
-                    myExecuteScript({
-                        target: { tabId: tabId, frameIds: [0] },
-                        func: () => {
-                            ((window as any).aceIBMa = (window as any).ace);
-                            (window as any).ace = (window as any).aceIBMaTemp;
-                        }
-                    }, function (res: any) {
-                        if (chrome.runtime.lastError) {
-                            reject(chrome.runtime.lastError.message);
-                        }
-                        resolve(res);
-                    })
-                });
-            }
+            // Move ace to aceIBMa and move the old ace back
+            await myExecuteScript2(tabId, () => {
+                ((window as any).aceIBMa = (window as any).ace);
+                (window as any).ace = (window as any).aceIBMaTemp;
+                delete (window as any).aceIBMaTemp;
+            })
         });
     }
 
+    // private async isEngineLoaded(tabId: number) : Promise<boolean> {
+    //     return await new Promise((resolve, reject) => {
+    //         myExecuteScript({
+    //             target: { tabId: tabId, frameIds: [0] },
+    //             func: () => {
+    //                 return(typeof (window as any).aceIBMa);
+    //             }
+    //         }, function (res: any) {
+    //             if (chrome.runtime.lastError) {
+    //                 reject(chrome.runtime.lastError.message);
+    //             }
+    //             resolve(res[0].result !== "undefined");
+    //         })
+    //     });
+    // }
+
     public async addTabChangeListener(listener: ListenerType<TabChangeType>) {
         this.addEventListener(listener, `BG_onTabUpdate`);
+    }
+
+    public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab> {
+        return this.hook("getTabInfo", null, async () => {
+            return await new Promise((resolve, _reject) => {
+                chrome.tabs.get(tabId!, async function (tab: any) {
+                    //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
+                    let canScan = await new Promise((resolve, _reject) => {
+                        if (tab.id < 0) return resolve(false);
+                        myExecuteScript({
+                            target: { tabId: tab.id, frameIds: [0] },
+                            func: () => (typeof (window as any).aceIBMa)
+                        }, function (res: any) {
+                            resolve(!!res);
+                        })
+                    });
+                    tab.canScan = canScan;
+                    resolve(tab);
+                });
+            });
+        });
     }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
@@ -273,7 +263,8 @@ class BackgroundController extends Controller {
                     if (msgBody.content !== null) {
                         return self.initTab(msgBody.content);
                     }
-                }
+                },
+                "BG_getTabInfo": async(_a, senderTabId) => self.getTabInfo(senderTabId!)
             }
 
             // Hook the above definitions
@@ -384,6 +375,22 @@ function myExecuteScript(
                 })
         }
     }
+}
+
+async function myExecuteScript2<T>(tabId: number, func: any, args?: any[]) : Promise<T> {
+    return await new Promise((resolve, reject) => {
+        myExecuteScript({
+            target: { tabId: tabId, frameIds: [0] },
+            args: args,
+            func: func
+        }, function (res: any) {
+            if (chrome.runtime.lastError) {
+                console.error(chrome.runtime.lastError);
+                reject(chrome.runtime.lastError.message);
+            }
+            resolve(res[0].result);
+        })
+    });
 }
 
 let singleton : BackgroundController | null = null;

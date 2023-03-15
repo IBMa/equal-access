@@ -49,7 +49,8 @@ interface ReportSectionState {
         "Needs review": boolean,
         "Recommendation": boolean
     }
-    selectedPath: string | null;
+    selectedPath: string | null
+    focusMode: boolean
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
@@ -63,6 +64,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             "Recommendation": true
         },
         selectedPath: null,
+        focusMode: false
     }
 
     reportListener : ListenerType<IReport> = async (report: IReport) => {
@@ -86,6 +88,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
         let path = await devtoolsController.getSelectedElementPath();
         this.setPath(path!);
+        devtoolsController.addFocusModeListener(async (newValue: boolean) => {
+            this.setState({focusMode: newValue });
+        })
+        this.setState({
+            focusMode: await devtoolsController.getFocusMode()
+        })
     }
 
     componentWillUnmount(): void {
@@ -128,15 +136,23 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     render() {
+        // console.log("Focus Mode:",this.state.focusMode)
         let counts = this.getCounts();
         let filtReport : IReport = this.state.report ? JSON.parse(JSON.stringify(this.state.report)) : null;
         if (filtReport) {
             filtReport.results = filtReport.results.filter((issue: IIssue) => {
-                return this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel];
+                let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
+                    && (!this.state.focusMode 
+                            || !this.state.selectedPath 
+                            || issue.path.dom.startsWith(this.state.selectedPath)
+                        )
+                );
+                return retVal;
             });
+            // console.log(filtReport.results.length);
         }
         let totalCount = 0;
-        return (<>
+       return (<>
             <Grid className="reportFilterSection">
                 {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
                     totalCount += counts[levelStr as eLevel].total;

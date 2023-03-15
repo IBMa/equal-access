@@ -145,8 +145,8 @@ export class DevtoolsAppController {
                 } catch (err) {
                     console.error(err);
                 }
-            })($0)`, (result: string) => {
-                devtoolsController.setSelectedElementPath(result);
+            })($0)`, async (result: string) => {
+                await devtoolsController.setSelectedElementPath(result);
             });
         });
     }

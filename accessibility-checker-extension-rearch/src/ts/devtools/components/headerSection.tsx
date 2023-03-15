@@ -32,29 +32,31 @@ export class HeaderSection extends React.Component {
     render() {
         return (
             <Grid className="headerSection"> 
-                <Column sm={3} md={6} lg={6}>
-                    <h1>IBM Equal Access Accessibility Checker</h1>
-                </Column>
-                <Column sm={1} md={2} lg={2} style={{marginLeft:"auto"}}>
-                    <Button 
-                        renderIcon={Help} 
-                        kind="ghost"   
-                        hasIconOnly iconDescription="Help" tooltipPosition="left" 
-                        onClick={(() => {
-                            let url = chrome.runtime.getURL("quickGuideAC.html");
-                            window.open(url, "_blank");
-                        }).bind(this)}>
-                    </Button>
-                    <Button 
-                        renderIcon={Settings} 
-                        kind="ghost"   
-                        hasIconOnly iconDescription="Settings" tooltipPosition="left" 
-                        style={{marginRight: "-1rem"}}
-                        onClick={(() => {
-                            let url = chrome.runtime.getURL("options.html");
-                            window.open(url, "_blank");
-                        }).bind(this)}>
-                    </Button>
+                <Column sm={4} md={8} lg={8}>
+                    <div style={{ display: "flex" }}>
+                        <h1 style={{ flex: "1 1 10rem"}}>IBM Equal Access Accessibility Checker</h1>
+                        <div style={{ flex: "0 1 5rem"}}>
+                            <Button 
+                                renderIcon={Help} 
+                                kind="ghost"   
+                                hasIconOnly iconDescription="Help" tooltipPosition="left" 
+                                onClick={(() => {
+                                    let url = chrome.runtime.getURL("quickGuideAC.html");
+                                    window.open(url, "_blank");
+                                }).bind(this)}>
+                            </Button>
+                            <Button 
+                                renderIcon={Settings} 
+                                kind="ghost"   
+                                hasIconOnly iconDescription="Settings" tooltipPosition="left" 
+                                style={{marginRight: "-1rem"}}
+                                onClick={(() => {
+                                    let url = chrome.runtime.getURL("options.html");
+                                    window.open(url, "_blank");
+                                }).bind(this)}>
+                            </Button>
+                        </div>
+                    </div>
                 </Column>
             </Grid>
         )
