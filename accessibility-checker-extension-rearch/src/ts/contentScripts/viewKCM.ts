@@ -243,7 +243,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             }
         });
         if (flagMatchFound) {
-            console.log("index = ",index," reg tabstop has error");
+            // console.log("index = ",index," reg tabstop has error");
             regularTabstops[index].nodeHasError = true;
         } 
     }

@@ -24,7 +24,7 @@ export default class TabStopErrorCircles {
     // Tab Stop error NOT in the tab chain - get ? instead of number
     public static draw(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
         // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-        // console.log("Function: redrawErrors");
+        console.log("Function: TabStopErrorCircles.draw");
         setTimeout(() => {
             let tabbableNodesXpaths = XpathUtils.getNodesXpaths(tabStops);
             
