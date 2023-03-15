@@ -17,6 +17,7 @@
 export default class NotificationDot {
     // JCH - now we are working towards changing the Triangle to a Notification Dot
     public static makeNotificationDot(x1: number, y1: number, iconName: string) {
+        console.log("Function: NotificationDot.makeNotificationDot *********************");
         iconName = iconName; // TODO delete this line later. Added to remove typescript error "is declared but its value is never read."
         var iconClone = this.notificationDotTemplate();
         iconClone.removeAttribute("display");

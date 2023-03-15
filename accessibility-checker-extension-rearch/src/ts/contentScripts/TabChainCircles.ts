@@ -24,9 +24,9 @@ export default class TabChainCircles {
 
     // @ts-ignore
     async public static draw(tabstops: any, tabStopsErrors: any, lines: boolean, outlines: boolean, iframes: any) {
-        console.log("Function: TabChainCircles.draw");
-        // JCH - do circles and errorCircle coord calculations after lines and outlines 
-        // as centers of circles and errorCircles set the basic coords
+        // console.log("Function: TabChainCircles.draw");
+        
+        // JCH - do circles and errorCircles coord calculations after lines and outlines 
 
         setTimeout(() => { 
             let offset = 3;
@@ -45,7 +45,7 @@ export default class TabChainCircles {
                     if (typeof nodes[i].tagName !== 'undefined' ||  nodes[i].tagName !== null ) { // JCH - tabbable nodes
                         // console.log("Tabbable nodes[",i,"]   tagName is ",nodes[i].tagName);
                         if (typeof nodes[i].getBoundingClientRect !== 'undefined' || nodes[i].getBoundingClientRect != null) {
-                            console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
+                            // console.log("Tabbable nodes[",i,"] has bounding rect", nodes[i].getBoundingClientRect().x,",",nodes[i].getBoundingClientRect().y);
                         }
                         else {
                             console.log("Tabbable nodes[",i,"] has NO bounding rect");
@@ -134,15 +134,12 @@ export default class TabChainCircles {
                          */ 
 
                         if (i > 0) {
-                            // console.log("node[",i-1,"] has coords xprev = ",nodes[i-1].getBoundingClientRect().x,"   yprev = ",nodes[i-1].getBoundingClientRect().y);
-                            // console.log("node[",i,"] has coords x = ",x,"   y = ",y);
                             if (x == nodes[i-1].getBoundingClientRect().x && y == nodes[i-1].getBoundingClientRect().y) {
-                                console.log("Error Circle EXACT OVERLAP");
+                                // console.log("Error Circle EXACT OVERLAP");
                                 x += 20;
                             }
                         }
 
-                        
                         // regarding lines see below as we draw circle after lines
                         
                         // for line to next tabbable element find next tabbable element that exists
@@ -196,7 +193,7 @@ export default class TabChainCircles {
                                     y2 = 18;
                                 }
 
-                                console.log("Error Circle Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
+                                // console.log("Error Circle Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
                                 TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
 
                                 // Create white outline
@@ -211,10 +208,7 @@ export default class TabChainCircles {
                             }
                         }
 
-                        // draw circles after lines
-                        // console.log("Tabbable with ERROR i = ",i," so add classname error");
-                        // console.log("errorCircle x = ",x,"  y = ",y);
-                        console.log("Error Circle node[",i,"] coords x = ",x,"   y = ",y);
+                        // draw circles, notification dot and text after lines
                         TabStopCircle.makeCircle(x, y, i.toString(), 16, nodeXpaths[i], true);
                         NotificationDot.makeNotificationDot(x+11, y-16, "test");   // notification dot
                         TabStopText.makeText(x, y, (i + 1).toString(), i.toString(), "textColorWhite");
@@ -251,8 +245,6 @@ export default class TabChainCircles {
 
                         let y = nodes[i].getBoundingClientRect().y;
                         let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
-                        console.log("-------------------------------------")
-                        console.log("Regular circle node initial [",i,"] has coords x = ",x,"   y = ",y);
             
                         // adjustment for iframes
                         // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
@@ -282,11 +274,9 @@ export default class TabChainCircles {
                         // If the first circle is being drawn slighly off of the screen move it into the screen
                         // Note: here we assume radius is 13
                         if (x <= 15) {
-                            console.log("x <= 15 so add 15");
                             x = 15;
                         }
                         if (y <= 15) {
-                            console.log("y <= 15 so add 15");
                             y = 15;
                         }
                         // see below lines as we draw circle after lines
@@ -348,10 +338,8 @@ export default class TabChainCircles {
                                 */ 
 
                                 if (i > 0) {
-                                    console.log("node[",i-1,"] has coords xprev = ",nodes[i-1].getBoundingClientRect().x,"   yprev = ",nodes[i-1].getBoundingClientRect().y);
-                                    console.log("node[",i,"] has coords x = ",x,"   y = ",y);
                                     if (x == nodes[i-1].getBoundingClientRect().x && y == nodes[i-1].getBoundingClientRect().y) {
-                                        console.log("Regular Circle EXACT OVERLAP");
+                                        // console.log("Regular Circle EXACT OVERLAP");
                                         x += 20;
                                     }
                                 }
@@ -372,9 +360,6 @@ export default class TabChainCircles {
                         }
 
                         // draw circles after lines
-                        // console.log("Tabbable no ERROR i = ",i," so DON'T add classname error");
-                        // console.log("x = ", x);
-                        // console.log("y = ", y);
                         console.log("Regular Circle node[",i,"] coords x = ",x,"   y = ",y);
                         TabStopCircle.makeCircle(x, y, i.toString(), 13, nodeXpaths[i], false);
                         TabStopText.makeText(x, y, (i + 1).toString(), i.toString(), "textColorWhite");

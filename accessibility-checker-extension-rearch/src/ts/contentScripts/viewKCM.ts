@@ -190,7 +190,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             font-weight: bold
         }
 
-        .svgIconTest{
+        .svgNotificationDot{
             position: absolute !important;
             overflow: visible !important;
             pointer-events: none !important;
@@ -211,14 +211,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             z-index: 2147483646 !important;
             visibility: visible !important;
         }
-        .svgIconTest{
-            position: absolute !important;
-            overflow: visible !important;
-            pointer-events: none !important;
-            z-index: 2147483646 !important;
-        }
-
-
+        
         .circleText{
             pointer-events: none !important;
         }
