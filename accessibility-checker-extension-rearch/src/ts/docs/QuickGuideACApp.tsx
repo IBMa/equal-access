@@ -219,7 +219,7 @@ export class QuickGuideACApp extends React.Component<{}, quickGuideACAppState> {
                         </ListItem>
                     </UnorderedList>
 
-                    <h2 id="troubleshooting">9. Troubleshooting</h2>
+                    <h2 id="troubleshooting">6. Troubleshooting</h2>
                     <p>
                         If the Accessibility Checker appears unresponsive:
                     </p>
