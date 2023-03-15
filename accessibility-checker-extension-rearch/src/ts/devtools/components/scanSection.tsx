@@ -27,16 +27,17 @@ import {
     OverflowMenu,
     OverflowMenuItem,
     Switch,
-    Theme
+    Theme,
+    Tooltip
 } from "@carbon/react";
 import {
     Keyboard,
-    KeyboardOff,
-    Renew
+    KeyboardOff
 } from "@carbon/react/icons";
 import { ListenerType } from '../../messaging/controller';
 import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
+import "./scanSection.scss";
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -48,7 +49,9 @@ interface ScanSectionState {
     reportContent: boolean
     scannedOnce: boolean
     storeReports: boolean,
-    storedReportsCount: number
+    storedReportsCount: number,
+    selectedElemPath: string,
+    focusMode: boolean
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
@@ -61,7 +64,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         scannedOnce: false,
         reportContent: false,
         storeReports: false,
-        storedReportsCount: 0
+        storedReportsCount: 0,
+        selectedElemPath: "html",
+        focusMode: false
     }
 
     reportListener : ListenerType<IReport> = async (report) => {
@@ -70,6 +75,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         if (report && report.results.length > 0) {
             hasReportContent = true;
         }
+        devtoolsController.setFocusMode(false);
         self.setState( { scanInProgress: hasReportContent ? 2 : 0, reportContent: hasReportContent });
         setTimeout(() => {
             self.setState( { scanInProgress: 0 });
@@ -84,21 +90,24 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         devtoolsController.addStoreReportsListener(async (newState) => {
             this.setState( { storeReports: newState });
         })
+        devtoolsController.addSelectedElementPathListener(async (newPath) => {
+            this.setState( { selectedElemPath: newPath });
+        })
+        devtoolsController.addFocusModeListener(async (newValue) => {
+            this.setState({ focusMode: newValue })
+        })
         bgController.addTabChangeListener(async (content: TabChangeType) => {
             if (content.changeInfo.status) {
                 this.setState({ pageStatus: content.changeInfo.status, scannedOnce: false });
             }
         });
-        let hasReportContent = false;
-        let report = await devtoolsController.getReport();
-        if (report && report.results.length > 0) {
-            hasReportContent = true;
-        }
+        this.reportListener((await devtoolsController.getReport())!);
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 
-            reportContent: hasReportContent, 
             storeReports: (await devtoolsController.getStoreReports()),
-            storedReportsCount: (await devtoolsController.getStoredReportsCount())
+            storedReportsCount: (await devtoolsController.getStoredReportsCount()),
+            selectedElemPath: (await devtoolsController.getSelectedElementPath())! || "/html",
+            focusMode: (await devtoolsController.getFocusMode())
         });
     }
 
@@ -112,6 +121,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
     }
 
     render() {
+        let selectedElementStr = this.state.selectedElemPath;
+        selectedElementStr = selectedElementStr.split("/").pop()!;
+        selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
         return (
             <Grid className="scanSection"> 
                 <Column sm={4} md={8} lg={8}>
@@ -128,18 +140,21 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         size="sm"
                                         style={{minWidth: "8.75rem"}}
                                         disabled={this.state.pageStatus !== "complete"} 
-                                        renderIcon={Renew} 
                                         onClick={() => { 
                                             this.scan(); 
                                         }
                                     }>Scan</Button>}
                                 </div>
                                 <Theme theme="g100" style={{flex: "0 1 2rem"}}>
-                                    <OverflowMenu size="sm" ariaLabel="stored scans" align="bottom" renderIcon={ChevronDown}>
+                                    <OverflowMenu 
+                                        size="sm" 
+                                        ariaLabel="stored scans" 
+                                        align="bottom" 
+                                        renderIcon={ChevronDown}
+                                    >
                                         <OverflowMenuItem
                                             disabled={!this.state.reportContent}
                                             itemText="Download current scan" 
-                                            requireTitle
                                             onClick={() => devtoolsController.exportXLSLast() }
                                         />
                                         <OverflowMenuItem 
@@ -152,7 +167,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         <OverflowMenuItem 
                                             disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
                                             itemText="Download stored scans" 
-                                            requireTitle
                                             onClick={() => devtoolsController.exportXLSAll() }
                                         />
                                         <OverflowMenuItem 
@@ -172,18 +186,32 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             </div>
                         </div>
                         <div style={{flex: "1 1 8.75rem"}}>
-                            <ContentSwitcher style={{maxWidth: "20rem", marginLeft: "auto" }} size="sm" onChange={(evt: any) => {
-                                console.log("Switch", evt);
-                            }}>
-                                <Switch
-                                    name="one"
-                                    text="First section"
-                                />
-                                <Switch
-                                    name="two"
-                                    text="All"
-                                />
-                            </ContentSwitcher>
+                            <Tooltip
+                                align="bottom"
+                                label="Focus view"
+                                style={{maxWidth: "20rem", marginLeft: "auto", width: "100%", display: "block" }} 
+                                >
+                                <ContentSwitcher data-tip data-for="focusViewTip"
+                                    style={{maxWidth: "20rem", marginLeft: "auto", width: "100%" }} 
+                                    size="sm" 
+                                    selectionMode="manual"
+                                    selectedIndex={this.state.focusMode ? 0 : 1}
+                                    onChange={(newState: { index: string, name: "All" | "Focused", text: string }) => {
+                                        devtoolsController.setFocusMode(newState.name === "Focused");
+                                    }}
+                                >
+                                    <Switch
+                                        name="Focused"
+                                        text={`<${selectedElementStr}>`}
+                                        disabled={!this.state.reportContent}
+                                    />
+                                    <Switch
+                                        name="All"
+                                        text="All"
+                                        disabled={!this.state.reportContent}
+                                    />
+                                </ContentSwitcher>
+                            </Tooltip>
                         </div>
                         <Button
                             style={{flex: "1 1 2rem"}}

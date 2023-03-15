@@ -29,6 +29,7 @@ let devtoolsState : {
     lastElementPath: string | null
     lastIssue: IIssue | null
     viewState: ViewState
+    focusedMode: boolean
 } | null = null;
 
 export interface ViewState {
@@ -316,7 +317,6 @@ export class DevtoolsController extends Controller {
         return this.hook("exportXLSLast", null, async () => {
             let bgController = await getBGController();
             let tabId = getTabId();
-            console.log(tabId);
             let rulesets = await bgController.getRulesets(tabId!);
             let tabInfo = await bgController.getTabInfo();
             if (devtoolsState?.lastReport && rulesets) {
@@ -375,6 +375,33 @@ export class DevtoolsController extends Controller {
         MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!, scanType, devtoolsState!.storedReports!.length, archives);
     }
 
+    /**
+     * Set selected issue
+     */
+    public async setFocusMode(value: boolean) : Promise<void> {
+        return this.hook("setFocusMode", value, async () => {
+            if (devtoolsState) {
+                devtoolsState.focusedMode = value;
+                setTimeout(() => {
+                    this.notifyEventListeners("DT_onFocusMode", this.ctrlDest.tabId, value);
+                }, 0);
+            }
+        });
+    }
+
+    /**
+     * Get selected issue
+     */
+    public async getFocusMode() : Promise<boolean> {
+        return this.hook("getFocusMode", null, async () => {
+            if (!devtoolsState) return false;
+            return devtoolsState!.focusedMode;
+        });
+    }
+    
+    public async addFocusModeListener(listener: ListenerType<boolean>) {
+        this.addEventListener(listener, `DT_onFocusMode`);
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -390,12 +417,14 @@ export class DevtoolsController extends Controller {
                 lastIssue: null,
                 viewState: {
                     kcm: false
-                }
+                },
+                focusedMode: false
             };
 
             const listenMsgs : { 
                 [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
             } = {
+                "DT_setFocusMode": async(msgBody) => self.setFocusMode(msgBody.content),
                 "DT_getStoredReports": async () => self.getStoredReports(),
                 "DT_getStoredReportsCount": async() => self.getStoredReportsCount(),
                 "DT_clearStoredReports": async () => self.clearStoredReports(),
