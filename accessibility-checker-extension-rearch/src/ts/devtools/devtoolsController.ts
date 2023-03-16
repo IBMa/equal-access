@@ -424,6 +424,7 @@ export class DevtoolsController extends Controller {
             const listenMsgs : { 
                 [ msgId: string ] : (msgBody: IMessage<any>, senderTabId?: number) => Promise<any>
             } = {
+                "DT_getFocusMode": async() => self.getFocusMode(),
                 "DT_setFocusMode": async(msgBody) => self.setFocusMode(msgBody.content),
                 "DT_getStoredReports": async () => self.getStoredReports(),
                 "DT_getStoredReportsCount": async() => self.getStoredReportsCount(),

@@ -38,6 +38,7 @@ import { ListenerType } from '../../messaging/controller';
 import { IReport } from '../../interfaces/interfaces';
 import { ChevronDown } from "@carbon/react/icons";
 import "./scanSection.scss";
+import { getDevtoolsAppController } from '../devtoolsAppController';
 
 let devtoolsController = getDevtoolsController();
 let bgController = getBGController();
@@ -76,7 +77,11 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             hasReportContent = true;
         }
         devtoolsController.setFocusMode(false);
-        self.setState( { scanInProgress: hasReportContent ? 2 : 0, reportContent: hasReportContent });
+        self.setState( { 
+            scanInProgress: hasReportContent ? 2 : 0, 
+            reportContent: hasReportContent,
+            storedReportsCount: await devtoolsController.getStoredReportsCount() 
+        });
         setTimeout(() => {
             self.setState( { scanInProgress: 0 });
         }, 500);
@@ -88,7 +93,10 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             this.setState( { viewState: newState });
         })
         devtoolsController.addStoreReportsListener(async (newState) => {
-            this.setState( { storeReports: newState });
+            this.setState( { 
+                storeReports: newState,
+                storedReportsCount: await devtoolsController.getStoredReportsCount()
+            });
         })
         devtoolsController.addSelectedElementPathListener(async (newPath) => {
             this.setState( { selectedElemPath: newPath });
@@ -105,7 +113,6 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         this.setState({ 
             viewState: (await devtoolsController.getViewState())!, 
             storeReports: (await devtoolsController.getStoreReports()),
-            storedReportsCount: (await devtoolsController.getStoredReportsCount()),
             selectedElemPath: (await devtoolsController.getSelectedElementPath())! || "/html",
             focusMode: (await devtoolsController.getFocusMode())
         });
@@ -124,8 +131,9 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         let selectedElementStr = this.state.selectedElemPath;
         selectedElementStr = selectedElementStr.split("/").pop()!;
         selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
-        return (
-            <Grid className="scanSection"> 
+        let devtoolsAppController = getDevtoolsAppController();
+        return (<div className="scanSection">
+            <Grid> 
                 <Column sm={4} md={8} lg={8}>
                     <div style={{display: "flex", flexWrap: "wrap", gap: "1rem"}}>
                         <div style={{flex: "0 1 8.75rem"}}>
@@ -172,14 +180,22 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         <OverflowMenuItem 
                                             disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
                                             itemText="View stored scans" 
-                                            // onClick={this.props.reportManagerHandler} // need to pass selected as scanType
+                                            onClick={async () => {
+                                                await devtoolsAppController.setSecondaryView("stored");
+                                                devtoolsAppController.openSecondary(".cds--overflow-menu[aria-label='stored scans']");
+                                            }}
                                         />
                                         <OverflowMenuItem 
                                             disabled={this.state.storedReportsCount === 0}
                                             isDelete={this.state.storedReportsCount > 0}
                                             hasDivider
                                             itemText="Delete stored scans" 
-                                            onClick={() => devtoolsController.clearStoredReports() }
+                                            onClick={() => {
+                                                devtoolsController.clearStoredReports();
+                                                this.setState({
+                                                    storedReportsCount: 0
+                                                })
+                                            }}
                                         />
                                     </OverflowMenu>
                                 </Theme>
@@ -230,6 +246,16 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     </div>
                 </Column>
             </Grid>
+            <Grid>
+                <Column sm={4} md={8} lg={8}>
+                    <div className="storedCount">
+                        {this.state.storeReports && "Storing: "}
+                        {this.state.storeReports && this.state.storedReportsCount === 0 && "No scans stored"}
+                        {this.state.storedReportsCount > 0 && `${this.state.storedReportsCount} scans stored`}
+                    </div>
+                </Column>
+            </Grid>
+            </div>
         );
     }
 }
