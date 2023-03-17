@@ -71,31 +71,25 @@ export default class MultiScanReport {
         //               1. for current scan (from menu)
         //               2. all stored scans (from menu)
         //               3. selected stored scans (from scan manager)
-        const theCurrentScan = storedScans[storedScans.length - 1];
-
+        let addScan = (storedScan: IReport) => {
+            let scanViolations = (storedScan.counts.violation || 0);
+            let scanNeedsReviews = (storedScan.counts.potentialviolation || 0) + (storedScan.counts.manual || 0);
+            let scanRecommendations = (storedScan.counts.recommendation || 0) + (storedScan.counts.potentialrecommendation || 0);
+            violations += scanViolations;
+            needsReviews += scanNeedsReviews;
+            recommendations += scanRecommendations;
+        }
+        let lastScan = storedScans[storedScans.length - 1];
         if (scanType === "current") {
-            violations = theCurrentScan.violations;
-            needsReviews = theCurrentScan.needsReviews;
-            recommendations = theCurrentScan.recommendations;
-            totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
-        } else if (scanType === "all") {
-            for (let i=0; i < storedScans.length; i++) {
-                violations += storedScans[i].violations;
-                needsReviews += storedScans[i].needsReviews;
-                recommendations += storedScans[i].recommendations;
-            }
-            totalIssues = violations+needsReviews+recommendations;
-        } else if (scanType === "selected") {
-            for (let i=0; i < storedScans.length; i++) {
-                if (storedScans[i].isSelected === true) {
-                    selectedStoredScanCount++;
-                    violations += storedScans[i].violations;
-                    needsReviews += storedScans[i].needsReviews;
-                    recommendations += storedScans[i].recommendations;
+            addScan(lastScan);
+        } else {
+            for (const storedScan of storedScans) {
+                if (scanType === "all" || storedScan.isSelected === true) {
+                    addScan(storedScan);
                 }
             }
-            totalIssues = violations+needsReviews+recommendations;
         }
+        totalIssues = violations+needsReviews+recommendations;
 
         const worksheet = workbook.addWorksheet("Overview");
 
@@ -140,9 +134,9 @@ export default class MultiScanReport {
             {key1: 'Tool:', key2: 'IBM Equal Access Accessibility Checker'},
             {key1: 'Version:', key2: chrome.runtime.getManifest().version},
             //@ts-ignore
-            {key1: 'Rule set:', key2: (theCurrentScan.ruleSet === "Latest Deployment") ? archives[1].name : theCurrentScan.ruleSet },
-            {key1: 'Guidelines:', key2: theCurrentScan.guidelines},
-            {key1: 'Report date:', key2: theCurrentScan.reportDate}, // do we need to get actual date?
+            {key1: 'Rule set:', key2: (lastScan.ruleSet === "Latest Deployment") ? archives[1].name : lastScan.ruleSet },
+            {key1: 'Guidelines:', key2: lastScan.guidelines},
+            {key1: 'Report date:', key2: new Date(lastScan.timestamp)}, // do we need to get actual date?
             {key1: 'Platform:', key2: navigator.userAgent},
             {key1: 'Scans:', key2: scanType === "current" ? 1 : scanType === "all" ? storedScanCount : selectedStoredScanCount}, // *** NEED TO FIX FOR selected
             {key1: 'Pages:', key2: ""}
@@ -319,7 +313,6 @@ export default class MultiScanReport {
         // if current scan use only the last scan otherwise loop through each scan an create row
         let j = scanType === "current" ? storedScans.length - 1 : 0; // NEED TO FIX for selected
         for (j; j < storedScans.length; j++) { // for each scan
-            console.log("scanType = ", scanType, "   storedScans[j].isSelected = ", storedScans[j].isSelected);
             if (scanType === "selected" && storedScans[j].isSelected === true) {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
@@ -417,13 +410,13 @@ export default class MultiScanReport {
         let totalIssues = 0;
 
         // question 1: is report for current scans or all available scans?
-        const theCurrentScan = storedScans[storedScans.length - 1];
+        const lastScan = storedScans[storedScans.length - 1];
 
         if (scanType === "current") {
-            violations = theCurrentScan.violations;
-            needsReviews = theCurrentScan.needsReviews;
-            recommendations = theCurrentScan.recommendations;
-            totalIssues = theCurrentScan.violations+theCurrentScan.needsReviews+theCurrentScan.recommendations;
+            violations = lastScan.violations;
+            needsReviews = lastScan.needsReviews;
+            recommendations = lastScan.recommendations;
+            totalIssues = lastScan.violations+lastScan.needsReviews+lastScan.recommendations;
         } else if (scanType === "all") {
             for (let i=0; i < storedScans.length; i++) {
                 violations += storedScans[i].violations;

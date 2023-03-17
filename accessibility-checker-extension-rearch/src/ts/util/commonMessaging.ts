@@ -28,6 +28,7 @@ export default class CommonMessaging {
                         sendResponse(result);
                         return result;
                     }).catch(err => {
+                        console.error(err);
                         sendResponse(JSON.stringify({ error: err }));
                         return true;
                     });

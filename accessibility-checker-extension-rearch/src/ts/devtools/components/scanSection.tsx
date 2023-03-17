@@ -79,8 +79,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         devtoolsController.setFocusMode(false);
         self.setState( { 
             scanInProgress: hasReportContent ? 2 : 0, 
-            reportContent: hasReportContent,
-            storedReportsCount: await devtoolsController.getStoredReportsCount() 
+            reportContent: hasReportContent
         });
         setTimeout(() => {
             self.setState( { scanInProgress: 0 });
@@ -95,7 +94,12 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         devtoolsController.addStoreReportsListener(async (newState) => {
             this.setState( { 
                 storeReports: newState,
-                storedReportsCount: await devtoolsController.getStoredReportsCount()
+                storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length
+            });
+        })
+        devtoolsController.addStoredReportsMetaListener(async (newState) => {
+            this.setState( { 
+                storedReportsCount: newState.length
             });
         })
         devtoolsController.addSelectedElementPathListener(async (newPath) => {
@@ -114,7 +118,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
             viewState: (await devtoolsController.getViewState())!, 
             storeReports: (await devtoolsController.getStoreReports()),
             selectedElemPath: (await devtoolsController.getSelectedElementPath())! || "/html",
-            focusMode: (await devtoolsController.getFocusMode())
+            focusMode: (await devtoolsController.getFocusMode()),
+            storedReportsCount: (await devtoolsController.getStoredReportsMeta()).length
         });
     }
 
@@ -163,7 +168,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         <OverflowMenuItem
                                             disabled={!this.state.reportContent}
                                             itemText="Download current scan" 
-                                            onClick={() => devtoolsController.exportXLSLast() }
+                                            onClick={() => devtoolsController.exportXLS("last") }
                                         />
                                         <OverflowMenuItem 
                                             // if scanStorage false not storing scans, if true storing scans
@@ -175,7 +180,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                         <OverflowMenuItem 
                                             disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan
                                             itemText="Download stored scans" 
-                                            onClick={() => devtoolsController.exportXLSAll() }
+                                            onClick={() => devtoolsController.exportXLS("all") }
                                         />
                                         <OverflowMenuItem 
                                             disabled={this.state.storedReportsCount === 0} // disabled when no stored scans or 1 stored scan

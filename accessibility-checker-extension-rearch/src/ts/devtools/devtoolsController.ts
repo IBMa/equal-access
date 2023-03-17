@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import { getBGController, TabChangeType } from "../background/backgroundController";
-import { IIssue, IMessage, IReport } from "../interfaces/interfaces";
+import { IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { genReport } from "../util/htmlReport/genReport";
@@ -50,11 +50,58 @@ export class DevtoolsController extends Controller {
         return retVal;
     }
 
-    public async getStoredReportsCount() : Promise<number> {
-        let retVal = await this.hook("getStoredReportsCount", null, async () => {
-            return devtoolsState!.storedReports.length;
+    public async getStoredReportsMeta() : Promise<IStoredReportMeta[]> {
+        return await this.hook("getStoredReportsMeta", null, async () => {
+            return devtoolsState!.storedReports.map(report => ({
+                id: report.id,
+                timestamp: report.timestamp,
+                label: report.label,
+                guidelines: report.guidelines,
+                pageTitle: report.pageTitle,
+                pageURL: report.pageURL,
+                screenshot: report.screenshot
+            }));
         });
-        return retVal;
+    }
+
+    public async setStoredReportsMeta(updateMetaArr: IStoredReportMeta[]) : Promise<void> {
+        return await this.hook("setStoredReportsMeta", updateMetaArr, async () => {
+            if (updateMetaArr.length === 0) {
+                devtoolsState!.storedReports = [];
+                this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
+            } else {
+                let misMatch = false;
+                let newReports = [];
+                for (const updateMeta of updateMetaArr) {
+                    let keepVal = devtoolsState!.storedReports.find(scan => scan.id === updateMeta.id);
+                    if (keepVal) {
+                        if (keepVal.timestamp !== updateMeta.timestamp) {
+                            // Something's out of sync
+                            misMatch = true;
+                            break;
+                        }
+                        for (const key in updateMeta) {
+                            (keepVal as any)[key] = (updateMeta as any)[key];
+                        }
+                        keepVal.id = ""+newReports.length;
+                        newReports.push(keepVal);
+                    } else {
+                        // Something's out of sync
+                        misMatch = true;
+                        break;
+                    }
+                }
+                if (!misMatch) {
+                    devtoolsState!.storedReports = newReports;
+                    let data = await this.getStoredReportsMeta();
+                    this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, data);
+                }
+            }
+        });
+    }
+
+    public async addStoredReportsMetaListener(listener: ListenerType<IStoredReportMeta[]>) {
+        this.addEventListener(listener, `DT_onStoredReportsMeta`);
     }
 
     /**
@@ -63,6 +110,7 @@ export class DevtoolsController extends Controller {
     public async clearStoredReports() : Promise<void> {
         return this.hook("clearStoredReports", null, async () => {
             devtoolsState!.storedReports = [];
+            this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
         });
     }
 
@@ -93,17 +141,30 @@ export class DevtoolsController extends Controller {
         this.removeEventListener(listener, `DT_onStoreReports`);
     }
 
+    private scanCounter = 1;
     /**
      * Set report 
      */
     public async setReport(report: IReport | null) : Promise<void> {
         return this.hook("setReport", report, async () => {
+            let bgController = getBGController();
+            let settings = await bgController.getSettings();
             if (report && devtoolsState?.storeReports) {
+                let tabId = getTabId();
+                let tabInfo = await bgController.getTabInfo(tabId);
+                report.id = devtoolsState.storedReports.length+"";
+                report.timestamp = new Date().getTime();
+                report.label = `scan_${this.scanCounter++}`;
+                report.guidelines = settings.selected_ruleset.id;
+                report.pageTitle = tabInfo.title!;
+                report.pageURL = tabInfo.url!;
+                report.screenshot = await bgController.getScreenshot(tabId);
                 devtoolsState.storedReports.push(report);
             }
             devtoolsState!.lastReport = report;
-            setTimeout(() => {
+            setTimeout(async () => {
                 this.notifyEventListeners("DT_onReport", this.ctrlDest.tabId, report);
+                this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, await this.getStoredReportsMeta());
                 this.setSelectedElementPath("/html[1]");
             }, 0);
         });
@@ -313,59 +374,57 @@ export class DevtoolsController extends Controller {
         }
     }
 
-    public async exportXLSLast() {
-        return this.hook("exportXLSLast", null, async () => {
-            let bgController = await getBGController();
-            let tabId = getTabId();
-            let rulesets = await bgController.getRulesets(tabId!);
-            let tabInfo = await bgController.getTabInfo();
-            if (devtoolsState?.lastReport && rulesets) {
-                let reportObj: any = {
-                    tabURL: tabInfo.url,
-                    rulesets: rulesets,
-                    report: {
-                        passUniqueElements: devtoolsState?.lastReport.passUniqueElements,
-                        timestamp: devtoolsState?.lastReport.timestamp,
-                        nls: devtoolsState?.lastReport.nls,
-                        counts: {
-                            "total": devtoolsState?.lastReport.counts.total,
-                            "filtered": devtoolsState?.lastReport.counts.filtered
-                        },
-                        results: []
+    public async exportXLS(type: "last" | "all" | "selected") {
+        return this.hook("exportXLS", type, async () => {
+            if (type === "all" || type === "selected") {
+                this.xlsxReportHandler(type);
+            } else {
+                let bgController = await getBGController();
+                let tabId = getTabId();
+                let rulesets = await bgController.getRulesets(tabId!);
+                let tabInfo = await bgController.getTabInfo(getTabId());
+                if (devtoolsState?.lastReport && rulesets) {
+                    let reportObj: any = {
+                        tabURL: tabInfo.url,
+                        rulesets: rulesets,
+                        report: {
+                            passUniqueElements: devtoolsState?.lastReport.passUniqueElements,
+                            timestamp: devtoolsState?.lastReport.timestamp,
+                            nls: devtoolsState?.lastReport.nls,
+                            counts: {
+                                "total": devtoolsState?.lastReport.counts.total,
+                                "filtered": devtoolsState?.lastReport.counts.filtered
+                            },
+                            results: []
+                        }
                     }
+                    for (const result of devtoolsState?.lastReport.results) {
+                        reportObj.report.results.push({
+                            ruleId: result.ruleId,
+                            path: result.path,
+                            value: result.value,
+                            message: result.message,
+                            snippet: result.snippet,
+                            help: result.help
+                        });
+                    }
+        
+                    let tabTitle: string = tabInfo.title!;
+                    let tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
+                    let filename = "Accessibility_Report-" + tabTitleSubString + ".html";
+                    //replace illegal characters in file name
+                    filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
+        
+                    let fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+                    let a = document.createElement('a');
+                    a.href = fileContent;
+                    a.download = filename;
+                    let e = document.createEvent('MouseEvents');
+                    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                    a.dispatchEvent(e);
                 }
-                for (const result of devtoolsState?.lastReport.results) {
-                    reportObj.report.results.push({
-                        ruleId: result.ruleId,
-                        path: result.path,
-                        value: result.value,
-                        message: result.message,
-                        snippet: result.snippet,
-                        help: result.help
-                    });
-                }
-    
-                let tabTitle: string = tabInfo.title!;
-                let tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-                let filename = "Accessibility_Report-" + tabTitleSubString + ".html";
-                //replace illegal characters in file name
-                filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
-    
-                let fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
-                let a = document.createElement('a');
-                a.href = fileContent;
-                a.download = filename;
-                let e = document.createEvent('MouseEvents');
-                e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                a.dispatchEvent(e);
+                this.xlsxReportHandler("current");
             }
-            this.xlsxReportHandler("current");
-        });
-    }
-
-    public async exportXLSAll() {
-        return this.hook("exportXLSAll", null, async () => {
-            this.xlsxReportHandler("all");
         });
     }
 
@@ -427,7 +486,8 @@ export class DevtoolsController extends Controller {
                 "DT_getFocusMode": async() => self.getFocusMode(),
                 "DT_setFocusMode": async(msgBody) => self.setFocusMode(msgBody.content),
                 "DT_getStoredReports": async () => self.getStoredReports(),
-                "DT_getStoredReportsCount": async() => self.getStoredReportsCount(),
+                "DT_getStoredReportsMeta": async() => self.getStoredReportsMeta(),
+                "DT_setStoredReportsMeta": async(msgBody) => self.setStoredReportsMeta(msgBody.content),
                 "DT_clearStoredReports": async () => self.clearStoredReports(),
                 "DT_getStoreReports": async () => self.getStoreReports(),
                 "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),
@@ -440,8 +500,7 @@ export class DevtoolsController extends Controller {
                 "DT_setSelectedElementPath": async (msgBody) => self.setSelectedElementPath(msgBody.content),
                 "DT_getSelectedElementPath": async () => self.getSelectedElementPath(),
                 "DT_inspectPath": async(msgBody) => self.inspectPath(msgBody.content),
-                "DT_exportXLSLast": async() => self.exportXLSLast(),
-                "DT_exportXLSAll": async() => self.exportXLSAll()
+                "DT_exportXLS": async(msgBody) => self.exportXLS(msgBody.content)
             }
 
             // Hook the above definitions

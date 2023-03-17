@@ -64,6 +64,7 @@ export class CommonMessaging {
                         sendResponse(resultStr);
                         return result;
                     }).catch(err => {
+                        console.error(err);
                         sendResponse(JSON.stringify({ error: err }));
                         return true;
                     });
@@ -122,10 +123,16 @@ export class CommonMessaging {
                                     resolve(await this.send(message, (retry || 0) + 1));
                                 },0);
                             } else {
-                                reject({
-                                    arg: message,
-                                    error: chrome.runtime.lastError.message
-                                });
+                                if (chrome.runtime.lastError.message?.includes("The message port closed")) {
+                                    console.info("[No response]:",message.type);
+                                    resolve(null);
+                                } else {
+                                    console.error(chrome.runtime.lastError);
+                                    reject({
+                                        arg: message,
+                                        error: chrome.runtime.lastError.message
+                                    });
+                                }
                             }
                         } else {
                             if (res) {

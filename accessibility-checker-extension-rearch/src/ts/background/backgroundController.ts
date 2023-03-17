@@ -219,7 +219,7 @@ class BackgroundController extends Controller {
     }
 
     public async getTabInfo(tabId?: number) : Promise<chrome.tabs.Tab> {
-        return this.hook("getTabInfo", null, async () => {
+        return this.hook("getTabInfo", tabId, async () => {
             return await new Promise((resolve, _reject) => {
                 chrome.tabs.get(tabId!, async function (tab: any) {
                     //chrome.tabs.get({ 'active': true, 'lastFocusedWindow': true }, async function (tabs) {
@@ -234,6 +234,18 @@ class BackgroundController extends Controller {
                     });
                     tab.canScan = canScan;
                     resolve(tab);
+                });
+            });
+        });
+    }
+
+    public async getScreenshot(tabId?: number) {
+        return this.hook("getScreenshot", tabId, async () => {
+            return await new Promise<string>((resolve, reject) => {
+                //@ts-ignore
+                chrome.tabs.captureVisibleTab((image:string) => {
+                    resolve(image);
+                    reject(new Error("Capture failed"));
                 });
             });
         });
@@ -264,7 +276,12 @@ class BackgroundController extends Controller {
                         return self.initTab(msgBody.content);
                     }
                 },
-                "BG_getTabInfo": async(_a, senderTabId) => self.getTabInfo(senderTabId!)
+                "BG_getTabInfo": async(msgBody, senderTabId) => {
+                    return self.getTabInfo((msgBody && msgBody.content) || senderTabId!)
+                },
+                "BG_getScreenshot": async(msgBody, senderTabId) => {
+                    return self.getScreenshot((msgBody && msgBody.content) || senderTabId!)
+                }
             }
 
             // Hook the above definitions
@@ -272,7 +289,7 @@ class BackgroundController extends Controller {
                 Object.keys(listenMsgs),
                 async (msgBody: IMessage<any>, senderTabId?: number) => {
                     let f = listenMsgs[msgBody.type];
-                    return f ? f(msgBody,senderTabId) : null;
+                        return f ? f(msgBody,senderTabId) : null;
                 }
             )
 

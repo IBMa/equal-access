@@ -96,12 +96,26 @@ export interface IIssue {
     help: string
 }
 
-export interface IReport {
+export interface IBasicTableRowRecord {
+    id: string
+    isSelected?: boolean
+}
+
+export interface IStoredReportMeta extends IBasicTableRowRecord {
+    timestamp: number
+    label: string
+    guidelines: string
+    pageTitle: string
+    pageURL: string
+    screenshot: string
+}
+
+
+export interface IReport extends IStoredReportMeta {
     results: IIssue[]
     numExecuted: number
     ruleTime: number
     totalTime: number
-    timestamp: string
     nls : {
         [ruleId: string]: {
             [reasonCode: string]: string
@@ -110,15 +124,16 @@ export interface IReport {
     counts: {
         filtered: number
         total: number
+        violation: number
+        potentialviolation: number
+        recommendation: number
+        potentialrecommendation: number
+        manual: number
+        pass: number
     }
-    pageTitle: string
+
+
     passUniqueElements: string[]
-    violations: number
-    needsReviews: number
-    recommendations: number
-    isSelected?: boolean
-    guidelines?: string
-    reportDate?: string
 }
 
 export enum eToolkitLevel {

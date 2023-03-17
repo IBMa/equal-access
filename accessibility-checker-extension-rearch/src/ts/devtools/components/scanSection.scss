@@ -8,6 +8,10 @@
 }
 
 .scanSection {
+    .cds--overflow-menu--sm {
+        min-height: 2rem;
+    }
+    
     .storedCount {
         margin-top:.5rem;
         margin-bottom: -.5rem;
