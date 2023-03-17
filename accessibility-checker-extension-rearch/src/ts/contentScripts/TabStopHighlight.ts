@@ -29,8 +29,8 @@ export default class TabStopHighlight {
         
         // console.log("JOHO docType = ", docType);
         if (!event.shiftKey && event.key === "Tab") { // only catch Tab key
-            console.log("Got TAB Key");
-            console.log("TAB doc = ", doc);
+            // console.log("Got TAB Key");
+            // console.log("TAB doc = ", doc);
             if (docType === "main") {
                 console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
@@ -39,7 +39,7 @@ export default class TabStopHighlight {
             
             // if we have iframe
             if (docType === "iframe") {
-                console.log("Got iframe element");
+                // console.log("Got iframe element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
                 elementXpath = iframeStr + elementXpath;
@@ -47,7 +47,7 @@ export default class TabStopHighlight {
 
             // if we have shadow dom no need to do anything special
             if (docType === "shadowdom") {
-                console.log("we have an element in a shadow dom");
+                // console.log("we have an element in a shadow dom");
                 let sdXpath = XpathUtils.getXPathForElement(doc);
                 let element = doc.shadowRoot.activeElement;
                 elementXpath = XpathUtils.getXPathForElement(element);
@@ -72,7 +72,7 @@ export default class TabStopHighlight {
             }
             // for prevHighlightedElement remove highlightSVGcircle and add nohighlightSVGcircle
             if (prevHighlightedElement) {
-                console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
+                // console.log("prevHighlightedElement.tagName = ", prevHighlightedElement.tagName);
                 if (prevHighlightedElement.tagName === "circle" && !prevHighlightedElement.classList.contains('error')) {
                     prevHighlightedElement.classList.remove("highlightSVGcircle");
                     prevHighlightedElement.classList.add("nohighlightSVGcircle");
@@ -117,7 +117,7 @@ export default class TabStopHighlight {
             // console.log("Got SHIFT TAB Key");
             // console.log("TAB doc = ", doc);
             if (docType === "main") {
-                console.log("Got main doc element");
+                // console.log("Got main doc element");
                 let element = doc.activeElement;  // get element just tabbed to which has focus
                 elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
             }
@@ -218,7 +218,7 @@ export default class TabStopHighlight {
                     element = doc.activeElement;  // get element just tabbed to which has focus
                     elementXpath = XpathUtils.getXPathForElement(element); // in main doc so just get xpath
                     elementXpath = iframeStr + elementXpath;
-                    console.log("iframeStr = ",iframeStr)
+                    // console.log("iframeStr = ",iframeStr)
                 }
 
                 // console.log("elementXpath = ",elementXpath);
@@ -264,7 +264,6 @@ export default class TabStopHighlight {
                     console.log("circle highlighted = ",circle);
                     let devtoolsController = getDevtoolsController();
                     devtoolsController.inspectPath(elementXpath, element);
-                    // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No circle to highlight = ",circle);
                 }
@@ -278,7 +277,6 @@ export default class TabStopHighlight {
                     console.log("errorCircle highlighted = ",errorCircle);
                     let devtoolsController = getDevtoolsController();
                     devtoolsController.inspectPath(elementXpath, element);
-                    // devtoolsController.setSelectedElementPath(elementXpath);
                 } else {
                     console.log("No errorCircle to highlight = ",circle);
                 }
@@ -302,8 +300,7 @@ export default class TabStopHighlight {
             return (textCollection[0]);
         } else {
             return null;
-        }
-           
+        } 
     }
 
     private static findErrorCircleTextElement(errorCircle:any) {
@@ -315,10 +312,10 @@ export default class TabStopHighlight {
             // @ts-ignore
             errorCircleClassMatch = errorCircleClasslist.filter((item: string) => {return item.toLowerCase().includes('circleNumber'.toLowerCase())});
             errorCircleNumber = errorCircleClassMatch[0].slice(12);
-            console.log("errorCircleNumber = ", errorCircleNumber);
+            // console.log("errorCircleNumber = ", errorCircleNumber);
             errorTextCollection = document.getElementsByClassName("circleNumber" + errorCircleNumber + " circleText");
-            console.log("textCollection.length = ", errorTextCollection.length);
-            console.log("circleCollection[0] = ", errorTextCollection[0]);
+            // console.log("textCollection.length = ", errorTextCollection.length);
+            // console.log("circleCollection[0] = ", errorTextCollection[0]);
             return (errorTextCollection[0]);
         } else {
             return null;

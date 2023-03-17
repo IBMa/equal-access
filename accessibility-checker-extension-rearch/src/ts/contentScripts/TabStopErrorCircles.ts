@@ -148,14 +148,11 @@ export default class TabStopErrorCircles {
                             TabStopLine.makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
                         }
 
-                        
                         // console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
                         
                         TabStopCircle.makeCircle(x, y, i.toString(), 16, nodeXpaths[i], true);
                         NotificationDot.makeNotificationDot(x+11, y-16, "test");   // notification dot
-                        
                         TabStopText.makeText(x, y, "?", i.toString(), "textColorBlack");
-                        
                     } else {
                         continue;
                     }
