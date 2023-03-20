@@ -86,16 +86,20 @@ export class Controller {
         if (msgId in Controller.myListeners) {
             for (let idx1=0; idx1<Controller.myListeners[msgId].length; ++idx1) {
                 let listener = Controller.myListeners[msgId][idx1];
-                let firstIdx = -1;
-                for (let idx2=0; idx2<Controller.myListeners[msgId].length; ++idx2) {
-                    if (Controller.myListeners[msgId][idx2].toString() === listener.toString()) {
-                        firstIdx = idx2;
-                        break;
+                // let firstIdx = -1;
+                // for (let idx2=0; idx2<Controller.myListeners[msgId].length; ++idx2) {
+                //     if (Controller.myListeners[msgId][idx2].toString() === listener.toString()) {
+                //         firstIdx = idx2;
+                //         break;
+                //     }
+                // }
+                // if (idx1 === firstIdx) {
+                    try {
+                        listener(content);
+                    } catch (err) {
+                        console.error(err);
                     }
-                }
-                if (idx1 === firstIdx) {
-                    listener(content);
-                }
+                // }
             }
         }
         if (this.type === "local") {
