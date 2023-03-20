@@ -14,7 +14,6 @@
   limitations under the License.
 *****************************************************************************/
 
-
 export default class XpathUtils {
     public static convertXpathsToHtmlElements(xpaths: any) {
         // console.log("Function: convertXpathsToHtmlElements: ")

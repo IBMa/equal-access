@@ -14,8 +14,6 @@
   limitations under the License.
 *****************************************************************************/
 
-import TabMessaging from "../util/tabMessaging";
-
 export default class TabStopCircle {
 
     // This is what we are making:
@@ -36,10 +34,6 @@ export default class TabStopCircle {
             circleClone.classList.add("nohighlightSVGcircle");
         }
        
-        circleClone.onclick = () => {
-            TabMessaging.sendToBackground("TABSTOP_XPATH_ONCLICK", { xpath: xpath, circleNumber: circleNumber + 1 })
-        };
-        
         if (document.getElementById("svgCircle") == null) {
             const elemSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             elemSVG.setAttribute("id", "svgCircle");

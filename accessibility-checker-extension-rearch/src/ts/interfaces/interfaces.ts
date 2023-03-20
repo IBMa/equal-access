@@ -134,6 +134,11 @@ export interface IReport extends IStoredReportMeta {
 
 
     passUniqueElements: string[]
+    violations: number
+    needsReviews: number
+    recommendations: number
+    isSelected?: boolean
+    reportDate?: string
 }
 
 export enum eToolkitLevel {

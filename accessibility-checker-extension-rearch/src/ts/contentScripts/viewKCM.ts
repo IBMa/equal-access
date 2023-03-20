@@ -190,7 +190,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             font-weight: bold
         }
 
-        .svgIconTest{
+        .svgNotificationDot{
             position: absolute !important;
             overflow: visible !important;
             pointer-events: none !important;
@@ -211,14 +211,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             z-index: 2147483646 !important;
             visibility: visible !important;
         }
-        .svgIconTest{
-            position: absolute !important;
-            overflow: visible !important;
-            pointer-events: none !important;
-            z-index: 2147483646 !important;
-        }
-
-
+        
         .circleText{
             pointer-events: none !important;
         }
@@ -243,7 +236,7 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
             }
         });
         if (flagMatchFound) {
-            console.log("index = ",index," reg tabstop has error");
+            // console.log("index = ",index," reg tabstop has error");
             regularTabstops[index].nodeHasError = true;
         } 
     }
@@ -266,33 +259,17 @@ function drawDeleteKCM(tabbable:IReport, tabbableErrors:IReport, settings:ISetti
         
     });
 
-    // Here is a possibile approach to window resize events:
-    // 1. Catch window resize events (they come in bunches)
-    // 2. When there is a "reasonable" since the last event
-    // 3. Turn off window resize event listener
-    // ---- Make sure the following happen sequentially using promises -------
-    // 4. Delete drawing
-    // 5. Scan (make sure scan cannot be started from anywhere else)
-    //    we can update the tabstops and tabstop errors
-    // 6. When scan finished make sure page is at the top
-    // 7. draw tabstops regular and with errors
-    // 8. Turn back on window resize event listener
-
-
-    // For softlaunch use notification or just help
-    // window.addEventListener("resize", debounce( resizeContent, 250 ));
-
     // left mouse click listener for the circles and triangles
     window.addEventListener('mousedown', function(event:any) {
-        console.log("-------------------1-------------------");
-        console.log("main doc left mouse click catcher");
-        console.log("event.target = ",event.target);
+        // console.log("-------------------1-------------------");
+        // console.log("main doc left mouse click catcher");
+        // console.log("event.target = ",event.target);
         TabStopHighlight.handleTabHighlight(event,document,"click","");
     });
 
     // Tab key listener for main window
     window.addEventListener('keyup', function(event:any) {
-        console.log("main doc key catcher");
+        // console.log("main doc key catcher");
         if ((event.target.shadowRoot instanceof ShadowRoot) === false) {
             console.log("CALL FUNCTION handleTabHighlight for main doc");
             TabStopHighlight.handleTabHighlight(event, document, "main", "");
@@ -364,14 +341,3 @@ function deleteDrawing(classToRemove: string) {
     document.querySelectorAll(classToRemove).forEach(e => e.remove());
     // console.log("Function: deleteDrawing DONE")
 }
-
-
-// function handleTabHighlight(event: any, document: Document, arg2: string, arg3: string) {
-//     // dummy function
-//     console.log("Function: handleTabHighlight");
-//     console.log("event = ",event);
-//     console.log("document = ",document);
-//     console.log("arg2 = ",arg2);
-//     console.log("arg3 = ",arg3);
-// }
-
