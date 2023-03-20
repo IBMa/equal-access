@@ -46,6 +46,7 @@ export let aria_attribute_conflict: Rule = {
         const ruleContext = context["dom"].node as Element;
         // dependency check: if the ARIA attribute is completely invalid, skip this check
 
+        
         if (getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
   
         let domAttributes = ruleContext.attributes;
