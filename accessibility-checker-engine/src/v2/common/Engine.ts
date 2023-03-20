@@ -502,14 +502,14 @@ export class Engine implements IEngine {
             // equiv: 0
             const ruleA : Rule = a.rule;
             const ruleB : Rule = b.rule;
-            if (ruleA.dependencies && !ruleB.dependencies) {
+            if ((ruleA.dependencies || ruleA.prereqs) && !(ruleB.dependencies || ruleB.prereqs)) {
                 return 1;
-            } else if (!ruleA.dependencies && ruleB.dependencies) {
+            } else if (!(ruleA.dependencies || ruleA.prereqs) && (ruleB.dependencies || ruleB.prereqs)) {
                 return -1;
-            } else if (ruleA.dependencies && ruleB.dependencies) {
-                if (ruleA.dependencies.includes(ruleB.id)) {
+            } else if ((ruleA.dependencies || ruleA.prereqs) && (ruleB.prereqs || ruleB.dependencies)) {
+                if ((ruleA.dependencies && ruleA.dependencies.includes(ruleB.id)) || (ruleA.prereqs && ruleA.prereqs.includes(ruleB.id))) {
                     return 1;
-                } else if (ruleB.dependencies.includes(ruleA.id)) {
+                } else if ((ruleB.dependencies && ruleB.dependencies.includes(ruleA.id)) || (ruleB.prereqs && ruleB.prereqs.includes(ruleA.id))) {
                     return -1;
                 }
             }

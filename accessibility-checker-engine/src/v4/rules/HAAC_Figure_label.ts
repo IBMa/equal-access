@@ -43,7 +43,7 @@ export let HAAC_Figure_label: Rule = {
         const ruleContext = context["dom"].node as Element;
         //skip the rule
         if (VisUtil.isNodeHiddenFromAT(ruleContext)) return null;
-        // JCH - NO OUT OF SCOPE hidden in context
+        
         let passed = false;
         let figures = ruleContext.getElementsByTagName("figcaption");
 

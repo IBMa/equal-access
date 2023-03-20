@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <!--
    /******************************************************************************
      Copyright:: 2020- IBM, Inc
@@ -16,58 +16,64 @@
     limitations under the License.
   *****************************************************************************/
 -->
+<html lang="en-US">
 
-<html lang="en" id="id-32">
-
-<head id="id-29">
-    <title id="id-36">Element with aria-hidden has no focusable content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<head>
+    <title>Sandbox</title>
+    <meta charset="UTF-8" />
 </head>
 
-<body id="id-9" aria-atomic="true">
-    <div aria-hidden="true">
-        <input type='text' aria-disabled="true" />
+<body>
+    <div role="list">
+      <div aria-live="polite">
+        <div role="listitem">List item 1</div>
+        <div role="listitem">List item 2</div>
+      </div>
     </div>
-    <script type="text/javascript">
+    <script>
         UnitTest = {
-            ruleIds: ["aria_hidden_focus_misuse"],
+            ruleIds: ["Rpt_Aria_RequiredParent_Native_Host_Sematics"],
             results: [
             {
-            "ruleId": "aria_hidden_focus_misuse",
-            "value": [
-              "INFORMATION",
-              "PASS"
-            ],
-            "path": {
-              "dom": "/html[1]/body[1]/div[1]",
-              "aria": "/document[1]/generic[1]/generic[1]"
-            },
-            "reasonId": "Pass_0",
-            "message": "Rule Passed",
-            "messageArgs": [],
-            "apiArgs": [],
-            "category": "Accessibility"
-          },
-          {
-            "ruleId": "aria_hidden_focus_misuse",
+            "ruleId": "Rpt_Aria_RequiredParent_Native_Host_Sematics",
             "value": [
               "INFORMATION",
               "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/div[1]/input[1]",
-              "aria": "/document[1]/generic[1]/generic[1]/textbox[1]"
+              "dom": "/html[1]/body[1]/div[1]/div[1]/div[1]",
+              "aria": "/document[1]/list[1]/generic[1]/listitem[1]"
             },
             "reasonId": "Fail_1",
-            "message": "Element \"input\" should not be focusable within the subtree of an element with an 'aria-hidden' attribute with value 'true'",
+            "message": "The element with role \"listitem\" is not contained in or owned by an element with one of the following roles: \"list\"",
             "messageArgs": [
-              "input"
+              "listitem",
+              "list"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          },
+          {
+            "ruleId": "Rpt_Aria_RequiredParent_Native_Host_Sematics",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]/div[1]/div[2]",
+              "aria": "/document[1]/list[1]/generic[1]/listitem[2]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The element with role \"listitem\" is not contained in or owned by an element with one of the following roles: \"list\"",
+            "messageArgs": [
+              "listitem",
+              "list"
             ],
             "apiArgs": [],
             "category": "Accessibility"
           }
             ]
-        }
+        };
     </script>
 </body>
 
