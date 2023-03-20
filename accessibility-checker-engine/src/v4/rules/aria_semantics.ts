@@ -16,6 +16,7 @@ import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getCache, setCache } from "../util/CacheUtil";
+import { getInvalidAttributes, isRoleDefined } from "../util/CommonUtil";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -64,10 +65,10 @@ export let aria_semantics_role: Rule = {
         }
         
         // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        let designPatterns = ARIADefinitions.designPatterns;
-        for (const role of domRoles) 
-            if (!(role.toLowerCase() in designPatterns)) 
-                return null;
+        let role_defined = isRoleDefined(domRoles);
+        if (domRoles && domRoles.length > 0 && !role_defined)
+            return null;
+        
         // Roles allowed on this node
         let allowedRoles = [];
 
@@ -154,59 +155,27 @@ export let aria_attribute_allowed: Rule = {
         if (ruleContext.nodeType !== Node.ELEMENT_NODE)
             return null;
 
-        // get roles from RPTUtil because multiple explicit roles are allowed
-        let roles = RPTUtil.getRoles(ruleContext, false);
-        
-        // the invalid role (not defined in the spec) case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        // for mutiple roles, skip if any role is invalid
-        let designPatterns = ARIADefinitions.designPatterns;
-        for (const role of roles) 
-            if (!(role.toLowerCase() in designPatterns)) 
-                return null;
+        let roles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
 
-        let type = "";
-        if (roles && roles.length > 0)
-            type = "role_attr";
-        else {    
-            roles =  RPTUtil.getImplicitRole(ruleContext);
-            if (roles && roles.length > 0)
-                type = "implicit_role_attr";
-
-        }
-        let tagName = ruleContext.tagName.toLowerCase();
-
-        // Failing attributes
-        let failAttributeTokens = [];
-        // Passing attributes
-        let passAttributeTokens = [];
-
-        let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
-        // Attributes allowed on this node
-        let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, roles, tagProperty);
-        let domAriaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);    
-        for (let i = 0; i < domAriaAttributes.length; i++) {
-            if (!allowedAttributes.includes(domAriaAttributes[i])) {
-                //valid attributes can be none also which is covered here
-                !failAttributeTokens.includes(domAriaAttributes[i]) ? failAttributeTokens.push(domAriaAttributes[i]) : false;
-            } else {
-                !passAttributeTokens.includes(domAriaAttributes[i]) ? passAttributeTokens.push(domAriaAttributes[i]) : false;
-            }
-        }
-        
-        if (failAttributeTokens.length > 0) {
-
-            setCache(ruleContext, "aria_attribute_allowed", "Fail");
-            if (type === "implicit_role_attr")
-                return RuleFail("Fail_invalid_implicit_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
-            else {
-                if (!roles || roles.length === 0) roles = ["none"];
-                return RuleFail("Fail_invalid_role_attr", [failAttributeTokens.join(", "), tagName, roles.join(", ")]);
-            }    
-
-        } else if (passAttributeTokens.length > 0) {
-            return RulePass("Pass", [passAttributeTokens.join(", "), tagName, roles.join(", ")]);
-        } else {
+        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+        let role_defined = isRoleDefined(roles);
+        if (roles && roles.length > 0 && !role_defined)
             return null;
+        
+        let tagName = ruleContext.tagName.toLowerCase();
+        let failedAttributes = getInvalidAttributes(ruleContext);
+        if (failedAttributes.length === 0)
+            return RulePass("Pass");
+
+        if (role_defined === null) {
+            //no explicit role defined
+            roles =  RPTUtil.getImplicitRole(ruleContext);
+            if (!roles && roles.length === 0)
+                return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, "none"]);
+            else
+                return RuleFail("Fail_invalid_implicit_role_attr", [failedAttributes.join(", "), tagName, roles.join(", ")]);
         }
+        
+        return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, roles.join(", ")]);
     }
 }
