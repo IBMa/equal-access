@@ -46,5 +46,4 @@ export default class TabStopLine {
         elemLine.setAttribute("class", "tabLine");
         return elemLine
     }
-    
 }

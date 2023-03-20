@@ -24,7 +24,7 @@ export default class TabStopErrorCircles {
     // Tab Stop error NOT in the tab chain - get ? instead of number
     public static draw(tabStopsErrors: any, tabStops: any, outlines: boolean, iframes: any) {
         // JCH - FIX drawing ? trangle if there is already a tabbable triangle
-        // console.log("Function: redrawErrors");
+        // console.log("Function: TabStopErrorCircles.draw");
         setTimeout(() => {
             let tabbableNodesXpaths = XpathUtils.getNodesXpaths(tabStops);
             
@@ -37,7 +37,6 @@ export default class TabStopErrorCircles {
                 return el != null;
             });
 
-            // console.log("nodes.length = ",nodes.length);
             for (let i = 0; i < nodes.length; i++) {
                 // console.log("nodes[",i,"] = ",nodes[i]);
                 // Check if already taken care of in the tabbable elements
@@ -70,13 +69,13 @@ export default class TabStopErrorCircles {
                                     // console.log("Non tabbable nodes[",i,"] has bounding rect");
                                 }
                                 else {
-                                    // console.log("Non tabbable nodes[",i,"] has NO bounding rect");
+                                    console.log("Non tabbable nodes[",i,"] has NO bounding rect");
                                 }
                             } else {
-                                // console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
+                                console.log("Non tabbablenodes[",i,"].tagName is null $$$$$");
                             }
                         } else {
-                            // console.log("Non tabbable nodes[",i,"] is null $$$$$");
+                            console.log("Non tabbable nodes[",i,"] is null $$$$$");
                         }
                     }
                     // console.log("--------------------------------");
@@ -149,14 +148,11 @@ export default class TabStopErrorCircles {
                             TabStopLine.makeLine(x + 1, yPlusHeight - 1, xPlusWidth - 1, yPlusHeight - 1, ["lineEmbossError"]);
                         }
 
-                        
                         // console.log("Not in Tab Chain with ERROR i = ",i," so add classname error");
                         
                         TabStopCircle.makeCircle(x, y, i.toString(), 16, nodeXpaths[i], true);
                         NotificationDot.makeNotificationDot(x+11, y-16, "test");   // notification dot
-                        
                         TabStopText.makeText(x, y, "?", i.toString(), "textColorBlack");
-                        
                     } else {
                         continue;
                     }
