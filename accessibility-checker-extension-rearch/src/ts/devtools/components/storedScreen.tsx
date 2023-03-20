@@ -52,11 +52,12 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
     }
 
     async componentDidMount(): Promise<void> {
+        let self = this;
         this.devtoolsController.addStoredReportsMetaListener(async (newState) => {
-            this.setState({storedReports: newState });
+            self.setState({storedReports: newState });
         })
         this.setState({
-            storedReports: await this.devtoolsController.getStoredReportsMeta()
+            storedReports: await self.devtoolsController.getStoredReportsMeta()
         })
     }
 

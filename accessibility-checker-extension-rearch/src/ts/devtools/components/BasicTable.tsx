@@ -3,13 +3,7 @@ import React, { Component } from 'react';
 import { 
     DataTableSkeleton, 
     DataTable, 
-    Pagination 
-} from '@carbon/react';
-import { ChooseItem } from "@carbon/react/icons";
-import { IBasicTableRowRecord } from '../../interfaces/interfaces';
-import './BasicTable.scss';
-
-const {
+    Pagination,
     Table,
     TableToolbar,
     TableToolbarSearch,
@@ -24,7 +18,10 @@ const {
     TableContainer,
     TableRow,
     TableToolbarContent,
-} = DataTable;
+} from '@carbon/react';
+import { ChooseItem } from "@carbon/react/icons";
+import { IBasicTableRowRecord } from '../../interfaces/interfaces';
+import './BasicTable.scss';
 
 interface BasicTableProps<IRowRecord extends IBasicTableRowRecord> {
     emptyLabel: string

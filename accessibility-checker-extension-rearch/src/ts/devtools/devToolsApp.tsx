@@ -81,6 +81,11 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
         </>;
+        let secondaryPanelModal = <>
+            {this.state.secondaryView === "splash" && <SplashScreen />}
+            {this.state.secondaryView === "help" && <HelpScreen />}
+            {this.state.secondaryView === "stored" && <StoredScreen /> }
+        </>;
 
         return <>
             <Grid fullWidth={true} narrow={true} style={{padding: "0rem", minHeight: "100%", maxHeight: "100%", height: "100%"}}>
@@ -125,7 +130,7 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
                                 </div>
                             </>}
                             <ModalBody style={{paddingLeft: "0rem", paddingRight: "0rem", marginBottom: "0rem", height: "100%"}}>
-                                {secondaryPanel}
+                                {secondaryPanelModal}
                             </ModalBody>
                         </ComposedModal>
                     </div>,
