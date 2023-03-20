@@ -48,7 +48,7 @@ export let Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics: Rule = {
         }
 
         //this rule is passed if a element has attribut role 
-        //also, passed of element has ny implicit roles. 
+        //also, passed of element has any implicit roles. 
         if (RPTUtil.hasAnyRole(ruleContext, true)) {
             return RulePass("Pass_0");
         }

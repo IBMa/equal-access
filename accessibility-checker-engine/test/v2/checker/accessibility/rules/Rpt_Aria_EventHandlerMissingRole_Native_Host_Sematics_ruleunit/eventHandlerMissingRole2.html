@@ -46,17 +46,30 @@
 
 
     <script type="text/javascript">
-        //<![CDATA[
-        if (typeof(OpenAjax) == 'undefined') OpenAjax = {}
-        if (typeof(OpenAjax.a11y) == 'undefined') OpenAjax.a11y = {}
-        OpenAjax.a11y.ruleCoverage = [{
-            ruleId: "1154",
-            passedXpaths: [
-               
+        UnitTest = {
+            ruleIds: ["Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics"],
+            results: [
+            {
+            "ruleId": "Rpt_Aria_EventHandlerMissingRole_Native_Host_Sematics",
+            "value": [
+              "INFORMATION",
+              "FAIL"
             ],
-            failedXpaths: ["/html/body/div[1]"]
-        }, ];
-        //]]>
+            "path": {
+              "dom": "/html[1]/body[1]/div[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "Fail_1",
+            "message": "The <div> element with 'onclick' does not have a valid ARIA role specified",
+            "messageArgs": [
+              "div",
+              "onclick"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+            ]
+        }
     </script>
 </body>
 

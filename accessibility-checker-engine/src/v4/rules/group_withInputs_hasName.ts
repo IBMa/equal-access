@@ -11,11 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { ARIAMapper } from "../../v2/aria/ARIAMapper";
 import { FragmentUtil } from "../../v2/checker/accessibility/util/fragment";
-import { getCache } from "../util/CacheUtil";
+import { getCache, setCache } from "../util/CacheUtil";
 
 export let group_withInputs_hasName: Rule = {
     id: "group_withInputs_hasName",
@@ -48,10 +48,10 @@ export let group_withInputs_hasName: Rule = {
         let ownerDocument = FragmentUtil.getOwnerFragment(ruleContext);
         let formCache = getCache(
             ruleContext.ownerDocument,
-            "landmark_name_unique",
+            "landmark_group_input",
             null
         );
-
+        
         if (!formCache) {
             formCache = {
                 groupsWithInputs: [],
@@ -78,6 +78,8 @@ export let group_withInputs_hasName: Rule = {
             formCache.groupsWithInputs = groupsWithInputs;
             formCache.groupsWithInputsComputedLabels =
                 groupsWithInputsComputedLabels;
+
+            setCache(ruleContext.ownerDocument, "landmark_group_input",formCache);    
         }
         // formCache.groupsWithInputs.forEach(element => {
         //     console.log("formCache.groupsWithInputs: " +element.id)
