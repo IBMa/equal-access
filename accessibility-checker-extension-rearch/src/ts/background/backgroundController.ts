@@ -164,7 +164,7 @@ class BackgroundController extends Controller {
                     report.counts = counts;
                 }
 
-                getDevtoolsController("remote", senderTabId).setReport(report);
+                getDevtoolsController(false, "remote", senderTabId).setReport(report);
             })();
             return {};
         });

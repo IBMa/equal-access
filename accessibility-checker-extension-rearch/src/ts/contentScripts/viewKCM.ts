@@ -29,7 +29,7 @@ let myKCMState = false;
     console.log("[DEBUG:KCM Settings]",settings);
     let myTabId = await bgController.getTabId()!;
     console.log("[DEBUG:KCM TabId]", myTabId);
-    let devtoolsController = getDevtoolsController("remote", myTabId);
+    let devtoolsController = getDevtoolsController(true, "remote", myTabId);
     console.log("ADDING LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
         console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);

@@ -159,7 +159,7 @@ export class CommonMessaging {
                         console.error("Unable to send message", myMessage);
                     }
                 } else {
-                    if (myMessage.dest.type !== "background") {
+                    if (myMessage.dest.type !== "background" && myMessage.dest.relay !== false) {
                         // Need to relay these through the background
                         myMessage.dest.relay = true;
                     }

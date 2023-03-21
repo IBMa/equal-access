@@ -485,8 +485,8 @@ export class DevtoolsController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
-    constructor(type: eControllerType, tabId?: number) {
-        super(type, { type: "devTools", tabId: (tabId || getTabId())!}, "DT");
+    constructor(isContentScript: boolean, type: eControllerType, tabId?: number) {
+        super(type, { type: "devTools", tabId: (tabId || getTabId())!, relay: isContentScript}, "DT");
         if (type === "local") {
             let self = this;
             devtoolsState = {
@@ -557,9 +557,17 @@ export class DevtoolsController extends Controller {
 }
 
 let singleton : DevtoolsController;
-export function getDevtoolsController(type?: eControllerType, tabId?: number) {
+/**
+ * Get a devtools controller
+ * @param relay 
+ * @param type Set to false if sending messages in the same context (e.g., from devtools panel to devtools main)
+ * @param tabId 
+ * @returns 
+ */
+export function getDevtoolsController(isContentScript?: boolean, type?: eControllerType, tabId?: number) {
     if (!singleton) {
-        singleton = new DevtoolsController(type || "remote", tabId);
+        console.log("Creating devtools controller", type);
+        singleton = new DevtoolsController(isContentScript === true, type || "remote", tabId);
     }
     return singleton;
 }

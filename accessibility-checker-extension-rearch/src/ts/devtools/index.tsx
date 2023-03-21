@@ -30,4 +30,4 @@ chrome.devtools.panels.create("Accessibility Assessment"+localStr, "", "devtools
     }
 );
 
-getDevtoolsController("local");
+getDevtoolsController(false, "local");
