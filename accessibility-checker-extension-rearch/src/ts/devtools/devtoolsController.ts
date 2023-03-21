@@ -15,17 +15,19 @@
 *****************************************************************************/
 
 import { getBGController, TabChangeType } from "../background/backgroundController";
-import { IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
+import { IBasicTableRowRecord, IIssue, IMessage, IReport, IStoredReportMeta } from "../interfaces/interfaces";
 import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import { genReport } from "../util/htmlReport/genReport";
 import { getTabId } from "../util/tabId";
+import MultiScanData from "../util/xlsxReport/multiScanReport/xlsx/MultiScanData";
 import MultiScanReport from "../util/xlsxReport/multiScanReport/xlsx/multiScanReport";
 
 let devtoolsState : {
     storeReports: boolean
-    storedReports: IReport[]
+    storedReports: IStoredReportMeta[]
     lastReport: IReport | null
+    lastReportMeta: IStoredReportMeta | null
     lastElementPath: string | null
     lastIssue: IIssue | null
     viewState: ViewState
@@ -43,7 +45,7 @@ export class DevtoolsController extends Controller {
     /**
      * Get stored reports
      */
-    public async getStoredReports() : Promise<IReport[]> {
+    public async getStoredReports() : Promise<IBasicTableRowRecord[]> {
         let retVal = await this.hook("getStoredReports", null, async () => {
             return devtoolsState!.storedReports;
         });
@@ -59,7 +61,9 @@ export class DevtoolsController extends Controller {
                 guidelines: report.guidelines,
                 pageTitle: report.pageTitle,
                 pageURL: report.pageURL,
-                screenshot: report.screenshot
+                screenshot: report.screenshot,
+                counts: report.counts,
+                storedScanData: report.storedScanData
             }));
         });
     }
@@ -149,17 +153,31 @@ export class DevtoolsController extends Controller {
         return this.hook("setReport", report, async () => {
             let bgController = getBGController();
             let settings = await bgController.getSettings();
-            if (report && devtoolsState?.storeReports) {
+            if (report) {
                 let tabId = getTabId();
                 let tabInfo = await bgController.getTabInfo(tabId);
-                report.id = devtoolsState.storedReports.length+"";
-                report.timestamp = new Date().getTime();
-                report.label = `scan_${this.scanCounter++}`;
-                report.guidelines = settings.selected_ruleset.id;
-                report.pageTitle = tabInfo.title!;
-                report.pageURL = tabInfo.url!;
-                report.screenshot = await bgController.getScreenshot(tabId);
-                devtoolsState.storedReports.push(report);
+                const now = new Date().getTime();
+                devtoolsState!.lastReportMeta = {
+                    id: devtoolsState!.storedReports.length+"",
+                    timestamp: now,
+                    label: `scan_${this.scanCounter++}`,
+                    guidelines: settings.selected_ruleset.id,
+                    pageTitle: tabInfo.title!,
+                    pageURL: tabInfo.url!,
+                    screenshot: await bgController.getScreenshot(tabId),
+                    storedScanData: MultiScanData.issues_sheet_rows({
+                        settings: settings,
+                        report: report,
+                        pageTitle: tabInfo.title!,
+                        pageURL: tabInfo.url!,
+                        timestamp: now+"",
+                        rulesets: await bgController.getRulesets(tabId!)
+                    }),
+                    counts: report.counts
+                };
+                if (devtoolsState?.storeReports) {
+                    devtoolsState.storedReports.push(devtoolsState.lastReportMeta);
+                }
             }
             devtoolsState!.lastReport = report;
             setTimeout(async () => {
@@ -389,11 +407,10 @@ export class DevtoolsController extends Controller {
                         rulesets: rulesets,
                         report: {
                             passUniqueElements: devtoolsState?.lastReport.passUniqueElements,
-                            timestamp: devtoolsState?.lastReport.timestamp,
+                            timestamp: devtoolsState?.lastReportMeta!.timestamp,
                             nls: devtoolsState?.lastReport.nls,
                             counts: {
-                                "total": devtoolsState?.lastReport.counts.total,
-                                "filtered": devtoolsState?.lastReport.counts.filtered
+                                "total": devtoolsState?.lastReport.counts.total
                             },
                             results: []
                         }
@@ -431,7 +448,11 @@ export class DevtoolsController extends Controller {
     public async xlsxReportHandler(scanType:string) {
         // console.log("xlsxReportHandler");
         let archives = await (await getBGController()).getArchives();
-        MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!, scanType, devtoolsState!.storedReports!.length, archives);
+        if (scanType === "current") {
+            MultiScanReport.multiScanXlsxDownload([devtoolsState?.lastReportMeta!], scanType, devtoolsState!.storedReports!.length, archives);
+        } else {
+            MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!, scanType, devtoolsState!.storedReports!.length, archives);
+        }
     }
 
     /**
@@ -472,6 +493,7 @@ export class DevtoolsController extends Controller {
                 storeReports: false,
                 storedReports: [],
                 lastReport: null,
+                lastReportMeta: null,
                 lastElementPath: null,
                 lastIssue: null,
                 viewState: {

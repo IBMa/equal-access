@@ -108,10 +108,17 @@ export interface IStoredReportMeta extends IBasicTableRowRecord {
     pageTitle: string
     pageURL: string
     screenshot: string
+    counts: {
+        "Violation": number
+        "Needs review": number
+        "Recommendation": number
+        "Pass": number
+        total: number
+    }
+    storedScanData: any
 }
 
-
-export interface IReport extends IStoredReportMeta {
+export interface IReport {
     results: IIssue[]
     numExecuted: number
     ruleTime: number
@@ -122,21 +129,13 @@ export interface IReport extends IStoredReportMeta {
         }
     }
     counts: {
-        filtered: number
+        "Violation": number
+        "Needs review": number
+        "Recommendation": number
+        "Pass": number
         total: number
-        violation: number
-        potentialviolation: number
-        recommendation: number
-        potentialrecommendation: number
-        manual: number
-        pass: number
     }
-
-
     passUniqueElements: string[]
-    violations: number
-    needsReviews: number
-    recommendations: number
     isSelected?: boolean
     reportDate?: string
 }

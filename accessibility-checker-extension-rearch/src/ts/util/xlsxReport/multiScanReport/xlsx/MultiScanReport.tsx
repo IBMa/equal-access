@@ -18,11 +18,15 @@ import ReportUtil from "../../reportUtil";
 // import ReportSummaryUtil from '../../../util/reportSummaryUtil';
 
 import ExcelJS from "exceljs"
-import { IArchiveDefinition, IReport } from "../../../../interfaces/interfaces";
+import { IArchiveDefinition, IStoredReportMeta } from "../../../../interfaces/interfaces";
+
+function perc(a: number, b: number) {
+    return parseInt((((a) / b) * 100).toFixed(0));
+}
 
 export default class MultiScanReport {
 
-    public static async multiScanXlsxDownload(storedScans: IReport[], scanType:string, storedScanCount: number, archives: IArchiveDefinition[]) {
+    public static async multiScanXlsxDownload(storedScans: IStoredReportMeta[], scanType:string, storedScanCount: number, archives: IArchiveDefinition[]) {
 
         // create workbook
         var reportWorkbook = MultiScanReport.createReportWorkbook(storedScans, scanType, storedScanCount, archives);
@@ -41,7 +45,7 @@ export default class MultiScanReport {
         ReportUtil.download_file(blob, fileName);
     }
 
-    public static createReportWorkbook(storedScans: IReport[], scanType: string, storedScanCount: number, archives: IArchiveDefinition[]) {
+    private static createReportWorkbook(storedScans: IStoredReportMeta[], scanType: string, storedScanCount: number, archives: IArchiveDefinition[]) {
         // create workbook
         // @ts-ignore
         const workbook = new ExcelJS.Workbook({useStyles: true });
@@ -57,7 +61,7 @@ export default class MultiScanReport {
     }
 
     
-    public static createOverviewSheet(storedScans: IReport[], scanType: string, storedScanCount: number, archives: IArchiveDefinition[], workbook: any) {
+    private static createOverviewSheet(storedScans: IStoredReportMeta[], scanType: string, storedScanCount: number, archives: IArchiveDefinition[], workbook: any) {
 
         let violations = 0;
         let needsReviews = 0;
@@ -71,10 +75,10 @@ export default class MultiScanReport {
         //               1. for current scan (from menu)
         //               2. all stored scans (from menu)
         //               3. selected stored scans (from scan manager)
-        let addScan = (storedScan: IReport) => {
-            let scanViolations = (storedScan.counts.violation || 0);
-            let scanNeedsReviews = (storedScan.counts.potentialviolation || 0) + (storedScan.counts.manual || 0);
-            let scanRecommendations = (storedScan.counts.recommendation || 0) + (storedScan.counts.potentialrecommendation || 0);
+        let addScan = (storedScan: IStoredReportMeta) => {
+            let scanViolations = (storedScan.counts.Violation || 0);
+            let scanNeedsReviews = (storedScan.counts["Needs review"] || 0);
+            let scanRecommendations = (storedScan.counts["Recommendation"] || 0);
             violations += scanViolations;
             needsReviews += scanNeedsReviews;
             recommendations += scanRecommendations;
@@ -235,7 +239,7 @@ export default class MultiScanReport {
         }
     }
 
-    public static createScanSummarySheet(storedScans: any, scanType: string, workbook: any) {
+    private static createScanSummarySheet(storedScans: IStoredReportMeta[], scanType: string, workbook: any) {
 
         const worksheet = workbook.addWorksheet("Scan summary");
 
@@ -316,14 +320,14 @@ export default class MultiScanReport {
             if (scanType === "selected" && storedScans[j].isSelected === true) {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
-                     storedScans[j].url, 
-                     storedScans[j].userScanLabel, 
+                     storedScans[j].pageURL, 
+                     storedScans[j].label, 
                      "none", 
-                     storedScans[j].violations,
-                     storedScans[j].needsReviews,
-                     storedScans[j].recommendations,
-                     storedScans[j].elementsNoViolations,
-                     storedScans[j].elementsNoFailures
+                     storedScans[j].counts["Violation"],
+                     storedScans[j].counts["Needs review"],
+                     storedScans[j].counts["Recommendation"],
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"],storedScans[j].counts.total),
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"]-storedScans[j].counts["Needs review"], storedScans[j].counts.total)
                 ]);
                 row.height = 37; // actual height is
                 for (let i = 1; i < 5; i++) {
@@ -344,14 +348,14 @@ export default class MultiScanReport {
             } else if (scanType === "all") {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
-                     storedScans[j].url, 
-                     storedScans[j].userScanLabel, 
+                     storedScans[j].pageURL, 
+                     storedScans[j].label, 
                      "none", 
-                     storedScans[j].violations,
-                     storedScans[j].needsReviews,
-                     storedScans[j].recommendations,
-                     storedScans[j].elementsNoViolations,
-                     storedScans[j].elementsNoFailures
+                     storedScans[j].counts["Violation"],
+                     storedScans[j].counts["Needs review"],
+                     storedScans[j].counts["Recommendation"],
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"],storedScans[j].counts.total),
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"]-storedScans[j].counts["Needs review"], storedScans[j].counts.total)
                 ]);
                 row.height = 37; // actual height is
                 for (let i = 1; i < 5; i++) {
@@ -372,14 +376,14 @@ export default class MultiScanReport {
             } else if (scanType === "current") {
                 let row = worksheet.addRow(
                     [storedScans[j].pageTitle, 
-                     storedScans[j].url, 
-                     storedScans[j].userScanLabel, 
+                     storedScans[j].pageURL, 
+                     storedScans[j].label, 
                      "none", 
-                     storedScans[j].violations,
-                     storedScans[j].needsReviews,
-                     storedScans[j].recommendations,
-                     storedScans[j].elementsNoViolations,
-                     storedScans[j].elementsNoFailures
+                     storedScans[j].counts["Violation"],
+                     storedScans[j].counts["Needs review"],
+                     storedScans[j].counts["Recommendation"],
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"],storedScans[j].counts.total),
+                     perc(storedScans[j].counts.total-storedScans[j].counts["Violation"]-storedScans[j].counts["Needs review"], storedScans[j].counts.total)
                 ]);
                 row.height = 37; // actual height is
                 for (let i = 1; i < 5; i++) {
@@ -402,7 +406,7 @@ export default class MultiScanReport {
         }
     }
 
-    public static createIssueSummarySheet(storedScans: any, scanType: string, workbook: any) {
+    private static createIssueSummarySheet(storedScans: IStoredReportMeta[], scanType: string, workbook: any) {
 
         let violations = 0;
         let needsReviews = 0;
@@ -413,27 +417,19 @@ export default class MultiScanReport {
         const lastScan = storedScans[storedScans.length - 1];
 
         if (scanType === "current") {
-            violations = lastScan.violations;
-            needsReviews = lastScan.needsReviews;
-            recommendations = lastScan.recommendations;
-            totalIssues = lastScan.violations+lastScan.needsReviews+lastScan.recommendations;
-        } else if (scanType === "all") {
+            violations = lastScan.counts["Violation"];
+            needsReviews = lastScan.counts["Needs review"];
+            recommendations = lastScan.counts["Recommendation"];
+        } else {
             for (let i=0; i < storedScans.length; i++) {
-                violations += storedScans[i].violations;
-                needsReviews += storedScans[i].needsReviews;
-                recommendations += storedScans[i].recommendations;
-            }
-            totalIssues = violations+needsReviews+recommendations;
-        } else if (scanType === "selected") {
-            for (let i=0; i < storedScans.length; i++) {
-                if (storedScans[i].isSelected === true) {
-                    violations += storedScans[i].violations;
-                    needsReviews += storedScans[i].needsReviews;
-                    recommendations += storedScans[i].recommendations;
+                if (scanType === "all" || storedScans[i].isSelected === true) {
+                    violations += storedScans[i].counts["Violation"];
+                    needsReviews += storedScans[i].counts["Needs review"];
+                    recommendations += storedScans[i].counts["Recommendation"];
                 }
             }
-            totalIssues = violations+needsReviews+recommendations;
         }
+        totalIssues = violations+needsReviews+recommendations;
 
         // counts
         let level1Counts = [0,0,0,0]; // level 1 total issues, violations, needs reviews, recommendations
@@ -1632,7 +1628,7 @@ export default class MultiScanReport {
         
     }
 
-    public static createIssuesSheet(storedScans: any, scanType: string, workbook: any) {
+    private static createIssuesSheet(storedScans: any, scanType: string, workbook: any) {
         const worksheet = workbook.addWorksheet("Issues");
 
         // build rows
@@ -1755,7 +1751,7 @@ export default class MultiScanReport {
         }
     }
 
-    public static createDefinitionsSheet(workbook: any) {
+    private static createDefinitionsSheet(workbook: any) {
 
         const worksheet = workbook.addWorksheet("Definition of fields");
 
@@ -1902,7 +1898,7 @@ export default class MultiScanReport {
 
     }
 
-    public static countDuplicatesInArray(array: []) {
+    private static countDuplicatesInArray(array: []) {
         let count = {};
         // let result = [];
         

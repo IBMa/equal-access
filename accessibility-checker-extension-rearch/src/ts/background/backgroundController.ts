@@ -20,12 +20,15 @@ import { CommonMessaging } from "../messaging/commonMessaging";
 import { Controller, eControllerType, ListenerType } from "../messaging/controller";
 import Config from "../util/config";
 import EngineCache from "./util/engineCache";
+import { UtilIssue } from "../util/UtilIssue";
 
 export type TabChangeType = {
     tabId: number
     changeInfo: chrome.tabs.TabChangeInfo
     tab: chrome.tabs.Tab
 }
+
+type eLevel = "Violation" | "Needs review" | "Recommendation";
 
 class BackgroundController extends Controller {
     ///////////////////////////////////////////////////////////////////////////
@@ -104,16 +107,8 @@ class BackgroundController extends Controller {
                     let checker = new (<any>window).aceIBMa.Checker();    
                     return checker.check(window.document, [settings.selected_ruleset.id, "EXTENSIONS"]).then((report: IReport) => {
                         try {
-                            if (report) {
-                                let passResults = report.results.filter((result) => {
-                                    return result.value[1] === "PASS" && result.value[0] !== "INFORMATION";
-                                })
-                                let passXpaths : string[] = passResults.map((result) => result.path.dom);
-                    
-                                report.passUniqueElements = Array.from(new Set(passXpaths));
-                    
-                                report.results = report.results.filter((issue) => issue.value[1] !== "PASS" || issue.value[0] === "INFORMATION");
-                                for (let result of report.results) {
+                            for (const result of report.results) {
+                                if (!(result.value[1] === "PASS" && result.value[0] !== "INFORMATION")) {
                                     let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
                                     let version = settings.selected_archive.version || "latest";
                                     if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
@@ -132,7 +127,7 @@ class BackgroundController extends Controller {
                                         ruleId: result.ruleId,
                                         messageArgs: result.messageArgs
                                     };
-                                    result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`
+                                    result.help = `${engineHelp}#${encodeURIComponent(JSON.stringify(minIssue))}`;
                                 }
                             }
                             return report;
@@ -142,6 +137,33 @@ class BackgroundController extends Controller {
                         }
                     });
                 }, [settings]);
+                
+                if (report) {
+                    let passResults = [];
+                    let remainResults = [];
+                    let counts = {
+                        "Violation": 0,
+                        "Needs review": 0,
+                        "Recommendation": 0,
+                        "Pass": 0,
+                        total: 0
+                    };
+                    for (const result of report.results) {
+                        let sing = UtilIssue.valueToStringSingular(result.value);
+                        ++counts[sing as eLevel];
+                        ++counts.total;
+                        if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
+                            passResults.push(result);
+                        } else {
+                            remainResults.push(result);
+                        }
+                    }
+                    let passXpaths : string[] = passResults.map((result) => result.path.dom);                    
+                    report.passUniqueElements = Array.from(new Set(passXpaths));
+                    report.results = remainResults;
+                    report.counts = counts;
+                }
+
                 getDevtoolsController("remote", senderTabId).setReport(report);
             })();
             return {};

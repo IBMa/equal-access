@@ -31,6 +31,7 @@ import { getDevtoolsAppController } from '../devtoolsAppController';
 import { getDevtoolsController } from '../devtoolsController';
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
+import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 export interface IRowGroup {
     id: string
@@ -426,9 +427,9 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                     counts[UtilIssue.valueToStringSingular(child.value)] = (counts[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
                 }
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
-                    { counts["Violation"] > 0 && <>{UtilIssue.valueSingToIcon("Violation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></> }
-                    { counts["Needs review"] > 0 && <>{UtilIssue.valueSingToIcon("Needs review", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></> }
-                    { counts["Recommendation"] > 0 && <>{UtilIssue.valueSingToIcon("Recommendation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></> }
+                    { counts["Violation"] > 0 && <>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></> }
+                    { counts["Needs review"] > 0 && <>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></> }
+                    { counts["Recommendation"] > 0 && <>{UtilIssueReact.valueSingToIcon("Recommendation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></> }
                 </span>;
                 bodyContent.push(<Grid 
                     id={group.id}
@@ -490,7 +491,7 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                             }}
                         >
                             <Column className="gridChild" role="gridcell" sm={4} md={8} lg={8}>
-                                {UtilIssue.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
+                                {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
                                     className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
                                     role="link"
                                     tabIndex={focused? 0 : -1}

@@ -35,6 +35,7 @@ import { ReportRoles } from './reportRoles';
 import { ReportReqts } from './reportReqts';
 import { ReportRules } from './reportRules';
 import { ListenerType } from '../../messaging/controller';
+import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 let devtoolsController = getDevtoolsController();
 
@@ -172,7 +173,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         id={levelStr.replace(/ /g, "")}
                                         indeterminate={false}
                                         labelText={<React.Fragment>
-                                            {UtilIssue.valueSingToIcon(levelStr, "reportSecIcon")}
+                                            {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
                                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                                 {filtReport && <>
                                                         {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total && 
