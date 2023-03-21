@@ -14,8 +14,7 @@
 import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { getCache, setCache } from "../util/CacheUtil";
-import { getInvalidAriaAttributes } from "../util/CommonUtil";
+import { getInvalidAriaAttributes, getConflictAriaAndHtmlAttributes } from "../util/CommonUtil";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
@@ -51,6 +50,26 @@ export let aria_attribute_conflict: Rule = {
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
         
+        let ret = [];
+        let ariaAttributes = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+        if (!ariaAttributes || ariaAttributes.length ===0)
+            return null;
+
+        let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
+        for (let i = 0; i < conflictAttributes.length; i++) {
+            ret.push(RuleFail("fail_conflict", [conflictAttributes[i]['ariaAttr'], conflictAttributes[i]['htmlAttr']]));
+            if (ariaAttributes.includes(conflictAttributes[i]['ariaAttr']))
+                RPTUtil.reduceArrayItemList([conflictAttributes[i]['ariaAttr']], ariaAttributes);
+        }
+
+        for (let i = 0; i < ariaAttributes.length; i++)
+            ret.push(RulePass("pass"));
+        
+        if (ret.length > 0) 
+            return ret;
+
+        return null;  
+        /** 
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
         let htmlAttrs = [];
@@ -80,6 +99,7 @@ export let aria_attribute_conflict: Rule = {
         }    
         if (ret.length > 0) 
             return ret;
-        return null;    
+        return null;   
+        */ 
     }
 }

@@ -65,3 +65,28 @@ export function getInvalidAriaAttributes(ruleContext: Element): string[] {
     }
     return attrs;
 }
+
+/* 
+ * check if any explicit role specified for the element is a valid ARIA role
+ * return: null if no explicit role is defined, 
+ *         true if the role(s) are defined in ARIA
+ *         false if any role is not defined in ARIA
+*/
+export function getConflictAriaAndHtmlAttributes(elem: Element) {
+    
+    let ariaAttrs = RPTUtil.getUserDefinedAriaAttributeNameValuePairs(elem);
+    let htmlAttrs = RPTUtil.getUserDefinedHtmlAttributeNameValuePairs(elem);
+    
+    let ret = [];
+    if (ariaAttrs && ariaAttrs.length > 0 && htmlAttrs && htmlAttrs.length > 0) {
+        for (let i = 0; i < ariaAttrs.length; i++) {
+            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'conflict');
+            if (examinedHtmlAtrNames === null) continue;
+            examinedHtmlAtrNames.forEach(item => {
+                if (item['result'] === 'Failed') //failed
+                    ret.push({'ariaAttr': ariaAttrs[i]['name'], 'htmlAttr': item['attr']});
+            });    
+        }
+    }
+    return ret;
+}
