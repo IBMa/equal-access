@@ -42,7 +42,7 @@
     "start-server-and-test": "^1.14.0"
   },
   "dependencies": {
-    "deep-diff": "^1.0.2",
-    "request": "^2.88.2"
+    "@cypress/request": "^2.88.11",
+    "deep-diff": "^1.0.2"
   }
 }
