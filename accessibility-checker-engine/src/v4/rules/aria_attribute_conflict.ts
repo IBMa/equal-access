@@ -15,6 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
+import { getInvalidAriaAttributes } from "../util/CommonUtil";
 
 export let aria_attribute_conflict: Rule = {
     id: "aria_attribute_conflict",
@@ -44,11 +45,12 @@ export let aria_attribute_conflict: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // dependency check: if the ARIA attribute is completely invalid, skip this check
-
         
-        if (getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
-  
+        // dependency check: if the ARIA attribute is completely invalid, skip this check
+        let invalidAttributes = getInvalidAriaAttributes(ruleContext);
+        if (invalidAttributes && invalidAttributes.length > 0)
+            return null;
+        
         let domAttributes = ruleContext.attributes;
         let ariaAttrs = [];
         let htmlAttrs = [];

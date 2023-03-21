@@ -20,8 +20,8 @@ import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
  *         true if the role(s) are defined in ARIA
  *         false if any role is not defined in ARIA
 */
-export function isRoleDefined(roles: string[]) {
-    if (!roles) return null;
+export function areRolesDefined(roles: string[]) {
+    if (!roles || roles.length ===0) return null;
     
     let designPatterns = ARIADefinitions.designPatterns;
     for (const role of roles) 
@@ -37,30 +37,28 @@ export function isRoleDefined(roles: string[]) {
  *         a list of invalid attributes
  *         empty list if all attributes are valid, or no aria attributes are specified
  */
-export function getInvalidAttributes(ruleContext: Element): string[] {
+export function getInvalidAriaAttributes(ruleContext: Element): string[] {
     let roles = RPTUtil.getUserDefinedRoles(ruleContext);
-
+    
     // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
     // for mutiple roles, skip if any role is invalid
-    if (isRoleDefined(roles)) 
+    let defined = areRolesDefined(roles);
+    if (defined !==null && !defined) 
         return null;
-
+    
     let attrs = [];
     if (!roles || roles.length == 0)
         roles =  RPTUtil.getImplicitRole(ruleContext);
     
-    let aria_attrs = RPTUtil.getUserDefinedAriaAttributes(ruleContext);  
-    if (!roles || roles.length == 0) {
-        return aria_attrs;
-    }
-
+    let aria_attrs: string[] = RPTUtil.getUserDefinedAriaAttributes(ruleContext);  
+    
     let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
     // Attributes allowed on this node
     let allowedAttributes = RPTUtil.getAllowedAriaAttributes(ruleContext, roles, tagProperty);
     
     if (aria_attrs) {
         for (let i = 0; i < aria_attrs.length; i++) {
-            let attrName = aria_attrs[i].name.trim().toLowerCase(); 
+            let attrName = aria_attrs[i].trim().toLowerCase(); 
             if (!allowedAttributes.includes(attrName) && !attrs.includes(attrName))
                 attrs.push(attrName);
         }

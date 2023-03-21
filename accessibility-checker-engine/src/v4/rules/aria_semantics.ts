@@ -11,12 +11,11 @@
   limitations under the License.
 *****************************************************************************/
 
-import { Rule, RuleResult, RuleFail, RuleContext, RulePotential, RuleManual, RulePass, RuleContextHierarchy } from "../api/IRule";
+import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy } from "../api/IRule";
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
-import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 import { getCache, setCache } from "../util/CacheUtil";
-import { getInvalidAttributes, isRoleDefined } from "../util/CommonUtil";
+import { getInvalidAriaAttributes, areRolesDefined } from "../util/CommonUtil";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -65,7 +64,7 @@ export let aria_semantics_role: Rule = {
         }
         
         // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        let role_defined = isRoleDefined(domRoles);
+        let role_defined = areRolesDefined(domRoles);
         if (domRoles && domRoles.length > 0 && !role_defined)
             return null;
         
@@ -155,27 +154,35 @@ export let aria_attribute_allowed: Rule = {
         if (ruleContext.nodeType !== Node.ELEMENT_NODE)
             return null;
 
-        let roles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
-
-        // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
-        let role_defined = isRoleDefined(roles);
-        if (roles && roles.length > 0 && !role_defined)
+        // ignore if no aria attribute
+        let ariaAttributes:string[] = RPTUtil.getUserDefinedAriaAttributes(ruleContext);
+        if (ariaAttributes === null || ariaAttributes.length === 0)
             return null;
-        
-        let tagName = ruleContext.tagName.toLowerCase();
-        let failedAttributes = getInvalidAttributes(ruleContext);
-        if (failedAttributes.length === 0)
-            return RulePass("Pass");
-
-        if (role_defined === null) {
+    
+        let roles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
+        let explicit = true;
+        if (roles && roles.length > 0) {
+            // the invalid role case: handled by Rpt_Aria_ValidRole. Ignore to avoid duplicated report
+            if (!areRolesDefined(roles))
+                return null;
+        } else {
             //no explicit role defined
             roles =  RPTUtil.getImplicitRole(ruleContext);
-            if (!roles && roles.length === 0)
-                return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, "none"]);
+            explicit = false;
+        }
+        
+        let tagName = ruleContext.tagName.toLowerCase();
+        let failedAttributes = getInvalidAriaAttributes(ruleContext);
+        if (!failedAttributes || failedAttributes.length === 0)
+            return RulePass("Pass", [ariaAttributes.join(", "), tagName, roles.join(", ")]);
+
+        if (roles.length > 0) {
+            if (explicit)
+                return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, roles.join(", ")]);
             else
                 return RuleFail("Fail_invalid_implicit_role_attr", [failedAttributes.join(", "), tagName, roles.join(", ")]);
         }
         
-        return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, roles.join(", ")]);
+        return RuleFail("Fail_invalid_role_attr", [failedAttributes.join(", "), tagName, "none"]);
     }
 }
