@@ -15,7 +15,7 @@ import { Rule, RuleResult, RuleFail, RuleContext, RulePass, RuleContextHierarchy
 import { eRulePolicy, eToolkitLevel } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { getCache, setCache } from "../util/CacheUtil";
-import { getInvalidAriaAttributes, areRolesDefined } from "../util/CommonUtil";
+import { getInvalidAriaAttributes, areRolesDefined, isTableDescendant } from "../util/CommonUtil";
 
 export let aria_semantics_role: Rule = {
     id: "aria_semantics_role",
@@ -52,9 +52,12 @@ export let aria_semantics_role: Rule = {
             return null;
 
         // dependency check: if it's already failed, then skip
-        if (["td", "th", "tr"].includes(tagName) && getCache(ruleContext, "table_aria_descendants", "") === "explicit_role") 
-            return null;
-        
+        if (["td", "th", "tr"].includes(tagName)) {
+            let parentRole = isTableDescendant(contextHierarchies);
+            if (parentRole !== null && parentRole.length > 0)
+                return null;
+        }
+
         let domRoles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
 
         // check the 'generic' role first
@@ -78,29 +81,33 @@ export let aria_semantics_role: Rule = {
 
         let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
         allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
-        // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
-        for (let i = 0; i < domRoles.length; i++) {
-            if (allowedRoles.length === 0) {
-                if (!failRoleTokens.includes(domRoles[i])) {
-                    failRoleTokens.push(domRoles[i]);
-                }
-            } else if (!allowedRoles.includes("any")) { // any role is valid so no checking here. the validity of the aria role is checked by Rpt_Aria_ValidRole
-                if (!allowedRoles.includes(domRoles[i])) {
-                    if (!failRoleTokens.includes(domRoles[i])) {
-                        failRoleTokens.push(domRoles[i]);
-                    }
-                } else if (!passRoleTokens.includes(domRoles[i])) {
-                    passRoleTokens.push(domRoles[i])
-                }
-            } else if (allowedRoles.includes("any")) {
-                if (domRoles[i] === 'generic' && failRoleTokens.indexOf(domRoles[i]) === -1) {
-                    failRoleTokens.push(domRoles[i]);
-                } else {
-                    if (passRoleTokens.indexOf(domRoles[i]) === -1)
-                        passRoleTokens.push(domRoles[i]);
-                }
+        
+        if (!allowedRoles || allowedRoles.length === 0) {
+            RPTUtil.concatUniqueArrayItemList(domRoles, failRoleTokens);
+        } else {
+            if (allowedRoles && allowedRoles.includes('any')) {
+                RPTUtil.concatUniqueArrayItemList(domRoles, passRoleTokens);
+            } else {
+                // Testing restrictions for each role and adding the corresponding attributes to the allowed attribute list
+                for (let i = 0; i < domRoles.length; i++) {
+                       if (!allowedRoles.includes(domRoles[i])) {
+                            if (!failRoleTokens.includes(domRoles[i])) {
+                                failRoleTokens.push(domRoles[i]);
+                            }
+                        } else if (!passRoleTokens.includes(domRoles[i])) {
+                            passRoleTokens.push(domRoles[i])
+                        }
+                    /**else if (allowedRoles.includes("any")) {
+                        //if (domRoles[i] === 'generic' && failRoleTokens.indexOf(domRoles[i]) === -1) {
+                        //    failRoleTokens.push(domRoles[i]);
+                        //} else {
+                            if (passRoleTokens.indexOf(domRoles[i]) === -1)
+                                passRoleTokens.push(domRoles[i]);
+                        //}
+                    }*/
+                } // for loop
             }
-        } // for loop
+        }    
         if (failRoleTokens.includes("presentation") || failRoleTokens.includes("none") && RPTUtil.isTabbable(ruleContext)) {
             return RuleFail("Fail_2", [failRoleTokens.join(", "), tagName]);
         } else if (failRoleTokens.length > 0) {

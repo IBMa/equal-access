@@ -11,6 +11,7 @@
   limitations under the License.
 *****************************************************************************/
 
+import {RuleContextHierarchy } from "../api/IRule";
 import { RPTUtil } from "../../v2/checker/accessibility/util/legacy";
 import { ARIADefinitions } from "../../v2/aria/ARIADefinitions";
 
@@ -29,6 +30,44 @@ export function areRolesDefined(roles: string[]) {
             return false;
 
     return true;
+}
+
+/* 
+ * check if any explicit role specified for the element is a valid ARIA role
+ * return: null if no explicit role is defined, 
+ *         true if the role(s) are defined in ARIA
+ *         false if any role is not defined in ARIA
+*/
+export function getInvalidRoles(ruleContext: Element) {
+    let domRoles: string[] = RPTUtil.getUserDefinedRoles(ruleContext);
+    
+    if (!domRoles || domRoles.length === 0)
+        return null;
+
+    // check the 'generic' role first
+    if (domRoles && domRoles.includes('generic'))
+        return ["generic"];
+    
+    // Failing roles
+    let failRoleTokens = [];
+    // Passing roles
+    let passRoleTokens = [];
+
+    let tagProperty = RPTUtil.getElementAriaProperty(ruleContext);
+    let allowedRoles = RPTUtil.getAllowedAriaRoles(ruleContext, tagProperty);
+    if (!allowedRoles && allowedRoles.length === 0)
+        return domRoles;
+    
+    let invalidRoles = [];
+
+    if (allowedRoles && allowedRoles.includes('any'))
+        return [];
+    
+    for (let i = 0; i < domRoles.length; i++)
+        if (!allowedRoles.includes(domRoles[i]) && !invalidRoles.includes(domRoles[i]))
+            invalidRoles.push(domRoles[i]);
+
+    return invalidRoles;        
 }
 
 /* 
@@ -67,10 +106,8 @@ export function getInvalidAriaAttributes(ruleContext: Element): string[] {
 }
 
 /* 
- * check if any explicit role specified for the element is a valid ARIA role
- * return: null if no explicit role is defined, 
- *         true if the role(s) are defined in ARIA
- *         false if any role is not defined in ARIA
+ * get conflict Aria and Html attributes
+ * return: a list of Aria and Html attribute pairs that are conflict
 */
 export function getConflictAriaAndHtmlAttributes(elem: Element) {
     
@@ -89,4 +126,14 @@ export function getConflictAriaAndHtmlAttributes(elem: Element) {
         }
     }
     return ret;
+}
+
+/* 
+ * get conflict Aria and Html attributes
+ * return: a list of Aria and Html attribute pairs that are conflict
+*/
+export function isTableDescendant(contextHierarchies?: RuleContextHierarchy) {
+    if (!contextHierarchies) return null;
+    
+    return contextHierarchies["aria"].filter(hier => ["table", "grid", "treegrid"].includes(hier.role));
 }
