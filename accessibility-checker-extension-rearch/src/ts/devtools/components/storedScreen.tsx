@@ -72,7 +72,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                             <BasicTable
                                 emptyLabel="No scans stored."
                                 headers={[
-                                    { key: 'id', header: "ID" },
+                                    // { key: 'id', header: "ID" },
                                     { key: 'pageURL', header: 'URL' },
                                     { key: 'pageTitle', header: 'Page title' },
                                     { key: 'timestamp', header: 'Date and time' },

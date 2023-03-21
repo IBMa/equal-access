@@ -110,7 +110,9 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         // getRowProps,
                         selectedRows,
                         getSelectionProps,
-                        getTableContainerProps
+                        getTableContainerProps,
+                        getToolbarProps,
+                        getBatchActionProps,
                     }: {
                         rows: any,
                         headers: Array<{key: string, header: string}>,
@@ -120,6 +122,8 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         getHeaderProps: any,
                         getSelectionProps: any,
                         getTableContainerProps: any,
+                        getToolbarProps: any,
+                        getBatchActionProps: any
                     }) => {
                         let totals: any[] = [];
                         while (totals.length < headers.length-1) {
@@ -145,8 +149,8 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                                     title="DataTable"
                                     description="With selection"
                                     {...getTableContainerProps()}>
-                                    {!this.props.hideToolbar && <TableToolbar aria-label="data table toolbar">
-                                        {hasBatchActions && <TableBatchActions>
+                                    {!this.props.hideToolbar && <TableToolbar {...getToolbarProps()} aria-label="data table toolbar">
+                                        {hasBatchActions && <TableBatchActions { ...getBatchActionProps()}>
                                             {this.props.batchActions!.map((batchAction => (
                                             <TableBatchAction
                                                 renderIcon={batchAction.icon}
