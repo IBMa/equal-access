@@ -37,6 +37,7 @@ import Config from '../util/config';
 import SplashScreen from './components/splashScreen';
 import HelpScreen from "./components/helpScreen";
 import StoredScreen from './components/storedScreen';
+import SummaryScreen from './components/summaryScreen';
 
 export type ePanel = "main" | "elements";
 
@@ -80,11 +81,13 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
+            {this.state.secondaryView === "summary" && <SummaryScreen /> }
         </>;
         let secondaryPanelModal = <>
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
+            {this.state.secondaryView === "summary" && <SummaryScreen /> }
         </>;
 
         return <>

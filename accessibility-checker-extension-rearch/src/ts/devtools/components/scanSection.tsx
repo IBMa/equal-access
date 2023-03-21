@@ -87,6 +87,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         });
         setTimeout(() => {
             self.setState( { scanInProgress: 0 });
+            getDevtoolsAppController().setSecondaryView("summary");
         }, 500);
     }
 

@@ -208,6 +208,13 @@ export class DevtoolsController extends Controller {
         });
     }
 
+    public async getReportMeta() : Promise<IStoredReportMeta | null> {
+        return this.hook("getReportMeta", null, async () => {
+            if (!devtoolsState) return null;
+            return devtoolsState?.lastReportMeta;
+        });
+    }
+
     public async addReportListener(listener: ListenerType<IReport>) {
         this.addEventListener(listener, `DT_onReport`);//, listener.callbackTabId);
     }
@@ -526,6 +533,7 @@ export class DevtoolsController extends Controller {
                 "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),
                 "DT_setReport": async (msgBody) => self.setReport(msgBody.content),
                 "DT_getReport": async () => self.getReport(),
+                "DT_getReportMeta": async () => self.getReportMeta(),
                 "DT_getViewState": async () => self.getViewState(),
                 "DT_setViewState": async (msgBody) => self.setViewState(msgBody.content),
                 "DT_setSelectedIssue": async (msgBody) => self.setSelectedIssue(msgBody.content),
