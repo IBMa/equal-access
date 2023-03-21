@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>test case</title>
+    <style>
+        section {
+            height: 100px;
+            width: 400px;
+            overflow-y: auto;
+            white-space: nowrap;
+        }
+        section > img {
+            display: inline-block;
+            width: 80px;
+        }
+    </style>
+    </head>
+    <body>
+        <h1>Our sponsors:</h1>
+<section>
+	<img src="/test-assets/shared/w3c-logo.png" alt="W3C" />
+	<img src="/test-assets/shared/eu-logo.svg" alt="EU" />
+	<img src="/test-assets/shared/w3c-logo.png" alt="W3C" />
+	<img src="/test-assets/shared/eu-logo.svg" alt="EU" />
+	<img src="/test-assets/shared/w3c-logo.png" alt="W3C" />
+	<img src="/test-assets/shared/eu-logo.svg" alt="EU" />
+	<img src="/test-assets/shared/w3c-logo.png" alt="W3C" />
+</section>
+    </main>
+
+    <script>
+        UnitTest = {
+            ruleIds: ["element_scrollable_tabbable"],
+            results: [  
+            {
+            "ruleId": "element_scrollable_tabbable",
+            "value": [
+              "INFORMATION",
+              "FAIL"
+            ],
+            "path": {
+              "dom": "/html[1]/body[1]/section[1]",
+              "aria": "/document[1]"
+            },
+            "reasonId": "fail_scrollable",
+            "message": "The scrollable element <section> with non-interactive content is not tabbable",
+            "messageArgs": [
+              "section"
+            ],
+            "apiArgs": [],
+            "category": "Accessibility"
+          }
+        ]
+        }
+    </script>
+
+</body>
+
+</html>   

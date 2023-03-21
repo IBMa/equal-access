@@ -1,4 +1,19 @@
-<!-- The title of this PR will be used for release notes, please provide a relevant title -->
+<!-- The title of this PR will be used for release notes, please provide a relevant title. 
+The following formats should be use for the release notes and PRs.
+
+**Rule/Engine updates:**
+newrule(`ruleid`): Title of PR
+fixrule(`ruleid`): Title of PR
+feature(engine): Title of PR
+fix(engine): Title of PR
+chore(`ruleid`|engine): Title of PR
+
+**Tool updates:
+feature(extension|node|karma|cypress): Title of PR
+fix(extension|node|karma|cypress): Title of PR
+chore(extension|node|karma|cypress|repo): Title of PR
+
+Please review more info: https://github.com/IBMa/equal-access/wiki/Release-notes -->
 
 <!-- Specify what this PR is doing. Remove all that do not apply -->
 * New Rule(s): **List rule IDs**

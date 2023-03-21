@@ -9,10 +9,11 @@
   "jest": {
     "setupFilesAfterEnv": [
       "./setupAfterEnv.js"
-    ]
+    ],
+    "transformIgnorePatterns": ["ace-node\\.js"]
   },
   "devDependencies": {
-    "accessibility-checker": "^3.1.10",
+    "accessibility-checker": "^3.1.45",
     "chromedriver": "*",
     "install": "^0.10.1",
     "jest": "^26.0.1",

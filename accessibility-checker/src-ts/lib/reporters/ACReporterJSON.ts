@@ -119,7 +119,7 @@ export class ACReporterJSON {
 
         // Build the full file name based on the label provide in the results and also the results dir specified in the
         // configuration.
-        let resultsFileName = pathLib.join(resultDir, results.label + '.json');
+        let resultsFileName = pathLib.join(resultDir, results.label.replace(/[:?&=]/g,"_") + '.json');
 
         /**************************************************** DEBUG INFORMATION ***************************************************************
         // Debug example which has label which has unix "/" in them.

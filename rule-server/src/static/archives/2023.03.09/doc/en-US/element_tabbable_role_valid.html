@@ -1,0 +1,135 @@
+<html lang="en-US">
+<head>
+    <title>element_tabbable_role_valid - Accessibility Checker Help</title>
+    <script>
+        RULE_MESSAGES = {"en-US":{"pass":"The tabbable element has a widget role","fail_invalid_role":"The tabbable element's role '{0}' is not a widget role","group":"A tabbable element must have a valid widget role"}};
+        RULE_ID = "element_tabbable_role_valid"
+    </script>
+
+    <!--
+/******************************************************************************
+    Copyright:: 2022- IBM, Inc
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ *****************************************************************************/
+    -->
+    <!-- Title and messages generated at build time -->
+    <link rel="icon" href="https://ibm.com/able/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="https://ibm.com/able/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../common/help.css" />
+    <script type="module">
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/code-snippet.min.js";
+        import "https://1.www.s81c.com/common/carbon/web-components/tag/latest/list.min.js";
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../common/help.js"></script>
+</head>
+<body>
+    <div class="bx--grid toolHelp">
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-8 bx--col-lg-16 toolHead">
+                <!-- Group message injected here -->
+                <h3 id="ruleMessage"></h3>
+                <!-- Severity level injected here -->
+                <div id="locLevel"></div>
+                <!-- Rule specific message injected here -->
+                <p id="groupLabel"></p>
+            </div>
+        </div>
+        <div class="bx--row">
+            <div class="bx--col-sm-4 bx--col-md-5 bx--col-lg-8 toolMain">
+<!-- Start main panel -->
+<mark-down><script type="text/plain">
+
+### Why is this important?
+
+A keyboard-focusable (tabbable) element has been found with an invalid role.
+When users reach elements by tabbing with the keyboard, 
+the element's role provides context about the expected interaction, 
+and assistive technologies like screen readers can provide additional information about ways to interact. 
+The only elements that should be in the tab order should be operable widgets. 
+Inoperable elements, such as headings, can be given focus by developers; however, they should not be tabbable by the user.
+
+It's likely that either a non-interactive element was given a `tabindex` value of 0 or greater, or assigned an element’s role incorrectly. 
+The Checker detects implied roles of interactive HTML elements that automatically get keyboard focus. 
+The Checker also detects content blocks that get keyboard focus to enable scrolling of the area using arrow keys when coding CSS `overflow: scroll` or `overflow: auto`. 
+Both of these situations are valid. 
+However, if the element *should not* be operable with the keyboard, then it *should not* be tabbable and get keyboard focus. 
+
+Note: IBM considers this a _violation_ of WCAG Success Criteria. 
+Others may use a strict interpretation of the criterion and may only _recommend_ this to be fixed. 
+However, there is broad agreement that putting inoperable elements in the tab order has an accessibility impact on users.  
+
+<!-- This is where the code snippet is injected -->
+<div id="locSnippet"></div>
+
+### What to do
+
+- If users *should not* be able to interact with this element using the keyboard, replace the non-widget role, 
+*and/or* use the explicit `tabindex="-1"` attribute to remove the element from the keyboard focus (tab) order.
+- *Or*,if users *should* be able to interact with this element using the keyboard, use a valid widget role
+
+### Examples:
+
+This first example is a simple focusable *toggle button*. 
+(JavaScript and CSS would need to be added to provide the appearance and full button functionality):
+
+```
+<div id="saveChanges" tabindex="0" role="button" aria-pressed="false">Save</div>
+```
+
+The second example is placed in the tab order automatically and provides features by default when using the HTML `<button>` element of `type=”button”` that informs the user about its intended interaction: 
+
+```
+<button type="button" id="saveChanges">Save</button>
+```
+
+The third example shows how a block of text can get keyboard focus to enable scrolling of the area by specifying `overflow: scroll` in the CSS: 
+
+```
+<style> 
+div.scroll { width: 200px; height: 100px; border: 2px solid black; overflow: scroll;} 
+</style> 
+... 
+<div class="scroll" tabindex="0">You can use the CSS overflow property when you want to have better control of the layout. 
+The overflow property specifies horizontal and vertical scroll bars operable with arrow keys if content overflows an element's box.</div> 
+``` 
+
+</script></mark-down>
+<!-- End main panel -->
+                <!-- This is where the rule id is injected -->
+                <div id="ruleInfo"></div>
+            </div>
+            <div class="bx--col-sm-4 bx--col-md-3 bx--col-lg-4 toolSide">
+<!-- Start side panel -->
+<mark-down><script type="text/plain">
+
+### About this requirement
+
+* [4.1.2 Name, Role, Value](https://www.ibm.com/able/requirements/requirements/#4_1_2)
+* [ARIA specification - Widget role definition](https://www.w3.org/TR/wai-aria-1.2/#widget)
+* [CSS `overflow:`](https://www.w3schools.com/css/css_overflow.asp) 
+* [Unit test - check tab order](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#check-tab-order)
+* [Unit test - confirm component keyboard interaction](https://www.ibm.com/able/toolkit/develop/considerations/unit-testing/#confirm-component-keyboard-interaction) 
+
+### Who does this affect?
+
+* People using a screen reader, including blind, low vision and neurodivergent people
+* People with low vision who use screen magnification with the keyboard
+* People using voice control or a keyboard-like switch device
+* People who rely on keyboard control
+
+</script></mark-down>
+<!-- End side panel -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
