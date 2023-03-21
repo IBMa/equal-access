@@ -119,16 +119,13 @@ try {
                 let config = await ACConfigManager.getConfigUnsupported();
                 const response = await axios.get(`${config.rulePack}/ace-node.js`);
                 const data = await response.data;
-                let engineDir = path.join(config.cacheFolder, "engine");
+                let engineDir = path.join(path.resolve(config.cacheFolder), "engine");
                 if (!fs.existsSync(engineDir)) {
                     fs.mkdirSync(engineDir, { recursive: true });
                 }
                 let nodePath = path.join(engineDir, "ace-node")
                 fs.writeFile(nodePath + ".js", data, function (err) {
                     try {
-                        if (nodePath.charAt(0) !== '/') {
-                            nodePath = "../../" + nodePath;
-                        }
                         err && console.log(err);
                         var ace_ibma = require(nodePath);
                         checker = new ace_ibma.Checker();

@@ -25,6 +25,7 @@ export class Config {
     public static __PRODUCTION__: boolean = Config.__CLOUD__;
     public static __LOCAL__: boolean = !process.env.TRAVIS_BRANCH && !Config.__CLOUD__;
     public static __LOCAL_REACT__: boolean = Config.__LOCAL__ && process.env.__LOCAL_REACT__ === "true";
+    public static __NODB__: boolean = process.env.__NODB__ === "true";
 
     // See also package.json / homepage in src-ui
     public static BASE_PATH = "/rules";
