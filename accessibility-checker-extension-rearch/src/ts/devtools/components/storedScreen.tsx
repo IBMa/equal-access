@@ -20,7 +20,6 @@ import {
     // ButtonSet,
     Column, 
     Grid,
-    Layer,
     Link,
     ModalFooter,
     TextInput,
@@ -171,18 +170,18 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                     <img src={detailRow.screenshot} alt="Screenshot of page scanned" width="100%" />
                                 </Column>
                                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
-                                    <Layer>
-                                        <TextInput 
-                                            labelText="Scan label" 
-                                            value={detailRow.label} 
-                                            onChange={(evt: any) => {
-                                                this.updateLabel(this.state.detailSelectedRow!, evt.target.value);
-                                            }}
-                                        />
-                                    </Layer>
                                     <div><strong>URL: </strong>{detailRow.pageURL}</div>
                                     <div><strong>Page title: </strong>{detailRow.pageTitle}</div>
-                                    <div>{new Date(detailRow.timestamp).toLocaleString()}</div>
+                                    <div><strong>Scan time: </strong>{new Date(detailRow.timestamp).toLocaleString()}</div>
+                                    <div style={{marginTop: ".5rem"}} />
+                                    <TextInput 
+                                        style={{backgroundColor: "white"}}
+                                        labelText="Scan label" 
+                                        value={detailRow.label} 
+                                        onChange={(evt: any) => {
+                                            this.updateLabel(this.state.detailSelectedRow!, evt.target.value);
+                                        }}
+                                    />
                                 </Column>
                             </Grid>
                         </>}
