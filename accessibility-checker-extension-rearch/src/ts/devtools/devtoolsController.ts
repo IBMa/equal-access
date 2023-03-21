@@ -104,6 +104,16 @@ export class DevtoolsController extends Controller {
         });
     }
 
+    public async setStoredReportsMetaLabel(idx: number, label: string) {
+        return await this.hook("setStoredReportsMetaLabel", { idx, label }, async () => {
+            if (devtoolsState!.storedReports![idx].label !== label) {
+                devtoolsState!.storedReports![idx].label = label;
+                let data = await this.getStoredReportsMeta();
+                this.notifyEventListeners("DT_onStoredReportsMeta", this.ctrlDest.tabId, data);
+            }
+        });
+    }
+
     public async addStoredReportsMetaListener(listener: ListenerType<IStoredReportMeta[]>) {
         this.addEventListener(listener, `DT_onStoredReportsMeta`);
     }
@@ -510,6 +520,7 @@ export class DevtoolsController extends Controller {
                 "DT_getStoredReports": async () => self.getStoredReports(),
                 "DT_getStoredReportsMeta": async() => self.getStoredReportsMeta(),
                 "DT_setStoredReportsMeta": async(msgBody) => self.setStoredReportsMeta(msgBody.content),
+                "DT_setStoredReportsMetaLabel": async(msgBody) => self.setStoredReportsMetaLabel(msgBody.content.idx, msgBody.content.label),
                 "DT_clearStoredReports": async () => self.clearStoredReports(),
                 "DT_getStoreReports": async () => self.getStoreReports(),
                 "DT_setStoreReports": async (msgBody) => self.setStoreReports(!!msgBody.content),

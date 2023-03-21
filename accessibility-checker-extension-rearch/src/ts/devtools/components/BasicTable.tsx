@@ -24,6 +24,8 @@ import { IBasicTableRowRecord } from '../../interfaces/interfaces';
 import './BasicTable.scss';
 
 interface BasicTableProps<IRowRecord extends IBasicTableRowRecord> {
+    title?: string
+    description?: string
     emptyLabel: string
     headers: Array<{ key: string, header: string }>
     data?: IRowRecord[]
@@ -146,8 +148,8 @@ export class BasicTable<IRowRecord extends IBasicTableRowRecord> extends Compone
                         return (
                             <div>
                                 <TableContainer 
-                                    title="DataTable"
-                                    description="With selection"
+                                    title={this.props.title}
+                                    description={this.props.description}
                                     {...getTableContainerProps()}>
                                     {!this.props.hideToolbar && <TableToolbar {...getToolbarProps()} aria-label="data table toolbar">
                                         {hasBatchActions && <TableBatchActions { ...getBatchActionProps()}>

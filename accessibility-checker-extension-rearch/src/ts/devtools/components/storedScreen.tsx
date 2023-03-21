@@ -39,7 +39,7 @@ import { BasicTable } from "./BasicTable";
 interface IStoredScreenState {
     storedReports: IStoredReportMeta[]
     deleteSelectedRows?: IStoredReportMeta[]
-    detailSelectedRow?: IStoredReportMeta
+    detailSelectedRow?: number
 }
 
 interface IStoredScreenProps {
@@ -61,15 +61,21 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
         })
     }
 
+    updateLabel(idx: number, newValue: string) {
+        this.devtoolsController.setStoredReportsMetaLabel(idx, newValue);
+    }
+
     render() {
+        let detailRow = typeof this.state.detailSelectedRow !== "undefined" && this.state.storedReports[this.state.detailSelectedRow] || undefined;
         return (
             <Grid className="storedScreen">
                 <Column sm={{span: 4}} md={{span: 8}} lg={{span: 8}}>
                     <Theme theme="g10">
                         <h2>Stored Scans</h2>
                         <div style={{marginTop: "1rem"}} />
-                        { !this.state.deleteSelectedRows && !this.state.detailSelectedRow && <>
+                        { !this.state.deleteSelectedRows && !detailRow && <>
                             <BasicTable
+                                // title="Stored scans"
                                 emptyLabel="No scans stored."
                                 headers={[
                                     // { key: 'id', header: "ID" },
@@ -107,7 +113,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                 hideHeaders={false}
                                 hideToolbar={false}
                                 onRow={async (rowId: string) => {
-                                    this.setState({ detailSelectedRow: this.state.storedReports[parseInt(rowId)]})
+                                    this.setState({ detailSelectedRow: parseInt(rowId)})
                                 }}
                                 fieldMapper={(rowId, cellId, cellValue) => {
                                     if (cellId === "timestamp") {
@@ -120,6 +126,9 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                             aria-label="Scan label"
                                             value={cellValue}
                                             size="sm"
+                                            onChange={(evt: any) => {
+                                                this.updateLabel(parseInt(rowId), evt.target.value);
+                                            }}
                                         />
                                     }
                                     return cellValue;
@@ -151,7 +160,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                 </Button>
                             </ModalFooter>
                         </>}
-                        { this.state.detailSelectedRow && <>
+                        { detailRow && <>
                             <div>
                                 <Link onClick={() => {
                                     this.setState({ detailSelectedRow: undefined })
@@ -159,15 +168,21 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                             </div>
                             <Grid className="storedScreen">
                                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
-                                    <img src={this.state.detailSelectedRow.screenshot} alt="Screenshot of page scanned" width="100%" />
+                                    <img src={detailRow.screenshot} alt="Screenshot of page scanned" width="100%" />
                                 </Column>
                                 <Column sm={{span: 4}} md={{span: 4}} lg={{span: 4}}>
                                     <Layer>
-                                        <TextInput labelText="Scan label" value={this.state.detailSelectedRow.label} />
+                                        <TextInput 
+                                            labelText="Scan label" 
+                                            value={detailRow.label} 
+                                            onChange={(evt: any) => {
+                                                this.updateLabel(this.state.detailSelectedRow!, evt.target.value);
+                                            }}
+                                        />
                                     </Layer>
-                                    <div><strong>URL: </strong>{this.state.detailSelectedRow.pageURL}</div>
-                                    <div><strong>Page title: </strong>{this.state.detailSelectedRow.pageTitle}</div>
-                                    <div>{new Date(this.state.detailSelectedRow.timestamp).toLocaleString()}</div>
+                                    <div><strong>URL: </strong>{detailRow.pageURL}</div>
+                                    <div><strong>Page title: </strong>{detailRow.pageTitle}</div>
+                                    <div>{new Date(detailRow.timestamp).toLocaleString()}</div>
                                 </Column>
                             </Grid>
                         </>}
