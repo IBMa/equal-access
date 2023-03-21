@@ -15,6 +15,7 @@
 *****************************************************************************/
 
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { getTabId } from '../../util/tabId';
 import { getBGController, TabChangeType } from '../../background/backgroundController';
@@ -23,6 +24,7 @@ import {
     Column,
     ContentSwitcher,
     InlineLoading,
+    Modal,
     Grid,
     OverflowMenu,
     OverflowMenuItem,
@@ -52,7 +54,8 @@ interface ScanSectionState {
     storeReports: boolean,
     storedReportsCount: number,
     selectedElemPath: string,
-    focusMode: boolean
+    focusMode: boolean,
+    confirmClearStored: boolean
 }
 
 export class ScanSection extends React.Component<{}, ScanSectionState> {
@@ -67,7 +70,8 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
         storeReports: false,
         storedReportsCount: 0,
         selectedElemPath: "html",
-        focusMode: false
+        focusMode: false,
+        confirmClearStored: false
     }
 
     reportListener : ListenerType<IReport> = async (report) => {
@@ -196,10 +200,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                             hasDivider
                                             itemText="Delete stored scans" 
                                             onClick={() => {
-                                                devtoolsController.clearStoredReports();
-                                                this.setState({
-                                                    storedReportsCount: 0
-                                                })
+                                                this.setState({ confirmClearStored: true });
                                             }}
                                         />
                                     </OverflowMenu>
@@ -260,7 +261,42 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                     </div>
                 </Column>
             </Grid>
-            </div>
+            {typeof document === 'undefined'
+                ? null
+                : ReactDOM.createPortal(
+                    <Modal
+                        aria-label="Delete stored scans"
+                        modalHeading="Delete stored scans"
+                        size='sm'
+                        danger={true}
+                        open={this.state.confirmClearStored}
+                        shouldSubmitOnEnter={false}
+                        onRequestClose={(() => {
+                            this.setState({ confirmClearStored: false });
+                        }).bind(this)}
+                        onRequestSubmit={(() => {
+                            devtoolsController.clearStoredReports();
+                            this.setState({
+                                storedReportsCount: 0,
+                                confirmClearStored: false
+                            })
+                        }).bind(this)}
+                        selectorPrimaryFocus=".cds--modal-footer .cds--btn--secondary"
+                        primaryButtonText="Delete"
+                        secondaryButtonText="Cancel"
+                        primaryButtonDisabled={false}
+                        preventCloseOnClickOutside={true}
+                        style={{ zIndex: 9050 }}
+                    >
+                        <p style={{ marginBottom: '1rem' }}>
+                            Are you sure you want to delete selected scans?
+                            This action is irreversible.
+                        </p>
+                    </Modal>,
+                    document.body
+                )
+            }
+        </div>
         );
     }
 }
