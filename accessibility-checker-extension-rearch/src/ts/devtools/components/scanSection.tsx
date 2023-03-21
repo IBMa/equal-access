@@ -237,14 +237,25 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                             </Tooltip>
                         </div>
                         <Button
+                            id="kcmToggle"
                             style={{flex: "1 1 2rem"}}
                             hasIconOnly
                             renderIcon={this.state.viewState.kcm ? KeyboardOff : Keyboard} 
                             disabled={!this.state.reportContent}
                             iconDescription="Keyboard Checker Mode" tooltipPosition="left" 
                             onClick={async () => {
-                                let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));
+                                let newState :ViewState = JSON.parse(JSON.stringify(this.state.viewState));                                
                                 newState.kcm = !newState.kcm;
+                                let devtoolsAppController = getDevtoolsAppController();
+                                if (newState.kcm) {
+                                    devtoolsAppController.setSecondaryView("kcm_overview");
+                                    devtoolsAppController.openSecondary("#kcmToggle");
+                                } else {
+                                    if (devtoolsAppController.getSecondaryView() === "kcm_overview") {
+                                        devtoolsAppController.setSecondaryView("summary");
+                                        devtoolsAppController.closeSecondary();
+                                    }
+                                }
                                 await devtoolsController.setViewState(newState);
                             }}
                             size="sm"

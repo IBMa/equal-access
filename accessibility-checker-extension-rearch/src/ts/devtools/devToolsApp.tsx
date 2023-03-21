@@ -38,6 +38,7 @@ import SplashScreen from './components/splashScreen';
 import HelpScreen from "./components/helpScreen";
 import StoredScreen from './components/storedScreen';
 import SummaryScreen from './components/summaryScreen';
+import KCMOverviewScreen from './components/kcmOverviewScreen';
 
 export type ePanel = "main" | "elements";
 
@@ -82,12 +83,14 @@ export class DevToolsApp extends React.Component<DevToolsAppProps, DevToolsAppSt
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
             {this.state.secondaryView === "summary" && <SummaryScreen /> }
+            {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
         let secondaryPanelModal = <>
             {this.state.secondaryView === "splash" && <SplashScreen />}
             {this.state.secondaryView === "help" && <HelpScreen />}
             {this.state.secondaryView === "stored" && <StoredScreen /> }
             {this.state.secondaryView === "summary" && <SummaryScreen /> }
+            {this.state.secondaryView === "kcm_overview" && <KCMOverviewScreen /> }
         </>;
 
         return <>
