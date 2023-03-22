@@ -194,6 +194,8 @@ export class Engine implements IEngine {
 
             if (walker.node.nodeType !== 11 
                 && (DOMWalker.isNodeVisible(walker.node)
+                    // || walker.node.nodeName.toLowerCase() === "head"
+                    || walker.node.nodeName.toLowerCase() === "meta"
                     || walker.node.nodeName.toLowerCase() === "style"
                     || walker.node.nodeName.toLowerCase() === "datalist"
                     || walker.node.nodeName.toLowerCase() === "param"
