@@ -86,6 +86,18 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                 rs = ruleset;
             }
         }
+        let violations = 0;
+        let needReview = 0;
+        let recommendation = 0;
+        for (const issue of this.props.reportData.report.results) {
+            if (issue.value[0] === "VIOLATION" && issue.value[1] === "FAIL") {
+                ++violations;
+            } else if (issue.value[0] === "VIOLATION" && (issue.value[1] === "POTENTIAL" || issue.value[1] === "MANUAL")) {
+                ++needReview;
+            } else if (issue.value[0] === "RECOMMENDATION") {
+                ++recommendation;
+            }
+        }
         return <div
             role="main"
             id="main-content"
@@ -114,17 +126,17 @@ export class SavedReport extends React.Component<SavedReportProps, SavedReportSt
                                 <div className="url"><strong>Scanned page:</strong> {this.props.reportData.tabURL}</div>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={this.props.reportData.report.counts.total["Violation"]} title="Violations" icon={Violation16}>
+                                <ScoreCard count={violations} title="Violations" icon={Violation16}>
                                     Accessibility failures that need to be corrected
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={this.props.reportData.report.counts.total["Needs review"]} title="Needs review" icon={NeedsReview16}>
+                                <ScoreCard count={needReview} title="Needs review" icon={NeedsReview16}>
                                     Issues that may not be a violation; manual review is needed
                                 </ScoreCard>
                             </Column>
                             <Column sm={2} md={4} lg={4}>
-                                <ScoreCard count={this.props.reportData.report.counts.total["Recommendation"]} title="Recommendations" icon={Recommendation16}>
+                                <ScoreCard count={recommendation} title="Recommendations" icon={Recommendation16}>
                                     Opportunities to apply best practices to further improve accessibility
                                 </ScoreCard>
                             </Column>

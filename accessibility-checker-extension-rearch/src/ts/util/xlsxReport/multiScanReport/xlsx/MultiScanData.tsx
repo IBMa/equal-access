@@ -14,7 +14,7 @@
     limitations under the License.
  *****************************************************************************/
 
-import { IReport, ISettings } from "../../../../interfaces/interfaces";
+import { IReport, ISettings, StoredScanData } from "../../../../interfaces/interfaces";
 
 
 const stringHash = require("string-hash");
@@ -41,14 +41,13 @@ export default class MultiScanData {
     // sheet as all other data is either static or can be calculated
     // from the issue data
 
-    public static issues_sheet_rows(xlsx_props: XLSXProps) {
+    public static issues_sheet_rows(xlsx_props: XLSXProps) : StoredScanData[] {
 
         let ret: any[] = [];
 
         let report = xlsx_props.report;
         let tab_url = xlsx_props.pageURL;
         let tab_title = xlsx_props.pageTitle;
-        const engine_end_point = process.env.engineEndpoint;
         const rule_map = this.id_rule_map(xlsx_props);
         const rule_checkpoints_map = this.ruleId_checkpoints_map(xlsx_props);
 
@@ -95,8 +94,8 @@ export default class MultiScanData {
                 item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
                 this.get_element(item.snippet),
                 item.snippet,
-                item.path.aria,
-                engine_end_point + '/tools/help/' + item.ruleId
+                item.path.dom,
+                item.help
             ]
 
             ret.push(row);

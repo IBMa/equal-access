@@ -58,12 +58,14 @@ export class DevtoolsController extends Controller {
                 id: report.id,
                 timestamp: report.timestamp,
                 label: report.label,
-                guidelines: report.guidelines,
+                ruleset: report.ruleset,
+                guideline: report.guideline,
                 pageTitle: report.pageTitle,
                 pageURL: report.pageURL,
                 screenshot: report.screenshot,
                 counts: report.counts,
-                storedScanData: report.storedScanData
+                storedScanData: report.storedScanData,
+                testedUniqueElements: report.testedUniqueElements
             }));
         });
     }
@@ -171,7 +173,8 @@ export class DevtoolsController extends Controller {
                     id: devtoolsState!.storedReports.length+"",
                     timestamp: now,
                     label: `scan_${this.scanCounter++}`,
-                    guidelines: settings.selected_ruleset.id,
+                    ruleset: settings.selected_archive.id,
+                    guideline: settings.selected_ruleset.id,
                     pageTitle: tabInfo.title!,
                     pageURL: tabInfo.url!,
                     screenshot: await bgController.getScreenshot(tabId),
@@ -183,6 +186,7 @@ export class DevtoolsController extends Controller {
                         timestamp: now+"",
                         rulesets: await bgController.getRulesets(tabId!)
                     }),
+                    testedUniqueElements: report.testedUniqueElements,
                     counts: report.counts
                 };
                 if (devtoolsState?.storeReports) {
@@ -414,61 +418,65 @@ export class DevtoolsController extends Controller {
             if (type === "all" || type === "selected") {
                 this.xlsxReportHandler(type);
             } else {
-                let bgController = await getBGController();
-                let tabId = getTabId();
-                let rulesets = await bgController.getRulesets(tabId!);
-                let tabInfo = await bgController.getTabInfo(getTabId());
-                if (devtoolsState?.lastReport && rulesets) {
-                    let reportObj: any = {
-                        tabURL: tabInfo.url,
-                        rulesets: rulesets,
-                        report: {
-                            passUniqueElements: devtoolsState?.lastReport.passUniqueElements,
-                            timestamp: devtoolsState?.lastReportMeta!.timestamp,
-                            nls: devtoolsState?.lastReport.nls,
-                            counts: {
-                                "total": devtoolsState?.lastReport.counts.total
-                            },
-                            results: []
-                        }
-                    }
-                    for (const result of devtoolsState?.lastReport.results) {
-                        reportObj.report.results.push({
-                            ruleId: result.ruleId,
-                            path: result.path,
-                            value: result.value,
-                            message: result.message,
-                            snippet: result.snippet,
-                            help: result.help
-                        });
-                    }
-        
-                    let tabTitle: string = tabInfo.title!;
-                    let tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
-                    let filename = "Accessibility_Report-" + tabTitleSubString + ".html";
-                    //replace illegal characters in file name
-                    filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
-        
-                    let fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
-                    let a = document.createElement('a');
-                    a.href = fileContent;
-                    a.download = filename;
-                    let e = document.createEvent('MouseEvents');
-                    e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-                    a.dispatchEvent(e);
-                }
+                this.htmlReportHandler();
                 this.xlsxReportHandler("current");
             }
         });
+    }
+
+    private async htmlReportHandler() {
+        let bgController = await getBGController();
+        let tabId = getTabId();
+        let rulesets = await bgController.getRulesets(tabId!);
+        let tabInfo = await bgController.getTabInfo(getTabId());
+        if (devtoolsState?.lastReport && rulesets) {
+            let reportObj: any = {
+                tabURL: tabInfo.url,
+                rulesets: rulesets,
+                report: {
+                    testedUniqueElements: devtoolsState?.lastReport.testedUniqueElements,
+                    timestamp: devtoolsState?.lastReportMeta!.timestamp,
+                    nls: devtoolsState?.lastReport.nls,
+                    counts: {
+                        "total": devtoolsState?.lastReport.counts.total
+                    },
+                    results: []
+                }
+            }
+            for (const result of devtoolsState?.lastReport.results) {
+                reportObj.report.results.push({
+                    ruleId: result.ruleId,
+                    path: result.path,
+                    value: result.value,
+                    message: result.message,
+                    snippet: result.snippet,
+                    help: result.help
+                });
+            }
+
+            let tabTitle: string = tabInfo.title!;
+            let tabTitleSubString = tabTitle ? tabTitle.substring(0, 50) : "";
+            let filename = "Accessibility_Report-" + tabTitleSubString + ".html";
+            //replace illegal characters in file name
+            filename = filename.replace(/[/\\?%*:|"<>]/g, '-');
+
+            let fileContent = "data:text/html;charset=utf-8," + encodeURIComponent(genReport(reportObj));
+            let a = document.createElement('a');
+            a.href = fileContent;
+            a.download = filename;
+            let e = document.createEvent('MouseEvents');
+            e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+            a.dispatchEvent(e);
+        }
     }
 
     public async xlsxReportHandler(scanType:string) {
         // console.log("xlsxReportHandler");
         let archives = await (await getBGController()).getArchives();
         if (scanType === "current") {
-            MultiScanReport.multiScanXlsxDownload([devtoolsState?.lastReportMeta!], scanType, devtoolsState!.storedReports!.length, archives);
+            MultiScanReport.multiScanXlsxDownload([devtoolsState?.lastReportMeta!], archives);
         } else {
-            MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!, scanType, devtoolsState!.storedReports!.length, archives);
+            MultiScanReport.multiScanXlsxDownload(devtoolsState?.storedReports!.filter(report => report.isSelected)!, archives);
         }
     }
 

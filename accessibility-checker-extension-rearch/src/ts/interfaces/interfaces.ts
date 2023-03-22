@@ -101,10 +101,28 @@ export interface IBasicTableRowRecord {
     isSelected?: boolean
 }
 
+export type StoredScanData = [
+    string, //tab_title,
+    string, //tab_url,
+    string, //this.format_date(xlsx_props.timestamp),
+    string, //stringHash(item.ruleId + item.path.dom),
+    string, // Violation, Needs review
+    number, //parseInt(rule_map.get(item.ruleId).toolkitLevel), // make number instead of text for spreadsheet
+    string, //this.checkpoints_string(rule_checkpoints_map, item.ruleId),
+    string, //this.wcag_string(rule_checkpoints_map, item.ruleId),
+    string, //item.ruleId,
+    string, //item.message.substring(0, 32767), //max ength for MS Excel 32767 characters
+    string, //this.get_element(item.snippet),
+    string, //item.snippet,
+    string, //item.path.dom,
+    string, //engine_end_point + '/tools/help/' + item.ruleId
+];
+
 export interface IStoredReportMeta extends IBasicTableRowRecord {
     timestamp: number
     label: string
-    guidelines: string
+    ruleset: string
+    guideline: string
     pageTitle: string
     pageURL: string
     screenshot: string
@@ -115,7 +133,8 @@ export interface IStoredReportMeta extends IBasicTableRowRecord {
         "Pass": number
         total: number
     }
-    storedScanData: any
+    storedScanData: StoredScanData[]
+    testedUniqueElements: number
 }
 
 export interface IReport {
@@ -135,7 +154,7 @@ export interface IReport {
         "Pass": number
         total: number
     }
-    passUniqueElements: string[]
+    testedUniqueElements: number
     isSelected?: boolean
     reportDate?: string
 }
