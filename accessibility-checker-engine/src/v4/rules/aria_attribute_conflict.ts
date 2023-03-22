@@ -69,37 +69,5 @@ export let aria_attribute_conflict: Rule = {
             return ret;
 
         return null;  
-        /** 
-        let domAttributes = ruleContext.attributes;
-        let ariaAttrs = [];
-        let htmlAttrs = [];
-        if (domAttributes) {
-            for (let i = 0; i < domAttributes.length; i++) {
-                let attrName = domAttributes[i].name.trim().toLowerCase(); 
-                let attrValue = ruleContext.getAttribute(attrName);
-                if (attrValue === '') attrValue = null;
-                if (attrName.substring(0, 5) === 'aria-') 
-                    ariaAttrs.push({name: attrName, value: attrValue});
-                else 
-                    htmlAttrs.push({name: attrName, value: attrValue});
-            }
-        }
-        let ret = [];
-        for (let i = 0; i < ariaAttrs.length; i++) {
-            const examinedHtmlAtrNames = RPTUtil.getConflictOrOverlappingHtmlAttribute(ariaAttrs[i], htmlAttrs, 'conflict');
-            if (examinedHtmlAtrNames === null) continue;
-            examinedHtmlAtrNames.forEach(item => {
-                if (item['result'] === 'Pass') { //pass
-                    ret.push(RulePass("pass"));
-                } else if (item['result'] === 'Failed') { //failed
-                    setCache(ruleContext, "aria_attribute_conflict", "fail_conflict");
-                    ret.push(RuleFail("fail_conflict", [ariaAttrs[i]['name'], item['attr']]));
-                }
-            });    
-        }    
-        if (ret.length > 0) 
-            return ret;
-        return null;   
-        */ 
     }
 }

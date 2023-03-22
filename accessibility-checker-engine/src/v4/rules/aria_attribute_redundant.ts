@@ -45,16 +45,13 @@ export let aria_attribute_redundant: Rule = {
     act: [],
     run: (context: RuleContext, options?: {}, contextHierarchies?: RuleContextHierarchy): RuleResult | RuleResult[] => {
         const ruleContext = context["dom"].node as Element;
-        // dependency check: if the ARIA attribute is completely invalid, skip this check
-
-        //if (getCache(ruleContext, "aria_attribute_allowed", "") === "Fail") return null;
+        
         // dependency check: if the ARIA attribute is completely invalid, skip this check
         let invalidAttributes = getInvalidAriaAttributes(ruleContext);
         if (invalidAttributes && invalidAttributes.length > 0)
             return null;
 
         // if conflict already reported, ignore reporting overlap
-        //if (getCache(ruleContext, "aria_attribute_conflict", "") === "fail_conflict") return null;
         let conflictAttributes = getConflictAriaAndHtmlAttributes(ruleContext);
         if (conflictAttributes && conflictAttributes.length > 0)
             return null;
