@@ -24,28 +24,12 @@
   </head>
   <body>
     <main id="main">
-      <div id="host">
-        <span id="host-span"></span>
-      </div>
+      <label id="host" for="input1">
+        <slot>my label text</slot>
+      </label>
+      <input id="input1" type="text" />  
     </main>
-    <script type="text/javascript">
-      let shadow = document
-        .getElementById("host")
-        .attachShadow({ mode: "open" });
-      let div = document.createElement("div");
-      div.setAttribute("id", "shadow-div1");
-      let label = document.createElement("label");
-      label.setAttribute("for", "input1");
-      label.innerHTML = "this label is for input";
-      div.appendChild(label);
-      let input = document.createElement("input");
-      input.setAttribute("id", "input1");
-      input.setAttribute("type", "text");
-      div.appendChild(input);
-
-      shadow.appendChild(div);
-      
-    </script>
+    
     <script type="text/javascript">
       UnitTest = {
           ruleIds: ["Valerie_Label_HasContent"],
@@ -57,7 +41,7 @@
               "PASS"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/div[1]/#document-fragment[1]/div[1]/label[1]",
+              "dom": "/html[1]/body[1]/main[1]/label[1]",
               "aria": "/document[1]/main[1]"
             },
             "reasonId": "Pass_Regular",
