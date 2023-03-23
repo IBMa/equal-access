@@ -120,6 +120,7 @@ export default class StoredScreen extends React.Component<IStoredScreenProps, IS
                                         return `${d.toLocaleString()}`;
                                     } else if (cellId === "label") {
                                         return <TextInput
+                                            style={{minWidth: "8rem"}}
                                             id={`label_${rowId}`}
                                             labelText=""
                                             aria-label="Scan label"

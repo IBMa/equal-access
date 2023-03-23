@@ -9,4 +9,16 @@
     h2 {
         @include type-style("heading-03");
     }
+
+    .StoredReportsTable {
+        margin: 0rem -1rem;
+    }
+}
+
+.cds--modal-content {
+    .storedScreen {
+        .StoredReportsTable {
+            margin: 0rem;
+        }
+    }
 }

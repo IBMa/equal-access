@@ -14,6 +14,14 @@ body {
     }
     .secondaryColumn {
         background-color: $gray-10;
+        .cds--subgrid {
+            >.cds--css-grid-column:first-of-type {
+                margin-left: 2rem;
+            }
+            // >.cds--css-grid-column:last-of-type {
+            //     margin-right: 2rem;
+            // }
+        }
     }
 }
 

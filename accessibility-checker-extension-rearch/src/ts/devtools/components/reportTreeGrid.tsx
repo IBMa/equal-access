@@ -409,7 +409,9 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                     let medCol = idx === this.props.headers.length-1 ? numLeft+4: 2;
                     numLeft -= 2;
                     return <Column sm={smallCol} md={medCol}>
-                        {header.label}
+                        <div className="gridHeaderCell">
+                            {header.label}
+                        </div>
                     </Column>
                 })}
             </Grid>;
@@ -427,9 +429,9 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                     counts[UtilIssue.valueToStringSingular(child.value)] = (counts[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
                 }
                 let childCounts = <span style={{marginLeft: ".5rem"}}>
-                    { counts["Violation"] > 0 && <>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></> }
-                    { counts["Needs review"] > 0 && <>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></> }
-                    { counts["Recommendation"] > 0 && <>{UtilIssueReact.valueSingToIcon("Recommendation", "levelIcon")}&nbsp;<span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></> }
+                    { counts["Violation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Violation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Violation"]}</span></span> }
+                    { counts["Needs review"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Needs review", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Needs review"]}</span></span> }
+                    { counts["Recommendation"] > 0 && <span style={{whiteSpace: "nowrap"}}>{UtilIssueReact.valueSingToIcon("Recommendation", "levelIcon")} <span style={{marginRight:".25rem"}}>{counts["Recommendation"]}</span></span> }
                 </span>;
                 bodyContent.push(<Grid 
                     id={group.id}
@@ -451,10 +453,12 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                         let medCol = idx === this.props.headers.length-1 ? numLeft+4: 2;
                         numLeft -= 2;
                         return <Column role="columnheader" sm={smallCol} md={medCol} className={header.key}>
-                            {idx === 0 && groupExpanded && <ChevronUp />}
-                            {idx === 0 && !groupExpanded && <ChevronDown />}
-                            { header.key === "label" && group.label }
-                            { header.key === "issueCount" && childCounts }
+                            <div className="gridGroupCell">
+                                {idx === 0 && groupExpanded && <ChevronUp />}
+                                {idx === 0 && !groupExpanded && <ChevronDown />}
+                                { header.key === "label" && group.label }
+                                { header.key === "issueCount" && childCounts }
+                            </div>
                         </Column>
                     })}
                 </Grid>);
@@ -491,23 +495,25 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                             }}
                         >
                             <Column className="gridChild" role="gridcell" sm={4} md={8} lg={8}>
-                                {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
-                                    className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
-                                    role="link"
-                                    tabIndex={focused? 0 : -1}
-                                    onClick={() => {
-                                        ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
-                                        ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
-                                        ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                    }}
-                                    onKeyDown={(evt: React.KeyboardEvent) => {
-                                        if (evt.key === "Enter" || evt.key === "Return") {
+                                <div className="gridDataCell">
+                                    {UtilIssueReact.valueToIcon(thisIssue.value, "levelIcon")} {thisIssue.message} <a 
+                                        className="hideLg cds--link hideLg cds--link--inline cds--link--sm"
+                                        role="link"
+                                        tabIndex={focused? 0 : -1}
+                                        onClick={() => {
                                             ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
                                             ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
                                             ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                        }
-                                    }}
-                                >Learn more</a>
+                                        }}
+                                        onKeyDown={(evt: React.KeyboardEvent) => {
+                                            if (evt.key === "Enter" || evt.key === "Return") {
+                                                ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
+                                                ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
+                                                ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
+                                            }
+                                        }}
+                                    >Learn more</a>
+                                </div>
                             </Column>
                         </Grid>);
                     }

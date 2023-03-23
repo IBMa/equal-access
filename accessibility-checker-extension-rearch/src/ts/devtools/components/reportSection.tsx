@@ -20,7 +20,7 @@ import { IIssue, IReport } from '../../interfaces/interfaces';
 import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
-import { 
+import {
     Checkbox,
     Tabs,
     Tab,
@@ -57,7 +57,7 @@ interface ReportSectionState {
 type eLevel = "Violation" | "Needs review" | "Recommendation";
 
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
-    state : ReportSectionState = {
+    state: ReportSectionState = {
         report: null,
         checked: {
             "Violation": true,
@@ -68,13 +68,13 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         focusMode: false
     }
 
-    reportListener : ListenerType<IReport> = async (report: IReport) => {
+    reportListener: ListenerType<IReport> = async (report: IReport) => {
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
         }
-        this.setState( { report });
+        this.setState({ report });
     }
-    selectedElementListener : ListenerType<string> = async (path) => {
+    selectedElementListener: ListenerType<string> = async (path) => {
         this.setPath(path);
     }
 
@@ -83,14 +83,14 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         let report = await devtoolsController.getReport();
         if (report) {
             report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-            this.setState( { report });
+            this.setState({ report });
         }
 
         devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
         let path = await devtoolsController.getSelectedElementPath();
         this.setPath(path!);
         devtoolsController.addFocusModeListener(async (newValue: boolean) => {
-            this.setState({focusMode: newValue });
+            this.setState({ focusMode: newValue });
         })
         this.setState({
             focusMode: await devtoolsController.getFocusMode()
@@ -102,24 +102,24 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     setPath(path: string) {
-        this.setState( { selectedPath: path });
+        this.setState({ selectedPath: path });
     }
 
     getCounts() {
         let counts = {
-            "Violation": { 
+            "Violation": {
                 focused: 0,
                 total: 0
             },
-            "Needs review": { 
+            "Needs review": {
                 focused: 0,
                 total: 0
             },
-            "Recommendation": { 
+            "Recommendation": {
                 focused: 0,
                 total: 0
             },
-            "Pass": { 
+            "Pass": {
                 focused: 0,
                 total: 0
             }
@@ -139,32 +139,33 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     render() {
         // console.log("Focus Mode:",this.state.focusMode)
         let counts = this.getCounts();
-        let filtReport : IReport = this.state.report ? JSON.parse(JSON.stringify(this.state.report)) : null;
+        let filtReport: IReport = this.state.report ? JSON.parse(JSON.stringify(this.state.report)) : null;
         if (filtReport) {
             filtReport.results = filtReport.results.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
-                    && (!this.state.focusMode 
-                            || !this.state.selectedPath 
-                            || issue.path.dom.startsWith(this.state.selectedPath)
-                        )
+                    && (!this.state.focusMode
+                        || !this.state.selectedPath
+                        || issue.path.dom.startsWith(this.state.selectedPath)
+                    )
                 );
                 return retVal;
             });
             // console.log(filtReport.results.length);
         }
         let totalCount = 0;
-       return (<>
+        let filterSection = <>
+            <div className="reportFilterBorder" />
             <Grid className="reportFilterSection">
                 {["Violation", "Needs review", "Recommendation"].map((levelStr) => {
                     totalCount += counts[levelStr as eLevel].total;
                     return <>
-                        <Column sm={1} md={2} lg={2} style={{marginRight: "0px"}} className="countCol">
+                        <Column sm={1} md={2} lg={2} style={{ marginRight: "0px" }}>
                             <span data-tip style={{ display: "inline-block", verticalAlign: "middle", paddingTop: "4px" }}>
                                 <Tooltip
                                     align="right"
                                     label={`Filter by ${UtilIssue.singToStringPlural(levelStr)}`}
                                 >
-                                    <Checkbox 
+                                    <Checkbox
                                         className="checkboxLabel"
                                         disabled={counts[levelStr as eLevel].total === 0}
                                         // title="Filter by violations" // used react tooltip so all tooltips the same
@@ -172,23 +173,23 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         checked={this.state.checked[levelStr as eLevel]}
                                         id={levelStr.replace(/ /g, "")}
                                         indeterminate={false}
-                                        labelText={<React.Fragment>
+                                        labelText={<span className="countCol">
                                             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
                                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
                                                 {filtReport && <>
-                                                        {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total && 
-                                                            counts[levelStr as eLevel].total
-                                                        ) || <>
+                                                    {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total &&
+                                                        counts[levelStr as eLevel].total
+                                                    ) || <>
                                                             {counts[levelStr as eLevel].focused}/{counts[levelStr as eLevel].total}
                                                         </>}
-                                                    </>}
+                                                </>}
                                             </span>
                                             <span className="summaryBarLabels" style={{ marginLeft: "4px" }}>
                                                 {UtilIssue.singToStringPlural(levelStr)}
                                             </span>
-                                        </React.Fragment>}
+                                        </span>}
                                         // hideLabel
-                                        onChange={(_evt: any, value: { checked: boolean, id: string}) => {
+                                        onChange={(_evt: any, value: { checked: boolean, id: string }) => {
                                             // Receives three arguments: true/false, the checkbox's id, and the dom event.
                                             let checked = JSON.parse(JSON.stringify(this.state.checked));
                                             checked[levelStr as eLevel] = value.checked;
@@ -198,17 +199,21 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                     />
                                 </Tooltip>
                                 {/* <ReactTooltip id="filterViolationsTip" place="top" effect="solid">
-                                    Filter by Violations
-                                </ReactTooltip> */}
+                                Filter by Violations
+                            </ReactTooltip> */}
                             </span>
                         </Column>
-                </>})}
+                    </>
+                })}
                 <Column sm={1} md={2} lg={2} className="totalCount">
                     {totalCount} issues found
                 </Column>
             </Grid>
-            <Grid className="reportSection" style={{ overflowY: "auto", flex: "1"}}>
-                <Column sm={4} md={8} lg={8}>
+        </>;
+
+        return (<>
+            <Grid className="reportSection" style={{ overflowY: "auto", flex: "1" }}>
+                <Column sm={4} md={8} lg={8} className="reportSectionColumn">
                     <Tabs
                         // ariaLabel="Report options"
                         role="navigation"
@@ -221,12 +226,15 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         </TabList>
                         <TabPanels>
                             <TabPanel>
+                                { filterSection }
                                 <ReportRoles report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
                             </TabPanel>
                             <TabPanel>
+                                { filterSection }
                                 <ReportReqts report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
                             </TabPanel>
                             <TabPanel>
+                                { filterSection }
                                 <ReportRules report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
                             </TabPanel>
                         </TabPanels>
