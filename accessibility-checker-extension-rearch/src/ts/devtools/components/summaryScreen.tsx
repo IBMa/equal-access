@@ -57,17 +57,14 @@ export default class SummaryScreen extends React.Component<ISummaryScreenProps, 
         }) || []
 
         let potentials = this.state.report && this.state.report.results.filter((result: any) => {
-            return result.value[0] === "VIOLATION" && result.value[1] === "POTENTIAL";
+            return result.value[0] === "VIOLATION" && (result.value[1] === "POTENTIAL" || result.value[1] === "MANUAL");
         }) || [];
 
         let violationsPlusPotentials = violations.concat(potentials);
         let failXpaths: string[] = violationsPlusPotentials.map(result => result.path.dom);
         let failUniqueElements = Array.from(new Set(failXpaths));
 
-        let vPlusNRPlusRxPaths = this.state.report && this.state.report.results.map(result => result.path.dom) || [];
-        let vPlusNRPlusR_Elements = Array.from(new Set(vPlusNRPlusRxPaths));
-
-        let testedElements = (this.state.report && this.state.report.passUniqueElements.length || 0) + vPlusNRPlusR_Elements.length;
+        let testedElements = (this.state.report && this.state.report.testedUniqueElements || 0);
 
         let d = new Date();
         let options = {

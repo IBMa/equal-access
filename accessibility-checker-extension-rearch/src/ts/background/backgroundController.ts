@@ -148,6 +148,8 @@ class BackgroundController extends Controller {
                         "Pass": 0,
                         total: 0
                     };
+                    let xpaths : string[] = report.results.map((result) => result.path.dom);                    
+                    report.testedUniqueElements = Array.from(new Set(xpaths)).length;
                     for (const result of report.results) {
                         let sing = UtilIssue.valueToStringSingular(result.value);
                         ++counts[sing as eLevel];
@@ -158,8 +160,6 @@ class BackgroundController extends Controller {
                             remainResults.push(result);
                         }
                     }
-                    let passXpaths : string[] = passResults.map((result) => result.path.dom);                    
-                    report.passUniqueElements = Array.from(new Set(passXpaths));
                     report.results = remainResults;
                     report.counts = counts;
                 }
