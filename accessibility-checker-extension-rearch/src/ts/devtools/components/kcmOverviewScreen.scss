@@ -2,5 +2,55 @@
 @use '@carbon/styles/scss/breakpoint'as *;
 @use '@carbon/styles/scss/colors'as *;
 
-.kcmOverview {
+
+.kcmTitle {
+    height: 28px;
+    width: 359px;
+    color: #161616;
+    font-family: "IBM Plex Sans";
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: 28px;
+}
+.kcmExplain {
+    color: #161616;
+  font-family: "IBM Plex Sans";
+  font-size: 12px;
+  letter-spacing: 0.14px;
+  line-height: 20px;
+}
+
+.path-11-copy {
+    box-sizing: border-box;
+    height: 375px;
+    width: 5px;
+    border: 1px solid #CBCDD1;
+    transform: scaleX(-1);
+}
+
+.visualization-guide {
+    height: 24px;
+    width: 137px;
+    color: #161616;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14px;
+    line-height: 20px;
+}
+
+.visualization-guide-text {
+    color: #161616;
+    font-family: "IBM Plex Sans";
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.32px;
+    line-height: 16px;
+}
+
+.svgNotificationDot{
+    position: absolute !important;
+    overflow: visible !important;
+    pointer-events: none !important;
+    z-index: 2147483646 !important;
 }
