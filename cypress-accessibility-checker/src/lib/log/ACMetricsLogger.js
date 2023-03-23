@@ -21,7 +21,7 @@
  *******************************************************************************/
 
 // Load required modules
-var request = require('request');
+var request = require("@cypress/request");
 
 /**
  * This function is responsible for constructing the accessibility-checker Metrics object which contains all the function
