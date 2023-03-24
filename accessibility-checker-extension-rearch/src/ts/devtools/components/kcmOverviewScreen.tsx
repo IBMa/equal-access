@@ -105,8 +105,8 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     <Grid style={{marginBottom: "1rem"}}>
                         <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
                             <svg height="50" width="50">
-                                <circle cx="25" cy="20" r="13" stroke="#C6C6C6" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="22" y="23">2</text>
+                                <circle cx="34" cy="20" r="13" stroke="#C6C6C6" stroke-width="3" fill="#525252" />
+                                <text className="visualization-guide-text" fill="white" x="31" y="23">2</text>
                             </svg>
                         </Column>
                         <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
@@ -121,10 +121,10 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     <Grid style={{marginBottom: "2rem"}}>
                         <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
                             <svg height="50" width="50">
-                                <circle cx="25" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="18" y="28">11</text>
+                                <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
+                                <text className="visualization-guide-text" fill="white" x="25" y="28">11</text>
                                 <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
-                                    <circle cx="100" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
+                                    <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
                                 </svg>
                             </svg>
                 
@@ -141,10 +141,10 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                     <Grid style={{marginBottom: "2rem"}}>
                         <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
                             <svg height="50" width="50">
-                                <circle cx="25" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="22" y="28">?</text>
+                                <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
+                                <text className="visualization-guide-text" fill="white" x="30" y="28">?</text>
                                 <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
-                                    <circle cx="100" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
+                                    <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
                                 </svg>
                             </svg>
                 
