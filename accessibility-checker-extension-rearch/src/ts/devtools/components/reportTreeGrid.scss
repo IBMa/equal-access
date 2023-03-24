@@ -3,12 +3,17 @@
 @use '@carbon/styles/scss/breakpoint'as *;
 
 .reportTreeGrid {
+    --border-width: 1px;
+    --focus-width: 2px;
+    --focus-color: black;
+    --selected-node-background: #F6F2FF;
+    --selected-node-border-color: #8A3FFC;
     .gridBody, .gridHeader { // row
         @include type-style('label-01');
         > div { // column
             > div { // cell
-                border-top: solid white 1px;
-                border-bottom: solid $gray-30 1px;
+                border-top: solid white var(--border-width);
+                border-bottom: solid $gray-30 var(--border-width);
                 margin: 0rem -1rem;
                 padding: 0.5rem 0rem .5rem 1rem;
                 height: 100%;
@@ -17,59 +22,37 @@
         > div:first-of-type {
             > div {
                 margin-left: 0rem;
-                border-left: solid white 1px;
+                border-left: solid white var(--border-width);
             }
         }
         > div:last-of-type {
             > div {
                 padding-right: 1rem;
                 margin-right: 0rem;
-                border-right: solid white 1px;
+                border-right: solid white var(--border-width);
             }
         }
     }
     .gridBody.selectedNode {
         > div { // column
             > div {
-                background-color: #F6F2FF;
-                border-top: solid #8A3FFC 1px;
-                border-bottom: solid #8A3FFC 1px;
+                background-color: var(--selected-node-background);
+                border-top: solid var(--selected-node-border-color) var(--border-width);
+                border-bottom: solid var(--selected-node-border-color) var(--border-width);
             }
         }
         > div:first-of-type {
             > div {
-                border-left: solid #8A3FFC 1px;
+                border-left: solid var(--selected-node-border-color) var(--border-width);
             }
         }
         > div:last-of-type {
             > div {
-                border-right: solid #8A3FFC 1px;
+                border-right: solid var(--selected-node-border-color) var(--border-width);
             }
         }
     }
 
-    &:focus-within {
-        outline-width: 0px;
-
-        .gridBody.focused {
-            > div {
-                > div {
-                    border-top: solid black 1px;
-                    border-bottom: solid black 1px;
-                }
-            }
-            > div:first-of-type {
-                > div {
-                    border-left: solid black 1px;
-                }
-            }
-            > div:last-of-type {
-                > div {
-                    border-right: solid black 1px;
-                }
-            }
-        }
-    }
     .gridHeader {
         font-weight: 600;
         > div {
@@ -106,6 +89,45 @@
     .hideLg {
         @include breakpoint('lg') {
             display: none;
+        }
+    }
+    &:focus-within {
+        outline-width: 0px;
+
+        .gridBody.focused {
+            > div {
+                > div {
+                    border-top: solid var(--focus-color) var(--focus-width);
+                    border-bottom: solid var(--focus-color) var(--focus-width);
+                    padding-top: calc(.5rem - var(--focus-width) + var(--border-width));
+                    padding-bottom: calc(.5rem - var(--focus-width) + var(--border-width));
+                }
+            }
+            > div:first-of-type {
+                > div {
+                    border-left: solid var(--focus-color) var(--focus-width);
+                    padding-left: calc(1rem - var(--focus-width) + var(--border-width));
+                }
+            }
+            > div:last-of-type {
+                > div {
+                    border-right: solid var(--focus-color) var(--focus-width);
+                    padding-right: calc(1rem - var(--focus-width) + var(--border-width));
+                }
+            }
+            .label {
+                > div {
+                    padding-left: calc(2rem - var(--focus-width) + var(--border-width));
+                }
+            }
+            .issueCount {
+                .gridGroupCell {
+                    padding-left: calc(2.5rem - var(--focus-width) + var(--border-width));
+                }
+            }
+            >div >div.gridDataCell {
+                padding-left: calc(3.75rem - var(--focus-width) + var(--border-width));
+            }
         }
     }
 }

@@ -109,6 +109,7 @@ class BackgroundController extends Controller {
                         try {
                             for (const result of report.results) {
                                 if (!(result.value[1] === "PASS" && result.value[0] !== "INFORMATION")) {
+                                    // Save all of this for backward compatibility
                                     let engineHelp = checker.engine.getHelp(result.ruleId, result.reasonId, settings.selected_archive.id);
                                     let version = settings.selected_archive.version || "latest";
                                     if (process.env.engineEndpoint && process.env.engineEndpoint.includes("localhost")) {
@@ -139,7 +140,7 @@ class BackgroundController extends Controller {
                 }, [settings]);
                 
                 if (report) {
-                    let passResults = [];
+                    // let passResults = [];
                     let remainResults = [];
                     let counts = {
                         "Violation": 0,
@@ -155,7 +156,7 @@ class BackgroundController extends Controller {
                         ++counts[sing as eLevel];
                         ++counts.total;
                         if (result.value[1] === "PASS" && result.value[0] !== "INFORMATION") {
-                            passResults.push(result);
+                            // passResults.push(result);
                         } else {
                             remainResults.push(result);
                         }
@@ -272,6 +273,12 @@ class BackgroundController extends Controller {
             });
         });
     }
+
+    public async getArchiveDefForVersion(version: string) {
+        return this.hook("getArchiveDefForVersion", version, async () => {
+            return EngineCache.getArchiveDefinitionByVersion(version);
+        });
+    }
     ///////////////////////////////////////////////////////////////////////////
     ///// PRIVATE API /////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////
@@ -303,6 +310,9 @@ class BackgroundController extends Controller {
                 },
                 "BG_getScreenshot": async(msgBody, senderTabId) => {
                     return self.getScreenshot((msgBody && msgBody.content) || senderTabId!)
+                },
+                "BG_getArchiveDefForVersion": async(msgBody) => {
+                    return self.getArchiveDefForVersion(msgBody.content);
                 }
             }
 
