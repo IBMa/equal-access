@@ -30,9 +30,9 @@ let myKCMState = false;
     let devtoolsController = getDevtoolsController(true, "remote", myTabId);
     // console.log("ADDING ViewState LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
-        console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);
+        // console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);
         if (viewState.kcm === myKCMState) return;
-        console.log("[DEBUG:KCM ViewState]", viewState.kcm);
+        // console.log("[DEBUG:KCM ViewState]", viewState.kcm);
         if (viewState.kcm === true) {
             myKCMState = true;
             // if viewState.kcm === true then scan has occurred and KCM button has been pushed
@@ -48,7 +48,7 @@ let myKCMState = false;
 })();
 
 function getKCMData (report:IReport | null, settings: ISettings) {
-    console.log("Function: getKCMData");
+    // console.log("Function: getKCMData");
     /* JCH before finish scan collect and order tab stops
         * Note: report contains all issues
         * 

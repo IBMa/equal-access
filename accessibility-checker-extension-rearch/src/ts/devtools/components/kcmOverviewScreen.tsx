@@ -19,7 +19,6 @@ import React from "react";
 import { Column, Grid, Checkbox } from '@carbon/react';
 import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
-// import { TabStopCircle } from "../../contentScripts/TabStopCircle";
 
 import "./kcmOverviewScreen.scss";
 
@@ -42,10 +41,13 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
     async componentDidMount(): Promise<void> {
         this.setState({
             settings: await this.bgController.getSettings()
-        })
+        });
     }
 
     render() {
+        if (this.state.settings?.tabStopAlerts === true) {
+            
+        }
         return <aside className="kcmOverview">
             {/* KCM Overview Title */}
             <Grid style={{marginTop: "1rem", marginBottom: "1rem"}}>
@@ -81,7 +83,31 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                         </div>
 
                         <div style={{marginBottom:"1rem"}}>
-                            <Checkbox labelText={`Do not show this again`} id="checkbox-label-1" />
+                            <Checkbox 
+                                labelText="Do not show this again" 
+                                id="checked"
+                                checked={this.state.settings?.tabStopAlerts}
+                                //@ts-ignore
+                                onChange={(value: any, id: any) => {
+                                    if (this.state.settings !== undefined) {
+                                        let tempState = this.state.settings;
+                                        tempState.tabStopAlerts = !tempState.tabStopAlerts;
+                                        this.setState({settings:tempState}); // internal state
+                                        this.bgController.setSettings(this.state.settings); // App state
+                                    }
+                                }} 
+
+                            />
+                            {/* <Toggle
+                                aria-label="toggle button"
+                                labelText="Do not show this again"
+                                id="alertToggle"
+                                toggled={this.state.settings?.tabStopAlerts}
+                                onToggle={(value: any) => {
+                                    console.log("tabStopAlerts value = ",value);
+                                    // this.setState({ tabStopAlerts: value });
+                                }} 
+                            /> */}
                         </div>
 
                     </div>

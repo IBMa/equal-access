@@ -52,7 +52,6 @@ interface OptionsAppState {
     modalRuleSet: boolean;
     modalGuidelines: boolean;
     // Keyboard Checker Mode options
-    showKCMOverview: boolean;
     tabStopLines: boolean;
     tabStopOutlines: boolean;
     tabStopAlerts: boolean;
@@ -71,7 +70,6 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
         modalRuleSet: false,
         modalGuidelines: false,
          // Keyboard Checker Mode options
-        showKCMOverview: true,
         tabStopLines: true,
         tabStopOutlines: false,
         tabStopAlerts: true,
@@ -455,7 +453,7 @@ export class OptionsApp extends React.Component<{}, OptionsAppState> {
                             id="alertToggle"
                             toggled={this.state.tabStopAlerts}
                             onToggle={(value: any) => {
-                                // console.log("lines checkbox value = ",value);
+                                console.log("lines checkbox value = ",value);
                                 this.setState({ tabStopAlerts: value });
                             }} 
                         />
