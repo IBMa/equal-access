@@ -140,6 +140,18 @@ class BackgroundController extends Controller {
                 }, [settings]);
                 
                 if (report) {
+                    report.results.sort((resultA, resultB) => {
+                        let valueA = UtilIssue.valueToStringSingular(resultA.value);
+                        let valueB = UtilIssue.valueToStringSingular(resultB.value);
+                        if (valueA === valueB) return 0;
+                        if (valueA === "Violation") return -1;
+                        if (valueB === "Violation") return 1;
+                        if (valueA === "Needs review") return -1;
+                        if (valueB === "Needs review") return 1;
+                        if (valueA === "Recommendation") return -1;
+                        if (valueB === "Recommendation") return 1;
+                        return 0;
+                    });
                     // let passResults = [];
                     let remainResults = [];
                     let counts = {

@@ -148,13 +148,15 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         this.setState( { expandedGroups: newExpanded });
     }
 
-    onRow(_group: IRowGroup, issue: IIssue) {
-        ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
-        ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
+    async onRow(_group: IRowGroup, issue: IIssue) {
+        await ReportTreeGrid.devtoolsController.setSelectedIssue(issue);
         if (this.props.panel === "elements") {
             // this.setState({ tabRowId: ReportTreeGrid.getRowId(group, issue) });
-            ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
+            await ReportTreeGrid.devtoolsController.inspectPath(issue.path.dom, this.treeGridRef.current);
+        } else {
+            await ReportTreeGrid.devtoolsController.setSelectedElementPath(issue.path.dom);
         }
+        ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
     }
 
     onKeyDown(evt: React.KeyboardEvent) {
@@ -501,16 +503,14 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
                                         role="link"
                                         tabIndex={focused? 0 : -1}
                                         onClick={() => {
-                                            ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
-                                            ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
+                                            this.onRow(group, thisIssue);
                                             ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
                                         }}
                                         onKeyDown={(evt: React.KeyboardEvent) => {
                                             if (evt.key === "Enter" || evt.key === "Return") {
-                                                ReportTreeGrid.devtoolsController.setSelectedIssue(thisIssue);
-                                                ReportTreeGrid.devtoolsAppController.setSecondaryView("help");
+                                                this.onRow(group, thisIssue);
                                                 ReportTreeGrid.devtoolsAppController.openSecondary(`#${rowId} a`);
-                                            }
+                                                }
                                         }}
                                     >Learn more</a>
                                 </div>

@@ -141,8 +141,10 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
 
     render() {
         let selectedElementStr = this.state.selectedElemPath;
-        selectedElementStr = selectedElementStr.split("/").pop()!;
-        selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
+        if (selectedElementStr) {
+            selectedElementStr = selectedElementStr.split("/").pop()!;
+            selectedElementStr = selectedElementStr.match(/([^[]*)/)![1];
+        }
         let devtoolsAppController = getDevtoolsAppController();
         return (<div className="scanSection">
             <Grid> 
@@ -227,7 +229,7 @@ export class ScanSection extends React.Component<{}, ScanSectionState> {
                                 >
                                     <Switch
                                         name="Focused"
-                                        text={`<${selectedElementStr}>`}
+                                        text={`<${selectedElementStr || "html"}>`}
                                         disabled={!this.state.reportContent}
                                     />
                                     <Switch
