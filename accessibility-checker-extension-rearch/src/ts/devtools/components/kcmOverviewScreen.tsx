@@ -46,7 +46,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
     }
 
     render() {
-        return <aside>
+        return <aside className="kcmOverview">
             {/* KCM Overview Title */}
             <Grid style={{marginTop: "1rem", marginBottom: "1rem"}}>
                 <Column sm={{ span: 4 }} md={{ span: 8 }} lg={{ span: 8 }}>
@@ -73,7 +73,7 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
 
                         <div style={{marginBottom:"1rem"}}>
                             Not all keyboard accessibility issues are detectable with this tool, manual testing is required. 
-                            Refer to the quick guide for more information.
+                            Refer to the <a className="link" href="https://ibm.com/able/toolkit/develop/considerations/unit-testing" target="_blank">quick guide</a> for more information.
                         </div>
 
                         <div style={{marginBottom:"1rem"}}>
