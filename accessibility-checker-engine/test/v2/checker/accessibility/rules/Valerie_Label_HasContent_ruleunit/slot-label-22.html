@@ -19,17 +19,25 @@
 
 <html lang="en-US">
   <head>
-    <title>Shadow DOM input Label</title>
+    <title>Slot Label 22</title>
     <meta charset="UTF-8" />
   </head>
   <body>
     <main id="main">
-      <label id="host" for="input1">
-        <slot>my label text</slot>
-      </label>
-      <input id="input1" type="text" />  
+      <div id="host">Tex in div </div>
     </main>
-    
+    <script type="text/javascript">
+      let shadow = document
+        .getElementById("host")
+        .attachShadow({ mode: "open" });
+        shadow.innerHTML = `
+          <label for="input1">
+              <slot></slot>
+          </label>
+          <input id="input1" type="text" />
+          `;
+      
+    </script>
     <script type="text/javascript">
       UnitTest = {
           ruleIds: ["Valerie_Label_HasContent"],
@@ -38,14 +46,14 @@
             "ruleId": "Valerie_Label_HasContent",
             "value": [
               "INFORMATION",
-              "PASS"
+              "FAIL"
             ],
             "path": {
-              "dom": "/html[1]/body[1]/main[1]/label[1]",
+              "dom": "/html[1]/body[1]/main[1]/div[1]/#document-fragment[1]/label[1]",
               "aria": "/document[1]/main[1]"
             },
-            "reasonId": "Pass_Regular",
-            "message": "<label> element has accessible name with inner content",
+            "reasonId": "Fail_1",
+            "message": "The <label> element does not have descriptive text that identifies the expected input",
             "messageArgs": [],
             "apiArgs": [],
             "category": "Accessibility"

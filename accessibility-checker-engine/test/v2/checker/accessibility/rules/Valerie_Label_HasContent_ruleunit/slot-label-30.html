@@ -19,7 +19,7 @@
 
 <html lang="en-US">
   <head>
-    <title>Shadow DOM input Label</title>
+    <title>Slot Label 20</title>
     <meta charset="UTF-8" />
   </head>
   <body>
@@ -32,7 +32,7 @@
       let shadow = document.getElementById("host").attachShadow({ mode: "open" });
 
       let slot = document.createElement("slot");
-      slot.innerHTML = "this label is for input";
+      slot.innerHTML = "label as a shadow dom host and add text in a slot child";
       shadow.appendChild(slot);
       
     </script>
