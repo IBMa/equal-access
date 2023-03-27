@@ -26,11 +26,9 @@ let bgController = getBGController();
 let myKCMState = false;
 (async() => {
     let settings = await bgController.getSettings();
-    console.log("[DEBUG:KCM Settings]",settings);
     let myTabId = await bgController.getTabId()!;
-    console.log("[DEBUG:KCM TabId]", myTabId);
     let devtoolsController = getDevtoolsController(true, "remote", myTabId);
-    console.log("ADDING LISTENERR");
+    // console.log("ADDING ViewState LISTENERR");
     devtoolsController.addViewStateListener(async (viewState) => {
         console.log("[DEBUG:KCM ViewState]", viewState.kcm, "   myKCMState = ",myKCMState);
         if (viewState.kcm === myKCMState) return;
@@ -41,7 +39,7 @@ let myKCMState = false;
             //    so draw KCM visualization
             let report = await devtoolsController.getReport();
             // @ts-ignore
-            getKCMData(viewState.kcm, report, settings);
+            getKCMData(report, settings);
         } else {
             deleteDrawing(".deleteMe");
             myKCMState = false;
@@ -49,7 +47,7 @@ let myKCMState = false;
     });
 })();
 
-function getKCMData (view: boolean, report:IReport | null, settings: ISettings) {
+function getKCMData (report:IReport | null, settings: ISettings) {
     console.log("Function: getKCMData");
     /* JCH before finish scan collect and order tab stops
         * Note: report contains all issues
@@ -91,9 +89,10 @@ function getKCMData (view: boolean, report:IReport | null, settings: ISettings) 
     if (tabbable !== null) {
         tabbable.sort((a: any, b: any) => b.apiArgs[0].tabindex - a.apiArgs[0].tabindex);
     }
-    console.log("viewState.kcm = ", view);
-    console.log("tabbable = ",tabbable);
-    console.log("tabbableErrors = ",tabbableErrors);
+    // console.log("viewState.kcm = ", view);
+    // console.log("tabbable = ",tabbable);
+    // console.log("tabbableErrors = ",tabbableErrors);
+   
     // now call function to draw (or delete)
 
     // @ts-ignore

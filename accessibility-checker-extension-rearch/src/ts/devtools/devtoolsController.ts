@@ -593,7 +593,7 @@ let singleton : DevtoolsController;
  */
 export function getDevtoolsController(isContentScript?: boolean, type?: eControllerType, tabId?: number) {
     if (!singleton) {
-        console.log("Creating devtools controller", type);
+        // console.log("Creating devtools controller", type);
         singleton = new DevtoolsController(isContentScript === true, type || "remote", tabId);
     }
     return singleton;

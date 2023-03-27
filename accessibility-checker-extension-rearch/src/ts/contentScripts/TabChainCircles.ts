@@ -91,8 +91,8 @@ export default class TabChainCircles {
 
                         let y = nodes[i].getBoundingClientRect().y;
                         let yPlusHeight = nodes[i].getBoundingClientRect().y + nodes[i].getBoundingClientRect().height;
-                        console.log("-------------------------------------");
-                        console.log("Error circle node[",i,"] has coords x = ",x,"   y = ",y);
+                        // console.log("-------------------------------------");
+                        // console.log("Error circle node[",i,"] has coords x = ",x,"   y = ",y);
             
                         // adjustment for iframes
                         // if element inside iframe get iframe coordinates the add coordinates of element to those of iframe
@@ -344,7 +344,7 @@ export default class TabChainCircles {
                                     }
                                 }
 
-                                console.log("Regular Circle node ",i," to ",i+1," Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
+                                // console.log("Regular Circle node ",i," to ",i+1," Line x1 = ",x1,"   x2 = ",x2,"   y1 = ",y1,"   y2 = ",y2);
                                 TabStopLine.makeLine(x1, y1, x2, y2, ["line"]);
 
                                 // Create white outline
@@ -360,7 +360,7 @@ export default class TabChainCircles {
                         }
 
                         // draw circles after lines
-                        console.log("Regular Circle node[",i,"] coords x = ",x,"   y = ",y);
+                        // console.log("Regular Circle node[",i,"] coords x = ",x,"   y = ",y);
                         TabStopCircle.makeCircle(x, y, i.toString(), 13, nodeXpaths[i], false);
                         TabStopText.makeText(x, y, (i + 1).toString(), i.toString(), "textColorWhite");
 
