@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { Column, Grid, Checkbox } from '@carbon/react';
+import { Column, Grid, Checkbox, Theme } from '@carbon/react';
 import { ISettings } from "../../interfaces/interfaces";
 import { getBGController } from "../../background/backgroundController";
 
@@ -67,9 +67,10 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
                             To use the visualization effectively do the following:
                         </div>
 
-                        <div><span style={{fontWeight:"bold"}}>Step 1</span> Check for errors in the tab stop order</div>
-                        <div><span style={{fontWeight:"bold"}}>Step 2</span> Look for extra tab stops</div>
-                        <div style={{marginBottom:"1rem"}}><span style={{fontWeight:"bold"}}>Step 3</span> Identify missing tab stops</div>
+                        <div className="step"><span style={{fontWeight:"bold"}}>Step 1</span> Check for errors in the tab stop order</div>
+                        <div className="step"><span style={{fontWeight:"bold"}}>Step 2</span> Look for extra tab stops</div>
+                        <div className="step"><span style={{fontWeight:"bold"}}>Step 3</span> Identify missing tab stops</div>
+                        <div style={{marginTop: "1rem"}} />
 
                         <div style={{marginBottom:"1rem"}}>
                             The list view shows only keyboard tab stop access issues. 
@@ -89,100 +90,52 @@ export default class KCMOverviewScreen extends React.Component<IKCMOverviewScree
 
                 {/* Right Column */}
 
-                <Column style={{marginLeft:"0", borderLeft:"double"}} sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
-                    
-                    <Grid style={{marginBottom: "1rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
-                            
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                            <div className="kcmExplain">
-                                <span className="visualization-guide" style={{fontWeight:"bold", marginBottom:"2rem"}}>Visualization guide</span>
-                            </div>
-                        </Column>
-                    </Grid>
-                    
-                    <Grid style={{marginBottom: "1rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
-                            <svg height="50" width="50">
-                                <circle cx="34" cy="20" r="13" stroke="#C6C6C6" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="31" y="23">2</text>
+                <Column className="rightCol" style={{ marginLeft:"0" }} sm={{ span: 4 }} md={{ span: 4 }} lg={{ span: 4 }}>
+                    <div className="noIconText">
+                        <span className="visualization-guide" style={{fontWeight:"bold", marginBottom:"2rem"}}>Visualization guide</span>
+                    </div>
+                    <div style={{clear: "both", marginTop: "1rem"}} />
+                    <div className="iconText">
+                        <svg height="50" width="50">
+                            <circle cx="34" cy="20" r="13" stroke="#C6C6C6" stroke-width="3" fill="#525252" />
+                            <text className="visualization-guide-text" fill="white" x="31" y="23">2</text>
+                        </svg>
+                        Numbered tab stop with no detected issues. Clicking will show element in the DOM.
+                    </div>
+                    <div style={{clear: "both", marginTop: "1rem"}} />
+                    <div className="iconText">
+                        <svg height="50" width="50">
+                            <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
+                            <text className="visualization-guide-text" fill="white" x="25" y="28">11</text>
+                            <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
+                                <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
                             </svg>
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                        <div className="kcmExplain">
-                            <div style={{marginBottom:"1rem"}}>
-                                Numbered tab stop with no detected issues. Clicking will show element in the DOM.
-                            </div>
-                        </div>
-                        </Column>
-                    </Grid>
-                    
-                    <Grid style={{marginBottom: "2rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
-                            <svg height="50" width="50">
-                                <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="25" y="28">11</text>
-                                <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
-                                    <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
-                                </svg>
+                        </svg>
+                        Numbered tab stop with detected issues. Click to learn about the issues.
+                    </div>
+                    <div style={{clear: "both", marginTop: "1rem"}} />
+                    <div className="iconText">
+                        <svg height="50" width="50">
+                            <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
+                            <text className="visualization-guide-text" fill="white" x="30" y="28">?</text>
+                            <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
+                                <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
                             </svg>
-                
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                            <div className="kcmExplain">
-                                <div style={{marginBottom:"1rem"}}>
-                                Numbered tab stop with detected issues. Click to learn about the issues.
-                                </div>
-                            </div>
-                        </Column>
-                    </Grid>
-
-                    <Grid style={{marginBottom: "2rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
-                            <svg height="50" width="50">
-                                <circle cx="32" cy="25" r="16" stroke="#FF8389" stroke-width="3" fill="#525252" />
-                                <text className="visualization-guide-text" fill="white" x="30" y="28">?</text>
-                                <svg className="svgNotificationDot" xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" viewBox="0 0 32 32" stroke="#525252" stroke-width="1">
-                                    <circle cx="105" cy="25" stroke="black" stroke-width="1" r="12" fill="#FF8389"></circle>
-                                </svg>
-                            </svg>
-                
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                            <div className="kcmExplain">
-                                <div style={{marginBottom:"1rem"}}>
-                                    Tab stops that are not in the tab order. Click to learn more.
-                                </div>
-                            </div>
-                        </Column>
-                    </Grid>
-
-                    <Grid style={{marginBottom: "1rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }}>
-                            
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                            <div className="kcmExplain">
-                                <span className="visualization-guide" style={{fontWeight:"bold", marginBottom:"2rem"}}>Exit</span>
-                            </div>
-                        </Column>
-                    </Grid>
-                    
-                    <Grid style={{marginBottom: "1rem"}}>
-                        <Column sm={{ span: 1 }} md={{ span: 1 }} lg={{ span: 1 }} style={{marginRight:"5px"}}>
-                            <div style={{width:"30px", height:"30px", backgroundColor:"black", float:"right", position:"relative"}}>
-                                <div style={{position:"absolute", width:"16px", height:"16px", top:"7px", right:"7px", backgroundColor:"white", filter:"invert(100%)"}}><KeyboardOff size={16} /></div>
-                            </div>
-                        </Column>
-                        <Column sm={{ span: 3 }} md={{ span: 3 }} lg={{ span: 3 }}>
-                            <div className="kcmExplain">
-                                Click on the keyboard icon to return to the regular view.
-                            </div>
-                        </Column>
-                    </Grid>
-                    
-
+                        </svg>
+                        Tab stops that are not in the tab order. Click to learn more.
+                    </div>
+                    <div style={{clear: "both", marginTop: "2rem"}} />
+                    <div className="noIconText">
+                        <span className="visualization-guide" style={{fontWeight:"bold"}}>Exit</span>
+                    </div>
+                    <div style={{clear: "both", marginTop: "1rem"}} />
+                    <div className="iconText">
+                        <Theme theme="g90" className="iconBox">
+                            <KeyboardOff size={16} />
+                        </Theme>
+                        Click on the keyboard icon to return to the regular view.
+                    </div>
+                    <div style={{clear: "both", marginTop: "1rem"}} />
                 </Column>
             </Grid>
             <Grid>
