@@ -10,6 +10,13 @@
     .cds--tab-content {
         padding: 0rem;
     }
+    .darkLink {
+        color: $black;
+        &:hover {
+            color: $gray-80;
+            cursor: pointer;
+        }
+    }
 }
 
 .reportFilterBorder {

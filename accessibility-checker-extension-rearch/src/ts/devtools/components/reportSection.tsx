@@ -22,6 +22,7 @@ import { UtilIssue } from '../../util/UtilIssue';
 import { ePanel } from '../devToolsApp';
 import {
     Checkbox,
+    Link,
     Tabs,
     Tab,
     TabList,
@@ -36,6 +37,7 @@ import { ReportReqts } from './reportReqts';
 import { ReportRules } from './reportRules';
 import { ListenerType } from '../../messaging/controller';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
+import { getDevtoolsAppController } from '../devtoolsAppController';
 
 let devtoolsController = getDevtoolsController();
 
@@ -206,7 +208,11 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                     </>
                 })}
                 <Column sm={1} md={2} lg={2} className="totalCount">
-                    {totalCount} issues found
+                    <Link id="totalIssuesCount" className="darkLink" inline={true} onClick={() => {
+                        let appController = getDevtoolsAppController();
+                        appController.setSecondaryView("summary");
+                        appController.openSecondary("totalIssuesCount");
+                    }}>{totalCount} issues found</Link>
                 </Column>
             </Grid>
         </>;
