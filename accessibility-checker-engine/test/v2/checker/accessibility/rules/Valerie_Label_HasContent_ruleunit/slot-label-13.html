@@ -19,24 +19,22 @@
 
 <html lang="en-US">
   <head>
-    <title>Slot Label 22</title>
+    <title>Slot Label 13</title>
     <meta charset="UTF-8" />
   </head>
   <body>
     <main id="main">
-      <div id="host">Tex in div </div>
+      <div id="host"><span slot="label">Search by location or language. Note: Location/Language will be dynamically updated as you provide the input</span>
+      </div>
     </main>
     <script type="text/javascript">
-      let shadow = document
-        .getElementById("host")
-        .attachShadow({ mode: "open" });
-        shadow.innerHTML = `
-          <label for="input1">
-              <slot></slot>
-          </label>
-          <input id="input1" type="text" />
-          `;
-      
+      let shadow = document.getElementById("host").attachShadow({ mode: "open" });
+      shadow.innerHTML = `
+      <label for="input1"><slot name='label'></slot>
+      </label>
+      <input id="input1" type="text" />
+    `;
+    
     </script>
     <script type="text/javascript">
       UnitTest = {
