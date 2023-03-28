@@ -15,24 +15,25 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { IIssue, IReport, IRuleset } from '../../interfaces/interfaces';
-import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
-import { UtilIssue } from '../../util/UtilIssue';
-import { ePanel } from '../devToolsApp';
+import { IIssue, IRuleset } from '../../../interfaces/interfaces';
+import { ReportTreeGrid, IRowGroup } from '../reportTreeGrid';
+import { UtilIssue } from '../../../util/UtilIssue';
+import { ePanel } from '../../devToolsApp';
 
-import "./reportSection.scss";
-import { getBGController } from '../../background/backgroundController';
-import { getTabId } from '../../util/tabId';
+import "../reportSection.scss";
+import { getBGController } from '../../../background/backgroundController';
+import { getTabId } from '../../../util/tabId';
 
 interface ReportProps {
     panel: ePanel
-    report: IReport | null
+    issues: IIssue[] | null
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
         "Recommendation": boolean
     }
     selectedPath: string | null;
+    onResetFilters: () => void
 }
 
 interface ReportState {
@@ -55,7 +56,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
 
     render() {
         let rowData : IRowGroup[] | null = null;
-        if (this.state.ruleset && this.props.report && this.props.report.results) {
+        if (this.state.ruleset && this.props.issues) {
             rowData = [];
             for (const checkpoint of this.state.ruleset.checkpoints) {
                 let curGroup : { 
@@ -67,7 +68,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                     label: `${checkpoint.num} ${checkpoint.name}`,
                     children: []
                 };
-                for (const result of this.props.report.results) {
+                for (const result of this.props.issues) {
                     if (checkpoint.rules?.find(rule => rule.id === result.ruleId)) {
                         curGroup.children.push(result);
                     }
@@ -75,14 +76,13 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
                 rowData.push(curGroup);
             }
             rowData = rowData.filter(row => row.children.length > 0);
-            rowData.sort((groupA, groupB) => groupA.label.localeCompare(groupB.label));
+            rowData.sort((groupA, groupB) => groupA.id.localeCompare(groupB.id));
             for (const group of rowData) {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
         return <ReportTreeGrid 
             panel={this.props.panel}
-            emptyLabel="No issues detected for the chosen filter criteria"
             noScanMessage={<>This page has not been scanned.</>}
             headers={[
                 { key: "issueCount", label: "Issues" },
@@ -90,6 +90,7 @@ export class ReportReqts extends React.Component<ReportProps, ReportState> {
             ]}
             rowData={rowData}
             selectedPath={this.props.selectedPath}
+            onResetFilters={this.props.onResetFilters}
         />
     }
 }

@@ -15,32 +15,32 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { IReport } from '../../interfaces/interfaces';
-import { ReportTreeGrid, IRowGroup } from './reportTreeGrid';
-import { UtilIssue } from '../../util/UtilIssue';
-import { ePanel } from '../devToolsApp';
-
-import "./reportSection.scss";
+import { IIssue } from '../../../interfaces/interfaces';
+import { ReportTreeGrid, IRowGroup } from '../reportTreeGrid';
+import { UtilIssue } from '../../../util/UtilIssue';
+import { ePanel } from '../../devToolsApp';
+import "../reportSection.scss";
 
 interface ReportProps {
     panel: ePanel
-    report: IReport | null
+    issues: IIssue[] | null
     checked: {
         "Violation": boolean,
         "Needs review": boolean,
         "Recommendation": boolean
     }
     selectedPath: string | null;
+    onResetFilters: () => void
 }
 
-export class ReportRules extends React.Component<ReportProps> {
+export class ReportRoles extends React.Component<ReportProps> {
     render() {
         let rowData : IRowGroup[] | null = null;
-        if (this.props.report && this.props.report.results) {
+        if (this.props.issues) {
             rowData = [];
-            for (const result of this.props.report.results) {
+            for (const result of this.props.issues) {
                 // let thisLabel = result.path.aria.replace(/\//g, "/ ").replace(/^\/ /, "/");
-                let thisLabel = this.props.report.nls[result.ruleId][0] || result.ruleId;
+                let thisLabel = result.path.aria.replace(/\//g, " /");
                 let curGroup = rowData.find(group => group.label === thisLabel);
                 if (!curGroup) {
                     curGroup = {
@@ -53,38 +53,21 @@ export class ReportRules extends React.Component<ReportProps> {
                     curGroup.children.push(result);
                 }
             }
-            rowData.sort((groupA, groupB) => {
-                const countsA : {
-                    [key: string]: number
-                } = {};
-                for (const child of groupA.children) {
-                    countsA[UtilIssue.valueToStringSingular(child.value)] = (countsA[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
-                }
-                const countsB : {
-                    [key: string]: number
-                } = {};
-                for (const child of groupB.children) {
-                    countsB[UtilIssue.valueToStringSingular(child.value)] = (countsB[UtilIssue.valueToStringSingular(child.value)] || 0) + 1;
-                }
-                return ((countsB["Violation"] || 0) - (countsA["Violation"] || 0))
-                 || ((countsB["Needs review"] || 0) - (countsA["Needs review"] || 0))
-                 || ((countsB["Recommendation"] || 0) - (countsA["Recommendation"] || 0))
-                 || 0;
-            });
+            rowData.sort((groupA, groupB) => groupA.id.localeCompare(groupB.id));
             for (const group of rowData) {
                 group.children.sort((a, b) => UtilIssue.valueToOrder(a.value)-UtilIssue.valueToOrder(b.value));
             }
         }
         return <ReportTreeGrid 
             panel={this.props.panel}
-            emptyLabel="No issues detected for the chosen filter criteria"
             noScanMessage={<>This page has not been scanned.</>}
             headers={[
                 { key: "issueCount", label: "Issues" },
-                { key: "label", label: "Rules" }
+                { key: "label", label: "Element Roles" }
             ]}
             rowData={rowData}
             selectedPath={this.props.selectedPath}
+            onResetFilters={this.props.onResetFilters}
         />
     }
 }

@@ -15,7 +15,7 @@
 *****************************************************************************/
 
 import * as React from 'react';
-import { getDevtoolsController } from '../devtoolsController';
+import { getDevtoolsController, ViewState } from '../devtoolsController';
 import { IIssue, IReport } from '../../interfaces/interfaces';
 import { Column, Grid } from "@carbon/react";
 import { UtilIssue } from '../../util/UtilIssue';
@@ -32,12 +32,14 @@ import {
 } from "@carbon/react";
 
 import "./reportSection.scss";
-import { ReportRoles } from './reportRoles';
-import { ReportReqts } from './reportReqts';
-import { ReportRules } from './reportRules';
+import { ReportRoles } from './reports/reportRoles';
+import { ReportReqts } from './reports/reportReqts';
+import { ReportRules } from './reports/reportRules';
 import { ListenerType } from '../../messaging/controller';
 import { UtilIssueReact } from '../../util/UtilIssueReact';
 import { getDevtoolsAppController } from '../devtoolsAppController';
+import { ReportTabs } from './reports/reportTabs';
+import { UtilKCM } from '../../util/UtilKCM';
 
 let devtoolsController = getDevtoolsController();
 
@@ -53,10 +55,30 @@ interface ReportSectionState {
         "Recommendation": boolean
     }
     selectedPath: string | null
-    focusMode: boolean
+    focusMode: boolean,
+    viewState?: ViewState
 }
 
 type eLevel = "Violation" | "Needs review" | "Recommendation";
+
+type CountType = {
+    "Violation": {
+        focused: number,
+        total: number
+    },
+    "Needs review": {
+        focused: number,
+        total: number
+    },
+    "Recommendation": {
+        focused: number,
+        total: number
+    },
+    "Pass": {
+        focused: number,
+        total: number
+    }
+}
 
 export class ReportSection extends React.Component<ReportSectionProps, ReportSectionState> {
     state: ReportSectionState = {
@@ -70,23 +92,10 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         focusMode: false
     }
 
-    reportListener: ListenerType<IReport> = async (report: IReport) => {
-        if (report) {
-            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-        }
-        this.setState({ report });
-    }
-    selectedElementListener: ListenerType<string> = async (path) => {
-        this.setPath(path);
-    }
-
     async componentDidMount(): Promise<void> {
         devtoolsController.addReportListener(this.reportListener);
         let report = await devtoolsController.getReport();
-        if (report) {
-            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS");
-            this.setState({ report });
-        }
+        this.reportListener(report!);
 
         devtoolsController.addSelectedElementPathListener(this.selectedElementListener);
         let path = await devtoolsController.getSelectedElementPath();
@@ -94,8 +103,12 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         devtoolsController.addFocusModeListener(async (newValue: boolean) => {
             this.setState({ focusMode: newValue });
         })
+        devtoolsController.addViewStateListener(async (viewState: ViewState) => {
+            this.setState({ viewState });
+        })
         this.setState({
-            focusMode: await devtoolsController.getFocusMode()
+            focusMode: await devtoolsController.getFocusMode(),
+            viewState: (await devtoolsController.getViewState())!
         })
     }
 
@@ -103,12 +116,32 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         devtoolsController.removeReportListener(this.reportListener);
     }
 
+    onResetFilters() {
+        this.setState({
+            checked: {
+                "Violation": true,
+                "Needs review": true,
+                "Recommendation": true
+            }
+        })
+    }
+
+    reportListener: ListenerType<IReport> = async (report: IReport) => {
+        if (report) {
+            report!.results = report!.results.filter(issue => issue.value[1] !== "PASS" || issue.ruleId === "detector_tabbable");
+        }
+        this.setState({ report });
+    }
+    selectedElementListener: ListenerType<string> = async (path) => {
+        this.setPath(path);
+    }
+
     setPath(path: string) {
         this.setState({ selectedPath: path });
     }
 
-    getCounts() {
-        let counts = {
+    initCount() {
+        return {
             "Violation": {
                 focused: 0,
                 total: 0
@@ -125,9 +158,13 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                 focused: 0,
                 total: 0
             }
-        };
-        if (this.state.report) {
-            for (const issue of this.state.report.results) {
+        }
+    }
+
+    getCounts(issues: IIssue[] | null) : CountType {
+        let counts = this.initCount();
+        if (issues) {
+            for (const issue of issues) {
                 let sing = UtilIssue.valueToStringSingular(issue.value);
                 ++counts[sing as eLevel].total;
                 if (!this.state.selectedPath || issue.path.dom.startsWith(this.state.selectedPath)) {
@@ -139,11 +176,24 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
     }
 
     render() {
-        // console.log("Focus Mode:",this.state.focusMode)
-        let counts = this.getCounts();
-        let filtReport: IReport = this.state.report ? JSON.parse(JSON.stringify(this.state.report)) : null;
-        if (filtReport) {
-            filtReport.results = filtReport.results.filter((issue: IIssue) => {
+        let reportIssues : IIssue[] | null = null;
+        let tabbableDetectors: IIssue[] | null = null;
+        let counts: CountType = this.initCount();
+
+        console.log(this.state.report);
+        if (this.state.report) {
+            if (this.state.viewState && this.state.viewState.kcm) {
+                let { tabbable, tabbableErrors } = UtilKCM.processIssues(this.state.report);
+                tabbableDetectors = tabbable;
+                reportIssues = tabbableErrors;
+            } else {
+                // console.log("Focus Mode:",this.state.focusMode)
+                reportIssues = this.state.report ? JSON.parse(JSON.stringify(this.state.report.results)) : null;
+            }
+        }
+        if (reportIssues) {
+            counts = this.getCounts(reportIssues);
+            reportIssues = reportIssues.filter((issue: IIssue) => {
                 let retVal = (this.state.checked[UtilIssue.valueToStringSingular(issue.value) as eLevel]
                     && (!this.state.focusMode
                         || !this.state.selectedPath
@@ -154,6 +204,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
             });
             // console.log(filtReport.results.length);
         }
+
         let totalCount = 0;
         let filterSection = <>
             <div className="reportFilterBorder" />
@@ -178,7 +229,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                                         labelText={<span className="countCol">
                                             {UtilIssueReact.valueSingToIcon(levelStr, "reportSecIcon")}
                                             <span className="reportSecCounts" style={{ marginLeft: "4px" }}>
-                                                {filtReport && <>
+                                                {reportIssues && <>
                                                     {(counts[levelStr as eLevel].focused === counts[levelStr as eLevel].total &&
                                                         counts[levelStr as eLevel].total
                                                     ) || <>
@@ -220,7 +271,7 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
         return (<>
             <Grid className="reportSection" style={{ overflowY: "auto", flex: "1" }}>
                 <Column sm={4} md={8} lg={8} className="reportSectionColumn">
-                    <Tabs
+                    {!this.state.viewState || !this.state.viewState!.kcm && <Tabs
                         // ariaLabel="Report options"
                         role="navigation"
                         tabContentClassName="tab-content"
@@ -233,18 +284,59 @@ export class ReportSection extends React.Component<ReportSectionProps, ReportSec
                         <TabPanels>
                             <TabPanel>
                                 { filterSection }
-                                <ReportRoles report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
+                                <ReportRoles 
+                                    issues={reportIssues} 
+                                    panel={this.props.panel} 
+                                    checked={this.state.checked} 
+                                    selectedPath={this.state.selectedPath} 
+                                    onResetFilters={this.onResetFilters.bind(this)}
+                                />
                             </TabPanel>
                             <TabPanel>
                                 { filterSection }
-                                <ReportReqts report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
+                                <ReportReqts 
+                                    issues={reportIssues} 
+                                    panel={this.props.panel} 
+                                    checked={this.state.checked} 
+                                    selectedPath={this.state.selectedPath} 
+                                    onResetFilters={this.onResetFilters.bind(this)}
+                                />
                             </TabPanel>
                             <TabPanel>
                                 { filterSection }
-                                <ReportRules report={filtReport} panel={this.props.panel} checked={this.state.checked} selectedPath={this.state.selectedPath} />
+                                <ReportRules 
+                                    report={this.state.report}
+                                    issues={reportIssues} 
+                                    panel={this.props.panel} 
+                                    checked={this.state.checked} 
+                                    selectedPath={this.state.selectedPath} 
+                                    onResetFilters={this.onResetFilters.bind(this)}
+                                />
                             </TabPanel>
                         </TabPanels>
-                    </Tabs>
+                    </Tabs>}
+                    {this.state.viewState && this.state.viewState.kcm && <Tabs
+                        // ariaLabel="Report options"
+                        role="navigation"
+                        tabContentClassName="tab-content"
+                    >
+                        <TabList>
+                            <Tab>Keyboard tab stops</Tab>
+                        </TabList>
+                        <TabPanels>
+                            <TabPanel>
+                                { filterSection }
+                                <ReportTabs 
+                                    issues={reportIssues}
+                                    tabbable={tabbableDetectors}
+                                    panel={this.props.panel} 
+                                    checked={this.state.checked} 
+                                    selectedPath={this.state.selectedPath} 
+                                    onResetFilters={this.onResetFilters.bind(this)}
+                                />
+                            </TabPanel>
+                        </TabPanels>
+                    </Tabs>}
                 </Column>
             </Grid>
         </>);

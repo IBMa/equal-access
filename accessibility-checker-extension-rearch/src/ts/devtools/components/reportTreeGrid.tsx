@@ -17,7 +17,8 @@ import * as React from 'react';
 
 import {
     Column,
-    Grid
+    Grid,
+    Link
 } from "@carbon/react";
 
 import {
@@ -35,19 +36,20 @@ import { UtilIssueReact } from '../../util/UtilIssueReact';
 
 export interface IRowGroup {
     id: string
-    label: string
+    label: string | React.ReactNode
     children: IIssue[]
 }
 
 interface ReportTreeGridProps {
     panel: ePanel;
-    emptyLabel: string
     headers: Array<{ key: string, label: string }>
     rowData?: IRowGroup[] | null
     className?: string
     selectedPath: string | null;
     noScanMessage: React.ReactNode;
+    onResetFilters: () => void
 }
+
 
 interface ReportTreeGridState {
     expandedGroups: string[]
@@ -399,9 +401,19 @@ export class ReportTreeGrid extends React.Component<ReportTreeGridProps, ReportT
         let content : React.ReactNode = <></>;
 
         if (!this.props.rowData) {
-            content = this.props.noScanMessage;
+            content = <div className="reportTreeGridEmptyText">{this.props.noScanMessage}</div>;
         } else if (this.props.rowData.length === 0) {
-            content = <>{ this.props.emptyLabel }</>
+            content = <div className="reportTreeGridEmptyText">
+                No issues detected for the chosen filter criteria. To see all issues, <Link
+                    inline={true}
+                    onClick={() => {
+                        getDevtoolsController().setFocusMode(false);
+                    }}
+                >turn off focus view</Link> and <Link
+                    inline={true}
+                    onClick={this.props.onResetFilters}
+                >select all issue types</Link>
+            </div>
         } else {
             // Generate the header
             let numLeft = 4;

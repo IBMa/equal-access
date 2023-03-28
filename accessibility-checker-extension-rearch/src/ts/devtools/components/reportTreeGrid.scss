@@ -2,6 +2,10 @@
 @use '@carbon/styles/scss/colors' as *;
 @use '@carbon/styles/scss/breakpoint'as *;
 
+.reportTreeGridEmptyText {
+    @include type-style('body-01');
+    margin-top: .5rem;
+}
 .reportTreeGrid {
     --border-width: 1px;
     --focus-width: 2px;

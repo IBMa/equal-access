@@ -127,8 +127,10 @@ export class CommonMessaging {
                                     resolve(await this.send(message, (retry || 0) + 1));
                                 },0);
                             } else {
-                                if (chrome.runtime.lastError.message?.includes("The message port closed")) {
-                                    console.info("[No response]:",message.type);
+                                if (chrome.runtime.lastError.message?.includes("The message port closed")
+                                    || chrome.runtime.lastError.message?.includes("Receiving end does not exist")) 
+                                {
+                                    // console.info("[No response]:",message.type);
                                     resolve(null);
                                 } else {
                                     console.error(chrome.runtime.lastError);
