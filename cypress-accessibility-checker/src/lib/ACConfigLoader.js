@@ -29,7 +29,7 @@ const myrequest = (url) => {
             })
     } else {
         return new Promise((resolve, reject) => {
-            var request = require("request");
+            var request = require("@cypress/request");
             request.get(url, function (error, response, body) {
                 if (error) {
                     reject(error);
